@@ -1,37 +1,30 @@
 import pytest
 import json
 from pathlib import Path
-import sys
 
-def test_parse_mapping_json():
-    """Test parsing mapping.json file"""
-    # Add parent directory to path so we can import tools
-    sys.path.insert(0, str(Path(__file__).parent.parent / "tools"))
-    from generate_models import parse_mapping_json
+def test_create_directory_structure():
+    """Test generating directory structure from package paths"""
+    from tools.generate_models import create_directory_structure
 
-    # Create test mapping.json
-    test_data = {
-        "types": [
-            {
-                "name": "TestClass",
-                "type": "Class",
-                "package_path": "M2::Test"
-            }
-        ]
-    }
+    # Create temp output dir
+    import tempfile
+    temp_dir = Path(tempfile.mkdtemp())
 
-    test_file = Path("test_mapping.json")
-    test_file.write_text(json.dumps(test_data))
+    # Test with simple data
+    types = [{
+        "name": "TestClass",
+        "type": "Class",
+        "package_path": "M2::Test::SubPackage"
+    }]
 
-    # Parse
-    result = parse_mapping_json(test_file)
+    # Create directory structure
+    create_directory_structure(types, temp_dir)
 
-    # Verify
-    assert len(result["types"]) == 1
-    assert result["types"][0]["name"] == "TestClass"
+    # Verify directories were created
+    assert (temp_dir / "M2").exists()
+    assert (temp_dir / "M2" / "Test").exists()
+    assert (temp_dir / "M2" / "Test" / "SubPackage").exists()
 
     # Cleanup
-    test_file.unlink()
-
-    # Cleanup
-    test_file.unlink()
+    import shutil
+    shutil.rmtree(temp_dir)
