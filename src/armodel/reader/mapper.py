@@ -4,7 +4,7 @@ from lxml import etree
 from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
 
-def map_xml_to_autosar(root: etree.Element) -> AUTOSAR:
+def map_xml_to_autosar(root: etree._Element) -> AUTOSAR:
     """Map XML element to AUTOSAR object.
 
     Args:

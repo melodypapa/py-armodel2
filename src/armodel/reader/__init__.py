@@ -48,7 +48,7 @@ class ARXMLReader:
 
         return autosar
 
-    def _load_file(self, filepath: Union[str, Path]) -> etree.Element:
+    def _load_file(self, filepath: Union[str, Path]) -> etree._Element:
         """Load ARXML file and return root element.
 
         Args:
@@ -69,7 +69,7 @@ class ARXMLReader:
         tree = etree.parse(str(filepath))
         return tree.getroot()
 
-    def _map_to_autosar(self, root: etree.Element) -> AUTOSAR:
+    def _map_to_autosar(self, root: etree._Element) -> AUTOSAR:
         """Map XML element to AUTOSAR object.
 
         Args:
@@ -87,7 +87,7 @@ class ARXMLReader:
 
         return autosar
 
-    def _validate_against_schema(self, root: etree.Element, autosar: AUTOSAR) -> None:
+    def _validate_against_schema(self, root: etree._Element, autosar: AUTOSAR) -> None:
         """Validate ARXML against XSD schema.
 
         Args:
