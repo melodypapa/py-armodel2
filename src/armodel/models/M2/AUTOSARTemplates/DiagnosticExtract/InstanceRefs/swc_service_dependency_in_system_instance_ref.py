@@ -1,6 +1,8 @@
 """SwcServiceDependencyInSystemInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class SwcServiceDependencyInSystemInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: SwcServiceDependencyInSystemInstanceRef = SwcServiceDependencyInSystemInstanceRef()
+        self._obj: SwcServiceDependencyInSystemInstanceRef = (
+            SwcServiceDependencyInSystemInstanceRef()
+        )
 
     def build(self) -> SwcServiceDependencyInSystemInstanceRef:
         """Build and return SwcServiceDependencyInSystemInstanceRef object.

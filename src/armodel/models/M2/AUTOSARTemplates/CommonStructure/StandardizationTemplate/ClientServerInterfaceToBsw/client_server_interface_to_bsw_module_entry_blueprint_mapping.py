@@ -1,6 +1,8 @@
 """ClientServerInterfaceToBswModuleEntryBlueprintMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -22,7 +24,9 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARObject):
         return element
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
+    def deserialize(
+        cls, element: ET.Element
+    ) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
         """Create ClientServerInterfaceToBswModuleEntryBlueprintMapping from XML element.
 
         Args:
@@ -41,7 +45,9 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = ClientServerInterfaceToBswModuleEntryBlueprintMapping()
+        self._obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = (
+            ClientServerInterfaceToBswModuleEntryBlueprintMapping()
+        )
 
     def build(self) -> ClientServerInterfaceToBswModuleEntryBlueprintMapping:
         """Build and return ClientServerInterfaceToBswModuleEntryBlueprintMapping object.

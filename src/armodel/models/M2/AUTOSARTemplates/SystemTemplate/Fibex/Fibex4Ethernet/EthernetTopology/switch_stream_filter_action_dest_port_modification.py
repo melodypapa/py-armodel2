@@ -1,6 +1,8 @@
 """SwitchStreamFilterActionDestPortModification AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class SwitchStreamFilterActionDestPortModificationBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: SwitchStreamFilterActionDestPortModification = SwitchStreamFilterActionDestPortModification()
+        self._obj: SwitchStreamFilterActionDestPortModification = (
+            SwitchStreamFilterActionDestPortModification()
+        )
 
     def build(self) -> SwitchStreamFilterActionDestPortModification:
         """Build and return SwitchStreamFilterActionDestPortModification object.

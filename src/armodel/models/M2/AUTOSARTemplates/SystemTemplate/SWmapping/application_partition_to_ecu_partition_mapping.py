@@ -1,6 +1,8 @@
 """ApplicationPartitionToEcuPartitionMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class ApplicationPartitionToEcuPartitionMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ApplicationPartitionToEcuPartitionMapping = ApplicationPartitionToEcuPartitionMapping()
+        self._obj: ApplicationPartitionToEcuPartitionMapping = (
+            ApplicationPartitionToEcuPartitionMapping()
+        )
 
     def build(self) -> ApplicationPartitionToEcuPartitionMapping:
         """Build and return ApplicationPartitionToEcuPartitionMapping object.

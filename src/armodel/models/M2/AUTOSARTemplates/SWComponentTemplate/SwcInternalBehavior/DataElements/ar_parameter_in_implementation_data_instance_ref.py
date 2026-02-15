@@ -1,6 +1,8 @@
 """ArParameterInImplementationDataInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class ArParameterInImplementationDataInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ArParameterInImplementationDataInstanceRef = ArParameterInImplementationDataInstanceRef()
+        self._obj: ArParameterInImplementationDataInstanceRef = (
+            ArParameterInImplementationDataInstanceRef()
+        )
 
     def build(self) -> ArParameterInImplementationDataInstanceRef:
         """Build and return ArParameterInImplementationDataInstanceRef object.

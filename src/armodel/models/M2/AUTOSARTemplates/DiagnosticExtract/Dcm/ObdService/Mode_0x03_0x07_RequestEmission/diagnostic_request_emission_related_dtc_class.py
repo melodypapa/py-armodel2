@@ -1,6 +1,8 @@
 """DiagnosticRequestEmissionRelatedDTCClass AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticRequestEmissionRelatedDTCClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestEmissionRelatedDTCClass = DiagnosticRequestEmissionRelatedDTCClass()
+        self._obj: DiagnosticRequestEmissionRelatedDTCClass = (
+            DiagnosticRequestEmissionRelatedDTCClass()
+        )
 
     def build(self) -> DiagnosticRequestEmissionRelatedDTCClass:
         """Build and return DiagnosticRequestEmissionRelatedDTCClass object.

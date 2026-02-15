@@ -1,6 +1,8 @@
 """ApplicationCompositeElementInPortInterfaceInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -22,7 +24,9 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
         return element
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeElementInPortInterfaceInstanceRef":
+    def deserialize(
+        cls, element: ET.Element
+    ) -> "ApplicationCompositeElementInPortInterfaceInstanceRef":
         """Create ApplicationCompositeElementInPortInterfaceInstanceRef from XML element.
 
         Args:
@@ -41,7 +45,9 @@ class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ApplicationCompositeElementInPortInterfaceInstanceRef = ApplicationCompositeElementInPortInterfaceInstanceRef()
+        self._obj: ApplicationCompositeElementInPortInterfaceInstanceRef = (
+            ApplicationCompositeElementInPortInterfaceInstanceRef()
+        )
 
     def build(self) -> ApplicationCompositeElementInPortInterfaceInstanceRef:
         """Build and return ApplicationCompositeElementInPortInterfaceInstanceRef object.

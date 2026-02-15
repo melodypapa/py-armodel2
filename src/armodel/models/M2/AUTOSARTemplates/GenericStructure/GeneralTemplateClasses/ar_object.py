@@ -20,9 +20,7 @@ class ARObject:
         Raises:
             NotImplementedError: Subclasses must implement this method
         """
-        raise NotImplementedError(
-            f"{self.__class__.__name__} must implement serialize() method"
-        )
+        raise NotImplementedError(f"{self.__class__.__name__} must implement serialize() method")
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ARObject":
@@ -34,6 +32,4 @@ class ARObject:
         Raises:
             NotImplementedError: Subclasses must implement this method
         """
-        raise NotImplementedError(
-            f"{cls.__name__} must implement deserialize() classmethod"
-        )
+        raise NotImplementedError(f"{cls.__name__} must implement deserialize() classmethod")

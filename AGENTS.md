@@ -1,310 +1,445 @@
-# py-armodel2 项目指南
+# py-armodel2 Project Guide
 
-本文档为 AI 代理提供此 Python 项目的全面上下文信息，用于指导后续的开发和维护工作。
+This document provides comprehensive context about this Python project for AI agents to guide subsequent development and maintenance work.
 
-## 项目概述
+## Project Overview
 
-**py-armodel2** 是一个用于处理 AUTOSAR（汽车开放系统架构）ARXML 模型的 Python 库。该项目采用代码生成架构，通过从映射文件自动生成静态 Python 类来表示 AUTOSAR 类型定义。
+**py-armodel2** is a Python library for processing AUTOSAR (AUTomotive Open System ARchitecture) ARXML models. The project adopts a code generation architecture, automatically generating static Python classes from mapping files to represent AUTOSAR type definitions.
 
-**项目状态**: 早期开发阶段，基础架构已就绪，正在实现核心功能。
+**Project Status**: Early development stage, core infrastructure is in place, implementing core features.
 
-### 核心特性
+### Core Features
 
-- **代码生成驱动**: 所有 AUTOSAR 模型类从 `docs/requirements/mapping.json` 自动生成
-- **多版本支持**: 支持 AUTOSAR 00044、00046、00052 三个 schema 版本
-- **静态类型安全**: 使用 Python 类型提示和 MyPy 类型检查
-- **完整的测试覆盖**: 单元测试和集成测试
-- **现代化工具链**: 使用 Ruff 进行代码格式化和 lint，Pytest 进行测试
+- **Code Generation Driven**: All AUTOSAR model classes are automatically generated from `docs/requirements/mapping.json`
+- **Multi-Version Support**: Supports three AUTOSAR schema versions: 00044, 00046, and 00052
+- **Static Type Safety**: Uses Python type hints and MyPy type checking
+- **Complete Test Coverage**: Unit tests and integration tests
+- **Modern Toolchain**: Uses Ruff for code formatting and linting, Pytest for testing
 
-## 技术栈
+### Development Environment Requirements
 
-### 核心依赖
-- **Python 3.8+**: 最低 Python 版本要求
-- **xml.etree.ElementTree**: XML 解析（标准库，替代 lxml）
-- **PyYAML 6.0+**: 配置文件解析
+- **Operating System**: macOS, Linux, Windows
+- **Python Version**: 3.9, 3.10, 3.11
+- **Package Manager**: pip
+- **Optional Tools**: git, GitHub CLI (gh)
 
-### 开发工具
-- **pytest 7.0+**: 测试框架
-- **pytest-cov 4.0+**: 代码覆盖率
-- **mypy 1.0+**: 静态类型检查
-- **ruff 0.1.0+**: 代码 lint 和格式化
-
-## 项目结构
-
-```
-py-armodel2/
-├── src/armodel/              # 源代码
-│   ├── cfg/                 # 配置文件
-│   │   └── schemas/        # Schema 版本配置
-│   │       └── config.yaml # 版本映射配置
-│   ├── core/               # 核心工具
-│   │   ├── base.py        # ARObject 基类
-│   │   └── version.py     # Schema 版本检测
-│   ├── models/             # 生成的 AUTOSAR 模型类
-│   │   └── M2/            # AUTOSAR M2 模型定义
-│   ├── reader/             # ARXML 读取模块
-│   ├── writer/             # ARXML 写入模块
-│   ├── cli/                # 命令行接口
-│   └── utils/              # 辅助工具
-├── tests/                  # 测试套件
-│   ├── unit/              # 单元测试（镜像 src 结构）
-│   ├── integration/       # 集成测试
-│   ├── fixtures/          # 测试数据
-│   └── test_generate_models.py # 代码生成器测试
-├── tools/                  # 代码生成工具
-│   └── generate_models.py # 模型类生成器
-├── scripts/                # 开发脚本
-│   └── setup.sh           # 开发环境设置脚本
-├── demos/                  # AUTOSAR schema 和示例文件
-│   ├── xsd/               # XSD schema 文件
-│   └── arxml/             # ARXML 示例文件
-├── docs/                   # 文档
-│   ├── plans/             # 实现计划
-│   │   ├── CODING_RULES.md # 编码规则
-│   │   └── design-rules.md # 设计规则
-│   └── requirements/      # 需求文档
-│       └── mapping.json   # 类型定义映射
-├── pyproject.toml         # 项目配置
-├── .github/workflows/     # CI/CD 配置
-│   └── ci.yml            # GitHub Actions 工作流
-└── .gitignore             # Git 忽略规则
-```
-
-## 构建和运行
-
-### 安装和设置
+### Quick Start
 
 ```bash
-# 使用设置脚本（推荐）
-./scripts/setup.sh
+# 1. Clone the repository
+git clone https://github.com/melodypapa/py-armodel2.git
+cd py-armodel2
 
-# 或手动安装
+# 2. Install dependencies
 pip install -e ".[dev]"
-```
 
-### 运行测试
-
-```bash
-# 设置 PYTHONPATH 并运行测试
+# 3. Run tests to verify installation
 PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
 
-# 运行带覆盖率的测试
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest --cov=armodel --cov-report=html
-
-# 运行特定测试文件
-PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_core/test_version.py -v
-```
-
-### 代码质量检查
-
-```bash
-# Lint 检查
-ruff check src/ tools/
-
-# 代码格式化
-ruff format src/ tools/
-
-# 类型检查
-mypy src/
-```
-
-### 代码生成
-
-```bash
-# 从 mapping.json 生成所有模型类
+# 4. Generate model classes (if needed)
 python tools/generate_models.py docs/requirements/mapping.json src/armodel/models/
 ```
 
-## 开发约定
+## Tech Stack
 
-### 编码规范
+### Core Dependencies
+- **Python 3.9+**: Minimum Python version requirement
+- **lxml 4.9.0+**: XML parsing (used in reader module)
+- **xml.etree.ElementTree**: XML parsing (standard library, used in writer module)
+- **PyYAML 6.0+**: Configuration file parsing
 
-项目遵循以下编码规则（定义在 `docs/plans/CODING_RULES.md`）：
+### Development Tools
+- **pytest 7.0+**: Testing framework
+- **pytest-cov 4.0+**: Code coverage
+- **mypy 1.0+**: Static type checking
+- **ruff 0.1.0+**: Code lint and formatting
 
-#### 命名约定
-- **文件名**: 使用 snake_case（例如：`test_version.py`）
-- **类名**: 使用 PascalCase（例如：`ApplicationInterface`）
-- **函数/变量名**: 使用 snake_case
+## Project Structure
 
-#### 类结构
-- 所有生成的类必须继承自 `ARObject`
-- 每个类必须包含 `serialize()` 和 `deserialize()` 方法
-- 每个类必须包含一个 builder 类用于实例化
-- Builder 类命名为 `<ClassName>Builder`
+```
+py-armodel2/
+├── src/armodel/              # Source code
+│   ├── cfg/                 # Configuration files
+│   │   └── schemas/        # Schema version configuration
+│   │       └── config.yaml # Version mapping configuration
+│   ├── core/               # Core utilities
+│   │   ├── __init__.py    # Module initialization
+│   │   └── version.py     # Schema version detection
+│   ├── models/             # Generated AUTOSAR model classes
+│   │   └── M2/            # AUTOSAR M2 model definitions
+│   ├── reader/             # ARXML reading module
+│   │   ├── __init__.py    # Module initialization
+│   │   ├── loader.py      # ARXML file loader
+│   │   └── mapper.py      # Element mapper
+│   ├── writer/             # ARXML writing module
+│   │   ├── __init__.py    # Module initialization
+│   │   ├── saver.py       # ARXML file saver
+│   │   └── serializer.py  # Serializer
+│   ├── cli/                # Command line interface (to be implemented)
+│   │   └── __init__.py    # Module initialization
+│   └── utils/              # Utility tools (to be implemented)
+│       └── __init__.py    # Module initialization
+├── tests/                  # Test suite
+│   ├── unit/              # Unit tests (mirrors src structure)
+│   │   ├── test_core/     # Core module tests
+│   │   ├── test_models/   # Model class tests
+│   │   ├── test_reader/   # Reader module tests
+│   │   ├── test_writer/   # Writer module tests
+│   │   └── test_tools/    # Tools tests
+│   ├── integration/       # Integration tests
+│   │   ├── test_read_arxml.py        # ARXML reading tests
+│   │   ├── test_write_arxml.py       # ARXML writing tests
+│   │   └── test_read_write_cycle.py  # Read-write cycle tests
+│   ├── fixtures/          # Test data
+│   │   └── arxml/         # ARXML test files
+│   └── test_generate_models.py # Code generator tests
+├── tools/                  # Code generation tools
+│   └── generate_models.py # Model class generator
+├── scripts/                # Development scripts
+│   └── setup.sh           # Development environment setup script
+├── demos/                  # AUTOSAR schema and example files
+│   ├── xsd/               # XSD schema files
+│   │   ├── AUTOSAR_00044/
+│   │   ├── AUTOSAR_00046/
+│   │   └── AUTOSAR_00052/
+│   └── arxml/             # ARXML example files
+├── docs/                   # Documentation
+│   ├── plans/             # Implementation plans
+│   │   ├── CODING_RULES.md # Coding rules
+│   │   ├── design-rules.md # Design rules
+│   │   ├── AGENTS.md      # AI agent guide (this document)
+│   │   └── *.md           # Other planning documents
+│   ├── designs/           # Design documents
+│   └── requirements/      # Requirements documents
+│       └── mapping.json   # Type definition mapping (1,937 types)
+├── pyproject.toml         # Project configuration
+├── .github/workflows/     # CI/CD configuration
+│   └── ci.yml            # GitHub Actions workflows
+├── .gitignore             # Git ignore rules
+├── README.md              # Project description
+├── AGENTS.md              # AI agent guide (root directory copy)
+└── CLAUDE.md              # Claude AI configuration
+```
 
-#### 序列化/反序列化
-- `serialize()` 返回 `xml.etree.ElementTree.Element`
-- `deserialize()` 是 `@classmethod`，接受 element 参数
-- 所有子元素必须使用其 `serialize()` 方法序列化
-- 所有子元素必须使用 `deserialize()` 方法反序列化
+## Building and Running
 
-#### 包结构
-- 包层次结构必须与 `mapping.json` 中的 package_path 完全匹配
-- 每个类在匹配的目录中都有自己的文件
-- `__init__.py` 导出包中的所有类
+### Installation and Setup
 
-#### 类型安全
-- 为所有类属性使用类型提示
-- 对可空属性使用 `Optional[T]`
-- 用文档字符串记录复杂类型
+```bash
+# Using setup script (recommended)
+./scripts/setup.sh
 
-#### 验证
-- 所有属性必须在 `builder.build()` 方法中验证
-- 对无效的属性值引发 `ValueError`
-- 验证必需属性是否存在
+# Or manual installation
+pip install -e ".[dev]"
+```
 
-#### 文档
-- 每个类必须有文档字符串
-- 每个方法必须有文档字符串
-- 用内联注释记录复杂逻辑
+### Running Tests
 
-#### 测试
-- 每个类必须有单元测试
-- 测试必须覆盖 serialize/deserialize
-- 测试必须验证 builder 功能
+```bash
+# Set PYTHONPATH and run tests
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
 
-#### 代码质量
-- 无硬编码值（在适当位置使用配置）
-- 遵循 PEP 8 风格指南
-- 最大行长 100 字符
+# Run tests with coverage
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest --cov=src --cov-report=html
 
-### Git 工作流
+# Run specific test file
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test_core/test_version.py -v
+```
 
-- **主分支**: `main`
-- **开发分支**: `develop`
-- **功能分支**: `feature/**`
-- **当前分支**: `feature/implementation-phase-2`
+### Code Quality Checks
+
+```bash
+# Lint check
+ruff check src/ tools/
+
+# Code formatting
+ruff format src/ tools/
+
+# Type checking
+mypy src/
+```
+
+### Code Generation
+
+```bash
+# Generate all model classes from mapping.json
+python tools/generate_models.py docs/requirements/mapping.json src/armodel/models/
+```
+
+### Command Line Tools (To Be Implemented)
+
+```bash
+# View help
+armodel --help
+
+# Check ARXML file
+armodel check path/to/file.arxml
+
+# Convert ARXML file
+armodel convert input.arxml output.arxml --version 00046
+```
+
+## Development Conventions
+
+### Coding Standards
+
+The project follows these coding rules (defined in `docs/plans/CODING_RULES.md`):
+
+#### Naming Conventions
+- **File names**: Use snake_case (e.g., `test_version.py`)
+- **Class names**: Use PascalCase (e.g., `ApplicationInterface`)
+- **Function/Variable names**: Use snake_case
+
+#### Class Structure
+- All generated classes must inherit from `ARObject`
+- Each class must include `serialize()` and `deserialize()` methods
+- Each class must include a builder class for instantiation
+- Builder classes are named `<ClassName>Builder`
+
+#### Serialization/Deserialization
+- `serialize()` returns `xml.etree.ElementTree.Element`
+- `deserialize()` is a `@classmethod` that accepts an element parameter
+- All child elements must be serialized using their `serialize()` method
+- All child elements must be deserialized using their `deserialize()` method
+
+#### Package Structure
+- Package hierarchy must exactly match the `package_path` in `mapping.json`
+- Each class has its own file in the matching directory
+- `__init__.py` exports all classes in the package
+
+#### Type Safety
+- Use type hints for all class attributes
+- Use `Optional[T]` for nullable attributes
+- Document complex types with docstrings
+
+#### Validation
+- All attributes must be validated in the `builder.build()` method
+- Raise `ValueError` for invalid attribute values
+- Validate that required attributes exist
+
+#### Documentation
+- Each class must have a docstring
+- Each method must have a docstring
+- Document complex logic with inline comments
+
+#### Testing
+- Each class must have unit tests
+- Tests must cover serialize/deserialize
+- Tests must verify builder functionality
+
+#### Code Quality
+- No hardcoded values (use configuration where appropriate)
+- Follow PEP 8 style guide
+- Maximum line length of 100 characters
+
+### Git Workflow
+
+- **Main branch**: `main`
+- **Development branch**: `develop` (to be enabled)
+- **Feature branches**: `feature/**`
+- **Current branch**: `main`
+- **Remote branch**: `origin/main` (default HEAD)
 
 ### CI/CD
 
-GitHub Actions 配置（`.github/workflows/ci.yml`）包括：
-- **Lint**: 使用 Ruff 检查代码
-- **Type Check**: 使用 MyPy 进行类型检查
-- **Test**: 在 Python 3.8-3.11 上运行测试
-- **Coverage**: 上传覆盖率报告到 Codecov
+GitHub Actions configuration (`.github/workflows/ci.yml`) includes:
+- **Lint**: Code checking with Ruff
+- **Type Check**: Type checking with MyPy
+- **Test**: Run tests on Python 3.9-3.11
+- **Coverage**: Upload coverage reports to Codecov
 
-## AUTOSAR Schema 版本
+Trigger conditions:
+- **Push**: main, develop, feature/** branches
+- **Pull Request**: main, develop branches
 
-项目支持多个 AUTOSAR 标准版本：
+## AUTOSAR Schema Versions
 
-### 版本映射（config.yaml）
+The project supports multiple AUTOSAR standard versions:
 
-| 版本   | Namespace                               | XSD 文件              | 特性                          |
-|--------|-----------------------------------------|-----------------------|-------------------------------|
-| 00044  | http://autosar.org/3.0.4               | AUTOSAR_00044.xsd     | Classic Platform 4.3.1 (2017) |
-| 00046  | http://autosar.org/schema/r4.0         | AUTOSAR_00046.xsd     | CP 4.4.0 / AP 18-10 (2018)    |
-| 00052  | http://autosar.org/schema/r5.0         | AUTOSAR_00052.xsd     | CP/AP 23-11 (2023)            |
+### Version Mapping (config.yaml)
 
-**默认版本**: 00046
+| Version | Namespace                               | XSD File              | Features                          |
+|---------|-----------------------------------------|-----------------------|-----------------------------------|
+| 00044   | http://autosar.org/3.0.4               | AUTOSAR_00044.xsd     | Classic Platform 4.3.1 (2017)    |
+| 00046   | http://autosar.org/schema/r4.0         | AUTOSAR_00046.xsd     | CP 4.4.0 / AP 18-10 (2018)       |
+| 00052   | http://autosar.org/schema/r5.0         | AUTOSAR_00052.xsd     | CP/AP 23-11 (2023)                |
 
-### Schema 变体
-- **Standard**: 带有所有验证规则的完整 schema
-- **COMPACT**: 性能优化版本，减少验证开销
-- **STRICT_COMPACT**: 结合严格基数验证与紧凑性能
+**Default version**: 00046
 
-## 核心架构
+### Schema Variants and Validation Modes
 
-### 模型生成
+Different versions support different validation modes and features:
 
-所有 AUTOSAR 模型类从 `docs/requirements/mapping.json` 生成：
-- **1,937 个类型定义**
-- 生成的类放置在 `src/armodel/models/` 中，遵循包路径
-- 每个类包含 serialize/deserialize 方法
-- 包含 builder 类以便于对象创建
+| Version | Validation Mode   | Features                          |
+|---------|-------------------|-----------------------------------|
+| 00044   | strict            | Strict validation                 |
+| 00046   | standard          | Standard validation + compact_schema |
+| 00052   | strict            | Strict validation + compact_schema + strict_compact |
 
-### Reader/Writer 模块
+**Default version**: 00046
 
-- **Reader**: 加载 ARXML 文件，使用 deserialize 方法创建 Python 对象
-- **Writer**: 使用 serialize 方法将 Python 对象序列化为 ARXML
+## Core Architecture
 
-### Schema 版本支持
+### Model Generation
 
-通过 `cfg/schemas/config.yaml` 支持多个 AUTOSAR schema 版本：
-- 版本检测从 ARXML 命名空间声明
-- 版本特定的解析和验证
-- 旧 ARXML 文件的向后兼容性
-- 新版本的向前兼容性考虑
+All AUTOSAR model classes are generated from `docs/requirements/mapping.json`:
+- **1,937 type definitions**
+- Generated classes are placed in `src/armodel/models/`, following package paths
+- Each class includes serialize/deserialize methods
+- Includes builder classes for easy object creation
 
-## 重要文件说明
+**Code Generator**: `tools/generate_models.py`
+- Automatically creates directory structure
+- Generates Python class files for each type
+- Includes class definitions and Builder classes
 
-### 配置文件
-- `pyproject.toml`: 项目配置、依赖和工具设置
-- `.github/workflows/ci.yml`: CI/CD 配置
-- `src/armodel/cfg/schemas/config.yaml`: Schema 版本配置
+### Reader Module
 
-### 代码生成
-- `tools/generate_models.py`: 模型类生成器
-- `docs/requirements/mapping.json`: 类型定义映射
+ARXML file reading and parsing:
+- **loader.py**: Loads ARXML files using lxml
+- **mapper.py**: Element mapper (to be completed)
+- Supports loading from file paths
+- Automatically handles XML syntax errors
 
-### 核心模块
-- `src/armodel/core/base.py`: ARObject 基类
-- `src/armodel/core/version.py`: Schema 版本检测
+### Writer Module
 
-### 测试
-- `tests/unit/`: 单元测试（镜像 src 结构）
-- `tests/integration/`: 集成测试
-- `tests/fixtures/`: 测试数据（AUTOSAR ARXML 文件）
+ARXML file writing and serialization:
+- **saver.py**: Saves ARXML files using xml.etree.ElementTree
+- **serializer.py**: Serializer (to be completed)
+- Supports formatted output
+- Automatically creates parent directories
 
-### 文档
-- `docs/plans/CODING_RULES.md`: 编码规则
-- `docs/plans/design-rules.md`: 设计规则
-- `README.md`: 项目概览和快速开始
+### Schema Version Support
 
-## 常见任务
+Multiple AUTOSAR schema versions are supported through `cfg/schemas/config.yaml`:
+- Version detection from ARXML namespace declarations
+- Version-specific parsing and validation
+- Backward compatibility for old ARXML files
+- Forward compatibility considerations for new versions
 
-### 添加新的 AUTOSAR 类型
+**Version Detection**: `src/armodel/core/version.py`
+- `detect_schema_version()`: Detects schema version from XML element
+- `get_default_version()`: Gets default version (00046)
 
-1. 在 `docs/requirements/mapping.json` 中添加类型定义
-2. 运行代码生成器：`python tools/generate_models.py docs/requirements/mapping.json src/armodel/models/`
-3. 为新类型添加单元测试
+## Important File Descriptions
 
-### 修复 bug
+### Configuration Files
+- `pyproject.toml`: Project configuration, dependencies, and tool settings
+- `.github/workflows/ci.yml`: CI/CD configuration
+- `src/armodel/cfg/config.yaml`: Configuration file loading entry point
+- `src/armodel/cfg/schemas/config.yaml`: Schema version configuration
 
-1. 在 `tests/` 中添加或更新测试用例
-2. 修复代码
-3. 运行测试验证修复：`PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest`
-4. 运行 lint 和类型检查：`ruff check src/ && mypy src/`
+### Code Generation
+- `tools/generate_models.py`: Model class generator
+- `docs/requirements/mapping.json`: Type definition mapping (317KB, 1,937 types)
 
-### 更新依赖
+### Core Modules
+- `src/armodel/core/version.py`: Schema version detection
 
-1. 在 `pyproject.toml` 中更新版本
-2. 运行 `pip install -e ".[dev]"`
-3. 运行测试确保兼容性
+### Reader Module
+- `src/armodel/reader/loader.py`: ARXML file loader (uses lxml)
+- `src/armodel/reader/mapper.py`: Element mapper
 
-## 测试策略
+### Writer Module
+- `src/armodel/writer/saver.py`: ARXML file saver (uses ElementTree)
+- `src/armodel/writer/serializer.py`: Serializer
 
-### 单元测试
-- 镜像 `src/` 目录结构
-- 每个模块都有对应的测试文件
-- 使用 pytest 框架
+### Testing
+- `tests/unit/`: Unit tests (mirrors src structure)
+- `tests/integration/`: Integration tests
+- `tests/fixtures/`: Test data (AUTOSAR ARXML files)
+- `tests/test_generate_models.py`: Code generator tests
 
-### 集成测试
-- 测试完整的 ARXML 读取/写入流程
-- 使用 `tests/fixtures/` 中的实际 AUTOSAR 文件
+### Documentation
+- `docs/plans/CODING_RULES.md`: Coding rules
+- `docs/plans/design-rules.md`: Design rules
+- `docs/plans/AGENTS.md`: AI agent guide (this document)
+- `README.md`: Project overview and quick start
+- `AGENTS.md`: AI agent guide copy in root directory
+- `CLAUDE.md`: Claude AI configuration
 
-### 代码生成测试
-- `tests/test_generate_models.py`: 测试代码生成器
-- 验证生成的代码符合编码规则
+## Common Tasks
 
-## 性能考虑
+### Adding a New AUTOSAR Type
 
-- 使用 compact schema 进行验证以减少开销
-- 考虑使用缓存机制处理大型 ARXML 文件
-- 对频繁操作使用批处理方法
+1. Add type definition in `docs/requirements/mapping.json`
+2. Run code generator: `python tools/generate_models.py docs/requirements/mapping.json src/armodel/models/`
+3. Add unit tests for the new type
 
-## 安全注意事项
+### Fixing Bugs
 
-- 验证所有用户输入的 ARXML 文件
-- 使用 schema 验证防止 XML 注入
-- 限制文件大小以防止 DoS 攻击
+1. Add or update test cases in `tests/`
+2. Fix the code
+3. Run tests to verify fix: `PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest`
+4. Run lint and type checks: `ruff check src/ && mypy src/`
 
-## AUTOSAR 参考资料
+### Updating Dependencies
 
-- 官方 AUTOSAR 规范: https://www.autosar.org
-- Schema 版本编号遵循 AUTOSAR 文档标识（例如 AUTOSAR_00052）
-- 每个 schema 版本对应特定的 AUTOSAR Classic Platform 和 Adaptive Platform 版本
+1. Update versions in `pyproject.toml`
+2. Run `pip install -e ".[dev]"`
+3. Run tests to ensure compatibility
 
-## 联系信息
+## Testing Strategy
 
-- 项目作者: Your Name (your.email@example.com)
-- 许可证: MIT
+### Unit Tests
+- Mirror `src/` directory structure
+- Each module has a corresponding test file
+- Use pytest framework
+- Current test modules:
+  - `test_core/`: Core functionality tests
+  - `test_models/`: Model class tests
+  - `test_reader/`: Reader module tests
+  - `test_writer/`: Writer module tests
+  - `test_tools/`: Tools tests
+
+### Integration Tests
+- Test complete ARXML read/write workflows
+- Use actual AUTOSAR files from `tests/fixtures/`
+- Current integration tests:
+  - `test_read_arxml.py`: ARXML reading tests
+  - `test_write_arxml.py`: ARXML writing tests
+  - `test_read_write_cycle.py`: Read-write cycle tests
+
+### Code Generation Tests
+- `tests/test_generate_models.py`: Tests code generator
+- Verifies generated code complies with coding rules
+
+## Performance Considerations
+
+- Use compact schema for validation to reduce overhead
+- Consider caching mechanisms for large ARXML files
+- Use batch processing for frequent operations
+
+## Security Considerations
+
+- Validate all user-input ARXML files
+- Use schema validation to prevent XML injection
+- Limit file size to prevent DoS attacks
+
+## AUTOSAR References
+
+- Official AUTOSAR specifications: https://www.autosar.org
+- Schema version numbering follows AUTOSAR document identifiers (e.g., AUTOSAR_00052)
+- Each schema version corresponds to specific AUTOSAR Classic Platform and Adaptive Platform versions
+
+## Project Information
+
+- **Project Author**: Your Name (your.email@example.com)
+- **License**: MIT
+- **Current Version**: 0.1.0
+- **Development Status**: Alpha (Early development)
+- **Target Users**: AUTOSAR tool developers, automotive software engineers
+
+## Known Limitations
+
+- CLI module not yet implemented
+- Utils module not yet implemented
+- Model class serialization/deserialization logic needs completion
+- Performance optimization for large ARXML files pending
+- Schema validation functionality pending
+
+## Future Plans
+
+See implementation plan documents in `docs/plans/` directory:
+- `2026-02-15-armodel2-implementation.md`: Detailed implementation plan
+- `2026-02-15-class-based-refactoring.md`: Class refactoring plan

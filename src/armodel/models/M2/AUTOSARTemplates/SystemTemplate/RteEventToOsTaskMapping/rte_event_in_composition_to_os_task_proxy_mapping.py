@@ -1,6 +1,8 @@
 """RteEventInCompositionToOsTaskProxyMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class RteEventInCompositionToOsTaskProxyMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: RteEventInCompositionToOsTaskProxyMapping = RteEventInCompositionToOsTaskProxyMapping()
+        self._obj: RteEventInCompositionToOsTaskProxyMapping = (
+            RteEventInCompositionToOsTaskProxyMapping()
+        )
 
     def build(self) -> RteEventInCompositionToOsTaskProxyMapping:
         """Build and return RteEventInCompositionToOsTaskProxyMapping object.

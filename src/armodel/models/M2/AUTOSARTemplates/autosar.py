@@ -1,6 +1,8 @@
 """AUTOSAR root element - singleton pattern."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -52,3 +54,21 @@ class AUTOSAR(ARObject):
         # TODO: Serialize child elements
 
         return element
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AUTOSAR":
+        """Create AUTOSAR object from XML element.
+
+        Args:
+            element: XML element to deserialize
+
+        Returns:
+            AUTOSAR object instance
+        """
+        # Return singleton instance
+        autosar = cls()
+
+        # TODO: Parse child elements and populate AUTOSAR
+        # For now, just return the singleton
+
+        return autosar

@@ -1,6 +1,8 @@
 """DiagnosticRequestPowertrainFreezeFrameData AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticRequestPowertrainFreezeFrameDataBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestPowertrainFreezeFrameData = DiagnosticRequestPowertrainFreezeFrameData()
+        self._obj: DiagnosticRequestPowertrainFreezeFrameData = (
+            DiagnosticRequestPowertrainFreezeFrameData()
+        )
 
     def build(self) -> DiagnosticRequestPowertrainFreezeFrameData:
         """Build and return DiagnosticRequestPowertrainFreezeFrameData object.

@@ -1,6 +1,8 @@
 """DiagnosticRequestOnBoardMonitoringTestResults AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticRequestOnBoardMonitoringTestResultsBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestOnBoardMonitoringTestResults = DiagnosticRequestOnBoardMonitoringTestResults()
+        self._obj: DiagnosticRequestOnBoardMonitoringTestResults = (
+            DiagnosticRequestOnBoardMonitoringTestResults()
+        )
 
     def build(self) -> DiagnosticRequestOnBoardMonitoringTestResults:
         """Build and return DiagnosticRequestOnBoardMonitoringTestResults object.

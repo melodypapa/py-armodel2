@@ -6,10 +6,7 @@ import xml.etree.ElementTree as ET
 
 
 def save_arxml_file(
-    root: ET.Element,
-    filepath: Union[str, Path],
-    pretty_print: bool = True,
-    encoding: str = "UTF-8"
+    root: ET.Element, filepath: Union[str, Path], pretty_print: bool = True, encoding: str = "UTF-8"
 ):
     """Save XML element to ARXML file.
 
@@ -26,8 +23,4 @@ def save_arxml_file(
 
     # Create tree and write
     tree = ET.ElementTree(root)
-    tree.write(
-        str(filepath),
-        encoding=encoding,
-        xml_declaration=True
-    )
+    tree.write(str(filepath), encoding=encoding, xml_declaration=True)

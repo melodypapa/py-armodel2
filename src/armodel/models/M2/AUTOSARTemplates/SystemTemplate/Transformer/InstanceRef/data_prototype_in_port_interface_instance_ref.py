@@ -1,6 +1,8 @@
 """DataPrototypeInPortInterfaceInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DataPrototypeInPortInterfaceInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DataPrototypeInPortInterfaceInstanceRef = DataPrototypeInPortInterfaceInstanceRef()
+        self._obj: DataPrototypeInPortInterfaceInstanceRef = (
+            DataPrototypeInPortInterfaceInstanceRef()
+        )
 
     def build(self) -> DataPrototypeInPortInterfaceInstanceRef:
         """Build and return DataPrototypeInPortInterfaceInstanceRef object.

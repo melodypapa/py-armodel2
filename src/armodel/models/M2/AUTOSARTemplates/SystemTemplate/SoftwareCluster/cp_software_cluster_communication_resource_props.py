@@ -1,6 +1,8 @@
 """CpSoftwareClusterCommunicationResourceProps AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class CpSoftwareClusterCommunicationResourcePropsBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSoftwareClusterCommunicationResourceProps = CpSoftwareClusterCommunicationResourceProps()
+        self._obj: CpSoftwareClusterCommunicationResourceProps = (
+            CpSoftwareClusterCommunicationResourceProps()
+        )
 
     def build(self) -> CpSoftwareClusterCommunicationResourceProps:
         """Build and return CpSoftwareClusterCommunicationResourceProps object.

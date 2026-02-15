@@ -1,6 +1,8 @@
 """DataPrototypeInSenderReceiverInterfaceInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -22,7 +24,9 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(ARObject):
         return element
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSenderReceiverInterfaceInstanceRef":
+    def deserialize(
+        cls, element: ET.Element
+    ) -> "DataPrototypeInSenderReceiverInterfaceInstanceRef":
         """Create DataPrototypeInSenderReceiverInterfaceInstanceRef from XML element.
 
         Args:
@@ -41,7 +45,9 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DataPrototypeInSenderReceiverInterfaceInstanceRef = DataPrototypeInSenderReceiverInterfaceInstanceRef()
+        self._obj: DataPrototypeInSenderReceiverInterfaceInstanceRef = (
+            DataPrototypeInSenderReceiverInterfaceInstanceRef()
+        )
 
     def build(self) -> DataPrototypeInSenderReceiverInterfaceInstanceRef:
         """Build and return DataPrototypeInSenderReceiverInterfaceInstanceRef object.
