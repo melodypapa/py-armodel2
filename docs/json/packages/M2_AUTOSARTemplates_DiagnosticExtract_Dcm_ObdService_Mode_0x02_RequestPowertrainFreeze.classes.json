@@ -36,14 +36,14 @@
       ],
       "attributes": {
         "freezeFrameFreezeFrame": {
-          "type": "DiagnosticPowertrain",
+          "type": "DiagnosticPowertrainFreezeFrame",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the associated freeze-frame."
         },
         "request": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -119,7 +119,7 @@
         }
       ],
       "attributes": {
-        "pid": {
+        "pids": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "reference",

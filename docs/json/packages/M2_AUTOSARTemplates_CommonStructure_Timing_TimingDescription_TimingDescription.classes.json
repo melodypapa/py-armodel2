@@ -39,7 +39,7 @@
       ],
       "attributes": {
         "component": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -200,7 +200,7 @@
           "note": "The referenced VariableDataPrototype"
         },
         "tdEventVariableType": {
-          "type": "TDEventVariableData",
+          "type": "any (TDEventVariableData)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -249,7 +249,7 @@
           "note": "The referenced operation."
         },
         "tdEvent": {
-          "type": "TDEventOperationType",
+          "type": "TDEventOperationTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -312,7 +312,7 @@
           "note": "The referenced mode declaration group prototype."
         },
         "tdEventMode": {
-          "type": "TDEventMode",
+          "type": "any (TDEventMode)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -354,7 +354,7 @@
       ],
       "attributes": {
         "tdEventTrigger": {
-          "type": "TDEventTriggerType",
+          "type": "TDEventTriggerTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
@@ -407,7 +407,7 @@
       ],
       "attributes": {
         "component": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -455,7 +455,7 @@
           "note": "The scope of this timing event."
         },
         "tdEventSwcBehaviorType": {
-          "type": "TDEventSwcInternal",
+          "type": "any (TDEventSwcInternal)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -610,7 +610,7 @@
           "note": "The PhysicalChannel on which the ISignal is transmitted."
         },
         "tdEventTypeEnum": {
-          "type": "TDEventISignalType",
+          "type": "TDEventISignalTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -720,7 +720,7 @@
           "note": "The PhysicalChannel on which the Frame is transmitted."
         },
         "tdEventTypeEnum": {
-          "type": "TDEventFrameType",
+          "type": "TDEventFrameTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -774,14 +774,14 @@
           "is_ref": false,
           "note": "This is used to describe the specific event type of a"
         },
-        "tdHeaderIdFilter": {
+        "tdHeaderIdFilters": {
           "type": "TDHeaderIdRange",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the header identifier or a range of header if contained in the Ethernet frame let the"
         },
-        "tdPduTriggering": {
+        "tdPduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -1002,7 +1002,7 @@
           "note": "The scope of this timing event."
         },
         "tdEventBswBehaviorType": {
-          "type": "TDEventBswInternal",
+          "type": "any (TDEventBswInternal)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1112,7 +1112,7 @@
           "note": "The scope of this timing event. 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
         "tdEventBswDeclarationType": {
-          "type": "TDEventBswMode",
+          "type": "any (TDEventBswMode)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1219,29 +1219,29 @@
         }
       ],
       "attributes": {
-        "argument": {
-          "type": "AutosarOperation",
+        "arguments": {
+          "type": "AutosarOperationArgumentInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An occurrence expression can reference an arbitrary of OperationArgumentPrototypes in its association aggregates instance OperationArgumentPrototypes which can in the expression."
         },
         "formula": {
-          "type": "TDEventOccurrence",
+          "type": "any (TDEventOccurrence)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is the expression formula which is used to describe occurrence expression."
         },
-        "mode": {
+        "modes": {
           "type": "TimingModeInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An occurrence expression can reference an arbitrary TimingModeInstances in its expression. This instance references to Mode can be referenced in the expression."
         },
-        "variable": {
-          "type": "AutosarVariable",
+        "variables": {
+          "type": "any (AutosarVariable)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -1277,7 +1277,7 @@
       ],
       "attributes": {
         "argument": {
-          "type": "AutosarOperation",
+          "type": "AutosarOperationArgumentInstance",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1298,7 +1298,7 @@
           "note": "This is one particular mode used in the expression"
         },
         "variable": {
-          "type": "AutosarVariable",
+          "type": "any (AutosarVariable)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -104,21 +104,21 @@
       ],
       "attributes": {
         "function": {
-          "type": "DiagnosticFunction",
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the corresponding function identifier."
         },
         "inhibitionMask": {
-          "type": "DiagnosticInhibition",
+          "type": "DiagnosticInhibitionMaskEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the value of the inhibition mask behavior."
         },
-        "inhibitSource": {
-          "type": "DiagnosticFunction",
+        "inhibitSources": {
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -156,14 +156,14 @@
       ],
       "attributes": {
         "event": {
-          "type": "DiagnosticFimAlias",
+          "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the alias event applicable for the inhibition source."
         },
         "eventGroup": {
-          "type": "DiagnosticFimAlias",
+          "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -204,7 +204,7 @@
         }
       ],
       "attributes": {
-        "event": {
+        "events": {
           "type": "DiagnosticEvent",
           "multiplicity": "*",
           "kind": "reference",
@@ -247,8 +247,8 @@
         }
       ],
       "attributes": {
-        "groupedAlias": {
-          "type": "DiagnosticFimAlias",
+        "groupedAliases": {
+          "type": "any (DiagnosticFimAlias)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

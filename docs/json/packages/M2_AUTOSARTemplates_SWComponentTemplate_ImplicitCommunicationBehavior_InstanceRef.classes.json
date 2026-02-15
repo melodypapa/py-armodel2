@@ -30,14 +30,14 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the base of the instanceRef."
         },
-        "contextSw": {
-          "type": "SwComponent",
+        "contextSws": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -81,14 +81,14 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the base of the InstanceRef."
         },
-        "contextSw": {
-          "type": "SwComponent",
+        "contextSws": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -132,14 +132,14 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the base of the InstanceRef."
         },
-        "contextSw": {
-          "type": "SwComponent",
+        "contextSws": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -183,7 +183,7 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -196,8 +196,8 @@
           "is_ref": true,
           "note": "This represents a reference to a context PortPrototype. xml.sequenceOffset=30"
         },
-        "contextSw": {
-          "type": "SwComponent",
+        "contextSws": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

@@ -42,7 +42,7 @@
           "note": "This attribute represents the identification number that is with the enclosing DiagnosticEvent and allows identify it when placed into a snapshot record or record storage. can be reported as internal data element in or extended data records."
         },
         "clearEvent": {
-          "type": "DiagnosticClearEvent",
+          "type": "DiagnosticClearEventAllowedBehaviorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -55,22 +55,22 @@
           "is_ref": false,
           "note": "This attribute defines the number of operation cycles with failed result before a confirmed DTC is set to 1. The this attribute is a by \"1\" increased value the confirmation threshold of the \"trip in ISO 14229-1 in figure D.4. A value defines the immediate confirmation of the DTC the first reported failed. This is also sometimes trip DTC\". A value of \"2\" defines a DTC the operation cycle after the first occurred value of \"2\" is typically used in the US for OBD"
         },
-        "connected": {
-          "type": "DiagnosticConnected",
+        "connecteds": {
+          "type": "any (DiagnosticConnected)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Event specific description of Indicators. Stereotypes: atpSplitable; atpVariation"
         },
         "eventClear": {
-          "type": "DiagnosticEventClear",
+          "type": "DiagnosticEventClearAllowedEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute defines whether the Dem has access to a \"ClearEventAllowed\" callback."
         },
         "eventKind": {
-          "type": "DiagnosticEventKind",
+          "type": "DiagnosticEventKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -129,7 +129,7 @@
       ],
       "attributes": {
         "behaviorIndicatorBehaviorEnum": {
-          "type": "DiagnosticConnected",
+          "type": "any (DiagnosticConnected)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -199,7 +199,7 @@
           "note": "This reference represents the DiagnosticEvent that the IUMPR computation."
         },
         "ratioKind": {
-          "type": "DiagnosticIumprKind",
+          "type": "DiagnosticIumprKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -240,7 +240,7 @@
         }
       ],
       "attributes": {
-        "iumpr": {
+        "iumprs": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
           "kind": "reference",
@@ -324,7 +324,7 @@
         }
       ],
       "attributes": {
-        "iumpr": {
+        "iumprs": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
           "kind": "reference",
@@ -415,7 +415,7 @@
           "note": "This represents the reference to the actual diagnostic"
         },
         "aliasEventEvent": {
-          "type": "DiagnosticFimAlias",
+          "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

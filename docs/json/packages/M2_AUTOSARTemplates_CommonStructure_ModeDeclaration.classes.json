@@ -65,7 +65,7 @@
       ],
       "attributes": {
         "swCalibrationAccess": {
-          "type": "SwCalibrationAccess",
+          "type": "SwCalibrationAccessEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -150,7 +150,7 @@
           "is_ref": false,
           "note": "The initial mode of the ModeDeclarationGroup. This active before any mode switches occurred."
         },
-        "mode": {
+        "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -164,7 +164,7 @@
           "is_ref": false,
           "note": "This represents the ability to define the error behavior by the mode manager in case of errors on the side (e.g. terminated mode user)."
         },
-        "modeTransitionModeDeclarationGroup": {
+        "modeTransitionModeDeclarationGroups": {
           "type": "ModeTransition",
           "multiplicity": "*",
           "kind": "attribute",
@@ -351,7 +351,7 @@
           "note": "This represents the ModeDeclaration that is considered mode in the context of the enclosing Mode"
         },
         "errorReaction": {
-          "type": "ModeErrorReaction",
+          "type": "ModeErrorReactionPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

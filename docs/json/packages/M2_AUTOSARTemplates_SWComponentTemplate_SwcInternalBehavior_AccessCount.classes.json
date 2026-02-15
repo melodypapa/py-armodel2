@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "accessCount": {
+        "accessCounts": {
           "type": "AccessCount",
           "multiplicity": "*",
           "kind": "attribute",
@@ -141,7 +141,7 @@
       ],
       "attributes": {
         "returnValue": {
-          "type": "RteApiReturnValue",
+          "type": "RteApiReturnValueProvisionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

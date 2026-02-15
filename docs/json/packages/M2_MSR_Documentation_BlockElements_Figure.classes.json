@@ -492,7 +492,7 @@
           "is_ref": false,
           "note": "This specifies an entry point in an online help system to"
         },
-        "lGraphic": {
+        "lGraphics": {
           "type": "LGraphic",
           "multiplicity": "*",
           "kind": "attribute",

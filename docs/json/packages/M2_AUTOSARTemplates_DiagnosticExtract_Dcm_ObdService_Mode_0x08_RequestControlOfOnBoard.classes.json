@@ -36,14 +36,14 @@
       ],
       "attributes": {
         "requestControl": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. Thereby, the reference represents the ability to access among all DiagnosticRequestControlOf the given context."
         },
         "testIdIdentifier": {
-          "type": "DiagnosticTestRoutine",
+          "type": "DiagnosticTestRoutineIdentifier",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

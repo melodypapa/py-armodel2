@@ -57,7 +57,7 @@
           "is_ref": false,
           "note": "The mapped BswInternalBehavior"
         },
-        "runnableMapping": {
+        "runnableMappings": {
           "type": "SwcBswRunnableMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -71,8 +71,8 @@
           "is_ref": false,
           "note": "The mapped SwcInternalBehavior."
         },
-        "synchronized": {
-          "type": "SwcBswSynchronized",
+        "synchronizeds": {
+          "type": "any (SwcBswSynchronized)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

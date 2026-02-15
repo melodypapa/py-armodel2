@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "dtcSettingClass": {
-          "type": "DiagnosticControlDTC",
+          "type": "any (DiagnosticControlDTC)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

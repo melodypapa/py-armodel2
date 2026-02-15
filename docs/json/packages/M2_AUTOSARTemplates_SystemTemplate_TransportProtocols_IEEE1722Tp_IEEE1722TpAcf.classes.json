@@ -36,7 +36,7 @@
         }
       ],
       "attributes": {
-        "acfPart": {
+        "acfParts": {
           "type": "IEEE1722TpAcfBusPart",
           "multiplicity": "*",
           "kind": "attribute",
@@ -88,7 +88,7 @@
       ],
       "attributes": {
         "collectionTrigger": {
-          "type": "PduCollectionTrigger",
+          "type": "PduCollectionTriggerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
@@ -166,7 +166,7 @@
       ],
       "attributes": {
         "canAddressing": {
-          "type": "CanAddressingMode",
+          "type": "CanAddressingModeType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -180,7 +180,7 @@
           "note": "Defines whether the bit rate switch bit shall be set."
         },
         "canFrameTxBehavior": {
-          "type": "CanFrameTxBehavior",
+          "type": "CanFrameTxBehaviorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

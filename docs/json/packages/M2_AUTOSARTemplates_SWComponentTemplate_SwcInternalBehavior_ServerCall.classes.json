@@ -43,7 +43,7 @@
       ],
       "attributes": {
         "asynchronousServer": {
-          "type": "AsynchronousServer",
+          "type": "any (AsynchronousServer)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -163,7 +163,7 @@
       ],
       "attributes": {
         "calledFrom": {
-          "type": "ExclusiveAreaNesting",
+          "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

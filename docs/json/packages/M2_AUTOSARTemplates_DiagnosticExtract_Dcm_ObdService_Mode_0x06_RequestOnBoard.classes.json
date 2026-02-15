@@ -35,7 +35,7 @@
         }
       ],
       "attributes": {
-        "diagnosticTestResult": {
+        "diagnosticTestResults": {
           "type": "DiagnosticTestResult",
           "multiplicity": "*",
           "kind": "reference",
@@ -43,7 +43,7 @@
           "note": "This reference identifies the applicable collection of test for setting up a request message for mode"
         },
         "requestOn": {
-          "type": "DiagnosticRequestOn",
+          "type": "any (DiagnosticRequestOn)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

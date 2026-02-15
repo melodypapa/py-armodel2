@@ -211,7 +211,7 @@
         }
       ],
       "attributes": {
-        "implementation": {
+        "implementations": {
           "type": "BswImplementation",
           "multiplicity": "*",
           "kind": "reference",
@@ -308,28 +308,28 @@
         }
       ],
       "attributes": {
-        "timingClock": {
+        "timingClocks": {
           "type": "TimingClock",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A list of abstract model Clocks."
         },
-        "timingClockSync": {
-          "type": "TimingClockSync",
+        "timingClockSyncs": {
+          "type": "TimingClockSyncAccuracy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A list of accuracies - which may be used to specify synchronizations from one model clock to another model atpVariation"
         },
-        "timingCondition": {
+        "timingConditions": {
           "type": "TimingCondition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The timing condition specifies a specific condition. atpVariation 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
-        "timing": {
+        "timings": {
           "type": "TimingConstraint",
           "multiplicity": "*",
           "kind": "attribute",

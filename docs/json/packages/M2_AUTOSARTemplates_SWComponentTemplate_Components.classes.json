@@ -164,7 +164,7 @@
         }
       ],
       "attributes": {
-        "hardware": {
+        "hardwares": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "reference",
@@ -230,7 +230,7 @@
         }
       ],
       "attributes": {
-        "hardware": {
+        "hardwares": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "reference",
@@ -421,7 +421,7 @@
         }
       ],
       "attributes": {
-        "clientServer": {
+        "clientServers": {
           "type": "ClientServerAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -429,48 +429,48 @@
           "note": "Annotation of this PortPrototype with respect to client/ communication."
         },
         "delegatedPort": {
-          "type": "DelegatedPort",
+          "type": "DelegatedPortAnnotation",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this delegated port."
         },
-        "ioHwAbstractionServerAnnotation": {
-          "type": "IoHwAbstractionServer",
+        "ioHwAbstractionServerAnnotations": {
+          "type": "IoHwAbstractionServerAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this IO Hardware Abstraction port."
         },
-        "modePortAnnotation": {
+        "modePortAnnotations": {
           "type": "ModePortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this mode port."
         },
-        "nvDataPortAnnotation": {
+        "nvDataPortAnnotations": {
           "type": "NvDataPortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this non voilatile data port."
         },
-        "parameterPort": {
-          "type": "ParameterPort",
+        "parameterPorts": {
+          "type": "ParameterPortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Annotations on this parameter port."
         },
-        "senderReceiver": {
-          "type": "SenderReceiver",
+        "senderReceivers": {
+          "type": "any (SenderReceiver)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of annotations of this ports sender/receiver communication."
         },
-        "triggerPortAnnotation": {
+        "triggerPortAnnotations": {
           "type": "TriggerPortAnnotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -751,29 +751,29 @@
         }
       ],
       "attributes": {
-        "consistencyNeeds": {
+        "consistencyNeedses": {
           "type": "ConsistencyNeeds",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the collection of ConsistencyNeeds by the enclosing SwComponentType. atpVariation"
         },
-        "port": {
+        "ports": {
           "type": "PortPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "The PortPrototypes through which this SwComponent communicate. of PortPrototype is subject to variability purpose to support the conditional existence of atpVariation"
         },
-        "portGroup": {
+        "portGroups": {
           "type": "PortGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "A port group being part of this component. atpVariation"
         },
-        "swcMapping": {
-          "type": "SwComponentMapping",
+        "swcMappings": {
+          "type": "any (SwComponentMapping)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
@@ -786,7 +786,7 @@
           "is_ref": false,
           "note": "This adds a documentation to the SwComponentType."
         },
-        "unitGroup": {
+        "unitGroups": {
           "type": "UnitGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -839,22 +839,22 @@
         }
       ],
       "attributes": {
-        "constant": {
+        "constants": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular ParameterSwComponentType"
         },
-        "dataType": {
+        "dataTypes": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the ParameterSwComponentType"
         },
-        "instantiationDataDef": {
-          "type": "InstantiationDataDef",
+        "instantiationDataDefs": {
+          "type": "InstantiationDataDefProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -915,7 +915,7 @@
         }
       ],
       "attributes": {
-        "requiredCom": {
+        "requiredComs": {
           "type": "RPortComSpec",
           "multiplicity": "*",
           "kind": "attribute",
@@ -964,7 +964,7 @@
         }
       ],
       "attributes": {
-        "providedCom": {
+        "providedComs": {
           "type": "PPortComSpec",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1089,14 +1089,14 @@
         }
       ],
       "attributes": {
-        "innerGroup": {
+        "innerGroups": {
           "type": "PortGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "defined in a component which is part of this by: InnerPortGroupIn"
         },
-        "outerPort": {
+        "outerPorts": {
           "type": "PortPrototype",
           "multiplicity": "*",
           "kind": "reference",
@@ -1303,14 +1303,14 @@
         }
       ],
       "attributes": {
-        "bulkNvData": {
+        "bulkNvDatas": {
           "type": "BulkNvDataDescriptor",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation formally defines the bulk Nv Blocks that provided to the application software by the enclosing atpVariation"
         },
-        "nvBlock": {
+        "nvBlocks": {
           "type": "NvBlockDescriptor",
           "multiplicity": "*",
           "kind": "attribute",

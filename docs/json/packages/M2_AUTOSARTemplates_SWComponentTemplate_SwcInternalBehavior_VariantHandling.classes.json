@@ -52,7 +52,7 @@
           "note": "This association to ImplementationDataType shall be"
         },
         "postBuildValue": {
-          "type": "PostBuildVariant",
+          "type": "any (PostBuildVariant)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

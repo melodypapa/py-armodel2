@@ -187,7 +187,7 @@
       ],
       "attributes": {
         "access": {
-          "type": "DiagnosticAccess",
+          "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "interpolationRoutine": {
+        "interpolationRoutines": {
           "type": "InterpolationRoutine",
           "multiplicity": "*",
           "kind": "attribute",
@@ -80,7 +80,7 @@
         }
       ],
       "attributes": {
-        "interpolationRoutine": {
+        "interpolationRoutines": {
           "type": "InterpolationRoutine",
           "multiplicity": "*",
           "kind": "attribute",

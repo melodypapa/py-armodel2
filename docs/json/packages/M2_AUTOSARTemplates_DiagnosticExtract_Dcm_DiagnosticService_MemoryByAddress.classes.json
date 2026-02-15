@@ -89,8 +89,8 @@
         }
       ],
       "attributes": {
-        "memoryRange": {
-          "type": "DiagnosticMemory",
+        "memoryRanges": {
+          "type": "any (DiagnosticMemory)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -132,7 +132,7 @@
       ],
       "attributes": {
         "access": {
-          "type": "DiagnosticAccess",
+          "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -198,7 +198,7 @@
       ],
       "attributes": {
         "writeClass": {
-          "type": "DiagnosticWriteMemory",
+          "type": "any (DiagnosticWriteMemory)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -278,7 +278,7 @@
       ],
       "attributes": {
         "readClass": {
-          "type": "DiagnosticReadMemory",
+          "type": "any (DiagnosticReadMemory)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -516,7 +516,7 @@
       ],
       "attributes": {
         "request": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -596,7 +596,7 @@
       ],
       "attributes": {
         "requestUpload": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

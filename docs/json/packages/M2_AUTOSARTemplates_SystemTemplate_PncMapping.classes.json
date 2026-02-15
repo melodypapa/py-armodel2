@@ -28,7 +28,7 @@
         }
       ],
       "attributes": {
-        "dynamicPnc": {
+        "dynamicPncs": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -42,21 +42,21 @@
           "is_ref": true,
           "note": "This adds the ability to become referrable to PncMapping."
         },
-        "physicalChannel": {
+        "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference maps the partial network to a channel."
         },
-        "pncConsumed": {
-          "type": "ConsumedProvided",
+        "pncConsumeds": {
+          "type": "ConsumedProvidedServiceInstanceGroup",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "ConsumedProvidedServiceInstanceGroup used in a Partial Network Cluster. This reference is optional, since could be used for starting and stopping Consumed according the requested but is not necessarily needed. atpVariation"
         },
-        "pncGroup": {
+        "pncGroups": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -70,7 +70,7 @@
           "is_ref": false,
           "note": "Identifer of the Partial Network Cluster. This number absolute bit position of this Partial Network the NM Pdu."
         },
-        "pncPdurGroup": {
+        "pncPdurGroups": {
           "type": "PdurIPduGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -84,7 +84,7 @@
           "is_ref": false,
           "note": "If this parameter is available and set to true then this PNC"
         },
-        "relevantFor": {
+        "relevantFors": {
           "type": "EcuInstance",
           "multiplicity": "*",
           "kind": "reference",
@@ -98,14 +98,14 @@
           "is_ref": false,
           "note": "This attribute specifies an identifying shortName for the"
         },
-        "vfc": {
+        "vfcs": {
           "type": "PortGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "This reference is optional in case that Description doesn’t use a complete Software (VFB View). This supports the legacy systems. by: PortGroupInSystem"
         },
-        "wakeupFrame": {
+        "wakeupFrames": {
           "type": "FrameTriggering",
           "multiplicity": "*",
           "kind": "reference",

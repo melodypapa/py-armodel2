@@ -34,14 +34,14 @@
         }
       ],
       "attributes": {
-        "doIpLogicAddressAddress": {
+        "doIpLogicAddressAddresses": {
           "type": "DoIpLogicAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of logical DoIP Addresses."
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "DoIpTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -88,7 +88,7 @@
           "note": "The logical DoIP address."
         },
         "doIpLogic": {
-          "type": "AbstractDoIpLogic",
+          "type": "AbstractDoIpLogicAddressProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -231,35 +231,35 @@
         }
       ],
       "attributes": {
-        "pduPool": {
+        "pduPools": {
           "type": "FlexrayTpPduPool",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of FlexRay TP Pdu Pools. atpVariation"
         },
-        "tpAddress": {
+        "tpAddresses": {
           "type": "TpAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TpAddresses."
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "FlexrayTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of FlexRay TP Connection Controls. Stereotypes: atpSplitable; atpVariation"
         },
-        "tpEcu": {
+        "tpEcus": {
           "type": "FlexrayTpEcu",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TP Ecus"
         },
-        "tpNode": {
+        "tpNodes": {
           "type": "FlexrayTpNode",
           "multiplicity": "*",
           "kind": "attribute",
@@ -298,7 +298,7 @@
       ],
       "attributes": {
         "ackType": {
-          "type": "TpAckType",
+          "type": "FrArTpAckType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -431,7 +431,7 @@
           "is_ref": false,
           "note": "TP address for 1:n connections."
         },
-        "receiver": {
+        "receivers": {
           "type": "FlexrayTpNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -504,7 +504,7 @@
         }
       ],
       "attributes": {
-        "nPdu": {
+        "nPdus": {
           "type": "NPdu",
           "multiplicity": "*",
           "kind": "reference",
@@ -542,8 +542,8 @@
         }
       ],
       "attributes": {
-        "connector": {
-          "type": "Communication",
+        "connectors": {
+          "type": "any (Communication)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -647,21 +647,21 @@
         }
       ],
       "attributes": {
-        "tpAddress": {
+        "tpAddresses": {
           "type": "TpAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TpAddresses."
         },
-        "tpChannel": {
+        "tpChannels": {
           "type": "FlexrayArTpChannel",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of FlexRay Autosar Transport Protocol atpVariation"
         },
-        "tpNode": {
+        "tpNodes": {
           "type": "FlexrayArTpNode",
           "multiplicity": "*",
           "kind": "attribute",
@@ -746,7 +746,7 @@
           "note": "This attribute defines the maximal number of wait frames sent for a pending connection. Range is 0..255."
         },
         "maximumMessage": {
-          "type": "MaximumMessage",
+          "type": "MaximumMessageLengthType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -773,7 +773,7 @@
           "is_ref": false,
           "note": "This attribute defines whether segmentation within a 1:n"
         },
-        "nPdu": {
+        "nPdus": {
           "type": "NPdu",
           "multiplicity": "*",
           "kind": "reference",
@@ -822,7 +822,7 @@
           "is_ref": false,
           "note": "This attribute defines the timeout value in seconds for a CF or FF-x (in case of retry) after receiving CF or after sending an FC or AF on the receiver"
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "FlexrayArTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -860,8 +860,8 @@
         }
       ],
       "attributes": {
-        "connector": {
-          "type": "FlexrayCommunication",
+        "connectors": {
+          "type": "any (FlexrayCommunication)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -938,7 +938,7 @@
           "is_ref": false,
           "note": "The source of the TP connection."
         },
-        "target": {
+        "targets": {
           "type": "FlexrayArTpNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -980,35 +980,35 @@
         }
       ],
       "attributes": {
-        "tpAddress": {
+        "tpAddresses": {
           "type": "CanTpAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TP Addresses."
         },
-        "tpChannel": {
+        "tpChannels": {
           "type": "CanTpChannel",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of CAN TP channels. atpVariation"
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "CanTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Senders and receivers of CAN TP messages. because TpNode can vary. atpVariation"
         },
-        "tpEcu": {
+        "tpEcus": {
           "type": "CanTpEcu",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TP Ecus"
         },
-        "tpNode": {
+        "tpNodes": {
           "type": "CanTpNode",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1083,7 +1083,7 @@
       ],
       "attributes": {
         "addressing": {
-          "type": "CanTpAddressing",
+          "type": "CanTpAddressingFormatType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1138,7 +1138,7 @@
           "is_ref": false,
           "note": "This specifies whether or not Sfs, FCs and the last CF"
         },
-        "receiver": {
+        "receivers": {
           "type": "CanTpNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -1146,7 +1146,7 @@
           "note": "The target of the TP connection."
         },
         "taTypeType": {
-          "type": "NetworkTargetAddress",
+          "type": "NetworkTargetAddressType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1306,7 +1306,7 @@
       ],
       "attributes": {
         "connector": {
-          "type": "Communication",
+          "type": "any (Communication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1382,21 +1382,21 @@
         }
       ],
       "attributes": {
-        "tpAddress": {
+        "tpAddresses": {
           "type": "TpAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TpAddresses."
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "LinTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of LIN TP channels. because TpNode can vary. atpVariation"
         },
-        "tpNode": {
+        "tpNodes": {
           "type": "LinTpNode",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1435,7 +1435,7 @@
       ],
       "attributes": {
         "connector": {
-          "type": "Communication",
+          "type": "any (Communication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1533,7 +1533,7 @@
           "is_ref": false,
           "note": "TP address for 1:n connections."
         },
-        "receiver": {
+        "receivers": {
           "type": "LinTpNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -1603,7 +1603,7 @@
         }
       ],
       "attributes": {
-        "tpConnection": {
+        "tpConnections": {
           "type": "EthTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1639,7 +1639,7 @@
         }
       ],
       "attributes": {
-        "tpSdu": {
+        "tpSdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -1681,14 +1681,14 @@
         }
       ],
       "attributes": {
-        "tpChannel": {
+        "tpChannels": {
           "type": "SomeipTpChannel",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of SomeipTpChannels that are collecting that are valid for a collection of"
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "SomeipTpConnection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1831,21 +1831,21 @@
         }
       ],
       "attributes": {
-        "tpAddress": {
+        "tpAddresses": {
           "type": "TpAddress",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of TP Adresses."
         },
-        "tpConnection": {
+        "tpConnections": {
           "type": "J1939TpConnection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of J1939 TP connections. because TpNode can vary. atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "tpNode": {
+        "tpNodes": {
           "type": "J1939TpNode",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1937,7 +1937,7 @@
           "is_ref": false,
           "note": "Set maximum for expected block size (maximum number in TP.CM_RTS)."
         },
-        "receiver": {
+        "receivers": {
           "type": "J1939TpNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -1951,7 +1951,7 @@
           "is_ref": false,
           "note": "Enable support for protocol retry."
         },
-        "tpPg": {
+        "tpPgs": {
           "type": "J1939TpPg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -2014,7 +2014,7 @@
           "is_ref": false,
           "note": "Parameter Group can be triggered by the J1939 request"
         },
-        "sdu": {
+        "sdus": {
           "type": "IPdu",
           "multiplicity": "*",
           "kind": "reference",
@@ -2053,7 +2053,7 @@
       ],
       "attributes": {
         "connector": {
-          "type": "Communication",
+          "type": "any (Communication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -43,14 +43,14 @@
           "note": "This represents the reference to the diagnostic event. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "eventGroupGroup": {
-          "type": "DiagnosticFimEvent",
+          "type": "DiagnosticFimEventGroup",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the reference to the event group"
         },
         "inhibitionSource": {
-          "type": "DiagnosticFunction",
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -93,14 +93,14 @@
       ],
       "attributes": {
         "actualEvent": {
-          "type": "DiagnosticFimEvent",
+          "type": "DiagnosticFimEventGroup",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the reference to the actual summary"
         },
         "aliasEvent": {
-          "type": "DiagnosticFimAlias",
+          "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

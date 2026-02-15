@@ -42,14 +42,14 @@
       ],
       "attributes": {
         "algorithmFamily": {
-          "type": "CryptoCertificate",
+          "type": "any (CryptoCertificate)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute represents a description of the family of algorithm used to generate public key and the cryptographic certificate."
         },
         "format": {
-          "type": "CryptoCertificateFormat",
+          "type": "CryptoCertificateFormatEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -63,7 +63,7 @@
           "note": "This attribute represents the ability to define the length of the certificate in bytes."
         },
         "nextHigher": {
-          "type": "CryptoService",
+          "type": "any (CryptoService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -168,7 +168,7 @@
           "note": "This attribute defines the destination MAC Address that is to calculate the ICV (Integrity Check Value)."
         },
         "globalKayProps": {
-          "type": "MacSecGlobalKay",
+          "type": "MacSecGlobalKayProps",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -181,7 +181,7 @@
           "is_ref": false,
           "note": "This attribute defines the key-server priority. atp.Status=candidate"
         },
-        "mkaParticipant": {
+        "mkaParticipants": {
           "type": "MacSecKayParticipant",
           "multiplicity": "*",
           "kind": "reference",
@@ -295,7 +295,7 @@
           "is_ref": false,
           "note": "Reference to the EthernetCluster (Link) on which the KaY located"
         },
-        "mkaParticipant": {
+        "mkaParticipants": {
           "type": "MacSecKayParticipant",
           "multiplicity": "*",
           "kind": "attribute",
@@ -341,7 +341,7 @@
           "note": "Reference to the key where the ckn (Connectivity is stored."
         },
         "cryptoAlgo": {
-          "type": "MacSecCryptoAlgo",
+          "type": "MacSecCryptoAlgoConfig",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -390,14 +390,14 @@
           "note": "This attribute defines the MACsec capability."
         },
         "cipherSuite": {
-          "type": "MacSecCipherSuite",
+          "type": "MacSecCipherSuiteConfig",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Tags: atp.Status=candidate"
         },
         "confidentiality": {
-          "type": "MacSecConfidentiality",
+          "type": "MacSecConfidentialityOffsetEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -747,14 +747,14 @@
         }
       ],
       "attributes": {
-        "keyExchange": {
+        "keyExchanges": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the shared(i.e. applicable for the aggregated cipher suites) crypto service the execution of key exchange during the"
         },
-        "tlsCipherSuite": {
+        "tlsCipherSuites": {
           "type": "TlsCryptoCipherSuite",
           "multiplicity": "*",
           "kind": "attribute",
@@ -815,7 +815,7 @@
           "note": "This reference identifies the crypto service primitive for and verification of MACs."
         },
         "certificate": {
-          "type": "CryptoService",
+          "type": "any (CryptoService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -835,8 +835,8 @@
           "is_ref": false,
           "note": "Name of the CipherSuite according to the IANA"
         },
-        "ellipticCurve": {
-          "type": "CryptoEllipticCurve",
+        "ellipticCurves": {
+          "type": "CryptoEllipticCurveProps",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -849,7 +849,7 @@
           "is_ref": false,
           "note": "This reference identifies the crypto service primitive for of encryption."
         },
-        "keyExchange": {
+        "keyExchanges": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
           "kind": "reference",
@@ -878,14 +878,14 @@
           "note": "Pre-shared key identity shared during the handshake"
         },
         "remote": {
-          "type": "CryptoService",
+          "type": "any (CryptoService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the applicable remote certificate."
         },
-        "signature": {
-          "type": "CryptoSignature",
+        "signatures": {
+          "type": "CryptoSignatureScheme",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -1102,7 +1102,7 @@
           "is_ref": false,
           "note": "Global IPsec configuration settings that are valid for all that are defined on the NetworkEndpoint."
         },
-        "ipSecRule": {
+        "ipSecRules": {
           "type": "IPSecRule",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1141,7 +1141,7 @@
       ],
       "attributes": {
         "direction": {
-          "type": "Communication",
+          "type": "any (Communication)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1161,8 +1161,8 @@
           "is_ref": false,
           "note": "This attribute defines the relevant IP protocol used in the Database (SPD) entry."
         },
-        "localCertificate": {
-          "type": "CryptoService",
+        "localCertificates": {
+          "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -1210,8 +1210,8 @@
           "is_ref": false,
           "note": "This attribute defines the priority of the IPSecRule (SPD processing of entries is based on priority, the highest priority \"0\"."
         },
-        "remote": {
-          "type": "CryptoService",
+        "remotes": {
+          "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -1224,7 +1224,7 @@
           "is_ref": false,
           "note": "This attribute defines how the remote participant should"
         },
-        "remoteIp": {
+        "remoteIps": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "reference",
@@ -1274,7 +1274,7 @@
         }
       ],
       "attributes": {
-        "ahCipherSuite": {
+        "ahCipherSuites": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1295,7 +1295,7 @@
           "is_ref": false,
           "note": "This attribute describes the interval to check the liveness peer actively using IKEv2 INFORMATIONAL DPD checking is only enforced if no ESP/AH packet has been received for the delay. configured the value \"5 minutes\" shall be assumed."
         },
-        "espCipherSuite": {
+        "espCipherSuites": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",

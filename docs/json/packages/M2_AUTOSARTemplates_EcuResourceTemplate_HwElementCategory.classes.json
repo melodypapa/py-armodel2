@@ -131,7 +131,7 @@
         }
       ],
       "attributes": {
-        "hwAttributeDef": {
+        "hwAttributeDefs": {
           "type": "HwAttributeDef",
           "multiplicity": "*",
           "kind": "attribute",
@@ -169,7 +169,7 @@
         }
       ],
       "attributes": {
-        "hwAttribute": {
+        "hwAttributes": {
           "type": "HwAttributeLiteralDef",
           "multiplicity": "*",
           "kind": "attribute",

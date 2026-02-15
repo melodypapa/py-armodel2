@@ -36,20 +36,20 @@
       ],
       "attributes": {
         "defaultAction": {
-          "type": "FirewallActionEnum",
+          "type": "any (FirewallActionEnum)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute defines a defaultAction in case that the not yet set."
         },
-        "firewallRuleProps": {
+        "firewallRulePropses": {
           "type": "FirewallRuleProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of firewall rules that apply in the vehicle mode Tags: atp.Status=candidate"
         },
-        "firewallState": {
+        "firewallStates": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "reference",
@@ -85,20 +85,20 @@
       ],
       "attributes": {
         "action": {
-          "type": "FirewallActionEnum",
+          "type": "any (FirewallActionEnum)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Action that is performed by the firewall if the matching fulfilled."
         },
-        "matchingEgress": {
+        "matchingEgresses": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This element defines an egress rule expression against"
         },
-        "matching": {
+        "matchings": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "reference",
@@ -149,35 +149,35 @@
           "note": "This attribute defines the capacity of the queue for rate Algorithm). 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "dataLinkLayerRule": {
-          "type": "DataLinkLayerRule",
+          "type": "any (DataLinkLayerRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of rules on the Data Link Layer atp.Status=candidate"
         },
         "ddsRule": {
-          "type": "DdsRule",
+          "type": "any (DdsRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of firewall rules for DDS."
         },
         "doIpRule": {
-          "type": "DoIpRule",
+          "type": "any (DoIpRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of firewall rules for DoIP messages"
         },
         "networkLayerRule": {
-          "type": "NetworkLayerRule",
+          "type": "any (NetworkLayerRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of rules on the Network Layer atp.Status=candidate"
         },
-        "payloadBytePattern": {
-          "type": "PayloadBytePattern",
+        "payloadBytePatterns": {
+          "type": "any (PayloadBytePattern)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -191,21 +191,21 @@
           "note": "This attribute defines the output rate that describes how leave the queue per second (leaky-bucket"
         },
         "someipRule": {
-          "type": "SomeipProtocolRule",
+          "type": "any (SomeipProtocolRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of firewall rules for SOME/IP messages"
         },
         "someipSdRule": {
-          "type": "SomeipSdRule",
+          "type": "any (SomeipSdRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of firewall rules for SOME/IP Service"
         },
         "transportLayerRule": {
-          "type": "TransportLayerRule",
+          "type": "any (TransportLayerRule)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

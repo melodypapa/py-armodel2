@@ -43,7 +43,7 @@
           "note": "This represents the PID associated with this instance of OBD mode 0x01 service."
         },
         "requestCurrent": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

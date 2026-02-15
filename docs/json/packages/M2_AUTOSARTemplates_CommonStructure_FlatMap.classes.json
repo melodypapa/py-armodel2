@@ -48,7 +48,7 @@
         }
       ],
       "attributes": {
-        "aliasName": {
+        "aliasNames": {
           "type": "AliasNameAssignment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -104,7 +104,7 @@
           "note": "Assignment of a unique name to an Identifiable."
         },
         "label": {
-          "type": "MultilanguageLong",
+          "type": "MultilanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -250,7 +250,7 @@
         }
       ],
       "attributes": {
-        "instance": {
+        "instances": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "*",
           "kind": "attribute",

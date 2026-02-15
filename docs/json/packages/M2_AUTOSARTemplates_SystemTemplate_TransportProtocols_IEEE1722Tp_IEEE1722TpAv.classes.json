@@ -43,14 +43,14 @@
           "note": "CRF base frequency in Hz."
         },
         "crfPullEnum": {
-          "type": "IEEE1722TpCrfPull",
+          "type": "IEEE1722TpCrfPullEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of the CRF stream pull value."
         },
         "crfTypeEnum": {
-          "type": "IEEE1722TpCrfType",
+          "type": "IEEE1722TpCrfTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -107,21 +107,21 @@
       ],
       "attributes": {
         "aafAes3Data": {
-          "type": "IEEE1722TpAafAes3",
+          "type": "IEEE1722TpAafAes3DataTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of the AAF AES3 stream aes3_data_type reference."
         },
         "aafFormatEnum": {
-          "type": "IEEE1722TpAafFormat",
+          "type": "IEEE1722TpAafFormatEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of the AAF stream format."
         },
         "aafNominalRate": {
-          "type": "IEEE1722TpAaf",
+          "type": "any (IEEE1722TpAaf)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -312,7 +312,7 @@
           "note": "Definition of the RVF stream active_pixels."
         },
         "rvfColorSpace": {
-          "type": "IEEE1722TpRvfColor",
+          "type": "IEEE1722TpRvfColorSpaceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -326,7 +326,7 @@
           "note": "Definition of the RVF stream event (evt) default value."
         },
         "rvfFrameRate": {
-          "type": "IEEE1722TpRvfFrame",
+          "type": "IEEE1722TpRvfFrameRateEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -340,14 +340,14 @@
           "note": "Defines the RVF stream interlaced (i)."
         },
         "rvfPixelDepth": {
-          "type": "IEEE1722TpRvfPixel",
+          "type": "any (IEEE1722TpRvfPixel)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of the RVF stream pixel_depth. atp.Status=candidate"
         },
         "rvfPixelFormat": {
-          "type": "IEEE1722TpRvfPixel",
+          "type": "any (IEEE1722TpRvfPixel)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

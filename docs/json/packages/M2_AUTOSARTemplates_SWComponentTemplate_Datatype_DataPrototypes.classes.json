@@ -330,21 +330,21 @@
       ],
       "attributes": {
         "arraySizeHandling": {
-          "type": "ArraySizeHandling",
+          "type": "ArraySizeHandlingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "The way how the size of the array is handled."
         },
         "arraySize": {
-          "type": "ArraySizeSemantics",
+          "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute controls how the information about the array size shall be interpreted."
         },
         "indexDataType": {
-          "type": "ApplicationPrimitive",
+          "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

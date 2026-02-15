@@ -42,8 +42,8 @@
         }
       ],
       "attributes": {
-        "dependent": {
-          "type": "RoleBasedResource",
+        "dependents": {
+          "type": "RoleBasedResourceDependency",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -164,14 +164,14 @@
           "is_ref": false,
           "note": "This attribute represents the value of the id of the CP software cluster."
         },
-        "swComponent": {
-          "type": "SwComponent",
+        "swComponents": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is the collection of SwComponentPrototype"
         },
-        "swCompositionComponentType": {
+        "swCompositionComponentTypes": {
           "type": "CompositionSwComponentType",
           "multiplicity": "*",
           "kind": "reference",
@@ -223,7 +223,7 @@
           "is_ref": false,
           "note": "Unique number of the (virtual or physical) machine to Software Cluster is mapped."
         },
-        "swCluster": {
+        "swClusters": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "reference",
@@ -310,29 +310,29 @@
         }
       ],
       "attributes": {
-        "portElementTo": {
-          "type": "PortElementTo",
+        "portElementTos": {
+          "type": "PortElementToCommunicationResourceMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "maps a communication resource to CP Software Clusters"
         },
-        "resourceTo": {
+        "resourceTos": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Maps a Software Cluster resource to an Application Partition to restrict the usage. Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "softwareCluster": {
-          "type": "CpSoftwareClusterTo",
+        "softwareClusters": {
+          "type": "any (CpSoftwareClusterTo)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "maps a service resource to CP Software Clusters Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
-        "swcTo": {
-          "type": "SwcToApplication",
+        "swcTos": {
+          "type": "SwcToApplicationPartitionMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -370,7 +370,7 @@
         }
       ],
       "attributes": {
-        "application": {
+        "applications": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
           "kind": "reference",
@@ -503,7 +503,7 @@
       ],
       "attributes": {
         "swComponent": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -543,14 +543,14 @@
         }
       ],
       "attributes": {
-        "ecuScope": {
+        "ecuScopes": {
           "type": "EcuInstance",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the EcuInstance in which the is defined."
         },
-        "resource": {
+        "resources": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "attribute",
@@ -659,7 +659,7 @@
       ],
       "attributes": {
         "data": {
-          "type": "DataConsistencyPolicy",
+          "type": "DataConsistencyPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -740,7 +740,7 @@
         }
       ],
       "attributes": {
-        "resourceNeeds": {
+        "resourceNeedses": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "reference",
@@ -786,7 +786,7 @@
           "is_ref": false,
           "note": "CP Software Cluster providing the resource"
         },
-        "requester": {
+        "requesters": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
           "kind": "reference",

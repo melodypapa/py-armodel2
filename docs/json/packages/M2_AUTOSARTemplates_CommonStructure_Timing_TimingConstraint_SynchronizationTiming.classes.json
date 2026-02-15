@@ -34,20 +34,20 @@
       ],
       "attributes": {
         "event": {
-          "type": "EventOccurrenceKind",
+          "type": "EventOccurrenceKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates whether the referenced events shall occur only once (single occurrence) or multiple times (multiple the given time interval."
         },
-        "scope": {
+        "scopes": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The event chains that are in the scope of the constraint. exclusive to scopeEvent, see ([constr_4522])."
         },
-        "scopeEvent": {
+        "scopeEvents": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "reference",
@@ -55,7 +55,7 @@
           "note": "The events that are in the scope of the constraint. to scope, see ([constr_4522])"
         },
         "synchronization": {
-          "type": "SynchronizationType",
+          "type": "SynchronizationTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

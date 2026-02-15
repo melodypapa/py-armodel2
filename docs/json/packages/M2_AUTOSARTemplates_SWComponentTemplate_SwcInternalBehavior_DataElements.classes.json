@@ -92,7 +92,7 @@
       ],
       "attributes": {
         "autosarVariable": {
-          "type": "ArVariableIn",
+          "type": "any (ArVariableIn)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -232,7 +232,7 @@
           "note": "This denotes the accessed variable."
         },
         "scope": {
-          "type": "VariableAccessScope",
+          "type": "VariableAccessScopeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -267,8 +267,8 @@
         }
       ],
       "attributes": {
-        "contextData": {
-          "type": "AbstractImplementation",
+        "contextDatas": {
+          "type": "any (AbstractImplementation)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -289,7 +289,7 @@
           "note": "This refers to the VariableDataPrototype typed by the in which the target can be found."
         },
         "targetData": {
-          "type": "AbstractImplementation",
+          "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -323,8 +323,8 @@
         }
       ],
       "attributes": {
-        "contextData": {
-          "type": "AbstractImplementation",
+        "contextDatas": {
+          "type": "any (AbstractImplementation)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -338,14 +338,14 @@
           "note": "This reference points to the PortPrototype providing/ root of the parameter."
         },
         "rootParameter": {
-          "type": "ParameterData",
+          "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This refers to the ParameterDataPrototype typed by the implementationDataType in which the target can be"
         },
         "targetData": {
-          "type": "AbstractImplementation",
+          "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

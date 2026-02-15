@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "feature": {
+        "features": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "reference",
@@ -93,14 +93,14 @@
         }
       ],
       "attributes": {
-        "attributeDef": {
+        "attributeDefs": {
           "type": "FMAttributeDef",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This defines the attributes of the given feature."
         },
-        "decompositionDecomposition": {
+        "decompositionDecompositions": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -121,14 +121,14 @@
           "is_ref": false,
           "note": "Defines a lower bound for the binding time of the variation that are associated with the FMFeature. This is meant as a hint for the development process."
         },
-        "relation": {
+        "relations": {
           "type": "FMFeatureRelation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines relations for FMFeatures, for example other FMFeatures, or conflicts with A FMFeature can only be part of a all its relations are fulfilled."
         },
-        "restriction": {
+        "restrictions": {
           "type": "FMFeatureRestriction",
           "multiplicity": "*",
           "kind": "attribute",
@@ -222,7 +222,7 @@
           "is_ref": false,
           "note": "The category of a FMFeatureDecomposition defines the"
         },
-        "feature": {
+        "features": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "reference",
@@ -275,7 +275,7 @@
       ],
       "attributes": {
         "restrictionAndAttributes": {
-          "type": "FMConditionByFeatures",
+          "type": "any (FMConditionByFeatures)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -312,7 +312,7 @@
         }
       ],
       "attributes": {
-        "feature": {
+        "features": {
           "type": "FMFeature",
           "multiplicity": "*",
           "kind": "reference",
@@ -320,7 +320,7 @@
           "note": "The FMFeature that is targeted by this FMFeature"
         },
         "restriction": {
-          "type": "FMConditionByFeatures",
+          "type": "any (FMConditionByFeatures)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -357,7 +357,7 @@
         }
       ],
       "attributes": {
-        "attributeValue": {
+        "attributeValues": {
           "type": "FMAttributeValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -440,21 +440,21 @@
         }
       ],
       "attributes": {
-        "featureModel": {
+        "featureModels": {
           "type": "FMFeatureModel",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "All FMFeatures in this FMFeatureSelectionSet shall be the referenced FMFeatureModel."
         },
-        "include": {
+        "includes": {
           "type": "FMFeatureSelectionSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Each FMFeatureSelectionSet may include one or more establishes a hierarchy See constr_5003 and details."
         },
-        "selection": {
+        "selections": {
           "type": "FMFeatureSelection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -495,7 +495,7 @@
         }
       ],
       "attributes": {
-        "mapping": {
+        "mappings": {
           "type": "FMFeatureMapElement",
           "multiplicity": "*",
           "kind": "attribute",
@@ -533,29 +533,29 @@
         }
       ],
       "attributes": {
-        "assertion": {
+        "assertions": {
           "type": "FMFeatureMap",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines a boolean expression based on features and"
         },
-        "condition": {
+        "conditions": {
           "type": "FMFeatureMap",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines a condition which needs to be fulfilled for this"
         },
-        "postBuildVariant": {
-          "type": "PostBuildVariant",
+        "postBuildVariants": {
+          "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Selects a set of values for postbuild variant criterions."
         },
-        "swValueSet": {
-          "type": "SwSystemconstant",
+        "swValueSets": {
+          "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -593,7 +593,7 @@
       ],
       "attributes": {
         "fmCondAndAttributes": {
-          "type": "FMConditionByFeatures",
+          "type": "any (FMConditionByFeatures)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -631,7 +631,7 @@
       ],
       "attributes": {
         "fmSyscondAndSwSystemconsts": {
-          "type": "FMConditionByFeatures",
+          "type": "any (FMConditionByFeatures)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -48,7 +48,7 @@
           "note": "This attribute represents the diagnostic event that is the diagnostic test result. atpVariation"
         },
         "monitored": {
-          "type": "Diagnostic",
+          "type": "any (Diagnostic)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

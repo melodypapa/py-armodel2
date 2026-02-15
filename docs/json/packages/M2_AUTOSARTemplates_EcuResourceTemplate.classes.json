@@ -52,21 +52,21 @@
         }
       ],
       "attributes": {
-        "hwElement": {
+        "hwElements": {
           "type": "HwElementConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents one particular connection between two elements. atpVariation"
         },
-        "hwPinGroup": {
+        "hwPinGroups": {
           "type": "HwPinGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "This aggregation is used to describe the connection a hardware element. Note that hardware no pins but only pingroups. atpVariation"
         },
-        "nestedElement": {
+        "nestedElements": {
           "type": "HwElement",
           "multiplicity": "*",
           "kind": "reference",
@@ -114,14 +114,14 @@
         }
       ],
       "attributes": {
-        "hwAttribute": {
+        "hwAttributes": {
           "type": "HwAttributeValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents a particular hardware value. atpVariation"
         },
-        "hwCategory": {
+        "hwCategories": {
           "type": "HwCategory",
           "multiplicity": "*",
           "kind": "reference",
@@ -255,7 +255,7 @@
         }
       ],
       "attributes": {
-        "functionName": {
+        "functionNames": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",
@@ -305,21 +305,21 @@
         }
       ],
       "attributes": {
-        "hwElement": {
+        "hwElements": {
           "type": "HwElement",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This association connects two hardware elements."
         },
-        "hwPin": {
+        "hwPins": {
           "type": "HwPinConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents one particular connection between two"
         },
-        "hwPinGroup": {
+        "hwPinGroups": {
           "type": "HwPinGroupConnector",
           "multiplicity": "*",
           "kind": "attribute",
@@ -355,14 +355,14 @@
         }
       ],
       "attributes": {
-        "hwPin": {
+        "hwPins": {
           "type": "HwPinConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents one particular connection between two"
         },
-        "hwPinGroup": {
+        "hwPinGroups": {
           "type": "HwPinGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -399,7 +399,7 @@
         }
       ],
       "attributes": {
-        "hwPin": {
+        "hwPins": {
           "type": "HwPin",
           "multiplicity": "*",
           "kind": "reference",

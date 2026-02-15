@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "clearDiagnostic": {
-          "type": "DiagnosticClear",
+          "type": "any (DiagnosticClear)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

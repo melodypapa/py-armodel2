@@ -33,29 +33,29 @@
         }
       ],
       "attributes": {
-        "emulation": {
-          "type": "McSwEmulationMethod",
+        "emulations": {
+          "type": "McSwEmulationMethodSupport",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Describes the calibration method used by the RTE. This information is not needed for A2L generation, but to setup in the ECU. atpVariation"
         },
-        "mcParameter": {
+        "mcParameters": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A data instance to be used for calibration. atpSplitable; atpVariation"
         },
-        "mcVariable": {
+        "mcVariables": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A data instance to be used for measurement. atpSplitable; atpVariation"
         },
-        "measurable": {
-          "type": "SwSystemconstant",
+        "measurables": {
+          "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -129,7 +129,7 @@
           "note": "Reference to the corresponding entry in the ECU Flat allows to trace back to the original specification generated data instance. This link shall be added RTE generator mainly for documentation purposes. is optional because McDataInstance may represent an array or struct only the subElements correspond to FlatMap McDataInstance may represent a task local buffer prototyping access which is different from the used for measurement access."
         },
         "instanceIn": {
-          "type": "ImplementationElement",
+          "type": "ImplementationElementInParameterInstanceRef",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -142,8 +142,8 @@
           "is_ref": false,
           "note": "Refers to \"upstream\" information on how the RTE uses data instance. Use Case: Rapid Prototyping"
         },
-        "mcData": {
-          "type": "RoleBasedMcData",
+        "mcDatas": {
+          "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -157,7 +157,7 @@
           "note": "These are the generated properties resulting from"
         },
         "resultingRptSw": {
-          "type": "RptSwPrototyping",
+          "type": "RptSwPrototypingAccess",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -177,7 +177,7 @@
           "is_ref": false,
           "note": "Describes the implemented code preparation for rapid"
         },
-        "subElement": {
+        "subElements": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "attribute",
@@ -233,8 +233,8 @@
           "is_ref": false,
           "note": "Identifies the actual method. The possible names shall"
         },
-        "elementGroup": {
-          "type": "McParameterElement",
+        "elementGroups": {
+          "type": "McParameterElementGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -339,7 +339,7 @@
           "note": "The context for the referred element."
         },
         "target": {
-          "type": "AbstractImplementation",
+          "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -414,7 +414,7 @@
           "is_ref": true,
           "note": "Refers to the set of adjustable data (= calibration by this function."
         },
-        "subFunction": {
+        "subFunctions": {
           "type": "McFunction",
           "multiplicity": "*",
           "kind": "reference",
@@ -449,14 +449,14 @@
         }
       ],
       "attributes": {
-        "rteEventRef": {
+        "rteEventRefs": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "by: RteEventInEcuInstance"
         },
-        "variableAccess": {
+        "variableAccesses": {
           "type": "VariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
@@ -495,14 +495,14 @@
         }
       ],
       "attributes": {
-        "execution": {
+        "executions": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Determines the executionContext in which the McData describing a local (e.g Task-Local) buffer of a is valid."
         },
-        "mcDataInstance": {
+        "mcDataInstances": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "reference",

@@ -193,7 +193,7 @@
           "note": "This reference identifies the mapped CpSoftwareCluster Resource. atp.Status=draft"
         },
         "function": {
-          "type": "DiagnosticFunction",
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

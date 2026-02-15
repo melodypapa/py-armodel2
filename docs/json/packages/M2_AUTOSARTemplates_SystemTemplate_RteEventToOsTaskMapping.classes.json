@@ -41,7 +41,7 @@
           "note": "This attribute specifies the period in seconds of this task of a cyclically activated task. Please note that this informative and not directly relevant for the But the attribute value can be mapped OS configuration to support configuration work a fixed set of OsTasks."
         },
         "preemptability": {
-          "type": "OsTaskPreemptability",
+          "type": "OsTaskPreemptabilityEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -189,7 +189,7 @@
         }
       ],
       "attributes": {
-        "rteEventInstanceRef": {
+        "rteEventInstanceRefs": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",
@@ -279,7 +279,7 @@
         }
       ],
       "attributes": {
-        "rteEventInstanceRef": {
+        "rteEventInstanceRefs": {
           "type": "RTEEvent",
           "multiplicity": "*",
           "kind": "attribute",

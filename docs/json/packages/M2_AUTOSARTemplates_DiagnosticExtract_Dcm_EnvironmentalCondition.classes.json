@@ -35,14 +35,14 @@
       ],
       "attributes": {
         "formula": {
-          "type": "DiagnosticEnvCondition",
+          "type": "any (DiagnosticEnvCondition)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute represents the formula part of the"
         },
-        "modeElement": {
-          "type": "DiagnosticEnvMode",
+        "modeElements": {
+          "type": "any (DiagnosticEnvMode)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -86,7 +86,7 @@
           "note": "This attribute represents the concrete NRC value that returned if the condition fails."
         },
         "op": {
-          "type": "DiagnosticLogical",
+          "type": "DiagnosticLogicalOperatorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -163,7 +163,7 @@
       ],
       "attributes": {
         "compareType": {
-          "type": "DiagnosticCompare",
+          "type": "DiagnosticCompareTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -295,7 +295,7 @@
       ],
       "attributes": {
         "modeElement": {
-          "type": "DiagnosticEnvMode",
+          "type": "any (DiagnosticEnvMode)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

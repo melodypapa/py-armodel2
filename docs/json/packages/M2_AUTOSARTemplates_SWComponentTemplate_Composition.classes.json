@@ -75,36 +75,36 @@
         }
       ],
       "attributes": {
-        "component": {
-          "type": "SwComponent",
+        "components": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The instantiated components that are part of this"
         },
-        "connector": {
+        "connectors": {
           "type": "SwConnector",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "SwConnectors have the principal ability to establish a"
         },
-        "constantValue": {
+        "constantValues": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the ConstantSpecificationMapping to be applied for initValues of PPortComSpecs and 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "dataType": {
+        "dataTypes": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Reference to the DataTypeMappingSet to be applied the used ApplicationDataTypes in developing subsystems it may happen are used on the surface In this case it reasonable to be able to also provide the to the ImplementationDataTypes. mapping shall be informal and not for the implementors mainly because generator is not concerned about the the mapping of ApplicationDataTypes delegated and inner PortPrototype matches mapping to ImplementationDataTypes is not"
         },
-        "instantiationRTEEvent": {
-          "type": "InstantiationRTEEvent",
+        "instantiationRTEEvents": {
+          "type": "InstantiationRTEEventProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -263,14 +263,14 @@
       ],
       "attributes": {
         "providerInstanceRef": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "implemented by: PPortInComposition"
         },
         "requesterInstanceRef": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -440,14 +440,14 @@
       ],
       "attributes": {
         "providedOuter": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the provided outer delegation Port Prototype of the PassThroughSwConnector."
         },
         "requiredOuter": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

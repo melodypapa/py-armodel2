@@ -30,8 +30,8 @@
         }
       ],
       "attributes": {
-        "commController": {
-          "type": "Communication",
+        "commControllers": {
+          "type": "any (Communication)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

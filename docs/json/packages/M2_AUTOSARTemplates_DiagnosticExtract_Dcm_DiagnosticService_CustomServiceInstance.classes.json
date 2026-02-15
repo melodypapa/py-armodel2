@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "customService": {
-          "type": "DiagnosticCustom",
+          "type": "any (DiagnosticCustom)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -37,7 +37,7 @@
       ],
       "attributes": {
         "data": {
-          "type": "DataTransformationKind",
+          "type": "DataTransformationKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -50,8 +50,8 @@
           "is_ref": false,
           "note": "Specifies whether the transformer chain is executed even"
         },
-        "transformer": {
-          "type": "Transformation",
+        "transformers": {
+          "type": "any (Transformation)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -285,7 +285,7 @@
           "note": "Disables the E2EStateMachine (only E2E check"
         },
         "e2eProfile": {
-          "type": "E2EProfileCompatibility",
+          "type": "E2EProfileCompatibilityProps",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -468,7 +468,7 @@
           "note": "Offset of the Data ID nibble in the Data[] array in bits. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "e2eProfile": {
-          "type": "E2EProfileCompatibility",
+          "type": "E2EProfileCompatibilityProps",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -517,7 +517,7 @@
           "note": "Offset of the E2E header in the Data[] array in bits."
         },
         "profileBehaviorBehaviorEnum": {
-          "type": "EndToEndProfile",
+          "type": "EndToEndProfileBehaviorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -592,14 +592,14 @@
         }
       ],
       "attributes": {
-        "data": {
+        "datas": {
           "type": "DataTransformation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This container consists of all transformer chains which be used for transformation of data communication. atpVariation"
         },
-        "transformationTechnology": {
+        "transformationTechnologies": {
           "type": "TransformationTechnology",
           "multiplicity": "*",
           "kind": "attribute",
@@ -670,13 +670,13 @@
       ],
       "attributes": {
         "csErrorReaction": {
-          "type": "CSTransformerError",
+          "type": "CSTransformerErrorReactionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines whether the transformer chain of client/server coordinates an autonomous error reaction the RTE or whether any error reaction is the the application."
         },
-        "dataPrototype": {
+        "dataPrototypes": {
           "type": "DataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
@@ -684,7 +684,7 @@
           "note": "Fine granular modeling of TransfromationProps on the level of DataPrototypes. This atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
         "transformer": {
-          "type": "Transformation",
+          "type": "any (Transformation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -794,7 +794,7 @@
           "note": "This attribute shall be used to determine the wire type in"
         },
         "messageType": {
-          "type": "SOMEIPMessageType",
+          "type": "SOMEIPMessageTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -828,7 +828,7 @@
           "is_ref": false,
           "note": "The size of all length fields (in Bytes) of unions in the message. This attribute is valid for all available Unions in the SOME/IP message. For a granular modeling on the level of Data DataPrototypeTransformationProps shall"
         },
-        "tlvDataId": {
+        "tlvDataIds": {
           "type": "TlvDataIdDefinitionSet",
           "multiplicity": "*",
           "kind": "reference",
@@ -871,7 +871,7 @@
         }
       ],
       "attributes": {
-        "transformationPropsProps": {
+        "transformationPropsPropses": {
           "type": "TransformationProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1265,7 +1265,7 @@
         }
       ],
       "attributes": {
-        "tlvDataId": {
+        "tlvDataIds": {
           "type": "TlvDataIdDefinition",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1322,7 +1322,7 @@
           "note": "This reference associates the definition of a TLV data id with a given AbstractImplementationDataTypeElement."
         },
         "tlvRecord": {
-          "type": "ApplicationRecord",
+          "type": "any (ApplicationRecord)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

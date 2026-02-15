@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "requestFile": {
-          "type": "DiagnosticRequestFile",
+          "type": "any (DiagnosticRequestFile)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

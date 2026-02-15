@@ -48,7 +48,7 @@
           "note": "Defines whether the aging cycle counter is processed"
         },
         "clearDtc": {
-          "type": "DiagnosticClearDtc",
+          "type": "any (DiagnosticClearDtc)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -76,7 +76,7 @@
           "note": "This attribute fixes the maximum number of event entries the fault memory."
         },
         "memoryEntry": {
-          "type": "DiagnosticMemoryEntry",
+          "type": "DiagnosticMemoryEntryStorageTriggerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -90,7 +90,7 @@
           "note": "This parameter is used to activate/deactivate the"
         },
         "typeOfFreeze": {
-          "type": "DiagnosticTypeOf",
+          "type": "any (DiagnosticTypeOf)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -133,7 +133,7 @@
       ],
       "attributes": {
         "typeOfDtc": {
-          "type": "DiagnosticTypeOfDtc",
+          "type": "DiagnosticTypeOfDtcSupportedEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -175,7 +175,7 @@
         }
       ],
       "attributes": {
-        "authRole": {
+        "authRoles": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
           "kind": "reference",

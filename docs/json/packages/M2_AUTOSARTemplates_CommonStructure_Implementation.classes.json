@@ -121,35 +121,35 @@
           "is_ref": false,
           "note": "A manifest specifying the intended build actions for the delivered with this implementation. atpVariation"
         },
-        "codeDescriptor": {
+        "codeDescriptors": {
           "type": "Code",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the provided implementation code."
         },
-        "compiler": {
+        "compilers": {
           "type": "Compiler",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the compiler for which this implementation has"
         },
-        "generated": {
+        "generateds": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Relates to an artifact that will be generated during the of this Implementation by an associated Note that this is an optional information might not always be in the scope of a single component to provide this information. atpVariation"
         },
-        "hwElement": {
+        "hwElements": {
           "type": "HwElement",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The hardware elements (e.g. the processor) required for"
         },
-        "linker": {
+        "linkers": {
           "type": "Linker",
           "multiplicity": "*",
           "kind": "attribute",
@@ -164,20 +164,20 @@
           "note": "The measurement & calibration support data belonging to The aggregtion is <<atpSplitable>> case of an already exisiting BSW this description will be added later process, namely at code generation time."
         },
         "programming": {
-          "type": "Programminglanguage",
+          "type": "ProgramminglanguageEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Programming language the implementation was created in."
         },
-        "requiredArtifact": {
+        "requiredArtifacts": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Specifies that this Implementation depends on the another artifact (e.g. a library). This DependencyOnArtifact is subject to the purpose to support variability in the algorithms in the cause different dependencies, e.g. of used libraries. atpVariation"
         },
-        "required": {
+        "requireds": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "attribute",
@@ -256,14 +256,14 @@
         }
       ],
       "attributes": {
-        "artifact": {
-          "type": "AutosarEngineering",
+        "artifacts": {
+          "type": "AutosarEngineeringObject",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Refers to the artifact belonging to this code descriptor."
         },
-        "callbackHeader": {
+        "callbackHeaders": {
           "type": "ServiceNeeds",
           "multiplicity": "*",
           "kind": "reference",
@@ -310,14 +310,14 @@
       ],
       "attributes": {
         "artifact": {
-          "type": "AutosarEngineering",
+          "type": "AutosarEngineeringObject",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "The specified artifact needs to exist."
         },
-        "usage": {
-          "type": "DependencyUsage",
+        "usages": {
+          "type": "DependencyUsageEnum",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,

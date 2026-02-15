@@ -35,7 +35,7 @@
       ],
       "attributes": {
         "communication": {
-          "type": "EthernetCommunication",
+          "type": "any (EthernetCommunication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

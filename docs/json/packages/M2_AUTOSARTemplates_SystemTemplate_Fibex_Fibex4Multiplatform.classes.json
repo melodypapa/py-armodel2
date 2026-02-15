@@ -40,21 +40,21 @@
           "is_ref": false,
           "note": "Reference to one ECU instance that implements the"
         },
-        "frameMapping": {
+        "frameMappings": {
           "type": "FrameMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Frame Gateway: The entire source frame is mapped as it the target frame (what in general is only possible a common platform). In this case source and should be the identical object. frames are variable in clusters, the mapping needs to be variable, too. atpVariation"
         },
-        "iPduMapping": {
+        "iPduMappings": {
           "type": "IPduMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "IPdu Gateway: Arranges those IPdus that are transferred gateway from one channel to the other in pairs and mapping between them. PDUs are variable in clusters, the gateway needs to be variable, too. atpVariation"
         },
-        "signalMapping": {
+        "signalMappings": {
           "type": "ISignalMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -202,7 +202,7 @@
       ],
       "attributes": {
         "defaultValue": {
-          "type": "PduMappingDefault",
+          "type": "PduMappingDefaultValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
@@ -243,7 +243,7 @@
         }
       ],
       "attributes": {
-        "defaultValue": {
+        "defaultValues": {
           "type": "DefaultValueElement",
           "multiplicity": "*",
           "kind": "attribute",

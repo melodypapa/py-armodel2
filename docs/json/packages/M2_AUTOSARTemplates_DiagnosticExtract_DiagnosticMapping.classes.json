@@ -235,15 +235,15 @@
         }
       ],
       "attributes": {
-        "cryptoService": {
-          "type": "CryptoService",
+        "cryptoServices": {
+          "type": "any (CryptoService)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the description of the applicable crypto certificate."
         },
         "serviceInstance": {
-          "type": "DiagnosticAuthTransmit",
+          "type": "any (DiagnosticAuthTransmit)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -343,7 +343,7 @@
           "note": "Reference to a DiagnosticEvent to which an Operation assigned."
         },
         "operationCycle": {
-          "type": "DiagnosticOperation",
+          "type": "any (DiagnosticOperation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -386,7 +386,7 @@
       ],
       "attributes": {
         "debounce": {
-          "type": "DiagnosticDebounce",
+          "type": "any (DiagnosticDebounce)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -443,7 +443,7 @@
           "note": "Reference to a DiagnosticEvent to which an Enable assigned."
         },
         "enableCondition": {
-          "type": "DiagnosticEnable",
+          "type": "any (DiagnosticEnable)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -493,7 +493,7 @@
           "note": "Reference to a DiagnosticEvent to which a Storage assigned."
         },
         "storage": {
-          "type": "DiagnosticStorage",
+          "type": "any (DiagnosticStorage)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -537,7 +537,7 @@
       ],
       "attributes": {
         "bswService": {
-          "type": "BswService",
+          "type": "any (BswService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -551,14 +551,14 @@
           "note": "Reference to the DiagnosticEvent that is assigned to ports."
         },
         "swcFlatService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a SwcServiceDependencyType that links ServiceNeeds to SWC service ports."
         },
         "swcService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -602,21 +602,21 @@
       ],
       "attributes": {
         "operationCycle": {
-          "type": "DiagnosticOperation",
+          "type": "any (DiagnosticOperation)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the DiagnosticOperationCycle that is to SWC service ports."
         },
         "swcFlatService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a SwcServiceDependencyType that links ServiceNeeds to SWC service ports."
         },
         "swcService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -660,21 +660,21 @@
       ],
       "attributes": {
         "enableCondition": {
-          "type": "DiagnosticEnable",
+          "type": "any (DiagnosticEnable)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the EnableCondition which is mapped to a service port."
         },
         "swcFlatService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a SwcServiceDependencyType that links ServiceNeeds to SWC service ports. This reference can in early stages of the development in order to SwcServiceDependency without a full System"
         },
         "swcService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -718,21 +718,21 @@
       ],
       "attributes": {
         "diagnosticStorage": {
-          "type": "DiagnosticStorage",
+          "type": "any (DiagnosticStorage)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the StorageCondition which is mapped to a SWC service port with DiagnosticStorageCondition"
         },
         "swcFlatService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a SwcServiceDependencyType that links ServiceNeeds to SWC service ports."
         },
         "swcService": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -832,7 +832,7 @@
           "note": "This reference identifies the applicable diagnostic event."
         },
         "securityEventContext": {
-          "type": "SecurityEventContext",
+          "type": "any (SecurityEventContext)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -875,7 +875,7 @@
       ],
       "attributes": {
         "function": {
-          "type": "DiagnosticFunction",
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -924,8 +924,8 @@
         }
       ],
       "attributes": {
-        "dataIdentifier": {
-          "type": "DiagnosticWriteDataBy",
+        "dataIdentifiers": {
+          "type": "any (DiagnosticWriteDataBy)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

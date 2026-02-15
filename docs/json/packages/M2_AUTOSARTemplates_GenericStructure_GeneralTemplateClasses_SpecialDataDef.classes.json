@@ -39,7 +39,7 @@
         }
       ],
       "attributes": {
-        "sdgClass": {
+        "sdgClasses": {
           "type": "SdgClass",
           "multiplicity": "*",
           "kind": "attribute",
@@ -127,7 +127,7 @@
         }
       ],
       "attributes": {
-        "attribute": {
+        "attributes": {
           "type": "SdgAttribute",
           "multiplicity": "*",
           "kind": "attribute",
@@ -148,7 +148,7 @@
           "is_ref": false,
           "note": "The AUTOSAR Meta-Class that may be extended by this"
         },
-        "sdgConstraint": {
+        "sdgConstraints": {
           "type": "TraceableText",
           "multiplicity": "*",
           "kind": "reference",

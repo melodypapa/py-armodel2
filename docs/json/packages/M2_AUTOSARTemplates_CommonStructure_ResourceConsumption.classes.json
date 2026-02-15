@@ -45,42 +45,42 @@
         }
       ],
       "attributes": {
-        "accessCountSet": {
+        "accessCountSets": {
           "type": "AccessCountSet",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Set of access count values atpSplitable; atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "executionTime": {
+        "executionTimes": {
           "type": "ExecutionTime",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of the execution time descriptions for this"
         },
-        "heapUsage": {
+        "heapUsages": {
           "type": "HeapUsage",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of the heap memory allocated by this"
         },
-        "memorySection": {
+        "memorySections": {
           "type": "MemorySection",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An abstract memory section required by this"
         },
-        "sectionNamePrefix": {
+        "sectionNamePrefixes": {
           "type": "SectionNamePrefix",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A prefix to be used for the memory section symbol in the atpVariation"
         },
-        "stackUsage": {
+        "stackUsages": {
           "type": "StackUsage",
           "multiplicity": "*",
           "kind": "attribute",

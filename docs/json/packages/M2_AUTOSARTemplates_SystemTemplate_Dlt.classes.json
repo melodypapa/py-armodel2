@@ -34,7 +34,7 @@
           "is_ref": false,
           "note": "Reference to the Ecu representation in the Log And Trace"
         },
-        "dltLogChannel": {
+        "dltLogChannels": {
           "type": "DltLogChannel",
           "multiplicity": "*",
           "kind": "attribute",
@@ -86,7 +86,7 @@
         }
       ],
       "attributes": {
-        "application": {
+        "applications": {
           "type": "DltContext",
           "multiplicity": "*",
           "kind": "reference",
@@ -94,13 +94,13 @@
           "note": "Reference to the Swc that produces the log or trace"
         },
         "defaultTrace": {
-          "type": "DltDefaultTraceState",
+          "type": "DltDefaultTraceStateEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attributes defines the default trace status."
         },
-        "dltMessage": {
+        "dltMessages": {
           "type": "DltMessage",
           "multiplicity": "*",
           "kind": "reference",
@@ -115,7 +115,7 @@
           "note": "This attribute identifies the Channel for usage within the"
         },
         "logTraceDefaultLog": {
-          "type": "LogTraceDefaultLog",
+          "type": "LogTraceDefaultLogLevelEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

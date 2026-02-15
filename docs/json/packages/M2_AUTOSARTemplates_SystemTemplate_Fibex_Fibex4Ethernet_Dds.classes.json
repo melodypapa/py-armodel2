@@ -168,14 +168,14 @@
           "is_ref": false,
           "note": "Minor Version of the Service that is provided by this Dds"
         },
-        "providedDds": {
+        "providedDdses": {
           "type": "DdsCpServiceInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of provided events. Stereotypes: atpSplitable; atpVariation Event Tags:"
         },
-        "staticRemote": {
+        "staticRemotes": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
           "kind": "reference",
@@ -215,7 +215,7 @@
         }
       ],
       "attributes": {
-        "consumedDds": {
+        "consumedDdses": {
           "type": "DdsCpServiceInstance",
           "multiplicity": "*",
           "kind": "attribute",
@@ -363,14 +363,14 @@
         }
       ],
       "attributes": {
-        "ddsDomain": {
+        "ddsDomains": {
           "type": "DdsCpDomain",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of DDS Domain definitions."
         },
-        "ddsQosProfile": {
+        "ddsQosProfiles": {
           "type": "DdsCpQosProfile",
           "multiplicity": "*",
           "kind": "attribute",
@@ -408,14 +408,14 @@
         }
       ],
       "attributes": {
-        "ddsPartition": {
+        "ddsPartitions": {
           "type": "DdsCpPartition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of DDS Partition definitions."
         },
-        "ddsTopic": {
+        "ddsTopics": {
           "type": "DdsCpTopic",
           "multiplicity": "*",
           "kind": "attribute",
@@ -831,7 +831,7 @@
       ],
       "attributes": {
         "ownershipKind": {
-          "type": "DdsOwnershipKind",
+          "type": "DdsOwnershipKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

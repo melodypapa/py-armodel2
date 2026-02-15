@@ -50,7 +50,7 @@
         }
       ],
       "attributes": {
-        "appliesTo": {
+        "appliesTos": {
           "type": "StandardNameEnum",
           "multiplicity": "*",
           "kind": "attribute",
@@ -120,7 +120,7 @@
           "is_ref": false,
           "note": "This represents an informal specification of the material."
         },
-        "testedItem": {
+        "testedItems": {
           "type": "Traceable",
           "multiplicity": "*",
           "kind": "reference",
@@ -234,7 +234,7 @@
         }
       ],
       "attributes": {
-        "trace": {
+        "traces": {
           "type": "Traceable",
           "multiplicity": "*",
           "kind": "reference",

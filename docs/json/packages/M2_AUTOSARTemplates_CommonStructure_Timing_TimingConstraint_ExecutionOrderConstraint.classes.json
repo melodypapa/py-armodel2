@@ -34,14 +34,14 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Specifies the composition SW-C type playing the role of a"
         },
         "executionOrder": {
-          "type": "ExecutionOrder",
+          "type": "any (ExecutionOrder)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -61,8 +61,8 @@
           "is_ref": false,
           "note": "Indicates whether the ExecutionOrderConstraint is only"
         },
-        "orderedElement": {
-          "type": "EOCExecutableEntity",
+        "orderedElements": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -114,8 +114,8 @@
         }
       ],
       "attributes": {
-        "directSuccessor": {
-          "type": "EOCExecutableEntity",
+        "directSuccessors": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -154,13 +154,13 @@
       ],
       "attributes": {
         "letDataExchange": {
-          "type": "LetDataExchange",
+          "type": "LetDataExchangeParadigmEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the data exchange paradigm between ExecutableEntitys within a LET interval. atp.Status=draft"
         },
-        "letInterval": {
+        "letIntervals": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "reference",
@@ -195,15 +195,15 @@
           "is_ref": false,
           "note": "Repetitive Execution Order Constraint only: number of ExecutableEntitys (slots) that are a given order within a cycle, for the Repetitive Constraint."
         },
-        "nestedElement": {
-          "type": "EOCExecutableEntity",
+        "nestedElements": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This association is used to establish hierarchies of EOCEER Groups and References."
         },
-        "successor": {
-          "type": "EOCExecutableEntity",
+        "successors": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -256,7 +256,7 @@
           "note": "Specifies the BSW module instance the BSW module belongs to."
         },
         "component": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -269,8 +269,8 @@
           "is_ref": false,
           "note": "The ExecutableEntity whose execution order is restricted contraint."
         },
-        "successor": {
-          "type": "EOCExecutableEntity",
+        "successors": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -316,7 +316,7 @@
           "note": "Specifies the BSW module instance the BSW event is to."
         },
         "component": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -329,8 +329,8 @@
           "is_ref": false,
           "note": "The AbstractEvent (event) whose execution order is the contraint."
         },
-        "successor": {
-          "type": "EOCExecutableEntity",
+        "successors": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

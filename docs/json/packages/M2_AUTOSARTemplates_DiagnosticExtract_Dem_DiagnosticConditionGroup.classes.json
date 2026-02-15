@@ -75,8 +75,8 @@
         }
       ],
       "attributes": {
-        "enableCondition": {
-          "type": "DiagnosticEnable",
+        "enableConditions": {
+          "type": "any (DiagnosticEnable)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -118,8 +118,8 @@
         }
       ],
       "attributes": {
-        "storage": {
-          "type": "DiagnosticStorage",
+        "storages": {
+          "type": "any (DiagnosticStorage)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

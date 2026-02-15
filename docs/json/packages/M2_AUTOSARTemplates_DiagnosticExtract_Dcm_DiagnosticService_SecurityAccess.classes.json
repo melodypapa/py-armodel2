@@ -43,7 +43,7 @@
           "note": "This would be 0x01, 0x03, 0x05, ... id can be computed by adding 1 to the"
         },
         "securityAccess": {
-          "type": "DiagnosticSecurity",
+          "type": "any (DiagnosticSecurity)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

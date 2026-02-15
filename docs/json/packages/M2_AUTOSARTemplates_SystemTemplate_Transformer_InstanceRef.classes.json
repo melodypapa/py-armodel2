@@ -31,14 +31,14 @@
       ],
       "attributes": {
         "baseInterface": {
-          "type": "SenderReceiver",
+          "type": "any (SenderReceiver)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Stereotypes: atpDerived"
         },
-        "contextData": {
-          "type": "ApplicationComposite",
+        "contextDatas": {
+          "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -97,8 +97,8 @@
           "is_ref": false,
           "note": "Stereotypes: atpDerived"
         },
-        "contextData": {
-          "type": "ApplicationComposite",
+        "contextDatas": {
+          "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -148,8 +148,8 @@
         }
       ],
       "attributes": {
-        "context": {
-          "type": "AbstractImplementation",
+        "contexts": {
+          "type": "any (AbstractImplementation)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -210,8 +210,8 @@
           "is_ref": false,
           "note": "Stereotypes: atpAbstract"
         },
-        "contextData": {
-          "type": "ApplicationComposite",
+        "contextDatas": {
+          "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

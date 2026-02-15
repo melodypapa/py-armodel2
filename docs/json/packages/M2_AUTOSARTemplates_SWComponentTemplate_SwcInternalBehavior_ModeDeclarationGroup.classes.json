@@ -126,7 +126,7 @@
         }
       ],
       "attributes": {
-        "mode": {
+        "modes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "reference",

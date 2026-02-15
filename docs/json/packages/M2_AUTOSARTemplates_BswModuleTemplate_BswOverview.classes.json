@@ -70,7 +70,7 @@
         }
       ],
       "attributes": {
-        "bswModule": {
+        "bswModules": {
           "type": "BswModuleDependency",
           "multiplicity": "*",
           "kind": "attribute",
@@ -84,21 +84,21 @@
           "is_ref": false,
           "note": "This adds a documentation to the BSW module. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "expectedEntry": {
+        "expectedEntries": {
           "type": "BswModuleEntry",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Indicates an entry which is required by this module. outgoingCallback / requiredEntry. atpVariation"
         },
-        "implemented": {
+        "implementeds": {
           "type": "BswModuleEntry",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Specifies an entry provided by this module which can be by other modules. This includes \"main\" functions, and callbacks. Replacement of expectedCallback. atpVariation"
         },
-        "internalBehavior": {
+        "internalBehaviors": {
           "type": "BswInternalBehavior",
           "multiplicity": "*",
           "kind": "attribute",
@@ -112,56 +112,56 @@
           "is_ref": false,
           "note": "Refers to the BSW Module Identifier defined by the For non-standardized modules, a can be optionally chosen."
         },
-        "providedClient": {
-          "type": "BswModuleClientServer",
+        "providedClients": {
+          "type": "BswModuleClientServerEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies that this module provides a client server entry which can be called from another partition or core.This declared locally to this context and will be the requiredClientServerEntry of another or module via the configuration of the BSW atpVariation"
         },
-        "providedData": {
+        "providedDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Specifies a data prototype provided by this module in be read from another partition or core.The declared locally to this context and will be the requiredData of another or the same the configuration of the BSW Scheduler. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "providedMode": {
+        "providedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "A set of modes which is owned and provided by this module or cluster. It can be connected to the required other modules or clusters via the the BswScheduler. It can also be modes provided via ports by an EcuAbstraction ComplexDeviceDriverSw atpVariation"
         },
-        "releasedTrigger": {
+        "releasedTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "A Trigger released by this module or cluster. It can be"
         },
-        "requiredClient": {
-          "type": "BswModuleClientServer",
+        "requiredClients": {
+          "type": "BswModuleClientServerEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies that this module requires a client server entry which can be implemented on another partition or is declared locally to this context and will to the providedClientServerEntry of another same module via the configuration of the BSW atpVariation"
         },
-        "requiredData": {
+        "requiredDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Specifies a data prototype required by this module in oder provided from another partition or core.The required declared locally to this context and will be the providedData of another or the same the configuration of the BswScheduler. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "requiredMode": {
+        "requiredModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Specifies that this module or cluster depends on a certain mode group. The requiredModeGroup is local to this will be connected to the providedModeGroup module or cluster via the configuration of the atpVariation"
         },
-        "requiredTrigger": {
+        "requiredTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
           "kind": "attribute",

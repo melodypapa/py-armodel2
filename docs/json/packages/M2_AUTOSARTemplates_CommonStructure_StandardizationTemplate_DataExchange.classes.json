@@ -27,8 +27,8 @@
         }
       ],
       "attributes": {
-        "specificationDocument": {
-          "type": "SpecificationDocument",
+        "specificationDocuments": {
+          "type": "SpecificationDocumentScope",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -74,8 +74,8 @@
           "is_ref": false,
           "note": "reference to a custom defined specification."
         },
-        "document": {
-          "type": "DocumentElement",
+        "documents": {
+          "type": "DocumentElementScope",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -115,14 +115,14 @@
       ],
       "attributes": {
         "customDocument": {
-          "type": "TraceableElement",
+          "type": "any (TraceableElement)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a custom defined specification element."
         },
-        "tailoring": {
-          "type": "DataFormatElement",
+        "tailorings": {
+          "type": "any (DataFormatElement)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

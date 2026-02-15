@@ -65,36 +65,36 @@
         }
       ],
       "attributes": {
-        "absolutely": {
-          "type": "TtcanAbsolutely",
+        "absolutelies": {
+          "type": "TtcanAbsolutelyScheduledTiming",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Each frame in TTCAN is identified by its slot id and communication cycle. A description is provided by the of AbsolutelyScheduledTiming."
         },
         "canAddressing": {
-          "type": "CanAddressingMode",
+          "type": "CanAddressingModeType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "The CAN protocol supports two types of frame formats. The standard frame format uses 11-bit identifiers and is the CAN specification 2.0 A. Additionally the format allows 29-bit identifiers and is the CAN specification 2.0 B."
         },
         "canFrameRxBehavior": {
-          "type": "CanFrameRxBehavior",
+          "type": "CanFrameRxBehaviorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines which CAN protocol shall be expected for frame reception."
         },
         "canFrameTxBehavior": {
-          "type": "CanFrameTxBehavior",
+          "type": "CanFrameTxBehaviorEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines which CAN protocol shall be used for frame transmission."
         },
         "canXlFrame": {
-          "type": "CanXlFrameTriggering",
+          "type": "CanXlFrameTriggeringProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,

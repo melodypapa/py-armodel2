@@ -159,7 +159,7 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -181,7 +181,7 @@
           "note": "This attributes indicates whether the specific Diagnostic"
         },
         "supportInfoByte": {
-          "type": "DiagnosticSupportInfo",
+          "type": "DiagnosticSupportInfoByte",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -363,7 +363,7 @@
           "is_ref": false,
           "note": "This attribute indicates that the enclosing Diagnostic an array and configures size in terms of the number of elements of the"
         },
-        "subElement": {
+        "subElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -408,7 +408,7 @@
         }
       ],
       "attributes": {
-        "subElement": {
+        "subElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -506,7 +506,7 @@
       ],
       "attributes": {
         "arraySize": {
-          "type": "ArraySizeSemantics",
+          "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -571,7 +571,7 @@
       ],
       "attributes": {
         "access": {
-          "type": "DiagnosticAccess",
+          "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -620,7 +620,7 @@
           "note": "This is the numerical identifier used to identify the the scope of diagnostic workflow"
         },
         "requestResult": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -679,14 +679,14 @@
         }
       ],
       "attributes": {
-        "request": {
+        "requests": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "response": {
+        "responses": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -725,14 +725,14 @@
         }
       ],
       "attributes": {
-        "request": {
+        "requests": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "response": {
+        "responses": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -771,14 +771,14 @@
         }
       ],
       "attributes": {
-        "request": {
+        "requests": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the request parameters."
         },
-        "response": {
+        "responses": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -820,7 +820,7 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -842,7 +842,7 @@
           "note": "The size of the entire PID can be greater than the sum of elements because padding might be applied."
         },
         "supportInfoByte": {
-          "type": "DiagnosticSupportInfo",
+          "type": "DiagnosticSupportInfoByte",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -961,7 +961,7 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "attribute",

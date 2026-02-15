@@ -131,8 +131,8 @@
         }
       ],
       "attributes": {
-        "compositeNetwork": {
-          "type": "CompositeNetwork",
+        "compositeNetworks": {
+          "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -146,7 +146,7 @@
           "note": "Data element these attributes belong to."
         },
         "handleOutOfRange": {
-          "type": "HandleOutOfRange",
+          "type": "any (HandleOutOfRange)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -166,8 +166,8 @@
           "is_ref": false,
           "note": "Number of Data required for validating the consistency of that shall be received with a valid counter (i.e. the allowed lock-in range) after the an unexpected behavior of a received E2E wrapper approach involves are not subjected to the AUTOSAR is superseded by the superior E2E (which is fully standardized by new projects (without legacy to carry-over parts) shall use the fully transformer approach."
         },
-        "transformationCom": {
-          "type": "TransformationCom",
+        "transformationComs": {
+          "type": "any (TransformationCom)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -401,8 +401,8 @@
         }
       ],
       "attributes": {
-        "compositeNetwork": {
-          "type": "CompositeNetwork",
+        "compositeNetworks": {
+          "type": "CompositeNetworkRepresentation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -416,7 +416,7 @@
           "note": "Data element these quality of service attributes apply to."
         },
         "handleOutOfRange": {
-          "type": "HandleOutOfRange",
+          "type": "any (HandleOutOfRange)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -430,14 +430,14 @@
           "note": "A networkRepresentation is used to define how the data"
         },
         "transmission": {
-          "type": "Transmission",
+          "type": "any (Transmission)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Requested transmission acknowledgement for data"
         },
         "transmissionComSpec": {
-          "type": "TransmissionComSpec",
+          "type": "TransmissionComSpecProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -580,7 +580,7 @@
           "note": "This attribute defines the minimum interval between two transmissions of the respective data the assumed to ensure."
         },
         "transmission": {
-          "type": "TransmissionMode",
+          "type": "any (TransmissionMode)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -651,14 +651,14 @@
       ],
       "attributes": {
         "leafElementElementInPortInterfaceInstanceRef": {
-          "type": "ApplicationComposite",
+          "type": "any (ApplicationComposite)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "data type. by: ApplicationComposite"
         },
         "networkRepresentation": {
-          "type": "SwDataDefPropsRepresentation",
+          "type": "any (SwDataDefPropsRepresentation)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -708,8 +708,8 @@
           "is_ref": false,
           "note": "This represents the corresponding ClientServerOperation."
         },
-        "transformationCom": {
-          "type": "TransformationCom",
+        "transformationComs": {
+          "type": "any (TransformationCom)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -759,8 +759,8 @@
           "is_ref": false,
           "note": "Length of call queue on the server side. The queue is the RTE. The value shall be greater or 1. Setting the value of queueLength to 1 implies requests are rejected while another request earlier is being processed."
         },
-        "transformationCom": {
-          "type": "TransformationCom",
+        "transformationComs": {
+          "type": "any (TransformationCom)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -811,7 +811,7 @@
           "note": "ModeDeclarationGroupPrototype (of the same Port to which these communication attributes apply."
         },
         "modeSwitchedAck": {
-          "type": "ModeSwitchedAck",
+          "type": "any (ModeSwitchedAck)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

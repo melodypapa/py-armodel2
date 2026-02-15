@@ -45,7 +45,7 @@
           "is_ref": false,
           "note": "The response event representing the point in time where chain is terminated."
         },
-        "segment": {
+        "segments": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
           "kind": "reference",
@@ -151,7 +151,7 @@
           "note": "Optional reference to a clock that holds the time base for"
         },
         "occurrence": {
-          "type": "TDEventOccurrence",
+          "type": "any (TDEventOccurrence)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "doipInterface": {
+        "doipInterfaces": {
           "type": "DoIpInterface",
           "multiplicity": "*",
           "kind": "attribute",
@@ -86,14 +86,14 @@
           "is_ref": false,
           "note": "Configuration of DoIPChannels available in an DoIp"
         },
-        "doipConnection": {
+        "doipConnections": {
           "type": "SocketConnection",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "DoIP Connections in the DoIpInterface that define the Do Pdus that are sent and received via SoAd over TCP or"
         },
-        "doIpRouting": {
+        "doIpRoutings": {
           "type": "DoIpRoutingActivation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -135,7 +135,7 @@
           "is_ref": false,
           "note": "Maximum amount of tester connections that shall be at one time before alive check is performed."
         },
-        "socket": {
+        "sockets": {
           "type": "StaticSocketConnection",
           "multiplicity": "*",
           "kind": "reference",
@@ -194,8 +194,8 @@
         }
       ],
       "attributes": {
-        "doIpTarget": {
-          "type": "DoIpLogicTarget",
+        "doIpTargets": {
+          "type": "DoIpLogicTargetAddressProps",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -300,7 +300,7 @@
         }
       ],
       "attributes": {
-        "doIpTester": {
+        "doIpTesters": {
           "type": "DoIpRoutingActivation",
           "multiplicity": "*",
           "kind": "reference",

@@ -50,7 +50,7 @@
       ],
       "attributes": {
         "authentication": {
-          "type": "Diagnostic",
+          "type": "any (Diagnostic)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -308,8 +308,8 @@
         }
       ],
       "attributes": {
-        "certificate": {
-          "type": "DiagnosticAuthTransmit",
+        "certificates": {
+          "type": "any (DiagnosticAuthTransmit)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

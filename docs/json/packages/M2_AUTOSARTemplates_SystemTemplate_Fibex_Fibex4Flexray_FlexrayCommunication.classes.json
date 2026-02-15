@@ -65,8 +65,8 @@
         }
       ],
       "attributes": {
-        "absolutely": {
-          "type": "FlexrayAbsolutely",
+        "absolutelies": {
+          "type": "FlexrayAbsolutelyScheduledTiming",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -87,7 +87,7 @@
           "note": "The first two bytes of the payload segment of the FlexRay for frames transmitted in the dynamic be used as receiver filterable data called the"
         },
         "payloadPreamble": {
-          "type": "BooleanIndicator",
+          "type": "any (BooleanIndicator)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

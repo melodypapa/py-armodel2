@@ -206,7 +206,7 @@
         }
       ],
       "attributes": {
-        "offset": {
+        "offsets": {
           "type": "MultidimensionalTime",
           "multiplicity": "*",
           "kind": "attribute",
@@ -346,21 +346,21 @@
         }
       ],
       "attributes": {
-        "confidenceInterval": {
+        "confidenceIntervals": {
           "type": "ConfidenceInterval",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "List of confidence intervals. xml.sequenceOffset=30 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
-        "maximum": {
+        "maximums": {
           "type": "MultidimensionalTime",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The nth array element describes the maximum distance can be observed for a sample of n+1 event an array with an identical number of elements as minimumDistance."
         },
-        "minimum": {
+        "minimums": {
           "type": "MultidimensionalTime",
           "multiplicity": "*",
           "kind": "attribute",

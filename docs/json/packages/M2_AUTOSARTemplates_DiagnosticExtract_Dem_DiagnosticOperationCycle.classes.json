@@ -35,7 +35,7 @@
       ],
       "attributes": {
         "typeCycleTypeEnum": {
-          "type": "DiagnosticOperation",
+          "type": "any (DiagnosticOperation)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

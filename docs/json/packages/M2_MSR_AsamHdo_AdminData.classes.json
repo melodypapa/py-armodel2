@@ -53,7 +53,7 @@
         }
       ],
       "attributes": {
-        "docRevision": {
+        "docRevisions": {
           "type": "DocRevision",
           "multiplicity": "*",
           "kind": "attribute",
@@ -115,7 +115,7 @@
           "is_ref": false,
           "note": "This is the name of an individual or an organization who"
         },
-        "modification": {
+        "modifications": {
           "type": "Modification",
           "multiplicity": "*",
           "kind": "attribute",
@@ -179,14 +179,14 @@
       ],
       "attributes": {
         "change": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This property denotes the one particular change which performed on the object."
         },
         "reason": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

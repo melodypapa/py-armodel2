@@ -75,7 +75,7 @@
           "is_ref": false,
           "note": "This represents the category of the RuleBasedValue"
         },
-        "swAxisCont": {
+        "swAxisConts": {
           "type": "RuleBasedAxisCont",
           "multiplicity": "*",
           "kind": "attribute",
@@ -160,7 +160,7 @@
         }
       ],
       "attributes": {
-        "element": {
+        "elements": {
           "type": "ValueSpecification",
           "multiplicity": "*",
           "kind": "attribute",
@@ -511,7 +511,7 @@
       ],
       "attributes": {
         "ruleBased": {
-          "type": "RuleBasedValue",
+          "type": "any (RuleBasedValue)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -663,7 +663,7 @@
           "is_ref": false,
           "note": "Specifies to which category of ApplicationDataType this"
         },
-        "swAxisCont": {
+        "swAxisConts": {
           "type": "SwAxisCont",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1189,7 +1189,7 @@
         }
       ],
       "attributes": {
-        "mapping": {
+        "mappings": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1292,14 +1292,14 @@
       ],
       "attributes": {
         "category": {
-          "type": "CalprmAxisCategory",
+          "type": "CalprmAxisCategoryEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This category specifies the particular axis types: STD_AXIS (swArraysize necessary)"
         },
         "ruleBased": {
-          "type": "RuleBasedValue",
+          "type": "any (RuleBasedValue)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1389,7 +1389,7 @@
       ],
       "attributes": {
         "ruleBased": {
-          "type": "RuleBasedValue",
+          "type": "any (RuleBasedValue)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1457,15 +1457,15 @@
         }
       ],
       "attributes": {
-        "argument": {
-          "type": "CompositeValue",
+        "arguments": {
+          "type": "CompositeValueSpecification",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the collection of aggregated Value Specifications. The last ValueSpecification in the be taken to execute the filling rule."
         },
-        "compound": {
-          "type": "CompositeRuleBased",
+        "compounds": {
+          "type": "any (CompositeRuleBased)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

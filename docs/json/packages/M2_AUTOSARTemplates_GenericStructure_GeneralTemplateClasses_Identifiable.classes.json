@@ -97,7 +97,7 @@
           "note": "The category is a keyword that specializes the semantics"
         },
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -661,7 +661,7 @@
           "is_ref": false,
           "note": "This represents the administrative data for the identifiable 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -676,7 +676,7 @@
           "note": "The category is a keyword that specializes the semantics"
         },
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -847,7 +847,7 @@
           "is_ref": false,
           "note": "This specifies an identifying shortName for the object. It"
         },
-        "shortNameFragment": {
+        "shortNameFragments": {
           "type": "ShortNameFragment",
           "multiplicity": "*",
           "kind": "attribute",
@@ -932,7 +932,7 @@
       ],
       "attributes": {
         "longName": {
-          "type": "MultilanguageLong",
+          "type": "MultilanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -976,7 +976,7 @@
       ],
       "attributes": {
         "longName1": {
-          "type": "SingleLanguageLong",
+          "type": "SingleLanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

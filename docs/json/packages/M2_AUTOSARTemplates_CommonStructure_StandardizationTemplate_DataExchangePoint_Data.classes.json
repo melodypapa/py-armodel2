@@ -307,22 +307,22 @@
         }
       ],
       "attributes": {
-        "classContent": {
-          "type": "ClassContent",
+        "classContents": {
+          "type": "ClassContentConditional",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the accepted / not accepted content of the"
         },
         "multiplicity": {
-          "type": "MultiplicityRestriction",
+          "type": "any (MultiplicityRestriction)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the multiplicity of the class in the current context."
         },
         "variation": {
-          "type": "VariationRestrictionWith",
+          "type": "VariationRestrictionWithSeverity",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -359,7 +359,7 @@
         }
       ],
       "attributes": {
-        "attribute": {
+        "attributes": {
           "type": "AttributeTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -373,14 +373,14 @@
           "is_ref": false,
           "note": "The rules on the content of this class are enabled if the to true."
         },
-        "constraint": {
+        "constraints": {
           "type": "ConstraintTailoring",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specification of tailorings of Constraints of that are owned this Meta Classes"
         },
-        "sdgTailoring": {
+        "sdgTailorings": {
           "type": "SdgTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -503,7 +503,7 @@
       ],
       "attributes": {
         "attribute": {
-          "type": "PrimitiveAttribute",
+          "type": "any (PrimitiveAttribute)",
           "multiplicity": "1",
           "kind": "reference",
           "is_ref": false,
@@ -629,14 +629,14 @@
       ],
       "attributes": {
         "multiplicity": {
-          "type": "MultiplicityRestriction",
+          "type": "any (MultiplicityRestriction)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Multiplicity restriction of the attribute Tags: xml.sequenceOffset=10"
         },
         "variation": {
-          "type": "VariationRestrictionWith",
+          "type": "VariationRestrictionWithSeverity",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -680,21 +680,21 @@
       ],
       "attributes": {
         "defaultValue": {
-          "type": "DefaultValueApplication",
+          "type": "DefaultValueApplicationStrategyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specification of how to handle AUTOSAR defined default values."
         },
-        "subAttribute": {
-          "type": "PrimitiveAttribute",
+        "subAttributes": {
+          "type": "any (PrimitiveAttribute)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Tailors the attribute of a <<primitive>> data type."
         },
         "valueRestrictionWithSeverity": {
-          "type": "ValueRestrictionWith",
+          "type": "ValueRestrictionWithSeverity",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -736,7 +736,7 @@
         }
       ],
       "attributes": {
-        "typeTailoring": {
+        "typeTailorings": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -779,7 +779,7 @@
         }
       ],
       "attributes": {
-        "typeTailoring": {
+        "typeTailorings": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
@@ -787,7 +787,7 @@
           "note": "Local class tailoring for content that is referenced by this"
         },
         "unresolvedRestriction": {
-          "type": "UnresolvedReference",
+          "type": "UnresolvedReferenceRestrictionWithSeverity",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
@@ -908,14 +908,14 @@
         }
       ],
       "attributes": {
-        "classTailoring": {
+        "classTailorings": {
           "type": "ClassTailoring",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specification of tailorings of Meta Classes"
         },
-        "constraint": {
+        "constraints": {
           "type": "ConstraintTailoring",
           "multiplicity": "*",
           "kind": "attribute",
