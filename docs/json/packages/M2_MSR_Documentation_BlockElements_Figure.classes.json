@@ -1,0 +1,563 @@
+{
+  "package": "M2::MSR::Documentation::BlockElements::Figure",
+  "classes": [
+    {
+      "name": "Area",
+      "package": "M2::MSR::Documentation::BlockElements::Figure",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "Map.area"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This element specifies a region in an image map. Image maps enable authors to specify regions in an object (e.g. a graphic) and to assign a specific activity to each region (e.g. load a document, launch a program etc.). For more details refer to the specification of HTML.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 299,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "accesskey": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute assigns an access key to an element. An"
+        },
+        "alt": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the text to be inserted as an"
+        },
+        "class": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Blank separated list of classes"
+        },
+        "coords": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the position and shape on the"
+        },
+        "href": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the memory location of a web"
+        },
+        "nohref": {
+          "type": "AreaEnumNohref",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "If this attribute is set, the Area has no associated link."
+        },
+        "onblur": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONBLUR-Event occurs, when focus is switched away"
+        },
+        "onclick": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONCLICK-Event occurs, if the current element is"
+        },
+        "ondblclick": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONCLICK-Event occurs, if the current element is"
+        },
+        "onfocus": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONFOCUS-Event occurs, if an element comes into"
+        },
+        "onkeydown": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYDOWN-Event occurs, if a button on the"
+        },
+        "onkeypress": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYPRESS-Event occurs, if a button on the"
+        },
+        "onkeyup": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYUP-Event occurs, if a button on the current"
+        },
+        "onmousedown": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEDOWN-Event occurs, if the mouse button"
+        },
+        "onmousemove": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEMOVE-Event occurs, if the mouse pointer"
+        },
+        "onmouseout": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEOUT-Event occurs, if the mouse pointer is"
+        },
+        "onmouseover": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEOVER-Event occurs, if the mouse pointer"
+        },
+        "onmouseup": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEUP-Event occurs if the mouse button"
+        },
+        "shape": {
+          "type": "AreaEnumShape",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The shape of the area. Note that in HTML this is"
+        },
+        "style": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Information on the associated style"
+        },
+        "tabindex": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the position of the current element"
+        },
+        "title": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Title information of the Area element"
+        }
+      }
+    },
+    {
+      "name": "Graphic",
+      "package": "M2::MSR::Documentation::BlockElements::Figure",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "EngineeringObject",
+      "bases": [
+        "ARObject",
+        "EngineeringObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "LGraphic.graphic"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This class represents an artifact containing the image to be inserted in the document",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 302,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "editfit": {
+          "type": "GraphicFitEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies how the graphic shall be displayed in an editor."
+        },
+        "editHeight": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies the height of the graphic when it is displayed in"
+        },
+        "editscale": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Set the proportional scale when displayed in an editor."
+        },
+        "editWidth": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies the width of the graphic when it is displayed in"
+        },
+        "filename": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Name of the file that should be displayed. This attribute is"
+        },
+        "fit": {
+          "type": "GraphicFitEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "It determines the way in which the graphic should be"
+        },
+        "generator": {
+          "type": "NameToken",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the generator which is used to"
+        },
+        "height": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Define the displayed height of the figure. The unit can be"
+        },
+        "htmlFit": {
+          "type": "GraphicFitEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "How to fit the graphic in an online media. Default is AS-IS."
+        },
+        "htmlHeight": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies the height of the graphic when it is displayed"
+        },
+        "htmlScale": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Set the proportional scale when displayed online."
+        },
+        "htmlWidth": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies the width of the graphic when it is displayed"
+        },
+        "notation": {
+          "type": "GraphicNotationEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute captures the format used to represent the"
+        },
+        "scale": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "In this element the dimensions of the graphic can be"
+        },
+        "width": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Define the displayed width of the figure. The unit can be"
+        }
+      }
+    },
+    {
+      "name": "Map",
+      "package": "M2::MSR::Documentation::BlockElements::Figure",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "LGraphic.map"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "Image maps enable authors to specify regions of an image or object and assign a specific action to each region (e.g., retrieve a document, run a program, etc.) When the region is activated by the user, the action is executed. The class follows the html approach and is intended to support interactive documents.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 305,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "area": {
+          "type": "Area",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "authors to specify regions in an object (e.g. and to assign a specific activity to each region a document, launch a program etc.)."
+        },
+        "class": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute assigns a class name or set of class names"
+        },
+        "name": {
+          "type": "NameToken",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute assigns a name to the image map in the"
+        },
+        "onclick": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONCLICK-Event occurs, if the current element is"
+        },
+        "ondblclick": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONDBLCLICK-Event occurs, if the current Event is"
+        },
+        "onkeydown": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYDOWN-Event occurs, if a button on the"
+        },
+        "onkeypress": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYPRESS-Event occurs, if a button on the"
+        },
+        "onkeyup": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONKEYUP-Event occurs, if a button on the current"
+        },
+        "onmousedown": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEDOWN-Event occurs, if the mouse button"
+        },
+        "onmousemove": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEMOVE-Event occurs, if the mouse pointer"
+        },
+        "onmouseout": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEOUT-Event occurs, if the mouse pointer is"
+        },
+        "onmouseover": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEOVER-Event occurs, if the mouse pointer"
+        },
+        "onmouseup": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The ONMOUSEUP-Event occurs if the mouse button"
+        },
+        "title": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute offers advisory information. Some Web"
+        }
+      }
+    },
+    {
+      "name": "MlFigure",
+      "package": "M2::MSR::Documentation::BlockElements::Figure",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "Paginateable",
+      "bases": [
+        "ARObject",
+        "DocumentViewSelectable",
+        "Paginateable"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "DocumentationBlock.figure"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This metaclass represents the ability to embed a figure.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 307,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "figureCaption": {
+          "type": "Caption",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This element specifies the title of an illustration."
+        },
+        "frame": {
+          "type": "FrameEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Used to defined the frame line around a figure. It can"
+        },
+        "helpEntry": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This specifies an entry point in an online help system to"
+        },
+        "lGraphic": {
+          "type": "LGraphic",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Container of the graphic (or diagram) and optional map of"
+        },
+        "pgwide": {
+          "type": "PgwideEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Used to indicate wether the figure should take the"
+        },
+        "verbatim": {
+          "type": "MultiLanguageVerbatim",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "<verbatim> is a paragraph in which white-space (in and line feeds) is obeyed. This enables to be carried out, which can even be simple devices. Behavior is the same as HTML ."
+        }
+      }
+    },
+    {
+      "name": "LGraphic",
+      "package": "M2::MSR::Documentation::BlockElements::Figure",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "LanguageSpecific",
+      "bases": [
+        "ARObject",
+        "LanguageSpecific"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MlFigure.lGraphic",
+        "MlFormula.lGraphic"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This meta-class represents the figure in one particular language.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 307,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "graphic": {
+          "type": "Graphic",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Reference to the actual graphic represented in the figure."
+        },
+        "map": {
+          "type": "Map",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Image maps enable authors to specify regions of an"
+        }
+      }
+    }
+  ]
+}
