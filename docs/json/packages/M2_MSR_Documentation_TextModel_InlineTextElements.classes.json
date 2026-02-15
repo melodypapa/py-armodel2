@@ -1,0 +1,528 @@
+{
+  "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+  "classes": [
+    {
+      "name": "Br",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForOverviewParagraph.br",
+        "MixedContentForParagraph.br",
+        "MixedContentForVerbatim.br"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This element is the same as function here as in a HTML document i.e. it forces a line break.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 316,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "EmphasisText",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": "atpMixedString",
+      "parent": null,
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForLongName.e",
+        "MixedContentForOverviewParagraph.e",
+        "MixedContentForParagraph.e"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This is an emphasized text. As a compromise it contains some rendering oriented attributes such as color and font.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 316,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "color": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This allows to recommend a color of the emphasis. It is"
+        },
+        "font": {
+          "type": "EEnumFont",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This specifies the font style in which the emphasized text"
+        },
+        "sub": {
+          "type": "Superscript",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "this is subscript text"
+        },
+        "sup": {
+          "type": "Superscript",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is superscript text"
+        },
+        "tt": {
+          "type": "Tt",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is a technical term."
+        },
+        "type": {
+          "type": "EEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates how the text may be emphasized. Note that this"
+        }
+      }
+    },
+    {
+      "name": "IndexEntry",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": "atpMixedString",
+      "parent": null,
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForLongName.ie",
+        "MixedContentForOverviewParagraph.ie",
+        "MixedContentForParagraph.ie"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This class represents an index entry.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 317,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "sub": {
+          "type": "Superscript",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is subscript text."
+        },
+        "sup": {
+          "type": "Superscript",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is superscript text."
+        }
+      }
+    },
+    {
+      "name": "Std",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "SingleLanguageReferrable",
+      "bases": [
+        "ARObject",
+        "Referrable",
+        "SingleLanguageReferrable"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForParagraph.std"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This represents a reference to external standards.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 318,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "date": {
+          "type": "DateTime",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This element specifies the release date of the external"
+        },
+        "position": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the reference to the relevant positions of"
+        },
+        "state": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents version and state of a standard. Kept as"
+        },
+        "subtitle": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the subtitle of the standard."
+        },
+        "url": {
+          "type": "Url",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the URL of the standard."
+        }
+      }
+    },
+    {
+      "name": "Tt",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "EmphasisText.tt",
+        "MixedContentForLongName.tt",
+        "MixedContentForOverviewParagraph.tt",
+        "MixedContentForParagraph.tt",
+        "MixedContentForVerbatim.tt"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This meta-class represents the ability to express specific technical terms. The kind of term is denoted in the attribute \"type\".",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 318,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "term": {
+          "type": "String",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is the term itself."
+        },
+        "texRender": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute holds information how the content"
+        },
+        "type": {
+          "type": "NameToken",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the type of the technical term."
+        }
+      }
+    },
+    {
+      "name": "Xdoc",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "SingleLanguageReferrable",
+      "bases": [
+        "ARObject",
+        "Referrable",
+        "SingleLanguageReferrable"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForParagraph.xdoc"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This meta-class represents the ability to refer to an external document which can be rendered as printed matter.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 319,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "date": {
+          "type": "DateTime",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This element specifies the release date of the external"
+        },
+        "number": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents document number of an external"
+        },
+        "position": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the reference to the relevant positions of"
+        },
+        "publisher": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the publisher of an external document"
+        },
+        "state": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents version and state of the external"
+        },
+        "url": {
+          "type": "Url",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This specifies the URL of the external document."
+        }
+      }
+    },
+    {
+      "name": "Xfile",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "SingleLanguageReferrable",
+      "bases": [
+        "ARObject",
+        "Referrable",
+        "SingleLanguageReferrable"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForParagraph.xfile"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This represents to reference an external file within a documentation.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 319,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "tool": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This element describes the tool which was used to"
+        },
+        "toolVersion": {
+          "type": "String",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This element describes the tool version which was used"
+        },
+        "url": {
+          "type": "Url",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the URL of the external file."
+        }
+      }
+    },
+    {
+      "name": "Xref",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": [
+        "ARObject"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForOverviewParagraph.xref",
+        "MixedContentForParagraph.xref",
+        "MixedContentForVerbatim."
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This represents a cross-reference within documentation.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 320,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {
+        "label1": {
+          "type": "SingleLanguageLong",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This allows to specify a replacement text which shall be if showContent is selected."
+        },
+        "referrable": {
+          "type": "Referrable",
+          "multiplicity": "0..1",
+          "kind": "reference",
+          "is_ref": true,
+          "note": "This establishes the reference in Autosar style"
+        },
+        "resolutionPolicyEnum": {
+          "type": "ResolutionPolicyEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the content of the xref element follow a policy. The default is \"NO-SLOPPY\". 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Template R23-11"
+        },
+        "showContentEnum": {
+          "type": "ShowContentEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the content of the xref element shall be default is \"NO-SHOW-CONTENT\"."
+        },
+        "showResourceAlias": {
+          "type": "ShowResourceAlias",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This indicates if the alias names of the referenced objects shall be rendered. This means this is some kind of look whether there is an alias for the if yes, print it. is more than one AliasNameSet, Xref might of those. alias is found and showResourceShortName is set to the shortName of the reference be displayed. By this showResourceAlias similar to showResourceShortName but shows instead of the shortName. NO-SHOW-ALIAS-NAME."
+        },
+        "showResource": {
+          "type": "ShowResourceType",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the type of the referenced Resource shall be shown. Default is \"SHOW-TYPE\""
+        },
+        "showResourceLong": {
+          "type": "ShowResourceLong",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the longName of the referenced resource shall be rendered. Default is \"SHOW-LONG-NAME\"."
+        },
+        "showResourceNumber": {
+          "type": "ShowResourceNumber",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW–NUMBER\""
+        },
+        "showResourcePage": {
+          "type": "ShowResourcePage",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the page number of the referenced resource shall be shown. Default is \"SHOW-PAGE\""
+        },
+        "showResourceShort": {
+          "type": "ShowResourceShort",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the shortJName of the referenced resource shall be shown. Default is \"SHOW-SHORT-NAME\""
+        },
+        "showSee": {
+          "type": "ShowSeeEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Indicates if the word \"see \" shall be shown before the"
+        }
+      }
+    },
+    {
+      "name": "XrefTarget",
+      "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "SingleLanguageReferrable",
+      "bases": [
+        "ARObject",
+        "Referrable",
+        "SingleLanguageReferrable"
+      ],
+      "children": [],
+      "subclasses": [],
+      "aggregated_by": [
+        "MixedContentForOverviewParagraph.xrefTarget",
+        "MixedContentForParagraph.xrefTarget"
+      ],
+      "implements": [],
+      "implemented_by": [],
+      "note": "This element specifies a reference target which can be scattered throughout the text.",
+      "sources": [
+        {
+          "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
+          "page_number": 321,
+          "autosar_standard": "Foundation",
+          "standard_release": "R23-11"
+        }
+      ],
+      "attributes": {}
+    }
+  ]
+}
