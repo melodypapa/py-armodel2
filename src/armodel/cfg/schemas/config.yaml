@@ -1,0 +1,27 @@
+# AUTOSAR Schema Configuration
+# This file defines how to handle different AUTOSAR XSD schema versions
+
+versions:
+  "00044":  # AUTOSAR Classic Platform 4.3.1 (2017)
+    namespace: "http://autosar.org/3.0.4"
+    xsd_file: "AUTOSAR_00044.xsd"
+    features:
+      validation_mode: "strict"
+
+  "00046":  # AUTOSAR CP 4.4.0 / AP 18-10 (2018)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00046.xsd"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  "00052":  # AUTOSAR CP/AP 23-11 (2023)
+    namespace: "http://autosar.org/schema/r5.0"
+    xsd_file: "AUTOSAR_00052.xsd"
+    features:
+      compact_schema: true
+      strict_compact: true
+      validation_mode: "strict"
+
+# Default version if none specified
+default: "00046"
