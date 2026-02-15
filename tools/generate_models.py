@@ -73,12 +73,11 @@ def generate_class_code(type_def: dict) -> str:
     is_splitable = type_def.get("splitable", False)
     split_file_name = type_def.get("split_file_name", "")
 
-    # Generate class code
+    # Generate class code - removed unused Optional import
     code = f'''"""{class_name} AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class {class_name}(ARObject):
@@ -92,25 +91,25 @@ class {class_name}(ARObject):
 
 '''
 
-    code += f'''    def __init__(self):
+    code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""
         super().__init__()
 '''
 
-    # Add serialize method
+    # Add serialize method with proper return type
     code += f'''
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert {class_name} to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("{class_name.upper()}")
+        element = ET.Element("{class_name.upper()}")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "{class_name}":
+    def deserialize(cls, element: ET.Element) -> "{class_name}":
         """Create {class_name} from XML element.
 
         Args:
@@ -142,7 +141,7 @@ def generate_builder_code(type_def: dict) -> str:
     code = f'''class {builder_name}:
     """Builder for {class_name}."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
         self._obj = {class_name}()
 
@@ -172,7 +171,7 @@ def to_snake_case(name: str) -> str:
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
-def generate_all_models(mapping_file: Path, output_dir: Path):
+def generate_all_models(mapping_file: Path, output_dir: Path) -> None:
     """Generate all model classes from mapping.json.
 
     Args:
