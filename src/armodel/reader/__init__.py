@@ -2,6 +2,7 @@
 
 from pathlib import Path
 from typing import Union, Optional
+import xml.etree.ElementTree as ET
 from lxml import etree
 
 from armodel.core import SchemaVersionManager
@@ -77,8 +78,12 @@ class ARXMLReader:
         Returns:
             AUTOSAR object instance
         """
+        # Convert lxml Element to ElementTree Element
+        xml_str = etree.tostring(root, encoding='unicode')
+        et_root = ET.fromstring(xml_str)
+
         # Use deserialize method to create AUTOSAR object
-        autosar = AUTOSAR.deserialize(root)
+        autosar = AUTOSAR.deserialize(et_root)
 
         return autosar
 
@@ -92,7 +97,11 @@ class ARXMLReader:
         Raises:
             Exception: If validation fails
         """
-        version = self._version_manager.detect_schema_version(root)
+        # Convert lxml Element to ET.Element for version detection
+        xml_str = etree.tostring(root, encoding='unicode')
+        et_root = ET.fromstring(xml_str)
+
+        version = self._version_manager.detect_schema_version(et_root)
         if not version:
             raise ValueError("Cannot validate: unknown schema version")
 
@@ -105,7 +114,7 @@ class ARXMLReader:
         # Construct XSD file path
         from pathlib import Path
 
-        xsd_path = Path("demos/xsd/AUTOSAR_") + version + "/" + xsd_file
+        xsd_path = Path("demos/xsd/AUTOSAR_") / version / xsd_file
 
         # Load XSD schema
         try:
@@ -128,7 +137,10 @@ class ARXMLReader:
             Schema version string or None if unknown
         """
         root = self._load_file(filepath)
-        return self._version_manager.detect_schema_version(root)
+        # Convert lxml Element to ET.Element for version detection
+        xml_str = etree.tostring(root, encoding='unicode')
+        et_root = ET.fromstring(xml_str)
+        return self._version_manager.detect_schema_version(et_root)
 
 
 __all__ = [

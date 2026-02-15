@@ -57,7 +57,7 @@ class ConfigurationManager:
             Configuration value or default
         """
         keys = key.split(".")
-        value = self._config
+        value: Any = self._config
 
         for k in keys:
             if isinstance(value, dict):
@@ -78,7 +78,10 @@ class ConfigurationManager:
         Returns:
             Schema configuration dictionary or None if version not found
         """
-        return self.get(f"versions.{version}")
+        config = self.get(f"versions.{version}")
+        if config is None:
+            return None
+        return cast(Dict[str, Any], config)
 
     def get_all_versions(self) -> List[str]:
         """Get list of all available schema versions.
@@ -95,7 +98,8 @@ class ConfigurationManager:
         Returns:
             Default version string
         """
-        return self.get("default", "00046")
+        default = self.get("default", "00046")
+        return cast(str, default)
 
     def get_namespace(self, version: str) -> Optional[str]:
         """Get namespace URI for specific schema version.
@@ -107,7 +111,10 @@ class ConfigurationManager:
             Namespace URI string or None if version not found
         """
         config = self.get_schema_config(version)
-        return config.get("namespace") if config else None
+        if config is None:
+            return None
+        namespace = config.get("namespace")
+        return cast(Optional[str], namespace)
 
     def get_xsd_path(self, version: str) -> Optional[str]:
         """Get XSD file path for specific schema version.
@@ -119,7 +126,10 @@ class ConfigurationManager:
             XSD file path or None if version not found
         """
         config = self.get_schema_config(version)
-        return config.get("xsd_path") if config else None
+        if config is None:
+            return None
+        xsd_path = config.get("xsd_path")
+        return cast(Optional[str], xsd_path)
 
     def get_features(self, version: str) -> Optional[Dict[str, Any]]:
         """Get features configuration for specific schema version.
@@ -131,7 +141,10 @@ class ConfigurationManager:
             Features dictionary or None if version not found
         """
         config = self.get_schema_config(version)
-        return config.get("features") if config else None
+        if config is None:
+            return None
+        features = config.get("features")
+        return cast(Optional[Dict[str, Any]], features)
 
 
 __all__ = [

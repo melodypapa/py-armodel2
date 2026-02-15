@@ -72,7 +72,9 @@ class ARXMLWriter:
 
         # Configure pretty printing
         if self._pretty_print:
-            self._indent(tree.getroot())
+            tree_root = tree.getroot()
+            if tree_root is not None:
+                self._indent(tree_root)
 
         tree.write(str(filepath), encoding=self._encoding, xml_declaration=True)
 
@@ -89,9 +91,10 @@ class ARXMLWriter:
                 elem.text = indent_str + "  "
             if not elem.tail or not elem.tail.strip():
                 elem.tail = indent_str
+            child = None
             for child in elem:
                 self._indent(child, level + 1)
-            if not child.tail or not child.tail.strip():
+            if child is not None and (not child.tail or not child.tail.strip()):
                 child.tail = indent_str
         else:
             if level and (not elem.tail or not elem.tail.strip()):
@@ -125,9 +128,8 @@ class ARXMLWriter:
         if self._pretty_print:
             self._indent(root)
 
-        return ET.tostring(root, encoding=self._encoding, xml_declaration=True).decode(
-            self._encoding
-        )
+        xml_bytes = ET.tostring(root, encoding=self._encoding, xml_declaration=True)
+        return xml_bytes.decode(self._encoding) if xml_bytes else ""
 
 
 __all__ = [

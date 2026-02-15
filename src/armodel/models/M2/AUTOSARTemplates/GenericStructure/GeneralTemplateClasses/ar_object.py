@@ -10,7 +10,7 @@ class ARObject:
     All generated AUTOSAR classes inherit from this base class.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ARObject."""
         self._attributes: dict[str, Any] = {}
 

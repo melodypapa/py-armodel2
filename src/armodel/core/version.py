@@ -1,6 +1,6 @@
 """Schema version detection for ARXML files."""
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, cast
 import xml.etree.ElementTree as ET
 from armodel.cfg.schemas import ConfigurationManager
 
@@ -12,15 +12,16 @@ class SchemaVersionManager:
     detection, namespace mapping, and configuration access.
     """
 
-    _instance = None
+    _instance: Optional["SchemaVersionManager"] = None
+    _initialized: bool = False
 
-    def __new__(cls):
+    def __new__(cls) -> "SchemaVersionManager":
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize version manager (singleton pattern)."""
         if self._initialized:
             return
@@ -79,7 +80,7 @@ class SchemaVersionManager:
         Returns:
             Default version string from config
         """
-        return self._default_version
+        return cast(str, self._default_version)
 
     def get_config(self, version: str) -> Optional[Dict[str, Any]]:
         """Get configuration for specific schema version.
@@ -90,7 +91,8 @@ class SchemaVersionManager:
         Returns:
             Configuration dictionary or None if version not found
         """
-        return self._config.get("versions", {}).get(version)
+        config = self._config.get("versions", {}).get(version)
+        return cast(Optional[Dict[str, Any]], config)
 
     def get_namespace(self, version: str) -> Optional[str]:
         """Get namespace URI for specific schema version.
@@ -118,7 +120,7 @@ class SchemaVersionManager:
         if xsd_file:
             from pathlib import Path
 
-            return str(Path("demos/xsd/AUTOSAR_") + version + "/" + xsd_file)
+            return str(Path("demos/xsd/AUTOSAR_") / version / xsd_file)
         return None
 
     def get_all_versions(self) -> list[str]:

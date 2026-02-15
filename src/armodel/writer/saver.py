@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 def save_arxml_file(
     root: ET.Element, filepath: Union[str, Path], pretty_print: bool = True, encoding: str = "UTF-8"
-):
+) -> None:
     """Save XML element to ARXML file.
 
     Args:
