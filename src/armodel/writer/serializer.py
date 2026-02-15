@@ -16,4 +16,3 @@ def serialize_autosar_to_xml(autosar: AUTOSAR) -> ET.Element:
     # Call object's serialize method
     root = autosar.serialize()
     return root
-

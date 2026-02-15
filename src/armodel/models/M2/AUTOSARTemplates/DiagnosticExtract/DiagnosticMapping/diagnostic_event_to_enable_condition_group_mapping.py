@@ -1,6 +1,8 @@
 """DiagnosticEventToEnableConditionGroupMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticEventToEnableConditionGroupMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticEventToEnableConditionGroupMapping = DiagnosticEventToEnableConditionGroupMapping()
+        self._obj: DiagnosticEventToEnableConditionGroupMapping = (
+            DiagnosticEventToEnableConditionGroupMapping()
+        )
 
     def build(self) -> DiagnosticEventToEnableConditionGroupMapping:
         """Build and return DiagnosticEventToEnableConditionGroupMapping object.

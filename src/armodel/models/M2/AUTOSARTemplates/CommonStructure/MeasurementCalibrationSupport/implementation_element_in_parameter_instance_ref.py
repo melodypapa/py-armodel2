@@ -1,6 +1,8 @@
 """ImplementationElementInParameterInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class ImplementationElementInParameterInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ImplementationElementInParameterInstanceRef = ImplementationElementInParameterInstanceRef()
+        self._obj: ImplementationElementInParameterInstanceRef = (
+            ImplementationElementInParameterInstanceRef()
+        )
 
     def build(self) -> ImplementationElementInParameterInstanceRef:
         """Build and return ImplementationElementInParameterInstanceRef object.

@@ -1,6 +1,8 @@
 """DiagnosticEventToTroubleCodeJ1939Mapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticEventToTroubleCodeJ1939MappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticEventToTroubleCodeJ1939Mapping = DiagnosticEventToTroubleCodeJ1939Mapping()
+        self._obj: DiagnosticEventToTroubleCodeJ1939Mapping = (
+            DiagnosticEventToTroubleCodeJ1939Mapping()
+        )
 
     def build(self) -> DiagnosticEventToTroubleCodeJ1939Mapping:
         """Build and return DiagnosticEventToTroubleCodeJ1939Mapping object.

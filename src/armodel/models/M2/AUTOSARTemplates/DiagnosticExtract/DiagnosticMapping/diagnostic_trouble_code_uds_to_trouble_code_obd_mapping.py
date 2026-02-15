@@ -1,6 +1,8 @@
 """DiagnosticTroubleCodeUdsToTroubleCodeObdMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
+        self._obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = (
+            DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
+        )
 
     def build(self) -> DiagnosticTroubleCodeUdsToTroubleCodeObdMapping:
         """Build and return DiagnosticTroubleCodeUdsToTroubleCodeObdMapping object.

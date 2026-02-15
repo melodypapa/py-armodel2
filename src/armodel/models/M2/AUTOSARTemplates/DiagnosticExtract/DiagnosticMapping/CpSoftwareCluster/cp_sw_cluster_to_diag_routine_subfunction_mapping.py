@@ -1,6 +1,8 @@
 """CpSwClusterToDiagRoutineSubfunctionMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class CpSwClusterToDiagRoutineSubfunctionMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSwClusterToDiagRoutineSubfunctionMapping = CpSwClusterToDiagRoutineSubfunctionMapping()
+        self._obj: CpSwClusterToDiagRoutineSubfunctionMapping = (
+            CpSwClusterToDiagRoutineSubfunctionMapping()
+        )
 
     def build(self) -> CpSwClusterToDiagRoutineSubfunctionMapping:
         """Build and return CpSwClusterToDiagRoutineSubfunctionMapping object.

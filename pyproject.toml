@@ -31,6 +31,8 @@ dev = [
     "pytest-cov>=4.0",
     "mypy>=1.0",
     "ruff>=0.1.0",
+    "lxml-stubs>=0.4.0",
+    "types-PyYAML>=6.0",
 ]
 
 [project.scripts]
@@ -47,9 +49,13 @@ python_functions = ["test_*"]
 
 [tool.mypy]
 python_version = "3.9"
-warn_return_any = true
-warn_unused_configs = true
+strict = true
+
+# Exclude generated model files from strict checking
+[[tool.mypy.overrides]]
+module = "armodel.models.M2.*"
 disallow_untyped_defs = false
+disallow_untyped_calls = false
 
 [tool.ruff]
 line-length = 100

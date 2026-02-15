@@ -52,7 +52,19 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_027**: Tests must cover serialize/deserialize
 - **DESIGN_RULE_028**: Tests must verify builder functionality
 
-### 10. Code Quality
+### 10. Architecture
+- **DESIGN_RULE_032**: Use class-based architecture instead of module-based
+- **DESIGN_RULE_033**: All infrastructure modules (core, reader, writer, cfg) must use class-based design
+- **DESIGN_RULE_034**: Infrastructure classes should use dependency injection for testability
+- **DESIGN_RULE_035**: Singleton pattern should be used for shared state managers
+
+### 11. Infrastructure Classes
+- **DESIGN_RULE_036**: SchemaVersionManager manages schema version detection and configuration
+- **DESIGN_RULE_037**: ConfigurationManager provides configuration loading with caching
+- **DESIGN_RULE_038**: ARXMLReader handles ARXML file loading and mapping to objects
+- **DESIGN_RULE_039**: ARXMLWriter handles object serialization and ARXML file saving
+
+### 12. Code Quality
 - **DESIGN_RULE_029**: No hardcoded values (use config where appropriate)
 - **DESIGN_RULE_030**: Follow PEP 8 style guide
 - **DESIGN_RULE_031**: Maximum line length 100 characters

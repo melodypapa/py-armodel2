@@ -1,6 +1,8 @@
 """DiagnosticRequestEmissionRelatedDTCPermanentStatusClass AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -22,7 +24,9 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatusClass(ARObject):
         return element
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass":
+    def deserialize(
+        cls, element: ET.Element
+    ) -> "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass":
         """Create DiagnosticRequestEmissionRelatedDTCPermanentStatusClass from XML element.
 
         Args:
@@ -41,7 +45,9 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatusClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestEmissionRelatedDTCPermanentStatusClass = DiagnosticRequestEmissionRelatedDTCPermanentStatusClass()
+        self._obj: DiagnosticRequestEmissionRelatedDTCPermanentStatusClass = (
+            DiagnosticRequestEmissionRelatedDTCPermanentStatusClass()
+        )
 
     def build(self) -> DiagnosticRequestEmissionRelatedDTCPermanentStatusClass:
         """Build and return DiagnosticRequestEmissionRelatedDTCPermanentStatusClass object.

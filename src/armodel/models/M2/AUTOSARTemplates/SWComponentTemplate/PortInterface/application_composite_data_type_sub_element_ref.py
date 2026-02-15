@@ -1,6 +1,8 @@
 """ApplicationCompositeDataTypeSubElementRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class ApplicationCompositeDataTypeSubElementRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ApplicationCompositeDataTypeSubElementRef = ApplicationCompositeDataTypeSubElementRef()
+        self._obj: ApplicationCompositeDataTypeSubElementRef = (
+            ApplicationCompositeDataTypeSubElementRef()
+        )
 
     def build(self) -> ApplicationCompositeDataTypeSubElementRef:
         """Build and return ApplicationCompositeDataTypeSubElementRef object.

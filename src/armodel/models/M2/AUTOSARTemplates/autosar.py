@@ -1,6 +1,10 @@
 """AUTOSAR root element - singleton pattern."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from typing import Any
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -13,28 +17,28 @@ class AUTOSAR(ARObject):
 
     _instance = None
 
-    def __new__(cls):
+    def __new__(cls) -> "AUTOSAR":
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AUTOSAR singleton."""
         if hasattr(self, "_initialized"):
             return
         super().__init__()
         self._initialized = True
         # Splitable elements (top-level children)
-        self.ar_packages: list = []
-        self.administrative_data: list = []
+        self.ar_packages: list[Any] = []
+        self.administrative_data: list[Any] = []
 
-    def get_splitable_elements(self) -> list:
+    def get_splitable_elements(self) -> list[Any]:
         """Get all splitable child elements.
 
         Returns:
             List of splitable elements
         """
-        splitable = []
+        splitable: list[Any] = []
         for elem in self.ar_packages:
             if getattr(elem, "is_splitable", False):
                 splitable.append(elem)
@@ -52,3 +56,21 @@ class AUTOSAR(ARObject):
         # TODO: Serialize child elements
 
         return element
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AUTOSAR":
+        """Create AUTOSAR object from XML element.
+
+        Args:
+            element: XML element to deserialize
+
+        Returns:
+            AUTOSAR object instance
+        """
+        # Return singleton instance
+        autosar = cls()
+
+        # TODO: Parse child elements and populate AUTOSAR
+        # For now, just return the singleton
+
+        return autosar

@@ -1,5 +1,9 @@
 """Configuration for armodel package."""
 
-from armodel.cfg.schemas import load_schema_config
+from armodel.cfg.schemas import (
+    ConfigurationManager,
+)
 
-__all__ = ["load_schema_config"]
+__all__ = [
+    "ConfigurationManager",
+]

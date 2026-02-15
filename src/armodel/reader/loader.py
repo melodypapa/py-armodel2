@@ -5,7 +5,7 @@ from lxml import etree
 from typing import Union
 
 
-def load_arxml_file(filepath: Union[str, Path]) -> etree.Element:
+def load_arxml_file(filepath: Union[str, Path]) -> etree._Element:
     """Load ARXML file and return root element.
 
     Args:

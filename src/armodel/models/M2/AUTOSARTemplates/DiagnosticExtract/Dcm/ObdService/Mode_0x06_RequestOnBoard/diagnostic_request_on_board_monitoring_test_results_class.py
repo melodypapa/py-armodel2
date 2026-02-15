@@ -1,6 +1,8 @@
 """DiagnosticRequestOnBoardMonitoringTestResultsClass AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -22,7 +24,9 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClass(ARObject):
         return element
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestOnBoardMonitoringTestResultsClass":
+    def deserialize(
+        cls, element: ET.Element
+    ) -> "DiagnosticRequestOnBoardMonitoringTestResultsClass":
         """Create DiagnosticRequestOnBoardMonitoringTestResultsClass from XML element.
 
         Args:
@@ -41,7 +45,9 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = DiagnosticRequestOnBoardMonitoringTestResultsClass()
+        self._obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = (
+            DiagnosticRequestOnBoardMonitoringTestResultsClass()
+        )
 
     def build(self) -> DiagnosticRequestOnBoardMonitoringTestResultsClass:
         """Build and return DiagnosticRequestOnBoardMonitoringTestResultsClass object.

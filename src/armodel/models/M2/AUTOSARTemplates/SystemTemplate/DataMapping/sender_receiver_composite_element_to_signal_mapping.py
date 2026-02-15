@@ -1,6 +1,8 @@
 """SenderReceiverCompositeElementToSignalMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class SenderReceiverCompositeElementToSignalMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: SenderReceiverCompositeElementToSignalMapping = SenderReceiverCompositeElementToSignalMapping()
+        self._obj: SenderReceiverCompositeElementToSignalMapping = (
+            SenderReceiverCompositeElementToSignalMapping()
+        )
 
     def build(self) -> SenderReceiverCompositeElementToSignalMapping:
         """Build and return SenderReceiverCompositeElementToSignalMapping object.

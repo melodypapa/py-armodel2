@@ -1,6 +1,8 @@
 """DiagnosticReadScalingDataByIdentifierClass AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
+    ARObject,
+)
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +43,9 @@ class DiagnosticReadScalingDataByIdentifierClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticReadScalingDataByIdentifierClass = DiagnosticReadScalingDataByIdentifierClass()
+        self._obj: DiagnosticReadScalingDataByIdentifierClass = (
+            DiagnosticReadScalingDataByIdentifierClass()
+        )
 
     def build(self) -> DiagnosticReadScalingDataByIdentifierClass:
         """Build and return DiagnosticReadScalingDataByIdentifierClass object.
