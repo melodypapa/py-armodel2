@@ -1,9 +1,9 @@
 import pytest
 from pathlib import Path
 
-def test_load_arxml_file(tmp_path):
-    """Test loading ARXML file"""
-    from armodel.reader.loader import load_arxml_file
+def test_load_arxml_integration(tmp_path):
+    """Test full ARXML loading flow"""
+    from armodel.reader import load_arxml
 
     # Create test ARXML file
     arxml_content = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -19,8 +19,8 @@ def test_load_arxml_file(tmp_path):
     test_file.write_text(arxml_content)
 
     # Load file
-    root = load_arxml_file(test_file)
+    autosar = load_arxml(test_file)
 
-    assert root is not None
-    # Check local name (ignore namespace)
-    assert root.tag.split("}")[-1] == "AUTOSAR"
+    # Verify
+    from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+    assert isinstance(autosar, AUTOSAR)
