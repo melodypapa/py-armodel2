@@ -1,29 +1,28 @@
 """SubElementRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SubElementRef(ARObject):
     """AUTOSAR SubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SubElementRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SubElementRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SUBELEMENTREF")
+        element = ET.Element("SUBELEMENTREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SubElementRef":
+    def deserialize(cls, element: ET.Element) -> "SubElementRef":
         """Create SubElementRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SubElementRef(ARObject):
         Returns:
             SubElementRef instance
         """
-        obj = cls()
+        obj: SubElementRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SubElementRef(ARObject):
 class SubElementRefBuilder:
     """Builder for SubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SubElementRef()
+        self._obj: SubElementRef = SubElementRef()
 
     def build(self) -> SubElementRef:
         """Build and return SubElementRef object.

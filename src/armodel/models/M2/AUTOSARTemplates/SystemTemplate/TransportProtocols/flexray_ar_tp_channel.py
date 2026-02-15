@@ -1,29 +1,28 @@
 """FlexrayArTpChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayArTpChannel(ARObject):
     """AUTOSAR FlexrayArTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayArTpChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayArTpChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYARTPCHANNEL")
+        element = ET.Element("FLEXRAYARTPCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayArTpChannel":
+    def deserialize(cls, element: ET.Element) -> "FlexrayArTpChannel":
         """Create FlexrayArTpChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayArTpChannel(ARObject):
         Returns:
             FlexrayArTpChannel instance
         """
-        obj = cls()
+        obj: FlexrayArTpChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayArTpChannel(ARObject):
 class FlexrayArTpChannelBuilder:
     """Builder for FlexrayArTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayArTpChannel()
+        self._obj: FlexrayArTpChannel = FlexrayArTpChannel()
 
     def build(self) -> FlexrayArTpChannel:
         """Build and return FlexrayArTpChannel object.

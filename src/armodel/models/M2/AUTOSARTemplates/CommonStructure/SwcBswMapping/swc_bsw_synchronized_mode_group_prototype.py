@@ -1,29 +1,28 @@
 """SwcBswSynchronizedModeGroupPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcBswSynchronizedModeGroupPrototype(ARObject):
     """AUTOSAR SwcBswSynchronizedModeGroupPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcBswSynchronizedModeGroupPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcBswSynchronizedModeGroupPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCBSWSYNCHRONIZEDMODEGROUPPROTOTYPE")
+        element = ET.Element("SWCBSWSYNCHRONIZEDMODEGROUPPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcBswSynchronizedModeGroupPrototype":
+    def deserialize(cls, element: ET.Element) -> "SwcBswSynchronizedModeGroupPrototype":
         """Create SwcBswSynchronizedModeGroupPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         Returns:
             SwcBswSynchronizedModeGroupPrototype instance
         """
-        obj = cls()
+        obj: SwcBswSynchronizedModeGroupPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
 class SwcBswSynchronizedModeGroupPrototypeBuilder:
     """Builder for SwcBswSynchronizedModeGroupPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcBswSynchronizedModeGroupPrototype()
+        self._obj: SwcBswSynchronizedModeGroupPrototype = SwcBswSynchronizedModeGroupPrototype()
 
     def build(self) -> SwcBswSynchronizedModeGroupPrototype:
         """Build and return SwcBswSynchronizedModeGroupPrototype object.

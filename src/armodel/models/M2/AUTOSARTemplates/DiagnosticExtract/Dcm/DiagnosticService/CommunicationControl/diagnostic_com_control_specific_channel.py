@@ -1,29 +1,28 @@
 """DiagnosticComControlSpecificChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticComControlSpecificChannel(ARObject):
     """AUTOSAR DiagnosticComControlSpecificChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticComControlSpecificChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticComControlSpecificChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCOMCONTROLSPECIFICCHANNEL")
+        element = ET.Element("DIAGNOSTICCOMCONTROLSPECIFICCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticComControlSpecificChannel":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSpecificChannel":
         """Create DiagnosticComControlSpecificChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticComControlSpecificChannel(ARObject):
         Returns:
             DiagnosticComControlSpecificChannel instance
         """
-        obj = cls()
+        obj: DiagnosticComControlSpecificChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticComControlSpecificChannel(ARObject):
 class DiagnosticComControlSpecificChannelBuilder:
     """Builder for DiagnosticComControlSpecificChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticComControlSpecificChannel()
+        self._obj: DiagnosticComControlSpecificChannel = DiagnosticComControlSpecificChannel()
 
     def build(self) -> DiagnosticComControlSpecificChannel:
         """Build and return DiagnosticComControlSpecificChannel object.

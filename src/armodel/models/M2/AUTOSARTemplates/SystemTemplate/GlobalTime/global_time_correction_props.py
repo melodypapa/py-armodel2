@@ -1,29 +1,28 @@
 """GlobalTimeCorrectionProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeCorrectionProps(ARObject):
     """AUTOSAR GlobalTimeCorrectionProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeCorrectionProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeCorrectionProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMECORRECTIONPROPS")
+        element = ET.Element("GLOBALTIMECORRECTIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeCorrectionProps":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeCorrectionProps":
         """Create GlobalTimeCorrectionProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeCorrectionProps(ARObject):
         Returns:
             GlobalTimeCorrectionProps instance
         """
-        obj = cls()
+        obj: GlobalTimeCorrectionProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeCorrectionProps(ARObject):
 class GlobalTimeCorrectionPropsBuilder:
     """Builder for GlobalTimeCorrectionProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeCorrectionProps()
+        self._obj: GlobalTimeCorrectionProps = GlobalTimeCorrectionProps()
 
     def build(self) -> GlobalTimeCorrectionProps:
         """Build and return GlobalTimeCorrectionProps object.

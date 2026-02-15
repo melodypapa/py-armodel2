@@ -1,29 +1,28 @@
 """BinaryManifestResourceDefinition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BinaryManifestResourceDefinition(ARObject):
     """AUTOSAR BinaryManifestResourceDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BinaryManifestResourceDefinition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BINARYMANIFESTRESOURCEDEFINITION")
+        element = ET.Element("BINARYMANIFESTRESOURCEDEFINITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BinaryManifestResourceDefinition":
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestResourceDefinition":
         """Create BinaryManifestResourceDefinition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BinaryManifestResourceDefinition(ARObject):
         Returns:
             BinaryManifestResourceDefinition instance
         """
-        obj = cls()
+        obj: BinaryManifestResourceDefinition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BinaryManifestResourceDefinition(ARObject):
 class BinaryManifestResourceDefinitionBuilder:
     """Builder for BinaryManifestResourceDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BinaryManifestResourceDefinition()
+        self._obj: BinaryManifestResourceDefinition = BinaryManifestResourceDefinition()
 
     def build(self) -> BinaryManifestResourceDefinition:
         """Build and return BinaryManifestResourceDefinition object.

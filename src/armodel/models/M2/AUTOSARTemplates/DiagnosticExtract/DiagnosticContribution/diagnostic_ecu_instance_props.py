@@ -1,29 +1,28 @@
 """DiagnosticEcuInstanceProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEcuInstanceProps(ARObject):
     """AUTOSAR DiagnosticEcuInstanceProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEcuInstanceProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEcuInstanceProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICECUINSTANCEPROPS")
+        element = ET.Element("DIAGNOSTICECUINSTANCEPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEcuInstanceProps":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuInstanceProps":
         """Create DiagnosticEcuInstanceProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEcuInstanceProps(ARObject):
         Returns:
             DiagnosticEcuInstanceProps instance
         """
-        obj = cls()
+        obj: DiagnosticEcuInstanceProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEcuInstanceProps(ARObject):
 class DiagnosticEcuInstancePropsBuilder:
     """Builder for DiagnosticEcuInstanceProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEcuInstanceProps()
+        self._obj: DiagnosticEcuInstanceProps = DiagnosticEcuInstanceProps()
 
     def build(self) -> DiagnosticEcuInstanceProps:
         """Build and return DiagnosticEcuInstanceProps object.

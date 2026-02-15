@@ -1,29 +1,28 @@
 """BaseTypeDirectDefinition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BaseTypeDirectDefinition(ARObject):
     """AUTOSAR BaseTypeDirectDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BaseTypeDirectDefinition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BaseTypeDirectDefinition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BASETYPEDIRECTDEFINITION")
+        element = ET.Element("BASETYPEDIRECTDEFINITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BaseTypeDirectDefinition":
+    def deserialize(cls, element: ET.Element) -> "BaseTypeDirectDefinition":
         """Create BaseTypeDirectDefinition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BaseTypeDirectDefinition(ARObject):
         Returns:
             BaseTypeDirectDefinition instance
         """
-        obj = cls()
+        obj: BaseTypeDirectDefinition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BaseTypeDirectDefinition(ARObject):
 class BaseTypeDirectDefinitionBuilder:
     """Builder for BaseTypeDirectDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BaseTypeDirectDefinition()
+        self._obj: BaseTypeDirectDefinition = BaseTypeDirectDefinition()
 
     def build(self) -> BaseTypeDirectDefinition:
         """Build and return BaseTypeDirectDefinition object.

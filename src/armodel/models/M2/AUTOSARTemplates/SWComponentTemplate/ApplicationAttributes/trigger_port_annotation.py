@@ -1,29 +1,28 @@
 """TriggerPortAnnotation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TriggerPortAnnotation(ARObject):
     """AUTOSAR TriggerPortAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TriggerPortAnnotation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TriggerPortAnnotation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRIGGERPORTANNOTATION")
+        element = ET.Element("TRIGGERPORTANNOTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TriggerPortAnnotation":
+    def deserialize(cls, element: ET.Element) -> "TriggerPortAnnotation":
         """Create TriggerPortAnnotation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TriggerPortAnnotation(ARObject):
         Returns:
             TriggerPortAnnotation instance
         """
-        obj = cls()
+        obj: TriggerPortAnnotation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TriggerPortAnnotation(ARObject):
 class TriggerPortAnnotationBuilder:
     """Builder for TriggerPortAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TriggerPortAnnotation()
+        self._obj: TriggerPortAnnotation = TriggerPortAnnotation()
 
     def build(self) -> TriggerPortAnnotation:
         """Build and return TriggerPortAnnotation object.

@@ -1,29 +1,28 @@
 """BswInternalBehavior AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswInternalBehavior(ARObject):
     """AUTOSAR BswInternalBehavior."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswInternalBehavior to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWINTERNALBEHAVIOR")
+        element = ET.Element("BSWINTERNALBEHAVIOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswInternalBehavior":
+    def deserialize(cls, element: ET.Element) -> "BswInternalBehavior":
         """Create BswInternalBehavior from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswInternalBehavior(ARObject):
         Returns:
             BswInternalBehavior instance
         """
-        obj = cls()
+        obj: BswInternalBehavior = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswInternalBehavior(ARObject):
 class BswInternalBehaviorBuilder:
     """Builder for BswInternalBehavior."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswInternalBehavior()
+        self._obj: BswInternalBehavior = BswInternalBehavior()
 
     def build(self) -> BswInternalBehavior:
         """Build and return BswInternalBehavior object.

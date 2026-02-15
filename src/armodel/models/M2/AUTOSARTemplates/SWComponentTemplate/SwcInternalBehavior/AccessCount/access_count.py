@@ -1,29 +1,28 @@
 """AccessCount AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AccessCount(ARObject):
     """AUTOSAR AccessCount."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AccessCount."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AccessCount to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ACCESSCOUNT")
+        element = ET.Element("ACCESSCOUNT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AccessCount":
+    def deserialize(cls, element: ET.Element) -> "AccessCount":
         """Create AccessCount from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AccessCount(ARObject):
         Returns:
             AccessCount instance
         """
-        obj = cls()
+        obj: AccessCount = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AccessCount(ARObject):
 class AccessCountBuilder:
     """Builder for AccessCount."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AccessCount()
+        self._obj: AccessCount = AccessCount()
 
     def build(self) -> AccessCount:
         """Build and return AccessCount object.

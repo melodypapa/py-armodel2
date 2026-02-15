@@ -1,29 +1,28 @@
 """CompuScaleConstantContents AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompuScaleConstantContents(ARObject):
     """AUTOSAR CompuScaleConstantContents."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompuScaleConstantContents to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPUSCALECONSTANTCONTENTS")
+        element = ET.Element("COMPUSCALECONSTANTCONTENTS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompuScaleConstantContents":
+    def deserialize(cls, element: ET.Element) -> "CompuScaleConstantContents":
         """Create CompuScaleConstantContents from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompuScaleConstantContents(ARObject):
         Returns:
             CompuScaleConstantContents instance
         """
-        obj = cls()
+        obj: CompuScaleConstantContents = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompuScaleConstantContents(ARObject):
 class CompuScaleConstantContentsBuilder:
     """Builder for CompuScaleConstantContents."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompuScaleConstantContents()
+        self._obj: CompuScaleConstantContents = CompuScaleConstantContents()
 
     def build(self) -> CompuScaleConstantContents:
         """Build and return CompuScaleConstantContents object.

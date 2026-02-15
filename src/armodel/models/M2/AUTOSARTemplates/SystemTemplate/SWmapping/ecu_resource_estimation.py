@@ -1,29 +1,28 @@
 """EcuResourceEstimation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcuResourceEstimation(ARObject):
     """AUTOSAR EcuResourceEstimation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcuResourceEstimation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECURESOURCEESTIMATION")
+        element = ET.Element("ECURESOURCEESTIMATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcuResourceEstimation":
+    def deserialize(cls, element: ET.Element) -> "EcuResourceEstimation":
         """Create EcuResourceEstimation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcuResourceEstimation(ARObject):
         Returns:
             EcuResourceEstimation instance
         """
-        obj = cls()
+        obj: EcuResourceEstimation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcuResourceEstimation(ARObject):
 class EcuResourceEstimationBuilder:
     """Builder for EcuResourceEstimation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcuResourceEstimation()
+        self._obj: EcuResourceEstimation = EcuResourceEstimation()
 
     def build(self) -> EcuResourceEstimation:
         """Build and return EcuResourceEstimation object.

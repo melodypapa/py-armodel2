@@ -1,29 +1,28 @@
 """AutosarParameterRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AutosarParameterRef(ARObject):
     """AUTOSAR AutosarParameterRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AutosarParameterRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AUTOSARPARAMETERREF")
+        element = ET.Element("AUTOSARPARAMETERREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AutosarParameterRef":
+    def deserialize(cls, element: ET.Element) -> "AutosarParameterRef":
         """Create AutosarParameterRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AutosarParameterRef(ARObject):
         Returns:
             AutosarParameterRef instance
         """
-        obj = cls()
+        obj: AutosarParameterRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AutosarParameterRef(ARObject):
 class AutosarParameterRefBuilder:
     """Builder for AutosarParameterRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AutosarParameterRef()
+        self._obj: AutosarParameterRef = AutosarParameterRef()
 
     def build(self) -> AutosarParameterRef:
         """Build and return AutosarParameterRef object.

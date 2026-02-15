@@ -1,29 +1,28 @@
 """DhcpServerConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DhcpServerConfiguration(ARObject):
     """AUTOSAR DhcpServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DhcpServerConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DhcpServerConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DHCPSERVERCONFIGURATION")
+        element = ET.Element("DHCPSERVERCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DhcpServerConfiguration":
+    def deserialize(cls, element: ET.Element) -> "DhcpServerConfiguration":
         """Create DhcpServerConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DhcpServerConfiguration(ARObject):
         Returns:
             DhcpServerConfiguration instance
         """
-        obj = cls()
+        obj: DhcpServerConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DhcpServerConfiguration(ARObject):
 class DhcpServerConfigurationBuilder:
     """Builder for DhcpServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DhcpServerConfiguration()
+        self._obj: DhcpServerConfiguration = DhcpServerConfiguration()
 
     def build(self) -> DhcpServerConfiguration:
         """Build and return DhcpServerConfiguration object.

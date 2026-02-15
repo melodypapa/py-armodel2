@@ -1,29 +1,28 @@
 """OperationInAtomicSwcInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class OperationInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR OperationInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize OperationInAtomicSwcInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert OperationInAtomicSwcInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("OPERATIONINATOMICSWCINSTANCEREF")
+        element = ET.Element("OPERATIONINATOMICSWCINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "OperationInAtomicSwcInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "OperationInAtomicSwcInstanceRef":
         """Create OperationInAtomicSwcInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class OperationInAtomicSwcInstanceRef(ARObject):
         Returns:
             OperationInAtomicSwcInstanceRef instance
         """
-        obj = cls()
+        obj: OperationInAtomicSwcInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class OperationInAtomicSwcInstanceRef(ARObject):
 class OperationInAtomicSwcInstanceRefBuilder:
     """Builder for OperationInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = OperationInAtomicSwcInstanceRef()
+        self._obj: OperationInAtomicSwcInstanceRef = OperationInAtomicSwcInstanceRef()
 
     def build(self) -> OperationInAtomicSwcInstanceRef:
         """Build and return OperationInAtomicSwcInstanceRef object.

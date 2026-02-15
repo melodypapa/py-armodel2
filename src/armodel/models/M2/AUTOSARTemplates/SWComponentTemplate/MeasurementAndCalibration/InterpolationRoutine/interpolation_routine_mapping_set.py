@@ -1,29 +1,28 @@
 """InterpolationRoutineMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InterpolationRoutineMappingSet(ARObject):
     """AUTOSAR InterpolationRoutineMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InterpolationRoutineMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InterpolationRoutineMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INTERPOLATIONROUTINEMAPPINGSET")
+        element = ET.Element("INTERPOLATIONROUTINEMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InterpolationRoutineMappingSet":
+    def deserialize(cls, element: ET.Element) -> "InterpolationRoutineMappingSet":
         """Create InterpolationRoutineMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InterpolationRoutineMappingSet(ARObject):
         Returns:
             InterpolationRoutineMappingSet instance
         """
-        obj = cls()
+        obj: InterpolationRoutineMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InterpolationRoutineMappingSet(ARObject):
 class InterpolationRoutineMappingSetBuilder:
     """Builder for InterpolationRoutineMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InterpolationRoutineMappingSet()
+        self._obj: InterpolationRoutineMappingSet = InterpolationRoutineMappingSet()
 
     def build(self) -> InterpolationRoutineMappingSet:
         """Build and return InterpolationRoutineMappingSet object.

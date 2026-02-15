@@ -1,29 +1,28 @@
 """MacSecCipherSuiteConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MacSecCipherSuiteConfig(ARObject):
     """AUTOSAR MacSecCipherSuiteConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MacSecCipherSuiteConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MACSECCIPHERSUITECONFIG")
+        element = ET.Element("MACSECCIPHERSUITECONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MacSecCipherSuiteConfig":
+    def deserialize(cls, element: ET.Element) -> "MacSecCipherSuiteConfig":
         """Create MacSecCipherSuiteConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MacSecCipherSuiteConfig(ARObject):
         Returns:
             MacSecCipherSuiteConfig instance
         """
-        obj = cls()
+        obj: MacSecCipherSuiteConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MacSecCipherSuiteConfig(ARObject):
 class MacSecCipherSuiteConfigBuilder:
     """Builder for MacSecCipherSuiteConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MacSecCipherSuiteConfig()
+        self._obj: MacSecCipherSuiteConfig = MacSecCipherSuiteConfig()
 
     def build(self) -> MacSecCipherSuiteConfig:
         """Build and return MacSecCipherSuiteConfig object.

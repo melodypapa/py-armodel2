@@ -1,29 +1,28 @@
 """BuildActionInvocator AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BuildActionInvocator(ARObject):
     """AUTOSAR BuildActionInvocator."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BuildActionInvocator."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BuildActionInvocator to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUILDACTIONINVOCATOR")
+        element = ET.Element("BUILDACTIONINVOCATOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BuildActionInvocator":
+    def deserialize(cls, element: ET.Element) -> "BuildActionInvocator":
         """Create BuildActionInvocator from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BuildActionInvocator(ARObject):
         Returns:
             BuildActionInvocator instance
         """
-        obj = cls()
+        obj: BuildActionInvocator = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BuildActionInvocator(ARObject):
 class BuildActionInvocatorBuilder:
     """Builder for BuildActionInvocator."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BuildActionInvocator()
+        self._obj: BuildActionInvocator = BuildActionInvocator()
 
     def build(self) -> BuildActionInvocator:
         """Build and return BuildActionInvocator object.

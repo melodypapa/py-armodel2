@@ -1,29 +1,28 @@
 """ConcreteClassTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConcreteClassTailoring(ARObject):
     """AUTOSAR ConcreteClassTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConcreteClassTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONCRETECLASSTAILORING")
+        element = ET.Element("CONCRETECLASSTAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConcreteClassTailoring":
+    def deserialize(cls, element: ET.Element) -> "ConcreteClassTailoring":
         """Create ConcreteClassTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConcreteClassTailoring(ARObject):
         Returns:
             ConcreteClassTailoring instance
         """
-        obj = cls()
+        obj: ConcreteClassTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConcreteClassTailoring(ARObject):
 class ConcreteClassTailoringBuilder:
     """Builder for ConcreteClassTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConcreteClassTailoring()
+        self._obj: ConcreteClassTailoring = ConcreteClassTailoring()
 
     def build(self) -> ConcreteClassTailoring:
         """Build and return ConcreteClassTailoring object.

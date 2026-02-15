@@ -1,29 +1,28 @@
 """SwcModeSwitchEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcModeSwitchEvent(ARObject):
     """AUTOSAR SwcModeSwitchEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcModeSwitchEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcModeSwitchEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCMODESWITCHEVENT")
+        element = ET.Element("SWCMODESWITCHEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcModeSwitchEvent":
+    def deserialize(cls, element: ET.Element) -> "SwcModeSwitchEvent":
         """Create SwcModeSwitchEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcModeSwitchEvent(ARObject):
         Returns:
             SwcModeSwitchEvent instance
         """
-        obj = cls()
+        obj: SwcModeSwitchEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcModeSwitchEvent(ARObject):
 class SwcModeSwitchEventBuilder:
     """Builder for SwcModeSwitchEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcModeSwitchEvent()
+        self._obj: SwcModeSwitchEvent = SwcModeSwitchEvent()
 
     def build(self) -> SwcModeSwitchEvent:
         """Build and return SwcModeSwitchEvent object.

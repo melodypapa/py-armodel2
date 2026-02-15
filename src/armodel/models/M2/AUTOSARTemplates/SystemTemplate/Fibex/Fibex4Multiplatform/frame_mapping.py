@@ -1,29 +1,28 @@
 """FrameMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FrameMapping(ARObject):
     """AUTOSAR FrameMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FrameMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FRAMEMAPPING")
+        element = ET.Element("FRAMEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FrameMapping":
+    def deserialize(cls, element: ET.Element) -> "FrameMapping":
         """Create FrameMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FrameMapping(ARObject):
         Returns:
             FrameMapping instance
         """
-        obj = cls()
+        obj: FrameMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FrameMapping(ARObject):
 class FrameMappingBuilder:
     """Builder for FrameMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FrameMapping()
+        self._obj: FrameMapping = FrameMapping()
 
     def build(self) -> FrameMapping:
         """Build and return FrameMapping object.

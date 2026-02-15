@@ -1,29 +1,28 @@
 """DiagnosticRequestPowertrainFreezeFrameDataClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestPowertrainFreezeFrameDataClass(ARObject):
     """AUTOSAR DiagnosticRequestPowertrainFreezeFrameDataClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameDataClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestPowertrainFreezeFrameDataClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTPOWERTRAINFREEZEFRAMEDATACLASS")
+        element = ET.Element("DIAGNOSTICREQUESTPOWERTRAINFREEZEFRAMEDATACLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestPowertrainFreezeFrameDataClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestPowertrainFreezeFrameDataClass":
         """Create DiagnosticRequestPowertrainFreezeFrameDataClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestPowertrainFreezeFrameDataClass(ARObject):
         Returns:
             DiagnosticRequestPowertrainFreezeFrameDataClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestPowertrainFreezeFrameDataClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestPowertrainFreezeFrameDataClass(ARObject):
 class DiagnosticRequestPowertrainFreezeFrameDataClassBuilder:
     """Builder for DiagnosticRequestPowertrainFreezeFrameDataClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestPowertrainFreezeFrameDataClass()
+        self._obj: DiagnosticRequestPowertrainFreezeFrameDataClass = DiagnosticRequestPowertrainFreezeFrameDataClass()
 
     def build(self) -> DiagnosticRequestPowertrainFreezeFrameDataClass:
         """Build and return DiagnosticRequestPowertrainFreezeFrameDataClass object.

@@ -1,29 +1,28 @@
 """EvaluatedVariantSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EvaluatedVariantSet(ARObject):
     """AUTOSAR EvaluatedVariantSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EvaluatedVariantSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EvaluatedVariantSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EVALUATEDVARIANTSET")
+        element = ET.Element("EVALUATEDVARIANTSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EvaluatedVariantSet":
+    def deserialize(cls, element: ET.Element) -> "EvaluatedVariantSet":
         """Create EvaluatedVariantSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EvaluatedVariantSet(ARObject):
         Returns:
             EvaluatedVariantSet instance
         """
-        obj = cls()
+        obj: EvaluatedVariantSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EvaluatedVariantSet(ARObject):
 class EvaluatedVariantSetBuilder:
     """Builder for EvaluatedVariantSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EvaluatedVariantSet()
+        self._obj: EvaluatedVariantSet = EvaluatedVariantSet()
 
     def build(self) -> EvaluatedVariantSet:
         """Build and return EvaluatedVariantSet object.

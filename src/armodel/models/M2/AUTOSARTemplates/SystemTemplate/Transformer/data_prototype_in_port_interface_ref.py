@@ -1,29 +1,28 @@
 """DataPrototypeInPortInterfaceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeInPortInterfaceRef(ARObject):
     """AUTOSAR DataPrototypeInPortInterfaceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeInPortInterfaceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPEINPORTINTERFACEREF")
+        element = ET.Element("DATAPROTOTYPEINPORTINTERFACEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeInPortInterfaceRef":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInPortInterfaceRef":
         """Create DataPrototypeInPortInterfaceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeInPortInterfaceRef(ARObject):
         Returns:
             DataPrototypeInPortInterfaceRef instance
         """
-        obj = cls()
+        obj: DataPrototypeInPortInterfaceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeInPortInterfaceRef(ARObject):
 class DataPrototypeInPortInterfaceRefBuilder:
     """Builder for DataPrototypeInPortInterfaceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeInPortInterfaceRef()
+        self._obj: DataPrototypeInPortInterfaceRef = DataPrototypeInPortInterfaceRef()
 
     def build(self) -> DataPrototypeInPortInterfaceRef:
         """Build and return DataPrototypeInPortInterfaceRef object.

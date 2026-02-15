@@ -1,29 +1,28 @@
 """DiagnosticEnvDataElementCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEnvDataElementCondition(ARObject):
     """AUTOSAR DiagnosticEnvDataElementCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEnvDataElementCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEnvDataElementCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICENVDATAELEMENTCONDITION")
+        element = ET.Element("DIAGNOSTICENVDATAELEMENTCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEnvDataElementCondition":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvDataElementCondition":
         """Create DiagnosticEnvDataElementCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEnvDataElementCondition(ARObject):
         Returns:
             DiagnosticEnvDataElementCondition instance
         """
-        obj = cls()
+        obj: DiagnosticEnvDataElementCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEnvDataElementCondition(ARObject):
 class DiagnosticEnvDataElementConditionBuilder:
     """Builder for DiagnosticEnvDataElementCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEnvDataElementCondition()
+        self._obj: DiagnosticEnvDataElementCondition = DiagnosticEnvDataElementCondition()
 
     def build(self) -> DiagnosticEnvDataElementCondition:
         """Build and return DiagnosticEnvDataElementCondition object.

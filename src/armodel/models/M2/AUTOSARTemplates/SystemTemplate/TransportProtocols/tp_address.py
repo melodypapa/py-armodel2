@@ -1,29 +1,28 @@
 """TpAddress AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TpAddress(ARObject):
     """AUTOSAR TpAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TpAddress."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TpAddress to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TPADDRESS")
+        element = ET.Element("TPADDRESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TpAddress":
+    def deserialize(cls, element: ET.Element) -> "TpAddress":
         """Create TpAddress from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TpAddress(ARObject):
         Returns:
             TpAddress instance
         """
-        obj = cls()
+        obj: TpAddress = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TpAddress(ARObject):
 class TpAddressBuilder:
     """Builder for TpAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TpAddress()
+        self._obj: TpAddress = TpAddress()
 
     def build(self) -> TpAddress:
         """Build and return TpAddress object.

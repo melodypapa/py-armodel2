@@ -1,29 +1,28 @@
 """IndexedArrayElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IndexedArrayElement(ARObject):
     """AUTOSAR IndexedArrayElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IndexedArrayElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IndexedArrayElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INDEXEDARRAYELEMENT")
+        element = ET.Element("INDEXEDARRAYELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IndexedArrayElement":
+    def deserialize(cls, element: ET.Element) -> "IndexedArrayElement":
         """Create IndexedArrayElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IndexedArrayElement(ARObject):
         Returns:
             IndexedArrayElement instance
         """
-        obj = cls()
+        obj: IndexedArrayElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IndexedArrayElement(ARObject):
 class IndexedArrayElementBuilder:
     """Builder for IndexedArrayElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IndexedArrayElement()
+        self._obj: IndexedArrayElement = IndexedArrayElement()
 
     def build(self) -> IndexedArrayElement:
         """Build and return IndexedArrayElement object.

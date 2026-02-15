@@ -1,29 +1,28 @@
 """NumericalValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NumericalValueSpecification(ARObject):
     """AUTOSAR NumericalValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NumericalValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NumericalValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NUMERICALVALUESPECIFICATION")
+        element = ET.Element("NUMERICALVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NumericalValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "NumericalValueSpecification":
         """Create NumericalValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NumericalValueSpecification(ARObject):
         Returns:
             NumericalValueSpecification instance
         """
-        obj = cls()
+        obj: NumericalValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NumericalValueSpecification(ARObject):
 class NumericalValueSpecificationBuilder:
     """Builder for NumericalValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NumericalValueSpecification()
+        self._obj: NumericalValueSpecification = NumericalValueSpecification()
 
     def build(self) -> NumericalValueSpecification:
         """Build and return NumericalValueSpecification object.

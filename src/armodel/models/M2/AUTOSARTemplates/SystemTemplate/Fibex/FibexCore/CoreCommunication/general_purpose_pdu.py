@@ -1,29 +1,28 @@
 """GeneralPurposePdu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GeneralPurposePdu(ARObject):
     """AUTOSAR GeneralPurposePdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GeneralPurposePdu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GeneralPurposePdu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GENERALPURPOSEPDU")
+        element = ET.Element("GENERALPURPOSEPDU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GeneralPurposePdu":
+    def deserialize(cls, element: ET.Element) -> "GeneralPurposePdu":
         """Create GeneralPurposePdu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GeneralPurposePdu(ARObject):
         Returns:
             GeneralPurposePdu instance
         """
-        obj = cls()
+        obj: GeneralPurposePdu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GeneralPurposePdu(ARObject):
 class GeneralPurposePduBuilder:
     """Builder for GeneralPurposePdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GeneralPurposePdu()
+        self._obj: GeneralPurposePdu = GeneralPurposePdu()
 
     def build(self) -> GeneralPurposePdu:
         """Build and return GeneralPurposePdu object.

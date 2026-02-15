@@ -1,29 +1,28 @@
 """PerInstanceMemory AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PerInstanceMemory(ARObject):
     """AUTOSAR PerInstanceMemory."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PerInstanceMemory."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PerInstanceMemory to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PERINSTANCEMEMORY")
+        element = ET.Element("PERINSTANCEMEMORY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PerInstanceMemory":
+    def deserialize(cls, element: ET.Element) -> "PerInstanceMemory":
         """Create PerInstanceMemory from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PerInstanceMemory(ARObject):
         Returns:
             PerInstanceMemory instance
         """
-        obj = cls()
+        obj: PerInstanceMemory = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PerInstanceMemory(ARObject):
 class PerInstanceMemoryBuilder:
     """Builder for PerInstanceMemory."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PerInstanceMemory()
+        self._obj: PerInstanceMemory = PerInstanceMemory()
 
     def build(self) -> PerInstanceMemory:
         """Build and return PerInstanceMemory object.

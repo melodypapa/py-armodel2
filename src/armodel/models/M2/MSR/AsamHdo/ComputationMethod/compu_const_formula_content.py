@@ -1,29 +1,28 @@
 """CompuConstFormulaContent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompuConstFormulaContent(ARObject):
     """AUTOSAR CompuConstFormulaContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompuConstFormulaContent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompuConstFormulaContent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPUCONSTFORMULACONTENT")
+        element = ET.Element("COMPUCONSTFORMULACONTENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompuConstFormulaContent":
+    def deserialize(cls, element: ET.Element) -> "CompuConstFormulaContent":
         """Create CompuConstFormulaContent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompuConstFormulaContent(ARObject):
         Returns:
             CompuConstFormulaContent instance
         """
-        obj = cls()
+        obj: CompuConstFormulaContent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompuConstFormulaContent(ARObject):
 class CompuConstFormulaContentBuilder:
     """Builder for CompuConstFormulaContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompuConstFormulaContent()
+        self._obj: CompuConstFormulaContent = CompuConstFormulaContent()
 
     def build(self) -> CompuConstFormulaContent:
         """Build and return CompuConstFormulaContent object.

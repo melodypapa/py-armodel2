@@ -1,29 +1,28 @@
 """DdsResourceLimits AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsResourceLimits(ARObject):
     """AUTOSAR DdsResourceLimits."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsResourceLimits."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsResourceLimits to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSRESOURCELIMITS")
+        element = ET.Element("DDSRESOURCELIMITS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsResourceLimits":
+    def deserialize(cls, element: ET.Element) -> "DdsResourceLimits":
         """Create DdsResourceLimits from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsResourceLimits(ARObject):
         Returns:
             DdsResourceLimits instance
         """
-        obj = cls()
+        obj: DdsResourceLimits = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsResourceLimits(ARObject):
 class DdsResourceLimitsBuilder:
     """Builder for DdsResourceLimits."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsResourceLimits()
+        self._obj: DdsResourceLimits = DdsResourceLimits()
 
     def build(self) -> DdsResourceLimits:
         """Build and return DdsResourceLimits object.

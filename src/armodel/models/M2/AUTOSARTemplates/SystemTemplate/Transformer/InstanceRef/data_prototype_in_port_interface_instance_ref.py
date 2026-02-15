@@ -1,29 +1,28 @@
 """DataPrototypeInPortInterfaceInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeInPortInterfaceInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInPortInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeInPortInterfaceInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPEINPORTINTERFACEINSTANCEREF")
+        element = ET.Element("DATAPROTOTYPEINPORTINTERFACEINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeInPortInterfaceInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInPortInterfaceInstanceRef":
         """Create DataPrototypeInPortInterfaceInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject):
         Returns:
             DataPrototypeInPortInterfaceInstanceRef instance
         """
-        obj = cls()
+        obj: DataPrototypeInPortInterfaceInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject):
 class DataPrototypeInPortInterfaceInstanceRefBuilder:
     """Builder for DataPrototypeInPortInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeInPortInterfaceInstanceRef()
+        self._obj: DataPrototypeInPortInterfaceInstanceRef = DataPrototypeInPortInterfaceInstanceRef()
 
     def build(self) -> DataPrototypeInPortInterfaceInstanceRef:
         """Build and return DataPrototypeInPortInterfaceInstanceRef object.

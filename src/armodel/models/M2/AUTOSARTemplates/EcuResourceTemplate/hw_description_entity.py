@@ -1,29 +1,28 @@
 """HwDescriptionEntity AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwDescriptionEntity(ARObject):
     """AUTOSAR HwDescriptionEntity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwDescriptionEntity to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWDESCRIPTIONENTITY")
+        element = ET.Element("HWDESCRIPTIONENTITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwDescriptionEntity":
+    def deserialize(cls, element: ET.Element) -> "HwDescriptionEntity":
         """Create HwDescriptionEntity from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwDescriptionEntity(ARObject):
         Returns:
             HwDescriptionEntity instance
         """
-        obj = cls()
+        obj: HwDescriptionEntity = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwDescriptionEntity(ARObject):
 class HwDescriptionEntityBuilder:
     """Builder for HwDescriptionEntity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwDescriptionEntity()
+        self._obj: HwDescriptionEntity = HwDescriptionEntity()
 
     def build(self) -> HwDescriptionEntity:
         """Build and return HwDescriptionEntity object.

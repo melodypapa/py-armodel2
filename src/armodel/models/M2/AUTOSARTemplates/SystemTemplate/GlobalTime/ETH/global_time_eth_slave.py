@@ -1,29 +1,28 @@
 """GlobalTimeEthSlave AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeEthSlave(ARObject):
     """AUTOSAR GlobalTimeEthSlave."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeEthSlave."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeEthSlave to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMEETHSLAVE")
+        element = ET.Element("GLOBALTIMEETHSLAVE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeEthSlave":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeEthSlave":
         """Create GlobalTimeEthSlave from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeEthSlave(ARObject):
         Returns:
             GlobalTimeEthSlave instance
         """
-        obj = cls()
+        obj: GlobalTimeEthSlave = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeEthSlave(ARObject):
 class GlobalTimeEthSlaveBuilder:
     """Builder for GlobalTimeEthSlave."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeEthSlave()
+        self._obj: GlobalTimeEthSlave = GlobalTimeEthSlave()
 
     def build(self) -> GlobalTimeEthSlave:
         """Build and return GlobalTimeEthSlave object.

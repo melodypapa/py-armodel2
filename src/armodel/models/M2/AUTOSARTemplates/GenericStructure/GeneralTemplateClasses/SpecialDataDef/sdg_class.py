@@ -1,29 +1,28 @@
 """SdgClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgClass(ARObject):
     """AUTOSAR SdgClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGCLASS")
+        element = ET.Element("SDGCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgClass":
+    def deserialize(cls, element: ET.Element) -> "SdgClass":
         """Create SdgClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgClass(ARObject):
         Returns:
             SdgClass instance
         """
-        obj = cls()
+        obj: SdgClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgClass(ARObject):
 class SdgClassBuilder:
     """Builder for SdgClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgClass()
+        self._obj: SdgClass = SdgClass()
 
     def build(self) -> SdgClass:
         """Build and return SdgClass object.

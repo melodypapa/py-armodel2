@@ -1,29 +1,28 @@
 """ConsumedServiceInstance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConsumedServiceInstance(ARObject):
     """AUTOSAR ConsumedServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConsumedServiceInstance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONSUMEDSERVICEINSTANCE")
+        element = ET.Element("CONSUMEDSERVICEINSTANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConsumedServiceInstance":
+    def deserialize(cls, element: ET.Element) -> "ConsumedServiceInstance":
         """Create ConsumedServiceInstance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConsumedServiceInstance(ARObject):
         Returns:
             ConsumedServiceInstance instance
         """
-        obj = cls()
+        obj: ConsumedServiceInstance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConsumedServiceInstance(ARObject):
 class ConsumedServiceInstanceBuilder:
     """Builder for ConsumedServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConsumedServiceInstance()
+        self._obj: ConsumedServiceInstance = ConsumedServiceInstance()
 
     def build(self) -> ConsumedServiceInstance:
         """Build and return ConsumedServiceInstance object.

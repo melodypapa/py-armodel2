@@ -1,29 +1,28 @@
 """EOCEventRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EOCEventRef(ARObject):
     """AUTOSAR EOCEventRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EOCEventRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EOCEventRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EOCEVENTREF")
+        element = ET.Element("EOCEVENTREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EOCEventRef":
+    def deserialize(cls, element: ET.Element) -> "EOCEventRef":
         """Create EOCEventRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EOCEventRef(ARObject):
         Returns:
             EOCEventRef instance
         """
-        obj = cls()
+        obj: EOCEventRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EOCEventRef(ARObject):
 class EOCEventRefBuilder:
     """Builder for EOCEventRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EOCEventRef()
+        self._obj: EOCEventRef = EOCEventRef()
 
     def build(self) -> EOCEventRef:
         """Build and return EOCEventRef object.

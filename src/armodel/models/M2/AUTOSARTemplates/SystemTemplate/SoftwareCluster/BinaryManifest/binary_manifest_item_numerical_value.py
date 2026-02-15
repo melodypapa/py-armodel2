@@ -1,29 +1,28 @@
 """BinaryManifestItemNumericalValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BinaryManifestItemNumericalValue(ARObject):
     """AUTOSAR BinaryManifestItemNumericalValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BinaryManifestItemNumericalValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BinaryManifestItemNumericalValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BINARYMANIFESTITEMNUMERICALVALUE")
+        element = ET.Element("BINARYMANIFESTITEMNUMERICALVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BinaryManifestItemNumericalValue":
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestItemNumericalValue":
         """Create BinaryManifestItemNumericalValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BinaryManifestItemNumericalValue(ARObject):
         Returns:
             BinaryManifestItemNumericalValue instance
         """
-        obj = cls()
+        obj: BinaryManifestItemNumericalValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BinaryManifestItemNumericalValue(ARObject):
 class BinaryManifestItemNumericalValueBuilder:
     """Builder for BinaryManifestItemNumericalValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BinaryManifestItemNumericalValue()
+        self._obj: BinaryManifestItemNumericalValue = BinaryManifestItemNumericalValue()
 
     def build(self) -> BinaryManifestItemNumericalValue:
         """Build and return BinaryManifestItemNumericalValue object.

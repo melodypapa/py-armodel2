@@ -1,29 +1,28 @@
 """IdsmSignatureSupportCp AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsmSignatureSupportCp(ARObject):
     """AUTOSAR IdsmSignatureSupportCp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsmSignatureSupportCp."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsmSignatureSupportCp to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSMSIGNATURESUPPORTCP")
+        element = ET.Element("IDSMSIGNATURESUPPORTCP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsmSignatureSupportCp":
+    def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportCp":
         """Create IdsmSignatureSupportCp from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsmSignatureSupportCp(ARObject):
         Returns:
             IdsmSignatureSupportCp instance
         """
-        obj = cls()
+        obj: IdsmSignatureSupportCp = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsmSignatureSupportCp(ARObject):
 class IdsmSignatureSupportCpBuilder:
     """Builder for IdsmSignatureSupportCp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsmSignatureSupportCp()
+        self._obj: IdsmSignatureSupportCp = IdsmSignatureSupportCp()
 
     def build(self) -> IdsmSignatureSupportCp:
         """Build and return IdsmSignatureSupportCp object.

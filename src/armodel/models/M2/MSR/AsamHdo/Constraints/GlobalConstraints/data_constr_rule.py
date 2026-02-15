@@ -1,29 +1,28 @@
 """DataConstrRule AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataConstrRule(ARObject):
     """AUTOSAR DataConstrRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataConstrRule."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataConstrRule to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATACONSTRRULE")
+        element = ET.Element("DATACONSTRRULE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataConstrRule":
+    def deserialize(cls, element: ET.Element) -> "DataConstrRule":
         """Create DataConstrRule from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataConstrRule(ARObject):
         Returns:
             DataConstrRule instance
         """
-        obj = cls()
+        obj: DataConstrRule = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataConstrRule(ARObject):
 class DataConstrRuleBuilder:
     """Builder for DataConstrRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataConstrRule()
+        self._obj: DataConstrRule = DataConstrRule()
 
     def build(self) -> DataConstrRule:
         """Build and return DataConstrRule object.

@@ -1,29 +1,28 @@
 """DiagnosticControlEnableMaskBit AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticControlEnableMaskBit(ARObject):
     """AUTOSAR DiagnosticControlEnableMaskBit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticControlEnableMaskBit to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCONTROLENABLEMASKBIT")
+        element = ET.Element("DIAGNOSTICCONTROLENABLEMASKBIT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticControlEnableMaskBit":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticControlEnableMaskBit":
         """Create DiagnosticControlEnableMaskBit from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
         Returns:
             DiagnosticControlEnableMaskBit instance
         """
-        obj = cls()
+        obj: DiagnosticControlEnableMaskBit = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticControlEnableMaskBit(ARObject):
 class DiagnosticControlEnableMaskBitBuilder:
     """Builder for DiagnosticControlEnableMaskBit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticControlEnableMaskBit()
+        self._obj: DiagnosticControlEnableMaskBit = DiagnosticControlEnableMaskBit()
 
     def build(self) -> DiagnosticControlEnableMaskBit:
         """Build and return DiagnosticControlEnableMaskBit object.

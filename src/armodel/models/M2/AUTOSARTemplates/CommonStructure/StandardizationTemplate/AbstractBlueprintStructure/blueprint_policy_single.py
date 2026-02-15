@@ -1,29 +1,28 @@
 """BlueprintPolicySingle AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BlueprintPolicySingle(ARObject):
     """AUTOSAR BlueprintPolicySingle."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BlueprintPolicySingle."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BlueprintPolicySingle to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BLUEPRINTPOLICYSINGLE")
+        element = ET.Element("BLUEPRINTPOLICYSINGLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BlueprintPolicySingle":
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicySingle":
         """Create BlueprintPolicySingle from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BlueprintPolicySingle(ARObject):
         Returns:
             BlueprintPolicySingle instance
         """
-        obj = cls()
+        obj: BlueprintPolicySingle = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BlueprintPolicySingle(ARObject):
 class BlueprintPolicySingleBuilder:
     """Builder for BlueprintPolicySingle."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BlueprintPolicySingle()
+        self._obj: BlueprintPolicySingle = BlueprintPolicySingle()
 
     def build(self) -> BlueprintPolicySingle:
         """Build and return BlueprintPolicySingle object.

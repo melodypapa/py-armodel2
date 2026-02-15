@@ -1,29 +1,28 @@
 """FreeFormat AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FreeFormat(ARObject):
     """AUTOSAR FreeFormat."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FreeFormat."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FreeFormat to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FREEFORMAT")
+        element = ET.Element("FREEFORMAT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FreeFormat":
+    def deserialize(cls, element: ET.Element) -> "FreeFormat":
         """Create FreeFormat from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FreeFormat(ARObject):
         Returns:
             FreeFormat instance
         """
-        obj = cls()
+        obj: FreeFormat = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FreeFormat(ARObject):
 class FreeFormatBuilder:
     """Builder for FreeFormat."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FreeFormat()
+        self._obj: FreeFormat = FreeFormat()
 
     def build(self) -> FreeFormat:
         """Build and return FreeFormat object.

@@ -1,29 +1,28 @@
 """VlanConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VlanConfig(ARObject):
     """AUTOSAR VlanConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VlanConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VlanConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VLANCONFIG")
+        element = ET.Element("VLANCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VlanConfig":
+    def deserialize(cls, element: ET.Element) -> "VlanConfig":
         """Create VlanConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VlanConfig(ARObject):
         Returns:
             VlanConfig instance
         """
-        obj = cls()
+        obj: VlanConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VlanConfig(ARObject):
 class VlanConfigBuilder:
     """Builder for VlanConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VlanConfig()
+        self._obj: VlanConfig = VlanConfig()
 
     def build(self) -> VlanConfig:
         """Build and return VlanConfig object.

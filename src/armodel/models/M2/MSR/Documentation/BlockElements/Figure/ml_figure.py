@@ -1,29 +1,28 @@
 """MlFigure AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MlFigure(ARObject):
     """AUTOSAR MlFigure."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MlFigure."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MlFigure to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MLFIGURE")
+        element = ET.Element("MLFIGURE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MlFigure":
+    def deserialize(cls, element: ET.Element) -> "MlFigure":
         """Create MlFigure from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MlFigure(ARObject):
         Returns:
             MlFigure instance
         """
-        obj = cls()
+        obj: MlFigure = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MlFigure(ARObject):
 class MlFigureBuilder:
     """Builder for MlFigure."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MlFigure()
+        self._obj: MlFigure = MlFigure()
 
     def build(self) -> MlFigure:
         """Build and return MlFigure object.

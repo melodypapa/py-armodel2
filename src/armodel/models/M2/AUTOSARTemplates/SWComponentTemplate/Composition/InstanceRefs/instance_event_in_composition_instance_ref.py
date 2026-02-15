@@ -1,29 +1,28 @@
 """InstanceEventInCompositionInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InstanceEventInCompositionInstanceRef(ARObject):
     """AUTOSAR InstanceEventInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InstanceEventInCompositionInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InstanceEventInCompositionInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INSTANCEEVENTINCOMPOSITIONINSTANCEREF")
+        element = ET.Element("INSTANCEEVENTINCOMPOSITIONINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InstanceEventInCompositionInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "InstanceEventInCompositionInstanceRef":
         """Create InstanceEventInCompositionInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         Returns:
             InstanceEventInCompositionInstanceRef instance
         """
-        obj = cls()
+        obj: InstanceEventInCompositionInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InstanceEventInCompositionInstanceRef(ARObject):
 class InstanceEventInCompositionInstanceRefBuilder:
     """Builder for InstanceEventInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InstanceEventInCompositionInstanceRef()
+        self._obj: InstanceEventInCompositionInstanceRef = InstanceEventInCompositionInstanceRef()
 
     def build(self) -> InstanceEventInCompositionInstanceRef:
         """Build and return InstanceEventInCompositionInstanceRef object.

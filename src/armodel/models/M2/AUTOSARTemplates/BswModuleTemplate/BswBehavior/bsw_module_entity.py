@@ -1,29 +1,28 @@
 """BswModuleEntity AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswModuleEntity(ARObject):
     """AUTOSAR BswModuleEntity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswModuleEntity to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWMODULEENTITY")
+        element = ET.Element("BSWMODULEENTITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswModuleEntity":
+    def deserialize(cls, element: ET.Element) -> "BswModuleEntity":
         """Create BswModuleEntity from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswModuleEntity(ARObject):
         Returns:
             BswModuleEntity instance
         """
-        obj = cls()
+        obj: BswModuleEntity = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswModuleEntity(ARObject):
 class BswModuleEntityBuilder:
     """Builder for BswModuleEntity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswModuleEntity()
+        self._obj: BswModuleEntity = BswModuleEntity()
 
     def build(self) -> BswModuleEntity:
         """Build and return BswModuleEntity object.

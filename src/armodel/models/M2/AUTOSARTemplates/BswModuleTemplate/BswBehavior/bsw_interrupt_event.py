@@ -1,29 +1,28 @@
 """BswInterruptEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswInterruptEvent(ARObject):
     """AUTOSAR BswInterruptEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswInterruptEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswInterruptEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWINTERRUPTEVENT")
+        element = ET.Element("BSWINTERRUPTEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswInterruptEvent":
+    def deserialize(cls, element: ET.Element) -> "BswInterruptEvent":
         """Create BswInterruptEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswInterruptEvent(ARObject):
         Returns:
             BswInterruptEvent instance
         """
-        obj = cls()
+        obj: BswInterruptEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswInterruptEvent(ARObject):
 class BswInterruptEventBuilder:
     """Builder for BswInterruptEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswInterruptEvent()
+        self._obj: BswInterruptEvent = BswInterruptEvent()
 
     def build(self) -> BswInterruptEvent:
         """Build and return BswInterruptEvent object.

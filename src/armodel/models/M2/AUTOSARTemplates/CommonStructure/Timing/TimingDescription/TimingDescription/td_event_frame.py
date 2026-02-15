@@ -1,29 +1,28 @@
 """TDEventFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventFrame(ARObject):
     """AUTOSAR TDEventFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTFRAME")
+        element = ET.Element("TDEVENTFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventFrame":
+    def deserialize(cls, element: ET.Element) -> "TDEventFrame":
         """Create TDEventFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventFrame(ARObject):
         Returns:
             TDEventFrame instance
         """
-        obj = cls()
+        obj: TDEventFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventFrame(ARObject):
 class TDEventFrameBuilder:
     """Builder for TDEventFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventFrame()
+        self._obj: TDEventFrame = TDEventFrame()
 
     def build(self) -> TDEventFrame:
         """Build and return TDEventFrame object.

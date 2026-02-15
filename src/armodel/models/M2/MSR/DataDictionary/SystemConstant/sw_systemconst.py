@@ -1,29 +1,28 @@
 """SwSystemconst AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwSystemconst(ARObject):
     """AUTOSAR SwSystemconst."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwSystemconst."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwSystemconst to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWSYSTEMCONST")
+        element = ET.Element("SWSYSTEMCONST")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwSystemconst":
+    def deserialize(cls, element: ET.Element) -> "SwSystemconst":
         """Create SwSystemconst from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwSystemconst(ARObject):
         Returns:
             SwSystemconst instance
         """
-        obj = cls()
+        obj: SwSystemconst = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwSystemconst(ARObject):
 class SwSystemconstBuilder:
     """Builder for SwSystemconst."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwSystemconst()
+        self._obj: SwSystemconst = SwSystemconst()
 
     def build(self) -> SwSystemconst:
         """Build and return SwSystemconst object.

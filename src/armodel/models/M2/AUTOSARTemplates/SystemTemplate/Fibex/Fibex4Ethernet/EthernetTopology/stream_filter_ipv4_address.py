@@ -1,29 +1,28 @@
 """StreamFilterIpv4Address AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class StreamFilterIpv4Address(ARObject):
     """AUTOSAR StreamFilterIpv4Address."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize StreamFilterIpv4Address."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert StreamFilterIpv4Address to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STREAMFILTERIPV4ADDRESS")
+        element = ET.Element("STREAMFILTERIPV4ADDRESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "StreamFilterIpv4Address":
+    def deserialize(cls, element: ET.Element) -> "StreamFilterIpv4Address":
         """Create StreamFilterIpv4Address from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class StreamFilterIpv4Address(ARObject):
         Returns:
             StreamFilterIpv4Address instance
         """
-        obj = cls()
+        obj: StreamFilterIpv4Address = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class StreamFilterIpv4Address(ARObject):
 class StreamFilterIpv4AddressBuilder:
     """Builder for StreamFilterIpv4Address."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = StreamFilterIpv4Address()
+        self._obj: StreamFilterIpv4Address = StreamFilterIpv4Address()
 
     def build(self) -> StreamFilterIpv4Address:
         """Build and return StreamFilterIpv4Address object.

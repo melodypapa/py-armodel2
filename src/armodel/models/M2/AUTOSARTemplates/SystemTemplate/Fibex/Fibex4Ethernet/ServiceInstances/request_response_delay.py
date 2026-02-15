@@ -1,29 +1,28 @@
 """RequestResponseDelay AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RequestResponseDelay(ARObject):
     """AUTOSAR RequestResponseDelay."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RequestResponseDelay."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RequestResponseDelay to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("REQUESTRESPONSEDELAY")
+        element = ET.Element("REQUESTRESPONSEDELAY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RequestResponseDelay":
+    def deserialize(cls, element: ET.Element) -> "RequestResponseDelay":
         """Create RequestResponseDelay from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RequestResponseDelay(ARObject):
         Returns:
             RequestResponseDelay instance
         """
-        obj = cls()
+        obj: RequestResponseDelay = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RequestResponseDelay(ARObject):
 class RequestResponseDelayBuilder:
     """Builder for RequestResponseDelay."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RequestResponseDelay()
+        self._obj: RequestResponseDelay = RequestResponseDelay()
 
     def build(self) -> RequestResponseDelay:
         """Build and return RequestResponseDelay object.

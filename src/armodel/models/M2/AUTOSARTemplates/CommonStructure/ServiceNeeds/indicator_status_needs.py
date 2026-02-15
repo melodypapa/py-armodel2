@@ -1,29 +1,28 @@
 """IndicatorStatusNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IndicatorStatusNeeds(ARObject):
     """AUTOSAR IndicatorStatusNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IndicatorStatusNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IndicatorStatusNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INDICATORSTATUSNEEDS")
+        element = ET.Element("INDICATORSTATUSNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IndicatorStatusNeeds":
+    def deserialize(cls, element: ET.Element) -> "IndicatorStatusNeeds":
         """Create IndicatorStatusNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IndicatorStatusNeeds(ARObject):
         Returns:
             IndicatorStatusNeeds instance
         """
-        obj = cls()
+        obj: IndicatorStatusNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IndicatorStatusNeeds(ARObject):
 class IndicatorStatusNeedsBuilder:
     """Builder for IndicatorStatusNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IndicatorStatusNeeds()
+        self._obj: IndicatorStatusNeeds = IndicatorStatusNeeds()
 
     def build(self) -> IndicatorStatusNeeds:
         """Build and return IndicatorStatusNeeds object.

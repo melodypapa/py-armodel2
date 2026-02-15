@@ -69,7 +69,6 @@ def generate_class_code(type_def: dict) -> str:
         Generated Python code as string
     """
     class_name = type_def["name"]
-    package_path = type_def.get("package_path", "")
     is_splitable = type_def.get("splitable", False)
     split_file_name = type_def.get("split_file_name", "")
 
@@ -118,7 +117,7 @@ class {class_name}(ARObject):
         Returns:
             {class_name} instance
         """
-        obj = cls()
+        obj: {class_name} = cls()
         # TODO: Add deserialization logic
         return obj
 '''
@@ -143,7 +142,7 @@ def generate_builder_code(type_def: dict) -> str:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = {class_name}()
+        self._obj: {class_name} = {class_name}()
 
     def build(self) -> {class_name}:
         """Build and return {class_name} object.

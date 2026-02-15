@@ -1,29 +1,28 @@
 """DataExchangePoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataExchangePoint(ARObject):
     """AUTOSAR DataExchangePoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataExchangePoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataExchangePoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAEXCHANGEPOINT")
+        element = ET.Element("DATAEXCHANGEPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataExchangePoint":
+    def deserialize(cls, element: ET.Element) -> "DataExchangePoint":
         """Create DataExchangePoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataExchangePoint(ARObject):
         Returns:
             DataExchangePoint instance
         """
-        obj = cls()
+        obj: DataExchangePoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataExchangePoint(ARObject):
 class DataExchangePointBuilder:
     """Builder for DataExchangePoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataExchangePoint()
+        self._obj: DataExchangePoint = DataExchangePoint()
 
     def build(self) -> DataExchangePoint:
         """Build and return DataExchangePoint object.

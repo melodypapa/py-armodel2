@@ -1,29 +1,28 @@
 """DoIpPowerModeStatusNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpPowerModeStatusNeeds(ARObject):
     """AUTOSAR DoIpPowerModeStatusNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpPowerModeStatusNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpPowerModeStatusNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPPOWERMODESTATUSNEEDS")
+        element = ET.Element("DOIPPOWERMODESTATUSNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpPowerModeStatusNeeds":
+    def deserialize(cls, element: ET.Element) -> "DoIpPowerModeStatusNeeds":
         """Create DoIpPowerModeStatusNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpPowerModeStatusNeeds(ARObject):
         Returns:
             DoIpPowerModeStatusNeeds instance
         """
-        obj = cls()
+        obj: DoIpPowerModeStatusNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpPowerModeStatusNeeds(ARObject):
 class DoIpPowerModeStatusNeedsBuilder:
     """Builder for DoIpPowerModeStatusNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpPowerModeStatusNeeds()
+        self._obj: DoIpPowerModeStatusNeeds = DoIpPowerModeStatusNeeds()
 
     def build(self) -> DoIpPowerModeStatusNeeds:
         """Build and return DoIpPowerModeStatusNeeds object.

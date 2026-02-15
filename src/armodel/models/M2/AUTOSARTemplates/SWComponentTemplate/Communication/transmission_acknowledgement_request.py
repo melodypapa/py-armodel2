@@ -1,29 +1,28 @@
 """TransmissionAcknowledgementRequest AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransmissionAcknowledgementRequest(ARObject):
     """AUTOSAR TransmissionAcknowledgementRequest."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransmissionAcknowledgementRequest."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransmissionAcknowledgementRequest to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSMISSIONACKNOWLEDGEMENTREQUEST")
+        element = ET.Element("TRANSMISSIONACKNOWLEDGEMENTREQUEST")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransmissionAcknowledgementRequest":
+    def deserialize(cls, element: ET.Element) -> "TransmissionAcknowledgementRequest":
         """Create TransmissionAcknowledgementRequest from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransmissionAcknowledgementRequest(ARObject):
         Returns:
             TransmissionAcknowledgementRequest instance
         """
-        obj = cls()
+        obj: TransmissionAcknowledgementRequest = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransmissionAcknowledgementRequest(ARObject):
 class TransmissionAcknowledgementRequestBuilder:
     """Builder for TransmissionAcknowledgementRequest."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransmissionAcknowledgementRequest()
+        self._obj: TransmissionAcknowledgementRequest = TransmissionAcknowledgementRequest()
 
     def build(self) -> TransmissionAcknowledgementRequest:
         """Build and return TransmissionAcknowledgementRequest object.

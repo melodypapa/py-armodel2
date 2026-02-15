@@ -1,29 +1,28 @@
 """ApplicationArrayDataType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationArrayDataType(ARObject):
     """AUTOSAR ApplicationArrayDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationArrayDataType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationArrayDataType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONARRAYDATATYPE")
+        element = ET.Element("APPLICATIONARRAYDATATYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationArrayDataType":
+    def deserialize(cls, element: ET.Element) -> "ApplicationArrayDataType":
         """Create ApplicationArrayDataType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationArrayDataType(ARObject):
         Returns:
             ApplicationArrayDataType instance
         """
-        obj = cls()
+        obj: ApplicationArrayDataType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationArrayDataType(ARObject):
 class ApplicationArrayDataTypeBuilder:
     """Builder for ApplicationArrayDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationArrayDataType()
+        self._obj: ApplicationArrayDataType = ApplicationArrayDataType()
 
     def build(self) -> ApplicationArrayDataType:
         """Build and return ApplicationArrayDataType object.

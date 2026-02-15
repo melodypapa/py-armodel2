@@ -1,29 +1,28 @@
 """FMFormulaByFeaturesAndSwSystemconsts AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMFormulaByFeaturesAndSwSystemconsts(ARObject):
     """AUTOSAR FMFormulaByFeaturesAndSwSystemconsts."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMFormulaByFeaturesAndSwSystemconsts."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMFormulaByFeaturesAndSwSystemconsts to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMFORMULABYFEATURESANDSWSYSTEMCONSTS")
+        element = ET.Element("FMFORMULABYFEATURESANDSWSYSTEMCONSTS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMFormulaByFeaturesAndSwSystemconsts":
+    def deserialize(cls, element: ET.Element) -> "FMFormulaByFeaturesAndSwSystemconsts":
         """Create FMFormulaByFeaturesAndSwSystemconsts from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject):
         Returns:
             FMFormulaByFeaturesAndSwSystemconsts instance
         """
-        obj = cls()
+        obj: FMFormulaByFeaturesAndSwSystemconsts = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject):
 class FMFormulaByFeaturesAndSwSystemconstsBuilder:
     """Builder for FMFormulaByFeaturesAndSwSystemconsts."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMFormulaByFeaturesAndSwSystemconsts()
+        self._obj: FMFormulaByFeaturesAndSwSystemconsts = FMFormulaByFeaturesAndSwSystemconsts()
 
     def build(self) -> FMFormulaByFeaturesAndSwSystemconsts:
         """Build and return FMFormulaByFeaturesAndSwSystemconsts object.

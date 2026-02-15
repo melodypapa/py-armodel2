@@ -1,29 +1,28 @@
 """ISignalTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ISignalTriggering(ARObject):
     """AUTOSAR ISignalTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ISignalTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ISIGNALTRIGGERING")
+        element = ET.Element("ISIGNALTRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ISignalTriggering":
+    def deserialize(cls, element: ET.Element) -> "ISignalTriggering":
         """Create ISignalTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ISignalTriggering(ARObject):
         Returns:
             ISignalTriggering instance
         """
-        obj = cls()
+        obj: ISignalTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ISignalTriggering(ARObject):
 class ISignalTriggeringBuilder:
     """Builder for ISignalTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ISignalTriggering()
+        self._obj: ISignalTriggering = ISignalTriggering()
 
     def build(self) -> ISignalTriggering:
         """Build and return ISignalTriggering object.

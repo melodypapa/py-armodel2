@@ -1,29 +1,28 @@
 """CouplingPortTrafficClassAssignment AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CouplingPortTrafficClassAssignment(ARObject):
     """AUTOSAR CouplingPortTrafficClassAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CouplingPortTrafficClassAssignment."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CouplingPortTrafficClassAssignment to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COUPLINGPORTTRAFFICCLASSASSIGNMENT")
+        element = ET.Element("COUPLINGPORTTRAFFICCLASSASSIGNMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CouplingPortTrafficClassAssignment":
+    def deserialize(cls, element: ET.Element) -> "CouplingPortTrafficClassAssignment":
         """Create CouplingPortTrafficClassAssignment from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CouplingPortTrafficClassAssignment(ARObject):
         Returns:
             CouplingPortTrafficClassAssignment instance
         """
-        obj = cls()
+        obj: CouplingPortTrafficClassAssignment = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CouplingPortTrafficClassAssignment(ARObject):
 class CouplingPortTrafficClassAssignmentBuilder:
     """Builder for CouplingPortTrafficClassAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CouplingPortTrafficClassAssignment()
+        self._obj: CouplingPortTrafficClassAssignment = CouplingPortTrafficClassAssignment()
 
     def build(self) -> CouplingPortTrafficClassAssignment:
         """Build and return CouplingPortTrafficClassAssignment object.

@@ -1,29 +1,28 @@
 """SwitchStreamFilterRule AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwitchStreamFilterRule(ARObject):
     """AUTOSAR SwitchStreamFilterRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwitchStreamFilterRule."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwitchStreamFilterRule to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWITCHSTREAMFILTERRULE")
+        element = ET.Element("SWITCHSTREAMFILTERRULE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwitchStreamFilterRule":
+    def deserialize(cls, element: ET.Element) -> "SwitchStreamFilterRule":
         """Create SwitchStreamFilterRule from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwitchStreamFilterRule(ARObject):
         Returns:
             SwitchStreamFilterRule instance
         """
-        obj = cls()
+        obj: SwitchStreamFilterRule = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwitchStreamFilterRule(ARObject):
 class SwitchStreamFilterRuleBuilder:
     """Builder for SwitchStreamFilterRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwitchStreamFilterRule()
+        self._obj: SwitchStreamFilterRule = SwitchStreamFilterRule()
 
     def build(self) -> SwitchStreamFilterRule:
         """Build and return SwitchStreamFilterRule object.

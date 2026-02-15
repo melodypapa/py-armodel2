@@ -1,29 +1,28 @@
 """SoAdRoutingGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SoAdRoutingGroup(ARObject):
     """AUTOSAR SoAdRoutingGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SoAdRoutingGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SoAdRoutingGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOADROUTINGGROUP")
+        element = ET.Element("SOADROUTINGGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SoAdRoutingGroup":
+    def deserialize(cls, element: ET.Element) -> "SoAdRoutingGroup":
         """Create SoAdRoutingGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SoAdRoutingGroup(ARObject):
         Returns:
             SoAdRoutingGroup instance
         """
-        obj = cls()
+        obj: SoAdRoutingGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SoAdRoutingGroup(ARObject):
 class SoAdRoutingGroupBuilder:
     """Builder for SoAdRoutingGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SoAdRoutingGroup()
+        self._obj: SoAdRoutingGroup = SoAdRoutingGroup()
 
     def build(self) -> SoAdRoutingGroup:
         """Build and return SoAdRoutingGroup object.

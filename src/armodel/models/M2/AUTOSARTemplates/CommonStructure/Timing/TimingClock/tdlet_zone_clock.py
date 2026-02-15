@@ -1,29 +1,28 @@
 """TDLETZoneClock AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDLETZoneClock(ARObject):
     """AUTOSAR TDLETZoneClock."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDLETZoneClock to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDLETZONECLOCK")
+        element = ET.Element("TDLETZONECLOCK")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDLETZoneClock":
+    def deserialize(cls, element: ET.Element) -> "TDLETZoneClock":
         """Create TDLETZoneClock from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDLETZoneClock(ARObject):
         Returns:
             TDLETZoneClock instance
         """
-        obj = cls()
+        obj: TDLETZoneClock = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDLETZoneClock(ARObject):
 class TDLETZoneClockBuilder:
     """Builder for TDLETZoneClock."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDLETZoneClock()
+        self._obj: TDLETZoneClock = TDLETZoneClock()
 
     def build(self) -> TDLETZoneClock:
         """Build and return TDLETZoneClock object.

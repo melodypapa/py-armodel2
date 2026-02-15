@@ -1,29 +1,28 @@
 """BswVariableAccess AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswVariableAccess(ARObject):
     """AUTOSAR BswVariableAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswVariableAccess."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswVariableAccess to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWVARIABLEACCESS")
+        element = ET.Element("BSWVARIABLEACCESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswVariableAccess":
+    def deserialize(cls, element: ET.Element) -> "BswVariableAccess":
         """Create BswVariableAccess from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswVariableAccess(ARObject):
         Returns:
             BswVariableAccess instance
         """
-        obj = cls()
+        obj: BswVariableAccess = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswVariableAccess(ARObject):
 class BswVariableAccessBuilder:
     """Builder for BswVariableAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswVariableAccess()
+        self._obj: BswVariableAccess = BswVariableAccess()
 
     def build(self) -> BswVariableAccess:
         """Build and return BswVariableAccess object.

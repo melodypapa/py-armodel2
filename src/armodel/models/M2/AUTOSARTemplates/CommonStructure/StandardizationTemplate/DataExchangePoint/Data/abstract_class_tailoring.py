@@ -1,29 +1,28 @@
 """AbstractClassTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractClassTailoring(ARObject):
     """AUTOSAR AbstractClassTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractClassTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractClassTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTCLASSTAILORING")
+        element = ET.Element("ABSTRACTCLASSTAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractClassTailoring":
+    def deserialize(cls, element: ET.Element) -> "AbstractClassTailoring":
         """Create AbstractClassTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractClassTailoring(ARObject):
         Returns:
             AbstractClassTailoring instance
         """
-        obj = cls()
+        obj: AbstractClassTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractClassTailoring(ARObject):
 class AbstractClassTailoringBuilder:
     """Builder for AbstractClassTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractClassTailoring()
+        self._obj: AbstractClassTailoring = AbstractClassTailoring()
 
     def build(self) -> AbstractClassTailoring:
         """Build and return AbstractClassTailoring object.

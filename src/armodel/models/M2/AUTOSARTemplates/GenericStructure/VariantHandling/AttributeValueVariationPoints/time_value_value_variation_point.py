@@ -1,29 +1,28 @@
 """TimeValueValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimeValueValueVariationPoint(ARObject):
     """AUTOSAR TimeValueValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimeValueValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimeValueValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMEVALUEVALUEVARIATIONPOINT")
+        element = ET.Element("TIMEVALUEVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimeValueValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "TimeValueValueVariationPoint":
         """Create TimeValueValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimeValueValueVariationPoint(ARObject):
         Returns:
             TimeValueValueVariationPoint instance
         """
-        obj = cls()
+        obj: TimeValueValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimeValueValueVariationPoint(ARObject):
 class TimeValueValueVariationPointBuilder:
     """Builder for TimeValueValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimeValueValueVariationPoint()
+        self._obj: TimeValueValueVariationPoint = TimeValueValueVariationPoint()
 
     def build(self) -> TimeValueValueVariationPoint:
         """Build and return TimeValueValueVariationPoint object.

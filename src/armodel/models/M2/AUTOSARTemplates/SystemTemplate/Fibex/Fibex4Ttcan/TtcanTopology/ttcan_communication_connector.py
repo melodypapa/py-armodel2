@@ -1,29 +1,28 @@
 """TtcanCommunicationConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TtcanCommunicationConnector(ARObject):
     """AUTOSAR TtcanCommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TtcanCommunicationConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TtcanCommunicationConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TTCANCOMMUNICATIONCONNECTOR")
+        element = ET.Element("TTCANCOMMUNICATIONCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TtcanCommunicationConnector":
+    def deserialize(cls, element: ET.Element) -> "TtcanCommunicationConnector":
         """Create TtcanCommunicationConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TtcanCommunicationConnector(ARObject):
         Returns:
             TtcanCommunicationConnector instance
         """
-        obj = cls()
+        obj: TtcanCommunicationConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TtcanCommunicationConnector(ARObject):
 class TtcanCommunicationConnectorBuilder:
     """Builder for TtcanCommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TtcanCommunicationConnector()
+        self._obj: TtcanCommunicationConnector = TtcanCommunicationConnector()
 
     def build(self) -> TtcanCommunicationConnector:
         """Build and return TtcanCommunicationConnector object.

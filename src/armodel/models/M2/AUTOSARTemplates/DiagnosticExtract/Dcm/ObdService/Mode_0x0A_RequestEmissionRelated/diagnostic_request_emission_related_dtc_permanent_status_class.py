@@ -1,29 +1,28 @@
 """DiagnosticRequestEmissionRelatedDTCPermanentStatusClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestEmissionRelatedDTCPermanentStatusClass(ARObject):
     """AUTOSAR DiagnosticRequestEmissionRelatedDTCPermanentStatusClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTCPermanentStatusClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestEmissionRelatedDTCPermanentStatusClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTEMISSIONRELATEDDTCPERMANENTSTATUSCLASS")
+        element = ET.Element("DIAGNOSTICREQUESTEMISSIONRELATEDDTCPERMANENTSTATUSCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestEmissionRelatedDTCPermanentStatusClass":
         """Create DiagnosticRequestEmissionRelatedDTCPermanentStatusClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatusClass(ARObject):
         Returns:
             DiagnosticRequestEmissionRelatedDTCPermanentStatusClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestEmissionRelatedDTCPermanentStatusClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatusClass(ARObject):
 class DiagnosticRequestEmissionRelatedDTCPermanentStatusClassBuilder:
     """Builder for DiagnosticRequestEmissionRelatedDTCPermanentStatusClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestEmissionRelatedDTCPermanentStatusClass()
+        self._obj: DiagnosticRequestEmissionRelatedDTCPermanentStatusClass = DiagnosticRequestEmissionRelatedDTCPermanentStatusClass()
 
     def build(self) -> DiagnosticRequestEmissionRelatedDTCPermanentStatusClass:
         """Build and return DiagnosticRequestEmissionRelatedDTCPermanentStatusClass object.

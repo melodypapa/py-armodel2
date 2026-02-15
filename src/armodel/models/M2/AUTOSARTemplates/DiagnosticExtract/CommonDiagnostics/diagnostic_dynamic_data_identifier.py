@@ -1,29 +1,28 @@
 """DiagnosticDynamicDataIdentifier AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticDynamicDataIdentifier(ARObject):
     """AUTOSAR DiagnosticDynamicDataIdentifier."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticDynamicDataIdentifier."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticDynamicDataIdentifier to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICDYNAMICDATAIDENTIFIER")
+        element = ET.Element("DIAGNOSTICDYNAMICDATAIDENTIFIER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticDynamicDataIdentifier":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticDynamicDataIdentifier":
         """Create DiagnosticDynamicDataIdentifier from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticDynamicDataIdentifier(ARObject):
         Returns:
             DiagnosticDynamicDataIdentifier instance
         """
-        obj = cls()
+        obj: DiagnosticDynamicDataIdentifier = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticDynamicDataIdentifier(ARObject):
 class DiagnosticDynamicDataIdentifierBuilder:
     """Builder for DiagnosticDynamicDataIdentifier."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticDynamicDataIdentifier()
+        self._obj: DiagnosticDynamicDataIdentifier = DiagnosticDynamicDataIdentifier()
 
     def build(self) -> DiagnosticDynamicDataIdentifier:
         """Build and return DiagnosticDynamicDataIdentifier object.

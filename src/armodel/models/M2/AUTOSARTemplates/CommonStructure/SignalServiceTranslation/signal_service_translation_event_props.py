@@ -1,29 +1,28 @@
 """SignalServiceTranslationEventProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SignalServiceTranslationEventProps(ARObject):
     """AUTOSAR SignalServiceTranslationEventProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SignalServiceTranslationEventProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SignalServiceTranslationEventProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SIGNALSERVICETRANSLATIONEVENTPROPS")
+        element = ET.Element("SIGNALSERVICETRANSLATIONEVENTPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SignalServiceTranslationEventProps":
+    def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationEventProps":
         """Create SignalServiceTranslationEventProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SignalServiceTranslationEventProps(ARObject):
         Returns:
             SignalServiceTranslationEventProps instance
         """
-        obj = cls()
+        obj: SignalServiceTranslationEventProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SignalServiceTranslationEventProps(ARObject):
 class SignalServiceTranslationEventPropsBuilder:
     """Builder for SignalServiceTranslationEventProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SignalServiceTranslationEventProps()
+        self._obj: SignalServiceTranslationEventProps = SignalServiceTranslationEventProps()
 
     def build(self) -> SignalServiceTranslationEventProps:
         """Build and return SignalServiceTranslationEventProps object.

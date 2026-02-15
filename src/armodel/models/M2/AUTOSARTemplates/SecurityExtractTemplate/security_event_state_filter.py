@@ -1,29 +1,28 @@
 """SecurityEventStateFilter AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SecurityEventStateFilter(ARObject):
     """AUTOSAR SecurityEventStateFilter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SecurityEventStateFilter."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SecurityEventStateFilter to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECURITYEVENTSTATEFILTER")
+        element = ET.Element("SECURITYEVENTSTATEFILTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SecurityEventStateFilter":
+    def deserialize(cls, element: ET.Element) -> "SecurityEventStateFilter":
         """Create SecurityEventStateFilter from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SecurityEventStateFilter(ARObject):
         Returns:
             SecurityEventStateFilter instance
         """
-        obj = cls()
+        obj: SecurityEventStateFilter = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SecurityEventStateFilter(ARObject):
 class SecurityEventStateFilterBuilder:
     """Builder for SecurityEventStateFilter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SecurityEventStateFilter()
+        self._obj: SecurityEventStateFilter = SecurityEventStateFilter()
 
     def build(self) -> SecurityEventStateFilter:
         """Build and return SecurityEventStateFilter object.

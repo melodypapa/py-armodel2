@@ -1,29 +1,28 @@
 """HwPinGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwPinGroup(ARObject):
     """AUTOSAR HwPinGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwPinGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwPinGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWPINGROUP")
+        element = ET.Element("HWPINGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwPinGroup":
+    def deserialize(cls, element: ET.Element) -> "HwPinGroup":
         """Create HwPinGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwPinGroup(ARObject):
         Returns:
             HwPinGroup instance
         """
-        obj = cls()
+        obj: HwPinGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwPinGroup(ARObject):
 class HwPinGroupBuilder:
     """Builder for HwPinGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwPinGroup()
+        self._obj: HwPinGroup = HwPinGroup()
 
     def build(self) -> HwPinGroup:
         """Build and return HwPinGroup object.

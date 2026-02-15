@@ -1,29 +1,28 @@
 """IndentSample AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IndentSample(ARObject):
     """AUTOSAR IndentSample."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IndentSample."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IndentSample to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INDENTSAMPLE")
+        element = ET.Element("INDENTSAMPLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IndentSample":
+    def deserialize(cls, element: ET.Element) -> "IndentSample":
         """Create IndentSample from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IndentSample(ARObject):
         Returns:
             IndentSample instance
         """
-        obj = cls()
+        obj: IndentSample = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IndentSample(ARObject):
 class IndentSampleBuilder:
     """Builder for IndentSample."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IndentSample()
+        self._obj: IndentSample = IndentSample()
 
     def build(self) -> IndentSample:
         """Build and return IndentSample object.

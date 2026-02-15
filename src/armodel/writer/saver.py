@@ -2,11 +2,11 @@
 
 from pathlib import Path
 from typing import Union
-from lxml import etree
+import xml.etree.ElementTree as ET
 
 
 def save_arxml_file(
-    root: etree.Element,
+    root: ET.Element,
     filepath: Union[str, Path],
     pretty_print: bool = True,
     encoding: str = "UTF-8"
@@ -25,10 +25,9 @@ def save_arxml_file(
     filepath.parent.mkdir(parents=True, exist_ok=True)
 
     # Create tree and write
-    tree = etree.ElementTree(root)
+    tree = ET.ElementTree(root)
     tree.write(
         str(filepath),
-        pretty_print=pretty_print,
-        xml_declaration=True,
-        encoding=encoding
+        encoding=encoding,
+        xml_declaration=True
     )

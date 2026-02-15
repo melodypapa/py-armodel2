@@ -1,29 +1,28 @@
 """PortGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortGroup(ARObject):
     """AUTOSAR PortGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTGROUP")
+        element = ET.Element("PORTGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortGroup":
+    def deserialize(cls, element: ET.Element) -> "PortGroup":
         """Create PortGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortGroup(ARObject):
         Returns:
             PortGroup instance
         """
-        obj = cls()
+        obj: PortGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortGroup(ARObject):
 class PortGroupBuilder:
     """Builder for PortGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortGroup()
+        self._obj: PortGroup = PortGroup()
 
     def build(self) -> PortGroup:
         """Build and return PortGroup object.

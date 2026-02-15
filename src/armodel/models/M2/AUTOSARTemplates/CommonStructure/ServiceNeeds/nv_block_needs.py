@@ -1,29 +1,28 @@
 """NvBlockNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NvBlockNeeds(ARObject):
     """AUTOSAR NvBlockNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NvBlockNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NvBlockNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NVBLOCKNEEDS")
+        element = ET.Element("NVBLOCKNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NvBlockNeeds":
+    def deserialize(cls, element: ET.Element) -> "NvBlockNeeds":
         """Create NvBlockNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NvBlockNeeds(ARObject):
         Returns:
             NvBlockNeeds instance
         """
-        obj = cls()
+        obj: NvBlockNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NvBlockNeeds(ARObject):
 class NvBlockNeedsBuilder:
     """Builder for NvBlockNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NvBlockNeeds()
+        self._obj: NvBlockNeeds = NvBlockNeeds()
 
     def build(self) -> NvBlockNeeds:
         """Build and return NvBlockNeeds object.

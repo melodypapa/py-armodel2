@@ -1,29 +1,28 @@
 """E2EProfileCompatibilityProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class E2EProfileCompatibilityProps(ARObject):
     """AUTOSAR E2EProfileCompatibilityProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert E2EProfileCompatibilityProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("E2EPROFILECOMPATIBILITYPROPS")
+        element = ET.Element("E2EPROFILECOMPATIBILITYPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "E2EProfileCompatibilityProps":
+    def deserialize(cls, element: ET.Element) -> "E2EProfileCompatibilityProps":
         """Create E2EProfileCompatibilityProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class E2EProfileCompatibilityProps(ARObject):
         Returns:
             E2EProfileCompatibilityProps instance
         """
-        obj = cls()
+        obj: E2EProfileCompatibilityProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class E2EProfileCompatibilityProps(ARObject):
 class E2EProfileCompatibilityPropsBuilder:
     """Builder for E2EProfileCompatibilityProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = E2EProfileCompatibilityProps()
+        self._obj: E2EProfileCompatibilityProps = E2EProfileCompatibilityProps()
 
     def build(self) -> E2EProfileCompatibilityProps:
         """Build and return E2EProfileCompatibilityProps object.

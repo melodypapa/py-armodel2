@@ -1,29 +1,28 @@
 """DiagnosticIumprGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticIumprGroup(ARObject):
     """AUTOSAR DiagnosticIumprGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticIumprGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticIumprGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICIUMPRGROUP")
+        element = ET.Element("DIAGNOSTICIUMPRGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticIumprGroup":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprGroup":
         """Create DiagnosticIumprGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticIumprGroup(ARObject):
         Returns:
             DiagnosticIumprGroup instance
         """
-        obj = cls()
+        obj: DiagnosticIumprGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticIumprGroup(ARObject):
 class DiagnosticIumprGroupBuilder:
     """Builder for DiagnosticIumprGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticIumprGroup()
+        self._obj: DiagnosticIumprGroup = DiagnosticIumprGroup()
 
     def build(self) -> DiagnosticIumprGroup:
         """Build and return DiagnosticIumprGroup object.

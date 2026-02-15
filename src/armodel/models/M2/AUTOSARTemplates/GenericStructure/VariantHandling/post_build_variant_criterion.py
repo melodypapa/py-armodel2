@@ -1,29 +1,28 @@
 """PostBuildVariantCriterion AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PostBuildVariantCriterion(ARObject):
     """AUTOSAR PostBuildVariantCriterion."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PostBuildVariantCriterion."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PostBuildVariantCriterion to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("POSTBUILDVARIANTCRITERION")
+        element = ET.Element("POSTBUILDVARIANTCRITERION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PostBuildVariantCriterion":
+    def deserialize(cls, element: ET.Element) -> "PostBuildVariantCriterion":
         """Create PostBuildVariantCriterion from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PostBuildVariantCriterion(ARObject):
         Returns:
             PostBuildVariantCriterion instance
         """
-        obj = cls()
+        obj: PostBuildVariantCriterion = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PostBuildVariantCriterion(ARObject):
 class PostBuildVariantCriterionBuilder:
     """Builder for PostBuildVariantCriterion."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PostBuildVariantCriterion()
+        self._obj: PostBuildVariantCriterion = PostBuildVariantCriterion()
 
     def build(self) -> PostBuildVariantCriterion:
         """Build and return PostBuildVariantCriterion object.

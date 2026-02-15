@@ -1,29 +1,28 @@
 """AliasNameSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AliasNameSet(ARObject):
     """AUTOSAR AliasNameSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AliasNameSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AliasNameSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ALIASNAMESET")
+        element = ET.Element("ALIASNAMESET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AliasNameSet":
+    def deserialize(cls, element: ET.Element) -> "AliasNameSet":
         """Create AliasNameSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AliasNameSet(ARObject):
         Returns:
             AliasNameSet instance
         """
-        obj = cls()
+        obj: AliasNameSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AliasNameSet(ARObject):
 class AliasNameSetBuilder:
     """Builder for AliasNameSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AliasNameSet()
+        self._obj: AliasNameSet = AliasNameSet()
 
     def build(self) -> AliasNameSet:
         """Build and return AliasNameSet object.

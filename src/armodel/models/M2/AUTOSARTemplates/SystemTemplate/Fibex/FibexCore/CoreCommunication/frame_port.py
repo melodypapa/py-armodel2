@@ -1,29 +1,28 @@
 """FramePort AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FramePort(ARObject):
     """AUTOSAR FramePort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FramePort."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FramePort to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FRAMEPORT")
+        element = ET.Element("FRAMEPORT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FramePort":
+    def deserialize(cls, element: ET.Element) -> "FramePort":
         """Create FramePort from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FramePort(ARObject):
         Returns:
             FramePort instance
         """
-        obj = cls()
+        obj: FramePort = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FramePort(ARObject):
 class FramePortBuilder:
     """Builder for FramePort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FramePort()
+        self._obj: FramePort = FramePort()
 
     def build(self) -> FramePort:
         """Build and return FramePort object.

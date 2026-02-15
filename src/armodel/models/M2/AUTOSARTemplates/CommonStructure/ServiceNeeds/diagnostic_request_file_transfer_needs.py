@@ -1,29 +1,28 @@
 """DiagnosticRequestFileTransferNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestFileTransferNeeds(ARObject):
     """AUTOSAR DiagnosticRequestFileTransferNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransferNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestFileTransferNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTFILETRANSFERNEEDS")
+        element = ET.Element("DIAGNOSTICREQUESTFILETRANSFERNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestFileTransferNeeds":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestFileTransferNeeds":
         """Create DiagnosticRequestFileTransferNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestFileTransferNeeds(ARObject):
         Returns:
             DiagnosticRequestFileTransferNeeds instance
         """
-        obj = cls()
+        obj: DiagnosticRequestFileTransferNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestFileTransferNeeds(ARObject):
 class DiagnosticRequestFileTransferNeedsBuilder:
     """Builder for DiagnosticRequestFileTransferNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestFileTransferNeeds()
+        self._obj: DiagnosticRequestFileTransferNeeds = DiagnosticRequestFileTransferNeeds()
 
     def build(self) -> DiagnosticRequestFileTransferNeeds:
         """Build and return DiagnosticRequestFileTransferNeeds object.

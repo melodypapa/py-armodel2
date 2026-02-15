@@ -1,29 +1,28 @@
 """NvBlockSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NvBlockSwComponentType(ARObject):
     """AUTOSAR NvBlockSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NvBlockSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NvBlockSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NVBLOCKSWCOMPONENTTYPE")
+        element = ET.Element("NVBLOCKSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NvBlockSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "NvBlockSwComponentType":
         """Create NvBlockSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NvBlockSwComponentType(ARObject):
         Returns:
             NvBlockSwComponentType instance
         """
-        obj = cls()
+        obj: NvBlockSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NvBlockSwComponentType(ARObject):
 class NvBlockSwComponentTypeBuilder:
     """Builder for NvBlockSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NvBlockSwComponentType()
+        self._obj: NvBlockSwComponentType = NvBlockSwComponentType()
 
     def build(self) -> NvBlockSwComponentType:
         """Build and return NvBlockSwComponentType object.

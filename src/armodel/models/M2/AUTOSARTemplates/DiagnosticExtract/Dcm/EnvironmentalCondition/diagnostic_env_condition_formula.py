@@ -1,29 +1,28 @@
 """DiagnosticEnvConditionFormula AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEnvConditionFormula(ARObject):
     """AUTOSAR DiagnosticEnvConditionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEnvConditionFormula to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICENVCONDITIONFORMULA")
+        element = ET.Element("DIAGNOSTICENVCONDITIONFORMULA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEnvConditionFormula":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvConditionFormula":
         """Create DiagnosticEnvConditionFormula from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEnvConditionFormula(ARObject):
         Returns:
             DiagnosticEnvConditionFormula instance
         """
-        obj = cls()
+        obj: DiagnosticEnvConditionFormula = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEnvConditionFormula(ARObject):
 class DiagnosticEnvConditionFormulaBuilder:
     """Builder for DiagnosticEnvConditionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEnvConditionFormula()
+        self._obj: DiagnosticEnvConditionFormula = DiagnosticEnvConditionFormula()
 
     def build(self) -> DiagnosticEnvConditionFormula:
         """Build and return DiagnosticEnvConditionFormula object.

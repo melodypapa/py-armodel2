@@ -1,29 +1,28 @@
 """TDEventOccurrenceExpression AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventOccurrenceExpression(ARObject):
     """AUTOSAR TDEventOccurrenceExpression."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpression."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventOccurrenceExpression to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTOCCURRENCEEXPRESSION")
+        element = ET.Element("TDEVENTOCCURRENCEEXPRESSION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventOccurrenceExpression":
+    def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpression":
         """Create TDEventOccurrenceExpression from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventOccurrenceExpression(ARObject):
         Returns:
             TDEventOccurrenceExpression instance
         """
-        obj = cls()
+        obj: TDEventOccurrenceExpression = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventOccurrenceExpression(ARObject):
 class TDEventOccurrenceExpressionBuilder:
     """Builder for TDEventOccurrenceExpression."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventOccurrenceExpression()
+        self._obj: TDEventOccurrenceExpression = TDEventOccurrenceExpression()
 
     def build(self) -> TDEventOccurrenceExpression:
         """Build and return TDEventOccurrenceExpression object.

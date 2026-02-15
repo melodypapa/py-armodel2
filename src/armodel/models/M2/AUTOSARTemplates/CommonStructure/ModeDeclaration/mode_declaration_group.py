@@ -1,29 +1,28 @@
 """ModeDeclarationGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeDeclarationGroup(ARObject):
     """AUTOSAR ModeDeclarationGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeDeclarationGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEDECLARATIONGROUP")
+        element = ET.Element("MODEDECLARATIONGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeDeclarationGroup":
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroup":
         """Create ModeDeclarationGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeDeclarationGroup(ARObject):
         Returns:
             ModeDeclarationGroup instance
         """
-        obj = cls()
+        obj: ModeDeclarationGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeDeclarationGroup(ARObject):
 class ModeDeclarationGroupBuilder:
     """Builder for ModeDeclarationGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeDeclarationGroup()
+        self._obj: ModeDeclarationGroup = ModeDeclarationGroup()
 
     def build(self) -> ModeDeclarationGroup:
         """Build and return ModeDeclarationGroup object.

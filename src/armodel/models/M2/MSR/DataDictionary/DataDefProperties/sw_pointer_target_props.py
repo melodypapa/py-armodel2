@@ -1,29 +1,28 @@
 """SwPointerTargetProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwPointerTargetProps(ARObject):
     """AUTOSAR SwPointerTargetProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwPointerTargetProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWPOINTERTARGETPROPS")
+        element = ET.Element("SWPOINTERTARGETPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwPointerTargetProps":
+    def deserialize(cls, element: ET.Element) -> "SwPointerTargetProps":
         """Create SwPointerTargetProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwPointerTargetProps(ARObject):
         Returns:
             SwPointerTargetProps instance
         """
-        obj = cls()
+        obj: SwPointerTargetProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwPointerTargetProps(ARObject):
 class SwPointerTargetPropsBuilder:
     """Builder for SwPointerTargetProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwPointerTargetProps()
+        self._obj: SwPointerTargetProps = SwPointerTargetProps()
 
     def build(self) -> SwPointerTargetProps:
         """Build and return SwPointerTargetProps object.

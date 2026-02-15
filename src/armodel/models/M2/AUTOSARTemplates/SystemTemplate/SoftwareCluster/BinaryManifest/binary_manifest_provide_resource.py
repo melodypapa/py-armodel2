@@ -1,29 +1,28 @@
 """BinaryManifestProvideResource AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BinaryManifestProvideResource(ARObject):
     """AUTOSAR BinaryManifestProvideResource."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BinaryManifestProvideResource."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BinaryManifestProvideResource to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BINARYMANIFESTPROVIDERESOURCE")
+        element = ET.Element("BINARYMANIFESTPROVIDERESOURCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BinaryManifestProvideResource":
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestProvideResource":
         """Create BinaryManifestProvideResource from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BinaryManifestProvideResource(ARObject):
         Returns:
             BinaryManifestProvideResource instance
         """
-        obj = cls()
+        obj: BinaryManifestProvideResource = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BinaryManifestProvideResource(ARObject):
 class BinaryManifestProvideResourceBuilder:
     """Builder for BinaryManifestProvideResource."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BinaryManifestProvideResource()
+        self._obj: BinaryManifestProvideResource = BinaryManifestProvideResource()
 
     def build(self) -> BinaryManifestProvideResource:
         """Build and return BinaryManifestProvideResource object.

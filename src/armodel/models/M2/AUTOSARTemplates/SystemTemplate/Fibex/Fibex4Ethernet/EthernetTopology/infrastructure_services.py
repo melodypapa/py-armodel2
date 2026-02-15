@@ -1,29 +1,28 @@
 """InfrastructureServices AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InfrastructureServices(ARObject):
     """AUTOSAR InfrastructureServices."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InfrastructureServices."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InfrastructureServices to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INFRASTRUCTURESERVICES")
+        element = ET.Element("INFRASTRUCTURESERVICES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InfrastructureServices":
+    def deserialize(cls, element: ET.Element) -> "InfrastructureServices":
         """Create InfrastructureServices from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InfrastructureServices(ARObject):
         Returns:
             InfrastructureServices instance
         """
-        obj = cls()
+        obj: InfrastructureServices = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InfrastructureServices(ARObject):
 class InfrastructureServicesBuilder:
     """Builder for InfrastructureServices."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InfrastructureServices()
+        self._obj: InfrastructureServices = InfrastructureServices()
 
     def build(self) -> InfrastructureServices:
         """Build and return InfrastructureServices object.

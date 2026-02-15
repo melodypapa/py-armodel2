@@ -1,29 +1,28 @@
 """IntegerValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IntegerValueVariationPoint(ARObject):
     """AUTOSAR IntegerValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IntegerValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IntegerValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INTEGERVALUEVARIATIONPOINT")
+        element = ET.Element("INTEGERVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IntegerValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "IntegerValueVariationPoint":
         """Create IntegerValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IntegerValueVariationPoint(ARObject):
         Returns:
             IntegerValueVariationPoint instance
         """
-        obj = cls()
+        obj: IntegerValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IntegerValueVariationPoint(ARObject):
 class IntegerValueVariationPointBuilder:
     """Builder for IntegerValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IntegerValueVariationPoint()
+        self._obj: IntegerValueVariationPoint = IntegerValueVariationPoint()
 
     def build(self) -> IntegerValueVariationPoint:
         """Build and return IntegerValueVariationPoint object.

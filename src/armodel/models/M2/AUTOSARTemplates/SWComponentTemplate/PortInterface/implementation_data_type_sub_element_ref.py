@@ -1,29 +1,28 @@
 """ImplementationDataTypeSubElementRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ImplementationDataTypeSubElementRef(ARObject):
     """AUTOSAR ImplementationDataTypeSubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ImplementationDataTypeSubElementRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ImplementationDataTypeSubElementRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IMPLEMENTATIONDATATYPESUBELEMENTREF")
+        element = ET.Element("IMPLEMENTATIONDATATYPESUBELEMENTREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ImplementationDataTypeSubElementRef":
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeSubElementRef":
         """Create ImplementationDataTypeSubElementRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ImplementationDataTypeSubElementRef(ARObject):
         Returns:
             ImplementationDataTypeSubElementRef instance
         """
-        obj = cls()
+        obj: ImplementationDataTypeSubElementRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ImplementationDataTypeSubElementRef(ARObject):
 class ImplementationDataTypeSubElementRefBuilder:
     """Builder for ImplementationDataTypeSubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ImplementationDataTypeSubElementRef()
+        self._obj: ImplementationDataTypeSubElementRef = ImplementationDataTypeSubElementRef()
 
     def build(self) -> ImplementationDataTypeSubElementRef:
         """Build and return ImplementationDataTypeSubElementRef object.

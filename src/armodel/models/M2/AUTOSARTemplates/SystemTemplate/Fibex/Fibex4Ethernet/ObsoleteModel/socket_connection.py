@@ -1,29 +1,28 @@
 """SocketConnection AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SocketConnection(ARObject):
     """AUTOSAR SocketConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SocketConnection."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SocketConnection to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOCKETCONNECTION")
+        element = ET.Element("SOCKETCONNECTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SocketConnection":
+    def deserialize(cls, element: ET.Element) -> "SocketConnection":
         """Create SocketConnection from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SocketConnection(ARObject):
         Returns:
             SocketConnection instance
         """
-        obj = cls()
+        obj: SocketConnection = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SocketConnection(ARObject):
 class SocketConnectionBuilder:
     """Builder for SocketConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SocketConnection()
+        self._obj: SocketConnection = SocketConnection()
 
     def build(self) -> SocketConnection:
         """Build and return SocketConnection object.

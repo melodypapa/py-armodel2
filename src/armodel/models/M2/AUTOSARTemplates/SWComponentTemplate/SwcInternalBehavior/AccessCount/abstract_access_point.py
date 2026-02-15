@@ -1,29 +1,28 @@
 """AbstractAccessPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractAccessPoint(ARObject):
     """AUTOSAR AbstractAccessPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractAccessPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractAccessPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTACCESSPOINT")
+        element = ET.Element("ABSTRACTACCESSPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractAccessPoint":
+    def deserialize(cls, element: ET.Element) -> "AbstractAccessPoint":
         """Create AbstractAccessPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractAccessPoint(ARObject):
         Returns:
             AbstractAccessPoint instance
         """
-        obj = cls()
+        obj: AbstractAccessPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractAccessPoint(ARObject):
 class AbstractAccessPointBuilder:
     """Builder for AbstractAccessPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractAccessPoint()
+        self._obj: AbstractAccessPoint = AbstractAccessPoint()
 
     def build(self) -> AbstractAccessPoint:
         """Build and return AbstractAccessPoint object.

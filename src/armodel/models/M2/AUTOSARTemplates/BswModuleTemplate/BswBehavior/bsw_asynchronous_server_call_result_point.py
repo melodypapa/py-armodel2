@@ -1,29 +1,28 @@
 """BswAsynchronousServerCallResultPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswAsynchronousServerCallResultPoint(ARObject):
     """AUTOSAR BswAsynchronousServerCallResultPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswAsynchronousServerCallResultPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWASYNCHRONOUSSERVERCALLRESULTPOINT")
+        element = ET.Element("BSWASYNCHRONOUSSERVERCALLRESULTPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswAsynchronousServerCallResultPoint":
+    def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallResultPoint":
         """Create BswAsynchronousServerCallResultPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswAsynchronousServerCallResultPoint(ARObject):
         Returns:
             BswAsynchronousServerCallResultPoint instance
         """
-        obj = cls()
+        obj: BswAsynchronousServerCallResultPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswAsynchronousServerCallResultPoint(ARObject):
 class BswAsynchronousServerCallResultPointBuilder:
     """Builder for BswAsynchronousServerCallResultPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswAsynchronousServerCallResultPoint()
+        self._obj: BswAsynchronousServerCallResultPoint = BswAsynchronousServerCallResultPoint()
 
     def build(self) -> BswAsynchronousServerCallResultPoint:
         """Build and return BswAsynchronousServerCallResultPoint object.

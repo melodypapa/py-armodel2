@@ -1,29 +1,28 @@
 """CpSoftwareClusterCommunicationResourceProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CpSoftwareClusterCommunicationResourceProps(ARObject):
     """AUTOSAR CpSoftwareClusterCommunicationResourceProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CpSoftwareClusterCommunicationResourceProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CpSoftwareClusterCommunicationResourceProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CPSOFTWARECLUSTERCOMMUNICATIONRESOURCEPROPS")
+        element = ET.Element("CPSOFTWARECLUSTERCOMMUNICATIONRESOURCEPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CpSoftwareClusterCommunicationResourceProps":
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterCommunicationResourceProps":
         """Create CpSoftwareClusterCommunicationResourceProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CpSoftwareClusterCommunicationResourceProps(ARObject):
         Returns:
             CpSoftwareClusterCommunicationResourceProps instance
         """
-        obj = cls()
+        obj: CpSoftwareClusterCommunicationResourceProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CpSoftwareClusterCommunicationResourceProps(ARObject):
 class CpSoftwareClusterCommunicationResourcePropsBuilder:
     """Builder for CpSoftwareClusterCommunicationResourceProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CpSoftwareClusterCommunicationResourceProps()
+        self._obj: CpSoftwareClusterCommunicationResourceProps = CpSoftwareClusterCommunicationResourceProps()
 
     def build(self) -> CpSoftwareClusterCommunicationResourceProps:
         """Build and return CpSoftwareClusterCommunicationResourceProps object.

@@ -1,29 +1,28 @@
 """ParameterPortAnnotation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ParameterPortAnnotation(ARObject):
     """AUTOSAR ParameterPortAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ParameterPortAnnotation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ParameterPortAnnotation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PARAMETERPORTANNOTATION")
+        element = ET.Element("PARAMETERPORTANNOTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ParameterPortAnnotation":
+    def deserialize(cls, element: ET.Element) -> "ParameterPortAnnotation":
         """Create ParameterPortAnnotation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ParameterPortAnnotation(ARObject):
         Returns:
             ParameterPortAnnotation instance
         """
-        obj = cls()
+        obj: ParameterPortAnnotation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ParameterPortAnnotation(ARObject):
 class ParameterPortAnnotationBuilder:
     """Builder for ParameterPortAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ParameterPortAnnotation()
+        self._obj: ParameterPortAnnotation = ParameterPortAnnotation()
 
     def build(self) -> ParameterPortAnnotation:
         """Build and return ParameterPortAnnotation object.

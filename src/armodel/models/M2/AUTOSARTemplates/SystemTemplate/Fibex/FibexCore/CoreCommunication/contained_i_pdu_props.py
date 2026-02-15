@@ -1,29 +1,28 @@
 """ContainedIPduProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ContainedIPduProps(ARObject):
     """AUTOSAR ContainedIPduProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ContainedIPduProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ContainedIPduProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONTAINEDIPDUPROPS")
+        element = ET.Element("CONTAINEDIPDUPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ContainedIPduProps":
+    def deserialize(cls, element: ET.Element) -> "ContainedIPduProps":
         """Create ContainedIPduProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ContainedIPduProps(ARObject):
         Returns:
             ContainedIPduProps instance
         """
-        obj = cls()
+        obj: ContainedIPduProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ContainedIPduProps(ARObject):
 class ContainedIPduPropsBuilder:
     """Builder for ContainedIPduProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ContainedIPduProps()
+        self._obj: ContainedIPduProps = ContainedIPduProps()
 
     def build(self) -> ContainedIPduProps:
         """Build and return ContainedIPduProps object.

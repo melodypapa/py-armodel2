@@ -1,29 +1,28 @@
 """DdsOwnership AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsOwnership(ARObject):
     """AUTOSAR DdsOwnership."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsOwnership."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsOwnership to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSOWNERSHIP")
+        element = ET.Element("DDSOWNERSHIP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsOwnership":
+    def deserialize(cls, element: ET.Element) -> "DdsOwnership":
         """Create DdsOwnership from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsOwnership(ARObject):
         Returns:
             DdsOwnership instance
         """
-        obj = cls()
+        obj: DdsOwnership = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsOwnership(ARObject):
 class DdsOwnershipBuilder:
     """Builder for DdsOwnership."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsOwnership()
+        self._obj: DdsOwnership = DdsOwnership()
 
     def build(self) -> DdsOwnership:
         """Build and return DdsOwnership object.

@@ -1,29 +1,28 @@
 """WorstCaseStackUsage AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class WorstCaseStackUsage(ARObject):
     """AUTOSAR WorstCaseStackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize WorstCaseStackUsage."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert WorstCaseStackUsage to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("WORSTCASESTACKUSAGE")
+        element = ET.Element("WORSTCASESTACKUSAGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "WorstCaseStackUsage":
+    def deserialize(cls, element: ET.Element) -> "WorstCaseStackUsage":
         """Create WorstCaseStackUsage from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class WorstCaseStackUsage(ARObject):
         Returns:
             WorstCaseStackUsage instance
         """
-        obj = cls()
+        obj: WorstCaseStackUsage = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class WorstCaseStackUsage(ARObject):
 class WorstCaseStackUsageBuilder:
     """Builder for WorstCaseStackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = WorstCaseStackUsage()
+        self._obj: WorstCaseStackUsage = WorstCaseStackUsage()
 
     def build(self) -> WorstCaseStackUsage:
         """Build and return WorstCaseStackUsage object.

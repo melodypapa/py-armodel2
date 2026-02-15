@@ -1,29 +1,28 @@
 """MlFormula AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MlFormula(ARObject):
     """AUTOSAR MlFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MlFormula."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MlFormula to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MLFORMULA")
+        element = ET.Element("MLFORMULA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MlFormula":
+    def deserialize(cls, element: ET.Element) -> "MlFormula":
         """Create MlFormula from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MlFormula(ARObject):
         Returns:
             MlFormula instance
         """
-        obj = cls()
+        obj: MlFormula = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MlFormula(ARObject):
 class MlFormulaBuilder:
     """Builder for MlFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MlFormula()
+        self._obj: MlFormula = MlFormula()
 
     def build(self) -> MlFormula:
         """Build and return MlFormula object.

@@ -1,29 +1,28 @@
 """DiagnosticContributionSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticContributionSet(ARObject):
     """AUTOSAR DiagnosticContributionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticContributionSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticContributionSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCONTRIBUTIONSET")
+        element = ET.Element("DIAGNOSTICCONTRIBUTIONSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticContributionSet":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticContributionSet":
         """Create DiagnosticContributionSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticContributionSet(ARObject):
         Returns:
             DiagnosticContributionSet instance
         """
-        obj = cls()
+        obj: DiagnosticContributionSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticContributionSet(ARObject):
 class DiagnosticContributionSetBuilder:
     """Builder for DiagnosticContributionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticContributionSet()
+        self._obj: DiagnosticContributionSet = DiagnosticContributionSet()
 
     def build(self) -> DiagnosticContributionSet:
         """Build and return DiagnosticContributionSet object.

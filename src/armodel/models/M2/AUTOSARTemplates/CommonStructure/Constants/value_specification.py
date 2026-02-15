@@ -1,29 +1,28 @@
 """ValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ValueSpecification(ARObject):
     """AUTOSAR ValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VALUESPECIFICATION")
+        element = ET.Element("VALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "ValueSpecification":
         """Create ValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ValueSpecification(ARObject):
         Returns:
             ValueSpecification instance
         """
-        obj = cls()
+        obj: ValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ValueSpecification(ARObject):
 class ValueSpecificationBuilder:
     """Builder for ValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ValueSpecification()
+        self._obj: ValueSpecification = ValueSpecification()
 
     def build(self) -> ValueSpecification:
         """Build and return ValueSpecification object.

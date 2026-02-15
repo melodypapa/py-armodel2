@@ -1,29 +1,28 @@
 """LinSlaveConfigIdent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinSlaveConfigIdent(ARObject):
     """AUTOSAR LinSlaveConfigIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinSlaveConfigIdent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinSlaveConfigIdent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINSLAVECONFIGIDENT")
+        element = ET.Element("LINSLAVECONFIGIDENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinSlaveConfigIdent":
+    def deserialize(cls, element: ET.Element) -> "LinSlaveConfigIdent":
         """Create LinSlaveConfigIdent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinSlaveConfigIdent(ARObject):
         Returns:
             LinSlaveConfigIdent instance
         """
-        obj = cls()
+        obj: LinSlaveConfigIdent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinSlaveConfigIdent(ARObject):
 class LinSlaveConfigIdentBuilder:
     """Builder for LinSlaveConfigIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinSlaveConfigIdent()
+        self._obj: LinSlaveConfigIdent = LinSlaveConfigIdent()
 
     def build(self) -> LinSlaveConfigIdent:
         """Build and return LinSlaveConfigIdent object.

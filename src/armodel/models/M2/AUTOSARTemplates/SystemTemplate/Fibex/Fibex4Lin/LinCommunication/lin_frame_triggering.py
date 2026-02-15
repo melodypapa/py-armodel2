@@ -1,29 +1,28 @@
 """LinFrameTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinFrameTriggering(ARObject):
     """AUTOSAR LinFrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinFrameTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinFrameTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINFRAMETRIGGERING")
+        element = ET.Element("LINFRAMETRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinFrameTriggering":
+    def deserialize(cls, element: ET.Element) -> "LinFrameTriggering":
         """Create LinFrameTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinFrameTriggering(ARObject):
         Returns:
             LinFrameTriggering instance
         """
-        obj = cls()
+        obj: LinFrameTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinFrameTriggering(ARObject):
 class LinFrameTriggeringBuilder:
     """Builder for LinFrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinFrameTriggering()
+        self._obj: LinFrameTriggering = LinFrameTriggering()
 
     def build(self) -> LinFrameTriggering:
         """Build and return LinFrameTriggering object.

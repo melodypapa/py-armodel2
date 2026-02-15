@@ -1,29 +1,28 @@
 """DiagnosticCustomServiceInstance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticCustomServiceInstance(ARObject):
     """AUTOSAR DiagnosticCustomServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceInstance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticCustomServiceInstance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCUSTOMSERVICEINSTANCE")
+        element = ET.Element("DIAGNOSTICCUSTOMSERVICEINSTANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticCustomServiceInstance":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCustomServiceInstance":
         """Create DiagnosticCustomServiceInstance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticCustomServiceInstance(ARObject):
         Returns:
             DiagnosticCustomServiceInstance instance
         """
-        obj = cls()
+        obj: DiagnosticCustomServiceInstance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticCustomServiceInstance(ARObject):
 class DiagnosticCustomServiceInstanceBuilder:
     """Builder for DiagnosticCustomServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticCustomServiceInstance()
+        self._obj: DiagnosticCustomServiceInstance = DiagnosticCustomServiceInstance()
 
     def build(self) -> DiagnosticCustomServiceInstance:
         """Build and return DiagnosticCustomServiceInstance object.

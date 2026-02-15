@@ -1,29 +1,28 @@
 """DiagnosticAuthTransmitCertificateEvaluation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticAuthTransmitCertificateEvaluation(ARObject):
     """AUTOSAR DiagnosticAuthTransmitCertificateEvaluation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateEvaluation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticAuthTransmitCertificateEvaluation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICAUTHTRANSMITCERTIFICATEEVALUATION")
+        element = ET.Element("DIAGNOSTICAUTHTRANSMITCERTIFICATEEVALUATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticAuthTransmitCertificateEvaluation":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificateEvaluation":
         """Create DiagnosticAuthTransmitCertificateEvaluation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticAuthTransmitCertificateEvaluation(ARObject):
         Returns:
             DiagnosticAuthTransmitCertificateEvaluation instance
         """
-        obj = cls()
+        obj: DiagnosticAuthTransmitCertificateEvaluation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticAuthTransmitCertificateEvaluation(ARObject):
 class DiagnosticAuthTransmitCertificateEvaluationBuilder:
     """Builder for DiagnosticAuthTransmitCertificateEvaluation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticAuthTransmitCertificateEvaluation()
+        self._obj: DiagnosticAuthTransmitCertificateEvaluation = DiagnosticAuthTransmitCertificateEvaluation()
 
     def build(self) -> DiagnosticAuthTransmitCertificateEvaluation:
         """Build and return DiagnosticAuthTransmitCertificateEvaluation object.

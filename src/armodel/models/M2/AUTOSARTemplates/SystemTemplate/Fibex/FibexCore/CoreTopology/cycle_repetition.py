@@ -1,29 +1,28 @@
 """CycleRepetition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CycleRepetition(ARObject):
     """AUTOSAR CycleRepetition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CycleRepetition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CycleRepetition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CYCLEREPETITION")
+        element = ET.Element("CYCLEREPETITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CycleRepetition":
+    def deserialize(cls, element: ET.Element) -> "CycleRepetition":
         """Create CycleRepetition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CycleRepetition(ARObject):
         Returns:
             CycleRepetition instance
         """
-        obj = cls()
+        obj: CycleRepetition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CycleRepetition(ARObject):
 class CycleRepetitionBuilder:
     """Builder for CycleRepetition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CycleRepetition()
+        self._obj: CycleRepetition = CycleRepetition()
 
     def build(self) -> CycleRepetition:
         """Build and return CycleRepetition object.

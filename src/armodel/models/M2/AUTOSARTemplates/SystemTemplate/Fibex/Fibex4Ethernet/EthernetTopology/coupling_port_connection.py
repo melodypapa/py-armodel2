@@ -1,29 +1,28 @@
 """CouplingPortConnection AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CouplingPortConnection(ARObject):
     """AUTOSAR CouplingPortConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CouplingPortConnection to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COUPLINGPORTCONNECTION")
+        element = ET.Element("COUPLINGPORTCONNECTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CouplingPortConnection":
+    def deserialize(cls, element: ET.Element) -> "CouplingPortConnection":
         """Create CouplingPortConnection from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CouplingPortConnection(ARObject):
         Returns:
             CouplingPortConnection instance
         """
-        obj = cls()
+        obj: CouplingPortConnection = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CouplingPortConnection(ARObject):
 class CouplingPortConnectionBuilder:
     """Builder for CouplingPortConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CouplingPortConnection()
+        self._obj: CouplingPortConnection = CouplingPortConnection()
 
     def build(self) -> CouplingPortConnection:
         """Build and return CouplingPortConnection object.

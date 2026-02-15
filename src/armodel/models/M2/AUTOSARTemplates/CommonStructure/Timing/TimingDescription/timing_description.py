@@ -1,29 +1,28 @@
 """TimingDescription AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimingDescription(ARObject):
     """AUTOSAR TimingDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimingDescription."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimingDescription to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMINGDESCRIPTION")
+        element = ET.Element("TIMINGDESCRIPTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimingDescription":
+    def deserialize(cls, element: ET.Element) -> "TimingDescription":
         """Create TimingDescription from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimingDescription(ARObject):
         Returns:
             TimingDescription instance
         """
-        obj = cls()
+        obj: TimingDescription = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimingDescription(ARObject):
 class TimingDescriptionBuilder:
     """Builder for TimingDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimingDescription()
+        self._obj: TimingDescription = TimingDescription()
 
     def build(self) -> TimingDescription:
         """Build and return TimingDescription object.

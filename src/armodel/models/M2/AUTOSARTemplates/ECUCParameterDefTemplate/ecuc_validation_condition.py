@@ -1,29 +1,28 @@
 """EcucValidationCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucValidationCondition(ARObject):
     """AUTOSAR EcucValidationCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucValidationCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucValidationCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCVALIDATIONCONDITION")
+        element = ET.Element("ECUCVALIDATIONCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucValidationCondition":
+    def deserialize(cls, element: ET.Element) -> "EcucValidationCondition":
         """Create EcucValidationCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucValidationCondition(ARObject):
         Returns:
             EcucValidationCondition instance
         """
-        obj = cls()
+        obj: EcucValidationCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucValidationCondition(ARObject):
 class EcucValidationConditionBuilder:
     """Builder for EcucValidationCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucValidationCondition()
+        self._obj: EcucValidationCondition = EcucValidationCondition()
 
     def build(self) -> EcucValidationCondition:
         """Build and return EcucValidationCondition object.

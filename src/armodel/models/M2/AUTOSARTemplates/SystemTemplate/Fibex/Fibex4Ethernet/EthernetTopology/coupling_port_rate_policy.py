@@ -1,29 +1,28 @@
 """CouplingPortRatePolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CouplingPortRatePolicy(ARObject):
     """AUTOSAR CouplingPortRatePolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CouplingPortRatePolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CouplingPortRatePolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COUPLINGPORTRATEPOLICY")
+        element = ET.Element("COUPLINGPORTRATEPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CouplingPortRatePolicy":
+    def deserialize(cls, element: ET.Element) -> "CouplingPortRatePolicy":
         """Create CouplingPortRatePolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CouplingPortRatePolicy(ARObject):
         Returns:
             CouplingPortRatePolicy instance
         """
-        obj = cls()
+        obj: CouplingPortRatePolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CouplingPortRatePolicy(ARObject):
 class CouplingPortRatePolicyBuilder:
     """Builder for CouplingPortRatePolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CouplingPortRatePolicy()
+        self._obj: CouplingPortRatePolicy = CouplingPortRatePolicy()
 
     def build(self) -> CouplingPortRatePolicy:
         """Build and return CouplingPortRatePolicy object.

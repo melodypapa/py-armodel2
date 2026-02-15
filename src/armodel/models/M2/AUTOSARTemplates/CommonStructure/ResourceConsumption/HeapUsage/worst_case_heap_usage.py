@@ -1,29 +1,28 @@
 """WorstCaseHeapUsage AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class WorstCaseHeapUsage(ARObject):
     """AUTOSAR WorstCaseHeapUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize WorstCaseHeapUsage."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert WorstCaseHeapUsage to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("WORSTCASEHEAPUSAGE")
+        element = ET.Element("WORSTCASEHEAPUSAGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "WorstCaseHeapUsage":
+    def deserialize(cls, element: ET.Element) -> "WorstCaseHeapUsage":
         """Create WorstCaseHeapUsage from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class WorstCaseHeapUsage(ARObject):
         Returns:
             WorstCaseHeapUsage instance
         """
-        obj = cls()
+        obj: WorstCaseHeapUsage = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class WorstCaseHeapUsage(ARObject):
 class WorstCaseHeapUsageBuilder:
     """Builder for WorstCaseHeapUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = WorstCaseHeapUsage()
+        self._obj: WorstCaseHeapUsage = WorstCaseHeapUsage()
 
     def build(self) -> WorstCaseHeapUsage:
         """Build and return WorstCaseHeapUsage object.

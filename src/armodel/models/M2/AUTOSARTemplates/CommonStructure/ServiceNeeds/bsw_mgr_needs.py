@@ -1,29 +1,28 @@
 """BswMgrNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswMgrNeeds(ARObject):
     """AUTOSAR BswMgrNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswMgrNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswMgrNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWMGRNEEDS")
+        element = ET.Element("BSWMGRNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswMgrNeeds":
+    def deserialize(cls, element: ET.Element) -> "BswMgrNeeds":
         """Create BswMgrNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswMgrNeeds(ARObject):
         Returns:
             BswMgrNeeds instance
         """
-        obj = cls()
+        obj: BswMgrNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswMgrNeeds(ARObject):
 class BswMgrNeedsBuilder:
     """Builder for BswMgrNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswMgrNeeds()
+        self._obj: BswMgrNeeds = BswMgrNeeds()
 
     def build(self) -> BswMgrNeeds:
         """Build and return BswMgrNeeds object.

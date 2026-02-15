@@ -1,29 +1,28 @@
 """HwCategory AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwCategory(ARObject):
     """AUTOSAR HwCategory."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwCategory."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwCategory to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWCATEGORY")
+        element = ET.Element("HWCATEGORY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwCategory":
+    def deserialize(cls, element: ET.Element) -> "HwCategory":
         """Create HwCategory from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwCategory(ARObject):
         Returns:
             HwCategory instance
         """
-        obj = cls()
+        obj: HwCategory = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwCategory(ARObject):
 class HwCategoryBuilder:
     """Builder for HwCategory."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwCategory()
+        self._obj: HwCategory = HwCategory()
 
     def build(self) -> HwCategory:
         """Build and return HwCategory object.

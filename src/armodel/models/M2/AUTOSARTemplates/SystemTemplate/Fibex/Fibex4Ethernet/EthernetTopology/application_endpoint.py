@@ -1,29 +1,28 @@
 """ApplicationEndpoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationEndpoint(ARObject):
     """AUTOSAR ApplicationEndpoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationEndpoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONENDPOINT")
+        element = ET.Element("APPLICATIONENDPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationEndpoint":
+    def deserialize(cls, element: ET.Element) -> "ApplicationEndpoint":
         """Create ApplicationEndpoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationEndpoint(ARObject):
         Returns:
             ApplicationEndpoint instance
         """
-        obj = cls()
+        obj: ApplicationEndpoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationEndpoint(ARObject):
 class ApplicationEndpointBuilder:
     """Builder for ApplicationEndpoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationEndpoint()
+        self._obj: ApplicationEndpoint = ApplicationEndpoint()
 
     def build(self) -> ApplicationEndpoint:
         """Build and return ApplicationEndpoint object.

@@ -1,29 +1,28 @@
 """SporadicEventTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SporadicEventTriggering(ARObject):
     """AUTOSAR SporadicEventTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SporadicEventTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SporadicEventTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SPORADICEVENTTRIGGERING")
+        element = ET.Element("SPORADICEVENTTRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SporadicEventTriggering":
+    def deserialize(cls, element: ET.Element) -> "SporadicEventTriggering":
         """Create SporadicEventTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SporadicEventTriggering(ARObject):
         Returns:
             SporadicEventTriggering instance
         """
-        obj = cls()
+        obj: SporadicEventTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SporadicEventTriggering(ARObject):
 class SporadicEventTriggeringBuilder:
     """Builder for SporadicEventTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SporadicEventTriggering()
+        self._obj: SporadicEventTriggering = SporadicEventTriggering()
 
     def build(self) -> SporadicEventTriggering:
         """Build and return SporadicEventTriggering object.

@@ -1,29 +1,28 @@
 """EcucCommonAttributes AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucCommonAttributes(ARObject):
     """AUTOSAR EcucCommonAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucCommonAttributes."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucCommonAttributes to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCCOMMONATTRIBUTES")
+        element = ET.Element("ECUCCOMMONATTRIBUTES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucCommonAttributes":
+    def deserialize(cls, element: ET.Element) -> "EcucCommonAttributes":
         """Create EcucCommonAttributes from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucCommonAttributes(ARObject):
         Returns:
             EcucCommonAttributes instance
         """
-        obj = cls()
+        obj: EcucCommonAttributes = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucCommonAttributes(ARObject):
 class EcucCommonAttributesBuilder:
     """Builder for EcucCommonAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucCommonAttributes()
+        self._obj: EcucCommonAttributes = EcucCommonAttributes()
 
     def build(self) -> EcucCommonAttributes:
         """Build and return EcucCommonAttributes object.

@@ -1,29 +1,28 @@
 """DiagnosticTransferExit AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticTransferExit(ARObject):
     """AUTOSAR DiagnosticTransferExit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticTransferExit."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticTransferExit to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICTRANSFEREXIT")
+        element = ET.Element("DIAGNOSTICTRANSFEREXIT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticTransferExit":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTransferExit":
         """Create DiagnosticTransferExit from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticTransferExit(ARObject):
         Returns:
             DiagnosticTransferExit instance
         """
-        obj = cls()
+        obj: DiagnosticTransferExit = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticTransferExit(ARObject):
 class DiagnosticTransferExitBuilder:
     """Builder for DiagnosticTransferExit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticTransferExit()
+        self._obj: DiagnosticTransferExit = DiagnosticTransferExit()
 
     def build(self) -> DiagnosticTransferExit:
         """Build and return DiagnosticTransferExit object.

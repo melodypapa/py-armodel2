@@ -1,29 +1,28 @@
 """ImplementationProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ImplementationProps(ARObject):
     """AUTOSAR ImplementationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ImplementationProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ImplementationProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IMPLEMENTATIONPROPS")
+        element = ET.Element("IMPLEMENTATIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ImplementationProps":
+    def deserialize(cls, element: ET.Element) -> "ImplementationProps":
         """Create ImplementationProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ImplementationProps(ARObject):
         Returns:
             ImplementationProps instance
         """
-        obj = cls()
+        obj: ImplementationProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ImplementationProps(ARObject):
 class ImplementationPropsBuilder:
     """Builder for ImplementationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ImplementationProps()
+        self._obj: ImplementationProps = ImplementationProps()
 
     def build(self) -> ImplementationProps:
         """Build and return ImplementationProps object.

@@ -1,29 +1,28 @@
 """AbstractEthernetFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractEthernetFrame(ARObject):
     """AUTOSAR AbstractEthernetFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractEthernetFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractEthernetFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTETHERNETFRAME")
+        element = ET.Element("ABSTRACTETHERNETFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractEthernetFrame":
+    def deserialize(cls, element: ET.Element) -> "AbstractEthernetFrame":
         """Create AbstractEthernetFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractEthernetFrame(ARObject):
         Returns:
             AbstractEthernetFrame instance
         """
-        obj = cls()
+        obj: AbstractEthernetFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractEthernetFrame(ARObject):
 class AbstractEthernetFrameBuilder:
     """Builder for AbstractEthernetFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractEthernetFrame()
+        self._obj: AbstractEthernetFrame = AbstractEthernetFrame()
 
     def build(self) -> AbstractEthernetFrame:
         """Build and return AbstractEthernetFrame object.

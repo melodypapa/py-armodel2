@@ -1,29 +1,28 @@
 """FlexrayFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayFrame(ARObject):
     """AUTOSAR FlexrayFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYFRAME")
+        element = ET.Element("FLEXRAYFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayFrame":
+    def deserialize(cls, element: ET.Element) -> "FlexrayFrame":
         """Create FlexrayFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayFrame(ARObject):
         Returns:
             FlexrayFrame instance
         """
-        obj = cls()
+        obj: FlexrayFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayFrame(ARObject):
 class FlexrayFrameBuilder:
     """Builder for FlexrayFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayFrame()
+        self._obj: FlexrayFrame = FlexrayFrame()
 
     def build(self) -> FlexrayFrame:
         """Build and return FlexrayFrame object.

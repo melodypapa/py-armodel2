@@ -1,29 +1,28 @@
 """ApplicationPartitionToEcuPartitionMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationPartitionToEcuPartitionMapping(ARObject):
     """AUTOSAR ApplicationPartitionToEcuPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationPartitionToEcuPartitionMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationPartitionToEcuPartitionMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONPARTITIONTOECUPARTITIONMAPPING")
+        element = ET.Element("APPLICATIONPARTITIONTOECUPARTITIONMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationPartitionToEcuPartitionMapping":
+    def deserialize(cls, element: ET.Element) -> "ApplicationPartitionToEcuPartitionMapping":
         """Create ApplicationPartitionToEcuPartitionMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationPartitionToEcuPartitionMapping(ARObject):
         Returns:
             ApplicationPartitionToEcuPartitionMapping instance
         """
-        obj = cls()
+        obj: ApplicationPartitionToEcuPartitionMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationPartitionToEcuPartitionMapping(ARObject):
 class ApplicationPartitionToEcuPartitionMappingBuilder:
     """Builder for ApplicationPartitionToEcuPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationPartitionToEcuPartitionMapping()
+        self._obj: ApplicationPartitionToEcuPartitionMapping = ApplicationPartitionToEcuPartitionMapping()
 
     def build(self) -> ApplicationPartitionToEcuPartitionMapping:
         """Build and return ApplicationPartitionToEcuPartitionMapping object.

@@ -1,29 +1,28 @@
 """Frame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Frame(ARObject):
     """AUTOSAR Frame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Frame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Frame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FRAME")
+        element = ET.Element("FRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Frame":
+    def deserialize(cls, element: ET.Element) -> "Frame":
         """Create Frame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Frame(ARObject):
         Returns:
             Frame instance
         """
-        obj = cls()
+        obj: Frame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Frame(ARObject):
 class FrameBuilder:
     """Builder for Frame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Frame()
+        self._obj: Frame = Frame()
 
     def build(self) -> Frame:
         """Build and return Frame object.

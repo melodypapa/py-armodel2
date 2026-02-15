@@ -1,29 +1,28 @@
 """CompuScaleRationalFormula AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompuScaleRationalFormula(ARObject):
     """AUTOSAR CompuScaleRationalFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompuScaleRationalFormula to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPUSCALERATIONALFORMULA")
+        element = ET.Element("COMPUSCALERATIONALFORMULA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompuScaleRationalFormula":
+    def deserialize(cls, element: ET.Element) -> "CompuScaleRationalFormula":
         """Create CompuScaleRationalFormula from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompuScaleRationalFormula(ARObject):
         Returns:
             CompuScaleRationalFormula instance
         """
-        obj = cls()
+        obj: CompuScaleRationalFormula = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompuScaleRationalFormula(ARObject):
 class CompuScaleRationalFormulaBuilder:
     """Builder for CompuScaleRationalFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompuScaleRationalFormula()
+        self._obj: CompuScaleRationalFormula = CompuScaleRationalFormula()
 
     def build(self) -> CompuScaleRationalFormula:
         """Build and return CompuScaleRationalFormula object.

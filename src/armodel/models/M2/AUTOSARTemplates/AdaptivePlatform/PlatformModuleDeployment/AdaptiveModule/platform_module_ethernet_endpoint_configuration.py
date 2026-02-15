@@ -1,29 +1,28 @@
 """PlatformModuleEthernetEndpointConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PlatformModuleEthernetEndpointConfiguration(ARObject):
     """AUTOSAR PlatformModuleEthernetEndpointConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PlatformModuleEthernetEndpointConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PlatformModuleEthernetEndpointConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PLATFORMMODULEETHERNETENDPOINTCONFIGURATION")
+        element = ET.Element("PLATFORMMODULEETHERNETENDPOINTCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PlatformModuleEthernetEndpointConfiguration":
+    def deserialize(cls, element: ET.Element) -> "PlatformModuleEthernetEndpointConfiguration":
         """Create PlatformModuleEthernetEndpointConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARObject):
         Returns:
             PlatformModuleEthernetEndpointConfiguration instance
         """
-        obj = cls()
+        obj: PlatformModuleEthernetEndpointConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PlatformModuleEthernetEndpointConfiguration(ARObject):
 class PlatformModuleEthernetEndpointConfigurationBuilder:
     """Builder for PlatformModuleEthernetEndpointConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PlatformModuleEthernetEndpointConfiguration()
+        self._obj: PlatformModuleEthernetEndpointConfiguration = PlatformModuleEthernetEndpointConfiguration()
 
     def build(self) -> PlatformModuleEthernetEndpointConfiguration:
         """Build and return PlatformModuleEthernetEndpointConfiguration object.

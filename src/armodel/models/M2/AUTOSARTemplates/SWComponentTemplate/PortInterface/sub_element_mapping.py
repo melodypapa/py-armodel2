@@ -1,29 +1,28 @@
 """SubElementMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SubElementMapping(ARObject):
     """AUTOSAR SubElementMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SubElementMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SubElementMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SUBELEMENTMAPPING")
+        element = ET.Element("SUBELEMENTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SubElementMapping":
+    def deserialize(cls, element: ET.Element) -> "SubElementMapping":
         """Create SubElementMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SubElementMapping(ARObject):
         Returns:
             SubElementMapping instance
         """
-        obj = cls()
+        obj: SubElementMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SubElementMapping(ARObject):
 class SubElementMappingBuilder:
     """Builder for SubElementMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SubElementMapping()
+        self._obj: SubElementMapping = SubElementMapping()
 
     def build(self) -> SubElementMapping:
         """Build and return SubElementMapping object.

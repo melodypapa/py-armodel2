@@ -1,29 +1,28 @@
 """SocketConnectionIpduIdentifierSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SocketConnectionIpduIdentifierSet(ARObject):
     """AUTOSAR SocketConnectionIpduIdentifierSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SocketConnectionIpduIdentifierSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SocketConnectionIpduIdentifierSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOCKETCONNECTIONIPDUIDENTIFIERSET")
+        element = ET.Element("SOCKETCONNECTIONIPDUIDENTIFIERSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SocketConnectionIpduIdentifierSet":
+    def deserialize(cls, element: ET.Element) -> "SocketConnectionIpduIdentifierSet":
         """Create SocketConnectionIpduIdentifierSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SocketConnectionIpduIdentifierSet(ARObject):
         Returns:
             SocketConnectionIpduIdentifierSet instance
         """
-        obj = cls()
+        obj: SocketConnectionIpduIdentifierSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SocketConnectionIpduIdentifierSet(ARObject):
 class SocketConnectionIpduIdentifierSetBuilder:
     """Builder for SocketConnectionIpduIdentifierSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SocketConnectionIpduIdentifierSet()
+        self._obj: SocketConnectionIpduIdentifierSet = SocketConnectionIpduIdentifierSet()
 
     def build(self) -> SocketConnectionIpduIdentifierSet:
         """Build and return SocketConnectionIpduIdentifierSet object.

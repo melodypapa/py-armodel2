@@ -1,29 +1,28 @@
 """DataInterface AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataInterface(ARObject):
     """AUTOSAR DataInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataInterface."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataInterface to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAINTERFACE")
+        element = ET.Element("DATAINTERFACE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataInterface":
+    def deserialize(cls, element: ET.Element) -> "DataInterface":
         """Create DataInterface from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataInterface(ARObject):
         Returns:
             DataInterface instance
         """
-        obj = cls()
+        obj: DataInterface = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataInterface(ARObject):
 class DataInterfaceBuilder:
     """Builder for DataInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataInterface()
+        self._obj: DataInterface = DataInterface()
 
     def build(self) -> DataInterface:
         """Build and return DataInterface object.

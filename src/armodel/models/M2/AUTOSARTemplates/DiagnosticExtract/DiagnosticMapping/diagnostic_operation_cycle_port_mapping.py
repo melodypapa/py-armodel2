@@ -1,29 +1,28 @@
 """DiagnosticOperationCyclePortMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticOperationCyclePortMapping(ARObject):
     """AUTOSAR DiagnosticOperationCyclePortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticOperationCyclePortMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticOperationCyclePortMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICOPERATIONCYCLEPORTMAPPING")
+        element = ET.Element("DIAGNOSTICOPERATIONCYCLEPORTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticOperationCyclePortMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticOperationCyclePortMapping":
         """Create DiagnosticOperationCyclePortMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticOperationCyclePortMapping(ARObject):
         Returns:
             DiagnosticOperationCyclePortMapping instance
         """
-        obj = cls()
+        obj: DiagnosticOperationCyclePortMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticOperationCyclePortMapping(ARObject):
 class DiagnosticOperationCyclePortMappingBuilder:
     """Builder for DiagnosticOperationCyclePortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticOperationCyclePortMapping()
+        self._obj: DiagnosticOperationCyclePortMapping = DiagnosticOperationCyclePortMapping()
 
     def build(self) -> DiagnosticOperationCyclePortMapping:
         """Build and return DiagnosticOperationCyclePortMapping object.

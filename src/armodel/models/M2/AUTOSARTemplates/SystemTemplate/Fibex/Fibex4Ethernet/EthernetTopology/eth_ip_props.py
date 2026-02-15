@@ -1,29 +1,28 @@
 """EthIpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthIpProps(ARObject):
     """AUTOSAR EthIpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthIpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthIpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHIPPROPS")
+        element = ET.Element("ETHIPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthIpProps":
+    def deserialize(cls, element: ET.Element) -> "EthIpProps":
         """Create EthIpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthIpProps(ARObject):
         Returns:
             EthIpProps instance
         """
-        obj = cls()
+        obj: EthIpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthIpProps(ARObject):
 class EthIpPropsBuilder:
     """Builder for EthIpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthIpProps()
+        self._obj: EthIpProps = EthIpProps()
 
     def build(self) -> EthIpProps:
         """Build and return EthIpProps object.

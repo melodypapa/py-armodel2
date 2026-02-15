@@ -1,29 +1,28 @@
 """PduTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PduTriggering(ARObject):
     """AUTOSAR PduTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PduTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PDUTRIGGERING")
+        element = ET.Element("PDUTRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PduTriggering":
+    def deserialize(cls, element: ET.Element) -> "PduTriggering":
         """Create PduTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PduTriggering(ARObject):
         Returns:
             PduTriggering instance
         """
-        obj = cls()
+        obj: PduTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PduTriggering(ARObject):
 class PduTriggeringBuilder:
     """Builder for PduTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PduTriggering()
+        self._obj: PduTriggering = PduTriggering()
 
     def build(self) -> PduTriggering:
         """Build and return PduTriggering object.

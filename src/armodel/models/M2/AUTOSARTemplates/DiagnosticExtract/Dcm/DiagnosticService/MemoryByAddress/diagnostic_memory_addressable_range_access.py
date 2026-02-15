@@ -1,29 +1,28 @@
 """DiagnosticMemoryAddressableRangeAccess AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticMemoryAddressableRangeAccess(ARObject):
     """AUTOSAR DiagnosticMemoryAddressableRangeAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticMemoryAddressableRangeAccess."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticMemoryAddressableRangeAccess to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICMEMORYADDRESSABLERANGEACCESS")
+        element = ET.Element("DIAGNOSTICMEMORYADDRESSABLERANGEACCESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticMemoryAddressableRangeAccess":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryAddressableRangeAccess":
         """Create DiagnosticMemoryAddressableRangeAccess from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticMemoryAddressableRangeAccess(ARObject):
         Returns:
             DiagnosticMemoryAddressableRangeAccess instance
         """
-        obj = cls()
+        obj: DiagnosticMemoryAddressableRangeAccess = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticMemoryAddressableRangeAccess(ARObject):
 class DiagnosticMemoryAddressableRangeAccessBuilder:
     """Builder for DiagnosticMemoryAddressableRangeAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticMemoryAddressableRangeAccess()
+        self._obj: DiagnosticMemoryAddressableRangeAccess = DiagnosticMemoryAddressableRangeAccess()
 
     def build(self) -> DiagnosticMemoryAddressableRangeAccess:
         """Build and return DiagnosticMemoryAddressableRangeAccess object.

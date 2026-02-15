@@ -1,29 +1,28 @@
 """BinaryManifestItemPointerValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BinaryManifestItemPointerValue(ARObject):
     """AUTOSAR BinaryManifestItemPointerValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BinaryManifestItemPointerValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BinaryManifestItemPointerValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BINARYMANIFESTITEMPOINTERVALUE")
+        element = ET.Element("BINARYMANIFESTITEMPOINTERVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BinaryManifestItemPointerValue":
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestItemPointerValue":
         """Create BinaryManifestItemPointerValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BinaryManifestItemPointerValue(ARObject):
         Returns:
             BinaryManifestItemPointerValue instance
         """
-        obj = cls()
+        obj: BinaryManifestItemPointerValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BinaryManifestItemPointerValue(ARObject):
 class BinaryManifestItemPointerValueBuilder:
     """Builder for BinaryManifestItemPointerValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BinaryManifestItemPointerValue()
+        self._obj: BinaryManifestItemPointerValue = BinaryManifestItemPointerValue()
 
     def build(self) -> BinaryManifestItemPointerValue:
         """Build and return BinaryManifestItemPointerValue object.

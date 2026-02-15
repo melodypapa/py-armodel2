@@ -1,29 +1,28 @@
 """Ipv4FragmentationProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Ipv4FragmentationProps(ARObject):
     """AUTOSAR Ipv4FragmentationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Ipv4FragmentationProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Ipv4FragmentationProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPV4FRAGMENTATIONPROPS")
+        element = ET.Element("IPV4FRAGMENTATIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Ipv4FragmentationProps":
+    def deserialize(cls, element: ET.Element) -> "Ipv4FragmentationProps":
         """Create Ipv4FragmentationProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Ipv4FragmentationProps(ARObject):
         Returns:
             Ipv4FragmentationProps instance
         """
-        obj = cls()
+        obj: Ipv4FragmentationProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Ipv4FragmentationProps(ARObject):
 class Ipv4FragmentationPropsBuilder:
     """Builder for Ipv4FragmentationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Ipv4FragmentationProps()
+        self._obj: Ipv4FragmentationProps = Ipv4FragmentationProps()
 
     def build(self) -> Ipv4FragmentationProps:
         """Build and return Ipv4FragmentationProps object.

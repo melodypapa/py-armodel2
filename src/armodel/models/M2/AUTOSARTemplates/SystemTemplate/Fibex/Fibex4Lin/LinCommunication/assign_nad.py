@@ -1,29 +1,28 @@
 """AssignNad AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AssignNad(ARObject):
     """AUTOSAR AssignNad."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AssignNad."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AssignNad to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ASSIGNNAD")
+        element = ET.Element("ASSIGNNAD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AssignNad":
+    def deserialize(cls, element: ET.Element) -> "AssignNad":
         """Create AssignNad from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AssignNad(ARObject):
         Returns:
             AssignNad instance
         """
-        obj = cls()
+        obj: AssignNad = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AssignNad(ARObject):
 class AssignNadBuilder:
     """Builder for AssignNad."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AssignNad()
+        self._obj: AssignNad = AssignNad()
 
     def build(self) -> AssignNad:
         """Build and return AssignNad object.

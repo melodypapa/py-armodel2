@@ -1,29 +1,28 @@
 """LimitValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LimitValueVariationPoint(ARObject):
     """AUTOSAR LimitValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LimitValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LimitValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LIMITVALUEVARIATIONPOINT")
+        element = ET.Element("LIMITVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LimitValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "LimitValueVariationPoint":
         """Create LimitValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LimitValueVariationPoint(ARObject):
         Returns:
             LimitValueVariationPoint instance
         """
-        obj = cls()
+        obj: LimitValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LimitValueVariationPoint(ARObject):
 class LimitValueVariationPointBuilder:
     """Builder for LimitValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LimitValueVariationPoint()
+        self._obj: LimitValueVariationPoint = LimitValueVariationPoint()
 
     def build(self) -> LimitValueVariationPoint:
         """Build and return LimitValueVariationPoint object.

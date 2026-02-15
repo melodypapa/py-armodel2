@@ -1,29 +1,28 @@
 """EthTSynSubTlvConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthTSynSubTlvConfig(ARObject):
     """AUTOSAR EthTSynSubTlvConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthTSynSubTlvConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHTSYNSUBTLVCONFIG")
+        element = ET.Element("ETHTSYNSUBTLVCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthTSynSubTlvConfig":
+    def deserialize(cls, element: ET.Element) -> "EthTSynSubTlvConfig":
         """Create EthTSynSubTlvConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthTSynSubTlvConfig(ARObject):
         Returns:
             EthTSynSubTlvConfig instance
         """
-        obj = cls()
+        obj: EthTSynSubTlvConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthTSynSubTlvConfig(ARObject):
 class EthTSynSubTlvConfigBuilder:
     """Builder for EthTSynSubTlvConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthTSynSubTlvConfig()
+        self._obj: EthTSynSubTlvConfig = EthTSynSubTlvConfig()
 
     def build(self) -> EthTSynSubTlvConfig:
         """Build and return EthTSynSubTlvConfig object.

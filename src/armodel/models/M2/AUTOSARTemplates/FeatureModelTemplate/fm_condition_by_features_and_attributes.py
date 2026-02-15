@@ -1,29 +1,28 @@
 """FMConditionByFeaturesAndAttributes AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMConditionByFeaturesAndAttributes(ARObject):
     """AUTOSAR FMConditionByFeaturesAndAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMConditionByFeaturesAndAttributes."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMConditionByFeaturesAndAttributes to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMCONDITIONBYFEATURESANDATTRIBUTES")
+        element = ET.Element("FMCONDITIONBYFEATURESANDATTRIBUTES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMConditionByFeaturesAndAttributes":
+    def deserialize(cls, element: ET.Element) -> "FMConditionByFeaturesAndAttributes":
         """Create FMConditionByFeaturesAndAttributes from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMConditionByFeaturesAndAttributes(ARObject):
         Returns:
             FMConditionByFeaturesAndAttributes instance
         """
-        obj = cls()
+        obj: FMConditionByFeaturesAndAttributes = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMConditionByFeaturesAndAttributes(ARObject):
 class FMConditionByFeaturesAndAttributesBuilder:
     """Builder for FMConditionByFeaturesAndAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMConditionByFeaturesAndAttributes()
+        self._obj: FMConditionByFeaturesAndAttributes = FMConditionByFeaturesAndAttributes()
 
     def build(self) -> FMConditionByFeaturesAndAttributes:
         """Build and return FMConditionByFeaturesAndAttributes object.

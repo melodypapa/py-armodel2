@@ -1,29 +1,28 @@
 """CommonSignalPath AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CommonSignalPath(ARObject):
     """AUTOSAR CommonSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CommonSignalPath."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CommonSignalPath to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMMONSIGNALPATH")
+        element = ET.Element("COMMONSIGNALPATH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CommonSignalPath":
+    def deserialize(cls, element: ET.Element) -> "CommonSignalPath":
         """Create CommonSignalPath from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CommonSignalPath(ARObject):
         Returns:
             CommonSignalPath instance
         """
-        obj = cls()
+        obj: CommonSignalPath = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CommonSignalPath(ARObject):
 class CommonSignalPathBuilder:
     """Builder for CommonSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CommonSignalPath()
+        self._obj: CommonSignalPath = CommonSignalPath()
 
     def build(self) -> CommonSignalPath:
         """Build and return CommonSignalPath object.

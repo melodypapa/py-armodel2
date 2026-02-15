@@ -1,29 +1,28 @@
 """DoIpGidSynchronizationNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpGidSynchronizationNeeds(ARObject):
     """AUTOSAR DoIpGidSynchronizationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpGidSynchronizationNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpGidSynchronizationNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPGIDSYNCHRONIZATIONNEEDS")
+        element = ET.Element("DOIPGIDSYNCHRONIZATIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpGidSynchronizationNeeds":
+    def deserialize(cls, element: ET.Element) -> "DoIpGidSynchronizationNeeds":
         """Create DoIpGidSynchronizationNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpGidSynchronizationNeeds(ARObject):
         Returns:
             DoIpGidSynchronizationNeeds instance
         """
-        obj = cls()
+        obj: DoIpGidSynchronizationNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpGidSynchronizationNeeds(ARObject):
 class DoIpGidSynchronizationNeedsBuilder:
     """Builder for DoIpGidSynchronizationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpGidSynchronizationNeeds()
+        self._obj: DoIpGidSynchronizationNeeds = DoIpGidSynchronizationNeeds()
 
     def build(self) -> DoIpGidSynchronizationNeeds:
         """Build and return DoIpGidSynchronizationNeeds object.

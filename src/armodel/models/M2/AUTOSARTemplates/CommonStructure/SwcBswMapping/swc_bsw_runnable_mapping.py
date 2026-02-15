@@ -1,29 +1,28 @@
 """SwcBswRunnableMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcBswRunnableMapping(ARObject):
     """AUTOSAR SwcBswRunnableMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcBswRunnableMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcBswRunnableMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCBSWRUNNABLEMAPPING")
+        element = ET.Element("SWCBSWRUNNABLEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcBswRunnableMapping":
+    def deserialize(cls, element: ET.Element) -> "SwcBswRunnableMapping":
         """Create SwcBswRunnableMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcBswRunnableMapping(ARObject):
         Returns:
             SwcBswRunnableMapping instance
         """
-        obj = cls()
+        obj: SwcBswRunnableMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcBswRunnableMapping(ARObject):
 class SwcBswRunnableMappingBuilder:
     """Builder for SwcBswRunnableMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcBswRunnableMapping()
+        self._obj: SwcBswRunnableMapping = SwcBswRunnableMapping()
 
     def build(self) -> SwcBswRunnableMapping:
         """Build and return SwcBswRunnableMapping object.

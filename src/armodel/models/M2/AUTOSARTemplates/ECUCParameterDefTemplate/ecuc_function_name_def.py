@@ -1,29 +1,28 @@
 """EcucFunctionNameDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucFunctionNameDef(ARObject):
     """AUTOSAR EcucFunctionNameDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucFunctionNameDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucFunctionNameDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCFUNCTIONNAMEDEF")
+        element = ET.Element("ECUCFUNCTIONNAMEDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucFunctionNameDef":
+    def deserialize(cls, element: ET.Element) -> "EcucFunctionNameDef":
         """Create EcucFunctionNameDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucFunctionNameDef(ARObject):
         Returns:
             EcucFunctionNameDef instance
         """
-        obj = cls()
+        obj: EcucFunctionNameDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucFunctionNameDef(ARObject):
 class EcucFunctionNameDefBuilder:
     """Builder for EcucFunctionNameDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucFunctionNameDef()
+        self._obj: EcucFunctionNameDef = EcucFunctionNameDef()
 
     def build(self) -> EcucFunctionNameDef:
         """Build and return EcucFunctionNameDef object.

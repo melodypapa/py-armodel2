@@ -1,29 +1,28 @@
 """LinConfigurationEntry AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinConfigurationEntry(ARObject):
     """AUTOSAR LinConfigurationEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinConfigurationEntry."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinConfigurationEntry to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINCONFIGURATIONENTRY")
+        element = ET.Element("LINCONFIGURATIONENTRY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinConfigurationEntry":
+    def deserialize(cls, element: ET.Element) -> "LinConfigurationEntry":
         """Create LinConfigurationEntry from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinConfigurationEntry(ARObject):
         Returns:
             LinConfigurationEntry instance
         """
-        obj = cls()
+        obj: LinConfigurationEntry = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinConfigurationEntry(ARObject):
 class LinConfigurationEntryBuilder:
     """Builder for LinConfigurationEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinConfigurationEntry()
+        self._obj: LinConfigurationEntry = LinConfigurationEntry()
 
     def build(self) -> LinConfigurationEntry:
         """Build and return LinConfigurationEntry object.

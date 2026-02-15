@@ -1,29 +1,28 @@
 """BinaryManifestItemDefinition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BinaryManifestItemDefinition(ARObject):
     """AUTOSAR BinaryManifestItemDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BinaryManifestItemDefinition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BinaryManifestItemDefinition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BINARYMANIFESTITEMDEFINITION")
+        element = ET.Element("BINARYMANIFESTITEMDEFINITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BinaryManifestItemDefinition":
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestItemDefinition":
         """Create BinaryManifestItemDefinition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BinaryManifestItemDefinition(ARObject):
         Returns:
             BinaryManifestItemDefinition instance
         """
-        obj = cls()
+        obj: BinaryManifestItemDefinition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BinaryManifestItemDefinition(ARObject):
 class BinaryManifestItemDefinitionBuilder:
     """Builder for BinaryManifestItemDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BinaryManifestItemDefinition()
+        self._obj: BinaryManifestItemDefinition = BinaryManifestItemDefinition()
 
     def build(self) -> BinaryManifestItemDefinition:
         """Build and return BinaryManifestItemDefinition object.

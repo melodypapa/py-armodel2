@@ -1,29 +1,28 @@
 """StreamFilterMACAddress AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class StreamFilterMACAddress(ARObject):
     """AUTOSAR StreamFilterMACAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize StreamFilterMACAddress."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert StreamFilterMACAddress to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STREAMFILTERMACADDRESS")
+        element = ET.Element("STREAMFILTERMACADDRESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "StreamFilterMACAddress":
+    def deserialize(cls, element: ET.Element) -> "StreamFilterMACAddress":
         """Create StreamFilterMACAddress from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class StreamFilterMACAddress(ARObject):
         Returns:
             StreamFilterMACAddress instance
         """
-        obj = cls()
+        obj: StreamFilterMACAddress = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class StreamFilterMACAddress(ARObject):
 class StreamFilterMACAddressBuilder:
     """Builder for StreamFilterMACAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = StreamFilterMACAddress()
+        self._obj: StreamFilterMACAddress = StreamFilterMACAddress()
 
     def build(self) -> StreamFilterMACAddress:
         """Build and return StreamFilterMACAddress object.

@@ -1,29 +1,28 @@
 """HttpTp AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HttpTp(ARObject):
     """AUTOSAR HttpTp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HttpTp."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HttpTp to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HTTPTP")
+        element = ET.Element("HTTPTP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HttpTp":
+    def deserialize(cls, element: ET.Element) -> "HttpTp":
         """Create HttpTp from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HttpTp(ARObject):
         Returns:
             HttpTp instance
         """
-        obj = cls()
+        obj: HttpTp = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HttpTp(ARObject):
 class HttpTpBuilder:
     """Builder for HttpTp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HttpTp()
+        self._obj: HttpTp = HttpTp()
 
     def build(self) -> HttpTp:
         """Build and return HttpTp object.

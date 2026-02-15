@@ -1,29 +1,28 @@
 """AbstractDoIpLogicAddressProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractDoIpLogicAddressProps(ARObject):
     """AUTOSAR AbstractDoIpLogicAddressProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractDoIpLogicAddressProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractDoIpLogicAddressProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTDOIPLOGICADDRESSPROPS")
+        element = ET.Element("ABSTRACTDOIPLOGICADDRESSPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractDoIpLogicAddressProps":
+    def deserialize(cls, element: ET.Element) -> "AbstractDoIpLogicAddressProps":
         """Create AbstractDoIpLogicAddressProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractDoIpLogicAddressProps(ARObject):
         Returns:
             AbstractDoIpLogicAddressProps instance
         """
-        obj = cls()
+        obj: AbstractDoIpLogicAddressProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractDoIpLogicAddressProps(ARObject):
 class AbstractDoIpLogicAddressPropsBuilder:
     """Builder for AbstractDoIpLogicAddressProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractDoIpLogicAddressProps()
+        self._obj: AbstractDoIpLogicAddressProps = AbstractDoIpLogicAddressProps()
 
     def build(self) -> AbstractDoIpLogicAddressProps:
         """Build and return AbstractDoIpLogicAddressProps object.

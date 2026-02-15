@@ -1,29 +1,28 @@
 """InternalConstrs AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InternalConstrs(ARObject):
     """AUTOSAR InternalConstrs."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InternalConstrs."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InternalConstrs to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INTERNALCONSTRS")
+        element = ET.Element("INTERNALCONSTRS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InternalConstrs":
+    def deserialize(cls, element: ET.Element) -> "InternalConstrs":
         """Create InternalConstrs from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InternalConstrs(ARObject):
         Returns:
             InternalConstrs instance
         """
-        obj = cls()
+        obj: InternalConstrs = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InternalConstrs(ARObject):
 class InternalConstrsBuilder:
     """Builder for InternalConstrs."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InternalConstrs()
+        self._obj: InternalConstrs = InternalConstrs()
 
     def build(self) -> InternalConstrs:
         """Build and return InternalConstrs object.

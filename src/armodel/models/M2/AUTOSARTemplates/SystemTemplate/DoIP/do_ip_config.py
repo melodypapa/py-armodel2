@@ -1,29 +1,28 @@
 """DoIpConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpConfig(ARObject):
     """AUTOSAR DoIpConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPCONFIG")
+        element = ET.Element("DOIPCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpConfig":
+    def deserialize(cls, element: ET.Element) -> "DoIpConfig":
         """Create DoIpConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpConfig(ARObject):
         Returns:
             DoIpConfig instance
         """
-        obj = cls()
+        obj: DoIpConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpConfig(ARObject):
 class DoIpConfigBuilder:
     """Builder for DoIpConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpConfig()
+        self._obj: DoIpConfig = DoIpConfig()
 
     def build(self) -> DoIpConfig:
         """Build and return DoIpConfig object.

@@ -1,29 +1,28 @@
 """UdpNmEcu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UdpNmEcu(ARObject):
     """AUTOSAR UdpNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UdpNmEcu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UdpNmEcu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("UDPNMECU")
+        element = ET.Element("UDPNMECU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UdpNmEcu":
+    def deserialize(cls, element: ET.Element) -> "UdpNmEcu":
         """Create UdpNmEcu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UdpNmEcu(ARObject):
         Returns:
             UdpNmEcu instance
         """
-        obj = cls()
+        obj: UdpNmEcu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UdpNmEcu(ARObject):
 class UdpNmEcuBuilder:
     """Builder for UdpNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UdpNmEcu()
+        self._obj: UdpNmEcu = UdpNmEcu()
 
     def build(self) -> UdpNmEcu:
         """Build and return UdpNmEcu object.

@@ -1,29 +1,28 @@
 """NvBlockDescriptor AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NvBlockDescriptor(ARObject):
     """AUTOSAR NvBlockDescriptor."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NvBlockDescriptor to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NVBLOCKDESCRIPTOR")
+        element = ET.Element("NVBLOCKDESCRIPTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NvBlockDescriptor":
+    def deserialize(cls, element: ET.Element) -> "NvBlockDescriptor":
         """Create NvBlockDescriptor from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NvBlockDescriptor(ARObject):
         Returns:
             NvBlockDescriptor instance
         """
-        obj = cls()
+        obj: NvBlockDescriptor = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NvBlockDescriptor(ARObject):
 class NvBlockDescriptorBuilder:
     """Builder for NvBlockDescriptor."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NvBlockDescriptor()
+        self._obj: NvBlockDescriptor = NvBlockDescriptor()
 
     def build(self) -> NvBlockDescriptor:
         """Build and return NvBlockDescriptor object.

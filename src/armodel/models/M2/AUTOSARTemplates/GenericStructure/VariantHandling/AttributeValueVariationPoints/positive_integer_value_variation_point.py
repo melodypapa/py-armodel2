@@ -1,29 +1,28 @@
 """PositiveIntegerValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PositiveIntegerValueVariationPoint(ARObject):
     """AUTOSAR PositiveIntegerValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PositiveIntegerValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PositiveIntegerValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("POSITIVEINTEGERVALUEVARIATIONPOINT")
+        element = ET.Element("POSITIVEINTEGERVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PositiveIntegerValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "PositiveIntegerValueVariationPoint":
         """Create PositiveIntegerValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PositiveIntegerValueVariationPoint(ARObject):
         Returns:
             PositiveIntegerValueVariationPoint instance
         """
-        obj = cls()
+        obj: PositiveIntegerValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PositiveIntegerValueVariationPoint(ARObject):
 class PositiveIntegerValueVariationPointBuilder:
     """Builder for PositiveIntegerValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PositiveIntegerValueVariationPoint()
+        self._obj: PositiveIntegerValueVariationPoint = PositiveIntegerValueVariationPoint()
 
     def build(self) -> PositiveIntegerValueVariationPoint:
         """Build and return PositiveIntegerValueVariationPoint object.

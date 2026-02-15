@@ -1,29 +1,28 @@
 """ExecutableEntityActivationReason AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ExecutableEntityActivationReason(ARObject):
     """AUTOSAR ExecutableEntityActivationReason."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ExecutableEntityActivationReason to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EXECUTABLEENTITYACTIVATIONREASON")
+        element = ET.Element("EXECUTABLEENTITYACTIVATIONREASON")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ExecutableEntityActivationReason":
+    def deserialize(cls, element: ET.Element) -> "ExecutableEntityActivationReason":
         """Create ExecutableEntityActivationReason from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ExecutableEntityActivationReason(ARObject):
         Returns:
             ExecutableEntityActivationReason instance
         """
-        obj = cls()
+        obj: ExecutableEntityActivationReason = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ExecutableEntityActivationReason(ARObject):
 class ExecutableEntityActivationReasonBuilder:
     """Builder for ExecutableEntityActivationReason."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ExecutableEntityActivationReason()
+        self._obj: ExecutableEntityActivationReason = ExecutableEntityActivationReason()
 
     def build(self) -> ExecutableEntityActivationReason:
         """Build and return ExecutableEntityActivationReason object.

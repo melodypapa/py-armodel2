@@ -1,29 +1,28 @@
 """EOCExecutableEntityRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EOCExecutableEntityRef(ARObject):
     """AUTOSAR EOCExecutableEntityRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EOCExecutableEntityRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EOCEXECUTABLEENTITYREF")
+        element = ET.Element("EOCEXECUTABLEENTITYREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EOCExecutableEntityRef":
+    def deserialize(cls, element: ET.Element) -> "EOCExecutableEntityRef":
         """Create EOCExecutableEntityRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EOCExecutableEntityRef(ARObject):
         Returns:
             EOCExecutableEntityRef instance
         """
-        obj = cls()
+        obj: EOCExecutableEntityRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EOCExecutableEntityRef(ARObject):
 class EOCExecutableEntityRefBuilder:
     """Builder for EOCExecutableEntityRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EOCExecutableEntityRef()
+        self._obj: EOCExecutableEntityRef = EOCExecutableEntityRef()
 
     def build(self) -> EOCExecutableEntityRef:
         """Build and return EOCExecutableEntityRef object.

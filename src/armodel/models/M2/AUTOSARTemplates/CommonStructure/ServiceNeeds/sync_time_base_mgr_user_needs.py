@@ -1,29 +1,28 @@
 """SyncTimeBaseMgrUserNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SyncTimeBaseMgrUserNeeds(ARObject):
     """AUTOSAR SyncTimeBaseMgrUserNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SyncTimeBaseMgrUserNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SyncTimeBaseMgrUserNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYNCTIMEBASEMGRUSERNEEDS")
+        element = ET.Element("SYNCTIMEBASEMGRUSERNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SyncTimeBaseMgrUserNeeds":
+    def deserialize(cls, element: ET.Element) -> "SyncTimeBaseMgrUserNeeds":
         """Create SyncTimeBaseMgrUserNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SyncTimeBaseMgrUserNeeds(ARObject):
         Returns:
             SyncTimeBaseMgrUserNeeds instance
         """
-        obj = cls()
+        obj: SyncTimeBaseMgrUserNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SyncTimeBaseMgrUserNeeds(ARObject):
 class SyncTimeBaseMgrUserNeedsBuilder:
     """Builder for SyncTimeBaseMgrUserNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SyncTimeBaseMgrUserNeeds()
+        self._obj: SyncTimeBaseMgrUserNeeds = SyncTimeBaseMgrUserNeeds()
 
     def build(self) -> SyncTimeBaseMgrUserNeeds:
         """Build and return SyncTimeBaseMgrUserNeeds object.

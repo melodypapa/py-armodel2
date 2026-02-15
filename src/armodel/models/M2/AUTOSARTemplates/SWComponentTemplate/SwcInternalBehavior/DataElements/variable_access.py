@@ -1,29 +1,28 @@
 """VariableAccess AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VariableAccess(ARObject):
     """AUTOSAR VariableAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VariableAccess to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VARIABLEACCESS")
+        element = ET.Element("VARIABLEACCESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VariableAccess":
+    def deserialize(cls, element: ET.Element) -> "VariableAccess":
         """Create VariableAccess from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VariableAccess(ARObject):
         Returns:
             VariableAccess instance
         """
-        obj = cls()
+        obj: VariableAccess = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VariableAccess(ARObject):
 class VariableAccessBuilder:
     """Builder for VariableAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VariableAccess()
+        self._obj: VariableAccess = VariableAccess()
 
     def build(self) -> VariableAccess:
         """Build and return VariableAccess object.

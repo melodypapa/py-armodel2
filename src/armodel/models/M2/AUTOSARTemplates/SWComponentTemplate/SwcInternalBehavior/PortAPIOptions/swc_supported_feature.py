@@ -1,29 +1,28 @@
 """SwcSupportedFeature AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcSupportedFeature(ARObject):
     """AUTOSAR SwcSupportedFeature."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcSupportedFeature."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcSupportedFeature to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCSUPPORTEDFEATURE")
+        element = ET.Element("SWCSUPPORTEDFEATURE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcSupportedFeature":
+    def deserialize(cls, element: ET.Element) -> "SwcSupportedFeature":
         """Create SwcSupportedFeature from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcSupportedFeature(ARObject):
         Returns:
             SwcSupportedFeature instance
         """
-        obj = cls()
+        obj: SwcSupportedFeature = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcSupportedFeature(ARObject):
 class SwcSupportedFeatureBuilder:
     """Builder for SwcSupportedFeature."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcSupportedFeature()
+        self._obj: SwcSupportedFeature = SwcSupportedFeature()
 
     def build(self) -> SwcSupportedFeature:
         """Build and return SwcSupportedFeature object.

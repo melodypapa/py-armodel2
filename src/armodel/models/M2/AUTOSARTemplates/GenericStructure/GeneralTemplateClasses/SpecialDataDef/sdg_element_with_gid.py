@@ -1,29 +1,28 @@
 """SdgElementWithGid AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgElementWithGid(ARObject):
     """AUTOSAR SdgElementWithGid."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgElementWithGid."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgElementWithGid to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGELEMENTWITHGID")
+        element = ET.Element("SDGELEMENTWITHGID")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgElementWithGid":
+    def deserialize(cls, element: ET.Element) -> "SdgElementWithGid":
         """Create SdgElementWithGid from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgElementWithGid(ARObject):
         Returns:
             SdgElementWithGid instance
         """
-        obj = cls()
+        obj: SdgElementWithGid = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgElementWithGid(ARObject):
 class SdgElementWithGidBuilder:
     """Builder for SdgElementWithGid."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgElementWithGid()
+        self._obj: SdgElementWithGid = SdgElementWithGid()
 
     def build(self) -> SdgElementWithGid:
         """Build and return SdgElementWithGid object.

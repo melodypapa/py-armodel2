@@ -1,29 +1,28 @@
 """CommunicationConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CommunicationConnector(ARObject):
     """AUTOSAR CommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CommunicationConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMMUNICATIONCONNECTOR")
+        element = ET.Element("COMMUNICATIONCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CommunicationConnector":
+    def deserialize(cls, element: ET.Element) -> "CommunicationConnector":
         """Create CommunicationConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CommunicationConnector(ARObject):
         Returns:
             CommunicationConnector instance
         """
-        obj = cls()
+        obj: CommunicationConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CommunicationConnector(ARObject):
 class CommunicationConnectorBuilder:
     """Builder for CommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CommunicationConnector()
+        self._obj: CommunicationConnector = CommunicationConnector()
 
     def build(self) -> CommunicationConnector:
         """Build and return CommunicationConnector object.

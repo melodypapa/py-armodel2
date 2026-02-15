@@ -1,29 +1,28 @@
 """DocumentationContext AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DocumentationContext(ARObject):
     """AUTOSAR DocumentationContext."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DocumentationContext to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOCUMENTATIONCONTEXT")
+        element = ET.Element("DOCUMENTATIONCONTEXT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DocumentationContext":
+    def deserialize(cls, element: ET.Element) -> "DocumentationContext":
         """Create DocumentationContext from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DocumentationContext(ARObject):
         Returns:
             DocumentationContext instance
         """
-        obj = cls()
+        obj: DocumentationContext = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DocumentationContext(ARObject):
 class DocumentationContextBuilder:
     """Builder for DocumentationContext."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DocumentationContext()
+        self._obj: DocumentationContext = DocumentationContext()
 
     def build(self) -> DocumentationContext:
         """Build and return DocumentationContext object.

@@ -1,29 +1,28 @@
 """DiagnosticIumprDenominatorGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticIumprDenominatorGroup(ARObject):
     """AUTOSAR DiagnosticIumprDenominatorGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticIumprDenominatorGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticIumprDenominatorGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICIUMPRDENOMINATORGROUP")
+        element = ET.Element("DIAGNOSTICIUMPRDENOMINATORGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticIumprDenominatorGroup":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprDenominatorGroup":
         """Create DiagnosticIumprDenominatorGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticIumprDenominatorGroup(ARObject):
         Returns:
             DiagnosticIumprDenominatorGroup instance
         """
-        obj = cls()
+        obj: DiagnosticIumprDenominatorGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticIumprDenominatorGroup(ARObject):
 class DiagnosticIumprDenominatorGroupBuilder:
     """Builder for DiagnosticIumprDenominatorGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticIumprDenominatorGroup()
+        self._obj: DiagnosticIumprDenominatorGroup = DiagnosticIumprDenominatorGroup()
 
     def build(self) -> DiagnosticIumprDenominatorGroup:
         """Build and return DiagnosticIumprDenominatorGroup object.

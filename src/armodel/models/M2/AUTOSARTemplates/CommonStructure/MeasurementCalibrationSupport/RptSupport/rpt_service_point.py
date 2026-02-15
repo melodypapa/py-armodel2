@@ -1,29 +1,28 @@
 """RptServicePoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptServicePoint(ARObject):
     """AUTOSAR RptServicePoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptServicePoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptServicePoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTSERVICEPOINT")
+        element = ET.Element("RPTSERVICEPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptServicePoint":
+    def deserialize(cls, element: ET.Element) -> "RptServicePoint":
         """Create RptServicePoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptServicePoint(ARObject):
         Returns:
             RptServicePoint instance
         """
-        obj = cls()
+        obj: RptServicePoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptServicePoint(ARObject):
 class RptServicePointBuilder:
     """Builder for RptServicePoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptServicePoint()
+        self._obj: RptServicePoint = RptServicePoint()
 
     def build(self) -> RptServicePoint:
         """Build and return RptServicePoint object.

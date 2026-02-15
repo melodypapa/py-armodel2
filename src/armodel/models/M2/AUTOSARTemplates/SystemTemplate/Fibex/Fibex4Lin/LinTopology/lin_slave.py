@@ -1,29 +1,28 @@
 """LinSlave AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinSlave(ARObject):
     """AUTOSAR LinSlave."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinSlave."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinSlave to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINSLAVE")
+        element = ET.Element("LINSLAVE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinSlave":
+    def deserialize(cls, element: ET.Element) -> "LinSlave":
         """Create LinSlave from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinSlave(ARObject):
         Returns:
             LinSlave instance
         """
-        obj = cls()
+        obj: LinSlave = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinSlave(ARObject):
 class LinSlaveBuilder:
     """Builder for LinSlave."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinSlave()
+        self._obj: LinSlave = LinSlave()
 
     def build(self) -> LinSlave:
         """Build and return LinSlave object.

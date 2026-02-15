@@ -1,29 +1,28 @@
 """VariableInAtomicSwcInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VariableInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR VariableInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VariableInAtomicSwcInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VariableInAtomicSwcInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VARIABLEINATOMICSWCINSTANCEREF")
+        element = ET.Element("VARIABLEINATOMICSWCINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VariableInAtomicSwcInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "VariableInAtomicSwcInstanceRef":
         """Create VariableInAtomicSwcInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VariableInAtomicSwcInstanceRef(ARObject):
         Returns:
             VariableInAtomicSwcInstanceRef instance
         """
-        obj = cls()
+        obj: VariableInAtomicSwcInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VariableInAtomicSwcInstanceRef(ARObject):
 class VariableInAtomicSwcInstanceRefBuilder:
     """Builder for VariableInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VariableInAtomicSwcInstanceRef()
+        self._obj: VariableInAtomicSwcInstanceRef = VariableInAtomicSwcInstanceRef()
 
     def build(self) -> VariableInAtomicSwcInstanceRef:
         """Build and return VariableInAtomicSwcInstanceRef object.

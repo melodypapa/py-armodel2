@@ -1,29 +1,28 @@
 """SwCalprmAxis AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwCalprmAxis(ARObject):
     """AUTOSAR SwCalprmAxis."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwCalprmAxis."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwCalprmAxis to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCALPRMAXIS")
+        element = ET.Element("SWCALPRMAXIS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwCalprmAxis":
+    def deserialize(cls, element: ET.Element) -> "SwCalprmAxis":
         """Create SwCalprmAxis from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwCalprmAxis(ARObject):
         Returns:
             SwCalprmAxis instance
         """
-        obj = cls()
+        obj: SwCalprmAxis = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwCalprmAxis(ARObject):
 class SwCalprmAxisBuilder:
     """Builder for SwCalprmAxis."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwCalprmAxis()
+        self._obj: SwCalprmAxis = SwCalprmAxis()
 
     def build(self) -> SwCalprmAxis:
         """Build and return SwCalprmAxis object.

@@ -1,29 +1,28 @@
 """EthGlobalTimeManagedCouplingPort AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthGlobalTimeManagedCouplingPort(ARObject):
     """AUTOSAR EthGlobalTimeManagedCouplingPort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthGlobalTimeManagedCouplingPort."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthGlobalTimeManagedCouplingPort to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHGLOBALTIMEMANAGEDCOUPLINGPORT")
+        element = ET.Element("ETHGLOBALTIMEMANAGEDCOUPLINGPORT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthGlobalTimeManagedCouplingPort":
+    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeManagedCouplingPort":
         """Create EthGlobalTimeManagedCouplingPort from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         Returns:
             EthGlobalTimeManagedCouplingPort instance
         """
-        obj = cls()
+        obj: EthGlobalTimeManagedCouplingPort = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 class EthGlobalTimeManagedCouplingPortBuilder:
     """Builder for EthGlobalTimeManagedCouplingPort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthGlobalTimeManagedCouplingPort()
+        self._obj: EthGlobalTimeManagedCouplingPort = EthGlobalTimeManagedCouplingPort()
 
     def build(self) -> EthGlobalTimeManagedCouplingPort:
         """Build and return EthGlobalTimeManagedCouplingPort object.

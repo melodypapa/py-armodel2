@@ -1,29 +1,28 @@
 """StackUsage AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class StackUsage(ARObject):
     """AUTOSAR StackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize StackUsage."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert StackUsage to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STACKUSAGE")
+        element = ET.Element("STACKUSAGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "StackUsage":
+    def deserialize(cls, element: ET.Element) -> "StackUsage":
         """Create StackUsage from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class StackUsage(ARObject):
         Returns:
             StackUsage instance
         """
-        obj = cls()
+        obj: StackUsage = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class StackUsage(ARObject):
 class StackUsageBuilder:
     """Builder for StackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = StackUsage()
+        self._obj: StackUsage = StackUsage()
 
     def build(self) -> StackUsage:
         """Build and return StackUsage object.

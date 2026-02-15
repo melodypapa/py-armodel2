@@ -1,29 +1,28 @@
 """OperationInvokedEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class OperationInvokedEvent(ARObject):
     """AUTOSAR OperationInvokedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert OperationInvokedEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("OPERATIONINVOKEDEVENT")
+        element = ET.Element("OPERATIONINVOKEDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "OperationInvokedEvent":
+    def deserialize(cls, element: ET.Element) -> "OperationInvokedEvent":
         """Create OperationInvokedEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class OperationInvokedEvent(ARObject):
         Returns:
             OperationInvokedEvent instance
         """
-        obj = cls()
+        obj: OperationInvokedEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class OperationInvokedEvent(ARObject):
 class OperationInvokedEventBuilder:
     """Builder for OperationInvokedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = OperationInvokedEvent()
+        self._obj: OperationInvokedEvent = OperationInvokedEvent()
 
     def build(self) -> OperationInvokedEvent:
         """Build and return OperationInvokedEvent object.

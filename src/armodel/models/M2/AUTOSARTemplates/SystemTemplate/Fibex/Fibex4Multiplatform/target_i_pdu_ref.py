@@ -1,29 +1,28 @@
 """TargetIPduRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TargetIPduRef(ARObject):
     """AUTOSAR TargetIPduRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TargetIPduRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TargetIPduRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TARGETIPDUREF")
+        element = ET.Element("TARGETIPDUREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TargetIPduRef":
+    def deserialize(cls, element: ET.Element) -> "TargetIPduRef":
         """Create TargetIPduRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TargetIPduRef(ARObject):
         Returns:
             TargetIPduRef instance
         """
-        obj = cls()
+        obj: TargetIPduRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TargetIPduRef(ARObject):
 class TargetIPduRefBuilder:
     """Builder for TargetIPduRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TargetIPduRef()
+        self._obj: TargetIPduRef = TargetIPduRef()
 
     def build(self) -> TargetIPduRef:
         """Build and return TargetIPduRef object.

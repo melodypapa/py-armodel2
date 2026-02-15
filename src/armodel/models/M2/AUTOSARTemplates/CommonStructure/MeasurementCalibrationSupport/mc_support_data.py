@@ -1,29 +1,28 @@
 """McSupportData AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class McSupportData(ARObject):
     """AUTOSAR McSupportData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize McSupportData."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert McSupportData to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MCSUPPORTDATA")
+        element = ET.Element("MCSUPPORTDATA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "McSupportData":
+    def deserialize(cls, element: ET.Element) -> "McSupportData":
         """Create McSupportData from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class McSupportData(ARObject):
         Returns:
             McSupportData instance
         """
-        obj = cls()
+        obj: McSupportData = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class McSupportData(ARObject):
 class McSupportDataBuilder:
     """Builder for McSupportData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = McSupportData()
+        self._obj: McSupportData = McSupportData()
 
     def build(self) -> McSupportData:
         """Build and return McSupportData object.

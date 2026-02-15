@@ -1,29 +1,28 @@
 """EcucConditionSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucConditionSpecification(ARObject):
     """AUTOSAR EcucConditionSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucConditionSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucConditionSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCCONDITIONSPECIFICATION")
+        element = ET.Element("ECUCCONDITIONSPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucConditionSpecification":
+    def deserialize(cls, element: ET.Element) -> "EcucConditionSpecification":
         """Create EcucConditionSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucConditionSpecification(ARObject):
         Returns:
             EcucConditionSpecification instance
         """
-        obj = cls()
+        obj: EcucConditionSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucConditionSpecification(ARObject):
 class EcucConditionSpecificationBuilder:
     """Builder for EcucConditionSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucConditionSpecification()
+        self._obj: EcucConditionSpecification = EcucConditionSpecification()
 
     def build(self) -> EcucConditionSpecification:
         """Build and return EcucConditionSpecification object.

@@ -1,29 +1,28 @@
 """SomeipServiceVersion AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SomeipServiceVersion(ARObject):
     """AUTOSAR SomeipServiceVersion."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SomeipServiceVersion."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SomeipServiceVersion to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOMEIPSERVICEVERSION")
+        element = ET.Element("SOMEIPSERVICEVERSION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SomeipServiceVersion":
+    def deserialize(cls, element: ET.Element) -> "SomeipServiceVersion":
         """Create SomeipServiceVersion from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SomeipServiceVersion(ARObject):
         Returns:
             SomeipServiceVersion instance
         """
-        obj = cls()
+        obj: SomeipServiceVersion = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SomeipServiceVersion(ARObject):
 class SomeipServiceVersionBuilder:
     """Builder for SomeipServiceVersion."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SomeipServiceVersion()
+        self._obj: SomeipServiceVersion = SomeipServiceVersion()
 
     def build(self) -> SomeipServiceVersion:
         """Build and return SomeipServiceVersion object.

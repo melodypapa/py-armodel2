@@ -1,29 +1,28 @@
 """FileInfoComment AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FileInfoComment(ARObject):
     """AUTOSAR FileInfoComment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FileInfoComment."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FileInfoComment to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FILEINFOCOMMENT")
+        element = ET.Element("FILEINFOCOMMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FileInfoComment":
+    def deserialize(cls, element: ET.Element) -> "FileInfoComment":
         """Create FileInfoComment from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FileInfoComment(ARObject):
         Returns:
             FileInfoComment instance
         """
-        obj = cls()
+        obj: FileInfoComment = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FileInfoComment(ARObject):
 class FileInfoCommentBuilder:
     """Builder for FileInfoComment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FileInfoComment()
+        self._obj: FileInfoComment = FileInfoComment()
 
     def build(self) -> FileInfoComment:
         """Build and return FileInfoComment object.

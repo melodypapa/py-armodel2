@@ -1,29 +1,28 @@
 """ApplicationCompositeDataTypeSubElementRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationCompositeDataTypeSubElementRef(ARObject):
     """AUTOSAR ApplicationCompositeDataTypeSubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationCompositeDataTypeSubElementRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationCompositeDataTypeSubElementRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONCOMPOSITEDATATYPESUBELEMENTREF")
+        element = ET.Element("APPLICATIONCOMPOSITEDATATYPESUBELEMENTREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationCompositeDataTypeSubElementRef":
+    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeDataTypeSubElementRef":
         """Create ApplicationCompositeDataTypeSubElementRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationCompositeDataTypeSubElementRef(ARObject):
         Returns:
             ApplicationCompositeDataTypeSubElementRef instance
         """
-        obj = cls()
+        obj: ApplicationCompositeDataTypeSubElementRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationCompositeDataTypeSubElementRef(ARObject):
 class ApplicationCompositeDataTypeSubElementRefBuilder:
     """Builder for ApplicationCompositeDataTypeSubElementRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationCompositeDataTypeSubElementRef()
+        self._obj: ApplicationCompositeDataTypeSubElementRef = ApplicationCompositeDataTypeSubElementRef()
 
     def build(self) -> ApplicationCompositeDataTypeSubElementRef:
         """Build and return ApplicationCompositeDataTypeSubElementRef object.

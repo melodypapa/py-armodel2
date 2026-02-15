@@ -1,29 +1,28 @@
 """AgeConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AgeConstraint(ARObject):
     """AUTOSAR AgeConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AgeConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AgeConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AGECONSTRAINT")
+        element = ET.Element("AGECONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AgeConstraint":
+    def deserialize(cls, element: ET.Element) -> "AgeConstraint":
         """Create AgeConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AgeConstraint(ARObject):
         Returns:
             AgeConstraint instance
         """
-        obj = cls()
+        obj: AgeConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AgeConstraint(ARObject):
 class AgeConstraintBuilder:
     """Builder for AgeConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AgeConstraint()
+        self._obj: AgeConstraint = AgeConstraint()
 
     def build(self) -> AgeConstraint:
         """Build and return AgeConstraint object.

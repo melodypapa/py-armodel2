@@ -1,29 +1,28 @@
 """DiagnosticStopRoutine AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticStopRoutine(ARObject):
     """AUTOSAR DiagnosticStopRoutine."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticStopRoutine."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticStopRoutine to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSTOPROUTINE")
+        element = ET.Element("DIAGNOSTICSTOPROUTINE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticStopRoutine":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticStopRoutine":
         """Create DiagnosticStopRoutine from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticStopRoutine(ARObject):
         Returns:
             DiagnosticStopRoutine instance
         """
-        obj = cls()
+        obj: DiagnosticStopRoutine = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticStopRoutine(ARObject):
 class DiagnosticStopRoutineBuilder:
     """Builder for DiagnosticStopRoutine."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticStopRoutine()
+        self._obj: DiagnosticStopRoutine = DiagnosticStopRoutine()
 
     def build(self) -> DiagnosticStopRoutine:
         """Build and return DiagnosticStopRoutine object.

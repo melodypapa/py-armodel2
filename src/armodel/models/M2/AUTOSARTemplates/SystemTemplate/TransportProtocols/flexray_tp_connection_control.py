@@ -1,29 +1,28 @@
 """FlexrayTpConnectionControl AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayTpConnectionControl(ARObject):
     """AUTOSAR FlexrayTpConnectionControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayTpConnectionControl."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayTpConnectionControl to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYTPCONNECTIONCONTROL")
+        element = ET.Element("FLEXRAYTPCONNECTIONCONTROL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayTpConnectionControl":
+    def deserialize(cls, element: ET.Element) -> "FlexrayTpConnectionControl":
         """Create FlexrayTpConnectionControl from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayTpConnectionControl(ARObject):
         Returns:
             FlexrayTpConnectionControl instance
         """
-        obj = cls()
+        obj: FlexrayTpConnectionControl = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayTpConnectionControl(ARObject):
 class FlexrayTpConnectionControlBuilder:
     """Builder for FlexrayTpConnectionControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayTpConnectionControl()
+        self._obj: FlexrayTpConnectionControl = FlexrayTpConnectionControl()
 
     def build(self) -> FlexrayTpConnectionControl:
         """Build and return FlexrayTpConnectionControl object.

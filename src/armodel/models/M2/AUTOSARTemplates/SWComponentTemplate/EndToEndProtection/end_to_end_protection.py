@@ -1,29 +1,28 @@
 """EndToEndProtection AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EndToEndProtection(ARObject):
     """AUTOSAR EndToEndProtection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EndToEndProtection."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EndToEndProtection to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ENDTOENDPROTECTION")
+        element = ET.Element("ENDTOENDPROTECTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EndToEndProtection":
+    def deserialize(cls, element: ET.Element) -> "EndToEndProtection":
         """Create EndToEndProtection from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EndToEndProtection(ARObject):
         Returns:
             EndToEndProtection instance
         """
-        obj = cls()
+        obj: EndToEndProtection = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EndToEndProtection(ARObject):
 class EndToEndProtectionBuilder:
     """Builder for EndToEndProtection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EndToEndProtection()
+        self._obj: EndToEndProtection = EndToEndProtection()
 
     def build(self) -> EndToEndProtection:
         """Build and return EndToEndProtection object.

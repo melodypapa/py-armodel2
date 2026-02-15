@@ -1,29 +1,28 @@
 """BurstPatternEventTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BurstPatternEventTriggering(ARObject):
     """AUTOSAR BurstPatternEventTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BurstPatternEventTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BurstPatternEventTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BURSTPATTERNEVENTTRIGGERING")
+        element = ET.Element("BURSTPATTERNEVENTTRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BurstPatternEventTriggering":
+    def deserialize(cls, element: ET.Element) -> "BurstPatternEventTriggering":
         """Create BurstPatternEventTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BurstPatternEventTriggering(ARObject):
         Returns:
             BurstPatternEventTriggering instance
         """
-        obj = cls()
+        obj: BurstPatternEventTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BurstPatternEventTriggering(ARObject):
 class BurstPatternEventTriggeringBuilder:
     """Builder for BurstPatternEventTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BurstPatternEventTriggering()
+        self._obj: BurstPatternEventTriggering = BurstPatternEventTriggering()
 
     def build(self) -> BurstPatternEventTriggering:
         """Build and return BurstPatternEventTriggering object.

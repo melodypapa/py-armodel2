@@ -1,29 +1,28 @@
 """EthGlobalTimeDomainProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthGlobalTimeDomainProps(ARObject):
     """AUTOSAR EthGlobalTimeDomainProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthGlobalTimeDomainProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthGlobalTimeDomainProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHGLOBALTIMEDOMAINPROPS")
+        element = ET.Element("ETHGLOBALTIMEDOMAINPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthGlobalTimeDomainProps":
+    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeDomainProps":
         """Create EthGlobalTimeDomainProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthGlobalTimeDomainProps(ARObject):
         Returns:
             EthGlobalTimeDomainProps instance
         """
-        obj = cls()
+        obj: EthGlobalTimeDomainProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthGlobalTimeDomainProps(ARObject):
 class EthGlobalTimeDomainPropsBuilder:
     """Builder for EthGlobalTimeDomainProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthGlobalTimeDomainProps()
+        self._obj: EthGlobalTimeDomainProps = EthGlobalTimeDomainProps()
 
     def build(self) -> EthGlobalTimeDomainProps:
         """Build and return EthGlobalTimeDomainProps object.

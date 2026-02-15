@@ -1,29 +1,28 @@
 """DiagnosticEnvironmentalCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEnvironmentalCondition(ARObject):
     """AUTOSAR DiagnosticEnvironmentalCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEnvironmentalCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEnvironmentalCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICENVIRONMENTALCONDITION")
+        element = ET.Element("DIAGNOSTICENVIRONMENTALCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEnvironmentalCondition":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvironmentalCondition":
         """Create DiagnosticEnvironmentalCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEnvironmentalCondition(ARObject):
         Returns:
             DiagnosticEnvironmentalCondition instance
         """
-        obj = cls()
+        obj: DiagnosticEnvironmentalCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEnvironmentalCondition(ARObject):
 class DiagnosticEnvironmentalConditionBuilder:
     """Builder for DiagnosticEnvironmentalCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEnvironmentalCondition()
+        self._obj: DiagnosticEnvironmentalCondition = DiagnosticEnvironmentalCondition()
 
     def build(self) -> DiagnosticEnvironmentalCondition:
         """Build and return DiagnosticEnvironmentalCondition object.

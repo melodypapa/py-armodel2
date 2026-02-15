@@ -1,29 +1,28 @@
 """BswExternalTriggerOccurredEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswExternalTriggerOccurredEvent(ARObject):
     """AUTOSAR BswExternalTriggerOccurredEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswExternalTriggerOccurredEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswExternalTriggerOccurredEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWEXTERNALTRIGGEROCCURREDEVENT")
+        element = ET.Element("BSWEXTERNALTRIGGEROCCURREDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswExternalTriggerOccurredEvent":
+    def deserialize(cls, element: ET.Element) -> "BswExternalTriggerOccurredEvent":
         """Create BswExternalTriggerOccurredEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswExternalTriggerOccurredEvent(ARObject):
         Returns:
             BswExternalTriggerOccurredEvent instance
         """
-        obj = cls()
+        obj: BswExternalTriggerOccurredEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswExternalTriggerOccurredEvent(ARObject):
 class BswExternalTriggerOccurredEventBuilder:
     """Builder for BswExternalTriggerOccurredEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswExternalTriggerOccurredEvent()
+        self._obj: BswExternalTriggerOccurredEvent = BswExternalTriggerOccurredEvent()
 
     def build(self) -> BswExternalTriggerOccurredEvent:
         """Build and return BswExternalTriggerOccurredEvent object.

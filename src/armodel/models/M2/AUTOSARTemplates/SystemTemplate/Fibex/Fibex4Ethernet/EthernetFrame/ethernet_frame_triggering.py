@@ -1,29 +1,28 @@
 """EthernetFrameTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthernetFrameTriggering(ARObject):
     """AUTOSAR EthernetFrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthernetFrameTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthernetFrameTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHERNETFRAMETRIGGERING")
+        element = ET.Element("ETHERNETFRAMETRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthernetFrameTriggering":
+    def deserialize(cls, element: ET.Element) -> "EthernetFrameTriggering":
         """Create EthernetFrameTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthernetFrameTriggering(ARObject):
         Returns:
             EthernetFrameTriggering instance
         """
-        obj = cls()
+        obj: EthernetFrameTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthernetFrameTriggering(ARObject):
 class EthernetFrameTriggeringBuilder:
     """Builder for EthernetFrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthernetFrameTriggering()
+        self._obj: EthernetFrameTriggering = EthernetFrameTriggering()
 
     def build(self) -> EthernetFrameTriggering:
         """Build and return EthernetFrameTriggering object.

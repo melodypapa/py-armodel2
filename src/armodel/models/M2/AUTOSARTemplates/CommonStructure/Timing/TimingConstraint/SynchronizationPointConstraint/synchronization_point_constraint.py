@@ -1,29 +1,28 @@
 """SynchronizationPointConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SynchronizationPointConstraint(ARObject):
     """AUTOSAR SynchronizationPointConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SynchronizationPointConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SynchronizationPointConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYNCHRONIZATIONPOINTCONSTRAINT")
+        element = ET.Element("SYNCHRONIZATIONPOINTCONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SynchronizationPointConstraint":
+    def deserialize(cls, element: ET.Element) -> "SynchronizationPointConstraint":
         """Create SynchronizationPointConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SynchronizationPointConstraint(ARObject):
         Returns:
             SynchronizationPointConstraint instance
         """
-        obj = cls()
+        obj: SynchronizationPointConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SynchronizationPointConstraint(ARObject):
 class SynchronizationPointConstraintBuilder:
     """Builder for SynchronizationPointConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SynchronizationPointConstraint()
+        self._obj: SynchronizationPointConstraint = SynchronizationPointConstraint()
 
     def build(self) -> SynchronizationPointConstraint:
         """Build and return SynchronizationPointConstraint object.

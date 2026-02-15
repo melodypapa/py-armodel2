@@ -1,29 +1,28 @@
 """InvalidationPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InvalidationPolicy(ARObject):
     """AUTOSAR InvalidationPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InvalidationPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InvalidationPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INVALIDATIONPOLICY")
+        element = ET.Element("INVALIDATIONPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InvalidationPolicy":
+    def deserialize(cls, element: ET.Element) -> "InvalidationPolicy":
         """Create InvalidationPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InvalidationPolicy(ARObject):
         Returns:
             InvalidationPolicy instance
         """
-        obj = cls()
+        obj: InvalidationPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InvalidationPolicy(ARObject):
 class InvalidationPolicyBuilder:
     """Builder for InvalidationPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InvalidationPolicy()
+        self._obj: InvalidationPolicy = InvalidationPolicy()
 
     def build(self) -> InvalidationPolicy:
         """Build and return InvalidationPolicy object.

@@ -1,29 +1,28 @@
 """AggregationCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AggregationCondition(ARObject):
     """AUTOSAR AggregationCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AggregationCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AggregationCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AGGREGATIONCONDITION")
+        element = ET.Element("AGGREGATIONCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AggregationCondition":
+    def deserialize(cls, element: ET.Element) -> "AggregationCondition":
         """Create AggregationCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AggregationCondition(ARObject):
         Returns:
             AggregationCondition instance
         """
-        obj = cls()
+        obj: AggregationCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AggregationCondition(ARObject):
 class AggregationConditionBuilder:
     """Builder for AggregationCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AggregationCondition()
+        self._obj: AggregationCondition = AggregationCondition()
 
     def build(self) -> AggregationCondition:
         """Build and return AggregationCondition object.

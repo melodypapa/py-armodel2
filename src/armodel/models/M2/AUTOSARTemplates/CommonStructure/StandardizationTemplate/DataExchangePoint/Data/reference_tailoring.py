@@ -1,29 +1,28 @@
 """ReferenceTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ReferenceTailoring(ARObject):
     """AUTOSAR ReferenceTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ReferenceTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ReferenceTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("REFERENCETAILORING")
+        element = ET.Element("REFERENCETAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ReferenceTailoring":
+    def deserialize(cls, element: ET.Element) -> "ReferenceTailoring":
         """Create ReferenceTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ReferenceTailoring(ARObject):
         Returns:
             ReferenceTailoring instance
         """
-        obj = cls()
+        obj: ReferenceTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ReferenceTailoring(ARObject):
 class ReferenceTailoringBuilder:
     """Builder for ReferenceTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ReferenceTailoring()
+        self._obj: ReferenceTailoring = ReferenceTailoring()
 
     def build(self) -> ReferenceTailoring:
         """Build and return ReferenceTailoring object.

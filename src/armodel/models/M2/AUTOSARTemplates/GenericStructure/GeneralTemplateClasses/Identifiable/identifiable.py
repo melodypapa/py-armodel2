@@ -1,29 +1,28 @@
 """Identifiable AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Identifiable(ARObject):
     """AUTOSAR Identifiable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Identifiable."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Identifiable to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDENTIFIABLE")
+        element = ET.Element("IDENTIFIABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Identifiable":
+    def deserialize(cls, element: ET.Element) -> "Identifiable":
         """Create Identifiable from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Identifiable(ARObject):
         Returns:
             Identifiable instance
         """
-        obj = cls()
+        obj: Identifiable = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Identifiable(ARObject):
 class IdentifiableBuilder:
     """Builder for Identifiable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Identifiable()
+        self._obj: Identifiable = Identifiable()
 
     def build(self) -> Identifiable:
         """Build and return Identifiable object.

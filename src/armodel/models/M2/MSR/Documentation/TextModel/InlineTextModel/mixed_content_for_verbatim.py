@@ -1,29 +1,28 @@
 """MixedContentForVerbatim AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MixedContentForVerbatim(ARObject):
     """AUTOSAR MixedContentForVerbatim."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MixedContentForVerbatim to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MIXEDCONTENTFORVERBATIM")
+        element = ET.Element("MIXEDCONTENTFORVERBATIM")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MixedContentForVerbatim":
+    def deserialize(cls, element: ET.Element) -> "MixedContentForVerbatim":
         """Create MixedContentForVerbatim from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MixedContentForVerbatim(ARObject):
         Returns:
             MixedContentForVerbatim instance
         """
-        obj = cls()
+        obj: MixedContentForVerbatim = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MixedContentForVerbatim(ARObject):
 class MixedContentForVerbatimBuilder:
     """Builder for MixedContentForVerbatim."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MixedContentForVerbatim()
+        self._obj: MixedContentForVerbatim = MixedContentForVerbatim()
 
     def build(self) -> MixedContentForVerbatim:
         """Build and return MixedContentForVerbatim object.

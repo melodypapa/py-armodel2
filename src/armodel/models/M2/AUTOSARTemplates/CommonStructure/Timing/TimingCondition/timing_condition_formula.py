@@ -1,29 +1,28 @@
 """TimingConditionFormula AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimingConditionFormula(ARObject):
     """AUTOSAR TimingConditionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimingConditionFormula to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMINGCONDITIONFORMULA")
+        element = ET.Element("TIMINGCONDITIONFORMULA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimingConditionFormula":
+    def deserialize(cls, element: ET.Element) -> "TimingConditionFormula":
         """Create TimingConditionFormula from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimingConditionFormula(ARObject):
         Returns:
             TimingConditionFormula instance
         """
-        obj = cls()
+        obj: TimingConditionFormula = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimingConditionFormula(ARObject):
 class TimingConditionFormulaBuilder:
     """Builder for TimingConditionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimingConditionFormula()
+        self._obj: TimingConditionFormula = TimingConditionFormula()
 
     def build(self) -> TimingConditionFormula:
         """Build and return TimingConditionFormula object.

@@ -1,29 +1,28 @@
 """DdsLifespan AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsLifespan(ARObject):
     """AUTOSAR DdsLifespan."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsLifespan."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsLifespan to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSLIFESPAN")
+        element = ET.Element("DDSLIFESPAN")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsLifespan":
+    def deserialize(cls, element: ET.Element) -> "DdsLifespan":
         """Create DdsLifespan from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsLifespan(ARObject):
         Returns:
             DdsLifespan instance
         """
-        obj = cls()
+        obj: DdsLifespan = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsLifespan(ARObject):
 class DdsLifespanBuilder:
     """Builder for DdsLifespan."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsLifespan()
+        self._obj: DdsLifespan = DdsLifespan()
 
     def build(self) -> DdsLifespan:
         """Build and return DdsLifespan object.

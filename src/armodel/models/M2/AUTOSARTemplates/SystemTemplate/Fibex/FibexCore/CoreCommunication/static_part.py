@@ -1,29 +1,28 @@
 """StaticPart AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class StaticPart(ARObject):
     """AUTOSAR StaticPart."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize StaticPart."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert StaticPart to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STATICPART")
+        element = ET.Element("STATICPART")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "StaticPart":
+    def deserialize(cls, element: ET.Element) -> "StaticPart":
         """Create StaticPart from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class StaticPart(ARObject):
         Returns:
             StaticPart instance
         """
-        obj = cls()
+        obj: StaticPart = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class StaticPart(ARObject):
 class StaticPartBuilder:
     """Builder for StaticPart."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = StaticPart()
+        self._obj: StaticPart = StaticPart()
 
     def build(self) -> StaticPart:
         """Build and return StaticPart object.

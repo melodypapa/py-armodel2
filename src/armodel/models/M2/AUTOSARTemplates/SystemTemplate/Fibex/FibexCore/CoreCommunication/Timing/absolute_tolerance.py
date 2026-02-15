@@ -1,29 +1,28 @@
 """AbsoluteTolerance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbsoluteTolerance(ARObject):
     """AUTOSAR AbsoluteTolerance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbsoluteTolerance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbsoluteTolerance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSOLUTETOLERANCE")
+        element = ET.Element("ABSOLUTETOLERANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbsoluteTolerance":
+    def deserialize(cls, element: ET.Element) -> "AbsoluteTolerance":
         """Create AbsoluteTolerance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbsoluteTolerance(ARObject):
         Returns:
             AbsoluteTolerance instance
         """
-        obj = cls()
+        obj: AbsoluteTolerance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbsoluteTolerance(ARObject):
 class AbsoluteToleranceBuilder:
     """Builder for AbsoluteTolerance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbsoluteTolerance()
+        self._obj: AbsoluteTolerance = AbsoluteTolerance()
 
     def build(self) -> AbsoluteTolerance:
         """Build and return AbsoluteTolerance object.

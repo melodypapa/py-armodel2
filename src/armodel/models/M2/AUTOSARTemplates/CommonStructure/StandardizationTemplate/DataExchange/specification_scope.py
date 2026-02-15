@@ -1,29 +1,28 @@
 """SpecificationScope AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SpecificationScope(ARObject):
     """AUTOSAR SpecificationScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SpecificationScope."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SpecificationScope to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SPECIFICATIONSCOPE")
+        element = ET.Element("SPECIFICATIONSCOPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SpecificationScope":
+    def deserialize(cls, element: ET.Element) -> "SpecificationScope":
         """Create SpecificationScope from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SpecificationScope(ARObject):
         Returns:
             SpecificationScope instance
         """
-        obj = cls()
+        obj: SpecificationScope = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SpecificationScope(ARObject):
 class SpecificationScopeBuilder:
     """Builder for SpecificationScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SpecificationScope()
+        self._obj: SpecificationScope = SpecificationScope()
 
     def build(self) -> SpecificationScope:
         """Build and return SpecificationScope object.

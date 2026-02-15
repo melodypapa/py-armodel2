@@ -1,29 +1,28 @@
 """LLongName AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LLongName(ARObject):
     """AUTOSAR LLongName."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LLongName."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LLongName to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LLONGNAME")
+        element = ET.Element("LLONGNAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LLongName":
+    def deserialize(cls, element: ET.Element) -> "LLongName":
         """Create LLongName from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LLongName(ARObject):
         Returns:
             LLongName instance
         """
-        obj = cls()
+        obj: LLongName = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LLongName(ARObject):
 class LLongNameBuilder:
     """Builder for LLongName."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LLongName()
+        self._obj: LLongName = LLongName()
 
     def build(self) -> LLongName:
         """Build and return LLongName object.

@@ -1,29 +1,28 @@
 """UserDefinedTransformationProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedTransformationProps(ARObject):
     """AUTOSAR UserDefinedTransformationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedTransformationProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedTransformationProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDTRANSFORMATIONPROPS")
+        element = ET.Element("USERDEFINEDTRANSFORMATIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedTransformationProps":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationProps":
         """Create UserDefinedTransformationProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedTransformationProps(ARObject):
         Returns:
             UserDefinedTransformationProps instance
         """
-        obj = cls()
+        obj: UserDefinedTransformationProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedTransformationProps(ARObject):
 class UserDefinedTransformationPropsBuilder:
     """Builder for UserDefinedTransformationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedTransformationProps()
+        self._obj: UserDefinedTransformationProps = UserDefinedTransformationProps()
 
     def build(self) -> UserDefinedTransformationProps:
         """Build and return UserDefinedTransformationProps object.

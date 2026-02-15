@@ -1,29 +1,28 @@
 """NmClusterCoupling AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NmClusterCoupling(ARObject):
     """AUTOSAR NmClusterCoupling."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NmClusterCoupling."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NmClusterCoupling to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NMCLUSTERCOUPLING")
+        element = ET.Element("NMCLUSTERCOUPLING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NmClusterCoupling":
+    def deserialize(cls, element: ET.Element) -> "NmClusterCoupling":
         """Create NmClusterCoupling from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NmClusterCoupling(ARObject):
         Returns:
             NmClusterCoupling instance
         """
-        obj = cls()
+        obj: NmClusterCoupling = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NmClusterCoupling(ARObject):
 class NmClusterCouplingBuilder:
     """Builder for NmClusterCoupling."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NmClusterCoupling()
+        self._obj: NmClusterCoupling = NmClusterCoupling()
 
     def build(self) -> NmClusterCoupling:
         """Build and return NmClusterCoupling object.

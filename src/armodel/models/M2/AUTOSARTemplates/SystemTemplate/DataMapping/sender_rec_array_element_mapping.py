@@ -1,29 +1,28 @@
 """SenderRecArrayElementMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SenderRecArrayElementMapping(ARObject):
     """AUTOSAR SenderRecArrayElementMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SenderRecArrayElementMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SenderRecArrayElementMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SENDERRECARRAYELEMENTMAPPING")
+        element = ET.Element("SENDERRECARRAYELEMENTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SenderRecArrayElementMapping":
+    def deserialize(cls, element: ET.Element) -> "SenderRecArrayElementMapping":
         """Create SenderRecArrayElementMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SenderRecArrayElementMapping(ARObject):
         Returns:
             SenderRecArrayElementMapping instance
         """
-        obj = cls()
+        obj: SenderRecArrayElementMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SenderRecArrayElementMapping(ARObject):
 class SenderRecArrayElementMappingBuilder:
     """Builder for SenderRecArrayElementMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SenderRecArrayElementMapping()
+        self._obj: SenderRecArrayElementMapping = SenderRecArrayElementMapping()
 
     def build(self) -> SenderRecArrayElementMapping:
         """Build and return SenderRecArrayElementMapping object.

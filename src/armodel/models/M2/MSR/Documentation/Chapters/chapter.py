@@ -1,29 +1,28 @@
 """Chapter AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Chapter(ARObject):
     """AUTOSAR Chapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Chapter."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Chapter to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CHAPTER")
+        element = ET.Element("CHAPTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Chapter":
+    def deserialize(cls, element: ET.Element) -> "Chapter":
         """Create Chapter from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Chapter(ARObject):
         Returns:
             Chapter instance
         """
-        obj = cls()
+        obj: Chapter = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Chapter(ARObject):
 class ChapterBuilder:
     """Builder for Chapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Chapter()
+        self._obj: Chapter = Chapter()
 
     def build(self) -> Chapter:
         """Build and return Chapter object.

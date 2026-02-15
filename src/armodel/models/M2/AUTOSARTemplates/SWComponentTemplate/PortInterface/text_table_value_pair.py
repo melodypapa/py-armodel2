@@ -1,29 +1,28 @@
 """TextTableValuePair AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TextTableValuePair(ARObject):
     """AUTOSAR TextTableValuePair."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TextTableValuePair."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TextTableValuePair to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TEXTTABLEVALUEPAIR")
+        element = ET.Element("TEXTTABLEVALUEPAIR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TextTableValuePair":
+    def deserialize(cls, element: ET.Element) -> "TextTableValuePair":
         """Create TextTableValuePair from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TextTableValuePair(ARObject):
         Returns:
             TextTableValuePair instance
         """
-        obj = cls()
+        obj: TextTableValuePair = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TextTableValuePair(ARObject):
 class TextTableValuePairBuilder:
     """Builder for TextTableValuePair."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TextTableValuePair()
+        self._obj: TextTableValuePair = TextTableValuePair()
 
     def build(self) -> TextTableValuePair:
         """Build and return TextTableValuePair object.

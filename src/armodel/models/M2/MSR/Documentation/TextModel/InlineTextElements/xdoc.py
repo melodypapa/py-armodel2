@@ -1,29 +1,28 @@
 """Xdoc AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Xdoc(ARObject):
     """AUTOSAR Xdoc."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Xdoc."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Xdoc to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("XDOC")
+        element = ET.Element("XDOC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Xdoc":
+    def deserialize(cls, element: ET.Element) -> "Xdoc":
         """Create Xdoc from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Xdoc(ARObject):
         Returns:
             Xdoc instance
         """
-        obj = cls()
+        obj: Xdoc = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Xdoc(ARObject):
 class XdocBuilder:
     """Builder for Xdoc."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Xdoc()
+        self._obj: Xdoc = Xdoc()
 
     def build(self) -> Xdoc:
         """Build and return Xdoc object.

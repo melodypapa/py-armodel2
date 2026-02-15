@@ -1,29 +1,28 @@
 """EcucQuery AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucQuery(ARObject):
     """AUTOSAR EcucQuery."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucQuery."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucQuery to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCQUERY")
+        element = ET.Element("ECUCQUERY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucQuery":
+    def deserialize(cls, element: ET.Element) -> "EcucQuery":
         """Create EcucQuery from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucQuery(ARObject):
         Returns:
             EcucQuery instance
         """
-        obj = cls()
+        obj: EcucQuery = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucQuery(ARObject):
 class EcucQueryBuilder:
     """Builder for EcucQuery."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucQuery()
+        self._obj: EcucQuery = EcucQuery()
 
     def build(self) -> EcucQuery:
         """Build and return EcucQuery object.

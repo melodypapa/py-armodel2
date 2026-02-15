@@ -1,29 +1,28 @@
 """MixedContentForParagraph AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MixedContentForParagraph(ARObject):
     """AUTOSAR MixedContentForParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MixedContentForParagraph."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MixedContentForParagraph to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MIXEDCONTENTFORPARAGRAPH")
+        element = ET.Element("MIXEDCONTENTFORPARAGRAPH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MixedContentForParagraph":
+    def deserialize(cls, element: ET.Element) -> "MixedContentForParagraph":
         """Create MixedContentForParagraph from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MixedContentForParagraph(ARObject):
         Returns:
             MixedContentForParagraph instance
         """
-        obj = cls()
+        obj: MixedContentForParagraph = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MixedContentForParagraph(ARObject):
 class MixedContentForParagraphBuilder:
     """Builder for MixedContentForParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MixedContentForParagraph()
+        self._obj: MixedContentForParagraph = MixedContentForParagraph()
 
     def build(self) -> MixedContentForParagraph:
         """Build and return MixedContentForParagraph object.

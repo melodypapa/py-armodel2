@@ -1,29 +1,28 @@
 """DiagnosticReadMemoryByAddressClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticReadMemoryByAddressClass(ARObject):
     """AUTOSAR DiagnosticReadMemoryByAddressClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticReadMemoryByAddressClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticReadMemoryByAddressClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREADMEMORYBYADDRESSCLASS")
+        element = ET.Element("DIAGNOSTICREADMEMORYBYADDRESSCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticReadMemoryByAddressClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadMemoryByAddressClass":
         """Create DiagnosticReadMemoryByAddressClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticReadMemoryByAddressClass(ARObject):
         Returns:
             DiagnosticReadMemoryByAddressClass instance
         """
-        obj = cls()
+        obj: DiagnosticReadMemoryByAddressClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticReadMemoryByAddressClass(ARObject):
 class DiagnosticReadMemoryByAddressClassBuilder:
     """Builder for DiagnosticReadMemoryByAddressClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticReadMemoryByAddressClass()
+        self._obj: DiagnosticReadMemoryByAddressClass = DiagnosticReadMemoryByAddressClass()
 
     def build(self) -> DiagnosticReadMemoryByAddressClass:
         """Build and return DiagnosticReadMemoryByAddressClass object.

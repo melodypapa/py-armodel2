@@ -1,29 +1,28 @@
 """DiagnosticEventPortMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEventPortMapping(ARObject):
     """AUTOSAR DiagnosticEventPortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEventPortMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEventPortMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICEVENTPORTMAPPING")
+        element = ET.Element("DIAGNOSTICEVENTPORTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEventPortMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventPortMapping":
         """Create DiagnosticEventPortMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEventPortMapping(ARObject):
         Returns:
             DiagnosticEventPortMapping instance
         """
-        obj = cls()
+        obj: DiagnosticEventPortMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEventPortMapping(ARObject):
 class DiagnosticEventPortMappingBuilder:
     """Builder for DiagnosticEventPortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEventPortMapping()
+        self._obj: DiagnosticEventPortMapping = DiagnosticEventPortMapping()
 
     def build(self) -> DiagnosticEventPortMapping:
         """Build and return DiagnosticEventPortMapping object.

@@ -1,29 +1,28 @@
 """SwAxisCont AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwAxisCont(ARObject):
     """AUTOSAR SwAxisCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwAxisCont."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwAxisCont to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWAXISCONT")
+        element = ET.Element("SWAXISCONT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwAxisCont":
+    def deserialize(cls, element: ET.Element) -> "SwAxisCont":
         """Create SwAxisCont from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwAxisCont(ARObject):
         Returns:
             SwAxisCont instance
         """
-        obj = cls()
+        obj: SwAxisCont = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwAxisCont(ARObject):
 class SwAxisContBuilder:
     """Builder for SwAxisCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwAxisCont()
+        self._obj: SwAxisCont = SwAxisCont()
 
     def build(self) -> SwAxisCont:
         """Build and return SwAxisCont object.

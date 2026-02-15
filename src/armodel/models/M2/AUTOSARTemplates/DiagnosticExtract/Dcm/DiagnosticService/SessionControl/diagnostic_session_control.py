@@ -1,29 +1,28 @@
 """DiagnosticSessionControl AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticSessionControl(ARObject):
     """AUTOSAR DiagnosticSessionControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticSessionControl to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSESSIONCONTROL")
+        element = ET.Element("DIAGNOSTICSESSIONCONTROL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticSessionControl":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticSessionControl":
         """Create DiagnosticSessionControl from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticSessionControl(ARObject):
         Returns:
             DiagnosticSessionControl instance
         """
-        obj = cls()
+        obj: DiagnosticSessionControl = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticSessionControl(ARObject):
 class DiagnosticSessionControlBuilder:
     """Builder for DiagnosticSessionControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticSessionControl()
+        self._obj: DiagnosticSessionControl = DiagnosticSessionControl()
 
     def build(self) -> DiagnosticSessionControl:
         """Build and return DiagnosticSessionControl object.

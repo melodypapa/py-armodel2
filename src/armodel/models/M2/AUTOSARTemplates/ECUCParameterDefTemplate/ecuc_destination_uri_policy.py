@@ -1,29 +1,28 @@
 """EcucDestinationUriPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucDestinationUriPolicy(ARObject):
     """AUTOSAR EcucDestinationUriPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucDestinationUriPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucDestinationUriPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCDESTINATIONURIPOLICY")
+        element = ET.Element("ECUCDESTINATIONURIPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucDestinationUriPolicy":
+    def deserialize(cls, element: ET.Element) -> "EcucDestinationUriPolicy":
         """Create EcucDestinationUriPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucDestinationUriPolicy(ARObject):
         Returns:
             EcucDestinationUriPolicy instance
         """
-        obj = cls()
+        obj: EcucDestinationUriPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucDestinationUriPolicy(ARObject):
 class EcucDestinationUriPolicyBuilder:
     """Builder for EcucDestinationUriPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucDestinationUriPolicy()
+        self._obj: EcucDestinationUriPolicy = EcucDestinationUriPolicy()
 
     def build(self) -> EcucDestinationUriPolicy:
         """Build and return EcucDestinationUriPolicy object.

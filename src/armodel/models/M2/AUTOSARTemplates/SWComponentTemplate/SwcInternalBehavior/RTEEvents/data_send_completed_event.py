@@ -1,29 +1,28 @@
 """DataSendCompletedEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataSendCompletedEvent(ARObject):
     """AUTOSAR DataSendCompletedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataSendCompletedEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataSendCompletedEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATASENDCOMPLETEDEVENT")
+        element = ET.Element("DATASENDCOMPLETEDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataSendCompletedEvent":
+    def deserialize(cls, element: ET.Element) -> "DataSendCompletedEvent":
         """Create DataSendCompletedEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataSendCompletedEvent(ARObject):
         Returns:
             DataSendCompletedEvent instance
         """
-        obj = cls()
+        obj: DataSendCompletedEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataSendCompletedEvent(ARObject):
 class DataSendCompletedEventBuilder:
     """Builder for DataSendCompletedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataSendCompletedEvent()
+        self._obj: DataSendCompletedEvent = DataSendCompletedEvent()
 
     def build(self) -> DataSendCompletedEvent:
         """Build and return DataSendCompletedEvent object.

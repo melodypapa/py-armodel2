@@ -1,29 +1,28 @@
 """ExternalTriggeringPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ExternalTriggeringPoint(ARObject):
     """AUTOSAR ExternalTriggeringPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ExternalTriggeringPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ExternalTriggeringPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EXTERNALTRIGGERINGPOINT")
+        element = ET.Element("EXTERNALTRIGGERINGPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ExternalTriggeringPoint":
+    def deserialize(cls, element: ET.Element) -> "ExternalTriggeringPoint":
         """Create ExternalTriggeringPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ExternalTriggeringPoint(ARObject):
         Returns:
             ExternalTriggeringPoint instance
         """
-        obj = cls()
+        obj: ExternalTriggeringPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ExternalTriggeringPoint(ARObject):
 class ExternalTriggeringPointBuilder:
     """Builder for ExternalTriggeringPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ExternalTriggeringPoint()
+        self._obj: ExternalTriggeringPoint = ExternalTriggeringPoint()
 
     def build(self) -> ExternalTriggeringPoint:
         """Build and return ExternalTriggeringPoint object.

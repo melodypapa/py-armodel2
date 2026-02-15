@@ -1,29 +1,28 @@
 """DdsTransportPriority AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsTransportPriority(ARObject):
     """AUTOSAR DdsTransportPriority."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsTransportPriority."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsTransportPriority to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSTRANSPORTPRIORITY")
+        element = ET.Element("DDSTRANSPORTPRIORITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsTransportPriority":
+    def deserialize(cls, element: ET.Element) -> "DdsTransportPriority":
         """Create DdsTransportPriority from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsTransportPriority(ARObject):
         Returns:
             DdsTransportPriority instance
         """
-        obj = cls()
+        obj: DdsTransportPriority = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsTransportPriority(ARObject):
 class DdsTransportPriorityBuilder:
     """Builder for DdsTransportPriority."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsTransportPriority()
+        self._obj: DdsTransportPriority = DdsTransportPriority()
 
     def build(self) -> DdsTransportPriority:
         """Build and return DdsTransportPriority object.

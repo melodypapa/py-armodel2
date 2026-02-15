@@ -1,29 +1,28 @@
 """PortDefinedArgumentValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortDefinedArgumentValue(ARObject):
     """AUTOSAR PortDefinedArgumentValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortDefinedArgumentValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortDefinedArgumentValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTDEFINEDARGUMENTVALUE")
+        element = ET.Element("PORTDEFINEDARGUMENTVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortDefinedArgumentValue":
+    def deserialize(cls, element: ET.Element) -> "PortDefinedArgumentValue":
         """Create PortDefinedArgumentValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortDefinedArgumentValue(ARObject):
         Returns:
             PortDefinedArgumentValue instance
         """
-        obj = cls()
+        obj: PortDefinedArgumentValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortDefinedArgumentValue(ARObject):
 class PortDefinedArgumentValueBuilder:
     """Builder for PortDefinedArgumentValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortDefinedArgumentValue()
+        self._obj: PortDefinedArgumentValue = PortDefinedArgumentValue()
 
     def build(self) -> PortDefinedArgumentValue:
         """Build and return PortDefinedArgumentValue object.

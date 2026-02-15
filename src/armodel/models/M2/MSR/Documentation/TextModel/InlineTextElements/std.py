@@ -1,29 +1,28 @@
 """Std AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Std(ARObject):
     """AUTOSAR Std."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Std."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Std to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STD")
+        element = ET.Element("STD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Std":
+    def deserialize(cls, element: ET.Element) -> "Std":
         """Create Std from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Std(ARObject):
         Returns:
             Std instance
         """
-        obj = cls()
+        obj: Std = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Std(ARObject):
 class StdBuilder:
     """Builder for Std."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Std()
+        self._obj: Std = Std()
 
     def build(self) -> Std:
         """Build and return Std object.

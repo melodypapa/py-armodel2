@@ -1,7 +1,7 @@
 """Base AUTOSAR object classes."""
 
 from typing import Any
-from lxml import etree
+import xml.etree.ElementTree as ET
 
 
 class ARObject:
@@ -14,7 +14,7 @@ class ARObject:
         """Initialize ARObject."""
         self._attributes: dict[str, Any] = {}
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert object to XML element.
 
         Raises:
@@ -25,7 +25,7 @@ class ARObject:
         )
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ARObject":
+    def deserialize(cls, element: ET.Element) -> "ARObject":
         """Create object from XML element.
 
         Args:

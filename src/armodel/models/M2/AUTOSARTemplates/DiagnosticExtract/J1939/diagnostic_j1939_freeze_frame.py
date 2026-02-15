@@ -1,29 +1,28 @@
 """DiagnosticJ1939FreezeFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticJ1939FreezeFrame(ARObject):
     """AUTOSAR DiagnosticJ1939FreezeFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticJ1939FreezeFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICJ1939FREEZEFRAME")
+        element = ET.Element("DIAGNOSTICJ1939FREEZEFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticJ1939FreezeFrame":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939FreezeFrame":
         """Create DiagnosticJ1939FreezeFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticJ1939FreezeFrame(ARObject):
         Returns:
             DiagnosticJ1939FreezeFrame instance
         """
-        obj = cls()
+        obj: DiagnosticJ1939FreezeFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticJ1939FreezeFrame(ARObject):
 class DiagnosticJ1939FreezeFrameBuilder:
     """Builder for DiagnosticJ1939FreezeFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticJ1939FreezeFrame()
+        self._obj: DiagnosticJ1939FreezeFrame = DiagnosticJ1939FreezeFrame()
 
     def build(self) -> DiagnosticJ1939FreezeFrame:
         """Build and return DiagnosticJ1939FreezeFrame object.

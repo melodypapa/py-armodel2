@@ -1,29 +1,28 @@
 """FlexrayCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayCluster(ARObject):
     """AUTOSAR FlexrayCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYCLUSTER")
+        element = ET.Element("FLEXRAYCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayCluster":
+    def deserialize(cls, element: ET.Element) -> "FlexrayCluster":
         """Create FlexrayCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayCluster(ARObject):
         Returns:
             FlexrayCluster instance
         """
-        obj = cls()
+        obj: FlexrayCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayCluster(ARObject):
 class FlexrayClusterBuilder:
     """Builder for FlexrayCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayCluster()
+        self._obj: FlexrayCluster = FlexrayCluster()
 
     def build(self) -> FlexrayCluster:
         """Build and return FlexrayCluster object.

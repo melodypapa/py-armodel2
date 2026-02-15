@@ -1,29 +1,28 @@
 """DataPrototypeInSystemInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeInSystemInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeInSystemInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPEINSYSTEMINSTANCEREF")
+        element = ET.Element("DATAPROTOTYPEINSYSTEMINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeInSystemInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSystemInstanceRef":
         """Create DataPrototypeInSystemInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         Returns:
             DataPrototypeInSystemInstanceRef instance
         """
-        obj = cls()
+        obj: DataPrototypeInSystemInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
 class DataPrototypeInSystemInstanceRefBuilder:
     """Builder for DataPrototypeInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeInSystemInstanceRef()
+        self._obj: DataPrototypeInSystemInstanceRef = DataPrototypeInSystemInstanceRef()
 
     def build(self) -> DataPrototypeInSystemInstanceRef:
         """Build and return DataPrototypeInSystemInstanceRef object.

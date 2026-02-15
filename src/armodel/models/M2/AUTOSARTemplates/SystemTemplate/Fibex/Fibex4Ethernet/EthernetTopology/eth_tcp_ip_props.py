@@ -1,29 +1,28 @@
 """EthTcpIpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthTcpIpProps(ARObject):
     """AUTOSAR EthTcpIpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthTcpIpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthTcpIpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHTCPIPPROPS")
+        element = ET.Element("ETHTCPIPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthTcpIpProps":
+    def deserialize(cls, element: ET.Element) -> "EthTcpIpProps":
         """Create EthTcpIpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthTcpIpProps(ARObject):
         Returns:
             EthTcpIpProps instance
         """
-        obj = cls()
+        obj: EthTcpIpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthTcpIpProps(ARObject):
 class EthTcpIpPropsBuilder:
     """Builder for EthTcpIpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthTcpIpProps()
+        self._obj: EthTcpIpProps = EthTcpIpProps()
 
     def build(self) -> EthTcpIpProps:
         """Build and return EthTcpIpProps object.

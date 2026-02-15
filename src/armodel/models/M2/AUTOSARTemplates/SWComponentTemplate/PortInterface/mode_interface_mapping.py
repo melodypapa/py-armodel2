@@ -1,29 +1,28 @@
 """ModeInterfaceMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeInterfaceMapping(ARObject):
     """AUTOSAR ModeInterfaceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeInterfaceMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeInterfaceMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEINTERFACEMAPPING")
+        element = ET.Element("MODEINTERFACEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeInterfaceMapping":
+    def deserialize(cls, element: ET.Element) -> "ModeInterfaceMapping":
         """Create ModeInterfaceMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeInterfaceMapping(ARObject):
         Returns:
             ModeInterfaceMapping instance
         """
-        obj = cls()
+        obj: ModeInterfaceMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeInterfaceMapping(ARObject):
 class ModeInterfaceMappingBuilder:
     """Builder for ModeInterfaceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeInterfaceMapping()
+        self._obj: ModeInterfaceMapping = ModeInterfaceMapping()
 
     def build(self) -> ModeInterfaceMapping:
         """Build and return ModeInterfaceMapping object.

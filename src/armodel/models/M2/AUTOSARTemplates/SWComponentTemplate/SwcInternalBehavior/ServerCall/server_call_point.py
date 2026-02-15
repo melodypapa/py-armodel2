@@ -1,29 +1,28 @@
 """ServerCallPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ServerCallPoint(ARObject):
     """AUTOSAR ServerCallPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ServerCallPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ServerCallPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SERVERCALLPOINT")
+        element = ET.Element("SERVERCALLPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ServerCallPoint":
+    def deserialize(cls, element: ET.Element) -> "ServerCallPoint":
         """Create ServerCallPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ServerCallPoint(ARObject):
         Returns:
             ServerCallPoint instance
         """
-        obj = cls()
+        obj: ServerCallPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ServerCallPoint(ARObject):
 class ServerCallPointBuilder:
     """Builder for ServerCallPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ServerCallPoint()
+        self._obj: ServerCallPoint = ServerCallPoint()
 
     def build(self) -> ServerCallPoint:
         """Build and return ServerCallPoint object.

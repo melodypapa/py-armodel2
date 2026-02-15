@@ -1,29 +1,28 @@
 """DiagnosticStorageConditionNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticStorageConditionNeeds(ARObject):
     """AUTOSAR DiagnosticStorageConditionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticStorageConditionNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSTORAGECONDITIONNEEDS")
+        element = ET.Element("DIAGNOSTICSTORAGECONDITIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticStorageConditionNeeds":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticStorageConditionNeeds":
         """Create DiagnosticStorageConditionNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticStorageConditionNeeds(ARObject):
         Returns:
             DiagnosticStorageConditionNeeds instance
         """
-        obj = cls()
+        obj: DiagnosticStorageConditionNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticStorageConditionNeeds(ARObject):
 class DiagnosticStorageConditionNeedsBuilder:
     """Builder for DiagnosticStorageConditionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticStorageConditionNeeds()
+        self._obj: DiagnosticStorageConditionNeeds = DiagnosticStorageConditionNeeds()
 
     def build(self) -> DiagnosticStorageConditionNeeds:
         """Build and return DiagnosticStorageConditionNeeds object.

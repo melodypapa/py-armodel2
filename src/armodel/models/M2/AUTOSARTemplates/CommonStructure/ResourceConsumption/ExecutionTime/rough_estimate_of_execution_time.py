@@ -1,29 +1,28 @@
 """RoughEstimateOfExecutionTime AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RoughEstimateOfExecutionTime(ARObject):
     """AUTOSAR RoughEstimateOfExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RoughEstimateOfExecutionTime."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RoughEstimateOfExecutionTime to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ROUGHESTIMATEOFEXECUTIONTIME")
+        element = ET.Element("ROUGHESTIMATEOFEXECUTIONTIME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RoughEstimateOfExecutionTime":
+    def deserialize(cls, element: ET.Element) -> "RoughEstimateOfExecutionTime":
         """Create RoughEstimateOfExecutionTime from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RoughEstimateOfExecutionTime(ARObject):
         Returns:
             RoughEstimateOfExecutionTime instance
         """
-        obj = cls()
+        obj: RoughEstimateOfExecutionTime = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RoughEstimateOfExecutionTime(ARObject):
 class RoughEstimateOfExecutionTimeBuilder:
     """Builder for RoughEstimateOfExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RoughEstimateOfExecutionTime()
+        self._obj: RoughEstimateOfExecutionTime = RoughEstimateOfExecutionTime()
 
     def build(self) -> RoughEstimateOfExecutionTime:
         """Build and return RoughEstimateOfExecutionTime object.

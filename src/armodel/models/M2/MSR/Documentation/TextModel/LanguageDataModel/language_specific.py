@@ -1,29 +1,28 @@
 """LanguageSpecific AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LanguageSpecific(ARObject):
     """AUTOSAR LanguageSpecific."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LanguageSpecific."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LanguageSpecific to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LANGUAGESPECIFIC")
+        element = ET.Element("LANGUAGESPECIFIC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LanguageSpecific":
+    def deserialize(cls, element: ET.Element) -> "LanguageSpecific":
         """Create LanguageSpecific from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LanguageSpecific(ARObject):
         Returns:
             LanguageSpecific instance
         """
-        obj = cls()
+        obj: LanguageSpecific = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LanguageSpecific(ARObject):
 class LanguageSpecificBuilder:
     """Builder for LanguageSpecific."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LanguageSpecific()
+        self._obj: LanguageSpecific = LanguageSpecific()
 
     def build(self) -> LanguageSpecific:
         """Build and return LanguageSpecific object.

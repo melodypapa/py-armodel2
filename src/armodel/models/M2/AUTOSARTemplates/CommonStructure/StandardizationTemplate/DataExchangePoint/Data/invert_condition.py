@@ -1,29 +1,28 @@
 """InvertCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InvertCondition(ARObject):
     """AUTOSAR InvertCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InvertCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InvertCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INVERTCONDITION")
+        element = ET.Element("INVERTCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InvertCondition":
+    def deserialize(cls, element: ET.Element) -> "InvertCondition":
         """Create InvertCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InvertCondition(ARObject):
         Returns:
             InvertCondition instance
         """
-        obj = cls()
+        obj: InvertCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InvertCondition(ARObject):
 class InvertConditionBuilder:
     """Builder for InvertCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InvertCondition()
+        self._obj: InvertCondition = InvertCondition()
 
     def build(self) -> InvertCondition:
         """Build and return InvertCondition object.

@@ -1,29 +1,28 @@
 """DiagnosticRequestEmissionRelatedDTCClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestEmissionRelatedDTCClass(ARObject):
     """AUTOSAR DiagnosticRequestEmissionRelatedDTCClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTCClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestEmissionRelatedDTCClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTEMISSIONRELATEDDTCCLASS")
+        element = ET.Element("DIAGNOSTICREQUESTEMISSIONRELATEDDTCCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestEmissionRelatedDTCClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestEmissionRelatedDTCClass":
         """Create DiagnosticRequestEmissionRelatedDTCClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestEmissionRelatedDTCClass(ARObject):
         Returns:
             DiagnosticRequestEmissionRelatedDTCClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestEmissionRelatedDTCClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestEmissionRelatedDTCClass(ARObject):
 class DiagnosticRequestEmissionRelatedDTCClassBuilder:
     """Builder for DiagnosticRequestEmissionRelatedDTCClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestEmissionRelatedDTCClass()
+        self._obj: DiagnosticRequestEmissionRelatedDTCClass = DiagnosticRequestEmissionRelatedDTCClass()
 
     def build(self) -> DiagnosticRequestEmissionRelatedDTCClass:
         """Build and return DiagnosticRequestEmissionRelatedDTCClass object.

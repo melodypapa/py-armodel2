@@ -1,29 +1,28 @@
 """BswQueuedDataReceptionPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswQueuedDataReceptionPolicy(ARObject):
     """AUTOSAR BswQueuedDataReceptionPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswQueuedDataReceptionPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswQueuedDataReceptionPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWQUEUEDDATARECEPTIONPOLICY")
+        element = ET.Element("BSWQUEUEDDATARECEPTIONPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswQueuedDataReceptionPolicy":
+    def deserialize(cls, element: ET.Element) -> "BswQueuedDataReceptionPolicy":
         """Create BswQueuedDataReceptionPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswQueuedDataReceptionPolicy(ARObject):
         Returns:
             BswQueuedDataReceptionPolicy instance
         """
-        obj = cls()
+        obj: BswQueuedDataReceptionPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswQueuedDataReceptionPolicy(ARObject):
 class BswQueuedDataReceptionPolicyBuilder:
     """Builder for BswQueuedDataReceptionPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswQueuedDataReceptionPolicy()
+        self._obj: BswQueuedDataReceptionPolicy = BswQueuedDataReceptionPolicy()
 
     def build(self) -> BswQueuedDataReceptionPolicy:
         """Build and return BswQueuedDataReceptionPolicy object.

@@ -1,29 +1,28 @@
 """VariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VariationPoint(ARObject):
     """AUTOSAR VariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VARIATIONPOINT")
+        element = ET.Element("VARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VariationPoint":
+    def deserialize(cls, element: ET.Element) -> "VariationPoint":
         """Create VariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VariationPoint(ARObject):
         Returns:
             VariationPoint instance
         """
-        obj = cls()
+        obj: VariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VariationPoint(ARObject):
 class VariationPointBuilder:
     """Builder for VariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VariationPoint()
+        self._obj: VariationPoint = VariationPoint()
 
     def build(self) -> VariationPoint:
         """Build and return VariationPoint object.

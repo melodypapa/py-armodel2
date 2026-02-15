@@ -1,29 +1,28 @@
 """TcpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TcpProps(ARObject):
     """AUTOSAR TcpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TcpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TcpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TCPPROPS")
+        element = ET.Element("TCPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TcpProps":
+    def deserialize(cls, element: ET.Element) -> "TcpProps":
         """Create TcpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TcpProps(ARObject):
         Returns:
             TcpProps instance
         """
-        obj = cls()
+        obj: TcpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TcpProps(ARObject):
 class TcpPropsBuilder:
     """Builder for TcpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TcpProps()
+        self._obj: TcpProps = TcpProps()
 
     def build(self) -> TcpProps:
         """Build and return TcpProps object.

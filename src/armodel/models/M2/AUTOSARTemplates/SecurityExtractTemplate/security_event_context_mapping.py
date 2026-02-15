@@ -1,29 +1,28 @@
 """SecurityEventContextMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SecurityEventContextMapping(ARObject):
     """AUTOSAR SecurityEventContextMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SecurityEventContextMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECURITYEVENTCONTEXTMAPPING")
+        element = ET.Element("SECURITYEVENTCONTEXTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SecurityEventContextMapping":
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextMapping":
         """Create SecurityEventContextMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SecurityEventContextMapping(ARObject):
         Returns:
             SecurityEventContextMapping instance
         """
-        obj = cls()
+        obj: SecurityEventContextMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SecurityEventContextMapping(ARObject):
 class SecurityEventContextMappingBuilder:
     """Builder for SecurityEventContextMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SecurityEventContextMapping()
+        self._obj: SecurityEventContextMapping = SecurityEventContextMapping()
 
     def build(self) -> SecurityEventContextMapping:
         """Build and return SecurityEventContextMapping object.

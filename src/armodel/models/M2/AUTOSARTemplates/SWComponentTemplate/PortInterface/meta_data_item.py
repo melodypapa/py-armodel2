@@ -1,29 +1,28 @@
 """MetaDataItem AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MetaDataItem(ARObject):
     """AUTOSAR MetaDataItem."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MetaDataItem."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MetaDataItem to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("METADATAITEM")
+        element = ET.Element("METADATAITEM")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MetaDataItem":
+    def deserialize(cls, element: ET.Element) -> "MetaDataItem":
         """Create MetaDataItem from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MetaDataItem(ARObject):
         Returns:
             MetaDataItem instance
         """
-        obj = cls()
+        obj: MetaDataItem = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MetaDataItem(ARObject):
 class MetaDataItemBuilder:
     """Builder for MetaDataItem."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MetaDataItem()
+        self._obj: MetaDataItem = MetaDataItem()
 
     def build(self) -> MetaDataItem:
         """Build and return MetaDataItem object.

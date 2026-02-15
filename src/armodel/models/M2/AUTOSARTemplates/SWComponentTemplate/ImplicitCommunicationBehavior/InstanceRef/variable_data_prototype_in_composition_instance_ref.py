@@ -1,29 +1,28 @@
 """VariableDataPrototypeInCompositionInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VariableDataPrototypeInCompositionInstanceRef(ARObject):
     """AUTOSAR VariableDataPrototypeInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VariableDataPrototypeInCompositionInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VariableDataPrototypeInCompositionInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VARIABLEDATAPROTOTYPEINCOMPOSITIONINSTANCEREF")
+        element = ET.Element("VARIABLEDATAPROTOTYPEINCOMPOSITIONINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VariableDataPrototypeInCompositionInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "VariableDataPrototypeInCompositionInstanceRef":
         """Create VariableDataPrototypeInCompositionInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
         Returns:
             VariableDataPrototypeInCompositionInstanceRef instance
         """
-        obj = cls()
+        obj: VariableDataPrototypeInCompositionInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
 class VariableDataPrototypeInCompositionInstanceRefBuilder:
     """Builder for VariableDataPrototypeInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VariableDataPrototypeInCompositionInstanceRef()
+        self._obj: VariableDataPrototypeInCompositionInstanceRef = VariableDataPrototypeInCompositionInstanceRef()
 
     def build(self) -> VariableDataPrototypeInCompositionInstanceRef:
         """Build and return VariableDataPrototypeInCompositionInstanceRef object.

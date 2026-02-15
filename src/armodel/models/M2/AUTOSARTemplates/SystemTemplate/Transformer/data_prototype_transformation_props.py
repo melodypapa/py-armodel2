@@ -1,29 +1,28 @@
 """DataPrototypeTransformationProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeTransformationProps(ARObject):
     """AUTOSAR DataPrototypeTransformationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeTransformationProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPETRANSFORMATIONPROPS")
+        element = ET.Element("DATAPROTOTYPETRANSFORMATIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeTransformationProps":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeTransformationProps":
         """Create DataPrototypeTransformationProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeTransformationProps(ARObject):
         Returns:
             DataPrototypeTransformationProps instance
         """
-        obj = cls()
+        obj: DataPrototypeTransformationProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeTransformationProps(ARObject):
 class DataPrototypeTransformationPropsBuilder:
     """Builder for DataPrototypeTransformationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeTransformationProps()
+        self._obj: DataPrototypeTransformationProps = DataPrototypeTransformationProps()
 
     def build(self) -> DataPrototypeTransformationProps:
         """Build and return DataPrototypeTransformationProps object.

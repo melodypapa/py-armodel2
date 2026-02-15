@@ -1,29 +1,28 @@
 """DdsDurability AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsDurability(ARObject):
     """AUTOSAR DdsDurability."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsDurability."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsDurability to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSDURABILITY")
+        element = ET.Element("DDSDURABILITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsDurability":
+    def deserialize(cls, element: ET.Element) -> "DdsDurability":
         """Create DdsDurability from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsDurability(ARObject):
         Returns:
             DdsDurability instance
         """
-        obj = cls()
+        obj: DdsDurability = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsDurability(ARObject):
 class DdsDurabilityBuilder:
     """Builder for DdsDurability."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsDurability()
+        self._obj: DdsDurability = DdsDurability()
 
     def build(self) -> DdsDurability:
         """Build and return DdsDurability object.

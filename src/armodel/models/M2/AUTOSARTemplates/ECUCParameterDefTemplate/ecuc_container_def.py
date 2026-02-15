@@ -1,29 +1,28 @@
 """EcucContainerDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucContainerDef(ARObject):
     """AUTOSAR EcucContainerDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucContainerDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucContainerDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCCONTAINERDEF")
+        element = ET.Element("ECUCCONTAINERDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucContainerDef":
+    def deserialize(cls, element: ET.Element) -> "EcucContainerDef":
         """Create EcucContainerDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucContainerDef(ARObject):
         Returns:
             EcucContainerDef instance
         """
-        obj = cls()
+        obj: EcucContainerDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucContainerDef(ARObject):
 class EcucContainerDefBuilder:
     """Builder for EcucContainerDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucContainerDef()
+        self._obj: EcucContainerDef = EcucContainerDef()
 
     def build(self) -> EcucContainerDef:
         """Build and return EcucContainerDef object.

@@ -1,29 +1,28 @@
 """ApplicationPrimitiveDataType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationPrimitiveDataType(ARObject):
     """AUTOSAR ApplicationPrimitiveDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationPrimitiveDataType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationPrimitiveDataType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONPRIMITIVEDATATYPE")
+        element = ET.Element("APPLICATIONPRIMITIVEDATATYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationPrimitiveDataType":
+    def deserialize(cls, element: ET.Element) -> "ApplicationPrimitiveDataType":
         """Create ApplicationPrimitiveDataType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationPrimitiveDataType(ARObject):
         Returns:
             ApplicationPrimitiveDataType instance
         """
-        obj = cls()
+        obj: ApplicationPrimitiveDataType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationPrimitiveDataType(ARObject):
 class ApplicationPrimitiveDataTypeBuilder:
     """Builder for ApplicationPrimitiveDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationPrimitiveDataType()
+        self._obj: ApplicationPrimitiveDataType = ApplicationPrimitiveDataType()
 
     def build(self) -> ApplicationPrimitiveDataType:
         """Build and return ApplicationPrimitiveDataType object.

@@ -1,29 +1,28 @@
 """DiagnosticExtendedDataRecord AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticExtendedDataRecord(ARObject):
     """AUTOSAR DiagnosticExtendedDataRecord."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticExtendedDataRecord."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticExtendedDataRecord to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICEXTENDEDDATARECORD")
+        element = ET.Element("DIAGNOSTICEXTENDEDDATARECORD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticExtendedDataRecord":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticExtendedDataRecord":
         """Create DiagnosticExtendedDataRecord from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticExtendedDataRecord(ARObject):
         Returns:
             DiagnosticExtendedDataRecord instance
         """
-        obj = cls()
+        obj: DiagnosticExtendedDataRecord = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticExtendedDataRecord(ARObject):
 class DiagnosticExtendedDataRecordBuilder:
     """Builder for DiagnosticExtendedDataRecord."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticExtendedDataRecord()
+        self._obj: DiagnosticExtendedDataRecord = DiagnosticExtendedDataRecord()
 
     def build(self) -> DiagnosticExtendedDataRecord:
         """Build and return DiagnosticExtendedDataRecord object.

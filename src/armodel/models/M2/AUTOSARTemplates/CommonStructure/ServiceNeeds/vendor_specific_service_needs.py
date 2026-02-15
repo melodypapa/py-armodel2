@@ -1,29 +1,28 @@
 """VendorSpecificServiceNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VendorSpecificServiceNeeds(ARObject):
     """AUTOSAR VendorSpecificServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VendorSpecificServiceNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VendorSpecificServiceNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VENDORSPECIFICSERVICENEEDS")
+        element = ET.Element("VENDORSPECIFICSERVICENEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VendorSpecificServiceNeeds":
+    def deserialize(cls, element: ET.Element) -> "VendorSpecificServiceNeeds":
         """Create VendorSpecificServiceNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VendorSpecificServiceNeeds(ARObject):
         Returns:
             VendorSpecificServiceNeeds instance
         """
-        obj = cls()
+        obj: VendorSpecificServiceNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VendorSpecificServiceNeeds(ARObject):
 class VendorSpecificServiceNeedsBuilder:
     """Builder for VendorSpecificServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VendorSpecificServiceNeeds()
+        self._obj: VendorSpecificServiceNeeds = VendorSpecificServiceNeeds()
 
     def build(self) -> VendorSpecificServiceNeeds:
         """Build and return VendorSpecificServiceNeeds object.

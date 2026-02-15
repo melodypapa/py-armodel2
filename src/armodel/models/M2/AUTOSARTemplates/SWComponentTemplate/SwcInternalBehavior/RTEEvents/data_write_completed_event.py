@@ -1,29 +1,28 @@
 """DataWriteCompletedEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataWriteCompletedEvent(ARObject):
     """AUTOSAR DataWriteCompletedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataWriteCompletedEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataWriteCompletedEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAWRITECOMPLETEDEVENT")
+        element = ET.Element("DATAWRITECOMPLETEDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataWriteCompletedEvent":
+    def deserialize(cls, element: ET.Element) -> "DataWriteCompletedEvent":
         """Create DataWriteCompletedEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataWriteCompletedEvent(ARObject):
         Returns:
             DataWriteCompletedEvent instance
         """
-        obj = cls()
+        obj: DataWriteCompletedEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataWriteCompletedEvent(ARObject):
 class DataWriteCompletedEventBuilder:
     """Builder for DataWriteCompletedEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataWriteCompletedEvent()
+        self._obj: DataWriteCompletedEvent = DataWriteCompletedEvent()
 
     def build(self) -> DataWriteCompletedEvent:
         """Build and return DataWriteCompletedEvent object.

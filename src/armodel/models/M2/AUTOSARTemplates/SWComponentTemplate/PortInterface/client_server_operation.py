@@ -1,29 +1,28 @@
 """ClientServerOperation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientServerOperation(ARObject):
     """AUTOSAR ClientServerOperation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientServerOperation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTSERVEROPERATION")
+        element = ET.Element("CLIENTSERVEROPERATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientServerOperation":
+    def deserialize(cls, element: ET.Element) -> "ClientServerOperation":
         """Create ClientServerOperation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientServerOperation(ARObject):
         Returns:
             ClientServerOperation instance
         """
-        obj = cls()
+        obj: ClientServerOperation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientServerOperation(ARObject):
 class ClientServerOperationBuilder:
     """Builder for ClientServerOperation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientServerOperation()
+        self._obj: ClientServerOperation = ClientServerOperation()
 
     def build(self) -> ClientServerOperation:
         """Build and return ClientServerOperation object.

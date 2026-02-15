@@ -1,29 +1,28 @@
 """RuleBasedAxisCont AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RuleBasedAxisCont(ARObject):
     """AUTOSAR RuleBasedAxisCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RuleBasedAxisCont."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RuleBasedAxisCont to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RULEBASEDAXISCONT")
+        element = ET.Element("RULEBASEDAXISCONT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RuleBasedAxisCont":
+    def deserialize(cls, element: ET.Element) -> "RuleBasedAxisCont":
         """Create RuleBasedAxisCont from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RuleBasedAxisCont(ARObject):
         Returns:
             RuleBasedAxisCont instance
         """
-        obj = cls()
+        obj: RuleBasedAxisCont = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RuleBasedAxisCont(ARObject):
 class RuleBasedAxisContBuilder:
     """Builder for RuleBasedAxisCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RuleBasedAxisCont()
+        self._obj: RuleBasedAxisCont = RuleBasedAxisCont()
 
     def build(self) -> RuleBasedAxisCont:
         """Build and return RuleBasedAxisCont object.

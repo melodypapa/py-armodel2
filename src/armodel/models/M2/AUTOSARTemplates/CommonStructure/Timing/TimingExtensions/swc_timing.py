@@ -1,29 +1,28 @@
 """SwcTiming AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcTiming(ARObject):
     """AUTOSAR SwcTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcTiming."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcTiming to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCTIMING")
+        element = ET.Element("SWCTIMING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcTiming":
+    def deserialize(cls, element: ET.Element) -> "SwcTiming":
         """Create SwcTiming from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcTiming(ARObject):
         Returns:
             SwcTiming instance
         """
-        obj = cls()
+        obj: SwcTiming = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcTiming(ARObject):
 class SwcTimingBuilder:
     """Builder for SwcTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcTiming()
+        self._obj: SwcTiming = SwcTiming()
 
     def build(self) -> SwcTiming:
         """Build and return SwcTiming object.

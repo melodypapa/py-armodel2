@@ -1,29 +1,28 @@
 """TcpIpIcmpv4Props AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TcpIpIcmpv4Props(ARObject):
     """AUTOSAR TcpIpIcmpv4Props."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TcpIpIcmpv4Props."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TcpIpIcmpv4Props to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TCPIPICMPV4PROPS")
+        element = ET.Element("TCPIPICMPV4PROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TcpIpIcmpv4Props":
+    def deserialize(cls, element: ET.Element) -> "TcpIpIcmpv4Props":
         """Create TcpIpIcmpv4Props from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TcpIpIcmpv4Props(ARObject):
         Returns:
             TcpIpIcmpv4Props instance
         """
-        obj = cls()
+        obj: TcpIpIcmpv4Props = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TcpIpIcmpv4Props(ARObject):
 class TcpIpIcmpv4PropsBuilder:
     """Builder for TcpIpIcmpv4Props."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TcpIpIcmpv4Props()
+        self._obj: TcpIpIcmpv4Props = TcpIpIcmpv4Props()
 
     def build(self) -> TcpIpIcmpv4Props:
         """Build and return TcpIpIcmpv4Props object.

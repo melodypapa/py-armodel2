@@ -1,29 +1,28 @@
 """IncludedDataTypeSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IncludedDataTypeSet(ARObject):
     """AUTOSAR IncludedDataTypeSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IncludedDataTypeSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IncludedDataTypeSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INCLUDEDDATATYPESET")
+        element = ET.Element("INCLUDEDDATATYPESET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IncludedDataTypeSet":
+    def deserialize(cls, element: ET.Element) -> "IncludedDataTypeSet":
         """Create IncludedDataTypeSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IncludedDataTypeSet(ARObject):
         Returns:
             IncludedDataTypeSet instance
         """
-        obj = cls()
+        obj: IncludedDataTypeSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IncludedDataTypeSet(ARObject):
 class IncludedDataTypeSetBuilder:
     """Builder for IncludedDataTypeSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IncludedDataTypeSet()
+        self._obj: IncludedDataTypeSet = IncludedDataTypeSet()
 
     def build(self) -> IncludedDataTypeSet:
         """Build and return IncludedDataTypeSet object.

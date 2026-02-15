@@ -1,29 +1,28 @@
 """FlatMap AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlatMap(ARObject):
     """AUTOSAR FlatMap."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlatMap."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlatMap to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLATMAP")
+        element = ET.Element("FLATMAP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlatMap":
+    def deserialize(cls, element: ET.Element) -> "FlatMap":
         """Create FlatMap from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlatMap(ARObject):
         Returns:
             FlatMap instance
         """
-        obj = cls()
+        obj: FlatMap = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlatMap(ARObject):
 class FlatMapBuilder:
     """Builder for FlatMap."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlatMap()
+        self._obj: FlatMap = FlatMap()
 
     def build(self) -> FlatMap:
         """Build and return FlatMap object.

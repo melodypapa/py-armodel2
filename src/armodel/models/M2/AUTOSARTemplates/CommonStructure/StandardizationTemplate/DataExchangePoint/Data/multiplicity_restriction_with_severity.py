@@ -1,29 +1,28 @@
 """MultiplicityRestrictionWithSeverity AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MultiplicityRestrictionWithSeverity(ARObject):
     """AUTOSAR MultiplicityRestrictionWithSeverity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MultiplicityRestrictionWithSeverity."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MultiplicityRestrictionWithSeverity to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MULTIPLICITYRESTRICTIONWITHSEVERITY")
+        element = ET.Element("MULTIPLICITYRESTRICTIONWITHSEVERITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MultiplicityRestrictionWithSeverity":
+    def deserialize(cls, element: ET.Element) -> "MultiplicityRestrictionWithSeverity":
         """Create MultiplicityRestrictionWithSeverity from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MultiplicityRestrictionWithSeverity(ARObject):
         Returns:
             MultiplicityRestrictionWithSeverity instance
         """
-        obj = cls()
+        obj: MultiplicityRestrictionWithSeverity = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MultiplicityRestrictionWithSeverity(ARObject):
 class MultiplicityRestrictionWithSeverityBuilder:
     """Builder for MultiplicityRestrictionWithSeverity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MultiplicityRestrictionWithSeverity()
+        self._obj: MultiplicityRestrictionWithSeverity = MultiplicityRestrictionWithSeverity()
 
     def build(self) -> MultiplicityRestrictionWithSeverity:
         """Build and return MultiplicityRestrictionWithSeverity object.

@@ -1,29 +1,28 @@
 """IdsMgrNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsMgrNeeds(ARObject):
     """AUTOSAR IdsMgrNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsMgrNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsMgrNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSMGRNEEDS")
+        element = ET.Element("IDSMGRNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsMgrNeeds":
+    def deserialize(cls, element: ET.Element) -> "IdsMgrNeeds":
         """Create IdsMgrNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsMgrNeeds(ARObject):
         Returns:
             IdsMgrNeeds instance
         """
-        obj = cls()
+        obj: IdsMgrNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsMgrNeeds(ARObject):
 class IdsMgrNeedsBuilder:
     """Builder for IdsMgrNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsMgrNeeds()
+        self._obj: IdsMgrNeeds = IdsMgrNeeds()
 
     def build(self) -> IdsMgrNeeds:
         """Build and return IdsMgrNeeds object.

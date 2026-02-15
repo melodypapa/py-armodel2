@@ -1,29 +1,28 @@
 """EthTSynCrcFlags AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthTSynCrcFlags(ARObject):
     """AUTOSAR EthTSynCrcFlags."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthTSynCrcFlags."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthTSynCrcFlags to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHTSYNCRCFLAGS")
+        element = ET.Element("ETHTSYNCRCFLAGS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthTSynCrcFlags":
+    def deserialize(cls, element: ET.Element) -> "EthTSynCrcFlags":
         """Create EthTSynCrcFlags from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthTSynCrcFlags(ARObject):
         Returns:
             EthTSynCrcFlags instance
         """
-        obj = cls()
+        obj: EthTSynCrcFlags = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthTSynCrcFlags(ARObject):
 class EthTSynCrcFlagsBuilder:
     """Builder for EthTSynCrcFlags."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthTSynCrcFlags()
+        self._obj: EthTSynCrcFlags = EthTSynCrcFlags()
 
     def build(self) -> EthTSynCrcFlags:
         """Build and return EthTSynCrcFlags object.

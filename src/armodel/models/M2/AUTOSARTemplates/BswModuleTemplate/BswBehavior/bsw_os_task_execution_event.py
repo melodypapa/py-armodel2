@@ -1,29 +1,28 @@
 """BswOsTaskExecutionEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswOsTaskExecutionEvent(ARObject):
     """AUTOSAR BswOsTaskExecutionEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswOsTaskExecutionEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswOsTaskExecutionEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWOSTASKEXECUTIONEVENT")
+        element = ET.Element("BSWOSTASKEXECUTIONEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswOsTaskExecutionEvent":
+    def deserialize(cls, element: ET.Element) -> "BswOsTaskExecutionEvent":
         """Create BswOsTaskExecutionEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswOsTaskExecutionEvent(ARObject):
         Returns:
             BswOsTaskExecutionEvent instance
         """
-        obj = cls()
+        obj: BswOsTaskExecutionEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswOsTaskExecutionEvent(ARObject):
 class BswOsTaskExecutionEventBuilder:
     """Builder for BswOsTaskExecutionEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswOsTaskExecutionEvent()
+        self._obj: BswOsTaskExecutionEvent = BswOsTaskExecutionEvent()
 
     def build(self) -> BswOsTaskExecutionEvent:
         """Build and return BswOsTaskExecutionEvent object.

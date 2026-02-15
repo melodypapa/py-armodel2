@@ -1,29 +1,28 @@
 """DiagnosticRequestControlOfOnBoardDevice AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestControlOfOnBoardDevice(ARObject):
     """AUTOSAR DiagnosticRequestControlOfOnBoardDevice."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestControlOfOnBoardDevice."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestControlOfOnBoardDevice to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTCONTROLOFONBOARDDEVICE")
+        element = ET.Element("DIAGNOSTICREQUESTCONTROLOFONBOARDDEVICE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestControlOfOnBoardDevice":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestControlOfOnBoardDevice":
         """Create DiagnosticRequestControlOfOnBoardDevice from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestControlOfOnBoardDevice(ARObject):
         Returns:
             DiagnosticRequestControlOfOnBoardDevice instance
         """
-        obj = cls()
+        obj: DiagnosticRequestControlOfOnBoardDevice = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestControlOfOnBoardDevice(ARObject):
 class DiagnosticRequestControlOfOnBoardDeviceBuilder:
     """Builder for DiagnosticRequestControlOfOnBoardDevice."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestControlOfOnBoardDevice()
+        self._obj: DiagnosticRequestControlOfOnBoardDevice = DiagnosticRequestControlOfOnBoardDevice()
 
     def build(self) -> DiagnosticRequestControlOfOnBoardDevice:
         """Build and return DiagnosticRequestControlOfOnBoardDevice object.

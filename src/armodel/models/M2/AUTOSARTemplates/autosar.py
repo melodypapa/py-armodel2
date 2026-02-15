@@ -1,7 +1,7 @@
 """AUTOSAR root element - singleton pattern."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
+import xml.etree.ElementTree as ET
 
 
 class AUTOSAR(ARObject):
@@ -40,14 +40,13 @@ class AUTOSAR(ARObject):
                 splitable.append(elem)
         return splitable
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AUTOSAR to XML element.
 
         Returns:
             XML element representing this document
         """
-        from lxml import etree
-        element = etree.Element("AUTOSAR")
+        element = ET.Element("AUTOSAR")
         element.set("xmlns", "http://autosar.org/schema/r4.0")
 
         # TODO: Serialize child elements

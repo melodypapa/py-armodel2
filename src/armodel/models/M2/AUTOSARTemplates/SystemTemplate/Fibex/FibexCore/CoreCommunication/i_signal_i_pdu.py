@@ -1,29 +1,28 @@
 """ISignalIPdu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ISignalIPdu(ARObject):
     """AUTOSAR ISignalIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ISignalIPdu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ISIGNALIPDU")
+        element = ET.Element("ISIGNALIPDU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ISignalIPdu":
+    def deserialize(cls, element: ET.Element) -> "ISignalIPdu":
         """Create ISignalIPdu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ISignalIPdu(ARObject):
         Returns:
             ISignalIPdu instance
         """
-        obj = cls()
+        obj: ISignalIPdu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ISignalIPdu(ARObject):
 class ISignalIPduBuilder:
     """Builder for ISignalIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ISignalIPdu()
+        self._obj: ISignalIPdu = ISignalIPdu()
 
     def build(self) -> ISignalIPdu:
         """Build and return ISignalIPdu object.

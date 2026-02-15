@@ -1,29 +1,28 @@
 """Gateway AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Gateway(ARObject):
     """AUTOSAR Gateway."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Gateway to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GATEWAY")
+        element = ET.Element("GATEWAY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Gateway":
+    def deserialize(cls, element: ET.Element) -> "Gateway":
         """Create Gateway from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Gateway(ARObject):
         Returns:
             Gateway instance
         """
-        obj = cls()
+        obj: Gateway = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Gateway(ARObject):
 class GatewayBuilder:
     """Builder for Gateway."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Gateway()
+        self._obj: Gateway = Gateway()
 
     def build(self) -> Gateway:
         """Build and return Gateway object.

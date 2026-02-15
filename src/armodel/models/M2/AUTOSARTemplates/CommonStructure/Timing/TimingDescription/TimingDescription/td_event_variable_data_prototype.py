@@ -1,29 +1,28 @@
 """TDEventVariableDataPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventVariableDataPrototype(ARObject):
     """AUTOSAR TDEventVariableDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventVariableDataPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTVARIABLEDATAPROTOTYPE")
+        element = ET.Element("TDEVENTVARIABLEDATAPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventVariableDataPrototype":
+    def deserialize(cls, element: ET.Element) -> "TDEventVariableDataPrototype":
         """Create TDEventVariableDataPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventVariableDataPrototype(ARObject):
         Returns:
             TDEventVariableDataPrototype instance
         """
-        obj = cls()
+        obj: TDEventVariableDataPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventVariableDataPrototype(ARObject):
 class TDEventVariableDataPrototypeBuilder:
     """Builder for TDEventVariableDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventVariableDataPrototype()
+        self._obj: TDEventVariableDataPrototype = TDEventVariableDataPrototype()
 
     def build(self) -> TDEventVariableDataPrototype:
         """Build and return TDEventVariableDataPrototype object.

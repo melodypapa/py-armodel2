@@ -1,29 +1,28 @@
 """CryptoServiceNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CryptoServiceNeeds(ARObject):
     """AUTOSAR CryptoServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CryptoServiceNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CRYPTOSERVICENEEDS")
+        element = ET.Element("CRYPTOSERVICENEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CryptoServiceNeeds":
+    def deserialize(cls, element: ET.Element) -> "CryptoServiceNeeds":
         """Create CryptoServiceNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CryptoServiceNeeds(ARObject):
         Returns:
             CryptoServiceNeeds instance
         """
-        obj = cls()
+        obj: CryptoServiceNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CryptoServiceNeeds(ARObject):
 class CryptoServiceNeedsBuilder:
     """Builder for CryptoServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CryptoServiceNeeds()
+        self._obj: CryptoServiceNeeds = CryptoServiceNeeds()
 
     def build(self) -> CryptoServiceNeeds:
         """Build and return CryptoServiceNeeds object.

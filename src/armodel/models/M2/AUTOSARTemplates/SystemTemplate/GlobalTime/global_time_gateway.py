@@ -1,29 +1,28 @@
 """GlobalTimeGateway AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeGateway(ARObject):
     """AUTOSAR GlobalTimeGateway."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeGateway to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMEGATEWAY")
+        element = ET.Element("GLOBALTIMEGATEWAY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeGateway":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeGateway":
         """Create GlobalTimeGateway from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeGateway(ARObject):
         Returns:
             GlobalTimeGateway instance
         """
-        obj = cls()
+        obj: GlobalTimeGateway = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeGateway(ARObject):
 class GlobalTimeGatewayBuilder:
     """Builder for GlobalTimeGateway."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeGateway()
+        self._obj: GlobalTimeGateway = GlobalTimeGateway()
 
     def build(self) -> GlobalTimeGateway:
         """Build and return GlobalTimeGateway object.

@@ -1,29 +1,28 @@
 """SwcToImplMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcToImplMapping(ARObject):
     """AUTOSAR SwcToImplMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcToImplMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcToImplMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCTOIMPLMAPPING")
+        element = ET.Element("SWCTOIMPLMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcToImplMapping":
+    def deserialize(cls, element: ET.Element) -> "SwcToImplMapping":
         """Create SwcToImplMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcToImplMapping(ARObject):
         Returns:
             SwcToImplMapping instance
         """
-        obj = cls()
+        obj: SwcToImplMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcToImplMapping(ARObject):
 class SwcToImplMappingBuilder:
     """Builder for SwcToImplMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcToImplMapping()
+        self._obj: SwcToImplMapping = SwcToImplMapping()
 
     def build(self) -> SwcToImplMapping:
         """Build and return SwcToImplMapping object.

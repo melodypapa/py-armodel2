@@ -1,29 +1,28 @@
 """TextTableMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TextTableMapping(ARObject):
     """AUTOSAR TextTableMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TextTableMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TEXTTABLEMAPPING")
+        element = ET.Element("TEXTTABLEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TextTableMapping":
+    def deserialize(cls, element: ET.Element) -> "TextTableMapping":
         """Create TextTableMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TextTableMapping(ARObject):
         Returns:
             TextTableMapping instance
         """
-        obj = cls()
+        obj: TextTableMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TextTableMapping(ARObject):
 class TextTableMappingBuilder:
     """Builder for TextTableMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TextTableMapping()
+        self._obj: TextTableMapping = TextTableMapping()
 
     def build(self) -> TextTableMapping:
         """Build and return TextTableMapping object.

@@ -1,29 +1,28 @@
 """ClientIdRange AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientIdRange(ARObject):
     """AUTOSAR ClientIdRange."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientIdRange."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientIdRange to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTIDRANGE")
+        element = ET.Element("CLIENTIDRANGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientIdRange":
+    def deserialize(cls, element: ET.Element) -> "ClientIdRange":
         """Create ClientIdRange from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientIdRange(ARObject):
         Returns:
             ClientIdRange instance
         """
-        obj = cls()
+        obj: ClientIdRange = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientIdRange(ARObject):
 class ClientIdRangeBuilder:
     """Builder for ClientIdRange."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientIdRange()
+        self._obj: ClientIdRange = ClientIdRange()
 
     def build(self) -> ClientIdRange:
         """Build and return ClientIdRange object.

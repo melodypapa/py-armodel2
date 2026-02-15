@@ -1,29 +1,28 @@
 """IndexEntry AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IndexEntry(ARObject):
     """AUTOSAR IndexEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IndexEntry."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IndexEntry to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INDEXENTRY")
+        element = ET.Element("INDEXENTRY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IndexEntry":
+    def deserialize(cls, element: ET.Element) -> "IndexEntry":
         """Create IndexEntry from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IndexEntry(ARObject):
         Returns:
             IndexEntry instance
         """
-        obj = cls()
+        obj: IndexEntry = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IndexEntry(ARObject):
 class IndexEntryBuilder:
     """Builder for IndexEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IndexEntry()
+        self._obj: IndexEntry = IndexEntry()
 
     def build(self) -> IndexEntry:
         """Build and return IndexEntry object.

@@ -1,29 +1,28 @@
 """PortPrototypeBlueprintInitValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortPrototypeBlueprintInitValue(ARObject):
     """AUTOSAR PortPrototypeBlueprintInitValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortPrototypeBlueprintInitValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortPrototypeBlueprintInitValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTPROTOTYPEBLUEPRINTINITVALUE")
+        element = ET.Element("PORTPROTOTYPEBLUEPRINTINITVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortPrototypeBlueprintInitValue":
+    def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprintInitValue":
         """Create PortPrototypeBlueprintInitValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
         Returns:
             PortPrototypeBlueprintInitValue instance
         """
-        obj = cls()
+        obj: PortPrototypeBlueprintInitValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortPrototypeBlueprintInitValue(ARObject):
 class PortPrototypeBlueprintInitValueBuilder:
     """Builder for PortPrototypeBlueprintInitValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortPrototypeBlueprintInitValue()
+        self._obj: PortPrototypeBlueprintInitValue = PortPrototypeBlueprintInitValue()
 
     def build(self) -> PortPrototypeBlueprintInitValue:
         """Build and return PortPrototypeBlueprintInitValue object.

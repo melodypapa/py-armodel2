@@ -1,29 +1,28 @@
 """TDEventBswModeDeclaration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventBswModeDeclaration(ARObject):
     """AUTOSAR TDEventBswModeDeclaration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventBswModeDeclaration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventBswModeDeclaration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTBSWMODEDECLARATION")
+        element = ET.Element("TDEVENTBSWMODEDECLARATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventBswModeDeclaration":
+    def deserialize(cls, element: ET.Element) -> "TDEventBswModeDeclaration":
         """Create TDEventBswModeDeclaration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventBswModeDeclaration(ARObject):
         Returns:
             TDEventBswModeDeclaration instance
         """
-        obj = cls()
+        obj: TDEventBswModeDeclaration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventBswModeDeclaration(ARObject):
 class TDEventBswModeDeclarationBuilder:
     """Builder for TDEventBswModeDeclaration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventBswModeDeclaration()
+        self._obj: TDEventBswModeDeclaration = TDEventBswModeDeclaration()
 
     def build(self) -> TDEventBswModeDeclaration:
         """Build and return TDEventBswModeDeclaration object.

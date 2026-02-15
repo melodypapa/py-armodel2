@@ -1,29 +1,28 @@
 """LVerbatim AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LVerbatim(ARObject):
     """AUTOSAR LVerbatim."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LVerbatim."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LVerbatim to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LVERBATIM")
+        element = ET.Element("LVERBATIM")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LVerbatim":
+    def deserialize(cls, element: ET.Element) -> "LVerbatim":
         """Create LVerbatim from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LVerbatim(ARObject):
         Returns:
             LVerbatim instance
         """
-        obj = cls()
+        obj: LVerbatim = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LVerbatim(ARObject):
 class LVerbatimBuilder:
     """Builder for LVerbatim."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LVerbatim()
+        self._obj: LVerbatim = LVerbatim()
 
     def build(self) -> LVerbatim:
         """Build and return LVerbatim object.

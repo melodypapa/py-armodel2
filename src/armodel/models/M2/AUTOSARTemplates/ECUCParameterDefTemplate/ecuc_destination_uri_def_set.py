@@ -1,29 +1,28 @@
 """EcucDestinationUriDefSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucDestinationUriDefSet(ARObject):
     """AUTOSAR EcucDestinationUriDefSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucDestinationUriDefSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCDESTINATIONURIDEFSET")
+        element = ET.Element("ECUCDESTINATIONURIDEFSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucDestinationUriDefSet":
+    def deserialize(cls, element: ET.Element) -> "EcucDestinationUriDefSet":
         """Create EcucDestinationUriDefSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucDestinationUriDefSet(ARObject):
         Returns:
             EcucDestinationUriDefSet instance
         """
-        obj = cls()
+        obj: EcucDestinationUriDefSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucDestinationUriDefSet(ARObject):
 class EcucDestinationUriDefSetBuilder:
     """Builder for EcucDestinationUriDefSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucDestinationUriDefSet()
+        self._obj: EcucDestinationUriDefSet = EcucDestinationUriDefSet()
 
     def build(self) -> EcucDestinationUriDefSet:
         """Build and return EcucDestinationUriDefSet object.

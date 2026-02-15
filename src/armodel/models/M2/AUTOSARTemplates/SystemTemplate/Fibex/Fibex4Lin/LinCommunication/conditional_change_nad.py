@@ -1,29 +1,28 @@
 """ConditionalChangeNad AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConditionalChangeNad(ARObject):
     """AUTOSAR ConditionalChangeNad."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConditionalChangeNad to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONDITIONALCHANGENAD")
+        element = ET.Element("CONDITIONALCHANGENAD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConditionalChangeNad":
+    def deserialize(cls, element: ET.Element) -> "ConditionalChangeNad":
         """Create ConditionalChangeNad from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConditionalChangeNad(ARObject):
         Returns:
             ConditionalChangeNad instance
         """
-        obj = cls()
+        obj: ConditionalChangeNad = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConditionalChangeNad(ARObject):
 class ConditionalChangeNadBuilder:
     """Builder for ConditionalChangeNad."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConditionalChangeNad()
+        self._obj: ConditionalChangeNad = ConditionalChangeNad()
 
     def build(self) -> ConditionalChangeNad:
         """Build and return ConditionalChangeNad object.

@@ -1,29 +1,28 @@
 """ServerComSpec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ServerComSpec(ARObject):
     """AUTOSAR ServerComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ServerComSpec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ServerComSpec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SERVERCOMSPEC")
+        element = ET.Element("SERVERCOMSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ServerComSpec":
+    def deserialize(cls, element: ET.Element) -> "ServerComSpec":
         """Create ServerComSpec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ServerComSpec(ARObject):
         Returns:
             ServerComSpec instance
         """
-        obj = cls()
+        obj: ServerComSpec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ServerComSpec(ARObject):
 class ServerComSpecBuilder:
     """Builder for ServerComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ServerComSpec()
+        self._obj: ServerComSpec = ServerComSpec()
 
     def build(self) -> ServerComSpec:
         """Build and return ServerComSpec object.

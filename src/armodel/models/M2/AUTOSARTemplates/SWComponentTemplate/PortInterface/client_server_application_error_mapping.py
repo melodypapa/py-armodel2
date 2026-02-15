@@ -1,29 +1,28 @@
 """ClientServerApplicationErrorMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientServerApplicationErrorMapping(ARObject):
     """AUTOSAR ClientServerApplicationErrorMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientServerApplicationErrorMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientServerApplicationErrorMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTSERVERAPPLICATIONERRORMAPPING")
+        element = ET.Element("CLIENTSERVERAPPLICATIONERRORMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientServerApplicationErrorMapping":
+    def deserialize(cls, element: ET.Element) -> "ClientServerApplicationErrorMapping":
         """Create ClientServerApplicationErrorMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientServerApplicationErrorMapping(ARObject):
         Returns:
             ClientServerApplicationErrorMapping instance
         """
-        obj = cls()
+        obj: ClientServerApplicationErrorMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientServerApplicationErrorMapping(ARObject):
 class ClientServerApplicationErrorMappingBuilder:
     """Builder for ClientServerApplicationErrorMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientServerApplicationErrorMapping()
+        self._obj: ClientServerApplicationErrorMapping = ClientServerApplicationErrorMapping()
 
     def build(self) -> ClientServerApplicationErrorMapping:
         """Build and return ClientServerApplicationErrorMapping object.

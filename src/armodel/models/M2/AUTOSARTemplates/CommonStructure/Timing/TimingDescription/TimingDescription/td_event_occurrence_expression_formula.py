@@ -1,29 +1,28 @@
 """TDEventOccurrenceExpressionFormula AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventOccurrenceExpressionFormula(ARObject):
     """AUTOSAR TDEventOccurrenceExpressionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpressionFormula."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventOccurrenceExpressionFormula to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTOCCURRENCEEXPRESSIONFORMULA")
+        element = ET.Element("TDEVENTOCCURRENCEEXPRESSIONFORMULA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventOccurrenceExpressionFormula":
+    def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpressionFormula":
         """Create TDEventOccurrenceExpressionFormula from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         Returns:
             TDEventOccurrenceExpressionFormula instance
         """
-        obj = cls()
+        obj: TDEventOccurrenceExpressionFormula = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventOccurrenceExpressionFormula(ARObject):
 class TDEventOccurrenceExpressionFormulaBuilder:
     """Builder for TDEventOccurrenceExpressionFormula."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventOccurrenceExpressionFormula()
+        self._obj: TDEventOccurrenceExpressionFormula = TDEventOccurrenceExpressionFormula()
 
     def build(self) -> TDEventOccurrenceExpressionFormula:
         """Build and return TDEventOccurrenceExpressionFormula object.

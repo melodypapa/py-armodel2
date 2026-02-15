@@ -1,29 +1,28 @@
 """DiagnosticEventToDebounceAlgorithmMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEventToDebounceAlgorithmMapping(ARObject):
     """AUTOSAR DiagnosticEventToDebounceAlgorithmMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEventToDebounceAlgorithmMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEventToDebounceAlgorithmMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICEVENTTODEBOUNCEALGORITHMMAPPING")
+        element = ET.Element("DIAGNOSTICEVENTTODEBOUNCEALGORITHMMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEventToDebounceAlgorithmMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToDebounceAlgorithmMapping":
         """Create DiagnosticEventToDebounceAlgorithmMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEventToDebounceAlgorithmMapping(ARObject):
         Returns:
             DiagnosticEventToDebounceAlgorithmMapping instance
         """
-        obj = cls()
+        obj: DiagnosticEventToDebounceAlgorithmMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEventToDebounceAlgorithmMapping(ARObject):
 class DiagnosticEventToDebounceAlgorithmMappingBuilder:
     """Builder for DiagnosticEventToDebounceAlgorithmMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEventToDebounceAlgorithmMapping()
+        self._obj: DiagnosticEventToDebounceAlgorithmMapping = DiagnosticEventToDebounceAlgorithmMapping()
 
     def build(self) -> DiagnosticEventToDebounceAlgorithmMapping:
         """Build and return DiagnosticEventToDebounceAlgorithmMapping object.

@@ -1,29 +1,28 @@
 """AbstractRuleBasedValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractRuleBasedValueSpecification(ARObject):
     """AUTOSAR AbstractRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractRuleBasedValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractRuleBasedValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTRULEBASEDVALUESPECIFICATION")
+        element = ET.Element("ABSTRACTRULEBASEDVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractRuleBasedValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "AbstractRuleBasedValueSpecification":
         """Create AbstractRuleBasedValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractRuleBasedValueSpecification(ARObject):
         Returns:
             AbstractRuleBasedValueSpecification instance
         """
-        obj = cls()
+        obj: AbstractRuleBasedValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractRuleBasedValueSpecification(ARObject):
 class AbstractRuleBasedValueSpecificationBuilder:
     """Builder for AbstractRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractRuleBasedValueSpecification()
+        self._obj: AbstractRuleBasedValueSpecification = AbstractRuleBasedValueSpecification()
 
     def build(self) -> AbstractRuleBasedValueSpecification:
         """Build and return AbstractRuleBasedValueSpecification object.

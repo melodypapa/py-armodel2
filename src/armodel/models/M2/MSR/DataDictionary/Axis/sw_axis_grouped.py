@@ -1,29 +1,28 @@
 """SwAxisGrouped AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwAxisGrouped(ARObject):
     """AUTOSAR SwAxisGrouped."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwAxisGrouped to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWAXISGROUPED")
+        element = ET.Element("SWAXISGROUPED")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwAxisGrouped":
+    def deserialize(cls, element: ET.Element) -> "SwAxisGrouped":
         """Create SwAxisGrouped from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwAxisGrouped(ARObject):
         Returns:
             SwAxisGrouped instance
         """
-        obj = cls()
+        obj: SwAxisGrouped = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwAxisGrouped(ARObject):
 class SwAxisGroupedBuilder:
     """Builder for SwAxisGrouped."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwAxisGrouped()
+        self._obj: SwAxisGrouped = SwAxisGrouped()
 
     def build(self) -> SwAxisGrouped:
         """Build and return SwAxisGrouped object.

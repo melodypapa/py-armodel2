@@ -1,29 +1,28 @@
 """ApplicationValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationValueSpecification(ARObject):
     """AUTOSAR ApplicationValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONVALUESPECIFICATION")
+        element = ET.Element("APPLICATIONVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "ApplicationValueSpecification":
         """Create ApplicationValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationValueSpecification(ARObject):
         Returns:
             ApplicationValueSpecification instance
         """
-        obj = cls()
+        obj: ApplicationValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationValueSpecification(ARObject):
 class ApplicationValueSpecificationBuilder:
     """Builder for ApplicationValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationValueSpecification()
+        self._obj: ApplicationValueSpecification = ApplicationValueSpecification()
 
     def build(self) -> ApplicationValueSpecification:
         """Build and return ApplicationValueSpecification object.

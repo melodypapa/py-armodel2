@@ -1,29 +1,28 @@
 """ApplicationSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationSwComponentType(ARObject):
     """AUTOSAR ApplicationSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONSWCOMPONENTTYPE")
+        element = ET.Element("APPLICATIONSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "ApplicationSwComponentType":
         """Create ApplicationSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationSwComponentType(ARObject):
         Returns:
             ApplicationSwComponentType instance
         """
-        obj = cls()
+        obj: ApplicationSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationSwComponentType(ARObject):
 class ApplicationSwComponentTypeBuilder:
     """Builder for ApplicationSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationSwComponentType()
+        self._obj: ApplicationSwComponentType = ApplicationSwComponentType()
 
     def build(self) -> ApplicationSwComponentType:
         """Build and return ApplicationSwComponentType object.

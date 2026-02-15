@@ -1,29 +1,28 @@
 """EnumerationMappingEntry AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EnumerationMappingEntry(ARObject):
     """AUTOSAR EnumerationMappingEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EnumerationMappingEntry."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EnumerationMappingEntry to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ENUMERATIONMAPPINGENTRY")
+        element = ET.Element("ENUMERATIONMAPPINGENTRY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EnumerationMappingEntry":
+    def deserialize(cls, element: ET.Element) -> "EnumerationMappingEntry":
         """Create EnumerationMappingEntry from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EnumerationMappingEntry(ARObject):
         Returns:
             EnumerationMappingEntry instance
         """
-        obj = cls()
+        obj: EnumerationMappingEntry = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EnumerationMappingEntry(ARObject):
 class EnumerationMappingEntryBuilder:
     """Builder for EnumerationMappingEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EnumerationMappingEntry()
+        self._obj: EnumerationMappingEntry = EnumerationMappingEntry()
 
     def build(self) -> EnumerationMappingEntry:
         """Build and return EnumerationMappingEntry object.

@@ -1,29 +1,28 @@
 """EthernetCommunicationController AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthernetCommunicationController(ARObject):
     """AUTOSAR EthernetCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthernetCommunicationController."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthernetCommunicationController to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHERNETCOMMUNICATIONCONTROLLER")
+        element = ET.Element("ETHERNETCOMMUNICATIONCONTROLLER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthernetCommunicationController":
+    def deserialize(cls, element: ET.Element) -> "EthernetCommunicationController":
         """Create EthernetCommunicationController from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthernetCommunicationController(ARObject):
         Returns:
             EthernetCommunicationController instance
         """
-        obj = cls()
+        obj: EthernetCommunicationController = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthernetCommunicationController(ARObject):
 class EthernetCommunicationControllerBuilder:
     """Builder for EthernetCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthernetCommunicationController()
+        self._obj: EthernetCommunicationController = EthernetCommunicationController()
 
     def build(self) -> EthernetCommunicationController:
         """Build and return EthernetCommunicationController object.

@@ -1,29 +1,28 @@
 """TriggerInSystemInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TriggerInSystemInstanceRef(ARObject):
     """AUTOSAR TriggerInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TriggerInSystemInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TriggerInSystemInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRIGGERINSYSTEMINSTANCEREF")
+        element = ET.Element("TRIGGERINSYSTEMINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TriggerInSystemInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "TriggerInSystemInstanceRef":
         """Create TriggerInSystemInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TriggerInSystemInstanceRef(ARObject):
         Returns:
             TriggerInSystemInstanceRef instance
         """
-        obj = cls()
+        obj: TriggerInSystemInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TriggerInSystemInstanceRef(ARObject):
 class TriggerInSystemInstanceRefBuilder:
     """Builder for TriggerInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TriggerInSystemInstanceRef()
+        self._obj: TriggerInSystemInstanceRef = TriggerInSystemInstanceRef()
 
     def build(self) -> TriggerInSystemInstanceRef:
         """Build and return TriggerInSystemInstanceRef object.

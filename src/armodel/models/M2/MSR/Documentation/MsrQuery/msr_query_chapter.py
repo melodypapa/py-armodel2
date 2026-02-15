@@ -1,29 +1,28 @@
 """MsrQueryChapter AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MsrQueryChapter(ARObject):
     """AUTOSAR MsrQueryChapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MsrQueryChapter."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MsrQueryChapter to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MSRQUERYCHAPTER")
+        element = ET.Element("MSRQUERYCHAPTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MsrQueryChapter":
+    def deserialize(cls, element: ET.Element) -> "MsrQueryChapter":
         """Create MsrQueryChapter from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MsrQueryChapter(ARObject):
         Returns:
             MsrQueryChapter instance
         """
-        obj = cls()
+        obj: MsrQueryChapter = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MsrQueryChapter(ARObject):
 class MsrQueryChapterBuilder:
     """Builder for MsrQueryChapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MsrQueryChapter()
+        self._obj: MsrQueryChapter = MsrQueryChapter()
 
     def build(self) -> MsrQueryChapter:
         """Build and return MsrQueryChapter object.

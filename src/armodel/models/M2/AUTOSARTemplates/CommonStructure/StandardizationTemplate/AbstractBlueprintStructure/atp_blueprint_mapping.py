@@ -1,29 +1,28 @@
 """AtpBlueprintMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AtpBlueprintMapping(ARObject):
     """AUTOSAR AtpBlueprintMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AtpBlueprintMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AtpBlueprintMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ATPBLUEPRINTMAPPING")
+        element = ET.Element("ATPBLUEPRINTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AtpBlueprintMapping":
+    def deserialize(cls, element: ET.Element) -> "AtpBlueprintMapping":
         """Create AtpBlueprintMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AtpBlueprintMapping(ARObject):
         Returns:
             AtpBlueprintMapping instance
         """
-        obj = cls()
+        obj: AtpBlueprintMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AtpBlueprintMapping(ARObject):
 class AtpBlueprintMappingBuilder:
     """Builder for AtpBlueprintMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AtpBlueprintMapping()
+        self._obj: AtpBlueprintMapping = AtpBlueprintMapping()
 
     def build(self) -> AtpBlueprintMapping:
         """Build and return AtpBlueprintMapping object.

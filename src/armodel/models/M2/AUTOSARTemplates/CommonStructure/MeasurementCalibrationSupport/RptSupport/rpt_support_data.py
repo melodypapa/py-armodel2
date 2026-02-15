@@ -1,29 +1,28 @@
 """RptSupportData AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptSupportData(ARObject):
     """AUTOSAR RptSupportData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptSupportData."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptSupportData to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTSUPPORTDATA")
+        element = ET.Element("RPTSUPPORTDATA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptSupportData":
+    def deserialize(cls, element: ET.Element) -> "RptSupportData":
         """Create RptSupportData from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptSupportData(ARObject):
         Returns:
             RptSupportData instance
         """
-        obj = cls()
+        obj: RptSupportData = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptSupportData(ARObject):
 class RptSupportDataBuilder:
     """Builder for RptSupportData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptSupportData()
+        self._obj: RptSupportData = RptSupportData()
 
     def build(self) -> RptSupportData:
         """Build and return RptSupportData object.

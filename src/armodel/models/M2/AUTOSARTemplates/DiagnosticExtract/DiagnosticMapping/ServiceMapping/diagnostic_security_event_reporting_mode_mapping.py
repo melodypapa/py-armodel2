@@ -1,29 +1,28 @@
 """DiagnosticSecurityEventReportingModeMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticSecurityEventReportingModeMapping(ARObject):
     """AUTOSAR DiagnosticSecurityEventReportingModeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticSecurityEventReportingModeMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticSecurityEventReportingModeMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSECURITYEVENTREPORTINGMODEMAPPING")
+        element = ET.Element("DIAGNOSTICSECURITYEVENTREPORTINGMODEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticSecurityEventReportingModeMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticSecurityEventReportingModeMapping":
         """Create DiagnosticSecurityEventReportingModeMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticSecurityEventReportingModeMapping(ARObject):
         Returns:
             DiagnosticSecurityEventReportingModeMapping instance
         """
-        obj = cls()
+        obj: DiagnosticSecurityEventReportingModeMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticSecurityEventReportingModeMapping(ARObject):
 class DiagnosticSecurityEventReportingModeMappingBuilder:
     """Builder for DiagnosticSecurityEventReportingModeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticSecurityEventReportingModeMapping()
+        self._obj: DiagnosticSecurityEventReportingModeMapping = DiagnosticSecurityEventReportingModeMapping()
 
     def build(self) -> DiagnosticSecurityEventReportingModeMapping:
         """Build and return DiagnosticSecurityEventReportingModeMapping object.

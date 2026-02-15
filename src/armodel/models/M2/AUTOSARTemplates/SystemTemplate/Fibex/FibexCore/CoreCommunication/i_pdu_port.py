@@ -1,29 +1,28 @@
 """IPduPort AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IPduPort(ARObject):
     """AUTOSAR IPduPort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IPduPort."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IPduPort to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPDUPORT")
+        element = ET.Element("IPDUPORT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IPduPort":
+    def deserialize(cls, element: ET.Element) -> "IPduPort":
         """Create IPduPort from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IPduPort(ARObject):
         Returns:
             IPduPort instance
         """
-        obj = cls()
+        obj: IPduPort = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IPduPort(ARObject):
 class IPduPortBuilder:
     """Builder for IPduPort."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IPduPort()
+        self._obj: IPduPort = IPduPort()
 
     def build(self) -> IPduPort:
         """Build and return IPduPort object.

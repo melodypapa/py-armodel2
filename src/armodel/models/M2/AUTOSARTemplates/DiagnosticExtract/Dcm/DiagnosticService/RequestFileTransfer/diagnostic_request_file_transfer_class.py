@@ -1,29 +1,28 @@
 """DiagnosticRequestFileTransferClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestFileTransferClass(ARObject):
     """AUTOSAR DiagnosticRequestFileTransferClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransferClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestFileTransferClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTFILETRANSFERCLASS")
+        element = ET.Element("DIAGNOSTICREQUESTFILETRANSFERCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestFileTransferClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestFileTransferClass":
         """Create DiagnosticRequestFileTransferClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestFileTransferClass(ARObject):
         Returns:
             DiagnosticRequestFileTransferClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestFileTransferClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestFileTransferClass(ARObject):
 class DiagnosticRequestFileTransferClassBuilder:
     """Builder for DiagnosticRequestFileTransferClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestFileTransferClass()
+        self._obj: DiagnosticRequestFileTransferClass = DiagnosticRequestFileTransferClass()
 
     def build(self) -> DiagnosticRequestFileTransferClass:
         """Build and return DiagnosticRequestFileTransferClass object.

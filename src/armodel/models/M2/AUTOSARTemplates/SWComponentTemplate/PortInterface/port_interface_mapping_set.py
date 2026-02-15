@@ -1,29 +1,28 @@
 """PortInterfaceMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortInterfaceMappingSet(ARObject):
     """AUTOSAR PortInterfaceMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortInterfaceMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortInterfaceMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTINTERFACEMAPPINGSET")
+        element = ET.Element("PORTINTERFACEMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortInterfaceMappingSet":
+    def deserialize(cls, element: ET.Element) -> "PortInterfaceMappingSet":
         """Create PortInterfaceMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortInterfaceMappingSet(ARObject):
         Returns:
             PortInterfaceMappingSet instance
         """
-        obj = cls()
+        obj: PortInterfaceMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortInterfaceMappingSet(ARObject):
 class PortInterfaceMappingSetBuilder:
     """Builder for PortInterfaceMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortInterfaceMappingSet()
+        self._obj: PortInterfaceMappingSet = PortInterfaceMappingSet()
 
     def build(self) -> PortInterfaceMappingSet:
         """Build and return PortInterfaceMappingSet object.

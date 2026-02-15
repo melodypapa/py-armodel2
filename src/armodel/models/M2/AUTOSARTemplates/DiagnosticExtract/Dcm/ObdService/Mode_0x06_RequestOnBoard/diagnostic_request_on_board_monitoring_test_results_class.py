@@ -1,29 +1,28 @@
 """DiagnosticRequestOnBoardMonitoringTestResultsClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestOnBoardMonitoringTestResultsClass(ARObject):
     """AUTOSAR DiagnosticRequestOnBoardMonitoringTestResultsClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResultsClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestOnBoardMonitoringTestResultsClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTONBOARDMONITORINGTESTRESULTSCLASS")
+        element = ET.Element("DIAGNOSTICREQUESTONBOARDMONITORINGTESTRESULTSCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestOnBoardMonitoringTestResultsClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestOnBoardMonitoringTestResultsClass":
         """Create DiagnosticRequestOnBoardMonitoringTestResultsClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClass(ARObject):
         Returns:
             DiagnosticRequestOnBoardMonitoringTestResultsClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClass(ARObject):
 class DiagnosticRequestOnBoardMonitoringTestResultsClassBuilder:
     """Builder for DiagnosticRequestOnBoardMonitoringTestResultsClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestOnBoardMonitoringTestResultsClass()
+        self._obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = DiagnosticRequestOnBoardMonitoringTestResultsClass()
 
     def build(self) -> DiagnosticRequestOnBoardMonitoringTestResultsClass:
         """Build and return DiagnosticRequestOnBoardMonitoringTestResultsClass object.

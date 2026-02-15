@@ -1,29 +1,28 @@
 """ScaleConstr AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ScaleConstr(ARObject):
     """AUTOSAR ScaleConstr."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ScaleConstr."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ScaleConstr to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SCALECONSTR")
+        element = ET.Element("SCALECONSTR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ScaleConstr":
+    def deserialize(cls, element: ET.Element) -> "ScaleConstr":
         """Create ScaleConstr from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ScaleConstr(ARObject):
         Returns:
             ScaleConstr instance
         """
-        obj = cls()
+        obj: ScaleConstr = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ScaleConstr(ARObject):
 class ScaleConstrBuilder:
     """Builder for ScaleConstr."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ScaleConstr()
+        self._obj: ScaleConstr = ScaleConstr()
 
     def build(self) -> ScaleConstr:
         """Build and return ScaleConstr object.

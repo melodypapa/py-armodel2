@@ -1,29 +1,28 @@
 """Prms AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Prms(ARObject):
     """AUTOSAR Prms."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Prms."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Prms to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PRMS")
+        element = ET.Element("PRMS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Prms":
+    def deserialize(cls, element: ET.Element) -> "Prms":
         """Create Prms from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Prms(ARObject):
         Returns:
             Prms instance
         """
-        obj = cls()
+        obj: Prms = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Prms(ARObject):
 class PrmsBuilder:
     """Builder for Prms."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Prms()
+        self._obj: Prms = Prms()
 
     def build(self) -> Prms:
         """Build and return Prms object.

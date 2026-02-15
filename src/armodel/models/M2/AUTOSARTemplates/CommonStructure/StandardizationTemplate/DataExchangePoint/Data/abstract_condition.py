@@ -1,29 +1,28 @@
 """AbstractCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractCondition(ARObject):
     """AUTOSAR AbstractCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTCONDITION")
+        element = ET.Element("ABSTRACTCONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractCondition":
+    def deserialize(cls, element: ET.Element) -> "AbstractCondition":
         """Create AbstractCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractCondition(ARObject):
         Returns:
             AbstractCondition instance
         """
-        obj = cls()
+        obj: AbstractCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractCondition(ARObject):
 class AbstractConditionBuilder:
     """Builder for AbstractCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractCondition()
+        self._obj: AbstractCondition = AbstractCondition()
 
     def build(self) -> AbstractCondition:
         """Build and return AbstractCondition object.

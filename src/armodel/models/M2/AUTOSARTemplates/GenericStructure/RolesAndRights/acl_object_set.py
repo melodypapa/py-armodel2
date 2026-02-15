@@ -1,29 +1,28 @@
 """AclObjectSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AclObjectSet(ARObject):
     """AUTOSAR AclObjectSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AclObjectSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ACLOBJECTSET")
+        element = ET.Element("ACLOBJECTSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AclObjectSet":
+    def deserialize(cls, element: ET.Element) -> "AclObjectSet":
         """Create AclObjectSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AclObjectSet(ARObject):
         Returns:
             AclObjectSet instance
         """
-        obj = cls()
+        obj: AclObjectSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AclObjectSet(ARObject):
 class AclObjectSetBuilder:
     """Builder for AclObjectSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AclObjectSet()
+        self._obj: AclObjectSet = AclObjectSet()
 
     def build(self) -> AclObjectSet:
         """Build and return AclObjectSet object.

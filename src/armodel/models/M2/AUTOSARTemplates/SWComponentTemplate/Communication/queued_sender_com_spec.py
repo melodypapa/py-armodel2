@@ -1,29 +1,28 @@
 """QueuedSenderComSpec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class QueuedSenderComSpec(ARObject):
     """AUTOSAR QueuedSenderComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize QueuedSenderComSpec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert QueuedSenderComSpec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("QUEUEDSENDERCOMSPEC")
+        element = ET.Element("QUEUEDSENDERCOMSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "QueuedSenderComSpec":
+    def deserialize(cls, element: ET.Element) -> "QueuedSenderComSpec":
         """Create QueuedSenderComSpec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class QueuedSenderComSpec(ARObject):
         Returns:
             QueuedSenderComSpec instance
         """
-        obj = cls()
+        obj: QueuedSenderComSpec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class QueuedSenderComSpec(ARObject):
 class QueuedSenderComSpecBuilder:
     """Builder for QueuedSenderComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = QueuedSenderComSpec()
+        self._obj: QueuedSenderComSpec = QueuedSenderComSpec()
 
     def build(self) -> QueuedSenderComSpec:
         """Build and return QueuedSenderComSpec object.

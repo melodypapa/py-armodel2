@@ -1,29 +1,28 @@
 """NvRequireComSpec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NvRequireComSpec(ARObject):
     """AUTOSAR NvRequireComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NvRequireComSpec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NvRequireComSpec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NVREQUIRECOMSPEC")
+        element = ET.Element("NVREQUIRECOMSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NvRequireComSpec":
+    def deserialize(cls, element: ET.Element) -> "NvRequireComSpec":
         """Create NvRequireComSpec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NvRequireComSpec(ARObject):
         Returns:
             NvRequireComSpec instance
         """
-        obj = cls()
+        obj: NvRequireComSpec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NvRequireComSpec(ARObject):
 class NvRequireComSpecBuilder:
     """Builder for NvRequireComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NvRequireComSpec()
+        self._obj: NvRequireComSpec = NvRequireComSpec()
 
     def build(self) -> NvRequireComSpec:
         """Build and return NvRequireComSpec object.

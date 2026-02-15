@@ -1,29 +1,28 @@
 """DiagnosticEcuReset AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEcuReset(ARObject):
     """AUTOSAR DiagnosticEcuReset."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEcuReset."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEcuReset to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICECURESET")
+        element = ET.Element("DIAGNOSTICECURESET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEcuReset":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuReset":
         """Create DiagnosticEcuReset from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEcuReset(ARObject):
         Returns:
             DiagnosticEcuReset instance
         """
-        obj = cls()
+        obj: DiagnosticEcuReset = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEcuReset(ARObject):
 class DiagnosticEcuResetBuilder:
     """Builder for DiagnosticEcuReset."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEcuReset()
+        self._obj: DiagnosticEcuReset = DiagnosticEcuReset()
 
     def build(self) -> DiagnosticEcuReset:
         """Build and return DiagnosticEcuReset object.

@@ -1,29 +1,28 @@
 """DiagnosticRequestCurrentPowertrainDataClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestCurrentPowertrainDataClass(ARObject):
     """AUTOSAR DiagnosticRequestCurrentPowertrainDataClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainDataClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestCurrentPowertrainDataClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTCURRENTPOWERTRAINDATACLASS")
+        element = ET.Element("DIAGNOSTICREQUESTCURRENTPOWERTRAINDATACLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestCurrentPowertrainDataClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestCurrentPowertrainDataClass":
         """Create DiagnosticRequestCurrentPowertrainDataClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestCurrentPowertrainDataClass(ARObject):
         Returns:
             DiagnosticRequestCurrentPowertrainDataClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestCurrentPowertrainDataClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestCurrentPowertrainDataClass(ARObject):
 class DiagnosticRequestCurrentPowertrainDataClassBuilder:
     """Builder for DiagnosticRequestCurrentPowertrainDataClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestCurrentPowertrainDataClass()
+        self._obj: DiagnosticRequestCurrentPowertrainDataClass = DiagnosticRequestCurrentPowertrainDataClass()
 
     def build(self) -> DiagnosticRequestCurrentPowertrainDataClass:
         """Build and return DiagnosticRequestCurrentPowertrainDataClass object.

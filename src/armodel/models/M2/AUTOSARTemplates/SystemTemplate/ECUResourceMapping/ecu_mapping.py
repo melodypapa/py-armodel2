@@ -1,29 +1,28 @@
 """ECUMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ECUMapping(ARObject):
     """AUTOSAR ECUMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ECUMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUMAPPING")
+        element = ET.Element("ECUMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ECUMapping":
+    def deserialize(cls, element: ET.Element) -> "ECUMapping":
         """Create ECUMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ECUMapping(ARObject):
         Returns:
             ECUMapping instance
         """
-        obj = cls()
+        obj: ECUMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ECUMapping(ARObject):
 class ECUMappingBuilder:
     """Builder for ECUMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ECUMapping()
+        self._obj: ECUMapping = ECUMapping()
 
     def build(self) -> ECUMapping:
         """Build and return ECUMapping object.

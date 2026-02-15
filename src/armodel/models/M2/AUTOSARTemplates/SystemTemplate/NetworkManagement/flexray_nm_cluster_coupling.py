@@ -1,29 +1,28 @@
 """FlexrayNmClusterCoupling AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayNmClusterCoupling(ARObject):
     """AUTOSAR FlexrayNmClusterCoupling."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayNmClusterCoupling."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayNmClusterCoupling to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYNMCLUSTERCOUPLING")
+        element = ET.Element("FLEXRAYNMCLUSTERCOUPLING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayNmClusterCoupling":
+    def deserialize(cls, element: ET.Element) -> "FlexrayNmClusterCoupling":
         """Create FlexrayNmClusterCoupling from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayNmClusterCoupling(ARObject):
         Returns:
             FlexrayNmClusterCoupling instance
         """
-        obj = cls()
+        obj: FlexrayNmClusterCoupling = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayNmClusterCoupling(ARObject):
 class FlexrayNmClusterCouplingBuilder:
     """Builder for FlexrayNmClusterCoupling."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayNmClusterCoupling()
+        self._obj: FlexrayNmClusterCoupling = FlexrayNmClusterCoupling()
 
     def build(self) -> FlexrayNmClusterCoupling:
         """Build and return FlexrayNmClusterCoupling object.

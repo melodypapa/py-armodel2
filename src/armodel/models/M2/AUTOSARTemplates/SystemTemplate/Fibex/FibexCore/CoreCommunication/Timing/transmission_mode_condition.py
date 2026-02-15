@@ -1,29 +1,28 @@
 """TransmissionModeCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransmissionModeCondition(ARObject):
     """AUTOSAR TransmissionModeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransmissionModeCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransmissionModeCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSMISSIONMODECONDITION")
+        element = ET.Element("TRANSMISSIONMODECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransmissionModeCondition":
+    def deserialize(cls, element: ET.Element) -> "TransmissionModeCondition":
         """Create TransmissionModeCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransmissionModeCondition(ARObject):
         Returns:
             TransmissionModeCondition instance
         """
-        obj = cls()
+        obj: TransmissionModeCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransmissionModeCondition(ARObject):
 class TransmissionModeConditionBuilder:
     """Builder for TransmissionModeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransmissionModeCondition()
+        self._obj: TransmissionModeCondition = TransmissionModeCondition()
 
     def build(self) -> TransmissionModeCondition:
         """Build and return TransmissionModeCondition object.

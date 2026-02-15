@@ -1,29 +1,28 @@
 """ValueRestrictionWithSeverity AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ValueRestrictionWithSeverity(ARObject):
     """AUTOSAR ValueRestrictionWithSeverity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ValueRestrictionWithSeverity."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ValueRestrictionWithSeverity to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VALUERESTRICTIONWITHSEVERITY")
+        element = ET.Element("VALUERESTRICTIONWITHSEVERITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ValueRestrictionWithSeverity":
+    def deserialize(cls, element: ET.Element) -> "ValueRestrictionWithSeverity":
         """Create ValueRestrictionWithSeverity from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ValueRestrictionWithSeverity(ARObject):
         Returns:
             ValueRestrictionWithSeverity instance
         """
-        obj = cls()
+        obj: ValueRestrictionWithSeverity = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ValueRestrictionWithSeverity(ARObject):
 class ValueRestrictionWithSeverityBuilder:
     """Builder for ValueRestrictionWithSeverity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ValueRestrictionWithSeverity()
+        self._obj: ValueRestrictionWithSeverity = ValueRestrictionWithSeverity()
 
     def build(self) -> ValueRestrictionWithSeverity:
         """Build and return ValueRestrictionWithSeverity object.

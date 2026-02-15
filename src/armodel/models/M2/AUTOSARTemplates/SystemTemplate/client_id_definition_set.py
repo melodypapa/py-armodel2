@@ -1,29 +1,28 @@
 """ClientIdDefinitionSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientIdDefinitionSet(ARObject):
     """AUTOSAR ClientIdDefinitionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientIdDefinitionSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientIdDefinitionSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTIDDEFINITIONSET")
+        element = ET.Element("CLIENTIDDEFINITIONSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientIdDefinitionSet":
+    def deserialize(cls, element: ET.Element) -> "ClientIdDefinitionSet":
         """Create ClientIdDefinitionSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientIdDefinitionSet(ARObject):
         Returns:
             ClientIdDefinitionSet instance
         """
-        obj = cls()
+        obj: ClientIdDefinitionSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientIdDefinitionSet(ARObject):
 class ClientIdDefinitionSetBuilder:
     """Builder for ClientIdDefinitionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientIdDefinitionSet()
+        self._obj: ClientIdDefinitionSet = ClientIdDefinitionSet()
 
     def build(self) -> ClientIdDefinitionSet:
         """Build and return ClientIdDefinitionSet object.

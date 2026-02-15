@@ -1,29 +1,28 @@
 """ParameterDataPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ParameterDataPrototype(ARObject):
     """AUTOSAR ParameterDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ParameterDataPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ParameterDataPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PARAMETERDATAPROTOTYPE")
+        element = ET.Element("PARAMETERDATAPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ParameterDataPrototype":
+    def deserialize(cls, element: ET.Element) -> "ParameterDataPrototype":
         """Create ParameterDataPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ParameterDataPrototype(ARObject):
         Returns:
             ParameterDataPrototype instance
         """
-        obj = cls()
+        obj: ParameterDataPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ParameterDataPrototype(ARObject):
 class ParameterDataPrototypeBuilder:
     """Builder for ParameterDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ParameterDataPrototype()
+        self._obj: ParameterDataPrototype = ParameterDataPrototype()
 
     def build(self) -> ParameterDataPrototype:
         """Build and return ParameterDataPrototype object.

@@ -1,29 +1,28 @@
 """SoConIPduIdentifier AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SoConIPduIdentifier(ARObject):
     """AUTOSAR SoConIPduIdentifier."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SoConIPduIdentifier."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SoConIPduIdentifier to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOCONIPDUIDENTIFIER")
+        element = ET.Element("SOCONIPDUIDENTIFIER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SoConIPduIdentifier":
+    def deserialize(cls, element: ET.Element) -> "SoConIPduIdentifier":
         """Create SoConIPduIdentifier from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SoConIPduIdentifier(ARObject):
         Returns:
             SoConIPduIdentifier instance
         """
-        obj = cls()
+        obj: SoConIPduIdentifier = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SoConIPduIdentifier(ARObject):
 class SoConIPduIdentifierBuilder:
     """Builder for SoConIPduIdentifier."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SoConIPduIdentifier()
+        self._obj: SoConIPduIdentifier = SoConIPduIdentifier()
 
     def build(self) -> SoConIPduIdentifier:
         """Build and return SoConIPduIdentifier object.

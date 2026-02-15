@@ -1,29 +1,28 @@
 """DiagnosticEnableConditionPortMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEnableConditionPortMapping(ARObject):
     """AUTOSAR DiagnosticEnableConditionPortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionPortMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEnableConditionPortMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICENABLECONDITIONPORTMAPPING")
+        element = ET.Element("DIAGNOSTICENABLECONDITIONPORTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEnableConditionPortMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnableConditionPortMapping":
         """Create DiagnosticEnableConditionPortMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEnableConditionPortMapping(ARObject):
         Returns:
             DiagnosticEnableConditionPortMapping instance
         """
-        obj = cls()
+        obj: DiagnosticEnableConditionPortMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEnableConditionPortMapping(ARObject):
 class DiagnosticEnableConditionPortMappingBuilder:
     """Builder for DiagnosticEnableConditionPortMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEnableConditionPortMapping()
+        self._obj: DiagnosticEnableConditionPortMapping = DiagnosticEnableConditionPortMapping()
 
     def build(self) -> DiagnosticEnableConditionPortMapping:
         """Build and return DiagnosticEnableConditionPortMapping object.

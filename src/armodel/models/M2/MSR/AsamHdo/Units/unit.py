@@ -1,29 +1,28 @@
 """Unit AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Unit(ARObject):
     """AUTOSAR Unit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Unit to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("UNIT")
+        element = ET.Element("UNIT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Unit":
+    def deserialize(cls, element: ET.Element) -> "Unit":
         """Create Unit from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Unit(ARObject):
         Returns:
             Unit instance
         """
-        obj = cls()
+        obj: Unit = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Unit(ARObject):
 class UnitBuilder:
     """Builder for Unit."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Unit()
+        self._obj: Unit = Unit()
 
     def build(self) -> Unit:
         """Build and return Unit object.

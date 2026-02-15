@@ -1,29 +1,28 @@
 """AbstractVariationRestriction AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractVariationRestriction(ARObject):
     """AUTOSAR AbstractVariationRestriction."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractVariationRestriction."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractVariationRestriction to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTVARIATIONRESTRICTION")
+        element = ET.Element("ABSTRACTVARIATIONRESTRICTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractVariationRestriction":
+    def deserialize(cls, element: ET.Element) -> "AbstractVariationRestriction":
         """Create AbstractVariationRestriction from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractVariationRestriction(ARObject):
         Returns:
             AbstractVariationRestriction instance
         """
-        obj = cls()
+        obj: AbstractVariationRestriction = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractVariationRestriction(ARObject):
 class AbstractVariationRestrictionBuilder:
     """Builder for AbstractVariationRestriction."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractVariationRestriction()
+        self._obj: AbstractVariationRestriction = AbstractVariationRestriction()
 
     def build(self) -> AbstractVariationRestriction:
         """Build and return AbstractVariationRestriction object.

@@ -1,29 +1,28 @@
 """SocketAddress AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SocketAddress(ARObject):
     """AUTOSAR SocketAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SocketAddress."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SocketAddress to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOCKETADDRESS")
+        element = ET.Element("SOCKETADDRESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SocketAddress":
+    def deserialize(cls, element: ET.Element) -> "SocketAddress":
         """Create SocketAddress from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SocketAddress(ARObject):
         Returns:
             SocketAddress instance
         """
-        obj = cls()
+        obj: SocketAddress = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SocketAddress(ARObject):
 class SocketAddressBuilder:
     """Builder for SocketAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SocketAddress()
+        self._obj: SocketAddress = SocketAddress()
 
     def build(self) -> SocketAddress:
         """Build and return SocketAddress object.

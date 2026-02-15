@@ -1,29 +1,28 @@
 """SecurityEventContextData AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SecurityEventContextData(ARObject):
     """AUTOSAR SecurityEventContextData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SecurityEventContextData."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SecurityEventContextData to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECURITYEVENTCONTEXTDATA")
+        element = ET.Element("SECURITYEVENTCONTEXTDATA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SecurityEventContextData":
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextData":
         """Create SecurityEventContextData from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SecurityEventContextData(ARObject):
         Returns:
             SecurityEventContextData instance
         """
-        obj = cls()
+        obj: SecurityEventContextData = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SecurityEventContextData(ARObject):
 class SecurityEventContextDataBuilder:
     """Builder for SecurityEventContextData."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SecurityEventContextData()
+        self._obj: SecurityEventContextData = SecurityEventContextData()
 
     def build(self) -> SecurityEventContextData:
         """Build and return SecurityEventContextData object.

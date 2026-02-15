@@ -1,29 +1,28 @@
 """DiagnosticMemoryDestinationPrimary AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticMemoryDestinationPrimary(ARObject):
     """AUTOSAR DiagnosticMemoryDestinationPrimary."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticMemoryDestinationPrimary to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICMEMORYDESTINATIONPRIMARY")
+        element = ET.Element("DIAGNOSTICMEMORYDESTINATIONPRIMARY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticMemoryDestinationPrimary":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestinationPrimary":
         """Create DiagnosticMemoryDestinationPrimary from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticMemoryDestinationPrimary(ARObject):
         Returns:
             DiagnosticMemoryDestinationPrimary instance
         """
-        obj = cls()
+        obj: DiagnosticMemoryDestinationPrimary = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticMemoryDestinationPrimary(ARObject):
 class DiagnosticMemoryDestinationPrimaryBuilder:
     """Builder for DiagnosticMemoryDestinationPrimary."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticMemoryDestinationPrimary()
+        self._obj: DiagnosticMemoryDestinationPrimary = DiagnosticMemoryDestinationPrimary()
 
     def build(self) -> DiagnosticMemoryDestinationPrimary:
         """Build and return DiagnosticMemoryDestinationPrimary object.

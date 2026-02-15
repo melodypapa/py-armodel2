@@ -1,29 +1,28 @@
 """AggregationTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AggregationTailoring(ARObject):
     """AUTOSAR AggregationTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AggregationTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AggregationTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AGGREGATIONTAILORING")
+        element = ET.Element("AGGREGATIONTAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AggregationTailoring":
+    def deserialize(cls, element: ET.Element) -> "AggregationTailoring":
         """Create AggregationTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AggregationTailoring(ARObject):
         Returns:
             AggregationTailoring instance
         """
-        obj = cls()
+        obj: AggregationTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AggregationTailoring(ARObject):
 class AggregationTailoringBuilder:
     """Builder for AggregationTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AggregationTailoring()
+        self._obj: AggregationTailoring = AggregationTailoring()
 
     def build(self) -> AggregationTailoring:
         """Build and return AggregationTailoring object.

@@ -1,29 +1,28 @@
 """BswAsynchronousServerCallReturnsEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswAsynchronousServerCallReturnsEvent(ARObject):
     """AUTOSAR BswAsynchronousServerCallReturnsEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswAsynchronousServerCallReturnsEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWASYNCHRONOUSSERVERCALLRETURNSEVENT")
+        element = ET.Element("BSWASYNCHRONOUSSERVERCALLRETURNSEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswAsynchronousServerCallReturnsEvent":
+    def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallReturnsEvent":
         """Create BswAsynchronousServerCallReturnsEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswAsynchronousServerCallReturnsEvent(ARObject):
         Returns:
             BswAsynchronousServerCallReturnsEvent instance
         """
-        obj = cls()
+        obj: BswAsynchronousServerCallReturnsEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswAsynchronousServerCallReturnsEvent(ARObject):
 class BswAsynchronousServerCallReturnsEventBuilder:
     """Builder for BswAsynchronousServerCallReturnsEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswAsynchronousServerCallReturnsEvent()
+        self._obj: BswAsynchronousServerCallReturnsEvent = BswAsynchronousServerCallReturnsEvent()
 
     def build(self) -> BswAsynchronousServerCallReturnsEvent:
         """Build and return BswAsynchronousServerCallReturnsEvent object.

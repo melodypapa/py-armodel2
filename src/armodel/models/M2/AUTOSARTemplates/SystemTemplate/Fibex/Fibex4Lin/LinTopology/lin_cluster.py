@@ -1,29 +1,28 @@
 """LinCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinCluster(ARObject):
     """AUTOSAR LinCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINCLUSTER")
+        element = ET.Element("LINCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinCluster":
+    def deserialize(cls, element: ET.Element) -> "LinCluster":
         """Create LinCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinCluster(ARObject):
         Returns:
             LinCluster instance
         """
-        obj = cls()
+        obj: LinCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinCluster(ARObject):
 class LinClusterBuilder:
     """Builder for LinCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinCluster()
+        self._obj: LinCluster = LinCluster()
 
     def build(self) -> LinCluster:
         """Build and return LinCluster object.

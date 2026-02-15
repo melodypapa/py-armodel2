@@ -1,29 +1,28 @@
 """ParameterAccess AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ParameterAccess(ARObject):
     """AUTOSAR ParameterAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ParameterAccess to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PARAMETERACCESS")
+        element = ET.Element("PARAMETERACCESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ParameterAccess":
+    def deserialize(cls, element: ET.Element) -> "ParameterAccess":
         """Create ParameterAccess from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ParameterAccess(ARObject):
         Returns:
             ParameterAccess instance
         """
-        obj = cls()
+        obj: ParameterAccess = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ParameterAccess(ARObject):
 class ParameterAccessBuilder:
     """Builder for ParameterAccess."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ParameterAccess()
+        self._obj: ParameterAccess = ParameterAccess()
 
     def build(self) -> ParameterAccess:
         """Build and return ParameterAccess object.

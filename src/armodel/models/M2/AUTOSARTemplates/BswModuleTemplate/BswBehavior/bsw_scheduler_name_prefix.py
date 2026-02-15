@@ -1,29 +1,28 @@
 """BswSchedulerNamePrefix AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswSchedulerNamePrefix(ARObject):
     """AUTOSAR BswSchedulerNamePrefix."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswSchedulerNamePrefix."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswSchedulerNamePrefix to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWSCHEDULERNAMEPREFIX")
+        element = ET.Element("BSWSCHEDULERNAMEPREFIX")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswSchedulerNamePrefix":
+    def deserialize(cls, element: ET.Element) -> "BswSchedulerNamePrefix":
         """Create BswSchedulerNamePrefix from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswSchedulerNamePrefix(ARObject):
         Returns:
             BswSchedulerNamePrefix instance
         """
-        obj = cls()
+        obj: BswSchedulerNamePrefix = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswSchedulerNamePrefix(ARObject):
 class BswSchedulerNamePrefixBuilder:
     """Builder for BswSchedulerNamePrefix."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswSchedulerNamePrefix()
+        self._obj: BswSchedulerNamePrefix = BswSchedulerNamePrefix()
 
     def build(self) -> BswSchedulerNamePrefix:
         """Build and return BswSchedulerNamePrefix object.

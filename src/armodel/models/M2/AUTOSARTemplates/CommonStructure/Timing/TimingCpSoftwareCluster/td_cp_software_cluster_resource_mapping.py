@@ -1,29 +1,28 @@
 """TDCpSoftwareClusterResourceMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDCpSoftwareClusterResourceMapping(ARObject):
     """AUTOSAR TDCpSoftwareClusterResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterResourceMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDCpSoftwareClusterResourceMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDCPSOFTWARECLUSTERRESOURCEMAPPING")
+        element = ET.Element("TDCPSOFTWARECLUSTERRESOURCEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDCpSoftwareClusterResourceMapping":
+    def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterResourceMapping":
         """Create TDCpSoftwareClusterResourceMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDCpSoftwareClusterResourceMapping(ARObject):
         Returns:
             TDCpSoftwareClusterResourceMapping instance
         """
-        obj = cls()
+        obj: TDCpSoftwareClusterResourceMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDCpSoftwareClusterResourceMapping(ARObject):
 class TDCpSoftwareClusterResourceMappingBuilder:
     """Builder for TDCpSoftwareClusterResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDCpSoftwareClusterResourceMapping()
+        self._obj: TDCpSoftwareClusterResourceMapping = TDCpSoftwareClusterResourceMapping()
 
     def build(self) -> TDCpSoftwareClusterResourceMapping:
         """Build and return TDCpSoftwareClusterResourceMapping object.

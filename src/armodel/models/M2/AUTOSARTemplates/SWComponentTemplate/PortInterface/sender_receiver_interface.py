@@ -1,29 +1,28 @@
 """SenderReceiverInterface AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SenderReceiverInterface(ARObject):
     """AUTOSAR SenderReceiverInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SenderReceiverInterface to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SENDERRECEIVERINTERFACE")
+        element = ET.Element("SENDERRECEIVERINTERFACE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SenderReceiverInterface":
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverInterface":
         """Create SenderReceiverInterface from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SenderReceiverInterface(ARObject):
         Returns:
             SenderReceiverInterface instance
         """
-        obj = cls()
+        obj: SenderReceiverInterface = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SenderReceiverInterface(ARObject):
 class SenderReceiverInterfaceBuilder:
     """Builder for SenderReceiverInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SenderReceiverInterface()
+        self._obj: SenderReceiverInterface = SenderReceiverInterface()
 
     def build(self) -> SenderReceiverInterface:
         """Build and return SenderReceiverInterface object.

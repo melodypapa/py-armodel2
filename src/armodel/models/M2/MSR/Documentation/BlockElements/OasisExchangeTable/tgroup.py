@@ -1,29 +1,28 @@
 """Tgroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Tgroup(ARObject):
     """AUTOSAR Tgroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Tgroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Tgroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TGROUP")
+        element = ET.Element("TGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Tgroup":
+    def deserialize(cls, element: ET.Element) -> "Tgroup":
         """Create Tgroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Tgroup(ARObject):
         Returns:
             Tgroup instance
         """
-        obj = cls()
+        obj: Tgroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Tgroup(ARObject):
 class TgroupBuilder:
     """Builder for Tgroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Tgroup()
+        self._obj: Tgroup = Tgroup()
 
     def build(self) -> Tgroup:
         """Build and return Tgroup object.

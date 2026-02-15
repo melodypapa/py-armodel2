@@ -1,29 +1,28 @@
 """FlexrayTpEcu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayTpEcu(ARObject):
     """AUTOSAR FlexrayTpEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayTpEcu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayTpEcu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYTPECU")
+        element = ET.Element("FLEXRAYTPECU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayTpEcu":
+    def deserialize(cls, element: ET.Element) -> "FlexrayTpEcu":
         """Create FlexrayTpEcu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayTpEcu(ARObject):
         Returns:
             FlexrayTpEcu instance
         """
-        obj = cls()
+        obj: FlexrayTpEcu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayTpEcu(ARObject):
 class FlexrayTpEcuBuilder:
     """Builder for FlexrayTpEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayTpEcu()
+        self._obj: FlexrayTpEcu = FlexrayTpEcu()
 
     def build(self) -> FlexrayTpEcu:
         """Build and return FlexrayTpEcu object.

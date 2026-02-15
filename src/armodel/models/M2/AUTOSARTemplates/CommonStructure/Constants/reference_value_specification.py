@@ -1,29 +1,28 @@
 """ReferenceValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ReferenceValueSpecification(ARObject):
     """AUTOSAR ReferenceValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ReferenceValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ReferenceValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("REFERENCEVALUESPECIFICATION")
+        element = ET.Element("REFERENCEVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ReferenceValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "ReferenceValueSpecification":
         """Create ReferenceValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ReferenceValueSpecification(ARObject):
         Returns:
             ReferenceValueSpecification instance
         """
-        obj = cls()
+        obj: ReferenceValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ReferenceValueSpecification(ARObject):
 class ReferenceValueSpecificationBuilder:
     """Builder for ReferenceValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ReferenceValueSpecification()
+        self._obj: ReferenceValueSpecification = ReferenceValueSpecification()
 
     def build(self) -> ReferenceValueSpecification:
         """Build and return ReferenceValueSpecification object.

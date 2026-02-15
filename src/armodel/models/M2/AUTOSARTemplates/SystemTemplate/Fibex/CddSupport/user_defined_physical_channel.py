@@ -1,29 +1,28 @@
 """UserDefinedPhysicalChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedPhysicalChannel(ARObject):
     """AUTOSAR UserDefinedPhysicalChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedPhysicalChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedPhysicalChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDPHYSICALCHANNEL")
+        element = ET.Element("USERDEFINEDPHYSICALCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedPhysicalChannel":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedPhysicalChannel":
         """Create UserDefinedPhysicalChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedPhysicalChannel(ARObject):
         Returns:
             UserDefinedPhysicalChannel instance
         """
-        obj = cls()
+        obj: UserDefinedPhysicalChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedPhysicalChannel(ARObject):
 class UserDefinedPhysicalChannelBuilder:
     """Builder for UserDefinedPhysicalChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedPhysicalChannel()
+        self._obj: UserDefinedPhysicalChannel = UserDefinedPhysicalChannel()
 
     def build(self) -> UserDefinedPhysicalChannel:
         """Build and return UserDefinedPhysicalChannel object.

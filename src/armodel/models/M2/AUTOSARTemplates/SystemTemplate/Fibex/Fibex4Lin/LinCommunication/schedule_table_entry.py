@@ -1,29 +1,28 @@
 """ScheduleTableEntry AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ScheduleTableEntry(ARObject):
     """AUTOSAR ScheduleTableEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ScheduleTableEntry."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ScheduleTableEntry to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SCHEDULETABLEENTRY")
+        element = ET.Element("SCHEDULETABLEENTRY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ScheduleTableEntry":
+    def deserialize(cls, element: ET.Element) -> "ScheduleTableEntry":
         """Create ScheduleTableEntry from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ScheduleTableEntry(ARObject):
         Returns:
             ScheduleTableEntry instance
         """
-        obj = cls()
+        obj: ScheduleTableEntry = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ScheduleTableEntry(ARObject):
 class ScheduleTableEntryBuilder:
     """Builder for ScheduleTableEntry."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ScheduleTableEntry()
+        self._obj: ScheduleTableEntry = ScheduleTableEntry()
 
     def build(self) -> ScheduleTableEntry:
         """Build and return ScheduleTableEntry object.

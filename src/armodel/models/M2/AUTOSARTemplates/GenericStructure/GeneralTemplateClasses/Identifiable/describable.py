@@ -1,29 +1,28 @@
 """Describable AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Describable(ARObject):
     """AUTOSAR Describable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Describable."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Describable to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DESCRIBABLE")
+        element = ET.Element("DESCRIBABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Describable":
+    def deserialize(cls, element: ET.Element) -> "Describable":
         """Create Describable from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Describable(ARObject):
         Returns:
             Describable instance
         """
-        obj = cls()
+        obj: Describable = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Describable(ARObject):
 class DescribableBuilder:
     """Builder for Describable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Describable()
+        self._obj: Describable = Describable()
 
     def build(self) -> Describable:
         """Build and return Describable object.

@@ -1,29 +1,28 @@
 """HwAttributeLiteralDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwAttributeLiteralDef(ARObject):
     """AUTOSAR HwAttributeLiteralDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwAttributeLiteralDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwAttributeLiteralDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWATTRIBUTELITERALDEF")
+        element = ET.Element("HWATTRIBUTELITERALDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwAttributeLiteralDef":
+    def deserialize(cls, element: ET.Element) -> "HwAttributeLiteralDef":
         """Create HwAttributeLiteralDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwAttributeLiteralDef(ARObject):
         Returns:
             HwAttributeLiteralDef instance
         """
-        obj = cls()
+        obj: HwAttributeLiteralDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwAttributeLiteralDef(ARObject):
 class HwAttributeLiteralDefBuilder:
     """Builder for HwAttributeLiteralDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwAttributeLiteralDef()
+        self._obj: HwAttributeLiteralDef = HwAttributeLiteralDef()
 
     def build(self) -> HwAttributeLiteralDef:
         """Build and return HwAttributeLiteralDef object.

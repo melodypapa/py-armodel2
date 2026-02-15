@@ -1,29 +1,28 @@
 """FunctionInhibitionNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FunctionInhibitionNeeds(ARObject):
     """AUTOSAR FunctionInhibitionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FunctionInhibitionNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FunctionInhibitionNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FUNCTIONINHIBITIONNEEDS")
+        element = ET.Element("FUNCTIONINHIBITIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FunctionInhibitionNeeds":
+    def deserialize(cls, element: ET.Element) -> "FunctionInhibitionNeeds":
         """Create FunctionInhibitionNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FunctionInhibitionNeeds(ARObject):
         Returns:
             FunctionInhibitionNeeds instance
         """
-        obj = cls()
+        obj: FunctionInhibitionNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FunctionInhibitionNeeds(ARObject):
 class FunctionInhibitionNeedsBuilder:
     """Builder for FunctionInhibitionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FunctionInhibitionNeeds()
+        self._obj: FunctionInhibitionNeeds = FunctionInhibitionNeeds()
 
     def build(self) -> FunctionInhibitionNeeds:
         """Build and return FunctionInhibitionNeeds object.

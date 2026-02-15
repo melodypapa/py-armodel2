@@ -1,29 +1,28 @@
 """TransformationPropsSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransformationPropsSet(ARObject):
     """AUTOSAR TransformationPropsSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransformationPropsSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransformationPropsSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSFORMATIONPROPSSET")
+        element = ET.Element("TRANSFORMATIONPROPSSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransformationPropsSet":
+    def deserialize(cls, element: ET.Element) -> "TransformationPropsSet":
         """Create TransformationPropsSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransformationPropsSet(ARObject):
         Returns:
             TransformationPropsSet instance
         """
-        obj = cls()
+        obj: TransformationPropsSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransformationPropsSet(ARObject):
 class TransformationPropsSetBuilder:
     """Builder for TransformationPropsSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransformationPropsSet()
+        self._obj: TransformationPropsSet = TransformationPropsSet()
 
     def build(self) -> TransformationPropsSet:
         """Build and return TransformationPropsSet object.

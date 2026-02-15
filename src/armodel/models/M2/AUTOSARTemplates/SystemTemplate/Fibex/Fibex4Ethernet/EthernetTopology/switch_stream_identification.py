@@ -1,29 +1,28 @@
 """SwitchStreamIdentification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwitchStreamIdentification(ARObject):
     """AUTOSAR SwitchStreamIdentification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwitchStreamIdentification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWITCHSTREAMIDENTIFICATION")
+        element = ET.Element("SWITCHSTREAMIDENTIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwitchStreamIdentification":
+    def deserialize(cls, element: ET.Element) -> "SwitchStreamIdentification":
         """Create SwitchStreamIdentification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwitchStreamIdentification(ARObject):
         Returns:
             SwitchStreamIdentification instance
         """
-        obj = cls()
+        obj: SwitchStreamIdentification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwitchStreamIdentification(ARObject):
 class SwitchStreamIdentificationBuilder:
     """Builder for SwitchStreamIdentification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwitchStreamIdentification()
+        self._obj: SwitchStreamIdentification = SwitchStreamIdentification()
 
     def build(self) -> SwitchStreamIdentification:
         """Build and return SwitchStreamIdentification object.

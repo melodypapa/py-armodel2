@@ -1,29 +1,28 @@
 """RunnableEntityArgument AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RunnableEntityArgument(ARObject):
     """AUTOSAR RunnableEntityArgument."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RunnableEntityArgument."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RunnableEntityArgument to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RUNNABLEENTITYARGUMENT")
+        element = ET.Element("RUNNABLEENTITYARGUMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RunnableEntityArgument":
+    def deserialize(cls, element: ET.Element) -> "RunnableEntityArgument":
         """Create RunnableEntityArgument from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RunnableEntityArgument(ARObject):
         Returns:
             RunnableEntityArgument instance
         """
-        obj = cls()
+        obj: RunnableEntityArgument = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RunnableEntityArgument(ARObject):
 class RunnableEntityArgumentBuilder:
     """Builder for RunnableEntityArgument."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RunnableEntityArgument()
+        self._obj: RunnableEntityArgument = RunnableEntityArgument()
 
     def build(self) -> RunnableEntityArgument:
         """Build and return RunnableEntityArgument object.

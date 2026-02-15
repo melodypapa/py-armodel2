@@ -1,29 +1,28 @@
 """TriggerMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TriggerMapping(ARObject):
     """AUTOSAR TriggerMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TriggerMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRIGGERMAPPING")
+        element = ET.Element("TRIGGERMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TriggerMapping":
+    def deserialize(cls, element: ET.Element) -> "TriggerMapping":
         """Create TriggerMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TriggerMapping(ARObject):
         Returns:
             TriggerMapping instance
         """
-        obj = cls()
+        obj: TriggerMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TriggerMapping(ARObject):
 class TriggerMappingBuilder:
     """Builder for TriggerMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TriggerMapping()
+        self._obj: TriggerMapping = TriggerMapping()
 
     def build(self) -> TriggerMapping:
         """Build and return TriggerMapping object.

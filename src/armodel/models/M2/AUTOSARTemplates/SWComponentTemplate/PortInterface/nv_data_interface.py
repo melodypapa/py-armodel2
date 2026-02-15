@@ -1,29 +1,28 @@
 """NvDataInterface AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NvDataInterface(ARObject):
     """AUTOSAR NvDataInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NvDataInterface."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NvDataInterface to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NVDATAINTERFACE")
+        element = ET.Element("NVDATAINTERFACE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NvDataInterface":
+    def deserialize(cls, element: ET.Element) -> "NvDataInterface":
         """Create NvDataInterface from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NvDataInterface(ARObject):
         Returns:
             NvDataInterface instance
         """
-        obj = cls()
+        obj: NvDataInterface = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NvDataInterface(ARObject):
 class NvDataInterfaceBuilder:
     """Builder for NvDataInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NvDataInterface()
+        self._obj: NvDataInterface = NvDataInterface()
 
     def build(self) -> NvDataInterface:
         """Build and return NvDataInterface object.

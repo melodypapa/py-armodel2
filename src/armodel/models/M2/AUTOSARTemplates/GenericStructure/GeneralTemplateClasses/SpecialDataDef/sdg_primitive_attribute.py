@@ -1,29 +1,28 @@
 """SdgPrimitiveAttribute AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgPrimitiveAttribute(ARObject):
     """AUTOSAR SdgPrimitiveAttribute."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgPrimitiveAttribute."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgPrimitiveAttribute to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGPRIMITIVEATTRIBUTE")
+        element = ET.Element("SDGPRIMITIVEATTRIBUTE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgPrimitiveAttribute":
+    def deserialize(cls, element: ET.Element) -> "SdgPrimitiveAttribute":
         """Create SdgPrimitiveAttribute from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgPrimitiveAttribute(ARObject):
         Returns:
             SdgPrimitiveAttribute instance
         """
-        obj = cls()
+        obj: SdgPrimitiveAttribute = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgPrimitiveAttribute(ARObject):
 class SdgPrimitiveAttributeBuilder:
     """Builder for SdgPrimitiveAttribute."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgPrimitiveAttribute()
+        self._obj: SdgPrimitiveAttribute = SdgPrimitiveAttribute()
 
     def build(self) -> SdgPrimitiveAttribute:
         """Build and return SdgPrimitiveAttribute object.

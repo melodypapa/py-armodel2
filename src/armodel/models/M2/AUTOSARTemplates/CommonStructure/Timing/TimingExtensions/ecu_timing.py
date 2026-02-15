@@ -1,29 +1,28 @@
 """EcuTiming AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcuTiming(ARObject):
     """AUTOSAR EcuTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcuTiming."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcuTiming to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUTIMING")
+        element = ET.Element("ECUTIMING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcuTiming":
+    def deserialize(cls, element: ET.Element) -> "EcuTiming":
         """Create EcuTiming from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcuTiming(ARObject):
         Returns:
             EcuTiming instance
         """
-        obj = cls()
+        obj: EcuTiming = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcuTiming(ARObject):
 class EcuTimingBuilder:
     """Builder for EcuTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcuTiming()
+        self._obj: EcuTiming = EcuTiming()
 
     def build(self) -> EcuTiming:
         """Build and return EcuTiming object.

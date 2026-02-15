@@ -1,29 +1,28 @@
 """IdsmRateLimitation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsmRateLimitation(ARObject):
     """AUTOSAR IdsmRateLimitation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsmRateLimitation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsmRateLimitation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSMRATELIMITATION")
+        element = ET.Element("IDSMRATELIMITATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsmRateLimitation":
+    def deserialize(cls, element: ET.Element) -> "IdsmRateLimitation":
         """Create IdsmRateLimitation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsmRateLimitation(ARObject):
         Returns:
             IdsmRateLimitation instance
         """
-        obj = cls()
+        obj: IdsmRateLimitation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsmRateLimitation(ARObject):
 class IdsmRateLimitationBuilder:
     """Builder for IdsmRateLimitation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsmRateLimitation()
+        self._obj: IdsmRateLimitation = IdsmRateLimitation()
 
     def build(self) -> IdsmRateLimitation:
         """Build and return IdsmRateLimitation object.

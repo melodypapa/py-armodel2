@@ -1,29 +1,28 @@
 """DdsCpISignalToDdsTopicMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsCpISignalToDdsTopicMapping(ARObject):
     """AUTOSAR DdsCpISignalToDdsTopicMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsCpISignalToDdsTopicMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsCpISignalToDdsTopicMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSCPISIGNALTODDSTOPICMAPPING")
+        element = ET.Element("DDSCPISIGNALTODDSTOPICMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsCpISignalToDdsTopicMapping":
+    def deserialize(cls, element: ET.Element) -> "DdsCpISignalToDdsTopicMapping":
         """Create DdsCpISignalToDdsTopicMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         Returns:
             DdsCpISignalToDdsTopicMapping instance
         """
-        obj = cls()
+        obj: DdsCpISignalToDdsTopicMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
 class DdsCpISignalToDdsTopicMappingBuilder:
     """Builder for DdsCpISignalToDdsTopicMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsCpISignalToDdsTopicMapping()
+        self._obj: DdsCpISignalToDdsTopicMapping = DdsCpISignalToDdsTopicMapping()
 
     def build(self) -> DdsCpISignalToDdsTopicMapping:
         """Build and return DdsCpISignalToDdsTopicMapping object.

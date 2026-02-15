@@ -1,29 +1,28 @@
 """ExecutionOrderConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ExecutionOrderConstraint(ARObject):
     """AUTOSAR ExecutionOrderConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ExecutionOrderConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EXECUTIONORDERCONSTRAINT")
+        element = ET.Element("EXECUTIONORDERCONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ExecutionOrderConstraint":
+    def deserialize(cls, element: ET.Element) -> "ExecutionOrderConstraint":
         """Create ExecutionOrderConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ExecutionOrderConstraint(ARObject):
         Returns:
             ExecutionOrderConstraint instance
         """
-        obj = cls()
+        obj: ExecutionOrderConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ExecutionOrderConstraint(ARObject):
 class ExecutionOrderConstraintBuilder:
     """Builder for ExecutionOrderConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ExecutionOrderConstraint()
+        self._obj: ExecutionOrderConstraint = ExecutionOrderConstraint()
 
     def build(self) -> ExecutionOrderConstraint:
         """Build and return ExecutionOrderConstraint object.

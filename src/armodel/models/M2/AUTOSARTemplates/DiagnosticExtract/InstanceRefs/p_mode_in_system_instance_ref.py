@@ -1,29 +1,28 @@
 """PModeInSystemInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PModeInSystemInstanceRef(ARObject):
     """AUTOSAR PModeInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PModeInSystemInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PModeInSystemInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PMODEINSYSTEMINSTANCEREF")
+        element = ET.Element("PMODEINSYSTEMINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PModeInSystemInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "PModeInSystemInstanceRef":
         """Create PModeInSystemInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PModeInSystemInstanceRef(ARObject):
         Returns:
             PModeInSystemInstanceRef instance
         """
-        obj = cls()
+        obj: PModeInSystemInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PModeInSystemInstanceRef(ARObject):
 class PModeInSystemInstanceRefBuilder:
     """Builder for PModeInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PModeInSystemInstanceRef()
+        self._obj: PModeInSystemInstanceRef = PModeInSystemInstanceRef()
 
     def build(self) -> PModeInSystemInstanceRef:
         """Build and return PModeInSystemInstanceRef object.

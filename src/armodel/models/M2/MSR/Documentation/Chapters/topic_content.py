@@ -1,29 +1,28 @@
 """TopicContent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TopicContent(ARObject):
     """AUTOSAR TopicContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TopicContent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TopicContent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TOPICCONTENT")
+        element = ET.Element("TOPICCONTENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TopicContent":
+    def deserialize(cls, element: ET.Element) -> "TopicContent":
         """Create TopicContent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TopicContent(ARObject):
         Returns:
             TopicContent instance
         """
-        obj = cls()
+        obj: TopicContent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TopicContent(ARObject):
 class TopicContentBuilder:
     """Builder for TopicContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TopicContent()
+        self._obj: TopicContent = TopicContent()
 
     def build(self) -> TopicContent:
         """Build and return TopicContent object.

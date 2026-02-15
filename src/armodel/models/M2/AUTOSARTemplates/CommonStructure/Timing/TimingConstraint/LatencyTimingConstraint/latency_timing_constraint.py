@@ -1,29 +1,28 @@
 """LatencyTimingConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LatencyTimingConstraint(ARObject):
     """AUTOSAR LatencyTimingConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LatencyTimingConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LatencyTimingConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LATENCYTIMINGCONSTRAINT")
+        element = ET.Element("LATENCYTIMINGCONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LatencyTimingConstraint":
+    def deserialize(cls, element: ET.Element) -> "LatencyTimingConstraint":
         """Create LatencyTimingConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LatencyTimingConstraint(ARObject):
         Returns:
             LatencyTimingConstraint instance
         """
-        obj = cls()
+        obj: LatencyTimingConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LatencyTimingConstraint(ARObject):
 class LatencyTimingConstraintBuilder:
     """Builder for LatencyTimingConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LatencyTimingConstraint()
+        self._obj: LatencyTimingConstraint = LatencyTimingConstraint()
 
     def build(self) -> LatencyTimingConstraint:
         """Build and return LatencyTimingConstraint object.

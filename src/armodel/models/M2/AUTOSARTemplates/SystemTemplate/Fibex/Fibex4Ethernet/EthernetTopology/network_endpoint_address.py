@@ -1,29 +1,28 @@
 """NetworkEndpointAddress AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NetworkEndpointAddress(ARObject):
     """AUTOSAR NetworkEndpointAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NetworkEndpointAddress."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NetworkEndpointAddress to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NETWORKENDPOINTADDRESS")
+        element = ET.Element("NETWORKENDPOINTADDRESS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NetworkEndpointAddress":
+    def deserialize(cls, element: ET.Element) -> "NetworkEndpointAddress":
         """Create NetworkEndpointAddress from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NetworkEndpointAddress(ARObject):
         Returns:
             NetworkEndpointAddress instance
         """
-        obj = cls()
+        obj: NetworkEndpointAddress = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NetworkEndpointAddress(ARObject):
 class NetworkEndpointAddressBuilder:
     """Builder for NetworkEndpointAddress."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NetworkEndpointAddress()
+        self._obj: NetworkEndpointAddress = NetworkEndpointAddress()
 
     def build(self) -> NetworkEndpointAddress:
         """Build and return NetworkEndpointAddress object.

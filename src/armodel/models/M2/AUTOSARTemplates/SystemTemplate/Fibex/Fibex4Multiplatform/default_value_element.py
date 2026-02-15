@@ -1,29 +1,28 @@
 """DefaultValueElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DefaultValueElement(ARObject):
     """AUTOSAR DefaultValueElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DefaultValueElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DefaultValueElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DEFAULTVALUEELEMENT")
+        element = ET.Element("DEFAULTVALUEELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DefaultValueElement":
+    def deserialize(cls, element: ET.Element) -> "DefaultValueElement":
         """Create DefaultValueElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DefaultValueElement(ARObject):
         Returns:
             DefaultValueElement instance
         """
-        obj = cls()
+        obj: DefaultValueElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DefaultValueElement(ARObject):
 class DefaultValueElementBuilder:
     """Builder for DefaultValueElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DefaultValueElement()
+        self._obj: DefaultValueElement = DefaultValueElement()
 
     def build(self) -> DefaultValueElement:
         """Build and return DefaultValueElement object.

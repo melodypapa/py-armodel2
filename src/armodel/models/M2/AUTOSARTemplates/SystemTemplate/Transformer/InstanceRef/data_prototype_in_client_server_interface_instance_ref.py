@@ -1,29 +1,28 @@
 """DataPrototypeInClientServerInterfaceInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeInClientServerInterfaceInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInClientServerInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeInClientServerInterfaceInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeInClientServerInterfaceInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPEINCLIENTSERVERINTERFACEINSTANCEREF")
+        element = ET.Element("DATAPROTOTYPEINCLIENTSERVERINTERFACEINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeInClientServerInterfaceInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInClientServerInterfaceInstanceRef":
         """Create DataPrototypeInClientServerInterfaceInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(ARObject):
         Returns:
             DataPrototypeInClientServerInterfaceInstanceRef instance
         """
-        obj = cls()
+        obj: DataPrototypeInClientServerInterfaceInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeInClientServerInterfaceInstanceRef(ARObject):
 class DataPrototypeInClientServerInterfaceInstanceRefBuilder:
     """Builder for DataPrototypeInClientServerInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeInClientServerInterfaceInstanceRef()
+        self._obj: DataPrototypeInClientServerInterfaceInstanceRef = DataPrototypeInClientServerInterfaceInstanceRef()
 
     def build(self) -> DataPrototypeInClientServerInterfaceInstanceRef:
         """Build and return DataPrototypeInClientServerInterfaceInstanceRef object.

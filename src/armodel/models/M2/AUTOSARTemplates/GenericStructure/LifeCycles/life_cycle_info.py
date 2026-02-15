@@ -1,29 +1,28 @@
 """LifeCycleInfo AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LifeCycleInfo(ARObject):
     """AUTOSAR LifeCycleInfo."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LifeCycleInfo to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LIFECYCLEINFO")
+        element = ET.Element("LIFECYCLEINFO")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LifeCycleInfo":
+    def deserialize(cls, element: ET.Element) -> "LifeCycleInfo":
         """Create LifeCycleInfo from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LifeCycleInfo(ARObject):
         Returns:
             LifeCycleInfo instance
         """
-        obj = cls()
+        obj: LifeCycleInfo = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LifeCycleInfo(ARObject):
 class LifeCycleInfoBuilder:
     """Builder for LifeCycleInfo."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LifeCycleInfo()
+        self._obj: LifeCycleInfo = LifeCycleInfo()
 
     def build(self) -> LifeCycleInfo:
         """Build and return LifeCycleInfo object.

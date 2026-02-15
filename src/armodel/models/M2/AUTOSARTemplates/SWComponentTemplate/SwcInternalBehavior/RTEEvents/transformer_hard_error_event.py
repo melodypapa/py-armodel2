@@ -1,29 +1,28 @@
 """TransformerHardErrorEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransformerHardErrorEvent(ARObject):
     """AUTOSAR TransformerHardErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransformerHardErrorEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSFORMERHARDERROREVENT")
+        element = ET.Element("TRANSFORMERHARDERROREVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransformerHardErrorEvent":
+    def deserialize(cls, element: ET.Element) -> "TransformerHardErrorEvent":
         """Create TransformerHardErrorEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransformerHardErrorEvent(ARObject):
         Returns:
             TransformerHardErrorEvent instance
         """
-        obj = cls()
+        obj: TransformerHardErrorEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransformerHardErrorEvent(ARObject):
 class TransformerHardErrorEventBuilder:
     """Builder for TransformerHardErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransformerHardErrorEvent()
+        self._obj: TransformerHardErrorEvent = TransformerHardErrorEvent()
 
     def build(self) -> TransformerHardErrorEvent:
         """Build and return TransformerHardErrorEvent object.

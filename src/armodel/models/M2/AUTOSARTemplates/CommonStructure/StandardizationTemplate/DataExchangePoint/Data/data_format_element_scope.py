@@ -1,29 +1,28 @@
 """DataFormatElementScope AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataFormatElementScope(ARObject):
     """AUTOSAR DataFormatElementScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataFormatElementScope."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataFormatElementScope to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAFORMATELEMENTSCOPE")
+        element = ET.Element("DATAFORMATELEMENTSCOPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataFormatElementScope":
+    def deserialize(cls, element: ET.Element) -> "DataFormatElementScope":
         """Create DataFormatElementScope from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataFormatElementScope(ARObject):
         Returns:
             DataFormatElementScope instance
         """
-        obj = cls()
+        obj: DataFormatElementScope = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataFormatElementScope(ARObject):
 class DataFormatElementScopeBuilder:
     """Builder for DataFormatElementScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataFormatElementScope()
+        self._obj: DataFormatElementScope = DataFormatElementScope()
 
     def build(self) -> DataFormatElementScope:
         """Build and return DataFormatElementScope object.

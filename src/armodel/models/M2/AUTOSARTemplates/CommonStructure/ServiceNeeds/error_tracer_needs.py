@@ -1,29 +1,28 @@
 """ErrorTracerNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ErrorTracerNeeds(ARObject):
     """AUTOSAR ErrorTracerNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ErrorTracerNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ErrorTracerNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ERRORTRACERNEEDS")
+        element = ET.Element("ERRORTRACERNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ErrorTracerNeeds":
+    def deserialize(cls, element: ET.Element) -> "ErrorTracerNeeds":
         """Create ErrorTracerNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ErrorTracerNeeds(ARObject):
         Returns:
             ErrorTracerNeeds instance
         """
-        obj = cls()
+        obj: ErrorTracerNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ErrorTracerNeeds(ARObject):
 class ErrorTracerNeedsBuilder:
     """Builder for ErrorTracerNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ErrorTracerNeeds()
+        self._obj: ErrorTracerNeeds = ErrorTracerNeeds()
 
     def build(self) -> ErrorTracerNeeds:
         """Build and return ErrorTracerNeeds object.

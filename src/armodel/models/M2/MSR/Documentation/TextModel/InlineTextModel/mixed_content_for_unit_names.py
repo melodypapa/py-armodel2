@@ -1,29 +1,28 @@
 """MixedContentForUnitNames AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MixedContentForUnitNames(ARObject):
     """AUTOSAR MixedContentForUnitNames."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MixedContentForUnitNames."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MixedContentForUnitNames to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MIXEDCONTENTFORUNITNAMES")
+        element = ET.Element("MIXEDCONTENTFORUNITNAMES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MixedContentForUnitNames":
+    def deserialize(cls, element: ET.Element) -> "MixedContentForUnitNames":
         """Create MixedContentForUnitNames from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MixedContentForUnitNames(ARObject):
         Returns:
             MixedContentForUnitNames instance
         """
-        obj = cls()
+        obj: MixedContentForUnitNames = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MixedContentForUnitNames(ARObject):
 class MixedContentForUnitNamesBuilder:
     """Builder for MixedContentForUnitNames."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MixedContentForUnitNames()
+        self._obj: MixedContentForUnitNames = MixedContentForUnitNames()
 
     def build(self) -> MixedContentForUnitNames:
         """Build and return MixedContentForUnitNames object.

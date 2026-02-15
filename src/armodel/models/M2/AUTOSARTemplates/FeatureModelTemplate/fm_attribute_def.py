@@ -1,29 +1,28 @@
 """FMAttributeDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMAttributeDef(ARObject):
     """AUTOSAR FMAttributeDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMAttributeDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMAttributeDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMATTRIBUTEDEF")
+        element = ET.Element("FMATTRIBUTEDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMAttributeDef":
+    def deserialize(cls, element: ET.Element) -> "FMAttributeDef":
         """Create FMAttributeDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMAttributeDef(ARObject):
         Returns:
             FMAttributeDef instance
         """
-        obj = cls()
+        obj: FMAttributeDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMAttributeDef(ARObject):
 class FMAttributeDefBuilder:
     """Builder for FMAttributeDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMAttributeDef()
+        self._obj: FMAttributeDef = FMAttributeDef()
 
     def build(self) -> FMAttributeDef:
         """Build and return FMAttributeDef object.

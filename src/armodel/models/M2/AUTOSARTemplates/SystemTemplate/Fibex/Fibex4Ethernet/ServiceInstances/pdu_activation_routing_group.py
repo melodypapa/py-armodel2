@@ -1,29 +1,28 @@
 """PduActivationRoutingGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PduActivationRoutingGroup(ARObject):
     """AUTOSAR PduActivationRoutingGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PduActivationRoutingGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PDUACTIVATIONROUTINGGROUP")
+        element = ET.Element("PDUACTIVATIONROUTINGGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PduActivationRoutingGroup":
+    def deserialize(cls, element: ET.Element) -> "PduActivationRoutingGroup":
         """Create PduActivationRoutingGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PduActivationRoutingGroup(ARObject):
         Returns:
             PduActivationRoutingGroup instance
         """
-        obj = cls()
+        obj: PduActivationRoutingGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PduActivationRoutingGroup(ARObject):
 class PduActivationRoutingGroupBuilder:
     """Builder for PduActivationRoutingGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PduActivationRoutingGroup()
+        self._obj: PduActivationRoutingGroup = PduActivationRoutingGroup()
 
     def build(self) -> PduActivationRoutingGroup:
         """Build and return PduActivationRoutingGroup object.

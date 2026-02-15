@@ -1,29 +1,28 @@
 """SwAxisGeneric AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwAxisGeneric(ARObject):
     """AUTOSAR SwAxisGeneric."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwAxisGeneric."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwAxisGeneric to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWAXISGENERIC")
+        element = ET.Element("SWAXISGENERIC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwAxisGeneric":
+    def deserialize(cls, element: ET.Element) -> "SwAxisGeneric":
         """Create SwAxisGeneric from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwAxisGeneric(ARObject):
         Returns:
             SwAxisGeneric instance
         """
-        obj = cls()
+        obj: SwAxisGeneric = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwAxisGeneric(ARObject):
 class SwAxisGenericBuilder:
     """Builder for SwAxisGeneric."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwAxisGeneric()
+        self._obj: SwAxisGeneric = SwAxisGeneric()
 
     def build(self) -> SwAxisGeneric:
         """Build and return SwAxisGeneric object.

@@ -1,29 +1,28 @@
 """DiagnosticPowertrainFreezeFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticPowertrainFreezeFrame(ARObject):
     """AUTOSAR DiagnosticPowertrainFreezeFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticPowertrainFreezeFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticPowertrainFreezeFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICPOWERTRAINFREEZEFRAME")
+        element = ET.Element("DIAGNOSTICPOWERTRAINFREEZEFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticPowertrainFreezeFrame":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticPowertrainFreezeFrame":
         """Create DiagnosticPowertrainFreezeFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticPowertrainFreezeFrame(ARObject):
         Returns:
             DiagnosticPowertrainFreezeFrame instance
         """
-        obj = cls()
+        obj: DiagnosticPowertrainFreezeFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticPowertrainFreezeFrame(ARObject):
 class DiagnosticPowertrainFreezeFrameBuilder:
     """Builder for DiagnosticPowertrainFreezeFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticPowertrainFreezeFrame()
+        self._obj: DiagnosticPowertrainFreezeFrame = DiagnosticPowertrainFreezeFrame()
 
     def build(self) -> DiagnosticPowertrainFreezeFrame:
         """Build and return DiagnosticPowertrainFreezeFrame object.

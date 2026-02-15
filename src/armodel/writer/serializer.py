@@ -1,10 +1,10 @@
 """Python object to XML serialization."""
 
-from lxml import etree
+import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
 
 
-def serialize_autosar_to_xml(autosar: AUTOSAR) -> etree.Element:
+def serialize_autosar_to_xml(autosar: AUTOSAR) -> ET.Element:
     """Serialize AUTOSAR object to XML element.
 
     Args:

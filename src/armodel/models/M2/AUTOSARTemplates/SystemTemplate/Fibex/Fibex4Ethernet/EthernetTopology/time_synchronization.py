@@ -1,29 +1,28 @@
 """TimeSynchronization AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimeSynchronization(ARObject):
     """AUTOSAR TimeSynchronization."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimeSynchronization."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimeSynchronization to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMESYNCHRONIZATION")
+        element = ET.Element("TIMESYNCHRONIZATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimeSynchronization":
+    def deserialize(cls, element: ET.Element) -> "TimeSynchronization":
         """Create TimeSynchronization from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimeSynchronization(ARObject):
         Returns:
             TimeSynchronization instance
         """
-        obj = cls()
+        obj: TimeSynchronization = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimeSynchronization(ARObject):
 class TimeSynchronizationBuilder:
     """Builder for TimeSynchronization."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimeSynchronization()
+        self._obj: TimeSynchronization = TimeSynchronization()
 
     def build(self) -> TimeSynchronization:
         """Build and return TimeSynchronization object.

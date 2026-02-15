@@ -1,29 +1,28 @@
 """TracedFailure AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TracedFailure(ARObject):
     """AUTOSAR TracedFailure."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TracedFailure."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TracedFailure to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRACEDFAILURE")
+        element = ET.Element("TRACEDFAILURE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TracedFailure":
+    def deserialize(cls, element: ET.Element) -> "TracedFailure":
         """Create TracedFailure from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TracedFailure(ARObject):
         Returns:
             TracedFailure instance
         """
-        obj = cls()
+        obj: TracedFailure = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TracedFailure(ARObject):
 class TracedFailureBuilder:
     """Builder for TracedFailure."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TracedFailure()
+        self._obj: TracedFailure = TracedFailure()
 
     def build(self) -> TracedFailure:
         """Build and return TracedFailure object.

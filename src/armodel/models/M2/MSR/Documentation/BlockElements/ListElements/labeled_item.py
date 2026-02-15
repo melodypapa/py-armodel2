@@ -1,29 +1,28 @@
 """LabeledItem AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LabeledItem(ARObject):
     """AUTOSAR LabeledItem."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LabeledItem."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LabeledItem to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LABELEDITEM")
+        element = ET.Element("LABELEDITEM")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LabeledItem":
+    def deserialize(cls, element: ET.Element) -> "LabeledItem":
         """Create LabeledItem from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LabeledItem(ARObject):
         Returns:
             LabeledItem instance
         """
-        obj = cls()
+        obj: LabeledItem = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LabeledItem(ARObject):
 class LabeledItemBuilder:
     """Builder for LabeledItem."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LabeledItem()
+        self._obj: LabeledItem = LabeledItem()
 
     def build(self) -> LabeledItem:
         """Build and return LabeledItem object.

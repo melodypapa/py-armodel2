@@ -1,29 +1,28 @@
 """DiagnosticCommonProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticCommonProps(ARObject):
     """AUTOSAR DiagnosticCommonProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticCommonProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticCommonProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCOMMONPROPS")
+        element = ET.Element("DIAGNOSTICCOMMONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticCommonProps":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCommonProps":
         """Create DiagnosticCommonProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticCommonProps(ARObject):
         Returns:
             DiagnosticCommonProps instance
         """
-        obj = cls()
+        obj: DiagnosticCommonProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticCommonProps(ARObject):
 class DiagnosticCommonPropsBuilder:
     """Builder for DiagnosticCommonProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticCommonProps()
+        self._obj: DiagnosticCommonProps = DiagnosticCommonProps()
 
     def build(self) -> DiagnosticCommonProps:
         """Build and return DiagnosticCommonProps object.

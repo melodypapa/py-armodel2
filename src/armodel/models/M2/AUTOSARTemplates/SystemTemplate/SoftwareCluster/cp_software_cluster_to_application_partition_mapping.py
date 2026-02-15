@@ -1,29 +1,28 @@
 """CpSoftwareClusterToApplicationPartitionMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CpSoftwareClusterToApplicationPartitionMapping(ARObject):
     """AUTOSAR CpSoftwareClusterToApplicationPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CpSoftwareClusterToApplicationPartitionMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CpSoftwareClusterToApplicationPartitionMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CPSOFTWARECLUSTERTOAPPLICATIONPARTITIONMAPPING")
+        element = ET.Element("CPSOFTWARECLUSTERTOAPPLICATIONPARTITIONMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CpSoftwareClusterToApplicationPartitionMapping":
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToApplicationPartitionMapping":
         """Create CpSoftwareClusterToApplicationPartitionMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CpSoftwareClusterToApplicationPartitionMapping(ARObject):
         Returns:
             CpSoftwareClusterToApplicationPartitionMapping instance
         """
-        obj = cls()
+        obj: CpSoftwareClusterToApplicationPartitionMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CpSoftwareClusterToApplicationPartitionMapping(ARObject):
 class CpSoftwareClusterToApplicationPartitionMappingBuilder:
     """Builder for CpSoftwareClusterToApplicationPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CpSoftwareClusterToApplicationPartitionMapping()
+        self._obj: CpSoftwareClusterToApplicationPartitionMapping = CpSoftwareClusterToApplicationPartitionMapping()
 
     def build(self) -> CpSoftwareClusterToApplicationPartitionMapping:
         """Build and return CpSoftwareClusterToApplicationPartitionMapping object.

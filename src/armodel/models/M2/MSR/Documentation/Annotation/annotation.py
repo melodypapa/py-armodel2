@@ -1,29 +1,28 @@
 """Annotation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Annotation(ARObject):
     """AUTOSAR Annotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Annotation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Annotation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ANNOTATION")
+        element = ET.Element("ANNOTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Annotation":
+    def deserialize(cls, element: ET.Element) -> "Annotation":
         """Create Annotation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Annotation(ARObject):
         Returns:
             Annotation instance
         """
-        obj = cls()
+        obj: Annotation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Annotation(ARObject):
 class AnnotationBuilder:
     """Builder for Annotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Annotation()
+        self._obj: Annotation = Annotation()
 
     def build(self) -> Annotation:
         """Build and return Annotation object.

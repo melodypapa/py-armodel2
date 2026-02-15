@@ -1,29 +1,28 @@
 """AutosarVariableInstance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AutosarVariableInstance(ARObject):
     """AUTOSAR AutosarVariableInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AutosarVariableInstance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AutosarVariableInstance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AUTOSARVARIABLEINSTANCE")
+        element = ET.Element("AUTOSARVARIABLEINSTANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AutosarVariableInstance":
+    def deserialize(cls, element: ET.Element) -> "AutosarVariableInstance":
         """Create AutosarVariableInstance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AutosarVariableInstance(ARObject):
         Returns:
             AutosarVariableInstance instance
         """
-        obj = cls()
+        obj: AutosarVariableInstance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AutosarVariableInstance(ARObject):
 class AutosarVariableInstanceBuilder:
     """Builder for AutosarVariableInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AutosarVariableInstance()
+        self._obj: AutosarVariableInstance = AutosarVariableInstance()
 
     def build(self) -> AutosarVariableInstance:
         """Build and return AutosarVariableInstance object.

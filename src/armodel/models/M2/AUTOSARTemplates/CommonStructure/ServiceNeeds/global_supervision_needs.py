@@ -1,29 +1,28 @@
 """GlobalSupervisionNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalSupervisionNeeds(ARObject):
     """AUTOSAR GlobalSupervisionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalSupervisionNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalSupervisionNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALSUPERVISIONNEEDS")
+        element = ET.Element("GLOBALSUPERVISIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalSupervisionNeeds":
+    def deserialize(cls, element: ET.Element) -> "GlobalSupervisionNeeds":
         """Create GlobalSupervisionNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalSupervisionNeeds(ARObject):
         Returns:
             GlobalSupervisionNeeds instance
         """
-        obj = cls()
+        obj: GlobalSupervisionNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalSupervisionNeeds(ARObject):
 class GlobalSupervisionNeedsBuilder:
     """Builder for GlobalSupervisionNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalSupervisionNeeds()
+        self._obj: GlobalSupervisionNeeds = GlobalSupervisionNeeds()
 
     def build(self) -> GlobalSupervisionNeeds:
         """Build and return GlobalSupervisionNeeds object.

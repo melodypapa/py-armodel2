@@ -1,29 +1,28 @@
 """SingleLanguageUnitNames AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SingleLanguageUnitNames(ARObject):
     """AUTOSAR SingleLanguageUnitNames."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SingleLanguageUnitNames."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SingleLanguageUnitNames to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SINGLELANGUAGEUNITNAMES")
+        element = ET.Element("SINGLELANGUAGEUNITNAMES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SingleLanguageUnitNames":
+    def deserialize(cls, element: ET.Element) -> "SingleLanguageUnitNames":
         """Create SingleLanguageUnitNames from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SingleLanguageUnitNames(ARObject):
         Returns:
             SingleLanguageUnitNames instance
         """
-        obj = cls()
+        obj: SingleLanguageUnitNames = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SingleLanguageUnitNames(ARObject):
 class SingleLanguageUnitNamesBuilder:
     """Builder for SingleLanguageUnitNames."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SingleLanguageUnitNames()
+        self._obj: SingleLanguageUnitNames = SingleLanguageUnitNames()
 
     def build(self) -> SingleLanguageUnitNames:
         """Build and return SingleLanguageUnitNames object.

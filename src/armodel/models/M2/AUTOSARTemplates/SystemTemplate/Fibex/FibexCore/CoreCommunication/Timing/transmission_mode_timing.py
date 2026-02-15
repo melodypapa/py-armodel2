@@ -1,29 +1,28 @@
 """TransmissionModeTiming AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransmissionModeTiming(ARObject):
     """AUTOSAR TransmissionModeTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransmissionModeTiming."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransmissionModeTiming to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSMISSIONMODETIMING")
+        element = ET.Element("TRANSMISSIONMODETIMING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransmissionModeTiming":
+    def deserialize(cls, element: ET.Element) -> "TransmissionModeTiming":
         """Create TransmissionModeTiming from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransmissionModeTiming(ARObject):
         Returns:
             TransmissionModeTiming instance
         """
-        obj = cls()
+        obj: TransmissionModeTiming = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransmissionModeTiming(ARObject):
 class TransmissionModeTimingBuilder:
     """Builder for TransmissionModeTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransmissionModeTiming()
+        self._obj: TransmissionModeTiming = TransmissionModeTiming()
 
     def build(self) -> TransmissionModeTiming:
         """Build and return TransmissionModeTiming object.

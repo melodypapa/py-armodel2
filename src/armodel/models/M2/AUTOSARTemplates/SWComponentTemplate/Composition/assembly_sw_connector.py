@@ -1,29 +1,28 @@
 """AssemblySwConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AssemblySwConnector(ARObject):
     """AUTOSAR AssemblySwConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AssemblySwConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ASSEMBLYSWCONNECTOR")
+        element = ET.Element("ASSEMBLYSWCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AssemblySwConnector":
+    def deserialize(cls, element: ET.Element) -> "AssemblySwConnector":
         """Create AssemblySwConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AssemblySwConnector(ARObject):
         Returns:
             AssemblySwConnector instance
         """
-        obj = cls()
+        obj: AssemblySwConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AssemblySwConnector(ARObject):
 class AssemblySwConnectorBuilder:
     """Builder for AssemblySwConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AssemblySwConnector()
+        self._obj: AssemblySwConnector = AssemblySwConnector()
 
     def build(self) -> AssemblySwConnector:
         """Build and return AssemblySwConnector object.

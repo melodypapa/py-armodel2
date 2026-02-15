@@ -1,29 +1,28 @@
 """Map AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Map(ARObject):
     """AUTOSAR Map."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Map."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Map to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MAP")
+        element = ET.Element("MAP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Map":
+    def deserialize(cls, element: ET.Element) -> "Map":
         """Create Map from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Map(ARObject):
         Returns:
             Map instance
         """
-        obj = cls()
+        obj: Map = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Map(ARObject):
 class MapBuilder:
     """Builder for Map."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Map()
+        self._obj: Map = Map()
 
     def build(self) -> Map:
         """Build and return Map object.

@@ -1,29 +1,28 @@
 """AbstractServiceInstance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractServiceInstance(ARObject):
     """AUTOSAR AbstractServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractServiceInstance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTSERVICEINSTANCE")
+        element = ET.Element("ABSTRACTSERVICEINSTANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractServiceInstance":
+    def deserialize(cls, element: ET.Element) -> "AbstractServiceInstance":
         """Create AbstractServiceInstance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractServiceInstance(ARObject):
         Returns:
             AbstractServiceInstance instance
         """
-        obj = cls()
+        obj: AbstractServiceInstance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractServiceInstance(ARObject):
 class AbstractServiceInstanceBuilder:
     """Builder for AbstractServiceInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractServiceInstance()
+        self._obj: AbstractServiceInstance = AbstractServiceInstance()
 
     def build(self) -> AbstractServiceInstance:
         """Build and return AbstractServiceInstance object.

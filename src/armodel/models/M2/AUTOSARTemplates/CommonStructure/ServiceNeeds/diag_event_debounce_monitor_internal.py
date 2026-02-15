@@ -1,29 +1,28 @@
 """DiagEventDebounceMonitorInternal AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagEventDebounceMonitorInternal(ARObject):
     """AUTOSAR DiagEventDebounceMonitorInternal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagEventDebounceMonitorInternal."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagEventDebounceMonitorInternal to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGEVENTDEBOUNCEMONITORINTERNAL")
+        element = ET.Element("DIAGEVENTDEBOUNCEMONITORINTERNAL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagEventDebounceMonitorInternal":
+    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceMonitorInternal":
         """Create DiagEventDebounceMonitorInternal from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagEventDebounceMonitorInternal(ARObject):
         Returns:
             DiagEventDebounceMonitorInternal instance
         """
-        obj = cls()
+        obj: DiagEventDebounceMonitorInternal = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagEventDebounceMonitorInternal(ARObject):
 class DiagEventDebounceMonitorInternalBuilder:
     """Builder for DiagEventDebounceMonitorInternal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagEventDebounceMonitorInternal()
+        self._obj: DiagEventDebounceMonitorInternal = DiagEventDebounceMonitorInternal()
 
     def build(self) -> DiagEventDebounceMonitorInternal:
         """Build and return DiagEventDebounceMonitorInternal object.

@@ -1,29 +1,28 @@
 """PredefinedChapter AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PredefinedChapter(ARObject):
     """AUTOSAR PredefinedChapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PredefinedChapter."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PredefinedChapter to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PREDEFINEDCHAPTER")
+        element = ET.Element("PREDEFINEDCHAPTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PredefinedChapter":
+    def deserialize(cls, element: ET.Element) -> "PredefinedChapter":
         """Create PredefinedChapter from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PredefinedChapter(ARObject):
         Returns:
             PredefinedChapter instance
         """
-        obj = cls()
+        obj: PredefinedChapter = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PredefinedChapter(ARObject):
 class PredefinedChapterBuilder:
     """Builder for PredefinedChapter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PredefinedChapter()
+        self._obj: PredefinedChapter = PredefinedChapter()
 
     def build(self) -> PredefinedChapter:
         """Build and return PredefinedChapter object.

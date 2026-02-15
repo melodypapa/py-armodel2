@@ -1,29 +1,28 @@
 """UserDefinedTransformationDescription AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedTransformationDescription(ARObject):
     """AUTOSAR UserDefinedTransformationDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedTransformationDescription."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedTransformationDescription to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDTRANSFORMATIONDESCRIPTION")
+        element = ET.Element("USERDEFINEDTRANSFORMATIONDESCRIPTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedTransformationDescription":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationDescription":
         """Create UserDefinedTransformationDescription from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedTransformationDescription(ARObject):
         Returns:
             UserDefinedTransformationDescription instance
         """
-        obj = cls()
+        obj: UserDefinedTransformationDescription = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedTransformationDescription(ARObject):
 class UserDefinedTransformationDescriptionBuilder:
     """Builder for UserDefinedTransformationDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedTransformationDescription()
+        self._obj: UserDefinedTransformationDescription = UserDefinedTransformationDescription()
 
     def build(self) -> UserDefinedTransformationDescription:
         """Build and return UserDefinedTransformationDescription object.

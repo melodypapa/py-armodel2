@@ -1,29 +1,28 @@
 """ArrayValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ArrayValueSpecification(ARObject):
     """AUTOSAR ArrayValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ArrayValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ArrayValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ARRAYVALUESPECIFICATION")
+        element = ET.Element("ARRAYVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ArrayValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "ArrayValueSpecification":
         """Create ArrayValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ArrayValueSpecification(ARObject):
         Returns:
             ArrayValueSpecification instance
         """
-        obj = cls()
+        obj: ArrayValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ArrayValueSpecification(ARObject):
 class ArrayValueSpecificationBuilder:
     """Builder for ArrayValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ArrayValueSpecification()
+        self._obj: ArrayValueSpecification = ArrayValueSpecification()
 
     def build(self) -> ArrayValueSpecification:
         """Build and return ArrayValueSpecification object.

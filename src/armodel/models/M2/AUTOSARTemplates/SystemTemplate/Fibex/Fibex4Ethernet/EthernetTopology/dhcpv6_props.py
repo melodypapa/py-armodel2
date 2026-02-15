@@ -1,29 +1,28 @@
 """Dhcpv6Props AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Dhcpv6Props(ARObject):
     """AUTOSAR Dhcpv6Props."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Dhcpv6Props."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Dhcpv6Props to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DHCPV6PROPS")
+        element = ET.Element("DHCPV6PROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Dhcpv6Props":
+    def deserialize(cls, element: ET.Element) -> "Dhcpv6Props":
         """Create Dhcpv6Props from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Dhcpv6Props(ARObject):
         Returns:
             Dhcpv6Props instance
         """
-        obj = cls()
+        obj: Dhcpv6Props = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Dhcpv6Props(ARObject):
 class Dhcpv6PropsBuilder:
     """Builder for Dhcpv6Props."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Dhcpv6Props()
+        self._obj: Dhcpv6Props = Dhcpv6Props()
 
     def build(self) -> Dhcpv6Props:
         """Build and return Dhcpv6Props object.

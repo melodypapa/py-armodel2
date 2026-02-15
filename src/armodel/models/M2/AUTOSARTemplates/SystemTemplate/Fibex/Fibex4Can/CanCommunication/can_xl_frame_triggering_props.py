@@ -1,29 +1,28 @@
 """CanXlFrameTriggeringProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanXlFrameTriggeringProps(ARObject):
     """AUTOSAR CanXlFrameTriggeringProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanXlFrameTriggeringProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANXLFRAMETRIGGERINGPROPS")
+        element = ET.Element("CANXLFRAMETRIGGERINGPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanXlFrameTriggeringProps":
+    def deserialize(cls, element: ET.Element) -> "CanXlFrameTriggeringProps":
         """Create CanXlFrameTriggeringProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanXlFrameTriggeringProps(ARObject):
         Returns:
             CanXlFrameTriggeringProps instance
         """
-        obj = cls()
+        obj: CanXlFrameTriggeringProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanXlFrameTriggeringProps(ARObject):
 class CanXlFrameTriggeringPropsBuilder:
     """Builder for CanXlFrameTriggeringProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanXlFrameTriggeringProps()
+        self._obj: CanXlFrameTriggeringProps = CanXlFrameTriggeringProps()
 
     def build(self) -> CanXlFrameTriggeringProps:
         """Build and return CanXlFrameTriggeringProps object.

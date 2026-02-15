@@ -1,29 +1,28 @@
 """IoHwAbstractionServerAnnotation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IoHwAbstractionServerAnnotation(ARObject):
     """AUTOSAR IoHwAbstractionServerAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IoHwAbstractionServerAnnotation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IOHWABSTRACTIONSERVERANNOTATION")
+        element = ET.Element("IOHWABSTRACTIONSERVERANNOTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IoHwAbstractionServerAnnotation":
+    def deserialize(cls, element: ET.Element) -> "IoHwAbstractionServerAnnotation":
         """Create IoHwAbstractionServerAnnotation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IoHwAbstractionServerAnnotation(ARObject):
         Returns:
             IoHwAbstractionServerAnnotation instance
         """
-        obj = cls()
+        obj: IoHwAbstractionServerAnnotation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IoHwAbstractionServerAnnotation(ARObject):
 class IoHwAbstractionServerAnnotationBuilder:
     """Builder for IoHwAbstractionServerAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IoHwAbstractionServerAnnotation()
+        self._obj: IoHwAbstractionServerAnnotation = IoHwAbstractionServerAnnotation()
 
     def build(self) -> IoHwAbstractionServerAnnotation:
         """Build and return IoHwAbstractionServerAnnotation object.

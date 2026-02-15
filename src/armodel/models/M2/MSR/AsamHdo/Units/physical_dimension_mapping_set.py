@@ -1,29 +1,28 @@
 """PhysicalDimensionMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PhysicalDimensionMappingSet(ARObject):
     """AUTOSAR PhysicalDimensionMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PhysicalDimensionMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PhysicalDimensionMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PHYSICALDIMENSIONMAPPINGSET")
+        element = ET.Element("PHYSICALDIMENSIONMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PhysicalDimensionMappingSet":
+    def deserialize(cls, element: ET.Element) -> "PhysicalDimensionMappingSet":
         """Create PhysicalDimensionMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PhysicalDimensionMappingSet(ARObject):
         Returns:
             PhysicalDimensionMappingSet instance
         """
-        obj = cls()
+        obj: PhysicalDimensionMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PhysicalDimensionMappingSet(ARObject):
 class PhysicalDimensionMappingSetBuilder:
     """Builder for PhysicalDimensionMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PhysicalDimensionMappingSet()
+        self._obj: PhysicalDimensionMappingSet = PhysicalDimensionMappingSet()
 
     def build(self) -> PhysicalDimensionMappingSet:
         """Build and return PhysicalDimensionMappingSet object.

@@ -1,29 +1,28 @@
 """DataFormatTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataFormatTailoring(ARObject):
     """AUTOSAR DataFormatTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataFormatTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataFormatTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAFORMATTAILORING")
+        element = ET.Element("DATAFORMATTAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataFormatTailoring":
+    def deserialize(cls, element: ET.Element) -> "DataFormatTailoring":
         """Create DataFormatTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataFormatTailoring(ARObject):
         Returns:
             DataFormatTailoring instance
         """
-        obj = cls()
+        obj: DataFormatTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataFormatTailoring(ARObject):
 class DataFormatTailoringBuilder:
     """Builder for DataFormatTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataFormatTailoring()
+        self._obj: DataFormatTailoring = DataFormatTailoring()
 
     def build(self) -> DataFormatTailoring:
         """Build and return DataFormatTailoring object.

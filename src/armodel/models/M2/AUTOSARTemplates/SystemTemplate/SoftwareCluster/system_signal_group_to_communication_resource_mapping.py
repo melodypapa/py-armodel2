@@ -1,29 +1,28 @@
 """SystemSignalGroupToCommunicationResourceMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SystemSignalGroupToCommunicationResourceMapping(ARObject):
     """AUTOSAR SystemSignalGroupToCommunicationResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SystemSignalGroupToCommunicationResourceMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SystemSignalGroupToCommunicationResourceMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYSTEMSIGNALGROUPTOCOMMUNICATIONRESOURCEMAPPING")
+        element = ET.Element("SYSTEMSIGNALGROUPTOCOMMUNICATIONRESOURCEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SystemSignalGroupToCommunicationResourceMapping":
+    def deserialize(cls, element: ET.Element) -> "SystemSignalGroupToCommunicationResourceMapping":
         """Create SystemSignalGroupToCommunicationResourceMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SystemSignalGroupToCommunicationResourceMapping(ARObject):
         Returns:
             SystemSignalGroupToCommunicationResourceMapping instance
         """
-        obj = cls()
+        obj: SystemSignalGroupToCommunicationResourceMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SystemSignalGroupToCommunicationResourceMapping(ARObject):
 class SystemSignalGroupToCommunicationResourceMappingBuilder:
     """Builder for SystemSignalGroupToCommunicationResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SystemSignalGroupToCommunicationResourceMapping()
+        self._obj: SystemSignalGroupToCommunicationResourceMapping = SystemSignalGroupToCommunicationResourceMapping()
 
     def build(self) -> SystemSignalGroupToCommunicationResourceMapping:
         """Build and return SystemSignalGroupToCommunicationResourceMapping object.

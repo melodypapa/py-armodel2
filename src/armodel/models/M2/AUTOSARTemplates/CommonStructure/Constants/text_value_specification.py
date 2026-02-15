@@ -1,29 +1,28 @@
 """TextValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TextValueSpecification(ARObject):
     """AUTOSAR TextValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TextValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TextValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TEXTVALUESPECIFICATION")
+        element = ET.Element("TEXTVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TextValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "TextValueSpecification":
         """Create TextValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TextValueSpecification(ARObject):
         Returns:
             TextValueSpecification instance
         """
-        obj = cls()
+        obj: TextValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TextValueSpecification(ARObject):
 class TextValueSpecificationBuilder:
     """Builder for TextValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TextValueSpecification()
+        self._obj: TextValueSpecification = TextValueSpecification()
 
     def build(self) -> TextValueSpecification:
         """Build and return TextValueSpecification object.

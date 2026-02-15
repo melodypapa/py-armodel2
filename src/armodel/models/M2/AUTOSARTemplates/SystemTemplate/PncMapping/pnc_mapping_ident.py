@@ -1,29 +1,28 @@
 """PncMappingIdent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PncMappingIdent(ARObject):
     """AUTOSAR PncMappingIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PncMappingIdent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PncMappingIdent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PNCMAPPINGIDENT")
+        element = ET.Element("PNCMAPPINGIDENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PncMappingIdent":
+    def deserialize(cls, element: ET.Element) -> "PncMappingIdent":
         """Create PncMappingIdent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PncMappingIdent(ARObject):
         Returns:
             PncMappingIdent instance
         """
-        obj = cls()
+        obj: PncMappingIdent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PncMappingIdent(ARObject):
 class PncMappingIdentBuilder:
     """Builder for PncMappingIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PncMappingIdent()
+        self._obj: PncMappingIdent = PncMappingIdent()
 
     def build(self) -> PncMappingIdent:
         """Build and return PncMappingIdent object.

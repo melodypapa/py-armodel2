@@ -1,29 +1,28 @@
 """DdsLatencyBudget AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsLatencyBudget(ARObject):
     """AUTOSAR DdsLatencyBudget."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsLatencyBudget."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsLatencyBudget to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSLATENCYBUDGET")
+        element = ET.Element("DDSLATENCYBUDGET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsLatencyBudget":
+    def deserialize(cls, element: ET.Element) -> "DdsLatencyBudget":
         """Create DdsLatencyBudget from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsLatencyBudget(ARObject):
         Returns:
             DdsLatencyBudget instance
         """
-        obj = cls()
+        obj: DdsLatencyBudget = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsLatencyBudget(ARObject):
 class DdsLatencyBudgetBuilder:
     """Builder for DdsLatencyBudget."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsLatencyBudget()
+        self._obj: DdsLatencyBudget = DdsLatencyBudget()
 
     def build(self) -> DdsLatencyBudget:
         """Build and return DdsLatencyBudget object.

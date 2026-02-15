@@ -1,29 +1,28 @@
 """EndToEndProtectionISignalIPdu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EndToEndProtectionISignalIPdu(ARObject):
     """AUTOSAR EndToEndProtectionISignalIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EndToEndProtectionISignalIPdu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ENDTOENDPROTECTIONISIGNALIPDU")
+        element = ET.Element("ENDTOENDPROTECTIONISIGNALIPDU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EndToEndProtectionISignalIPdu":
+    def deserialize(cls, element: ET.Element) -> "EndToEndProtectionISignalIPdu":
         """Create EndToEndProtectionISignalIPdu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
         Returns:
             EndToEndProtectionISignalIPdu instance
         """
-        obj = cls()
+        obj: EndToEndProtectionISignalIPdu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EndToEndProtectionISignalIPdu(ARObject):
 class EndToEndProtectionISignalIPduBuilder:
     """Builder for EndToEndProtectionISignalIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EndToEndProtectionISignalIPdu()
+        self._obj: EndToEndProtectionISignalIPdu = EndToEndProtectionISignalIPdu()
 
     def build(self) -> EndToEndProtectionISignalIPdu:
         """Build and return EndToEndProtectionISignalIPdu object.

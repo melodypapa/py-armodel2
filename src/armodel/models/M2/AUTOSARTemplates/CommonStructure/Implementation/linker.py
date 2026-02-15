@@ -1,29 +1,28 @@
 """Linker AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Linker(ARObject):
     """AUTOSAR Linker."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Linker."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Linker to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINKER")
+        element = ET.Element("LINKER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Linker":
+    def deserialize(cls, element: ET.Element) -> "Linker":
         """Create Linker from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Linker(ARObject):
         Returns:
             Linker instance
         """
-        obj = cls()
+        obj: Linker = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Linker(ARObject):
 class LinkerBuilder:
     """Builder for Linker."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Linker()
+        self._obj: Linker = Linker()
 
     def build(self) -> Linker:
         """Build and return Linker object.

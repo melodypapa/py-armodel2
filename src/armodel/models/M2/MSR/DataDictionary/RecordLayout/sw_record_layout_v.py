@@ -1,29 +1,28 @@
 """SwRecordLayoutV AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwRecordLayoutV(ARObject):
     """AUTOSAR SwRecordLayoutV."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwRecordLayoutV."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwRecordLayoutV to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWRECORDLAYOUTV")
+        element = ET.Element("SWRECORDLAYOUTV")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwRecordLayoutV":
+    def deserialize(cls, element: ET.Element) -> "SwRecordLayoutV":
         """Create SwRecordLayoutV from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwRecordLayoutV(ARObject):
         Returns:
             SwRecordLayoutV instance
         """
-        obj = cls()
+        obj: SwRecordLayoutV = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwRecordLayoutV(ARObject):
 class SwRecordLayoutVBuilder:
     """Builder for SwRecordLayoutV."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwRecordLayoutV()
+        self._obj: SwRecordLayoutV = SwRecordLayoutV()
 
     def build(self) -> SwRecordLayoutV:
         """Build and return SwRecordLayoutV object.

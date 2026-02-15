@@ -1,29 +1,28 @@
 """ApplicationRuleBasedValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationRuleBasedValueSpecification(ARObject):
     """AUTOSAR ApplicationRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationRuleBasedValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONRULEBASEDVALUESPECIFICATION")
+        element = ET.Element("APPLICATIONRULEBASEDVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationRuleBasedValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "ApplicationRuleBasedValueSpecification":
         """Create ApplicationRuleBasedValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationRuleBasedValueSpecification(ARObject):
         Returns:
             ApplicationRuleBasedValueSpecification instance
         """
-        obj = cls()
+        obj: ApplicationRuleBasedValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationRuleBasedValueSpecification(ARObject):
 class ApplicationRuleBasedValueSpecificationBuilder:
     """Builder for ApplicationRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationRuleBasedValueSpecification()
+        self._obj: ApplicationRuleBasedValueSpecification = ApplicationRuleBasedValueSpecification()
 
     def build(self) -> ApplicationRuleBasedValueSpecification:
         """Build and return ApplicationRuleBasedValueSpecification object.

@@ -1,29 +1,28 @@
 """DataPrototypeMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataPrototypeMapping(ARObject):
     """AUTOSAR DataPrototypeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataPrototypeMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataPrototypeMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAPROTOTYPEMAPPING")
+        element = ET.Element("DATAPROTOTYPEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataPrototypeMapping":
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeMapping":
         """Create DataPrototypeMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataPrototypeMapping(ARObject):
         Returns:
             DataPrototypeMapping instance
         """
-        obj = cls()
+        obj: DataPrototypeMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataPrototypeMapping(ARObject):
 class DataPrototypeMappingBuilder:
     """Builder for DataPrototypeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataPrototypeMapping()
+        self._obj: DataPrototypeMapping = DataPrototypeMapping()
 
     def build(self) -> DataPrototypeMapping:
         """Build and return DataPrototypeMapping object.

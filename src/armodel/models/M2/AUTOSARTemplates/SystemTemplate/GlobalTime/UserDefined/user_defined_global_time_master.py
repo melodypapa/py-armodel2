@@ -1,29 +1,28 @@
 """UserDefinedGlobalTimeMaster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedGlobalTimeMaster(ARObject):
     """AUTOSAR UserDefinedGlobalTimeMaster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedGlobalTimeMaster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedGlobalTimeMaster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDGLOBALTIMEMASTER")
+        element = ET.Element("USERDEFINEDGLOBALTIMEMASTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedGlobalTimeMaster":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedGlobalTimeMaster":
         """Create UserDefinedGlobalTimeMaster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedGlobalTimeMaster(ARObject):
         Returns:
             UserDefinedGlobalTimeMaster instance
         """
-        obj = cls()
+        obj: UserDefinedGlobalTimeMaster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedGlobalTimeMaster(ARObject):
 class UserDefinedGlobalTimeMasterBuilder:
     """Builder for UserDefinedGlobalTimeMaster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedGlobalTimeMaster()
+        self._obj: UserDefinedGlobalTimeMaster = UserDefinedGlobalTimeMaster()
 
     def build(self) -> UserDefinedGlobalTimeMaster:
         """Build and return UserDefinedGlobalTimeMaster object.

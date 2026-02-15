@@ -1,29 +1,28 @@
 """DltArgument AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DltArgument(ARObject):
     """AUTOSAR DltArgument."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DltArgument."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DltArgument to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DLTARGUMENT")
+        element = ET.Element("DLTARGUMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DltArgument":
+    def deserialize(cls, element: ET.Element) -> "DltArgument":
         """Create DltArgument from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DltArgument(ARObject):
         Returns:
             DltArgument instance
         """
-        obj = cls()
+        obj: DltArgument = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DltArgument(ARObject):
 class DltArgumentBuilder:
     """Builder for DltArgument."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DltArgument()
+        self._obj: DltArgument = DltArgument()
 
     def build(self) -> DltArgument:
         """Build and return DltArgument object.

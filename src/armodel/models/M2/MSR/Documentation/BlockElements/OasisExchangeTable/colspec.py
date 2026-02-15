@@ -1,29 +1,28 @@
 """Colspec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Colspec(ARObject):
     """AUTOSAR Colspec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Colspec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Colspec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COLSPEC")
+        element = ET.Element("COLSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Colspec":
+    def deserialize(cls, element: ET.Element) -> "Colspec":
         """Create Colspec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Colspec(ARObject):
         Returns:
             Colspec instance
         """
-        obj = cls()
+        obj: Colspec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Colspec(ARObject):
 class ColspecBuilder:
     """Builder for Colspec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Colspec()
+        self._obj: Colspec = Colspec()
 
     def build(self) -> Colspec:
         """Build and return Colspec object.

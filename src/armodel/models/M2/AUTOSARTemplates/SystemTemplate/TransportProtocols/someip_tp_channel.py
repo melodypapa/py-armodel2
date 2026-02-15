@@ -1,29 +1,28 @@
 """SomeipTpChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SomeipTpChannel(ARObject):
     """AUTOSAR SomeipTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SomeipTpChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SomeipTpChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOMEIPTPCHANNEL")
+        element = ET.Element("SOMEIPTPCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SomeipTpChannel":
+    def deserialize(cls, element: ET.Element) -> "SomeipTpChannel":
         """Create SomeipTpChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SomeipTpChannel(ARObject):
         Returns:
             SomeipTpChannel instance
         """
-        obj = cls()
+        obj: SomeipTpChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SomeipTpChannel(ARObject):
 class SomeipTpChannelBuilder:
     """Builder for SomeipTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SomeipTpChannel()
+        self._obj: SomeipTpChannel = SomeipTpChannel()
 
     def build(self) -> SomeipTpChannel:
         """Build and return SomeipTpChannel object.

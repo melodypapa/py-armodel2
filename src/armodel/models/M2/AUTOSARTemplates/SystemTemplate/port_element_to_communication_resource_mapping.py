@@ -1,29 +1,28 @@
 """PortElementToCommunicationResourceMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortElementToCommunicationResourceMapping(ARObject):
     """AUTOSAR PortElementToCommunicationResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortElementToCommunicationResourceMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTELEMENTTOCOMMUNICATIONRESOURCEMAPPING")
+        element = ET.Element("PORTELEMENTTOCOMMUNICATIONRESOURCEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortElementToCommunicationResourceMapping":
+    def deserialize(cls, element: ET.Element) -> "PortElementToCommunicationResourceMapping":
         """Create PortElementToCommunicationResourceMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortElementToCommunicationResourceMapping(ARObject):
         Returns:
             PortElementToCommunicationResourceMapping instance
         """
-        obj = cls()
+        obj: PortElementToCommunicationResourceMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortElementToCommunicationResourceMapping(ARObject):
 class PortElementToCommunicationResourceMappingBuilder:
     """Builder for PortElementToCommunicationResourceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortElementToCommunicationResourceMapping()
+        self._obj: PortElementToCommunicationResourceMapping = PortElementToCommunicationResourceMapping()
 
     def build(self) -> PortElementToCommunicationResourceMapping:
         """Build and return PortElementToCommunicationResourceMapping object.

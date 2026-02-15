@@ -1,29 +1,28 @@
 """McGroupDataRefSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class McGroupDataRefSet(ARObject):
     """AUTOSAR McGroupDataRefSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize McGroupDataRefSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert McGroupDataRefSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MCGROUPDATAREFSET")
+        element = ET.Element("MCGROUPDATAREFSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "McGroupDataRefSet":
+    def deserialize(cls, element: ET.Element) -> "McGroupDataRefSet":
         """Create McGroupDataRefSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class McGroupDataRefSet(ARObject):
         Returns:
             McGroupDataRefSet instance
         """
-        obj = cls()
+        obj: McGroupDataRefSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class McGroupDataRefSet(ARObject):
 class McGroupDataRefSetBuilder:
     """Builder for McGroupDataRefSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = McGroupDataRefSet()
+        self._obj: McGroupDataRefSet = McGroupDataRefSet()
 
     def build(self) -> McGroupDataRefSet:
         """Build and return McGroupDataRefSet object.

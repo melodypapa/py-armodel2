@@ -1,29 +1,28 @@
 """CompositionSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompositionSwComponentType(ARObject):
     """AUTOSAR CompositionSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompositionSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPOSITIONSWCOMPONENTTYPE")
+        element = ET.Element("COMPOSITIONSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompositionSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "CompositionSwComponentType":
         """Create CompositionSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompositionSwComponentType(ARObject):
         Returns:
             CompositionSwComponentType instance
         """
-        obj = cls()
+        obj: CompositionSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompositionSwComponentType(ARObject):
 class CompositionSwComponentTypeBuilder:
     """Builder for CompositionSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompositionSwComponentType()
+        self._obj: CompositionSwComponentType = CompositionSwComponentType()
 
     def build(self) -> CompositionSwComponentType:
         """Build and return CompositionSwComponentType object.

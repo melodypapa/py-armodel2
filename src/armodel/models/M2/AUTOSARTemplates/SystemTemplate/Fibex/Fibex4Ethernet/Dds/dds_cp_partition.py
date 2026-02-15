@@ -1,29 +1,28 @@
 """DdsCpPartition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsCpPartition(ARObject):
     """AUTOSAR DdsCpPartition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsCpPartition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsCpPartition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSCPPARTITION")
+        element = ET.Element("DDSCPPARTITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsCpPartition":
+    def deserialize(cls, element: ET.Element) -> "DdsCpPartition":
         """Create DdsCpPartition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsCpPartition(ARObject):
         Returns:
             DdsCpPartition instance
         """
-        obj = cls()
+        obj: DdsCpPartition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsCpPartition(ARObject):
 class DdsCpPartitionBuilder:
     """Builder for DdsCpPartition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsCpPartition()
+        self._obj: DdsCpPartition = DdsCpPartition()
 
     def build(self) -> DdsCpPartition:
         """Build and return DdsCpPartition object.

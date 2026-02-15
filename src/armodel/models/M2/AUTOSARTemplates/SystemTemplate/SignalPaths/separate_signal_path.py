@@ -1,29 +1,28 @@
 """SeparateSignalPath AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SeparateSignalPath(ARObject):
     """AUTOSAR SeparateSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SeparateSignalPath."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SeparateSignalPath to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SEPARATESIGNALPATH")
+        element = ET.Element("SEPARATESIGNALPATH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SeparateSignalPath":
+    def deserialize(cls, element: ET.Element) -> "SeparateSignalPath":
         """Create SeparateSignalPath from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SeparateSignalPath(ARObject):
         Returns:
             SeparateSignalPath instance
         """
-        obj = cls()
+        obj: SeparateSignalPath = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SeparateSignalPath(ARObject):
 class SeparateSignalPathBuilder:
     """Builder for SeparateSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SeparateSignalPath()
+        self._obj: SeparateSignalPath = SeparateSignalPath()
 
     def build(self) -> SeparateSignalPath:
         """Build and return SeparateSignalPath object.

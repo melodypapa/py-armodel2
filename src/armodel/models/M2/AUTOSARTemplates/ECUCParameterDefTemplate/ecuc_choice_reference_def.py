@@ -1,29 +1,28 @@
 """EcucChoiceReferenceDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucChoiceReferenceDef(ARObject):
     """AUTOSAR EcucChoiceReferenceDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucChoiceReferenceDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucChoiceReferenceDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCCHOICEREFERENCEDEF")
+        element = ET.Element("ECUCCHOICEREFERENCEDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucChoiceReferenceDef":
+    def deserialize(cls, element: ET.Element) -> "EcucChoiceReferenceDef":
         """Create EcucChoiceReferenceDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucChoiceReferenceDef(ARObject):
         Returns:
             EcucChoiceReferenceDef instance
         """
-        obj = cls()
+        obj: EcucChoiceReferenceDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucChoiceReferenceDef(ARObject):
 class EcucChoiceReferenceDefBuilder:
     """Builder for EcucChoiceReferenceDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucChoiceReferenceDef()
+        self._obj: EcucChoiceReferenceDef = EcucChoiceReferenceDef()
 
     def build(self) -> EcucChoiceReferenceDef:
         """Build and return EcucChoiceReferenceDef object.

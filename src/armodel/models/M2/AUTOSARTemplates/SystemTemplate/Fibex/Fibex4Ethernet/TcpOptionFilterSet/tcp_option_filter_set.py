@@ -1,29 +1,28 @@
 """TcpOptionFilterSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TcpOptionFilterSet(ARObject):
     """AUTOSAR TcpOptionFilterSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TcpOptionFilterSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TcpOptionFilterSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TCPOPTIONFILTERSET")
+        element = ET.Element("TCPOPTIONFILTERSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TcpOptionFilterSet":
+    def deserialize(cls, element: ET.Element) -> "TcpOptionFilterSet":
         """Create TcpOptionFilterSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TcpOptionFilterSet(ARObject):
         Returns:
             TcpOptionFilterSet instance
         """
-        obj = cls()
+        obj: TcpOptionFilterSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TcpOptionFilterSet(ARObject):
 class TcpOptionFilterSetBuilder:
     """Builder for TcpOptionFilterSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TcpOptionFilterSet()
+        self._obj: TcpOptionFilterSet = TcpOptionFilterSet()
 
     def build(self) -> TcpOptionFilterSet:
         """Build and return TcpOptionFilterSet object.

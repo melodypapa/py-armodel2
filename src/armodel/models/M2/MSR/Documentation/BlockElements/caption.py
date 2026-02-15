@@ -1,29 +1,28 @@
 """Caption AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Caption(ARObject):
     """AUTOSAR Caption."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Caption."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Caption to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CAPTION")
+        element = ET.Element("CAPTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Caption":
+    def deserialize(cls, element: ET.Element) -> "Caption":
         """Create Caption from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Caption(ARObject):
         Returns:
             Caption instance
         """
-        obj = cls()
+        obj: Caption = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Caption(ARObject):
 class CaptionBuilder:
     """Builder for Caption."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Caption()
+        self._obj: Caption = Caption()
 
     def build(self) -> Caption:
         """Build and return Caption object.

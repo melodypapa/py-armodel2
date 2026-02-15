@@ -1,29 +1,28 @@
 """UdpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UdpProps(ARObject):
     """AUTOSAR UdpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UdpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UdpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("UDPPROPS")
+        element = ET.Element("UDPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UdpProps":
+    def deserialize(cls, element: ET.Element) -> "UdpProps":
         """Create UdpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UdpProps(ARObject):
         Returns:
             UdpProps instance
         """
-        obj = cls()
+        obj: UdpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UdpProps(ARObject):
 class UdpPropsBuilder:
     """Builder for UdpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UdpProps()
+        self._obj: UdpProps = UdpProps()
 
     def build(self) -> UdpProps:
         """Build and return UdpProps object.

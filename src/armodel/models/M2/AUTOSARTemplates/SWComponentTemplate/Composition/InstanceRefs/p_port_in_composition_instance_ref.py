@@ -1,29 +1,28 @@
 """PPortInCompositionInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PPortInCompositionInstanceRef(ARObject):
     """AUTOSAR PPortInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PPortInCompositionInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PPortInCompositionInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PPORTINCOMPOSITIONINSTANCEREF")
+        element = ET.Element("PPORTINCOMPOSITIONINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PPortInCompositionInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "PPortInCompositionInstanceRef":
         """Create PPortInCompositionInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PPortInCompositionInstanceRef(ARObject):
         Returns:
             PPortInCompositionInstanceRef instance
         """
-        obj = cls()
+        obj: PPortInCompositionInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PPortInCompositionInstanceRef(ARObject):
 class PPortInCompositionInstanceRefBuilder:
     """Builder for PPortInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PPortInCompositionInstanceRef()
+        self._obj: PPortInCompositionInstanceRef = PPortInCompositionInstanceRef()
 
     def build(self) -> PPortInCompositionInstanceRef:
         """Build and return PPortInCompositionInstanceRef object.

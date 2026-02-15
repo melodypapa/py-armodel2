@@ -1,29 +1,28 @@
 """SwcServiceDependencyInSystemInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcServiceDependencyInSystemInstanceRef(ARObject):
     """AUTOSAR SwcServiceDependencyInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcServiceDependencyInSystemInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCSERVICEDEPENDENCYINSYSTEMINSTANCEREF")
+        element = ET.Element("SWCSERVICEDEPENDENCYINSYSTEMINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcServiceDependencyInSystemInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "SwcServiceDependencyInSystemInstanceRef":
         """Create SwcServiceDependencyInSystemInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         Returns:
             SwcServiceDependencyInSystemInstanceRef instance
         """
-        obj = cls()
+        obj: SwcServiceDependencyInSystemInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
 class SwcServiceDependencyInSystemInstanceRefBuilder:
     """Builder for SwcServiceDependencyInSystemInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcServiceDependencyInSystemInstanceRef()
+        self._obj: SwcServiceDependencyInSystemInstanceRef = SwcServiceDependencyInSystemInstanceRef()
 
     def build(self) -> SwcServiceDependencyInSystemInstanceRef:
         """Build and return SwcServiceDependencyInSystemInstanceRef object.

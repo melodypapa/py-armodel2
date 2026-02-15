@@ -1,29 +1,28 @@
 """SdgForeignReference AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgForeignReference(ARObject):
     """AUTOSAR SdgForeignReference."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgForeignReference."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgForeignReference to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGFOREIGNREFERENCE")
+        element = ET.Element("SDGFOREIGNREFERENCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgForeignReference":
+    def deserialize(cls, element: ET.Element) -> "SdgForeignReference":
         """Create SdgForeignReference from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgForeignReference(ARObject):
         Returns:
             SdgForeignReference instance
         """
-        obj = cls()
+        obj: SdgForeignReference = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgForeignReference(ARObject):
 class SdgForeignReferenceBuilder:
     """Builder for SdgForeignReference."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgForeignReference()
+        self._obj: SdgForeignReference = SdgForeignReference()
 
     def build(self) -> SdgForeignReference:
         """Build and return SdgForeignReference object.

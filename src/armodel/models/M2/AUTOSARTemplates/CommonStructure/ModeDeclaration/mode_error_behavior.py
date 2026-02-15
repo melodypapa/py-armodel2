@@ -1,29 +1,28 @@
 """ModeErrorBehavior AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeErrorBehavior(ARObject):
     """AUTOSAR ModeErrorBehavior."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeErrorBehavior to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEERRORBEHAVIOR")
+        element = ET.Element("MODEERRORBEHAVIOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeErrorBehavior":
+    def deserialize(cls, element: ET.Element) -> "ModeErrorBehavior":
         """Create ModeErrorBehavior from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeErrorBehavior(ARObject):
         Returns:
             ModeErrorBehavior instance
         """
-        obj = cls()
+        obj: ModeErrorBehavior = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeErrorBehavior(ARObject):
 class ModeErrorBehaviorBuilder:
     """Builder for ModeErrorBehavior."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeErrorBehavior()
+        self._obj: ModeErrorBehavior = ModeErrorBehavior()
 
     def build(self) -> ModeErrorBehavior:
         """Build and return ModeErrorBehavior object.

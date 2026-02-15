@@ -1,29 +1,28 @@
 """EcucModuleDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucModuleDef(ARObject):
     """AUTOSAR EcucModuleDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucModuleDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucModuleDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCMODULEDEF")
+        element = ET.Element("ECUCMODULEDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucModuleDef":
+    def deserialize(cls, element: ET.Element) -> "EcucModuleDef":
         """Create EcucModuleDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucModuleDef(ARObject):
         Returns:
             EcucModuleDef instance
         """
-        obj = cls()
+        obj: EcucModuleDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucModuleDef(ARObject):
 class EcucModuleDefBuilder:
     """Builder for EcucModuleDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucModuleDef()
+        self._obj: EcucModuleDef = EcucModuleDef()
 
     def build(self) -> EcucModuleDef:
         """Build and return EcucModuleDef object.

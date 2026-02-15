@@ -1,29 +1,28 @@
 """ModeRequestTypeMap AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeRequestTypeMap(ARObject):
     """AUTOSAR ModeRequestTypeMap."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeRequestTypeMap to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEREQUESTTYPEMAP")
+        element = ET.Element("MODEREQUESTTYPEMAP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeRequestTypeMap":
+    def deserialize(cls, element: ET.Element) -> "ModeRequestTypeMap":
         """Create ModeRequestTypeMap from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeRequestTypeMap(ARObject):
         Returns:
             ModeRequestTypeMap instance
         """
-        obj = cls()
+        obj: ModeRequestTypeMap = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeRequestTypeMap(ARObject):
 class ModeRequestTypeMapBuilder:
     """Builder for ModeRequestTypeMap."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeRequestTypeMap()
+        self._obj: ModeRequestTypeMap = ModeRequestTypeMap()
 
     def build(self) -> ModeRequestTypeMap:
         """Build and return ModeRequestTypeMap object.

@@ -1,29 +1,28 @@
 """MsrQueryP1 AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MsrQueryP1(ARObject):
     """AUTOSAR MsrQueryP1."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MsrQueryP1."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MsrQueryP1 to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MSRQUERYP1")
+        element = ET.Element("MSRQUERYP1")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MsrQueryP1":
+    def deserialize(cls, element: ET.Element) -> "MsrQueryP1":
         """Create MsrQueryP1 from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MsrQueryP1(ARObject):
         Returns:
             MsrQueryP1 instance
         """
-        obj = cls()
+        obj: MsrQueryP1 = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MsrQueryP1(ARObject):
 class MsrQueryP1Builder:
     """Builder for MsrQueryP1."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MsrQueryP1()
+        self._obj: MsrQueryP1 = MsrQueryP1()
 
     def build(self) -> MsrQueryP1:
         """Build and return MsrQueryP1 object.

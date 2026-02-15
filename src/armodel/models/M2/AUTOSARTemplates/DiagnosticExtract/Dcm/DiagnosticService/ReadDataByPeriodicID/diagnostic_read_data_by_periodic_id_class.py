@@ -1,29 +1,28 @@
 """DiagnosticReadDataByPeriodicIDClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticReadDataByPeriodicIDClass(ARObject):
     """AUTOSAR DiagnosticReadDataByPeriodicIDClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicIDClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticReadDataByPeriodicIDClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREADDATABYPERIODICIDCLASS")
+        element = ET.Element("DIAGNOSTICREADDATABYPERIODICIDCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticReadDataByPeriodicIDClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadDataByPeriodicIDClass":
         """Create DiagnosticReadDataByPeriodicIDClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticReadDataByPeriodicIDClass(ARObject):
         Returns:
             DiagnosticReadDataByPeriodicIDClass instance
         """
-        obj = cls()
+        obj: DiagnosticReadDataByPeriodicIDClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticReadDataByPeriodicIDClass(ARObject):
 class DiagnosticReadDataByPeriodicIDClassBuilder:
     """Builder for DiagnosticReadDataByPeriodicIDClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticReadDataByPeriodicIDClass()
+        self._obj: DiagnosticReadDataByPeriodicIDClass = DiagnosticReadDataByPeriodicIDClass()
 
     def build(self) -> DiagnosticReadDataByPeriodicIDClass:
         """Build and return DiagnosticReadDataByPeriodicIDClass object.

@@ -1,29 +1,28 @@
 """BswExclusiveAreaPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswExclusiveAreaPolicy(ARObject):
     """AUTOSAR BswExclusiveAreaPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswExclusiveAreaPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswExclusiveAreaPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWEXCLUSIVEAREAPOLICY")
+        element = ET.Element("BSWEXCLUSIVEAREAPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswExclusiveAreaPolicy":
+    def deserialize(cls, element: ET.Element) -> "BswExclusiveAreaPolicy":
         """Create BswExclusiveAreaPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswExclusiveAreaPolicy(ARObject):
         Returns:
             BswExclusiveAreaPolicy instance
         """
-        obj = cls()
+        obj: BswExclusiveAreaPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswExclusiveAreaPolicy(ARObject):
 class BswExclusiveAreaPolicyBuilder:
     """Builder for BswExclusiveAreaPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswExclusiveAreaPolicy()
+        self._obj: BswExclusiveAreaPolicy = BswExclusiveAreaPolicy()
 
     def build(self) -> BswExclusiveAreaPolicy:
         """Build and return BswExclusiveAreaPolicy object.

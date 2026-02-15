@@ -1,29 +1,28 @@
 """AttributeCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AttributeCondition(ARObject):
     """AUTOSAR AttributeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AttributeCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AttributeCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ATTRIBUTECONDITION")
+        element = ET.Element("ATTRIBUTECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AttributeCondition":
+    def deserialize(cls, element: ET.Element) -> "AttributeCondition":
         """Create AttributeCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AttributeCondition(ARObject):
         Returns:
             AttributeCondition instance
         """
-        obj = cls()
+        obj: AttributeCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AttributeCondition(ARObject):
 class AttributeConditionBuilder:
     """Builder for AttributeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AttributeCondition()
+        self._obj: AttributeCondition = AttributeCondition()
 
     def build(self) -> AttributeCondition:
         """Build and return AttributeCondition object.

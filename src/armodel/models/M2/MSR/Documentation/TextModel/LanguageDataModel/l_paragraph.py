@@ -1,29 +1,28 @@
 """LParagraph AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LParagraph(ARObject):
     """AUTOSAR LParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LParagraph."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LParagraph to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LPARAGRAPH")
+        element = ET.Element("LPARAGRAPH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LParagraph":
+    def deserialize(cls, element: ET.Element) -> "LParagraph":
         """Create LParagraph from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LParagraph(ARObject):
         Returns:
             LParagraph instance
         """
-        obj = cls()
+        obj: LParagraph = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LParagraph(ARObject):
 class LParagraphBuilder:
     """Builder for LParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LParagraph()
+        self._obj: LParagraph = LParagraph()
 
     def build(self) -> LParagraph:
         """Build and return LParagraph object.

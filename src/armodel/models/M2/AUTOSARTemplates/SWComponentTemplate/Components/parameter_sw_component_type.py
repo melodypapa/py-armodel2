@@ -1,29 +1,28 @@
 """ParameterSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ParameterSwComponentType(ARObject):
     """AUTOSAR ParameterSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ParameterSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PARAMETERSWCOMPONENTTYPE")
+        element = ET.Element("PARAMETERSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ParameterSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "ParameterSwComponentType":
         """Create ParameterSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ParameterSwComponentType(ARObject):
         Returns:
             ParameterSwComponentType instance
         """
-        obj = cls()
+        obj: ParameterSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ParameterSwComponentType(ARObject):
 class ParameterSwComponentTypeBuilder:
     """Builder for ParameterSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ParameterSwComponentType()
+        self._obj: ParameterSwComponentType = ParameterSwComponentType()
 
     def build(self) -> ParameterSwComponentType:
         """Build and return ParameterSwComponentType object.

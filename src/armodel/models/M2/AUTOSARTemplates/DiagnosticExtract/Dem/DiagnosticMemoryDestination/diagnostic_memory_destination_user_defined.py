@@ -1,29 +1,28 @@
 """DiagnosticMemoryDestinationUserDefined AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticMemoryDestinationUserDefined(ARObject):
     """AUTOSAR DiagnosticMemoryDestinationUserDefined."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationUserDefined."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticMemoryDestinationUserDefined to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICMEMORYDESTINATIONUSERDEFINED")
+        element = ET.Element("DIAGNOSTICMEMORYDESTINATIONUSERDEFINED")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticMemoryDestinationUserDefined":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestinationUserDefined":
         """Create DiagnosticMemoryDestinationUserDefined from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticMemoryDestinationUserDefined(ARObject):
         Returns:
             DiagnosticMemoryDestinationUserDefined instance
         """
-        obj = cls()
+        obj: DiagnosticMemoryDestinationUserDefined = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticMemoryDestinationUserDefined(ARObject):
 class DiagnosticMemoryDestinationUserDefinedBuilder:
     """Builder for DiagnosticMemoryDestinationUserDefined."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticMemoryDestinationUserDefined()
+        self._obj: DiagnosticMemoryDestinationUserDefined = DiagnosticMemoryDestinationUserDefined()
 
     def build(self) -> DiagnosticMemoryDestinationUserDefined:
         """Build and return DiagnosticMemoryDestinationUserDefined object.

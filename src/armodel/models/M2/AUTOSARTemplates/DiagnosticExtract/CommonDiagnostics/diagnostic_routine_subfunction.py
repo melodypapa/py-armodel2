@@ -1,29 +1,28 @@
 """DiagnosticRoutineSubfunction AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRoutineSubfunction(ARObject):
     """AUTOSAR DiagnosticRoutineSubfunction."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRoutineSubfunction."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRoutineSubfunction to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICROUTINESUBFUNCTION")
+        element = ET.Element("DIAGNOSTICROUTINESUBFUNCTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRoutineSubfunction":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRoutineSubfunction":
         """Create DiagnosticRoutineSubfunction from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRoutineSubfunction(ARObject):
         Returns:
             DiagnosticRoutineSubfunction instance
         """
-        obj = cls()
+        obj: DiagnosticRoutineSubfunction = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRoutineSubfunction(ARObject):
 class DiagnosticRoutineSubfunctionBuilder:
     """Builder for DiagnosticRoutineSubfunction."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRoutineSubfunction()
+        self._obj: DiagnosticRoutineSubfunction = DiagnosticRoutineSubfunction()
 
     def build(self) -> DiagnosticRoutineSubfunction:
         """Build and return DiagnosticRoutineSubfunction object.

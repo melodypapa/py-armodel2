@@ -1,29 +1,28 @@
 """FMFormulaByFeaturesAndAttributes AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMFormulaByFeaturesAndAttributes(ARObject):
     """AUTOSAR FMFormulaByFeaturesAndAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMFormulaByFeaturesAndAttributes."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMFormulaByFeaturesAndAttributes to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMFORMULABYFEATURESANDATTRIBUTES")
+        element = ET.Element("FMFORMULABYFEATURESANDATTRIBUTES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMFormulaByFeaturesAndAttributes":
+    def deserialize(cls, element: ET.Element) -> "FMFormulaByFeaturesAndAttributes":
         """Create FMFormulaByFeaturesAndAttributes from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMFormulaByFeaturesAndAttributes(ARObject):
         Returns:
             FMFormulaByFeaturesAndAttributes instance
         """
-        obj = cls()
+        obj: FMFormulaByFeaturesAndAttributes = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMFormulaByFeaturesAndAttributes(ARObject):
 class FMFormulaByFeaturesAndAttributesBuilder:
     """Builder for FMFormulaByFeaturesAndAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMFormulaByFeaturesAndAttributes()
+        self._obj: FMFormulaByFeaturesAndAttributes = FMFormulaByFeaturesAndAttributes()
 
     def build(self) -> FMFormulaByFeaturesAndAttributes:
         """Build and return FMFormulaByFeaturesAndAttributes object.

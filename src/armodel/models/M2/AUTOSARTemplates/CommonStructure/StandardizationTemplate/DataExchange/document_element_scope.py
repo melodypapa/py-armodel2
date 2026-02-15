@@ -1,29 +1,28 @@
 """DocumentElementScope AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DocumentElementScope(ARObject):
     """AUTOSAR DocumentElementScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DocumentElementScope."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DocumentElementScope to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOCUMENTELEMENTSCOPE")
+        element = ET.Element("DOCUMENTELEMENTSCOPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DocumentElementScope":
+    def deserialize(cls, element: ET.Element) -> "DocumentElementScope":
         """Create DocumentElementScope from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DocumentElementScope(ARObject):
         Returns:
             DocumentElementScope instance
         """
-        obj = cls()
+        obj: DocumentElementScope = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DocumentElementScope(ARObject):
 class DocumentElementScopeBuilder:
     """Builder for DocumentElementScope."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DocumentElementScope()
+        self._obj: DocumentElementScope = DocumentElementScope()
 
     def build(self) -> DocumentElementScope:
         """Build and return DocumentElementScope object.

@@ -1,29 +1,28 @@
 """CompuMethod AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompuMethod(ARObject):
     """AUTOSAR CompuMethod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompuMethod."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompuMethod to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPUMETHOD")
+        element = ET.Element("COMPUMETHOD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompuMethod":
+    def deserialize(cls, element: ET.Element) -> "CompuMethod":
         """Create CompuMethod from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompuMethod(ARObject):
         Returns:
             CompuMethod instance
         """
-        obj = cls()
+        obj: CompuMethod = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompuMethod(ARObject):
 class CompuMethodBuilder:
     """Builder for CompuMethod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompuMethod()
+        self._obj: CompuMethod = CompuMethod()
 
     def build(self) -> CompuMethod:
         """Build and return CompuMethod object.

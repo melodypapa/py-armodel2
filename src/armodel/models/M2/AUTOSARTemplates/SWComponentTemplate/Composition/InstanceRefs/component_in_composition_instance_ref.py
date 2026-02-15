@@ -1,29 +1,28 @@
 """ComponentInCompositionInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ComponentInCompositionInstanceRef(ARObject):
     """AUTOSAR ComponentInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ComponentInCompositionInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ComponentInCompositionInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPONENTINCOMPOSITIONINSTANCEREF")
+        element = ET.Element("COMPONENTINCOMPOSITIONINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ComponentInCompositionInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "ComponentInCompositionInstanceRef":
         """Create ComponentInCompositionInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ComponentInCompositionInstanceRef(ARObject):
         Returns:
             ComponentInCompositionInstanceRef instance
         """
-        obj = cls()
+        obj: ComponentInCompositionInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ComponentInCompositionInstanceRef(ARObject):
 class ComponentInCompositionInstanceRefBuilder:
     """Builder for ComponentInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ComponentInCompositionInstanceRef()
+        self._obj: ComponentInCompositionInstanceRef = ComponentInCompositionInstanceRef()
 
     def build(self) -> ComponentInCompositionInstanceRef:
         """Build and return ComponentInCompositionInstanceRef object.

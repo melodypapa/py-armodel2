@@ -1,29 +1,28 @@
 """DevelopmentError AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DevelopmentError(ARObject):
     """AUTOSAR DevelopmentError."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DevelopmentError."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DevelopmentError to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DEVELOPMENTERROR")
+        element = ET.Element("DEVELOPMENTERROR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DevelopmentError":
+    def deserialize(cls, element: ET.Element) -> "DevelopmentError":
         """Create DevelopmentError from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DevelopmentError(ARObject):
         Returns:
             DevelopmentError instance
         """
-        obj = cls()
+        obj: DevelopmentError = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DevelopmentError(ARObject):
 class DevelopmentErrorBuilder:
     """Builder for DevelopmentError."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DevelopmentError()
+        self._obj: DevelopmentError = DevelopmentError()
 
     def build(self) -> DevelopmentError:
         """Build and return DevelopmentError object.

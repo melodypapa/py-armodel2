@@ -1,29 +1,28 @@
 """EcuAbstractionSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcuAbstractionSwComponentType(ARObject):
     """AUTOSAR EcuAbstractionSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcuAbstractionSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcuAbstractionSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUABSTRACTIONSWCOMPONENTTYPE")
+        element = ET.Element("ECUABSTRACTIONSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcuAbstractionSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "EcuAbstractionSwComponentType":
         """Create EcuAbstractionSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcuAbstractionSwComponentType(ARObject):
         Returns:
             EcuAbstractionSwComponentType instance
         """
-        obj = cls()
+        obj: EcuAbstractionSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcuAbstractionSwComponentType(ARObject):
 class EcuAbstractionSwComponentTypeBuilder:
     """Builder for EcuAbstractionSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcuAbstractionSwComponentType()
+        self._obj: EcuAbstractionSwComponentType = EcuAbstractionSwComponentType()
 
     def build(self) -> EcuAbstractionSwComponentType:
         """Build and return EcuAbstractionSwComponentType object.

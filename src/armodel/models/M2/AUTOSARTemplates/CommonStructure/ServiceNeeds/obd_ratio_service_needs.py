@@ -1,29 +1,28 @@
 """ObdRatioServiceNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ObdRatioServiceNeeds(ARObject):
     """AUTOSAR ObdRatioServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ObdRatioServiceNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ObdRatioServiceNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("OBDRATIOSERVICENEEDS")
+        element = ET.Element("OBDRATIOSERVICENEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ObdRatioServiceNeeds":
+    def deserialize(cls, element: ET.Element) -> "ObdRatioServiceNeeds":
         """Create ObdRatioServiceNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ObdRatioServiceNeeds(ARObject):
         Returns:
             ObdRatioServiceNeeds instance
         """
-        obj = cls()
+        obj: ObdRatioServiceNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ObdRatioServiceNeeds(ARObject):
 class ObdRatioServiceNeedsBuilder:
     """Builder for ObdRatioServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ObdRatioServiceNeeds()
+        self._obj: ObdRatioServiceNeeds = ObdRatioServiceNeeds()
 
     def build(self) -> ObdRatioServiceNeeds:
         """Build and return ObdRatioServiceNeeds object.

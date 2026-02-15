@@ -1,29 +1,28 @@
 """SwServiceArg AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwServiceArg(ARObject):
     """AUTOSAR SwServiceArg."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwServiceArg."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwServiceArg to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWSERVICEARG")
+        element = ET.Element("SWSERVICEARG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwServiceArg":
+    def deserialize(cls, element: ET.Element) -> "SwServiceArg":
         """Create SwServiceArg from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwServiceArg(ARObject):
         Returns:
             SwServiceArg instance
         """
-        obj = cls()
+        obj: SwServiceArg = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwServiceArg(ARObject):
 class SwServiceArgBuilder:
     """Builder for SwServiceArg."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwServiceArg()
+        self._obj: SwServiceArg = SwServiceArg()
 
     def build(self) -> SwServiceArg:
         """Build and return SwServiceArg object.

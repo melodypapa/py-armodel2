@@ -1,29 +1,28 @@
 """TtcanCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TtcanCluster(ARObject):
     """AUTOSAR TtcanCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TtcanCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TtcanCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TTCANCLUSTER")
+        element = ET.Element("TTCANCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TtcanCluster":
+    def deserialize(cls, element: ET.Element) -> "TtcanCluster":
         """Create TtcanCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TtcanCluster(ARObject):
         Returns:
             TtcanCluster instance
         """
-        obj = cls()
+        obj: TtcanCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TtcanCluster(ARObject):
 class TtcanClusterBuilder:
     """Builder for TtcanCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TtcanCluster()
+        self._obj: TtcanCluster = TtcanCluster()
 
     def build(self) -> TtcanCluster:
         """Build and return TtcanCluster object.

@@ -1,29 +1,28 @@
 """Ipv6NdpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Ipv6NdpProps(ARObject):
     """AUTOSAR Ipv6NdpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Ipv6NdpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Ipv6NdpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPV6NDPPROPS")
+        element = ET.Element("IPV6NDPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Ipv6NdpProps":
+    def deserialize(cls, element: ET.Element) -> "Ipv6NdpProps":
         """Create Ipv6NdpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Ipv6NdpProps(ARObject):
         Returns:
             Ipv6NdpProps instance
         """
-        obj = cls()
+        obj: Ipv6NdpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Ipv6NdpProps(ARObject):
 class Ipv6NdpPropsBuilder:
     """Builder for Ipv6NdpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Ipv6NdpProps()
+        self._obj: Ipv6NdpProps = Ipv6NdpProps()
 
     def build(self) -> Ipv6NdpProps:
         """Build and return Ipv6NdpProps object.

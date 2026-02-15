@@ -1,29 +1,28 @@
 """DdsCpQosProfile AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsCpQosProfile(ARObject):
     """AUTOSAR DdsCpQosProfile."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsCpQosProfile."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsCpQosProfile to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSCPQOSPROFILE")
+        element = ET.Element("DDSCPQOSPROFILE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsCpQosProfile":
+    def deserialize(cls, element: ET.Element) -> "DdsCpQosProfile":
         """Create DdsCpQosProfile from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsCpQosProfile(ARObject):
         Returns:
             DdsCpQosProfile instance
         """
-        obj = cls()
+        obj: DdsCpQosProfile = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsCpQosProfile(ARObject):
 class DdsCpQosProfileBuilder:
     """Builder for DdsCpQosProfile."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsCpQosProfile()
+        self._obj: DdsCpQosProfile = DdsCpQosProfile()
 
     def build(self) -> DdsCpQosProfile:
         """Build and return DdsCpQosProfile object.

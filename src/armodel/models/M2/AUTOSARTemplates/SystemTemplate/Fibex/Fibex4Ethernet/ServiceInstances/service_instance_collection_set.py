@@ -1,29 +1,28 @@
 """ServiceInstanceCollectionSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ServiceInstanceCollectionSet(ARObject):
     """AUTOSAR ServiceInstanceCollectionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ServiceInstanceCollectionSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ServiceInstanceCollectionSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SERVICEINSTANCECOLLECTIONSET")
+        element = ET.Element("SERVICEINSTANCECOLLECTIONSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ServiceInstanceCollectionSet":
+    def deserialize(cls, element: ET.Element) -> "ServiceInstanceCollectionSet":
         """Create ServiceInstanceCollectionSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ServiceInstanceCollectionSet(ARObject):
         Returns:
             ServiceInstanceCollectionSet instance
         """
-        obj = cls()
+        obj: ServiceInstanceCollectionSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ServiceInstanceCollectionSet(ARObject):
 class ServiceInstanceCollectionSetBuilder:
     """Builder for ServiceInstanceCollectionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ServiceInstanceCollectionSet()
+        self._obj: ServiceInstanceCollectionSet = ServiceInstanceCollectionSet()
 
     def build(self) -> ServiceInstanceCollectionSet:
         """Build and return ServiceInstanceCollectionSet object.

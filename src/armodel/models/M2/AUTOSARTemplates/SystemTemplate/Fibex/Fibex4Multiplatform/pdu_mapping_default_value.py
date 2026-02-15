@@ -1,29 +1,28 @@
 """PduMappingDefaultValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PduMappingDefaultValue(ARObject):
     """AUTOSAR PduMappingDefaultValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PduMappingDefaultValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PduMappingDefaultValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PDUMAPPINGDEFAULTVALUE")
+        element = ET.Element("PDUMAPPINGDEFAULTVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PduMappingDefaultValue":
+    def deserialize(cls, element: ET.Element) -> "PduMappingDefaultValue":
         """Create PduMappingDefaultValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PduMappingDefaultValue(ARObject):
         Returns:
             PduMappingDefaultValue instance
         """
-        obj = cls()
+        obj: PduMappingDefaultValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PduMappingDefaultValue(ARObject):
 class PduMappingDefaultValueBuilder:
     """Builder for PduMappingDefaultValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PduMappingDefaultValue()
+        self._obj: PduMappingDefaultValue = PduMappingDefaultValue()
 
     def build(self) -> PduMappingDefaultValue:
         """Build and return PduMappingDefaultValue object.

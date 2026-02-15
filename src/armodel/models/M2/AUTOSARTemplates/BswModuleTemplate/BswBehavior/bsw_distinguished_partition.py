@@ -1,29 +1,28 @@
 """BswDistinguishedPartition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswDistinguishedPartition(ARObject):
     """AUTOSAR BswDistinguishedPartition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswDistinguishedPartition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswDistinguishedPartition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWDISTINGUISHEDPARTITION")
+        element = ET.Element("BSWDISTINGUISHEDPARTITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswDistinguishedPartition":
+    def deserialize(cls, element: ET.Element) -> "BswDistinguishedPartition":
         """Create BswDistinguishedPartition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswDistinguishedPartition(ARObject):
         Returns:
             BswDistinguishedPartition instance
         """
-        obj = cls()
+        obj: BswDistinguishedPartition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswDistinguishedPartition(ARObject):
 class BswDistinguishedPartitionBuilder:
     """Builder for BswDistinguishedPartition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswDistinguishedPartition()
+        self._obj: BswDistinguishedPartition = BswDistinguishedPartition()
 
     def build(self) -> BswDistinguishedPartition:
         """Build and return BswDistinguishedPartition object.

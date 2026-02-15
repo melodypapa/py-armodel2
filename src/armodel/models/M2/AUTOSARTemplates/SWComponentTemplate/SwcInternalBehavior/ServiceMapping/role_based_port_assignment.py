@@ -1,29 +1,28 @@
 """RoleBasedPortAssignment AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RoleBasedPortAssignment(ARObject):
     """AUTOSAR RoleBasedPortAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RoleBasedPortAssignment."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RoleBasedPortAssignment to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ROLEBASEDPORTASSIGNMENT")
+        element = ET.Element("ROLEBASEDPORTASSIGNMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RoleBasedPortAssignment":
+    def deserialize(cls, element: ET.Element) -> "RoleBasedPortAssignment":
         """Create RoleBasedPortAssignment from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RoleBasedPortAssignment(ARObject):
         Returns:
             RoleBasedPortAssignment instance
         """
-        obj = cls()
+        obj: RoleBasedPortAssignment = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RoleBasedPortAssignment(ARObject):
 class RoleBasedPortAssignmentBuilder:
     """Builder for RoleBasedPortAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RoleBasedPortAssignment()
+        self._obj: RoleBasedPortAssignment = RoleBasedPortAssignment()
 
     def build(self) -> RoleBasedPortAssignment:
         """Build and return RoleBasedPortAssignment object.

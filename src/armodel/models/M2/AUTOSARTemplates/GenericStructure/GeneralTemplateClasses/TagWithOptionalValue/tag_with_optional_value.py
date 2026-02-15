@@ -1,29 +1,28 @@
 """TagWithOptionalValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TagWithOptionalValue(ARObject):
     """AUTOSAR TagWithOptionalValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TagWithOptionalValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TagWithOptionalValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TAGWITHOPTIONALVALUE")
+        element = ET.Element("TAGWITHOPTIONALVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TagWithOptionalValue":
+    def deserialize(cls, element: ET.Element) -> "TagWithOptionalValue":
         """Create TagWithOptionalValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TagWithOptionalValue(ARObject):
         Returns:
             TagWithOptionalValue instance
         """
-        obj = cls()
+        obj: TagWithOptionalValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TagWithOptionalValue(ARObject):
 class TagWithOptionalValueBuilder:
     """Builder for TagWithOptionalValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TagWithOptionalValue()
+        self._obj: TagWithOptionalValue = TagWithOptionalValue()
 
     def build(self) -> TagWithOptionalValue:
         """Build and return TagWithOptionalValue object.

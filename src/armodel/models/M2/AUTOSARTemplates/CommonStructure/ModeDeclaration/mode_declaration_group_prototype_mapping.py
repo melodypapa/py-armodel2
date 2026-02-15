@@ -1,29 +1,28 @@
 """ModeDeclarationGroupPrototypeMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeDeclarationGroupPrototypeMapping(ARObject):
     """AUTOSAR ModeDeclarationGroupPrototypeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeDeclarationGroupPrototypeMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEDECLARATIONGROUPPROTOTYPEMAPPING")
+        element = ET.Element("MODEDECLARATIONGROUPPROTOTYPEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeDeclarationGroupPrototypeMapping":
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroupPrototypeMapping":
         """Create ModeDeclarationGroupPrototypeMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         Returns:
             ModeDeclarationGroupPrototypeMapping instance
         """
-        obj = cls()
+        obj: ModeDeclarationGroupPrototypeMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
 class ModeDeclarationGroupPrototypeMappingBuilder:
     """Builder for ModeDeclarationGroupPrototypeMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeDeclarationGroupPrototypeMapping()
+        self._obj: ModeDeclarationGroupPrototypeMapping = ModeDeclarationGroupPrototypeMapping()
 
     def build(self) -> ModeDeclarationGroupPrototypeMapping:
         """Build and return ModeDeclarationGroupPrototypeMapping object.

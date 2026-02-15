@@ -1,29 +1,28 @@
 """VlanMembership AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VlanMembership(ARObject):
     """AUTOSAR VlanMembership."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VlanMembership."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VlanMembership to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VLANMEMBERSHIP")
+        element = ET.Element("VLANMEMBERSHIP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VlanMembership":
+    def deserialize(cls, element: ET.Element) -> "VlanMembership":
         """Create VlanMembership from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VlanMembership(ARObject):
         Returns:
             VlanMembership instance
         """
-        obj = cls()
+        obj: VlanMembership = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VlanMembership(ARObject):
 class VlanMembershipBuilder:
     """Builder for VlanMembership."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VlanMembership()
+        self._obj: VlanMembership = VlanMembership()
 
     def build(self) -> VlanMembership:
         """Build and return VlanMembership object.

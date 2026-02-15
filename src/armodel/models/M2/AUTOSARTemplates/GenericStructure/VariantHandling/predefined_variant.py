@@ -1,29 +1,28 @@
 """PredefinedVariant AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PredefinedVariant(ARObject):
     """AUTOSAR PredefinedVariant."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PredefinedVariant."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PredefinedVariant to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PREDEFINEDVARIANT")
+        element = ET.Element("PREDEFINEDVARIANT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PredefinedVariant":
+    def deserialize(cls, element: ET.Element) -> "PredefinedVariant":
         """Create PredefinedVariant from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PredefinedVariant(ARObject):
         Returns:
             PredefinedVariant instance
         """
-        obj = cls()
+        obj: PredefinedVariant = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PredefinedVariant(ARObject):
 class PredefinedVariantBuilder:
     """Builder for PredefinedVariant."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PredefinedVariant()
+        self._obj: PredefinedVariant = PredefinedVariant()
 
     def build(self) -> PredefinedVariant:
         """Build and return PredefinedVariant object.

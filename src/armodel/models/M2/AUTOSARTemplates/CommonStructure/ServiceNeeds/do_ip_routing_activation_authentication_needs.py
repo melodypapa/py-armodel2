@@ -1,29 +1,28 @@
 """DoIpRoutingActivationAuthenticationNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpRoutingActivationAuthenticationNeeds(ARObject):
     """AUTOSAR DoIpRoutingActivationAuthenticationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpRoutingActivationAuthenticationNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpRoutingActivationAuthenticationNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPROUTINGACTIVATIONAUTHENTICATIONNEEDS")
+        element = ET.Element("DOIPROUTINGACTIVATIONAUTHENTICATIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpRoutingActivationAuthenticationNeeds":
+    def deserialize(cls, element: ET.Element) -> "DoIpRoutingActivationAuthenticationNeeds":
         """Create DoIpRoutingActivationAuthenticationNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpRoutingActivationAuthenticationNeeds(ARObject):
         Returns:
             DoIpRoutingActivationAuthenticationNeeds instance
         """
-        obj = cls()
+        obj: DoIpRoutingActivationAuthenticationNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpRoutingActivationAuthenticationNeeds(ARObject):
 class DoIpRoutingActivationAuthenticationNeedsBuilder:
     """Builder for DoIpRoutingActivationAuthenticationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpRoutingActivationAuthenticationNeeds()
+        self._obj: DoIpRoutingActivationAuthenticationNeeds = DoIpRoutingActivationAuthenticationNeeds()
 
     def build(self) -> DoIpRoutingActivationAuthenticationNeeds:
         """Build and return DoIpRoutingActivationAuthenticationNeeds object.

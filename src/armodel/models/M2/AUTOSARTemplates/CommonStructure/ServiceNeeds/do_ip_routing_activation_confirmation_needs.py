@@ -1,29 +1,28 @@
 """DoIpRoutingActivationConfirmationNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpRoutingActivationConfirmationNeeds(ARObject):
     """AUTOSAR DoIpRoutingActivationConfirmationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpRoutingActivationConfirmationNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpRoutingActivationConfirmationNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPROUTINGACTIVATIONCONFIRMATIONNEEDS")
+        element = ET.Element("DOIPROUTINGACTIVATIONCONFIRMATIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpRoutingActivationConfirmationNeeds":
+    def deserialize(cls, element: ET.Element) -> "DoIpRoutingActivationConfirmationNeeds":
         """Create DoIpRoutingActivationConfirmationNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpRoutingActivationConfirmationNeeds(ARObject):
         Returns:
             DoIpRoutingActivationConfirmationNeeds instance
         """
-        obj = cls()
+        obj: DoIpRoutingActivationConfirmationNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpRoutingActivationConfirmationNeeds(ARObject):
 class DoIpRoutingActivationConfirmationNeedsBuilder:
     """Builder for DoIpRoutingActivationConfirmationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpRoutingActivationConfirmationNeeds()
+        self._obj: DoIpRoutingActivationConfirmationNeeds = DoIpRoutingActivationConfirmationNeeds()
 
     def build(self) -> DoIpRoutingActivationConfirmationNeeds:
         """Build and return DoIpRoutingActivationConfirmationNeeds object.

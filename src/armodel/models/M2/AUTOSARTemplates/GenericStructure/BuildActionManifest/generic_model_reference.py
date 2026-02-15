@@ -1,29 +1,28 @@
 """GenericModelReference AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GenericModelReference(ARObject):
     """AUTOSAR GenericModelReference."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GenericModelReference."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GenericModelReference to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GENERICMODELREFERENCE")
+        element = ET.Element("GENERICMODELREFERENCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GenericModelReference":
+    def deserialize(cls, element: ET.Element) -> "GenericModelReference":
         """Create GenericModelReference from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GenericModelReference(ARObject):
         Returns:
             GenericModelReference instance
         """
-        obj = cls()
+        obj: GenericModelReference = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GenericModelReference(ARObject):
 class GenericModelReferenceBuilder:
     """Builder for GenericModelReference."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GenericModelReference()
+        self._obj: GenericModelReference = GenericModelReference()
 
     def build(self) -> GenericModelReference:
         """Build and return GenericModelReference object.

@@ -1,29 +1,28 @@
 """SymbolProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SymbolProps(ARObject):
     """AUTOSAR SymbolProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SymbolProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SymbolProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYMBOLPROPS")
+        element = ET.Element("SYMBOLPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SymbolProps":
+    def deserialize(cls, element: ET.Element) -> "SymbolProps":
         """Create SymbolProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SymbolProps(ARObject):
         Returns:
             SymbolProps instance
         """
-        obj = cls()
+        obj: SymbolProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SymbolProps(ARObject):
 class SymbolPropsBuilder:
     """Builder for SymbolProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SymbolProps()
+        self._obj: SymbolProps = SymbolProps()
 
     def build(self) -> SymbolProps:
         """Build and return SymbolProps object.

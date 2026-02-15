@@ -1,29 +1,28 @@
 """AbstractEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractEvent(ARObject):
     """AUTOSAR AbstractEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTEVENT")
+        element = ET.Element("ABSTRACTEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractEvent":
+    def deserialize(cls, element: ET.Element) -> "AbstractEvent":
         """Create AbstractEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractEvent(ARObject):
         Returns:
             AbstractEvent instance
         """
-        obj = cls()
+        obj: AbstractEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractEvent(ARObject):
 class AbstractEventBuilder:
     """Builder for AbstractEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractEvent()
+        self._obj: AbstractEvent = AbstractEvent()
 
     def build(self) -> AbstractEvent:
         """Build and return AbstractEvent object.

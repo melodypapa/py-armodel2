@@ -1,29 +1,28 @@
 """SwTextProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwTextProps(ARObject):
     """AUTOSAR SwTextProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwTextProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWTEXTPROPS")
+        element = ET.Element("SWTEXTPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwTextProps":
+    def deserialize(cls, element: ET.Element) -> "SwTextProps":
         """Create SwTextProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwTextProps(ARObject):
         Returns:
             SwTextProps instance
         """
-        obj = cls()
+        obj: SwTextProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwTextProps(ARObject):
 class SwTextPropsBuilder:
     """Builder for SwTextProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwTextProps()
+        self._obj: SwTextProps = SwTextProps()
 
     def build(self) -> SwTextProps:
         """Build and return SwTextProps object.

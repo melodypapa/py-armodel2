@@ -1,29 +1,28 @@
 """SenderReceiverAnnotation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SenderReceiverAnnotation(ARObject):
     """AUTOSAR SenderReceiverAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SenderReceiverAnnotation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SENDERRECEIVERANNOTATION")
+        element = ET.Element("SENDERRECEIVERANNOTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SenderReceiverAnnotation":
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverAnnotation":
         """Create SenderReceiverAnnotation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SenderReceiverAnnotation(ARObject):
         Returns:
             SenderReceiverAnnotation instance
         """
-        obj = cls()
+        obj: SenderReceiverAnnotation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SenderReceiverAnnotation(ARObject):
 class SenderReceiverAnnotationBuilder:
     """Builder for SenderReceiverAnnotation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SenderReceiverAnnotation()
+        self._obj: SenderReceiverAnnotation = SenderReceiverAnnotation()
 
     def build(self) -> SenderReceiverAnnotation:
         """Build and return SenderReceiverAnnotation object.

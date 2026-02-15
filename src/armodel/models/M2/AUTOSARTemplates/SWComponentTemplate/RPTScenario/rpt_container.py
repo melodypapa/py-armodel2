@@ -1,29 +1,28 @@
 """RptContainer AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptContainer(ARObject):
     """AUTOSAR RptContainer."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptContainer."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptContainer to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTCONTAINER")
+        element = ET.Element("RPTCONTAINER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptContainer":
+    def deserialize(cls, element: ET.Element) -> "RptContainer":
         """Create RptContainer from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptContainer(ARObject):
         Returns:
             RptContainer instance
         """
-        obj = cls()
+        obj: RptContainer = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptContainer(ARObject):
 class RptContainerBuilder:
     """Builder for RptContainer."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptContainer()
+        self._obj: RptContainer = RptContainer()
 
     def build(self) -> RptContainer:
         """Build and return RptContainer object.

@@ -1,29 +1,28 @@
 """DiagnosticFimAliasEventGroupMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticFimAliasEventGroupMapping(ARObject):
     """AUTOSAR DiagnosticFimAliasEventGroupMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroupMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticFimAliasEventGroupMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICFIMALIASEVENTGROUPMAPPING")
+        element = ET.Element("DIAGNOSTICFIMALIASEVENTGROUPMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticFimAliasEventGroupMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEventGroupMapping":
         """Create DiagnosticFimAliasEventGroupMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticFimAliasEventGroupMapping(ARObject):
         Returns:
             DiagnosticFimAliasEventGroupMapping instance
         """
-        obj = cls()
+        obj: DiagnosticFimAliasEventGroupMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticFimAliasEventGroupMapping(ARObject):
 class DiagnosticFimAliasEventGroupMappingBuilder:
     """Builder for DiagnosticFimAliasEventGroupMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticFimAliasEventGroupMapping()
+        self._obj: DiagnosticFimAliasEventGroupMapping = DiagnosticFimAliasEventGroupMapping()
 
     def build(self) -> DiagnosticFimAliasEventGroupMapping:
         """Build and return DiagnosticFimAliasEventGroupMapping object.

@@ -1,29 +1,28 @@
 """SwAddrMethod AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwAddrMethod(ARObject):
     """AUTOSAR SwAddrMethod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwAddrMethod."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwAddrMethod to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWADDRMETHOD")
+        element = ET.Element("SWADDRMETHOD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwAddrMethod":
+    def deserialize(cls, element: ET.Element) -> "SwAddrMethod":
         """Create SwAddrMethod from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwAddrMethod(ARObject):
         Returns:
             SwAddrMethod instance
         """
-        obj = cls()
+        obj: SwAddrMethod = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwAddrMethod(ARObject):
 class SwAddrMethodBuilder:
     """Builder for SwAddrMethod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwAddrMethod()
+        self._obj: SwAddrMethod = SwAddrMethod()
 
     def build(self) -> SwAddrMethod:
         """Build and return SwAddrMethod object.

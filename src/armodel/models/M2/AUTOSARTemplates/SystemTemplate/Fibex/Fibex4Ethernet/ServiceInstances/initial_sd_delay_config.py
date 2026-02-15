@@ -1,29 +1,28 @@
 """InitialSdDelayConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InitialSdDelayConfig(ARObject):
     """AUTOSAR InitialSdDelayConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InitialSdDelayConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InitialSdDelayConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INITIALSDDELAYCONFIG")
+        element = ET.Element("INITIALSDDELAYCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InitialSdDelayConfig":
+    def deserialize(cls, element: ET.Element) -> "InitialSdDelayConfig":
         """Create InitialSdDelayConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InitialSdDelayConfig(ARObject):
         Returns:
             InitialSdDelayConfig instance
         """
-        obj = cls()
+        obj: InitialSdDelayConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InitialSdDelayConfig(ARObject):
 class InitialSdDelayConfigBuilder:
     """Builder for InitialSdDelayConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InitialSdDelayConfig()
+        self._obj: InitialSdDelayConfig = InitialSdDelayConfig()
 
     def build(self) -> InitialSdDelayConfig:
         """Build and return InitialSdDelayConfig object.

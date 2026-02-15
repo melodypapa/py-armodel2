@@ -1,29 +1,28 @@
 """BswCompositionTiming AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswCompositionTiming(ARObject):
     """AUTOSAR BswCompositionTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswCompositionTiming."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswCompositionTiming to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWCOMPOSITIONTIMING")
+        element = ET.Element("BSWCOMPOSITIONTIMING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswCompositionTiming":
+    def deserialize(cls, element: ET.Element) -> "BswCompositionTiming":
         """Create BswCompositionTiming from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswCompositionTiming(ARObject):
         Returns:
             BswCompositionTiming instance
         """
-        obj = cls()
+        obj: BswCompositionTiming = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswCompositionTiming(ARObject):
 class BswCompositionTimingBuilder:
     """Builder for BswCompositionTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswCompositionTiming()
+        self._obj: BswCompositionTiming = BswCompositionTiming()
 
     def build(self) -> BswCompositionTiming:
         """Build and return BswCompositionTiming object.

@@ -1,29 +1,28 @@
 """IPv6ExtHeaderFilterList AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IPv6ExtHeaderFilterList(ARObject):
     """AUTOSAR IPv6ExtHeaderFilterList."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IPv6ExtHeaderFilterList to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPV6EXTHEADERFILTERLIST")
+        element = ET.Element("IPV6EXTHEADERFILTERLIST")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IPv6ExtHeaderFilterList":
+    def deserialize(cls, element: ET.Element) -> "IPv6ExtHeaderFilterList":
         """Create IPv6ExtHeaderFilterList from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IPv6ExtHeaderFilterList(ARObject):
         Returns:
             IPv6ExtHeaderFilterList instance
         """
-        obj = cls()
+        obj: IPv6ExtHeaderFilterList = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IPv6ExtHeaderFilterList(ARObject):
 class IPv6ExtHeaderFilterListBuilder:
     """Builder for IPv6ExtHeaderFilterList."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IPv6ExtHeaderFilterList()
+        self._obj: IPv6ExtHeaderFilterList = IPv6ExtHeaderFilterList()
 
     def build(self) -> IPv6ExtHeaderFilterList:
         """Build and return IPv6ExtHeaderFilterList object.

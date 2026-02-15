@@ -1,29 +1,28 @@
 """BlueprintPolicyNotModifiable AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BlueprintPolicyNotModifiable(ARObject):
     """AUTOSAR BlueprintPolicyNotModifiable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BlueprintPolicyNotModifiable."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BlueprintPolicyNotModifiable to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BLUEPRINTPOLICYNOTMODIFIABLE")
+        element = ET.Element("BLUEPRINTPOLICYNOTMODIFIABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BlueprintPolicyNotModifiable":
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicyNotModifiable":
         """Create BlueprintPolicyNotModifiable from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BlueprintPolicyNotModifiable(ARObject):
         Returns:
             BlueprintPolicyNotModifiable instance
         """
-        obj = cls()
+        obj: BlueprintPolicyNotModifiable = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BlueprintPolicyNotModifiable(ARObject):
 class BlueprintPolicyNotModifiableBuilder:
     """Builder for BlueprintPolicyNotModifiable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BlueprintPolicyNotModifiable()
+        self._obj: BlueprintPolicyNotModifiable = BlueprintPolicyNotModifiable()
 
     def build(self) -> BlueprintPolicyNotModifiable:
         """Build and return BlueprintPolicyNotModifiable object.

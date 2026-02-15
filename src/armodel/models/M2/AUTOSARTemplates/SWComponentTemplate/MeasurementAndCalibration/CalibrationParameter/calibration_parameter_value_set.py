@@ -1,29 +1,28 @@
 """CalibrationParameterValueSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CalibrationParameterValueSet(ARObject):
     """AUTOSAR CalibrationParameterValueSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CalibrationParameterValueSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CalibrationParameterValueSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CALIBRATIONPARAMETERVALUESET")
+        element = ET.Element("CALIBRATIONPARAMETERVALUESET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CalibrationParameterValueSet":
+    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValueSet":
         """Create CalibrationParameterValueSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CalibrationParameterValueSet(ARObject):
         Returns:
             CalibrationParameterValueSet instance
         """
-        obj = cls()
+        obj: CalibrationParameterValueSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CalibrationParameterValueSet(ARObject):
 class CalibrationParameterValueSetBuilder:
     """Builder for CalibrationParameterValueSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CalibrationParameterValueSet()
+        self._obj: CalibrationParameterValueSet = CalibrationParameterValueSet()
 
     def build(self) -> CalibrationParameterValueSet:
         """Build and return CalibrationParameterValueSet object.

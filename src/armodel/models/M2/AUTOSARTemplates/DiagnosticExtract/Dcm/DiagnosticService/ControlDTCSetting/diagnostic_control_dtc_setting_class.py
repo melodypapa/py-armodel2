@@ -1,29 +1,28 @@
 """DiagnosticControlDTCSettingClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticControlDTCSettingClass(ARObject):
     """AUTOSAR DiagnosticControlDTCSettingClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticControlDTCSettingClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCONTROLDTCSETTINGCLASS")
+        element = ET.Element("DIAGNOSTICCONTROLDTCSETTINGCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticControlDTCSettingClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticControlDTCSettingClass":
         """Create DiagnosticControlDTCSettingClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticControlDTCSettingClass(ARObject):
         Returns:
             DiagnosticControlDTCSettingClass instance
         """
-        obj = cls()
+        obj: DiagnosticControlDTCSettingClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticControlDTCSettingClass(ARObject):
 class DiagnosticControlDTCSettingClassBuilder:
     """Builder for DiagnosticControlDTCSettingClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticControlDTCSettingClass()
+        self._obj: DiagnosticControlDTCSettingClass = DiagnosticControlDTCSettingClass()
 
     def build(self) -> DiagnosticControlDTCSettingClass:
         """Build and return DiagnosticControlDTCSettingClass object.

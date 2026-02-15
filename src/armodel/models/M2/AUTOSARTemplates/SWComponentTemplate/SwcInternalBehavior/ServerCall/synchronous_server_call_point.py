@@ -1,29 +1,28 @@
 """SynchronousServerCallPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SynchronousServerCallPoint(ARObject):
     """AUTOSAR SynchronousServerCallPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SynchronousServerCallPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYNCHRONOUSSERVERCALLPOINT")
+        element = ET.Element("SYNCHRONOUSSERVERCALLPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SynchronousServerCallPoint":
+    def deserialize(cls, element: ET.Element) -> "SynchronousServerCallPoint":
         """Create SynchronousServerCallPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SynchronousServerCallPoint(ARObject):
         Returns:
             SynchronousServerCallPoint instance
         """
-        obj = cls()
+        obj: SynchronousServerCallPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SynchronousServerCallPoint(ARObject):
 class SynchronousServerCallPointBuilder:
     """Builder for SynchronousServerCallPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SynchronousServerCallPoint()
+        self._obj: SynchronousServerCallPoint = SynchronousServerCallPoint()
 
     def build(self) -> SynchronousServerCallPoint:
         """Build and return SynchronousServerCallPoint object.

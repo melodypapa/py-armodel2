@@ -2,7 +2,6 @@
 
 from pathlib import Path
 from typing import Union
-from lxml import etree
 
 from armodel.writer.serializer import serialize_autosar_to_xml
 from armodel.writer.saver import save_arxml_file

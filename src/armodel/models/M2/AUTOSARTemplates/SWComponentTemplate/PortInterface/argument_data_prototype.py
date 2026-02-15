@@ -1,29 +1,28 @@
 """ArgumentDataPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ArgumentDataPrototype(ARObject):
     """AUTOSAR ArgumentDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ArgumentDataPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ArgumentDataPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ARGUMENTDATAPROTOTYPE")
+        element = ET.Element("ARGUMENTDATAPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ArgumentDataPrototype":
+    def deserialize(cls, element: ET.Element) -> "ArgumentDataPrototype":
         """Create ArgumentDataPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ArgumentDataPrototype(ARObject):
         Returns:
             ArgumentDataPrototype instance
         """
-        obj = cls()
+        obj: ArgumentDataPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ArgumentDataPrototype(ARObject):
 class ArgumentDataPrototypeBuilder:
     """Builder for ArgumentDataPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ArgumentDataPrototype()
+        self._obj: ArgumentDataPrototype = ArgumentDataPrototype()
 
     def build(self) -> ArgumentDataPrototype:
         """Build and return ArgumentDataPrototype object.

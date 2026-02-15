@@ -1,29 +1,28 @@
 """MultiLanguagePlainText AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MultiLanguagePlainText(ARObject):
     """AUTOSAR MultiLanguagePlainText."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MultiLanguagePlainText."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MultiLanguagePlainText to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MULTILANGUAGEPLAINTEXT")
+        element = ET.Element("MULTILANGUAGEPLAINTEXT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MultiLanguagePlainText":
+    def deserialize(cls, element: ET.Element) -> "MultiLanguagePlainText":
         """Create MultiLanguagePlainText from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MultiLanguagePlainText(ARObject):
         Returns:
             MultiLanguagePlainText instance
         """
-        obj = cls()
+        obj: MultiLanguagePlainText = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MultiLanguagePlainText(ARObject):
 class MultiLanguagePlainTextBuilder:
     """Builder for MultiLanguagePlainText."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MultiLanguagePlainText()
+        self._obj: MultiLanguagePlainText = MultiLanguagePlainText()
 
     def build(self) -> MultiLanguagePlainText:
         """Build and return MultiLanguagePlainText object.

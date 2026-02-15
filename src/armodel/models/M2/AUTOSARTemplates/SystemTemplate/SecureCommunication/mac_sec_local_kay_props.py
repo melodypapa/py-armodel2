@@ -1,29 +1,28 @@
 """MacSecLocalKayProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MacSecLocalKayProps(ARObject):
     """AUTOSAR MacSecLocalKayProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MacSecLocalKayProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MACSECLOCALKAYPROPS")
+        element = ET.Element("MACSECLOCALKAYPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MacSecLocalKayProps":
+    def deserialize(cls, element: ET.Element) -> "MacSecLocalKayProps":
         """Create MacSecLocalKayProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MacSecLocalKayProps(ARObject):
         Returns:
             MacSecLocalKayProps instance
         """
-        obj = cls()
+        obj: MacSecLocalKayProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MacSecLocalKayProps(ARObject):
 class MacSecLocalKayPropsBuilder:
     """Builder for MacSecLocalKayProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MacSecLocalKayProps()
+        self._obj: MacSecLocalKayProps = MacSecLocalKayProps()
 
     def build(self) -> MacSecLocalKayProps:
         """Build and return MacSecLocalKayProps object.

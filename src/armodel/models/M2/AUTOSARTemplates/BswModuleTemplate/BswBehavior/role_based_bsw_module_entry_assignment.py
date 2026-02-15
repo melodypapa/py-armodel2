@@ -1,29 +1,28 @@
 """RoleBasedBswModuleEntryAssignment AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RoleBasedBswModuleEntryAssignment(ARObject):
     """AUTOSAR RoleBasedBswModuleEntryAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RoleBasedBswModuleEntryAssignment."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RoleBasedBswModuleEntryAssignment to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ROLEBASEDBSWMODULEENTRYASSIGNMENT")
+        element = ET.Element("ROLEBASEDBSWMODULEENTRYASSIGNMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RoleBasedBswModuleEntryAssignment":
+    def deserialize(cls, element: ET.Element) -> "RoleBasedBswModuleEntryAssignment":
         """Create RoleBasedBswModuleEntryAssignment from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         Returns:
             RoleBasedBswModuleEntryAssignment instance
         """
-        obj = cls()
+        obj: RoleBasedBswModuleEntryAssignment = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
 class RoleBasedBswModuleEntryAssignmentBuilder:
     """Builder for RoleBasedBswModuleEntryAssignment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RoleBasedBswModuleEntryAssignment()
+        self._obj: RoleBasedBswModuleEntryAssignment = RoleBasedBswModuleEntryAssignment()
 
     def build(self) -> RoleBasedBswModuleEntryAssignment:
         """Build and return RoleBasedBswModuleEntryAssignment object.

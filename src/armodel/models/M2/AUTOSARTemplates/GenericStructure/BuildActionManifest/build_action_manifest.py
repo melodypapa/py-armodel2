@@ -1,29 +1,28 @@
 """BuildActionManifest AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BuildActionManifest(ARObject):
     """AUTOSAR BuildActionManifest."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BuildActionManifest."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BuildActionManifest to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUILDACTIONMANIFEST")
+        element = ET.Element("BUILDACTIONMANIFEST")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BuildActionManifest":
+    def deserialize(cls, element: ET.Element) -> "BuildActionManifest":
         """Create BuildActionManifest from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BuildActionManifest(ARObject):
         Returns:
             BuildActionManifest instance
         """
-        obj = cls()
+        obj: BuildActionManifest = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BuildActionManifest(ARObject):
 class BuildActionManifestBuilder:
     """Builder for BuildActionManifest."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BuildActionManifest()
+        self._obj: BuildActionManifest = BuildActionManifest()
 
     def build(self) -> BuildActionManifest:
         """Build and return BuildActionManifest object.

@@ -1,29 +1,28 @@
 """ImplementationDataTypeElementInPortInterfaceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
     """AUTOSAR ImplementationDataTypeElementInPortInterfaceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ImplementationDataTypeElementInPortInterfaceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ImplementationDataTypeElementInPortInterfaceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IMPLEMENTATIONDATATYPEELEMENTINPORTINTERFACEREF")
+        element = ET.Element("IMPLEMENTATIONDATATYPEELEMENTINPORTINTERFACEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ImplementationDataTypeElementInPortInterfaceRef":
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElementInPortInterfaceRef":
         """Create ImplementationDataTypeElementInPortInterfaceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
         Returns:
             ImplementationDataTypeElementInPortInterfaceRef instance
         """
-        obj = cls()
+        obj: ImplementationDataTypeElementInPortInterfaceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
 class ImplementationDataTypeElementInPortInterfaceRefBuilder:
     """Builder for ImplementationDataTypeElementInPortInterfaceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ImplementationDataTypeElementInPortInterfaceRef()
+        self._obj: ImplementationDataTypeElementInPortInterfaceRef = ImplementationDataTypeElementInPortInterfaceRef()
 
     def build(self) -> ImplementationDataTypeElementInPortInterfaceRef:
         """Build and return ImplementationDataTypeElementInPortInterfaceRef object.

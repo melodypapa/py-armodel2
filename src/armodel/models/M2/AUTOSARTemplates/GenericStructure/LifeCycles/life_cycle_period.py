@@ -1,29 +1,28 @@
 """LifeCyclePeriod AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LifeCyclePeriod(ARObject):
     """AUTOSAR LifeCyclePeriod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LifeCyclePeriod."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LifeCyclePeriod to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LIFECYCLEPERIOD")
+        element = ET.Element("LIFECYCLEPERIOD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LifeCyclePeriod":
+    def deserialize(cls, element: ET.Element) -> "LifeCyclePeriod":
         """Create LifeCyclePeriod from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LifeCyclePeriod(ARObject):
         Returns:
             LifeCyclePeriod instance
         """
-        obj = cls()
+        obj: LifeCyclePeriod = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LifeCyclePeriod(ARObject):
 class LifeCyclePeriodBuilder:
     """Builder for LifeCyclePeriod."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LifeCyclePeriod()
+        self._obj: LifeCyclePeriod = LifeCyclePeriod()
 
     def build(self) -> LifeCyclePeriod:
         """Build and return LifeCyclePeriod object.

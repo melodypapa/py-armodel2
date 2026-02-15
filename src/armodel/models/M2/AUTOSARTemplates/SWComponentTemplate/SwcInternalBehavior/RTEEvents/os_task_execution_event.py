@@ -1,29 +1,28 @@
 """OsTaskExecutionEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class OsTaskExecutionEvent(ARObject):
     """AUTOSAR OsTaskExecutionEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize OsTaskExecutionEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert OsTaskExecutionEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("OSTASKEXECUTIONEVENT")
+        element = ET.Element("OSTASKEXECUTIONEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "OsTaskExecutionEvent":
+    def deserialize(cls, element: ET.Element) -> "OsTaskExecutionEvent":
         """Create OsTaskExecutionEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class OsTaskExecutionEvent(ARObject):
         Returns:
             OsTaskExecutionEvent instance
         """
-        obj = cls()
+        obj: OsTaskExecutionEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class OsTaskExecutionEvent(ARObject):
 class OsTaskExecutionEventBuilder:
     """Builder for OsTaskExecutionEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = OsTaskExecutionEvent()
+        self._obj: OsTaskExecutionEvent = OsTaskExecutionEvent()
 
     def build(self) -> OsTaskExecutionEvent:
         """Build and return OsTaskExecutionEvent object.

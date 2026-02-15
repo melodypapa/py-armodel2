@@ -1,29 +1,28 @@
 """DiagnosticFimAliasEventGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticFimAliasEventGroup(ARObject):
     """AUTOSAR DiagnosticFimAliasEventGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticFimAliasEventGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICFIMALIASEVENTGROUP")
+        element = ET.Element("DIAGNOSTICFIMALIASEVENTGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticFimAliasEventGroup":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEventGroup":
         """Create DiagnosticFimAliasEventGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticFimAliasEventGroup(ARObject):
         Returns:
             DiagnosticFimAliasEventGroup instance
         """
-        obj = cls()
+        obj: DiagnosticFimAliasEventGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticFimAliasEventGroup(ARObject):
 class DiagnosticFimAliasEventGroupBuilder:
     """Builder for DiagnosticFimAliasEventGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticFimAliasEventGroup()
+        self._obj: DiagnosticFimAliasEventGroup = DiagnosticFimAliasEventGroup()
 
     def build(self) -> DiagnosticFimAliasEventGroup:
         """Build and return DiagnosticFimAliasEventGroup object.

@@ -1,29 +1,28 @@
 """DiagnosticTroubleCodeUdsToTroubleCodeObdMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(ARObject):
     """AUTOSAR DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticTroubleCodeUdsToTroubleCodeObdMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICTROUBLECODEUDSTOTROUBLECODEOBDMAPPING")
+        element = ET.Element("DIAGNOSTICTROUBLECODEUDSTOTROUBLECODEOBDMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticTroubleCodeUdsToTroubleCodeObdMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeUdsToTroubleCodeObdMapping":
         """Create DiagnosticTroubleCodeUdsToTroubleCodeObdMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(ARObject):
         Returns:
             DiagnosticTroubleCodeUdsToTroubleCodeObdMapping instance
         """
-        obj = cls()
+        obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(ARObject):
 class DiagnosticTroubleCodeUdsToTroubleCodeObdMappingBuilder:
     """Builder for DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
+        self._obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
 
     def build(self) -> DiagnosticTroubleCodeUdsToTroubleCodeObdMapping:
         """Build and return DiagnosticTroubleCodeUdsToTroubleCodeObdMapping object.

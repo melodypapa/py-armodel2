@@ -1,29 +1,28 @@
 """ARPackage AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ARPackage(ARObject):
     """AUTOSAR ARPackage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ARPackage to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ARPACKAGE")
+        element = ET.Element("ARPACKAGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ARPackage":
+    def deserialize(cls, element: ET.Element) -> "ARPackage":
         """Create ARPackage from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ARPackage(ARObject):
         Returns:
             ARPackage instance
         """
-        obj = cls()
+        obj: ARPackage = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ARPackage(ARObject):
 class ARPackageBuilder:
     """Builder for ARPackage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ARPackage()
+        self._obj: ARPackage = ARPackage()
 
     def build(self) -> ARPackage:
         """Build and return ARPackage object.

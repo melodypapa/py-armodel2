@@ -1,29 +1,28 @@
 """ConstantSpecificationMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConstantSpecificationMapping(ARObject):
     """AUTOSAR ConstantSpecificationMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConstantSpecificationMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConstantSpecificationMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONSTANTSPECIFICATIONMAPPING")
+        element = ET.Element("CONSTANTSPECIFICATIONMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConstantSpecificationMapping":
+    def deserialize(cls, element: ET.Element) -> "ConstantSpecificationMapping":
         """Create ConstantSpecificationMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConstantSpecificationMapping(ARObject):
         Returns:
             ConstantSpecificationMapping instance
         """
-        obj = cls()
+        obj: ConstantSpecificationMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConstantSpecificationMapping(ARObject):
 class ConstantSpecificationMappingBuilder:
     """Builder for ConstantSpecificationMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConstantSpecificationMapping()
+        self._obj: ConstantSpecificationMapping = ConstantSpecificationMapping()
 
     def build(self) -> ConstantSpecificationMapping:
         """Build and return ConstantSpecificationMapping object.

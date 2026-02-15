@@ -1,29 +1,28 @@
 """ClientServerToSignalMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientServerToSignalMapping(ARObject):
     """AUTOSAR ClientServerToSignalMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientServerToSignalMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientServerToSignalMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTSERVERTOSIGNALMAPPING")
+        element = ET.Element("CLIENTSERVERTOSIGNALMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientServerToSignalMapping":
+    def deserialize(cls, element: ET.Element) -> "ClientServerToSignalMapping":
         """Create ClientServerToSignalMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientServerToSignalMapping(ARObject):
         Returns:
             ClientServerToSignalMapping instance
         """
-        obj = cls()
+        obj: ClientServerToSignalMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientServerToSignalMapping(ARObject):
 class ClientServerToSignalMappingBuilder:
     """Builder for ClientServerToSignalMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientServerToSignalMapping()
+        self._obj: ClientServerToSignalMapping = ClientServerToSignalMapping()
 
     def build(self) -> ClientServerToSignalMapping:
         """Build and return ClientServerToSignalMapping object.

@@ -1,29 +1,28 @@
 """DiagnosticServiceSwMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticServiceSwMapping(ARObject):
     """AUTOSAR DiagnosticServiceSwMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticServiceSwMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticServiceSwMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSERVICESWMAPPING")
+        element = ET.Element("DIAGNOSTICSERVICESWMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticServiceSwMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceSwMapping":
         """Create DiagnosticServiceSwMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticServiceSwMapping(ARObject):
         Returns:
             DiagnosticServiceSwMapping instance
         """
-        obj = cls()
+        obj: DiagnosticServiceSwMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticServiceSwMapping(ARObject):
 class DiagnosticServiceSwMappingBuilder:
     """Builder for DiagnosticServiceSwMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticServiceSwMapping()
+        self._obj: DiagnosticServiceSwMapping = DiagnosticServiceSwMapping()
 
     def build(self) -> DiagnosticServiceSwMapping:
         """Build and return DiagnosticServiceSwMapping object.

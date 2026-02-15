@@ -1,29 +1,28 @@
 """DoIpActivationLineNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DoIpActivationLineNeeds(ARObject):
     """AUTOSAR DoIpActivationLineNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DoIpActivationLineNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DoIpActivationLineNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOIPACTIVATIONLINENEEDS")
+        element = ET.Element("DOIPACTIVATIONLINENEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DoIpActivationLineNeeds":
+    def deserialize(cls, element: ET.Element) -> "DoIpActivationLineNeeds":
         """Create DoIpActivationLineNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DoIpActivationLineNeeds(ARObject):
         Returns:
             DoIpActivationLineNeeds instance
         """
-        obj = cls()
+        obj: DoIpActivationLineNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DoIpActivationLineNeeds(ARObject):
 class DoIpActivationLineNeedsBuilder:
     """Builder for DoIpActivationLineNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DoIpActivationLineNeeds()
+        self._obj: DoIpActivationLineNeeds = DoIpActivationLineNeeds()
 
     def build(self) -> DoIpActivationLineNeeds:
         """Build and return DoIpActivationLineNeeds object.

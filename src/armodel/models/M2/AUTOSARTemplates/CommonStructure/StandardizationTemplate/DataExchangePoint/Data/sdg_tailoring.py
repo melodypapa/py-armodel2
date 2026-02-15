@@ -1,29 +1,28 @@
 """SdgTailoring AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgTailoring(ARObject):
     """AUTOSAR SdgTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgTailoring to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGTAILORING")
+        element = ET.Element("SDGTAILORING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgTailoring":
+    def deserialize(cls, element: ET.Element) -> "SdgTailoring":
         """Create SdgTailoring from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgTailoring(ARObject):
         Returns:
             SdgTailoring instance
         """
-        obj = cls()
+        obj: SdgTailoring = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgTailoring(ARObject):
 class SdgTailoringBuilder:
     """Builder for SdgTailoring."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgTailoring()
+        self._obj: SdgTailoring = SdgTailoring()
 
     def build(self) -> SdgTailoring:
         """Build and return SdgTailoring object.

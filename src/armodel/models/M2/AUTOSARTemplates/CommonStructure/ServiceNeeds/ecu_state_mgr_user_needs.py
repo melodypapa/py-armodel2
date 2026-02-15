@@ -1,29 +1,28 @@
 """EcuStateMgrUserNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcuStateMgrUserNeeds(ARObject):
     """AUTOSAR EcuStateMgrUserNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcuStateMgrUserNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcuStateMgrUserNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUSTATEMGRUSERNEEDS")
+        element = ET.Element("ECUSTATEMGRUSERNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcuStateMgrUserNeeds":
+    def deserialize(cls, element: ET.Element) -> "EcuStateMgrUserNeeds":
         """Create EcuStateMgrUserNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcuStateMgrUserNeeds(ARObject):
         Returns:
             EcuStateMgrUserNeeds instance
         """
-        obj = cls()
+        obj: EcuStateMgrUserNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcuStateMgrUserNeeds(ARObject):
 class EcuStateMgrUserNeedsBuilder:
     """Builder for EcuStateMgrUserNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcuStateMgrUserNeeds()
+        self._obj: EcuStateMgrUserNeeds = EcuStateMgrUserNeeds()
 
     def build(self) -> EcuStateMgrUserNeeds:
         """Build and return EcuStateMgrUserNeeds object.

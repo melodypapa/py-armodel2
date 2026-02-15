@@ -1,29 +1,28 @@
 """DiagnosticIOControl AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticIOControl(ARObject):
     """AUTOSAR DiagnosticIOControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticIOControl."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticIOControl to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICIOCONTROL")
+        element = ET.Element("DIAGNOSTICIOCONTROL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticIOControl":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIOControl":
         """Create DiagnosticIOControl from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticIOControl(ARObject):
         Returns:
             DiagnosticIOControl instance
         """
-        obj = cls()
+        obj: DiagnosticIOControl = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticIOControl(ARObject):
 class DiagnosticIOControlBuilder:
     """Builder for DiagnosticIOControl."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticIOControl()
+        self._obj: DiagnosticIOControl = DiagnosticIOControl()
 
     def build(self) -> DiagnosticIOControl:
         """Build and return DiagnosticIOControl object.

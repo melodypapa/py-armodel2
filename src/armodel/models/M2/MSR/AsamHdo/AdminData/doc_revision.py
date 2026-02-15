@@ -1,29 +1,28 @@
 """DocRevision AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DocRevision(ARObject):
     """AUTOSAR DocRevision."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DocRevision."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DocRevision to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DOCREVISION")
+        element = ET.Element("DOCREVISION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DocRevision":
+    def deserialize(cls, element: ET.Element) -> "DocRevision":
         """Create DocRevision from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DocRevision(ARObject):
         Returns:
             DocRevision instance
         """
-        obj = cls()
+        obj: DocRevision = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DocRevision(ARObject):
 class DocRevisionBuilder:
     """Builder for DocRevision."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DocRevision()
+        self._obj: DocRevision = DocRevision()
 
     def build(self) -> DocRevision:
         """Build and return DocRevision object.

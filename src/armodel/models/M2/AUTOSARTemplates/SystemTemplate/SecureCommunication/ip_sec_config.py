@@ -1,29 +1,28 @@
 """IPSecConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IPSecConfig(ARObject):
     """AUTOSAR IPSecConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IPSecConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPSECCONFIG")
+        element = ET.Element("IPSECCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IPSecConfig":
+    def deserialize(cls, element: ET.Element) -> "IPSecConfig":
         """Create IPSecConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IPSecConfig(ARObject):
         Returns:
             IPSecConfig instance
         """
-        obj = cls()
+        obj: IPSecConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IPSecConfig(ARObject):
 class IPSecConfigBuilder:
     """Builder for IPSecConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IPSecConfig()
+        self._obj: IPSecConfig = IPSecConfig()
 
     def build(self) -> IPSecConfig:
         """Build and return IPSecConfig object.

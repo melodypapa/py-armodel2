@@ -1,29 +1,28 @@
 """LinCommunicationController AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinCommunicationController(ARObject):
     """AUTOSAR LinCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinCommunicationController."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinCommunicationController to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINCOMMUNICATIONCONTROLLER")
+        element = ET.Element("LINCOMMUNICATIONCONTROLLER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinCommunicationController":
+    def deserialize(cls, element: ET.Element) -> "LinCommunicationController":
         """Create LinCommunicationController from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinCommunicationController(ARObject):
         Returns:
             LinCommunicationController instance
         """
-        obj = cls()
+        obj: LinCommunicationController = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinCommunicationController(ARObject):
 class LinCommunicationControllerBuilder:
     """Builder for LinCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinCommunicationController()
+        self._obj: LinCommunicationController = LinCommunicationController()
 
     def build(self) -> LinCommunicationController:
         """Build and return LinCommunicationController object.

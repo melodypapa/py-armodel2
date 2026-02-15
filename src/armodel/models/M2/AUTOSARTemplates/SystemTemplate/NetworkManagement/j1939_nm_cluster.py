@@ -1,29 +1,28 @@
 """J1939NmCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class J1939NmCluster(ARObject):
     """AUTOSAR J1939NmCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize J1939NmCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert J1939NmCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("J1939NMCLUSTER")
+        element = ET.Element("J1939NMCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "J1939NmCluster":
+    def deserialize(cls, element: ET.Element) -> "J1939NmCluster":
         """Create J1939NmCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class J1939NmCluster(ARObject):
         Returns:
             J1939NmCluster instance
         """
-        obj = cls()
+        obj: J1939NmCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class J1939NmCluster(ARObject):
 class J1939NmClusterBuilder:
     """Builder for J1939NmCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = J1939NmCluster()
+        self._obj: J1939NmCluster = J1939NmCluster()
 
     def build(self) -> J1939NmCluster:
         """Build and return J1939NmCluster object.

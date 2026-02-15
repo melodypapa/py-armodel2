@@ -1,29 +1,28 @@
 """EcucMultilineStringParamDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucMultilineStringParamDef(ARObject):
     """AUTOSAR EcucMultilineStringParamDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucMultilineStringParamDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucMultilineStringParamDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCMULTILINESTRINGPARAMDEF")
+        element = ET.Element("ECUCMULTILINESTRINGPARAMDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucMultilineStringParamDef":
+    def deserialize(cls, element: ET.Element) -> "EcucMultilineStringParamDef":
         """Create EcucMultilineStringParamDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucMultilineStringParamDef(ARObject):
         Returns:
             EcucMultilineStringParamDef instance
         """
-        obj = cls()
+        obj: EcucMultilineStringParamDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucMultilineStringParamDef(ARObject):
 class EcucMultilineStringParamDefBuilder:
     """Builder for EcucMultilineStringParamDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucMultilineStringParamDef()
+        self._obj: EcucMultilineStringParamDef = EcucMultilineStringParamDef()
 
     def build(self) -> EcucMultilineStringParamDef:
         """Build and return EcucMultilineStringParamDef object.

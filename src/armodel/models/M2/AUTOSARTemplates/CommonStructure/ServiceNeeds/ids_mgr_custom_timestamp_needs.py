@@ -1,29 +1,28 @@
 """IdsMgrCustomTimestampNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsMgrCustomTimestampNeeds(ARObject):
     """AUTOSAR IdsMgrCustomTimestampNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsMgrCustomTimestampNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsMgrCustomTimestampNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSMGRCUSTOMTIMESTAMPNEEDS")
+        element = ET.Element("IDSMGRCUSTOMTIMESTAMPNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsMgrCustomTimestampNeeds":
+    def deserialize(cls, element: ET.Element) -> "IdsMgrCustomTimestampNeeds":
         """Create IdsMgrCustomTimestampNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsMgrCustomTimestampNeeds(ARObject):
         Returns:
             IdsMgrCustomTimestampNeeds instance
         """
-        obj = cls()
+        obj: IdsMgrCustomTimestampNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsMgrCustomTimestampNeeds(ARObject):
 class IdsMgrCustomTimestampNeedsBuilder:
     """Builder for IdsMgrCustomTimestampNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsMgrCustomTimestampNeeds()
+        self._obj: IdsMgrCustomTimestampNeeds = IdsMgrCustomTimestampNeeds()
 
     def build(self) -> IdsMgrCustomTimestampNeeds:
         """Build and return IdsMgrCustomTimestampNeeds object.

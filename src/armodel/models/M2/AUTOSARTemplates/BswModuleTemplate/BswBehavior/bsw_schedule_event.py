@@ -1,29 +1,28 @@
 """BswScheduleEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswScheduleEvent(ARObject):
     """AUTOSAR BswScheduleEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswScheduleEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswScheduleEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWSCHEDULEEVENT")
+        element = ET.Element("BSWSCHEDULEEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswScheduleEvent":
+    def deserialize(cls, element: ET.Element) -> "BswScheduleEvent":
         """Create BswScheduleEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswScheduleEvent(ARObject):
         Returns:
             BswScheduleEvent instance
         """
-        obj = cls()
+        obj: BswScheduleEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswScheduleEvent(ARObject):
 class BswScheduleEventBuilder:
     """Builder for BswScheduleEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswScheduleEvent()
+        self._obj: BswScheduleEvent = BswScheduleEvent()
 
     def build(self) -> BswScheduleEvent:
         """Build and return BswScheduleEvent object.

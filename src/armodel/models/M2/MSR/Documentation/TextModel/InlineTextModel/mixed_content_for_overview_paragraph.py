@@ -1,29 +1,28 @@
 """MixedContentForOverviewParagraph AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MixedContentForOverviewParagraph(ARObject):
     """AUTOSAR MixedContentForOverviewParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MixedContentForOverviewParagraph."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MixedContentForOverviewParagraph to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MIXEDCONTENTFOROVERVIEWPARAGRAPH")
+        element = ET.Element("MIXEDCONTENTFOROVERVIEWPARAGRAPH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MixedContentForOverviewParagraph":
+    def deserialize(cls, element: ET.Element) -> "MixedContentForOverviewParagraph":
         """Create MixedContentForOverviewParagraph from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MixedContentForOverviewParagraph(ARObject):
         Returns:
             MixedContentForOverviewParagraph instance
         """
-        obj = cls()
+        obj: MixedContentForOverviewParagraph = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MixedContentForOverviewParagraph(ARObject):
 class MixedContentForOverviewParagraphBuilder:
     """Builder for MixedContentForOverviewParagraph."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MixedContentForOverviewParagraph()
+        self._obj: MixedContentForOverviewParagraph = MixedContentForOverviewParagraph()
 
     def build(self) -> MixedContentForOverviewParagraph:
         """Build and return MixedContentForOverviewParagraph object.

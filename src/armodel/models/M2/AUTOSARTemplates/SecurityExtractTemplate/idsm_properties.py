@@ -1,29 +1,28 @@
 """IdsmProperties AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsmProperties(ARObject):
     """AUTOSAR IdsmProperties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsmProperties."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsmProperties to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSMPROPERTIES")
+        element = ET.Element("IDSMPROPERTIES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsmProperties":
+    def deserialize(cls, element: ET.Element) -> "IdsmProperties":
         """Create IdsmProperties from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsmProperties(ARObject):
         Returns:
             IdsmProperties instance
         """
-        obj = cls()
+        obj: IdsmProperties = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsmProperties(ARObject):
 class IdsmPropertiesBuilder:
     """Builder for IdsmProperties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsmProperties()
+        self._obj: IdsmProperties = IdsmProperties()
 
     def build(self) -> IdsmProperties:
         """Build and return IdsmProperties object.

@@ -1,29 +1,28 @@
 """PRPortPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PRPortPrototype(ARObject):
     """AUTOSAR PRPortPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PRPortPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PRPORTPROTOTYPE")
+        element = ET.Element("PRPORTPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PRPortPrototype":
+    def deserialize(cls, element: ET.Element) -> "PRPortPrototype":
         """Create PRPortPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PRPortPrototype(ARObject):
         Returns:
             PRPortPrototype instance
         """
-        obj = cls()
+        obj: PRPortPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PRPortPrototype(ARObject):
 class PRPortPrototypeBuilder:
     """Builder for PRPortPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PRPortPrototype()
+        self._obj: PRPortPrototype = PRPortPrototype()
 
     def build(self) -> PRPortPrototype:
         """Build and return PRPortPrototype object.

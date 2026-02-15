@@ -1,29 +1,28 @@
 """BswBackgroundEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswBackgroundEvent(ARObject):
     """AUTOSAR BswBackgroundEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswBackgroundEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswBackgroundEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWBACKGROUNDEVENT")
+        element = ET.Element("BSWBACKGROUNDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswBackgroundEvent":
+    def deserialize(cls, element: ET.Element) -> "BswBackgroundEvent":
         """Create BswBackgroundEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswBackgroundEvent(ARObject):
         Returns:
             BswBackgroundEvent instance
         """
-        obj = cls()
+        obj: BswBackgroundEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswBackgroundEvent(ARObject):
 class BswBackgroundEventBuilder:
     """Builder for BswBackgroundEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswBackgroundEvent()
+        self._obj: BswBackgroundEvent = BswBackgroundEvent()
 
     def build(self) -> BswBackgroundEvent:
         """Build and return BswBackgroundEvent object.

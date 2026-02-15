@@ -1,29 +1,28 @@
 """LinTpConfig AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinTpConfig(ARObject):
     """AUTOSAR LinTpConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinTpConfig."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinTpConfig to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINTPCONFIG")
+        element = ET.Element("LINTPCONFIG")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinTpConfig":
+    def deserialize(cls, element: ET.Element) -> "LinTpConfig":
         """Create LinTpConfig from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinTpConfig(ARObject):
         Returns:
             LinTpConfig instance
         """
-        obj = cls()
+        obj: LinTpConfig = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinTpConfig(ARObject):
 class LinTpConfigBuilder:
     """Builder for LinTpConfig."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinTpConfig()
+        self._obj: LinTpConfig = LinTpConfig()
 
     def build(self) -> LinTpConfig:
         """Build and return LinTpConfig object.

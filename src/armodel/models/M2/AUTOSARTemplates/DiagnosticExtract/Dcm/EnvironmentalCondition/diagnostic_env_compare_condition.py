@@ -1,29 +1,28 @@
 """DiagnosticEnvCompareCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEnvCompareCondition(ARObject):
     """AUTOSAR DiagnosticEnvCompareCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEnvCompareCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEnvCompareCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICENVCOMPARECONDITION")
+        element = ET.Element("DIAGNOSTICENVCOMPARECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEnvCompareCondition":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvCompareCondition":
         """Create DiagnosticEnvCompareCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEnvCompareCondition(ARObject):
         Returns:
             DiagnosticEnvCompareCondition instance
         """
-        obj = cls()
+        obj: DiagnosticEnvCompareCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEnvCompareCondition(ARObject):
 class DiagnosticEnvCompareConditionBuilder:
     """Builder for DiagnosticEnvCompareCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEnvCompareCondition()
+        self._obj: DiagnosticEnvCompareCondition = DiagnosticEnvCompareCondition()
 
     def build(self) -> DiagnosticEnvCompareCondition:
         """Build and return DiagnosticEnvCompareCondition object.

@@ -1,29 +1,28 @@
 """CompositeRuleBasedValueSpecification AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompositeRuleBasedValueSpecification(ARObject):
     """AUTOSAR CompositeRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueSpecification."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompositeRuleBasedValueSpecification to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPOSITERULEBASEDVALUESPECIFICATION")
+        element = ET.Element("COMPOSITERULEBASEDVALUESPECIFICATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompositeRuleBasedValueSpecification":
+    def deserialize(cls, element: ET.Element) -> "CompositeRuleBasedValueSpecification":
         """Create CompositeRuleBasedValueSpecification from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompositeRuleBasedValueSpecification(ARObject):
         Returns:
             CompositeRuleBasedValueSpecification instance
         """
-        obj = cls()
+        obj: CompositeRuleBasedValueSpecification = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompositeRuleBasedValueSpecification(ARObject):
 class CompositeRuleBasedValueSpecificationBuilder:
     """Builder for CompositeRuleBasedValueSpecification."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompositeRuleBasedValueSpecification()
+        self._obj: CompositeRuleBasedValueSpecification = CompositeRuleBasedValueSpecification()
 
     def build(self) -> CompositeRuleBasedValueSpecification:
         """Build and return CompositeRuleBasedValueSpecification object.

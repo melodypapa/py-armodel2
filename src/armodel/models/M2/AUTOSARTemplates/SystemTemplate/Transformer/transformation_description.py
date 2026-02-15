@@ -1,29 +1,28 @@
 """TransformationDescription AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransformationDescription(ARObject):
     """AUTOSAR TransformationDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransformationDescription."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransformationDescription to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSFORMATIONDESCRIPTION")
+        element = ET.Element("TRANSFORMATIONDESCRIPTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransformationDescription":
+    def deserialize(cls, element: ET.Element) -> "TransformationDescription":
         """Create TransformationDescription from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransformationDescription(ARObject):
         Returns:
             TransformationDescription instance
         """
-        obj = cls()
+        obj: TransformationDescription = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransformationDescription(ARObject):
 class TransformationDescriptionBuilder:
     """Builder for TransformationDescription."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransformationDescription()
+        self._obj: TransformationDescription = TransformationDescription()
 
     def build(self) -> TransformationDescription:
         """Build and return TransformationDescription object.

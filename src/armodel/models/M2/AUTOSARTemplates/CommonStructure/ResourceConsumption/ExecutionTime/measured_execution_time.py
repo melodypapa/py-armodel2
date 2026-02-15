@@ -1,29 +1,28 @@
 """MeasuredExecutionTime AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MeasuredExecutionTime(ARObject):
     """AUTOSAR MeasuredExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MeasuredExecutionTime."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MeasuredExecutionTime to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MEASUREDEXECUTIONTIME")
+        element = ET.Element("MEASUREDEXECUTIONTIME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MeasuredExecutionTime":
+    def deserialize(cls, element: ET.Element) -> "MeasuredExecutionTime":
         """Create MeasuredExecutionTime from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MeasuredExecutionTime(ARObject):
         Returns:
             MeasuredExecutionTime instance
         """
-        obj = cls()
+        obj: MeasuredExecutionTime = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MeasuredExecutionTime(ARObject):
 class MeasuredExecutionTimeBuilder:
     """Builder for MeasuredExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MeasuredExecutionTime()
+        self._obj: MeasuredExecutionTime = MeasuredExecutionTime()
 
     def build(self) -> MeasuredExecutionTime:
         """Build and return MeasuredExecutionTime object.

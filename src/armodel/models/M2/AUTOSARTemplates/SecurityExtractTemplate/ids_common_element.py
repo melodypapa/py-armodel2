@@ -1,29 +1,28 @@
 """IdsCommonElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsCommonElement(ARObject):
     """AUTOSAR IdsCommonElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsCommonElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsCommonElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSCOMMONELEMENT")
+        element = ET.Element("IDSCOMMONELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsCommonElement":
+    def deserialize(cls, element: ET.Element) -> "IdsCommonElement":
         """Create IdsCommonElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsCommonElement(ARObject):
         Returns:
             IdsCommonElement instance
         """
-        obj = cls()
+        obj: IdsCommonElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsCommonElement(ARObject):
 class IdsCommonElementBuilder:
     """Builder for IdsCommonElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsCommonElement()
+        self._obj: IdsCommonElement = IdsCommonElement()
 
     def build(self) -> IdsCommonElement:
         """Build and return IdsCommonElement object.

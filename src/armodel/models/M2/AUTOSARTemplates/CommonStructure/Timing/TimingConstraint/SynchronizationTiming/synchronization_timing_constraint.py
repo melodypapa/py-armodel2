@@ -1,29 +1,28 @@
 """SynchronizationTimingConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SynchronizationTimingConstraint(ARObject):
     """AUTOSAR SynchronizationTimingConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SynchronizationTimingConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYNCHRONIZATIONTIMINGCONSTRAINT")
+        element = ET.Element("SYNCHRONIZATIONTIMINGCONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SynchronizationTimingConstraint":
+    def deserialize(cls, element: ET.Element) -> "SynchronizationTimingConstraint":
         """Create SynchronizationTimingConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SynchronizationTimingConstraint(ARObject):
         Returns:
             SynchronizationTimingConstraint instance
         """
-        obj = cls()
+        obj: SynchronizationTimingConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SynchronizationTimingConstraint(ARObject):
 class SynchronizationTimingConstraintBuilder:
     """Builder for SynchronizationTimingConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SynchronizationTimingConstraint()
+        self._obj: SynchronizationTimingConstraint = SynchronizationTimingConstraint()
 
     def build(self) -> SynchronizationTimingConstraint:
         """Build and return SynchronizationTimingConstraint object.

@@ -1,29 +1,28 @@
 """ConstantSpecificationMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConstantSpecificationMappingSet(ARObject):
     """AUTOSAR ConstantSpecificationMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConstantSpecificationMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONSTANTSPECIFICATIONMAPPINGSET")
+        element = ET.Element("CONSTANTSPECIFICATIONMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConstantSpecificationMappingSet":
+    def deserialize(cls, element: ET.Element) -> "ConstantSpecificationMappingSet":
         """Create ConstantSpecificationMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConstantSpecificationMappingSet(ARObject):
         Returns:
             ConstantSpecificationMappingSet instance
         """
-        obj = cls()
+        obj: ConstantSpecificationMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConstantSpecificationMappingSet(ARObject):
 class ConstantSpecificationMappingSetBuilder:
     """Builder for ConstantSpecificationMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConstantSpecificationMappingSet()
+        self._obj: ConstantSpecificationMappingSet = ConstantSpecificationMappingSet()
 
     def build(self) -> ConstantSpecificationMappingSet:
         """Build and return ConstantSpecificationMappingSet object.

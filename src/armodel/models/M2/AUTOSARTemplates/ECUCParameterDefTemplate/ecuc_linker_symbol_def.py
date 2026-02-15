@@ -1,29 +1,28 @@
 """EcucLinkerSymbolDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucLinkerSymbolDef(ARObject):
     """AUTOSAR EcucLinkerSymbolDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucLinkerSymbolDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucLinkerSymbolDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCLINKERSYMBOLDEF")
+        element = ET.Element("ECUCLINKERSYMBOLDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucLinkerSymbolDef":
+    def deserialize(cls, element: ET.Element) -> "EcucLinkerSymbolDef":
         """Create EcucLinkerSymbolDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucLinkerSymbolDef(ARObject):
         Returns:
             EcucLinkerSymbolDef instance
         """
-        obj = cls()
+        obj: EcucLinkerSymbolDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucLinkerSymbolDef(ARObject):
 class EcucLinkerSymbolDefBuilder:
     """Builder for EcucLinkerSymbolDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucLinkerSymbolDef()
+        self._obj: EcucLinkerSymbolDef = EcucLinkerSymbolDef()
 
     def build(self) -> EcucLinkerSymbolDef:
         """Build and return EcucLinkerSymbolDef object.

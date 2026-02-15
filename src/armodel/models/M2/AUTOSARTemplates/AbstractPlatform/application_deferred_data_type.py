@@ -1,29 +1,28 @@
 """ApplicationDeferredDataType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationDeferredDataType(ARObject):
     """AUTOSAR ApplicationDeferredDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationDeferredDataType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationDeferredDataType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONDEFERREDDATATYPE")
+        element = ET.Element("APPLICATIONDEFERREDDATATYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationDeferredDataType":
+    def deserialize(cls, element: ET.Element) -> "ApplicationDeferredDataType":
         """Create ApplicationDeferredDataType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationDeferredDataType(ARObject):
         Returns:
             ApplicationDeferredDataType instance
         """
-        obj = cls()
+        obj: ApplicationDeferredDataType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationDeferredDataType(ARObject):
 class ApplicationDeferredDataTypeBuilder:
     """Builder for ApplicationDeferredDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationDeferredDataType()
+        self._obj: ApplicationDeferredDataType = ApplicationDeferredDataType()
 
     def build(self) -> ApplicationDeferredDataType:
         """Build and return ApplicationDeferredDataType object.

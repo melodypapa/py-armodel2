@@ -1,29 +1,28 @@
 """ApplicationCompositeElementInPortInterfaceInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
     """AUTOSAR ApplicationCompositeElementInPortInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationCompositeElementInPortInterfaceInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationCompositeElementInPortInterfaceInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONCOMPOSITEELEMENTINPORTINTERFACEINSTANCEREF")
+        element = ET.Element("APPLICATIONCOMPOSITEELEMENTINPORTINTERFACEINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationCompositeElementInPortInterfaceInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeElementInPortInterfaceInstanceRef":
         """Create ApplicationCompositeElementInPortInterfaceInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
         Returns:
             ApplicationCompositeElementInPortInterfaceInstanceRef instance
         """
-        obj = cls()
+        obj: ApplicationCompositeElementInPortInterfaceInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
 class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder:
     """Builder for ApplicationCompositeElementInPortInterfaceInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationCompositeElementInPortInterfaceInstanceRef()
+        self._obj: ApplicationCompositeElementInPortInterfaceInstanceRef = ApplicationCompositeElementInPortInterfaceInstanceRef()
 
     def build(self) -> ApplicationCompositeElementInPortInterfaceInstanceRef:
         """Build and return ApplicationCompositeElementInPortInterfaceInstanceRef object.

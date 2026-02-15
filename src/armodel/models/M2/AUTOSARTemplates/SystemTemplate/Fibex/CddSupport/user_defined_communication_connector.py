@@ -1,29 +1,28 @@
 """UserDefinedCommunicationConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedCommunicationConnector(ARObject):
     """AUTOSAR UserDefinedCommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedCommunicationConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedCommunicationConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDCOMMUNICATIONCONNECTOR")
+        element = ET.Element("USERDEFINEDCOMMUNICATIONCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedCommunicationConnector":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedCommunicationConnector":
         """Create UserDefinedCommunicationConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedCommunicationConnector(ARObject):
         Returns:
             UserDefinedCommunicationConnector instance
         """
-        obj = cls()
+        obj: UserDefinedCommunicationConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedCommunicationConnector(ARObject):
 class UserDefinedCommunicationConnectorBuilder:
     """Builder for UserDefinedCommunicationConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedCommunicationConnector()
+        self._obj: UserDefinedCommunicationConnector = UserDefinedCommunicationConnector()
 
     def build(self) -> UserDefinedCommunicationConnector:
         """Build and return UserDefinedCommunicationConnector object.

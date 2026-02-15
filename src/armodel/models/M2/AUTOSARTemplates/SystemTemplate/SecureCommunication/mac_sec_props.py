@@ -1,29 +1,28 @@
 """MacSecProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MacSecProps(ARObject):
     """AUTOSAR MacSecProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MacSecProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MacSecProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MACSECPROPS")
+        element = ET.Element("MACSECPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MacSecProps":
+    def deserialize(cls, element: ET.Element) -> "MacSecProps":
         """Create MacSecProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MacSecProps(ARObject):
         Returns:
             MacSecProps instance
         """
-        obj = cls()
+        obj: MacSecProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MacSecProps(ARObject):
 class MacSecPropsBuilder:
     """Builder for MacSecProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MacSecProps()
+        self._obj: MacSecProps = MacSecProps()
 
     def build(self) -> MacSecProps:
         """Build and return MacSecProps object.

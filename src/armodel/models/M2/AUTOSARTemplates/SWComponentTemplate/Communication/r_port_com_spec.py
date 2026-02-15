@@ -1,29 +1,28 @@
 """RPortComSpec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RPortComSpec(ARObject):
     """AUTOSAR RPortComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RPortComSpec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RPortComSpec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPORTCOMSPEC")
+        element = ET.Element("RPORTCOMSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RPortComSpec":
+    def deserialize(cls, element: ET.Element) -> "RPortComSpec":
         """Create RPortComSpec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RPortComSpec(ARObject):
         Returns:
             RPortComSpec instance
         """
-        obj = cls()
+        obj: RPortComSpec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RPortComSpec(ARObject):
 class RPortComSpecBuilder:
     """Builder for RPortComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RPortComSpec()
+        self._obj: RPortComSpec = RPortComSpec()
 
     def build(self) -> RPortComSpec:
         """Build and return RPortComSpec object.

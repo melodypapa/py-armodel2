@@ -1,29 +1,28 @@
 """PassThroughSwConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PassThroughSwConnector(ARObject):
     """AUTOSAR PassThroughSwConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PassThroughSwConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PassThroughSwConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PASSTHROUGHSWCONNECTOR")
+        element = ET.Element("PASSTHROUGHSWCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PassThroughSwConnector":
+    def deserialize(cls, element: ET.Element) -> "PassThroughSwConnector":
         """Create PassThroughSwConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PassThroughSwConnector(ARObject):
         Returns:
             PassThroughSwConnector instance
         """
-        obj = cls()
+        obj: PassThroughSwConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PassThroughSwConnector(ARObject):
 class PassThroughSwConnectorBuilder:
     """Builder for PassThroughSwConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PassThroughSwConnector()
+        self._obj: PassThroughSwConnector = PassThroughSwConnector()
 
     def build(self) -> PassThroughSwConnector:
         """Build and return PassThroughSwConnector object.

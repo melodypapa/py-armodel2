@@ -1,29 +1,28 @@
 """TDEventCycleStart AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDEventCycleStart(ARObject):
     """AUTOSAR TDEventCycleStart."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDEventCycleStart."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDEventCycleStart to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDEVENTCYCLESTART")
+        element = ET.Element("TDEVENTCYCLESTART")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDEventCycleStart":
+    def deserialize(cls, element: ET.Element) -> "TDEventCycleStart":
         """Create TDEventCycleStart from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDEventCycleStart(ARObject):
         Returns:
             TDEventCycleStart instance
         """
-        obj = cls()
+        obj: TDEventCycleStart = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDEventCycleStart(ARObject):
 class TDEventCycleStartBuilder:
     """Builder for TDEventCycleStart."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDEventCycleStart()
+        self._obj: TDEventCycleStart = TDEventCycleStart()
 
     def build(self) -> TDEventCycleStart:
         """Build and return TDEventCycleStart object.

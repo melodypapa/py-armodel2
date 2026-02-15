@@ -1,29 +1,28 @@
 """UserDefinedPdu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UserDefinedPdu(ARObject):
     """AUTOSAR UserDefinedPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UserDefinedPdu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UserDefinedPdu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("USERDEFINEDPDU")
+        element = ET.Element("USERDEFINEDPDU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UserDefinedPdu":
+    def deserialize(cls, element: ET.Element) -> "UserDefinedPdu":
         """Create UserDefinedPdu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UserDefinedPdu(ARObject):
         Returns:
             UserDefinedPdu instance
         """
-        obj = cls()
+        obj: UserDefinedPdu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UserDefinedPdu(ARObject):
 class UserDefinedPduBuilder:
     """Builder for UserDefinedPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UserDefinedPdu()
+        self._obj: UserDefinedPdu = UserDefinedPdu()
 
     def build(self) -> UserDefinedPdu:
         """Build and return UserDefinedPdu object.

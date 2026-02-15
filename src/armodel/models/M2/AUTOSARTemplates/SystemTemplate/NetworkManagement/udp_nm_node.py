@@ -1,29 +1,28 @@
 """UdpNmNode AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UdpNmNode(ARObject):
     """AUTOSAR UdpNmNode."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UdpNmNode."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UdpNmNode to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("UDPNMNODE")
+        element = ET.Element("UDPNMNODE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UdpNmNode":
+    def deserialize(cls, element: ET.Element) -> "UdpNmNode":
         """Create UdpNmNode from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UdpNmNode(ARObject):
         Returns:
             UdpNmNode instance
         """
-        obj = cls()
+        obj: UdpNmNode = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UdpNmNode(ARObject):
 class UdpNmNodeBuilder:
     """Builder for UdpNmNode."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UdpNmNode()
+        self._obj: UdpNmNode = UdpNmNode()
 
     def build(self) -> UdpNmNode:
         """Build and return UdpNmNode object.

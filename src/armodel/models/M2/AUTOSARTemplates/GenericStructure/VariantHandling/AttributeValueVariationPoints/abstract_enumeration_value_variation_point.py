@@ -1,29 +1,28 @@
 """AbstractEnumerationValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractEnumerationValueVariationPoint(ARObject):
     """AUTOSAR AbstractEnumerationValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractEnumerationValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTENUMERATIONVALUEVARIATIONPOINT")
+        element = ET.Element("ABSTRACTENUMERATIONVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractEnumerationValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "AbstractEnumerationValueVariationPoint":
         """Create AbstractEnumerationValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractEnumerationValueVariationPoint(ARObject):
         Returns:
             AbstractEnumerationValueVariationPoint instance
         """
-        obj = cls()
+        obj: AbstractEnumerationValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractEnumerationValueVariationPoint(ARObject):
 class AbstractEnumerationValueVariationPointBuilder:
     """Builder for AbstractEnumerationValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractEnumerationValueVariationPoint()
+        self._obj: AbstractEnumerationValueVariationPoint = AbstractEnumerationValueVariationPoint()
 
     def build(self) -> AbstractEnumerationValueVariationPoint:
         """Build and return AbstractEnumerationValueVariationPoint object.

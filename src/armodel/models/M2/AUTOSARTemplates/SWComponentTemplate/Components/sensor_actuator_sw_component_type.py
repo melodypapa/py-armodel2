@@ -1,29 +1,28 @@
 """SensorActuatorSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SensorActuatorSwComponentType(ARObject):
     """AUTOSAR SensorActuatorSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SensorActuatorSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SENSORACTUATORSWCOMPONENTTYPE")
+        element = ET.Element("SENSORACTUATORSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SensorActuatorSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "SensorActuatorSwComponentType":
         """Create SensorActuatorSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SensorActuatorSwComponentType(ARObject):
         Returns:
             SensorActuatorSwComponentType instance
         """
-        obj = cls()
+        obj: SensorActuatorSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SensorActuatorSwComponentType(ARObject):
 class SensorActuatorSwComponentTypeBuilder:
     """Builder for SensorActuatorSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SensorActuatorSwComponentType()
+        self._obj: SensorActuatorSwComponentType = SensorActuatorSwComponentType()
 
     def build(self) -> SensorActuatorSwComponentType:
         """Build and return SensorActuatorSwComponentType object.

@@ -1,29 +1,28 @@
 """BaseTypeDefinition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BaseTypeDefinition(ARObject):
     """AUTOSAR BaseTypeDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BaseTypeDefinition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BaseTypeDefinition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BASETYPEDEFINITION")
+        element = ET.Element("BASETYPEDEFINITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BaseTypeDefinition":
+    def deserialize(cls, element: ET.Element) -> "BaseTypeDefinition":
         """Create BaseTypeDefinition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BaseTypeDefinition(ARObject):
         Returns:
             BaseTypeDefinition instance
         """
-        obj = cls()
+        obj: BaseTypeDefinition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BaseTypeDefinition(ARObject):
 class BaseTypeDefinitionBuilder:
     """Builder for BaseTypeDefinition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BaseTypeDefinition()
+        self._obj: BaseTypeDefinition = BaseTypeDefinition()
 
     def build(self) -> BaseTypeDefinition:
         """Build and return BaseTypeDefinition object.

@@ -1,29 +1,28 @@
 """ForbiddenSignalPath AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ForbiddenSignalPath(ARObject):
     """AUTOSAR ForbiddenSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ForbiddenSignalPath."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ForbiddenSignalPath to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FORBIDDENSIGNALPATH")
+        element = ET.Element("FORBIDDENSIGNALPATH")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ForbiddenSignalPath":
+    def deserialize(cls, element: ET.Element) -> "ForbiddenSignalPath":
         """Create ForbiddenSignalPath from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ForbiddenSignalPath(ARObject):
         Returns:
             ForbiddenSignalPath instance
         """
-        obj = cls()
+        obj: ForbiddenSignalPath = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ForbiddenSignalPath(ARObject):
 class ForbiddenSignalPathBuilder:
     """Builder for ForbiddenSignalPath."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ForbiddenSignalPath()
+        self._obj: ForbiddenSignalPath = ForbiddenSignalPath()
 
     def build(self) -> ForbiddenSignalPath:
         """Build and return ForbiddenSignalPath object.

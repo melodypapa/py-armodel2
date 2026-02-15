@@ -1,29 +1,28 @@
 """POperationInAtomicSwcInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class POperationInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR POperationInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize POperationInAtomicSwcInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert POperationInAtomicSwcInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("POPERATIONINATOMICSWCINSTANCEREF")
+        element = ET.Element("POPERATIONINATOMICSWCINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "POperationInAtomicSwcInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "POperationInAtomicSwcInstanceRef":
         """Create POperationInAtomicSwcInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class POperationInAtomicSwcInstanceRef(ARObject):
         Returns:
             POperationInAtomicSwcInstanceRef instance
         """
-        obj = cls()
+        obj: POperationInAtomicSwcInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class POperationInAtomicSwcInstanceRef(ARObject):
 class POperationInAtomicSwcInstanceRefBuilder:
     """Builder for POperationInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = POperationInAtomicSwcInstanceRef()
+        self._obj: POperationInAtomicSwcInstanceRef = POperationInAtomicSwcInstanceRef()
 
     def build(self) -> POperationInAtomicSwcInstanceRef:
         """Build and return POperationInAtomicSwcInstanceRef object.

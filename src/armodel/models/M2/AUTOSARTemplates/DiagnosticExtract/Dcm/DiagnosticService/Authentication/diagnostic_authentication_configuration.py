@@ -1,29 +1,28 @@
 """DiagnosticAuthenticationConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticAuthenticationConfiguration(ARObject):
     """AUTOSAR DiagnosticAuthenticationConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticAuthenticationConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticAuthenticationConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICAUTHENTICATIONCONFIGURATION")
+        element = ET.Element("DIAGNOSTICAUTHENTICATIONCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticAuthenticationConfiguration":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthenticationConfiguration":
         """Create DiagnosticAuthenticationConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticAuthenticationConfiguration(ARObject):
         Returns:
             DiagnosticAuthenticationConfiguration instance
         """
-        obj = cls()
+        obj: DiagnosticAuthenticationConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticAuthenticationConfiguration(ARObject):
 class DiagnosticAuthenticationConfigurationBuilder:
     """Builder for DiagnosticAuthenticationConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticAuthenticationConfiguration()
+        self._obj: DiagnosticAuthenticationConfiguration = DiagnosticAuthenticationConfiguration()
 
     def build(self) -> DiagnosticAuthenticationConfiguration:
         """Build and return DiagnosticAuthenticationConfiguration object.

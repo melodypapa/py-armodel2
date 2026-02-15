@@ -1,29 +1,28 @@
 """SignalServiceTranslationElementProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SignalServiceTranslationElementProps(ARObject):
     """AUTOSAR SignalServiceTranslationElementProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SignalServiceTranslationElementProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SignalServiceTranslationElementProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SIGNALSERVICETRANSLATIONELEMENTPROPS")
+        element = ET.Element("SIGNALSERVICETRANSLATIONELEMENTPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SignalServiceTranslationElementProps":
+    def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationElementProps":
         """Create SignalServiceTranslationElementProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SignalServiceTranslationElementProps(ARObject):
         Returns:
             SignalServiceTranslationElementProps instance
         """
-        obj = cls()
+        obj: SignalServiceTranslationElementProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SignalServiceTranslationElementProps(ARObject):
 class SignalServiceTranslationElementPropsBuilder:
     """Builder for SignalServiceTranslationElementProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SignalServiceTranslationElementProps()
+        self._obj: SignalServiceTranslationElementProps = SignalServiceTranslationElementProps()
 
     def build(self) -> SignalServiceTranslationElementProps:
         """Build and return SignalServiceTranslationElementProps object.

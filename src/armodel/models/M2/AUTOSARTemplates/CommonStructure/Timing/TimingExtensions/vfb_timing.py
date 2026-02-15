@@ -1,29 +1,28 @@
 """VfbTiming AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VfbTiming(ARObject):
     """AUTOSAR VfbTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VfbTiming."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VfbTiming to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VFBTIMING")
+        element = ET.Element("VFBTIMING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VfbTiming":
+    def deserialize(cls, element: ET.Element) -> "VfbTiming":
         """Create VfbTiming from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VfbTiming(ARObject):
         Returns:
             VfbTiming instance
         """
-        obj = cls()
+        obj: VfbTiming = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VfbTiming(ARObject):
 class VfbTimingBuilder:
     """Builder for VfbTiming."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VfbTiming()
+        self._obj: VfbTiming = VfbTiming()
 
     def build(self) -> VfbTiming:
         """Build and return VfbTiming object.

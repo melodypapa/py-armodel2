@@ -1,29 +1,28 @@
 """DiagnosticStorageCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticStorageCondition(ARObject):
     """AUTOSAR DiagnosticStorageCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticStorageCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticStorageCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSTORAGECONDITION")
+        element = ET.Element("DIAGNOSTICSTORAGECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticStorageCondition":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticStorageCondition":
         """Create DiagnosticStorageCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticStorageCondition(ARObject):
         Returns:
             DiagnosticStorageCondition instance
         """
-        obj = cls()
+        obj: DiagnosticStorageCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticStorageCondition(ARObject):
 class DiagnosticStorageConditionBuilder:
     """Builder for DiagnosticStorageCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticStorageCondition()
+        self._obj: DiagnosticStorageCondition = DiagnosticStorageCondition()
 
     def build(self) -> DiagnosticStorageCondition:
         """Build and return DiagnosticStorageCondition object.

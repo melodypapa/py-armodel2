@@ -1,29 +1,28 @@
 """FlexrayFifoConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FlexrayFifoConfiguration(ARObject):
     """AUTOSAR FlexrayFifoConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FlexrayFifoConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FlexrayFifoConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLEXRAYFIFOCONFIGURATION")
+        element = ET.Element("FLEXRAYFIFOCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FlexrayFifoConfiguration":
+    def deserialize(cls, element: ET.Element) -> "FlexrayFifoConfiguration":
         """Create FlexrayFifoConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FlexrayFifoConfiguration(ARObject):
         Returns:
             FlexrayFifoConfiguration instance
         """
-        obj = cls()
+        obj: FlexrayFifoConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FlexrayFifoConfiguration(ARObject):
 class FlexrayFifoConfigurationBuilder:
     """Builder for FlexrayFifoConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FlexrayFifoConfiguration()
+        self._obj: FlexrayFifoConfiguration = FlexrayFifoConfiguration()
 
     def build(self) -> FlexrayFifoConfiguration:
         """Build and return FlexrayFifoConfiguration object.

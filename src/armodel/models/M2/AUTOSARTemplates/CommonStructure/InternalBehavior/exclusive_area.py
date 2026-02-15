@@ -1,29 +1,28 @@
 """ExclusiveArea AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ExclusiveArea(ARObject):
     """AUTOSAR ExclusiveArea."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ExclusiveArea."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ExclusiveArea to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("EXCLUSIVEAREA")
+        element = ET.Element("EXCLUSIVEAREA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ExclusiveArea":
+    def deserialize(cls, element: ET.Element) -> "ExclusiveArea":
         """Create ExclusiveArea from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ExclusiveArea(ARObject):
         Returns:
             ExclusiveArea instance
         """
-        obj = cls()
+        obj: ExclusiveArea = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ExclusiveArea(ARObject):
 class ExclusiveAreaBuilder:
     """Builder for ExclusiveArea."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ExclusiveArea()
+        self._obj: ExclusiveArea = ExclusiveArea()
 
     def build(self) -> ExclusiveArea:
         """Build and return ExclusiveArea object.

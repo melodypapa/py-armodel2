@@ -1,29 +1,28 @@
 """Compiler AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Compiler(ARObject):
     """AUTOSAR Compiler."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Compiler."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Compiler to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPILER")
+        element = ET.Element("COMPILER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Compiler":
+    def deserialize(cls, element: ET.Element) -> "Compiler":
         """Create Compiler from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Compiler(ARObject):
         Returns:
             Compiler instance
         """
-        obj = cls()
+        obj: Compiler = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Compiler(ARObject):
 class CompilerBuilder:
     """Builder for Compiler."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Compiler()
+        self._obj: Compiler = Compiler()
 
     def build(self) -> Compiler:
         """Build and return Compiler object.

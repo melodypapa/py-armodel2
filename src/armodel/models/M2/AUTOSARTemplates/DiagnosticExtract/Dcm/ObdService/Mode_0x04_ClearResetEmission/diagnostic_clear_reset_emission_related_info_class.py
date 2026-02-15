@@ -1,29 +1,28 @@
 """DiagnosticClearResetEmissionRelatedInfoClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticClearResetEmissionRelatedInfoClass(ARObject):
     """AUTOSAR DiagnosticClearResetEmissionRelatedInfoClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticClearResetEmissionRelatedInfoClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticClearResetEmissionRelatedInfoClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCLEARRESETEMISSIONRELATEDINFOCLASS")
+        element = ET.Element("DIAGNOSTICCLEARRESETEMISSIONRELATEDINFOCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticClearResetEmissionRelatedInfoClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticClearResetEmissionRelatedInfoClass":
         """Create DiagnosticClearResetEmissionRelatedInfoClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticClearResetEmissionRelatedInfoClass(ARObject):
         Returns:
             DiagnosticClearResetEmissionRelatedInfoClass instance
         """
-        obj = cls()
+        obj: DiagnosticClearResetEmissionRelatedInfoClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticClearResetEmissionRelatedInfoClass(ARObject):
 class DiagnosticClearResetEmissionRelatedInfoClassBuilder:
     """Builder for DiagnosticClearResetEmissionRelatedInfoClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticClearResetEmissionRelatedInfoClass()
+        self._obj: DiagnosticClearResetEmissionRelatedInfoClass = DiagnosticClearResetEmissionRelatedInfoClass()
 
     def build(self) -> DiagnosticClearResetEmissionRelatedInfoClass:
         """Build and return DiagnosticClearResetEmissionRelatedInfoClass object.

@@ -1,29 +1,28 @@
 """RuleBasedValueCont AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RuleBasedValueCont(ARObject):
     """AUTOSAR RuleBasedValueCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RuleBasedValueCont."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RuleBasedValueCont to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RULEBASEDVALUECONT")
+        element = ET.Element("RULEBASEDVALUECONT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RuleBasedValueCont":
+    def deserialize(cls, element: ET.Element) -> "RuleBasedValueCont":
         """Create RuleBasedValueCont from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RuleBasedValueCont(ARObject):
         Returns:
             RuleBasedValueCont instance
         """
-        obj = cls()
+        obj: RuleBasedValueCont = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RuleBasedValueCont(ARObject):
 class RuleBasedValueContBuilder:
     """Builder for RuleBasedValueCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RuleBasedValueCont()
+        self._obj: RuleBasedValueCont = RuleBasedValueCont()
 
     def build(self) -> RuleBasedValueCont:
         """Build and return RuleBasedValueCont object.

@@ -1,29 +1,28 @@
 """IPSecConfigProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IPSecConfigProps(ARObject):
     """AUTOSAR IPSecConfigProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IPSecConfigProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IPSecConfigProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPSECCONFIGPROPS")
+        element = ET.Element("IPSECCONFIGPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IPSecConfigProps":
+    def deserialize(cls, element: ET.Element) -> "IPSecConfigProps":
         """Create IPSecConfigProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IPSecConfigProps(ARObject):
         Returns:
             IPSecConfigProps instance
         """
-        obj = cls()
+        obj: IPSecConfigProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IPSecConfigProps(ARObject):
 class IPSecConfigPropsBuilder:
     """Builder for IPSecConfigProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IPSecConfigProps()
+        self._obj: IPSecConfigProps = IPSecConfigProps()
 
     def build(self) -> IPSecConfigProps:
         """Build and return IPSecConfigProps object.

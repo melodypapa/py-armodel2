@@ -1,29 +1,28 @@
 """DiagnosticEventToEnableConditionGroupMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticEventToEnableConditionGroupMapping(ARObject):
     """AUTOSAR DiagnosticEventToEnableConditionGroupMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticEventToEnableConditionGroupMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticEventToEnableConditionGroupMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICEVENTTOENABLECONDITIONGROUPMAPPING")
+        element = ET.Element("DIAGNOSTICEVENTTOENABLECONDITIONGROUPMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticEventToEnableConditionGroupMapping":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToEnableConditionGroupMapping":
         """Create DiagnosticEventToEnableConditionGroupMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticEventToEnableConditionGroupMapping(ARObject):
         Returns:
             DiagnosticEventToEnableConditionGroupMapping instance
         """
-        obj = cls()
+        obj: DiagnosticEventToEnableConditionGroupMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticEventToEnableConditionGroupMapping(ARObject):
 class DiagnosticEventToEnableConditionGroupMappingBuilder:
     """Builder for DiagnosticEventToEnableConditionGroupMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticEventToEnableConditionGroupMapping()
+        self._obj: DiagnosticEventToEnableConditionGroupMapping = DiagnosticEventToEnableConditionGroupMapping()
 
     def build(self) -> DiagnosticEventToEnableConditionGroupMapping:
         """Build and return DiagnosticEventToEnableConditionGroupMapping object.

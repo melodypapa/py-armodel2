@@ -1,29 +1,28 @@
 """RteEventInCompositionToOsTaskProxyMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RteEventInCompositionToOsTaskProxyMapping(ARObject):
     """AUTOSAR RteEventInCompositionToOsTaskProxyMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RteEventInCompositionToOsTaskProxyMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RteEventInCompositionToOsTaskProxyMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RTEEVENTINCOMPOSITIONTOOSTASKPROXYMAPPING")
+        element = ET.Element("RTEEVENTINCOMPOSITIONTOOSTASKPROXYMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RteEventInCompositionToOsTaskProxyMapping":
+    def deserialize(cls, element: ET.Element) -> "RteEventInCompositionToOsTaskProxyMapping":
         """Create RteEventInCompositionToOsTaskProxyMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RteEventInCompositionToOsTaskProxyMapping(ARObject):
         Returns:
             RteEventInCompositionToOsTaskProxyMapping instance
         """
-        obj = cls()
+        obj: RteEventInCompositionToOsTaskProxyMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RteEventInCompositionToOsTaskProxyMapping(ARObject):
 class RteEventInCompositionToOsTaskProxyMappingBuilder:
     """Builder for RteEventInCompositionToOsTaskProxyMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RteEventInCompositionToOsTaskProxyMapping()
+        self._obj: RteEventInCompositionToOsTaskProxyMapping = RteEventInCompositionToOsTaskProxyMapping()
 
     def build(self) -> RteEventInCompositionToOsTaskProxyMapping:
         """Build and return RteEventInCompositionToOsTaskProxyMapping object.

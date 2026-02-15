@@ -1,29 +1,28 @@
 """ServiceProxySwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ServiceProxySwComponentType(ARObject):
     """AUTOSAR ServiceProxySwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ServiceProxySwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ServiceProxySwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SERVICEPROXYSWCOMPONENTTYPE")
+        element = ET.Element("SERVICEPROXYSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ServiceProxySwComponentType":
+    def deserialize(cls, element: ET.Element) -> "ServiceProxySwComponentType":
         """Create ServiceProxySwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ServiceProxySwComponentType(ARObject):
         Returns:
             ServiceProxySwComponentType instance
         """
-        obj = cls()
+        obj: ServiceProxySwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ServiceProxySwComponentType(ARObject):
 class ServiceProxySwComponentTypeBuilder:
     """Builder for ServiceProxySwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ServiceProxySwComponentType()
+        self._obj: ServiceProxySwComponentType = ServiceProxySwComponentType()
 
     def build(self) -> ServiceProxySwComponentType:
         """Build and return ServiceProxySwComponentType object.

@@ -1,29 +1,28 @@
 """CommunicationBufferLocking AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CommunicationBufferLocking(ARObject):
     """AUTOSAR CommunicationBufferLocking."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CommunicationBufferLocking."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CommunicationBufferLocking to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMMUNICATIONBUFFERLOCKING")
+        element = ET.Element("COMMUNICATIONBUFFERLOCKING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CommunicationBufferLocking":
+    def deserialize(cls, element: ET.Element) -> "CommunicationBufferLocking":
         """Create CommunicationBufferLocking from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CommunicationBufferLocking(ARObject):
         Returns:
             CommunicationBufferLocking instance
         """
-        obj = cls()
+        obj: CommunicationBufferLocking = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CommunicationBufferLocking(ARObject):
 class CommunicationBufferLockingBuilder:
     """Builder for CommunicationBufferLocking."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CommunicationBufferLocking()
+        self._obj: CommunicationBufferLocking = CommunicationBufferLocking()
 
     def build(self) -> CommunicationBufferLocking:
         """Build and return CommunicationBufferLocking object.

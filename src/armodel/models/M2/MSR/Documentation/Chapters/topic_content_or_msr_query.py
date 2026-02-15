@@ -1,29 +1,28 @@
 """TopicContentOrMsrQuery AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TopicContentOrMsrQuery(ARObject):
     """AUTOSAR TopicContentOrMsrQuery."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TopicContentOrMsrQuery."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TopicContentOrMsrQuery to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TOPICCONTENTORMSRQUERY")
+        element = ET.Element("TOPICCONTENTORMSRQUERY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TopicContentOrMsrQuery":
+    def deserialize(cls, element: ET.Element) -> "TopicContentOrMsrQuery":
         """Create TopicContentOrMsrQuery from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TopicContentOrMsrQuery(ARObject):
         Returns:
             TopicContentOrMsrQuery instance
         """
-        obj = cls()
+        obj: TopicContentOrMsrQuery = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TopicContentOrMsrQuery(ARObject):
 class TopicContentOrMsrQueryBuilder:
     """Builder for TopicContentOrMsrQuery."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TopicContentOrMsrQuery()
+        self._obj: TopicContentOrMsrQuery = TopicContentOrMsrQuery()
 
     def build(self) -> TopicContentOrMsrQuery:
         """Build and return TopicContentOrMsrQuery object.

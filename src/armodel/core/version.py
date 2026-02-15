@@ -1,7 +1,7 @@
 """Schema version detection for ARXML files."""
 
-from typing import Optional
-from lxml import etree
+from typing import Optional, cast
+import xml.etree.ElementTree as ET
 from armodel.cfg.schemas import load_schema_config
 
 
@@ -15,10 +15,10 @@ for version, config in _SCHEMA_CONFIG["versions"].items():
     _NAMESPACE_TO_VERSION[namespace] = version
 
 # Get default version
-_DEFAULT_VERSION = _SCHEMA_CONFIG.get("default", "00046")
+_DEFAULT_VERSION: str = cast(str, _SCHEMA_CONFIG.get("default", "00046"))
 
 
-def detect_schema_version(root: etree.Element) -> Optional[str]:
+def detect_schema_version(root: ET.Element) -> Optional[str]:
     """Detect AUTOSAR schema version from XML element namespace.
 
     Args:
@@ -27,8 +27,14 @@ def detect_schema_version(root: etree.Element) -> Optional[str]:
     Returns:
         Schema version string (e.g., "00046") or None if unknown
     """
-    # Get the namespace
-    namespace = root.nsmap.get(None, "")
+    # Extract namespace from tag (format: {namespace}tagname)
+    namespace = ""
+    if "}" in root.tag:
+        # Namespace is embedded in tag: {namespace}tagname
+        namespace = root.tag.split("}")[0].strip("{")
+    elif "xmlns" in root.attrib:
+        # Namespace in attribute (fallback)
+        namespace = root.attrib.get("xmlns", "")
 
     # Map to version using configuration
     return _NAMESPACE_TO_VERSION.get(namespace)

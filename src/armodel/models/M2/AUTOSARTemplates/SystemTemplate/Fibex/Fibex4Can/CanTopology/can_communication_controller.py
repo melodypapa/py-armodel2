@@ -1,29 +1,28 @@
 """CanCommunicationController AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanCommunicationController(ARObject):
     """AUTOSAR CanCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanCommunicationController."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanCommunicationController to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANCOMMUNICATIONCONTROLLER")
+        element = ET.Element("CANCOMMUNICATIONCONTROLLER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanCommunicationController":
+    def deserialize(cls, element: ET.Element) -> "CanCommunicationController":
         """Create CanCommunicationController from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanCommunicationController(ARObject):
         Returns:
             CanCommunicationController instance
         """
-        obj = cls()
+        obj: CanCommunicationController = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanCommunicationController(ARObject):
 class CanCommunicationControllerBuilder:
     """Builder for CanCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanCommunicationController()
+        self._obj: CanCommunicationController = CanCommunicationController()
 
     def build(self) -> CanCommunicationController:
         """Build and return CanCommunicationController object.

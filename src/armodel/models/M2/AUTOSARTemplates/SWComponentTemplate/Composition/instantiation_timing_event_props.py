@@ -1,29 +1,28 @@
 """InstantiationTimingEventProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InstantiationTimingEventProps(ARObject):
     """AUTOSAR InstantiationTimingEventProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InstantiationTimingEventProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InstantiationTimingEventProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INSTANTIATIONTIMINGEVENTPROPS")
+        element = ET.Element("INSTANTIATIONTIMINGEVENTPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InstantiationTimingEventProps":
+    def deserialize(cls, element: ET.Element) -> "InstantiationTimingEventProps":
         """Create InstantiationTimingEventProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InstantiationTimingEventProps(ARObject):
         Returns:
             InstantiationTimingEventProps instance
         """
-        obj = cls()
+        obj: InstantiationTimingEventProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InstantiationTimingEventProps(ARObject):
 class InstantiationTimingEventPropsBuilder:
     """Builder for InstantiationTimingEventProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InstantiationTimingEventProps()
+        self._obj: InstantiationTimingEventProps = InstantiationTimingEventProps()
 
     def build(self) -> InstantiationTimingEventProps:
         """Build and return InstantiationTimingEventProps object.

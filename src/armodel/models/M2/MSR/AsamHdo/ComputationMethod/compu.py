@@ -1,29 +1,28 @@
 """Compu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Compu(ARObject):
     """AUTOSAR Compu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Compu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Compu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPU")
+        element = ET.Element("COMPU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Compu":
+    def deserialize(cls, element: ET.Element) -> "Compu":
         """Create Compu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Compu(ARObject):
         Returns:
             Compu instance
         """
-        obj = cls()
+        obj: Compu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Compu(ARObject):
 class CompuBuilder:
     """Builder for Compu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Compu()
+        self._obj: Compu = Compu()
 
     def build(self) -> Compu:
         """Build and return Compu object.

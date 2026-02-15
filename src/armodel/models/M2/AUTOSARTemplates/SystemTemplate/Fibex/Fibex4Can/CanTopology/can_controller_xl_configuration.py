@@ -1,29 +1,28 @@
 """CanControllerXlConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanControllerXlConfiguration(ARObject):
     """AUTOSAR CanControllerXlConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanControllerXlConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanControllerXlConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANCONTROLLERXLCONFIGURATION")
+        element = ET.Element("CANCONTROLLERXLCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanControllerXlConfiguration":
+    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfiguration":
         """Create CanControllerXlConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanControllerXlConfiguration(ARObject):
         Returns:
             CanControllerXlConfiguration instance
         """
-        obj = cls()
+        obj: CanControllerXlConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanControllerXlConfiguration(ARObject):
 class CanControllerXlConfigurationBuilder:
     """Builder for CanControllerXlConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanControllerXlConfiguration()
+        self._obj: CanControllerXlConfiguration = CanControllerXlConfiguration()
 
     def build(self) -> CanControllerXlConfiguration:
         """Build and return CanControllerXlConfiguration object.

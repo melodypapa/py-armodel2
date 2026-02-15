@@ -1,29 +1,28 @@
 """BusMirrorLinPidToCanIdMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BusMirrorLinPidToCanIdMapping(ARObject):
     """AUTOSAR BusMirrorLinPidToCanIdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BusMirrorLinPidToCanIdMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BusMirrorLinPidToCanIdMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUSMIRRORLINPIDTOCANIDMAPPING")
+        element = ET.Element("BUSMIRRORLINPIDTOCANIDMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BusMirrorLinPidToCanIdMapping":
+    def deserialize(cls, element: ET.Element) -> "BusMirrorLinPidToCanIdMapping":
         """Create BusMirrorLinPidToCanIdMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         Returns:
             BusMirrorLinPidToCanIdMapping instance
         """
-        obj = cls()
+        obj: BusMirrorLinPidToCanIdMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
 class BusMirrorLinPidToCanIdMappingBuilder:
     """Builder for BusMirrorLinPidToCanIdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BusMirrorLinPidToCanIdMapping()
+        self._obj: BusMirrorLinPidToCanIdMapping = BusMirrorLinPidToCanIdMapping()
 
     def build(self) -> BusMirrorLinPidToCanIdMapping:
         """Build and return BusMirrorLinPidToCanIdMapping object.

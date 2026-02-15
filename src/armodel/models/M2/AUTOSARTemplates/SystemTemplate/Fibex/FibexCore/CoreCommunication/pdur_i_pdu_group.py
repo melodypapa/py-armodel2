@@ -1,29 +1,28 @@
 """PdurIPduGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PdurIPduGroup(ARObject):
     """AUTOSAR PdurIPduGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PdurIPduGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PdurIPduGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PDURIPDUGROUP")
+        element = ET.Element("PDURIPDUGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PdurIPduGroup":
+    def deserialize(cls, element: ET.Element) -> "PdurIPduGroup":
         """Create PdurIPduGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PdurIPduGroup(ARObject):
         Returns:
             PdurIPduGroup instance
         """
-        obj = cls()
+        obj: PdurIPduGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PdurIPduGroup(ARObject):
 class PdurIPduGroupBuilder:
     """Builder for PdurIPduGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PdurIPduGroup()
+        self._obj: PdurIPduGroup = PdurIPduGroup()
 
     def build(self) -> PdurIPduGroup:
         """Build and return PdurIPduGroup object.

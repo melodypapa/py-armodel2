@@ -1,29 +1,28 @@
 """Ieee1722Tp AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Ieee1722Tp(ARObject):
     """AUTOSAR Ieee1722Tp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Ieee1722Tp."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Ieee1722Tp to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IEEE1722TP")
+        element = ET.Element("IEEE1722TP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Ieee1722Tp":
+    def deserialize(cls, element: ET.Element) -> "Ieee1722Tp":
         """Create Ieee1722Tp from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Ieee1722Tp(ARObject):
         Returns:
             Ieee1722Tp instance
         """
-        obj = cls()
+        obj: Ieee1722Tp = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Ieee1722Tp(ARObject):
 class Ieee1722TpBuilder:
     """Builder for Ieee1722Tp."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Ieee1722Tp()
+        self._obj: Ieee1722Tp = Ieee1722Tp()
 
     def build(self) -> Ieee1722Tp:
         """Build and return Ieee1722Tp object.

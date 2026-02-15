@@ -1,29 +1,28 @@
 """ModeSwitchedAckEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeSwitchedAckEvent(ARObject):
     """AUTOSAR ModeSwitchedAckEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeSwitchedAckEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeSwitchedAckEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODESWITCHEDACKEVENT")
+        element = ET.Element("MODESWITCHEDACKEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeSwitchedAckEvent":
+    def deserialize(cls, element: ET.Element) -> "ModeSwitchedAckEvent":
         """Create ModeSwitchedAckEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeSwitchedAckEvent(ARObject):
         Returns:
             ModeSwitchedAckEvent instance
         """
-        obj = cls()
+        obj: ModeSwitchedAckEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeSwitchedAckEvent(ARObject):
 class ModeSwitchedAckEventBuilder:
     """Builder for ModeSwitchedAckEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeSwitchedAckEvent()
+        self._obj: ModeSwitchedAckEvent = ModeSwitchedAckEvent()
 
     def build(self) -> ModeSwitchedAckEvent:
         """Build and return ModeSwitchedAckEvent object.

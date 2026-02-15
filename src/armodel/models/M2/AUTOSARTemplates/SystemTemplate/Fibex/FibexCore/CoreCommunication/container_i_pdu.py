@@ -1,29 +1,28 @@
 """ContainerIPdu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ContainerIPdu(ARObject):
     """AUTOSAR ContainerIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ContainerIPdu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ContainerIPdu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONTAINERIPDU")
+        element = ET.Element("CONTAINERIPDU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ContainerIPdu":
+    def deserialize(cls, element: ET.Element) -> "ContainerIPdu":
         """Create ContainerIPdu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ContainerIPdu(ARObject):
         Returns:
             ContainerIPdu instance
         """
-        obj = cls()
+        obj: ContainerIPdu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ContainerIPdu(ARObject):
 class ContainerIPduBuilder:
     """Builder for ContainerIPdu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ContainerIPdu()
+        self._obj: ContainerIPdu = ContainerIPdu()
 
     def build(self) -> ContainerIPdu:
         """Build and return ContainerIPdu object.

@@ -1,29 +1,28 @@
 """SystemSignal AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SystemSignal(ARObject):
     """AUTOSAR SystemSignal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SystemSignal."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SystemSignal to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SYSTEMSIGNAL")
+        element = ET.Element("SYSTEMSIGNAL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SystemSignal":
+    def deserialize(cls, element: ET.Element) -> "SystemSignal":
         """Create SystemSignal from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SystemSignal(ARObject):
         Returns:
             SystemSignal instance
         """
-        obj = cls()
+        obj: SystemSignal = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SystemSignal(ARObject):
 class SystemSignalBuilder:
     """Builder for SystemSignal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SystemSignal()
+        self._obj: SystemSignal = SystemSignal()
 
     def build(self) -> SystemSignal:
         """Build and return SystemSignal object.

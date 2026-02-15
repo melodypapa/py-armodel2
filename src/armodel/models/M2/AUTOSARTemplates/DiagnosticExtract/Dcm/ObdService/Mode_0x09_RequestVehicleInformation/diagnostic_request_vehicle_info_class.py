@@ -1,29 +1,28 @@
 """DiagnosticRequestVehicleInfoClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestVehicleInfoClass(ARObject):
     """AUTOSAR DiagnosticRequestVehicleInfoClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestVehicleInfoClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestVehicleInfoClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTVEHICLEINFOCLASS")
+        element = ET.Element("DIAGNOSTICREQUESTVEHICLEINFOCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestVehicleInfoClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestVehicleInfoClass":
         """Create DiagnosticRequestVehicleInfoClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestVehicleInfoClass(ARObject):
         Returns:
             DiagnosticRequestVehicleInfoClass instance
         """
-        obj = cls()
+        obj: DiagnosticRequestVehicleInfoClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestVehicleInfoClass(ARObject):
 class DiagnosticRequestVehicleInfoClassBuilder:
     """Builder for DiagnosticRequestVehicleInfoClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestVehicleInfoClass()
+        self._obj: DiagnosticRequestVehicleInfoClass = DiagnosticRequestVehicleInfoClass()
 
     def build(self) -> DiagnosticRequestVehicleInfoClass:
         """Build and return DiagnosticRequestVehicleInfoClass object.

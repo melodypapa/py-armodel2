@@ -1,29 +1,28 @@
 """TlsCryptoServiceMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TlsCryptoServiceMapping(ARObject):
     """AUTOSAR TlsCryptoServiceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TlsCryptoServiceMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TlsCryptoServiceMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TLSCRYPTOSERVICEMAPPING")
+        element = ET.Element("TLSCRYPTOSERVICEMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TlsCryptoServiceMapping":
+    def deserialize(cls, element: ET.Element) -> "TlsCryptoServiceMapping":
         """Create TlsCryptoServiceMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TlsCryptoServiceMapping(ARObject):
         Returns:
             TlsCryptoServiceMapping instance
         """
-        obj = cls()
+        obj: TlsCryptoServiceMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TlsCryptoServiceMapping(ARObject):
 class TlsCryptoServiceMappingBuilder:
     """Builder for TlsCryptoServiceMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TlsCryptoServiceMapping()
+        self._obj: TlsCryptoServiceMapping = TlsCryptoServiceMapping()
 
     def build(self) -> TlsCryptoServiceMapping:
         """Build and return TlsCryptoServiceMapping object.

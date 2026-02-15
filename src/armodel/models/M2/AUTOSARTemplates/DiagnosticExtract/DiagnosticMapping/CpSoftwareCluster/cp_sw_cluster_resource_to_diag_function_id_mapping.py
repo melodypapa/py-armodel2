@@ -1,29 +1,28 @@
 """CpSwClusterResourceToDiagFunctionIdMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
     """AUTOSAR CpSwClusterResourceToDiagFunctionIdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CpSwClusterResourceToDiagFunctionIdMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CPSWCLUSTERRESOURCETODIAGFUNCTIONIDMAPPING")
+        element = ET.Element("CPSWCLUSTERRESOURCETODIAGFUNCTIONIDMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CpSwClusterResourceToDiagFunctionIdMapping":
+    def deserialize(cls, element: ET.Element) -> "CpSwClusterResourceToDiagFunctionIdMapping":
         """Create CpSwClusterResourceToDiagFunctionIdMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
         Returns:
             CpSwClusterResourceToDiagFunctionIdMapping instance
         """
-        obj = cls()
+        obj: CpSwClusterResourceToDiagFunctionIdMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
 class CpSwClusterResourceToDiagFunctionIdMappingBuilder:
     """Builder for CpSwClusterResourceToDiagFunctionIdMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CpSwClusterResourceToDiagFunctionIdMapping()
+        self._obj: CpSwClusterResourceToDiagFunctionIdMapping = CpSwClusterResourceToDiagFunctionIdMapping()
 
     def build(self) -> CpSwClusterResourceToDiagFunctionIdMapping:
         """Build and return CpSwClusterResourceToDiagFunctionIdMapping object.

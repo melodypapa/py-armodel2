@@ -1,29 +1,28 @@
 """InnerRunnableEntityGroupInCompositionInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerRunnableEntityGroupInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InnerRunnableEntityGroupInCompositionInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InnerRunnableEntityGroupInCompositionInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INNERRUNNABLEENTITYGROUPINCOMPOSITIONINSTANCEREF")
+        element = ET.Element("INNERRUNNABLEENTITYGROUPINCOMPOSITIONINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InnerRunnableEntityGroupInCompositionInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "InnerRunnableEntityGroupInCompositionInstanceRef":
         """Create InnerRunnableEntityGroupInCompositionInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         Returns:
             InnerRunnableEntityGroupInCompositionInstanceRef instance
         """
-        obj = cls()
+        obj: InnerRunnableEntityGroupInCompositionInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
 class InnerRunnableEntityGroupInCompositionInstanceRefBuilder:
     """Builder for InnerRunnableEntityGroupInCompositionInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InnerRunnableEntityGroupInCompositionInstanceRef()
+        self._obj: InnerRunnableEntityGroupInCompositionInstanceRef = InnerRunnableEntityGroupInCompositionInstanceRef()
 
     def build(self) -> InnerRunnableEntityGroupInCompositionInstanceRef:
         """Build and return InnerRunnableEntityGroupInCompositionInstanceRef object.

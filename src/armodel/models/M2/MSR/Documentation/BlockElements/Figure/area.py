@@ -1,29 +1,28 @@
 """Area AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Area(ARObject):
     """AUTOSAR Area."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Area."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Area to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AREA")
+        element = ET.Element("AREA")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Area":
+    def deserialize(cls, element: ET.Element) -> "Area":
         """Create Area from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Area(ARObject):
         Returns:
             Area instance
         """
-        obj = cls()
+        obj: Area = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Area(ARObject):
 class AreaBuilder:
     """Builder for Area."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Area()
+        self._obj: Area = Area()
 
     def build(self) -> Area:
         """Build and return Area object.

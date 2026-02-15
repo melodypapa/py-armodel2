@@ -1,29 +1,28 @@
 """CollectableElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CollectableElement(ARObject):
     """AUTOSAR CollectableElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CollectableElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CollectableElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COLLECTABLEELEMENT")
+        element = ET.Element("COLLECTABLEELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CollectableElement":
+    def deserialize(cls, element: ET.Element) -> "CollectableElement":
         """Create CollectableElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CollectableElement(ARObject):
         Returns:
             CollectableElement instance
         """
-        obj = cls()
+        obj: CollectableElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CollectableElement(ARObject):
 class CollectableElementBuilder:
     """Builder for CollectableElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CollectableElement()
+        self._obj: CollectableElement = CollectableElement()
 
     def build(self) -> CollectableElement:
         """Build and return CollectableElement object.

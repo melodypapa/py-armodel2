@@ -2,7 +2,6 @@
 
 from pathlib import Path
 from typing import Union
-from lxml import etree
 
 from armodel.reader.loader import load_arxml_file
 from armodel.reader.mapper import map_xml_to_autosar
@@ -20,7 +19,7 @@ def load_arxml(filepath: Union[str, Path], validate: bool = False):
 
     Raises:
         FileNotFoundError: If file doesn't exist
-        etree.XMLSyntaxError: If XML is malformed
+        Exception: If XML is malformed
     """
     # Load XML
     root = load_arxml_file(filepath)

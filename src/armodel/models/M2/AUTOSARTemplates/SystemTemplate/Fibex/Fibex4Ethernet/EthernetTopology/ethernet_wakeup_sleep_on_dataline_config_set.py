@@ -1,29 +1,28 @@
 """EthernetWakeupSleepOnDatalineConfigSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EthernetWakeupSleepOnDatalineConfigSet(ARObject):
     """AUTOSAR EthernetWakeupSleepOnDatalineConfigSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfigSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EthernetWakeupSleepOnDatalineConfigSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ETHERNETWAKEUPSLEEPONDATALINECONFIGSET")
+        element = ET.Element("ETHERNETWAKEUPSLEEPONDATALINECONFIGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EthernetWakeupSleepOnDatalineConfigSet":
+    def deserialize(cls, element: ET.Element) -> "EthernetWakeupSleepOnDatalineConfigSet":
         """Create EthernetWakeupSleepOnDatalineConfigSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EthernetWakeupSleepOnDatalineConfigSet(ARObject):
         Returns:
             EthernetWakeupSleepOnDatalineConfigSet instance
         """
-        obj = cls()
+        obj: EthernetWakeupSleepOnDatalineConfigSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EthernetWakeupSleepOnDatalineConfigSet(ARObject):
 class EthernetWakeupSleepOnDatalineConfigSetBuilder:
     """Builder for EthernetWakeupSleepOnDatalineConfigSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EthernetWakeupSleepOnDatalineConfigSet()
+        self._obj: EthernetWakeupSleepOnDatalineConfigSet = EthernetWakeupSleepOnDatalineConfigSet()
 
     def build(self) -> EthernetWakeupSleepOnDatalineConfigSet:
         """Build and return EthernetWakeupSleepOnDatalineConfigSet object.

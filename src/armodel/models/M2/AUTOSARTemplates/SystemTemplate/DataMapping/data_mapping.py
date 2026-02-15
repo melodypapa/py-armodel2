@@ -1,29 +1,28 @@
 """DataMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataMapping(ARObject):
     """AUTOSAR DataMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAMAPPING")
+        element = ET.Element("DATAMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataMapping":
+    def deserialize(cls, element: ET.Element) -> "DataMapping":
         """Create DataMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataMapping(ARObject):
         Returns:
             DataMapping instance
         """
-        obj = cls()
+        obj: DataMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataMapping(ARObject):
 class DataMappingBuilder:
     """Builder for DataMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataMapping()
+        self._obj: DataMapping = DataMapping()
 
     def build(self) -> DataMapping:
         """Build and return DataMapping object.

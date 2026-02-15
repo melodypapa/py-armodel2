@@ -1,29 +1,28 @@
 """HwPinGroupConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwPinGroupConnector(ARObject):
     """AUTOSAR HwPinGroupConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwPinGroupConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwPinGroupConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWPINGROUPCONNECTOR")
+        element = ET.Element("HWPINGROUPCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwPinGroupConnector":
+    def deserialize(cls, element: ET.Element) -> "HwPinGroupConnector":
         """Create HwPinGroupConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwPinGroupConnector(ARObject):
         Returns:
             HwPinGroupConnector instance
         """
-        obj = cls()
+        obj: HwPinGroupConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwPinGroupConnector(ARObject):
 class HwPinGroupConnectorBuilder:
     """Builder for HwPinGroupConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwPinGroupConnector()
+        self._obj: HwPinGroupConnector = HwPinGroupConnector()
 
     def build(self) -> HwPinGroupConnector:
         """Build and return HwPinGroupConnector object.

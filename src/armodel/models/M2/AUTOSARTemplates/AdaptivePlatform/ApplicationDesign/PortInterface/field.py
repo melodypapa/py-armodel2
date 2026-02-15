@@ -1,29 +1,28 @@
 """Field AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Field(ARObject):
     """AUTOSAR Field."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Field."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Field to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FIELD")
+        element = ET.Element("FIELD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Field":
+    def deserialize(cls, element: ET.Element) -> "Field":
         """Create Field from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Field(ARObject):
         Returns:
             Field instance
         """
-        obj = cls()
+        obj: Field = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Field(ARObject):
 class FieldBuilder:
     """Builder for Field."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Field()
+        self._obj: Field = Field()
 
     def build(self) -> Field:
         """Build and return Field object.

@@ -1,29 +1,28 @@
 """WhitespaceControlled AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class WhitespaceControlled(ARObject):
     """AUTOSAR WhitespaceControlled."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize WhitespaceControlled."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert WhitespaceControlled to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("WHITESPACECONTROLLED")
+        element = ET.Element("WHITESPACECONTROLLED")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "WhitespaceControlled":
+    def deserialize(cls, element: ET.Element) -> "WhitespaceControlled":
         """Create WhitespaceControlled from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class WhitespaceControlled(ARObject):
         Returns:
             WhitespaceControlled instance
         """
-        obj = cls()
+        obj: WhitespaceControlled = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class WhitespaceControlled(ARObject):
 class WhitespaceControlledBuilder:
     """Builder for WhitespaceControlled."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = WhitespaceControlled()
+        self._obj: WhitespaceControlled = WhitespaceControlled()
 
     def build(self) -> WhitespaceControlled:
         """Build and return WhitespaceControlled object.

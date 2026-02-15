@@ -1,29 +1,28 @@
 """SecurityEventContextMappingCommConnector AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SecurityEventContextMappingCommConnector(ARObject):
     """AUTOSAR SecurityEventContextMappingCommConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SecurityEventContextMappingCommConnector to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECURITYEVENTCONTEXTMAPPINGCOMMCONNECTOR")
+        element = ET.Element("SECURITYEVENTCONTEXTMAPPINGCOMMCONNECTOR")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SecurityEventContextMappingCommConnector":
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextMappingCommConnector":
         """Create SecurityEventContextMappingCommConnector from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SecurityEventContextMappingCommConnector(ARObject):
         Returns:
             SecurityEventContextMappingCommConnector instance
         """
-        obj = cls()
+        obj: SecurityEventContextMappingCommConnector = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SecurityEventContextMappingCommConnector(ARObject):
 class SecurityEventContextMappingCommConnectorBuilder:
     """Builder for SecurityEventContextMappingCommConnector."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SecurityEventContextMappingCommConnector()
+        self._obj: SecurityEventContextMappingCommConnector = SecurityEventContextMappingCommConnector()
 
     def build(self) -> SecurityEventContextMappingCommConnector:
         """Build and return SecurityEventContextMappingCommConnector object.

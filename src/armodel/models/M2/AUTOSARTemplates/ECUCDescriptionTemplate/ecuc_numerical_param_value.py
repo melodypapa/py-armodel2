@@ -1,29 +1,28 @@
 """EcucNumericalParamValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucNumericalParamValue(ARObject):
     """AUTOSAR EcucNumericalParamValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucNumericalParamValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucNumericalParamValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCNUMERICALPARAMVALUE")
+        element = ET.Element("ECUCNUMERICALPARAMVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucNumericalParamValue":
+    def deserialize(cls, element: ET.Element) -> "EcucNumericalParamValue":
         """Create EcucNumericalParamValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucNumericalParamValue(ARObject):
         Returns:
             EcucNumericalParamValue instance
         """
-        obj = cls()
+        obj: EcucNumericalParamValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucNumericalParamValue(ARObject):
 class EcucNumericalParamValueBuilder:
     """Builder for EcucNumericalParamValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucNumericalParamValue()
+        self._obj: EcucNumericalParamValue = EcucNumericalParamValue()
 
     def build(self) -> EcucNumericalParamValue:
         """Build and return EcucNumericalParamValue object.

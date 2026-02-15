@@ -1,29 +1,28 @@
 """DiagEventDebounceAlgorithm AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagEventDebounceAlgorithm(ARObject):
     """AUTOSAR DiagEventDebounceAlgorithm."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagEventDebounceAlgorithm."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagEventDebounceAlgorithm to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGEVENTDEBOUNCEALGORITHM")
+        element = ET.Element("DIAGEVENTDEBOUNCEALGORITHM")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagEventDebounceAlgorithm":
+    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceAlgorithm":
         """Create DiagEventDebounceAlgorithm from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagEventDebounceAlgorithm(ARObject):
         Returns:
             DiagEventDebounceAlgorithm instance
         """
-        obj = cls()
+        obj: DiagEventDebounceAlgorithm = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagEventDebounceAlgorithm(ARObject):
 class DiagEventDebounceAlgorithmBuilder:
     """Builder for DiagEventDebounceAlgorithm."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagEventDebounceAlgorithm()
+        self._obj: DiagEventDebounceAlgorithm = DiagEventDebounceAlgorithm()
 
     def build(self) -> DiagEventDebounceAlgorithm:
         """Build and return DiagEventDebounceAlgorithm object.

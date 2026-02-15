@@ -1,29 +1,28 @@
 """SwSystemconstantValueSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwSystemconstantValueSet(ARObject):
     """AUTOSAR SwSystemconstantValueSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwSystemconstantValueSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWSYSTEMCONSTANTVALUESET")
+        element = ET.Element("SWSYSTEMCONSTANTVALUESET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwSystemconstantValueSet":
+    def deserialize(cls, element: ET.Element) -> "SwSystemconstantValueSet":
         """Create SwSystemconstantValueSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwSystemconstantValueSet(ARObject):
         Returns:
             SwSystemconstantValueSet instance
         """
-        obj = cls()
+        obj: SwSystemconstantValueSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwSystemconstantValueSet(ARObject):
 class SwSystemconstantValueSetBuilder:
     """Builder for SwSystemconstantValueSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwSystemconstantValueSet()
+        self._obj: SwSystemconstantValueSet = SwSystemconstantValueSet()
 
     def build(self) -> SwSystemconstantValueSet:
         """Build and return SwSystemconstantValueSet object.

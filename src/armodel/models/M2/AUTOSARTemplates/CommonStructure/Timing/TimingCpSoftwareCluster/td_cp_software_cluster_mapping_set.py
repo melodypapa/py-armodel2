@@ -1,29 +1,28 @@
 """TDCpSoftwareClusterMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TDCpSoftwareClusterMappingSet(ARObject):
     """AUTOSAR TDCpSoftwareClusterMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TDCpSoftwareClusterMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TDCPSOFTWARECLUSTERMAPPINGSET")
+        element = ET.Element("TDCPSOFTWARECLUSTERMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TDCpSoftwareClusterMappingSet":
+    def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterMappingSet":
         """Create TDCpSoftwareClusterMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TDCpSoftwareClusterMappingSet(ARObject):
         Returns:
             TDCpSoftwareClusterMappingSet instance
         """
-        obj = cls()
+        obj: TDCpSoftwareClusterMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TDCpSoftwareClusterMappingSet(ARObject):
 class TDCpSoftwareClusterMappingSetBuilder:
     """Builder for TDCpSoftwareClusterMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TDCpSoftwareClusterMappingSet()
+        self._obj: TDCpSoftwareClusterMappingSet = TDCpSoftwareClusterMappingSet()
 
     def build(self) -> TDCpSoftwareClusterMappingSet:
         """Build and return TDCpSoftwareClusterMappingSet object.

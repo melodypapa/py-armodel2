@@ -1,29 +1,28 @@
 """AbstractCanCommunicationControllerAttributes AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractCanCommunicationControllerAttributes(ARObject):
     """AUTOSAR AbstractCanCommunicationControllerAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractCanCommunicationControllerAttributes."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractCanCommunicationControllerAttributes to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTCANCOMMUNICATIONCONTROLLERATTRIBUTES")
+        element = ET.Element("ABSTRACTCANCOMMUNICATIONCONTROLLERATTRIBUTES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractCanCommunicationControllerAttributes":
+    def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationControllerAttributes":
         """Create AbstractCanCommunicationControllerAttributes from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractCanCommunicationControllerAttributes(ARObject):
         Returns:
             AbstractCanCommunicationControllerAttributes instance
         """
-        obj = cls()
+        obj: AbstractCanCommunicationControllerAttributes = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractCanCommunicationControllerAttributes(ARObject):
 class AbstractCanCommunicationControllerAttributesBuilder:
     """Builder for AbstractCanCommunicationControllerAttributes."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractCanCommunicationControllerAttributes()
+        self._obj: AbstractCanCommunicationControllerAttributes = AbstractCanCommunicationControllerAttributes()
 
     def build(self) -> AbstractCanCommunicationControllerAttributes:
         """Build and return AbstractCanCommunicationControllerAttributes object.

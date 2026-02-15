@@ -1,29 +1,28 @@
 """ReceptionComSpecProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ReceptionComSpecProps(ARObject):
     """AUTOSAR ReceptionComSpecProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ReceptionComSpecProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ReceptionComSpecProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RECEPTIONCOMSPECPROPS")
+        element = ET.Element("RECEPTIONCOMSPECPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ReceptionComSpecProps":
+    def deserialize(cls, element: ET.Element) -> "ReceptionComSpecProps":
         """Create ReceptionComSpecProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ReceptionComSpecProps(ARObject):
         Returns:
             ReceptionComSpecProps instance
         """
-        obj = cls()
+        obj: ReceptionComSpecProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ReceptionComSpecProps(ARObject):
 class ReceptionComSpecPropsBuilder:
     """Builder for ReceptionComSpecProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ReceptionComSpecProps()
+        self._obj: ReceptionComSpecProps = ReceptionComSpecProps()
 
     def build(self) -> ReceptionComSpecProps:
         """Build and return ReceptionComSpecProps object.

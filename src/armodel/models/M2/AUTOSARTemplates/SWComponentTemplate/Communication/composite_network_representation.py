@@ -1,29 +1,28 @@
 """CompositeNetworkRepresentation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompositeNetworkRepresentation(ARObject):
     """AUTOSAR CompositeNetworkRepresentation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompositeNetworkRepresentation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompositeNetworkRepresentation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPOSITENETWORKREPRESENTATION")
+        element = ET.Element("COMPOSITENETWORKREPRESENTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompositeNetworkRepresentation":
+    def deserialize(cls, element: ET.Element) -> "CompositeNetworkRepresentation":
         """Create CompositeNetworkRepresentation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompositeNetworkRepresentation(ARObject):
         Returns:
             CompositeNetworkRepresentation instance
         """
-        obj = cls()
+        obj: CompositeNetworkRepresentation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompositeNetworkRepresentation(ARObject):
 class CompositeNetworkRepresentationBuilder:
     """Builder for CompositeNetworkRepresentation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompositeNetworkRepresentation()
+        self._obj: CompositeNetworkRepresentation = CompositeNetworkRepresentation()
 
     def build(self) -> CompositeNetworkRepresentation:
         """Build and return CompositeNetworkRepresentation object.

@@ -1,29 +1,28 @@
 """MacMulticastConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MacMulticastConfiguration(ARObject):
     """AUTOSAR MacMulticastConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MacMulticastConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MacMulticastConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MACMULTICASTCONFIGURATION")
+        element = ET.Element("MACMULTICASTCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MacMulticastConfiguration":
+    def deserialize(cls, element: ET.Element) -> "MacMulticastConfiguration":
         """Create MacMulticastConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MacMulticastConfiguration(ARObject):
         Returns:
             MacMulticastConfiguration instance
         """
-        obj = cls()
+        obj: MacMulticastConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MacMulticastConfiguration(ARObject):
 class MacMulticastConfigurationBuilder:
     """Builder for MacMulticastConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MacMulticastConfiguration()
+        self._obj: MacMulticastConfiguration = MacMulticastConfiguration()
 
     def build(self) -> MacMulticastConfiguration:
         """Build and return MacMulticastConfiguration object.

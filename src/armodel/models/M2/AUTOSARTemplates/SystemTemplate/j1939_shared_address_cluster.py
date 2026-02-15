@@ -1,29 +1,28 @@
 """J1939SharedAddressCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class J1939SharedAddressCluster(ARObject):
     """AUTOSAR J1939SharedAddressCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert J1939SharedAddressCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("J1939SHAREDADDRESSCLUSTER")
+        element = ET.Element("J1939SHAREDADDRESSCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "J1939SharedAddressCluster":
+    def deserialize(cls, element: ET.Element) -> "J1939SharedAddressCluster":
         """Create J1939SharedAddressCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class J1939SharedAddressCluster(ARObject):
         Returns:
             J1939SharedAddressCluster instance
         """
-        obj = cls()
+        obj: J1939SharedAddressCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class J1939SharedAddressCluster(ARObject):
 class J1939SharedAddressClusterBuilder:
     """Builder for J1939SharedAddressCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = J1939SharedAddressCluster()
+        self._obj: J1939SharedAddressCluster = J1939SharedAddressCluster()
 
     def build(self) -> J1939SharedAddressCluster:
         """Build and return J1939SharedAddressCluster object.

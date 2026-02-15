@@ -1,29 +1,28 @@
 """ParameterProvideComSpec AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ParameterProvideComSpec(ARObject):
     """AUTOSAR ParameterProvideComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ParameterProvideComSpec."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ParameterProvideComSpec to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PARAMETERPROVIDECOMSPEC")
+        element = ET.Element("PARAMETERPROVIDECOMSPEC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ParameterProvideComSpec":
+    def deserialize(cls, element: ET.Element) -> "ParameterProvideComSpec":
         """Create ParameterProvideComSpec from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ParameterProvideComSpec(ARObject):
         Returns:
             ParameterProvideComSpec instance
         """
-        obj = cls()
+        obj: ParameterProvideComSpec = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ParameterProvideComSpec(ARObject):
 class ParameterProvideComSpecBuilder:
     """Builder for ParameterProvideComSpec."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ParameterProvideComSpec()
+        self._obj: ParameterProvideComSpec = ParameterProvideComSpec()
 
     def build(self) -> ParameterProvideComSpec:
         """Build and return ParameterProvideComSpec object.

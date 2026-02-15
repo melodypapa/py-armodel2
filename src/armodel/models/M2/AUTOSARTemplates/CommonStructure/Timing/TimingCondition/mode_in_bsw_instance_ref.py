@@ -1,29 +1,28 @@
 """ModeInBswInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeInBswInstanceRef(ARObject):
     """AUTOSAR ModeInBswInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeInBswInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeInBswInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEINBSWINSTANCEREF")
+        element = ET.Element("MODEINBSWINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeInBswInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "ModeInBswInstanceRef":
         """Create ModeInBswInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeInBswInstanceRef(ARObject):
         Returns:
             ModeInBswInstanceRef instance
         """
-        obj = cls()
+        obj: ModeInBswInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeInBswInstanceRef(ARObject):
 class ModeInBswInstanceRefBuilder:
     """Builder for ModeInBswInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeInBswInstanceRef()
+        self._obj: ModeInBswInstanceRef = ModeInBswInstanceRef()
 
     def build(self) -> ModeInBswInstanceRef:
         """Build and return ModeInBswInstanceRef object.

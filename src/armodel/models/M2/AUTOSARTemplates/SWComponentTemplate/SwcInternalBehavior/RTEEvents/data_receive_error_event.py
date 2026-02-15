@@ -1,29 +1,28 @@
 """DataReceiveErrorEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataReceiveErrorEvent(ARObject):
     """AUTOSAR DataReceiveErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataReceiveErrorEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataReceiveErrorEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATARECEIVEERROREVENT")
+        element = ET.Element("DATARECEIVEERROREVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataReceiveErrorEvent":
+    def deserialize(cls, element: ET.Element) -> "DataReceiveErrorEvent":
         """Create DataReceiveErrorEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataReceiveErrorEvent(ARObject):
         Returns:
             DataReceiveErrorEvent instance
         """
-        obj = cls()
+        obj: DataReceiveErrorEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataReceiveErrorEvent(ARObject):
 class DataReceiveErrorEventBuilder:
     """Builder for DataReceiveErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataReceiveErrorEvent()
+        self._obj: DataReceiveErrorEvent = DataReceiveErrorEvent()
 
     def build(self) -> DataReceiveErrorEvent:
         """Build and return DataReceiveErrorEvent object.

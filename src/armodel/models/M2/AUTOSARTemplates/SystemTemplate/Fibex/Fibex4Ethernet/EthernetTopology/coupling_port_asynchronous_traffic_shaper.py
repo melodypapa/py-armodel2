@@ -1,29 +1,28 @@
 """CouplingPortAsynchronousTrafficShaper AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CouplingPortAsynchronousTrafficShaper(ARObject):
     """AUTOSAR CouplingPortAsynchronousTrafficShaper."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CouplingPortAsynchronousTrafficShaper."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CouplingPortAsynchronousTrafficShaper to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COUPLINGPORTASYNCHRONOUSTRAFFICSHAPER")
+        element = ET.Element("COUPLINGPORTASYNCHRONOUSTRAFFICSHAPER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CouplingPortAsynchronousTrafficShaper":
+    def deserialize(cls, element: ET.Element) -> "CouplingPortAsynchronousTrafficShaper":
         """Create CouplingPortAsynchronousTrafficShaper from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CouplingPortAsynchronousTrafficShaper(ARObject):
         Returns:
             CouplingPortAsynchronousTrafficShaper instance
         """
-        obj = cls()
+        obj: CouplingPortAsynchronousTrafficShaper = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CouplingPortAsynchronousTrafficShaper(ARObject):
 class CouplingPortAsynchronousTrafficShaperBuilder:
     """Builder for CouplingPortAsynchronousTrafficShaper."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CouplingPortAsynchronousTrafficShaper()
+        self._obj: CouplingPortAsynchronousTrafficShaper = CouplingPortAsynchronousTrafficShaper()
 
     def build(self) -> CouplingPortAsynchronousTrafficShaper:
         """Build and return CouplingPortAsynchronousTrafficShaper object.

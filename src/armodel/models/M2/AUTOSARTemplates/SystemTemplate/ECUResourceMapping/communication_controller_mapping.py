@@ -1,29 +1,28 @@
 """CommunicationControllerMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CommunicationControllerMapping(ARObject):
     """AUTOSAR CommunicationControllerMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CommunicationControllerMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CommunicationControllerMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMMUNICATIONCONTROLLERMAPPING")
+        element = ET.Element("COMMUNICATIONCONTROLLERMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CommunicationControllerMapping":
+    def deserialize(cls, element: ET.Element) -> "CommunicationControllerMapping":
         """Create CommunicationControllerMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CommunicationControllerMapping(ARObject):
         Returns:
             CommunicationControllerMapping instance
         """
-        obj = cls()
+        obj: CommunicationControllerMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CommunicationControllerMapping(ARObject):
 class CommunicationControllerMappingBuilder:
     """Builder for CommunicationControllerMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CommunicationControllerMapping()
+        self._obj: CommunicationControllerMapping = CommunicationControllerMapping()
 
     def build(self) -> CommunicationControllerMapping:
         """Build and return CommunicationControllerMapping object.

@@ -1,29 +1,28 @@
 """SwComponentPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwComponentPrototype(ARObject):
     """AUTOSAR SwComponentPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwComponentPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwComponentPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCOMPONENTPROTOTYPE")
+        element = ET.Element("SWCOMPONENTPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwComponentPrototype":
+    def deserialize(cls, element: ET.Element) -> "SwComponentPrototype":
         """Create SwComponentPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwComponentPrototype(ARObject):
         Returns:
             SwComponentPrototype instance
         """
-        obj = cls()
+        obj: SwComponentPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwComponentPrototype(ARObject):
 class SwComponentPrototypeBuilder:
     """Builder for SwComponentPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwComponentPrototype()
+        self._obj: SwComponentPrototype = SwComponentPrototype()
 
     def build(self) -> SwComponentPrototype:
         """Build and return SwComponentPrototype object.

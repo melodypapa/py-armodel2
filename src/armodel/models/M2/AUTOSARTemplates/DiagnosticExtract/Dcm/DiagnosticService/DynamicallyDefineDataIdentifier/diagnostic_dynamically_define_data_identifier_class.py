@@ -1,29 +1,28 @@
 """DiagnosticDynamicallyDefineDataIdentifierClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticDynamicallyDefineDataIdentifierClass(ARObject):
     """AUTOSAR DiagnosticDynamicallyDefineDataIdentifierClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifierClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticDynamicallyDefineDataIdentifierClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICDYNAMICALLYDEFINEDATAIDENTIFIERCLASS")
+        element = ET.Element("DIAGNOSTICDYNAMICALLYDEFINEDATAIDENTIFIERCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticDynamicallyDefineDataIdentifierClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticDynamicallyDefineDataIdentifierClass":
         """Create DiagnosticDynamicallyDefineDataIdentifierClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(ARObject):
         Returns:
             DiagnosticDynamicallyDefineDataIdentifierClass instance
         """
-        obj = cls()
+        obj: DiagnosticDynamicallyDefineDataIdentifierClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(ARObject):
 class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
     """Builder for DiagnosticDynamicallyDefineDataIdentifierClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticDynamicallyDefineDataIdentifierClass()
+        self._obj: DiagnosticDynamicallyDefineDataIdentifierClass = DiagnosticDynamicallyDefineDataIdentifierClass()
 
     def build(self) -> DiagnosticDynamicallyDefineDataIdentifierClass:
         """Build and return DiagnosticDynamicallyDefineDataIdentifierClass object.

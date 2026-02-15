@@ -1,29 +1,28 @@
 """RptExecutableEntityProperties AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptExecutableEntityProperties(ARObject):
     """AUTOSAR RptExecutableEntityProperties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptExecutableEntityProperties."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptExecutableEntityProperties to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTEXECUTABLEENTITYPROPERTIES")
+        element = ET.Element("RPTEXECUTABLEENTITYPROPERTIES")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptExecutableEntityProperties":
+    def deserialize(cls, element: ET.Element) -> "RptExecutableEntityProperties":
         """Create RptExecutableEntityProperties from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptExecutableEntityProperties(ARObject):
         Returns:
             RptExecutableEntityProperties instance
         """
-        obj = cls()
+        obj: RptExecutableEntityProperties = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptExecutableEntityProperties(ARObject):
 class RptExecutableEntityPropertiesBuilder:
     """Builder for RptExecutableEntityProperties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptExecutableEntityProperties()
+        self._obj: RptExecutableEntityProperties = RptExecutableEntityProperties()
 
     def build(self) -> RptExecutableEntityProperties:
         """Build and return RptExecutableEntityProperties object.

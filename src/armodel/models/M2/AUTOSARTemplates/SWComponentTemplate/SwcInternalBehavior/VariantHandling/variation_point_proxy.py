@@ -1,29 +1,28 @@
 """VariationPointProxy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class VariationPointProxy(ARObject):
     """AUTOSAR VariationPointProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert VariationPointProxy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VARIATIONPOINTPROXY")
+        element = ET.Element("VARIATIONPOINTPROXY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "VariationPointProxy":
+    def deserialize(cls, element: ET.Element) -> "VariationPointProxy":
         """Create VariationPointProxy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class VariationPointProxy(ARObject):
         Returns:
             VariationPointProxy instance
         """
-        obj = cls()
+        obj: VariationPointProxy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class VariationPointProxy(ARObject):
 class VariationPointProxyBuilder:
     """Builder for VariationPointProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = VariationPointProxy()
+        self._obj: VariationPointProxy = VariationPointProxy()
 
     def build(self) -> VariationPointProxy:
         """Build and return VariationPointProxy object.

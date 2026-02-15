@@ -1,29 +1,28 @@
 """NumericalOrText AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class NumericalOrText(ARObject):
     """AUTOSAR NumericalOrText."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize NumericalOrText."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert NumericalOrText to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("NUMERICALORTEXT")
+        element = ET.Element("NUMERICALORTEXT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "NumericalOrText":
+    def deserialize(cls, element: ET.Element) -> "NumericalOrText":
         """Create NumericalOrText from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class NumericalOrText(ARObject):
         Returns:
             NumericalOrText instance
         """
-        obj = cls()
+        obj: NumericalOrText = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class NumericalOrText(ARObject):
 class NumericalOrTextBuilder:
     """Builder for NumericalOrText."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = NumericalOrText()
+        self._obj: NumericalOrText = NumericalOrText()
 
     def build(self) -> NumericalOrText:
         """Build and return NumericalOrText object.

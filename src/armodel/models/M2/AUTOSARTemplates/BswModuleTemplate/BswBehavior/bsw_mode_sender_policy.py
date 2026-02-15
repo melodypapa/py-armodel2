@@ -1,29 +1,28 @@
 """BswModeSenderPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswModeSenderPolicy(ARObject):
     """AUTOSAR BswModeSenderPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswModeSenderPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswModeSenderPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWMODESENDERPOLICY")
+        element = ET.Element("BSWMODESENDERPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswModeSenderPolicy":
+    def deserialize(cls, element: ET.Element) -> "BswModeSenderPolicy":
         """Create BswModeSenderPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswModeSenderPolicy(ARObject):
         Returns:
             BswModeSenderPolicy instance
         """
-        obj = cls()
+        obj: BswModeSenderPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswModeSenderPolicy(ARObject):
 class BswModeSenderPolicyBuilder:
     """Builder for BswModeSenderPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswModeSenderPolicy()
+        self._obj: BswModeSenderPolicy = BswModeSenderPolicy()
 
     def build(self) -> BswModeSenderPolicy:
         """Build and return BswModeSenderPolicy object.

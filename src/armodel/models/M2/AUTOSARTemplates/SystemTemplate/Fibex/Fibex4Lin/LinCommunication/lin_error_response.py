@@ -1,29 +1,28 @@
 """LinErrorResponse AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinErrorResponse(ARObject):
     """AUTOSAR LinErrorResponse."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinErrorResponse."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinErrorResponse to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINERRORRESPONSE")
+        element = ET.Element("LINERRORRESPONSE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinErrorResponse":
+    def deserialize(cls, element: ET.Element) -> "LinErrorResponse":
         """Create LinErrorResponse from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinErrorResponse(ARObject):
         Returns:
             LinErrorResponse instance
         """
-        obj = cls()
+        obj: LinErrorResponse = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinErrorResponse(ARObject):
 class LinErrorResponseBuilder:
     """Builder for LinErrorResponse."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinErrorResponse()
+        self._obj: LinErrorResponse = LinErrorResponse()
 
     def build(self) -> LinErrorResponse:
         """Build and return LinErrorResponse object.

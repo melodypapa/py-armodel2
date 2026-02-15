@@ -1,29 +1,28 @@
 """PModeGroupInAtomicSwcInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PModeGroupInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR PModeGroupInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PModeGroupInAtomicSwcInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PMODEGROUPINATOMICSWCINSTANCEREF")
+        element = ET.Element("PMODEGROUPINATOMICSWCINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PModeGroupInAtomicSwcInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "PModeGroupInAtomicSwcInstanceRef":
         """Create PModeGroupInAtomicSwcInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PModeGroupInAtomicSwcInstanceRef(ARObject):
         Returns:
             PModeGroupInAtomicSwcInstanceRef instance
         """
-        obj = cls()
+        obj: PModeGroupInAtomicSwcInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PModeGroupInAtomicSwcInstanceRef(ARObject):
 class PModeGroupInAtomicSwcInstanceRefBuilder:
     """Builder for PModeGroupInAtomicSwcInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PModeGroupInAtomicSwcInstanceRef()
+        self._obj: PModeGroupInAtomicSwcInstanceRef = PModeGroupInAtomicSwcInstanceRef()
 
     def build(self) -> PModeGroupInAtomicSwcInstanceRef:
         """Build and return PModeGroupInAtomicSwcInstanceRef object.

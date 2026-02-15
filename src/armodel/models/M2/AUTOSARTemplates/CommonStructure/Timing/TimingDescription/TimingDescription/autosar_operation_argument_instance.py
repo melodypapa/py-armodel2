@@ -1,29 +1,28 @@
 """AutosarOperationArgumentInstance AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AutosarOperationArgumentInstance(ARObject):
     """AUTOSAR AutosarOperationArgumentInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AutosarOperationArgumentInstance."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AutosarOperationArgumentInstance to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AUTOSAROPERATIONARGUMENTINSTANCE")
+        element = ET.Element("AUTOSAROPERATIONARGUMENTINSTANCE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AutosarOperationArgumentInstance":
+    def deserialize(cls, element: ET.Element) -> "AutosarOperationArgumentInstance":
         """Create AutosarOperationArgumentInstance from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AutosarOperationArgumentInstance(ARObject):
         Returns:
             AutosarOperationArgumentInstance instance
         """
-        obj = cls()
+        obj: AutosarOperationArgumentInstance = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AutosarOperationArgumentInstance(ARObject):
 class AutosarOperationArgumentInstanceBuilder:
     """Builder for AutosarOperationArgumentInstance."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AutosarOperationArgumentInstance()
+        self._obj: AutosarOperationArgumentInstance = AutosarOperationArgumentInstance()
 
     def build(self) -> AutosarOperationArgumentInstance:
         """Build and return AutosarOperationArgumentInstance object.

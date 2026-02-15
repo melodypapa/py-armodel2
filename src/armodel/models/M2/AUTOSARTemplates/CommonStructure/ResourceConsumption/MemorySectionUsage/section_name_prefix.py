@@ -1,29 +1,28 @@
 """SectionNamePrefix AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SectionNamePrefix(ARObject):
     """AUTOSAR SectionNamePrefix."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SectionNamePrefix to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECTIONNAMEPREFIX")
+        element = ET.Element("SECTIONNAMEPREFIX")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SectionNamePrefix":
+    def deserialize(cls, element: ET.Element) -> "SectionNamePrefix":
         """Create SectionNamePrefix from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SectionNamePrefix(ARObject):
         Returns:
             SectionNamePrefix instance
         """
-        obj = cls()
+        obj: SectionNamePrefix = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SectionNamePrefix(ARObject):
 class SectionNamePrefixBuilder:
     """Builder for SectionNamePrefix."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SectionNamePrefix()
+        self._obj: SectionNamePrefix = SectionNamePrefix()
 
     def build(self) -> SectionNamePrefix:
         """Build and return SectionNamePrefix object.

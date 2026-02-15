@@ -1,29 +1,28 @@
 """SwcToSwcSignal AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcToSwcSignal(ARObject):
     """AUTOSAR SwcToSwcSignal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcToSwcSignal."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcToSwcSignal to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCTOSWCSIGNAL")
+        element = ET.Element("SWCTOSWCSIGNAL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcToSwcSignal":
+    def deserialize(cls, element: ET.Element) -> "SwcToSwcSignal":
         """Create SwcToSwcSignal from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcToSwcSignal(ARObject):
         Returns:
             SwcToSwcSignal instance
         """
-        obj = cls()
+        obj: SwcToSwcSignal = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcToSwcSignal(ARObject):
 class SwcToSwcSignalBuilder:
     """Builder for SwcToSwcSignal."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcToSwcSignal()
+        self._obj: SwcToSwcSignal = SwcToSwcSignal()
 
     def build(self) -> SwcToSwcSignal:
         """Build and return SwcToSwcSignal object.

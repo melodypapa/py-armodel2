@@ -1,29 +1,28 @@
 """MultilanguageReferrable AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MultilanguageReferrable(ARObject):
     """AUTOSAR MultilanguageReferrable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MultilanguageReferrable."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MultilanguageReferrable to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MULTILANGUAGEREFERRABLE")
+        element = ET.Element("MULTILANGUAGEREFERRABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MultilanguageReferrable":
+    def deserialize(cls, element: ET.Element) -> "MultilanguageReferrable":
         """Create MultilanguageReferrable from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MultilanguageReferrable(ARObject):
         Returns:
             MultilanguageReferrable instance
         """
-        obj = cls()
+        obj: MultilanguageReferrable = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MultilanguageReferrable(ARObject):
 class MultilanguageReferrableBuilder:
     """Builder for MultilanguageReferrable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MultilanguageReferrable()
+        self._obj: MultilanguageReferrable = MultilanguageReferrable()
 
     def build(self) -> MultilanguageReferrable:
         """Build and return MultilanguageReferrable object.

@@ -1,29 +1,28 @@
 """ApplicationCompositeDataType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ApplicationCompositeDataType(ARObject):
     """AUTOSAR ApplicationCompositeDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ApplicationCompositeDataType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ApplicationCompositeDataType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPLICATIONCOMPOSITEDATATYPE")
+        element = ET.Element("APPLICATIONCOMPOSITEDATATYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ApplicationCompositeDataType":
+    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeDataType":
         """Create ApplicationCompositeDataType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ApplicationCompositeDataType(ARObject):
         Returns:
             ApplicationCompositeDataType instance
         """
-        obj = cls()
+        obj: ApplicationCompositeDataType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ApplicationCompositeDataType(ARObject):
 class ApplicationCompositeDataTypeBuilder:
     """Builder for ApplicationCompositeDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ApplicationCompositeDataType()
+        self._obj: ApplicationCompositeDataType = ApplicationCompositeDataType()
 
     def build(self) -> ApplicationCompositeDataType:
         """Build and return ApplicationCompositeDataType object.

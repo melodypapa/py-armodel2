@@ -1,29 +1,28 @@
 """StreamFilterPortRange AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class StreamFilterPortRange(ARObject):
     """AUTOSAR StreamFilterPortRange."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize StreamFilterPortRange."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert StreamFilterPortRange to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("STREAMFILTERPORTRANGE")
+        element = ET.Element("STREAMFILTERPORTRANGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "StreamFilterPortRange":
+    def deserialize(cls, element: ET.Element) -> "StreamFilterPortRange":
         """Create StreamFilterPortRange from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class StreamFilterPortRange(ARObject):
         Returns:
             StreamFilterPortRange instance
         """
-        obj = cls()
+        obj: StreamFilterPortRange = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class StreamFilterPortRange(ARObject):
 class StreamFilterPortRangeBuilder:
     """Builder for StreamFilterPortRange."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = StreamFilterPortRange()
+        self._obj: StreamFilterPortRange = StreamFilterPortRange()
 
     def build(self) -> StreamFilterPortRange:
         """Build and return StreamFilterPortRange object.

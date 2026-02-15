@@ -1,29 +1,28 @@
 """FloatValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FloatValueVariationPoint(ARObject):
     """AUTOSAR FloatValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FloatValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FloatValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FLOATVALUEVARIATIONPOINT")
+        element = ET.Element("FLOATVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FloatValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "FloatValueVariationPoint":
         """Create FloatValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FloatValueVariationPoint(ARObject):
         Returns:
             FloatValueVariationPoint instance
         """
-        obj = cls()
+        obj: FloatValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FloatValueVariationPoint(ARObject):
 class FloatValueVariationPointBuilder:
     """Builder for FloatValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FloatValueVariationPoint()
+        self._obj: FloatValueVariationPoint = FloatValueVariationPoint()
 
     def build(self) -> FloatValueVariationPoint:
         """Build and return FloatValueVariationPoint object.

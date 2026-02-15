@@ -1,29 +1,28 @@
 """TlsCryptoCipherSuiteProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TlsCryptoCipherSuiteProps(ARObject):
     """AUTOSAR TlsCryptoCipherSuiteProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TlsCryptoCipherSuiteProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TLSCRYPTOCIPHERSUITEPROPS")
+        element = ET.Element("TLSCRYPTOCIPHERSUITEPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TlsCryptoCipherSuiteProps":
+    def deserialize(cls, element: ET.Element) -> "TlsCryptoCipherSuiteProps":
         """Create TlsCryptoCipherSuiteProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TlsCryptoCipherSuiteProps(ARObject):
         Returns:
             TlsCryptoCipherSuiteProps instance
         """
-        obj = cls()
+        obj: TlsCryptoCipherSuiteProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TlsCryptoCipherSuiteProps(ARObject):
 class TlsCryptoCipherSuitePropsBuilder:
     """Builder for TlsCryptoCipherSuiteProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TlsCryptoCipherSuiteProps()
+        self._obj: TlsCryptoCipherSuiteProps = TlsCryptoCipherSuiteProps()
 
     def build(self) -> TlsCryptoCipherSuiteProps:
         """Build and return TlsCryptoCipherSuiteProps object.

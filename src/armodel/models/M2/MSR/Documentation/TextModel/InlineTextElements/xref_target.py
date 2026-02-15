@@ -1,29 +1,28 @@
 """XrefTarget AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class XrefTarget(ARObject):
     """AUTOSAR XrefTarget."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize XrefTarget."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert XrefTarget to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("XREFTARGET")
+        element = ET.Element("XREFTARGET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "XrefTarget":
+    def deserialize(cls, element: ET.Element) -> "XrefTarget":
         """Create XrefTarget from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class XrefTarget(ARObject):
         Returns:
             XrefTarget instance
         """
-        obj = cls()
+        obj: XrefTarget = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class XrefTarget(ARObject):
 class XrefTargetBuilder:
     """Builder for XrefTarget."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = XrefTarget()
+        self._obj: XrefTarget = XrefTarget()
 
     def build(self) -> XrefTarget:
         """Build and return XrefTarget object.

@@ -1,29 +1,28 @@
 """Keyword AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Keyword(ARObject):
     """AUTOSAR Keyword."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Keyword."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Keyword to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("KEYWORD")
+        element = ET.Element("KEYWORD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Keyword":
+    def deserialize(cls, element: ET.Element) -> "Keyword":
         """Create Keyword from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Keyword(ARObject):
         Returns:
             Keyword instance
         """
-        obj = cls()
+        obj: Keyword = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Keyword(ARObject):
 class KeywordBuilder:
     """Builder for Keyword."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Keyword()
+        self._obj: Keyword = Keyword()
 
     def build(self) -> Keyword:
         """Build and return Keyword object.

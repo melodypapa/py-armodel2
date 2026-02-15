@@ -1,29 +1,28 @@
 """EcucIndexableValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucIndexableValue(ARObject):
     """AUTOSAR EcucIndexableValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucIndexableValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucIndexableValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCINDEXABLEVALUE")
+        element = ET.Element("ECUCINDEXABLEVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucIndexableValue":
+    def deserialize(cls, element: ET.Element) -> "EcucIndexableValue":
         """Create EcucIndexableValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucIndexableValue(ARObject):
         Returns:
             EcucIndexableValue instance
         """
-        obj = cls()
+        obj: EcucIndexableValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucIndexableValue(ARObject):
 class EcucIndexableValueBuilder:
     """Builder for EcucIndexableValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucIndexableValue()
+        self._obj: EcucIndexableValue = EcucIndexableValue()
 
     def build(self) -> EcucIndexableValue:
         """Build and return EcucIndexableValue object.

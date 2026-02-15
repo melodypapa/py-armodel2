@@ -1,29 +1,28 @@
 """SimulatedExecutionTime AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SimulatedExecutionTime(ARObject):
     """AUTOSAR SimulatedExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SimulatedExecutionTime."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SimulatedExecutionTime to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SIMULATEDEXECUTIONTIME")
+        element = ET.Element("SIMULATEDEXECUTIONTIME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SimulatedExecutionTime":
+    def deserialize(cls, element: ET.Element) -> "SimulatedExecutionTime":
         """Create SimulatedExecutionTime from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SimulatedExecutionTime(ARObject):
         Returns:
             SimulatedExecutionTime instance
         """
-        obj = cls()
+        obj: SimulatedExecutionTime = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SimulatedExecutionTime(ARObject):
 class SimulatedExecutionTimeBuilder:
     """Builder for SimulatedExecutionTime."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SimulatedExecutionTime()
+        self._obj: SimulatedExecutionTime = SimulatedExecutionTime()
 
     def build(self) -> SimulatedExecutionTime:
         """Build and return SimulatedExecutionTime object.

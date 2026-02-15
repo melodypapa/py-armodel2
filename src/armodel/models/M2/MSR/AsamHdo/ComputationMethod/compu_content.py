@@ -1,29 +1,28 @@
 """CompuContent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CompuContent(ARObject):
     """AUTOSAR CompuContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CompuContent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CompuContent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMPUCONTENT")
+        element = ET.Element("COMPUCONTENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CompuContent":
+    def deserialize(cls, element: ET.Element) -> "CompuContent":
         """Create CompuContent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CompuContent(ARObject):
         Returns:
             CompuContent instance
         """
-        obj = cls()
+        obj: CompuContent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CompuContent(ARObject):
 class CompuContentBuilder:
     """Builder for CompuContent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CompuContent()
+        self._obj: CompuContent = CompuContent()
 
     def build(self) -> CompuContent:
         """Build and return CompuContent object.

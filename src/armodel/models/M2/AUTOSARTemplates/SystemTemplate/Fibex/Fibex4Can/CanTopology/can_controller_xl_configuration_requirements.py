@@ -1,29 +1,28 @@
 """CanControllerXlConfigurationRequirements AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanControllerXlConfigurationRequirements(ARObject):
     """AUTOSAR CanControllerXlConfigurationRequirements."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanControllerXlConfigurationRequirements."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanControllerXlConfigurationRequirements to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANCONTROLLERXLCONFIGURATIONREQUIREMENTS")
+        element = ET.Element("CANCONTROLLERXLCONFIGURATIONREQUIREMENTS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanControllerXlConfigurationRequirements":
+    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfigurationRequirements":
         """Create CanControllerXlConfigurationRequirements from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
         Returns:
             CanControllerXlConfigurationRequirements instance
         """
-        obj = cls()
+        obj: CanControllerXlConfigurationRequirements = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanControllerXlConfigurationRequirements(ARObject):
 class CanControllerXlConfigurationRequirementsBuilder:
     """Builder for CanControllerXlConfigurationRequirements."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanControllerXlConfigurationRequirements()
+        self._obj: CanControllerXlConfigurationRequirements = CanControllerXlConfigurationRequirements()
 
     def build(self) -> CanControllerXlConfigurationRequirements:
         """Build and return CanControllerXlConfigurationRequirements object.

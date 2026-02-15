@@ -1,29 +1,28 @@
 """CanTpChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanTpChannel(ARObject):
     """AUTOSAR CanTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanTpChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanTpChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANTPCHANNEL")
+        element = ET.Element("CANTPCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanTpChannel":
+    def deserialize(cls, element: ET.Element) -> "CanTpChannel":
         """Create CanTpChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanTpChannel(ARObject):
         Returns:
             CanTpChannel instance
         """
-        obj = cls()
+        obj: CanTpChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanTpChannel(ARObject):
 class CanTpChannelBuilder:
     """Builder for CanTpChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanTpChannel()
+        self._obj: CanTpChannel = CanTpChannel()
 
     def build(self) -> CanTpChannel:
         """Build and return CanTpChannel object.

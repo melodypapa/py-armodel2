@@ -1,29 +1,28 @@
 """FirewallRule AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FirewallRule(ARObject):
     """AUTOSAR FirewallRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FirewallRule."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FirewallRule to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FIREWALLRULE")
+        element = ET.Element("FIREWALLRULE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FirewallRule":
+    def deserialize(cls, element: ET.Element) -> "FirewallRule":
         """Create FirewallRule from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FirewallRule(ARObject):
         Returns:
             FirewallRule instance
         """
-        obj = cls()
+        obj: FirewallRule = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FirewallRule(ARObject):
 class FirewallRuleBuilder:
     """Builder for FirewallRule."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FirewallRule()
+        self._obj: FirewallRule = FirewallRule()
 
     def build(self) -> FirewallRule:
         """Build and return FirewallRule object.

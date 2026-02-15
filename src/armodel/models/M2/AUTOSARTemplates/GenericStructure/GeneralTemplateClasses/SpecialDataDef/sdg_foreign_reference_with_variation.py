@@ -1,29 +1,28 @@
 """SdgForeignReferenceWithVariation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SdgForeignReferenceWithVariation(ARObject):
     """AUTOSAR SdgForeignReferenceWithVariation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SdgForeignReferenceWithVariation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SdgForeignReferenceWithVariation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SDGFOREIGNREFERENCEWITHVARIATION")
+        element = ET.Element("SDGFOREIGNREFERENCEWITHVARIATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SdgForeignReferenceWithVariation":
+    def deserialize(cls, element: ET.Element) -> "SdgForeignReferenceWithVariation":
         """Create SdgForeignReferenceWithVariation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SdgForeignReferenceWithVariation(ARObject):
         Returns:
             SdgForeignReferenceWithVariation instance
         """
-        obj = cls()
+        obj: SdgForeignReferenceWithVariation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SdgForeignReferenceWithVariation(ARObject):
 class SdgForeignReferenceWithVariationBuilder:
     """Builder for SdgForeignReferenceWithVariation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SdgForeignReferenceWithVariation()
+        self._obj: SdgForeignReferenceWithVariation = SdgForeignReferenceWithVariation()
 
     def build(self) -> SdgForeignReferenceWithVariation:
         """Build and return SdgForeignReferenceWithVariation object.

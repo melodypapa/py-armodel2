@@ -1,29 +1,28 @@
 """AtpPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AtpPrototype(ARObject):
     """AUTOSAR AtpPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AtpPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AtpPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ATPPROTOTYPE")
+        element = ET.Element("ATPPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AtpPrototype":
+    def deserialize(cls, element: ET.Element) -> "AtpPrototype":
         """Create AtpPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AtpPrototype(ARObject):
         Returns:
             AtpPrototype instance
         """
-        obj = cls()
+        obj: AtpPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AtpPrototype(ARObject):
 class AtpPrototypeBuilder:
     """Builder for AtpPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AtpPrototype()
+        self._obj: AtpPrototype = AtpPrototype()
 
     def build(self) -> AtpPrototype:
         """Build and return AtpPrototype object.

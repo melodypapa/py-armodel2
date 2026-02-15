@@ -1,29 +1,28 @@
 """BusMirrorChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BusMirrorChannel(ARObject):
     """AUTOSAR BusMirrorChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BusMirrorChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BusMirrorChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUSMIRRORCHANNEL")
+        element = ET.Element("BUSMIRRORCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BusMirrorChannel":
+    def deserialize(cls, element: ET.Element) -> "BusMirrorChannel":
         """Create BusMirrorChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BusMirrorChannel(ARObject):
         Returns:
             BusMirrorChannel instance
         """
-        obj = cls()
+        obj: BusMirrorChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BusMirrorChannel(ARObject):
 class BusMirrorChannelBuilder:
     """Builder for BusMirrorChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BusMirrorChannel()
+        self._obj: BusMirrorChannel = BusMirrorChannel()
 
     def build(self) -> BusMirrorChannel:
         """Build and return BusMirrorChannel object.

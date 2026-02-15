@@ -1,29 +1,28 @@
 """SwValueCont AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwValueCont(ARObject):
     """AUTOSAR SwValueCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwValueCont."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwValueCont to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWVALUECONT")
+        element = ET.Element("SWVALUECONT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwValueCont":
+    def deserialize(cls, element: ET.Element) -> "SwValueCont":
         """Create SwValueCont from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwValueCont(ARObject):
         Returns:
             SwValueCont instance
         """
-        obj = cls()
+        obj: SwValueCont = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwValueCont(ARObject):
 class SwValueContBuilder:
     """Builder for SwValueCont."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwValueCont()
+        self._obj: SwValueCont = SwValueCont()
 
     def build(self) -> SwValueCont:
         """Build and return SwValueCont object.

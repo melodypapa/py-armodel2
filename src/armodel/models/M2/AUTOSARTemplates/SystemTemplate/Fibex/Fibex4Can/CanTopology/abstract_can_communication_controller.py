@@ -1,29 +1,28 @@
 """AbstractCanCommunicationController AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractCanCommunicationController(ARObject):
     """AUTOSAR AbstractCanCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractCanCommunicationController."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractCanCommunicationController to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTCANCOMMUNICATIONCONTROLLER")
+        element = ET.Element("ABSTRACTCANCOMMUNICATIONCONTROLLER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractCanCommunicationController":
+    def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationController":
         """Create AbstractCanCommunicationController from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractCanCommunicationController(ARObject):
         Returns:
             AbstractCanCommunicationController instance
         """
-        obj = cls()
+        obj: AbstractCanCommunicationController = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractCanCommunicationController(ARObject):
 class AbstractCanCommunicationControllerBuilder:
     """Builder for AbstractCanCommunicationController."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractCanCommunicationController()
+        self._obj: AbstractCanCommunicationController = AbstractCanCommunicationController()
 
     def build(self) -> AbstractCanCommunicationController:
         """Build and return AbstractCanCommunicationController object.

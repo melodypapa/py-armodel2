@@ -1,29 +1,28 @@
 """TtcanPhysicalChannel AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TtcanPhysicalChannel(ARObject):
     """AUTOSAR TtcanPhysicalChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TtcanPhysicalChannel."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TtcanPhysicalChannel to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TTCANPHYSICALCHANNEL")
+        element = ET.Element("TTCANPHYSICALCHANNEL")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TtcanPhysicalChannel":
+    def deserialize(cls, element: ET.Element) -> "TtcanPhysicalChannel":
         """Create TtcanPhysicalChannel from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TtcanPhysicalChannel(ARObject):
         Returns:
             TtcanPhysicalChannel instance
         """
-        obj = cls()
+        obj: TtcanPhysicalChannel = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TtcanPhysicalChannel(ARObject):
 class TtcanPhysicalChannelBuilder:
     """Builder for TtcanPhysicalChannel."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TtcanPhysicalChannel()
+        self._obj: TtcanPhysicalChannel = TtcanPhysicalChannel()
 
     def build(self) -> TtcanPhysicalChannel:
         """Build and return TtcanPhysicalChannel object.

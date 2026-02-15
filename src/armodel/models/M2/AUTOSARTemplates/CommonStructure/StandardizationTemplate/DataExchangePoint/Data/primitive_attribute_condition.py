@@ -1,29 +1,28 @@
 """PrimitiveAttributeCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PrimitiveAttributeCondition(ARObject):
     """AUTOSAR PrimitiveAttributeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PrimitiveAttributeCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PRIMITIVEATTRIBUTECONDITION")
+        element = ET.Element("PRIMITIVEATTRIBUTECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PrimitiveAttributeCondition":
+    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeCondition":
         """Create PrimitiveAttributeCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PrimitiveAttributeCondition(ARObject):
         Returns:
             PrimitiveAttributeCondition instance
         """
-        obj = cls()
+        obj: PrimitiveAttributeCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PrimitiveAttributeCondition(ARObject):
 class PrimitiveAttributeConditionBuilder:
     """Builder for PrimitiveAttributeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PrimitiveAttributeCondition()
+        self._obj: PrimitiveAttributeCondition = PrimitiveAttributeCondition()
 
     def build(self) -> PrimitiveAttributeCondition:
         """Build and return PrimitiveAttributeCondition object.

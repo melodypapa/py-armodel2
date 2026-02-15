@@ -1,29 +1,28 @@
 """AtpType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AtpType(ARObject):
     """AUTOSAR AtpType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AtpType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AtpType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ATPTYPE")
+        element = ET.Element("ATPTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AtpType":
+    def deserialize(cls, element: ET.Element) -> "AtpType":
         """Create AtpType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AtpType(ARObject):
         Returns:
             AtpType instance
         """
-        obj = cls()
+        obj: AtpType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AtpType(ARObject):
 class AtpTypeBuilder:
     """Builder for AtpType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AtpType()
+        self._obj: AtpType = AtpType()
 
     def build(self) -> AtpType:
         """Build and return AtpType object.

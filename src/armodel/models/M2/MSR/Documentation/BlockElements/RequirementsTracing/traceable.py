@@ -1,29 +1,28 @@
 """Traceable AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Traceable(ARObject):
     """AUTOSAR Traceable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Traceable."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Traceable to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRACEABLE")
+        element = ET.Element("TRACEABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Traceable":
+    def deserialize(cls, element: ET.Element) -> "Traceable":
         """Create Traceable from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Traceable(ARObject):
         Returns:
             Traceable instance
         """
-        obj = cls()
+        obj: Traceable = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Traceable(ARObject):
 class TraceableBuilder:
     """Builder for Traceable."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Traceable()
+        self._obj: Traceable = Traceable()
 
     def build(self) -> Traceable:
         """Build and return Traceable object.

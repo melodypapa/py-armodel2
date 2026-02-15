@@ -1,29 +1,28 @@
 """BswModeManagerErrorEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BswModeManagerErrorEvent(ARObject):
     """AUTOSAR BswModeManagerErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BswModeManagerErrorEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BswModeManagerErrorEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BSWMODEMANAGERERROREVENT")
+        element = ET.Element("BSWMODEMANAGERERROREVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BswModeManagerErrorEvent":
+    def deserialize(cls, element: ET.Element) -> "BswModeManagerErrorEvent":
         """Create BswModeManagerErrorEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BswModeManagerErrorEvent(ARObject):
         Returns:
             BswModeManagerErrorEvent instance
         """
-        obj = cls()
+        obj: BswModeManagerErrorEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BswModeManagerErrorEvent(ARObject):
 class BswModeManagerErrorEventBuilder:
     """Builder for BswModeManagerErrorEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BswModeManagerErrorEvent()
+        self._obj: BswModeManagerErrorEvent = BswModeManagerErrorEvent()
 
     def build(self) -> BswModeManagerErrorEvent:
         """Build and return BswModeManagerErrorEvent object.

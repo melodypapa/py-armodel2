@@ -1,29 +1,28 @@
 """BlockState AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BlockState(ARObject):
     """AUTOSAR BlockState."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BlockState."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BlockState to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BLOCKSTATE")
+        element = ET.Element("BLOCKSTATE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BlockState":
+    def deserialize(cls, element: ET.Element) -> "BlockState":
         """Create BlockState from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BlockState(ARObject):
         Returns:
             BlockState instance
         """
-        obj = cls()
+        obj: BlockState = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BlockState(ARObject):
 class BlockStateBuilder:
     """Builder for BlockState."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BlockState()
+        self._obj: BlockState = BlockState()
 
     def build(self) -> BlockState:
         """Build and return BlockState object.

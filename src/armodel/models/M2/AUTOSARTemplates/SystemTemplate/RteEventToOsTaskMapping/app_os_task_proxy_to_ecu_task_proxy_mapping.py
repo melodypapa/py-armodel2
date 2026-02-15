@@ -1,29 +1,28 @@
 """AppOsTaskProxyToEcuTaskProxyMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AppOsTaskProxyToEcuTaskProxyMapping(ARObject):
     """AUTOSAR AppOsTaskProxyToEcuTaskProxyMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AppOsTaskProxyToEcuTaskProxyMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AppOsTaskProxyToEcuTaskProxyMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("APPOSTASKPROXYTOECUTASKPROXYMAPPING")
+        element = ET.Element("APPOSTASKPROXYTOECUTASKPROXYMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AppOsTaskProxyToEcuTaskProxyMapping":
+    def deserialize(cls, element: ET.Element) -> "AppOsTaskProxyToEcuTaskProxyMapping":
         """Create AppOsTaskProxyToEcuTaskProxyMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(ARObject):
         Returns:
             AppOsTaskProxyToEcuTaskProxyMapping instance
         """
-        obj = cls()
+        obj: AppOsTaskProxyToEcuTaskProxyMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AppOsTaskProxyToEcuTaskProxyMapping(ARObject):
 class AppOsTaskProxyToEcuTaskProxyMappingBuilder:
     """Builder for AppOsTaskProxyToEcuTaskProxyMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AppOsTaskProxyToEcuTaskProxyMapping()
+        self._obj: AppOsTaskProxyToEcuTaskProxyMapping = AppOsTaskProxyToEcuTaskProxyMapping()
 
     def build(self) -> AppOsTaskProxyToEcuTaskProxyMapping:
         """Build and return AppOsTaskProxyToEcuTaskProxyMapping object.

@@ -1,29 +1,28 @@
 """ModeDrivenTransmissionModeCondition AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeDrivenTransmissionModeCondition(ARObject):
     """AUTOSAR ModeDrivenTransmissionModeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeDrivenTransmissionModeCondition."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeDrivenTransmissionModeCondition to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEDRIVENTRANSMISSIONMODECONDITION")
+        element = ET.Element("MODEDRIVENTRANSMISSIONMODECONDITION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeDrivenTransmissionModeCondition":
+    def deserialize(cls, element: ET.Element) -> "ModeDrivenTransmissionModeCondition":
         """Create ModeDrivenTransmissionModeCondition from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         Returns:
             ModeDrivenTransmissionModeCondition instance
         """
-        obj = cls()
+        obj: ModeDrivenTransmissionModeCondition = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeDrivenTransmissionModeCondition(ARObject):
 class ModeDrivenTransmissionModeConditionBuilder:
     """Builder for ModeDrivenTransmissionModeCondition."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeDrivenTransmissionModeCondition()
+        self._obj: ModeDrivenTransmissionModeCondition = ModeDrivenTransmissionModeCondition()
 
     def build(self) -> ModeDrivenTransmissionModeCondition:
         """Build and return ModeDrivenTransmissionModeCondition object.

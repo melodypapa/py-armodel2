@@ -1,29 +1,28 @@
 """TlsPskIdentity AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TlsPskIdentity(ARObject):
     """AUTOSAR TlsPskIdentity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TlsPskIdentity."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TlsPskIdentity to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TLSPSKIDENTITY")
+        element = ET.Element("TLSPSKIDENTITY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TlsPskIdentity":
+    def deserialize(cls, element: ET.Element) -> "TlsPskIdentity":
         """Create TlsPskIdentity from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TlsPskIdentity(ARObject):
         Returns:
             TlsPskIdentity instance
         """
-        obj = cls()
+        obj: TlsPskIdentity = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TlsPskIdentity(ARObject):
 class TlsPskIdentityBuilder:
     """Builder for TlsPskIdentity."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TlsPskIdentity()
+        self._obj: TlsPskIdentity = TlsPskIdentity()
 
     def build(self) -> TlsPskIdentity:
         """Build and return TlsPskIdentity object.

@@ -1,29 +1,28 @@
 """BaseType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BaseType(ARObject):
     """AUTOSAR BaseType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BaseType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BaseType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BASETYPE")
+        element = ET.Element("BASETYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BaseType":
+    def deserialize(cls, element: ET.Element) -> "BaseType":
         """Create BaseType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BaseType(ARObject):
         Returns:
             BaseType instance
         """
-        obj = cls()
+        obj: BaseType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BaseType(ARObject):
 class BaseTypeBuilder:
     """Builder for BaseType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BaseType()
+        self._obj: BaseType = BaseType()
 
     def build(self) -> BaseType:
         """Build and return BaseType object.

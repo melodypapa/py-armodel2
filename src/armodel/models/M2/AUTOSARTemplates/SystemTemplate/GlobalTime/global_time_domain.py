@@ -1,29 +1,28 @@
 """GlobalTimeDomain AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeDomain(ARObject):
     """AUTOSAR GlobalTimeDomain."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeDomain to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMEDOMAIN")
+        element = ET.Element("GLOBALTIMEDOMAIN")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeDomain":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeDomain":
         """Create GlobalTimeDomain from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeDomain(ARObject):
         Returns:
             GlobalTimeDomain instance
         """
-        obj = cls()
+        obj: GlobalTimeDomain = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeDomain(ARObject):
 class GlobalTimeDomainBuilder:
     """Builder for GlobalTimeDomain."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeDomain()
+        self._obj: GlobalTimeDomain = GlobalTimeDomain()
 
     def build(self) -> GlobalTimeDomain:
         """Build and return GlobalTimeDomain object.

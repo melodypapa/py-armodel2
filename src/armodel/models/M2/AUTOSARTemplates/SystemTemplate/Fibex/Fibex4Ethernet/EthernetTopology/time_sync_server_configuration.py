@@ -1,29 +1,28 @@
 """TimeSyncServerConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimeSyncServerConfiguration(ARObject):
     """AUTOSAR TimeSyncServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimeSyncServerConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimeSyncServerConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMESYNCSERVERCONFIGURATION")
+        element = ET.Element("TIMESYNCSERVERCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimeSyncServerConfiguration":
+    def deserialize(cls, element: ET.Element) -> "TimeSyncServerConfiguration":
         """Create TimeSyncServerConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimeSyncServerConfiguration(ARObject):
         Returns:
             TimeSyncServerConfiguration instance
         """
-        obj = cls()
+        obj: TimeSyncServerConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimeSyncServerConfiguration(ARObject):
 class TimeSyncServerConfigurationBuilder:
     """Builder for TimeSyncServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimeSyncServerConfiguration()
+        self._obj: TimeSyncServerConfiguration = TimeSyncServerConfiguration()
 
     def build(self) -> TimeSyncServerConfiguration:
         """Build and return TimeSyncServerConfiguration object.

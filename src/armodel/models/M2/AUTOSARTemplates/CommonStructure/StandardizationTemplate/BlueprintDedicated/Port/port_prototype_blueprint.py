@@ -1,29 +1,28 @@
 """PortPrototypeBlueprint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortPrototypeBlueprint(ARObject):
     """AUTOSAR PortPrototypeBlueprint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortPrototypeBlueprint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTPROTOTYPEBLUEPRINT")
+        element = ET.Element("PORTPROTOTYPEBLUEPRINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortPrototypeBlueprint":
+    def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprint":
         """Create PortPrototypeBlueprint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortPrototypeBlueprint(ARObject):
         Returns:
             PortPrototypeBlueprint instance
         """
-        obj = cls()
+        obj: PortPrototypeBlueprint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortPrototypeBlueprint(ARObject):
 class PortPrototypeBlueprintBuilder:
     """Builder for PortPrototypeBlueprint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortPrototypeBlueprint()
+        self._obj: PortPrototypeBlueprint = PortPrototypeBlueprint()
 
     def build(self) -> PortPrototypeBlueprint:
         """Build and return PortPrototypeBlueprint object.

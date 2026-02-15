@@ -1,29 +1,28 @@
 """SignalPathConstraint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SignalPathConstraint(ARObject):
     """AUTOSAR SignalPathConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SignalPathConstraint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SignalPathConstraint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SIGNALPATHCONSTRAINT")
+        element = ET.Element("SIGNALPATHCONSTRAINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SignalPathConstraint":
+    def deserialize(cls, element: ET.Element) -> "SignalPathConstraint":
         """Create SignalPathConstraint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SignalPathConstraint(ARObject):
         Returns:
             SignalPathConstraint instance
         """
-        obj = cls()
+        obj: SignalPathConstraint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SignalPathConstraint(ARObject):
 class SignalPathConstraintBuilder:
     """Builder for SignalPathConstraint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SignalPathConstraint()
+        self._obj: SignalPathConstraint = SignalPathConstraint()
 
     def build(self) -> SignalPathConstraint:
         """Build and return SignalPathConstraint object.

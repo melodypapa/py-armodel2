@@ -1,29 +1,28 @@
 """SwCalprmAxisTypeProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwCalprmAxisTypeProps(ARObject):
     """AUTOSAR SwCalprmAxisTypeProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwCalprmAxisTypeProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwCalprmAxisTypeProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCALPRMAXISTYPEPROPS")
+        element = ET.Element("SWCALPRMAXISTYPEPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwCalprmAxisTypeProps":
+    def deserialize(cls, element: ET.Element) -> "SwCalprmAxisTypeProps":
         """Create SwCalprmAxisTypeProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwCalprmAxisTypeProps(ARObject):
         Returns:
             SwCalprmAxisTypeProps instance
         """
-        obj = cls()
+        obj: SwCalprmAxisTypeProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwCalprmAxisTypeProps(ARObject):
 class SwCalprmAxisTypePropsBuilder:
     """Builder for SwCalprmAxisTypeProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwCalprmAxisTypeProps()
+        self._obj: SwCalprmAxisTypeProps = SwCalprmAxisTypeProps()
 
     def build(self) -> SwCalprmAxisTypeProps:
         """Build and return SwCalprmAxisTypeProps object.

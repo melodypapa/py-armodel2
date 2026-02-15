@@ -1,29 +1,28 @@
 """SwCalprmRefProxy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwCalprmRefProxy(ARObject):
     """AUTOSAR SwCalprmRefProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwCalprmRefProxy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCALPRMREFPROXY")
+        element = ET.Element("SWCALPRMREFPROXY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwCalprmRefProxy":
+    def deserialize(cls, element: ET.Element) -> "SwCalprmRefProxy":
         """Create SwCalprmRefProxy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwCalprmRefProxy(ARObject):
         Returns:
             SwCalprmRefProxy instance
         """
-        obj = cls()
+        obj: SwCalprmRefProxy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwCalprmRefProxy(ARObject):
 class SwCalprmRefProxyBuilder:
     """Builder for SwCalprmRefProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwCalprmRefProxy()
+        self._obj: SwCalprmRefProxy = SwCalprmRefProxy()
 
     def build(self) -> SwCalprmRefProxy:
         """Build and return SwCalprmRefProxy object.

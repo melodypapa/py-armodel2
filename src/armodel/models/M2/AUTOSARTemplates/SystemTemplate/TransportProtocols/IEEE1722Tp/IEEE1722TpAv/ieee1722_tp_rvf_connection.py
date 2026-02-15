@@ -1,29 +1,28 @@
 """IEEE1722TpRvfConnection AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IEEE1722TpRvfConnection(ARObject):
     """AUTOSAR IEEE1722TpRvfConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IEEE1722TpRvfConnection to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IEEE1722TPRVFCONNECTION")
+        element = ET.Element("IEEE1722TPRVFCONNECTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IEEE1722TpRvfConnection":
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpRvfConnection":
         """Create IEEE1722TpRvfConnection from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IEEE1722TpRvfConnection(ARObject):
         Returns:
             IEEE1722TpRvfConnection instance
         """
-        obj = cls()
+        obj: IEEE1722TpRvfConnection = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IEEE1722TpRvfConnection(ARObject):
 class IEEE1722TpRvfConnectionBuilder:
     """Builder for IEEE1722TpRvfConnection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IEEE1722TpRvfConnection()
+        self._obj: IEEE1722TpRvfConnection = IEEE1722TpRvfConnection()
 
     def build(self) -> IEEE1722TpRvfConnection:
         """Build and return IEEE1722TpRvfConnection object.

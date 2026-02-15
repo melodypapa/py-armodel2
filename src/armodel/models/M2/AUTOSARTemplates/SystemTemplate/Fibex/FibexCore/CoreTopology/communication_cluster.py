@@ -1,29 +1,28 @@
 """CommunicationCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CommunicationCluster(ARObject):
     """AUTOSAR CommunicationCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CommunicationCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CommunicationCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("COMMUNICATIONCLUSTER")
+        element = ET.Element("COMMUNICATIONCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CommunicationCluster":
+    def deserialize(cls, element: ET.Element) -> "CommunicationCluster":
         """Create CommunicationCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CommunicationCluster(ARObject):
         Returns:
             CommunicationCluster instance
         """
-        obj = cls()
+        obj: CommunicationCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CommunicationCluster(ARObject):
 class CommunicationClusterBuilder:
     """Builder for CommunicationCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CommunicationCluster()
+        self._obj: CommunicationCluster = CommunicationCluster()
 
     def build(self) -> CommunicationCluster:
         """Build and return CommunicationCluster object.

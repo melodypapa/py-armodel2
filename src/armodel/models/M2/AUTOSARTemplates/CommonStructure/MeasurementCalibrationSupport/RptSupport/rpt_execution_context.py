@@ -1,29 +1,28 @@
 """RptExecutionContext AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptExecutionContext(ARObject):
     """AUTOSAR RptExecutionContext."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptExecutionContext."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptExecutionContext to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTEXECUTIONCONTEXT")
+        element = ET.Element("RPTEXECUTIONCONTEXT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptExecutionContext":
+    def deserialize(cls, element: ET.Element) -> "RptExecutionContext":
         """Create RptExecutionContext from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptExecutionContext(ARObject):
         Returns:
             RptExecutionContext instance
         """
-        obj = cls()
+        obj: RptExecutionContext = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptExecutionContext(ARObject):
 class RptExecutionContextBuilder:
     """Builder for RptExecutionContext."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptExecutionContext()
+        self._obj: RptExecutionContext = RptExecutionContext()
 
     def build(self) -> RptExecutionContext:
         """Build and return RptExecutionContext object.

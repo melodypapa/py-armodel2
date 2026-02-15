@@ -1,29 +1,28 @@
 """ConsistencyNeedsBlueprintSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ConsistencyNeedsBlueprintSet(ARObject):
     """AUTOSAR ConsistencyNeedsBlueprintSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ConsistencyNeedsBlueprintSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ConsistencyNeedsBlueprintSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CONSISTENCYNEEDSBLUEPRINTSET")
+        element = ET.Element("CONSISTENCYNEEDSBLUEPRINTSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ConsistencyNeedsBlueprintSet":
+    def deserialize(cls, element: ET.Element) -> "ConsistencyNeedsBlueprintSet":
         """Create ConsistencyNeedsBlueprintSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ConsistencyNeedsBlueprintSet(ARObject):
         Returns:
             ConsistencyNeedsBlueprintSet instance
         """
-        obj = cls()
+        obj: ConsistencyNeedsBlueprintSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ConsistencyNeedsBlueprintSet(ARObject):
 class ConsistencyNeedsBlueprintSetBuilder:
     """Builder for ConsistencyNeedsBlueprintSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ConsistencyNeedsBlueprintSet()
+        self._obj: ConsistencyNeedsBlueprintSet = ConsistencyNeedsBlueprintSet()
 
     def build(self) -> ConsistencyNeedsBlueprintSet:
         """Build and return ConsistencyNeedsBlueprintSet object.

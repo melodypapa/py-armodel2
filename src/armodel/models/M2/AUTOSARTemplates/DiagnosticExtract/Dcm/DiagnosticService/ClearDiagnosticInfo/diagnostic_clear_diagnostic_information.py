@@ -1,29 +1,28 @@
 """DiagnosticClearDiagnosticInformation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticClearDiagnosticInformation(ARObject):
     """AUTOSAR DiagnosticClearDiagnosticInformation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticClearDiagnosticInformation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticClearDiagnosticInformation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICCLEARDIAGNOSTICINFORMATION")
+        element = ET.Element("DIAGNOSTICCLEARDIAGNOSTICINFORMATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticClearDiagnosticInformation":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticClearDiagnosticInformation":
         """Create DiagnosticClearDiagnosticInformation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticClearDiagnosticInformation(ARObject):
         Returns:
             DiagnosticClearDiagnosticInformation instance
         """
-        obj = cls()
+        obj: DiagnosticClearDiagnosticInformation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticClearDiagnosticInformation(ARObject):
 class DiagnosticClearDiagnosticInformationBuilder:
     """Builder for DiagnosticClearDiagnosticInformation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticClearDiagnosticInformation()
+        self._obj: DiagnosticClearDiagnosticInformation = DiagnosticClearDiagnosticInformation()
 
     def build(self) -> DiagnosticClearDiagnosticInformation:
         """Build and return DiagnosticClearDiagnosticInformation object.

@@ -1,29 +1,28 @@
 """FibexElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FibexElement(ARObject):
     """AUTOSAR FibexElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FibexElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FibexElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FIBEXELEMENT")
+        element = ET.Element("FIBEXELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FibexElement":
+    def deserialize(cls, element: ET.Element) -> "FibexElement":
         """Create FibexElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FibexElement(ARObject):
         Returns:
             FibexElement instance
         """
-        obj = cls()
+        obj: FibexElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FibexElement(ARObject):
 class FibexElementBuilder:
     """Builder for FibexElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FibexElement()
+        self._obj: FibexElement = FibexElement()
 
     def build(self) -> FibexElement:
         """Build and return FibexElement object.

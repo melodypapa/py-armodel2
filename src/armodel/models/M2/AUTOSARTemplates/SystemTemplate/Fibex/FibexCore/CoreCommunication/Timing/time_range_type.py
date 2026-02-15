@@ -1,29 +1,28 @@
 """TimeRangeType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TimeRangeType(ARObject):
     """AUTOSAR TimeRangeType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TimeRangeType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TimeRangeType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TIMERANGETYPE")
+        element = ET.Element("TIMERANGETYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TimeRangeType":
+    def deserialize(cls, element: ET.Element) -> "TimeRangeType":
         """Create TimeRangeType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TimeRangeType(ARObject):
         Returns:
             TimeRangeType instance
         """
-        obj = cls()
+        obj: TimeRangeType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TimeRangeType(ARObject):
 class TimeRangeTypeBuilder:
     """Builder for TimeRangeType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TimeRangeType()
+        self._obj: TimeRangeType = TimeRangeType()
 
     def build(self) -> TimeRangeType:
         """Build and return TimeRangeType object.

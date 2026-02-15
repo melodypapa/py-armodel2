@@ -1,29 +1,28 @@
 """CryptoKeyManagementNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CryptoKeyManagementNeeds(ARObject):
     """AUTOSAR CryptoKeyManagementNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CryptoKeyManagementNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CryptoKeyManagementNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CRYPTOKEYMANAGEMENTNEEDS")
+        element = ET.Element("CRYPTOKEYMANAGEMENTNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CryptoKeyManagementNeeds":
+    def deserialize(cls, element: ET.Element) -> "CryptoKeyManagementNeeds":
         """Create CryptoKeyManagementNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CryptoKeyManagementNeeds(ARObject):
         Returns:
             CryptoKeyManagementNeeds instance
         """
-        obj = cls()
+        obj: CryptoKeyManagementNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CryptoKeyManagementNeeds(ARObject):
 class CryptoKeyManagementNeedsBuilder:
     """Builder for CryptoKeyManagementNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CryptoKeyManagementNeeds()
+        self._obj: CryptoKeyManagementNeeds = CryptoKeyManagementNeeds()
 
     def build(self) -> CryptoKeyManagementNeeds:
         """Build and return CryptoKeyManagementNeeds object.

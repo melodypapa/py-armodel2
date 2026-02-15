@@ -1,29 +1,28 @@
 """ClientServerOperationBlueprintMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ClientServerOperationBlueprintMapping(ARObject):
     """AUTOSAR ClientServerOperationBlueprintMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ClientServerOperationBlueprintMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CLIENTSERVEROPERATIONBLUEPRINTMAPPING")
+        element = ET.Element("CLIENTSERVEROPERATIONBLUEPRINTMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ClientServerOperationBlueprintMapping":
+    def deserialize(cls, element: ET.Element) -> "ClientServerOperationBlueprintMapping":
         """Create ClientServerOperationBlueprintMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
         Returns:
             ClientServerOperationBlueprintMapping instance
         """
-        obj = cls()
+        obj: ClientServerOperationBlueprintMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ClientServerOperationBlueprintMapping(ARObject):
 class ClientServerOperationBlueprintMappingBuilder:
     """Builder for ClientServerOperationBlueprintMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ClientServerOperationBlueprintMapping()
+        self._obj: ClientServerOperationBlueprintMapping = ClientServerOperationBlueprintMapping()
 
     def build(self) -> ClientServerOperationBlueprintMapping:
         """Build and return ClientServerOperationBlueprintMapping object.

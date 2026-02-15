@@ -1,29 +1,28 @@
 """Ipv4ArpProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Ipv4ArpProps(ARObject):
     """AUTOSAR Ipv4ArpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Ipv4ArpProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Ipv4ArpProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPV4ARPPROPS")
+        element = ET.Element("IPV4ARPPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Ipv4ArpProps":
+    def deserialize(cls, element: ET.Element) -> "Ipv4ArpProps":
         """Create Ipv4ArpProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Ipv4ArpProps(ARObject):
         Returns:
             Ipv4ArpProps instance
         """
-        obj = cls()
+        obj: Ipv4ArpProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Ipv4ArpProps(ARObject):
 class Ipv4ArpPropsBuilder:
     """Builder for Ipv4ArpProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Ipv4ArpProps()
+        self._obj: Ipv4ArpProps = Ipv4ArpProps()
 
     def build(self) -> Ipv4ArpProps:
         """Build and return Ipv4ArpProps object.

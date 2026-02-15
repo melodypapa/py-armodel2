@@ -1,29 +1,28 @@
 """ValueGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ValueGroup(ARObject):
     """AUTOSAR ValueGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ValueGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ValueGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("VALUEGROUP")
+        element = ET.Element("VALUEGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ValueGroup":
+    def deserialize(cls, element: ET.Element) -> "ValueGroup":
         """Create ValueGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ValueGroup(ARObject):
         Returns:
             ValueGroup instance
         """
-        obj = cls()
+        obj: ValueGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ValueGroup(ARObject):
 class ValueGroupBuilder:
     """Builder for ValueGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ValueGroup()
+        self._obj: ValueGroup = ValueGroup()
 
     def build(self) -> ValueGroup:
         """Build and return ValueGroup object.

@@ -1,29 +1,28 @@
 """DiagnosticRequestUpload AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticRequestUpload(ARObject):
     """AUTOSAR DiagnosticRequestUpload."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticRequestUpload."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticRequestUpload to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREQUESTUPLOAD")
+        element = ET.Element("DIAGNOSTICREQUESTUPLOAD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticRequestUpload":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestUpload":
         """Create DiagnosticRequestUpload from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticRequestUpload(ARObject):
         Returns:
             DiagnosticRequestUpload instance
         """
-        obj = cls()
+        obj: DiagnosticRequestUpload = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticRequestUpload(ARObject):
 class DiagnosticRequestUploadBuilder:
     """Builder for DiagnosticRequestUpload."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticRequestUpload()
+        self._obj: DiagnosticRequestUpload = DiagnosticRequestUpload()
 
     def build(self) -> DiagnosticRequestUpload:
         """Build and return DiagnosticRequestUpload object.

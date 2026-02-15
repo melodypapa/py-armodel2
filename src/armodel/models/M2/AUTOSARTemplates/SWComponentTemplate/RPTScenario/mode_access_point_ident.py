@@ -1,29 +1,28 @@
 """ModeAccessPointIdent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ModeAccessPointIdent(ARObject):
     """AUTOSAR ModeAccessPointIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ModeAccessPointIdent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ModeAccessPointIdent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MODEACCESSPOINTIDENT")
+        element = ET.Element("MODEACCESSPOINTIDENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ModeAccessPointIdent":
+    def deserialize(cls, element: ET.Element) -> "ModeAccessPointIdent":
         """Create ModeAccessPointIdent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ModeAccessPointIdent(ARObject):
         Returns:
             ModeAccessPointIdent instance
         """
-        obj = cls()
+        obj: ModeAccessPointIdent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ModeAccessPointIdent(ARObject):
 class ModeAccessPointIdentBuilder:
     """Builder for ModeAccessPointIdent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ModeAccessPointIdent()
+        self._obj: ModeAccessPointIdent = ModeAccessPointIdent()
 
     def build(self) -> ModeAccessPointIdent:
         """Build and return ModeAccessPointIdent object.

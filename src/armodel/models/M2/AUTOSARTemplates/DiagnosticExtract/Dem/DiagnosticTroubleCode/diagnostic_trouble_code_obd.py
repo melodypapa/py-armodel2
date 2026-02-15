@@ -1,29 +1,28 @@
 """DiagnosticTroubleCodeObd AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticTroubleCodeObd(ARObject):
     """AUTOSAR DiagnosticTroubleCodeObd."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeObd."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticTroubleCodeObd to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICTROUBLECODEOBD")
+        element = ET.Element("DIAGNOSTICTROUBLECODEOBD")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticTroubleCodeObd":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeObd":
         """Create DiagnosticTroubleCodeObd from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticTroubleCodeObd(ARObject):
         Returns:
             DiagnosticTroubleCodeObd instance
         """
-        obj = cls()
+        obj: DiagnosticTroubleCodeObd = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticTroubleCodeObd(ARObject):
 class DiagnosticTroubleCodeObdBuilder:
     """Builder for DiagnosticTroubleCodeObd."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticTroubleCodeObd()
+        self._obj: DiagnosticTroubleCodeObd = DiagnosticTroubleCodeObd()
 
     def build(self) -> DiagnosticTroubleCodeObd:
         """Build and return DiagnosticTroubleCodeObd object.

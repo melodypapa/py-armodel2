@@ -1,29 +1,28 @@
 """Table AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Table(ARObject):
     """AUTOSAR Table."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Table."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Table to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TABLE")
+        element = ET.Element("TABLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Table":
+    def deserialize(cls, element: ET.Element) -> "Table":
         """Create Table from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Table(ARObject):
         Returns:
             Table instance
         """
-        obj = cls()
+        obj: Table = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Table(ARObject):
 class TableBuilder:
     """Builder for Table."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Table()
+        self._obj: Table = Table()
 
     def build(self) -> Table:
         """Build and return Table object.

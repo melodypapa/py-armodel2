@@ -1,29 +1,28 @@
 """ArVariableInImplementationDataInstanceRef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ArVariableInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArVariableInImplementationDataInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ArVariableInImplementationDataInstanceRef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ArVariableInImplementationDataInstanceRef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ARVARIABLEINIMPLEMENTATIONDATAINSTANCEREF")
+        element = ET.Element("ARVARIABLEINIMPLEMENTATIONDATAINSTANCEREF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ArVariableInImplementationDataInstanceRef":
+    def deserialize(cls, element: ET.Element) -> "ArVariableInImplementationDataInstanceRef":
         """Create ArVariableInImplementationDataInstanceRef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         Returns:
             ArVariableInImplementationDataInstanceRef instance
         """
-        obj = cls()
+        obj: ArVariableInImplementationDataInstanceRef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
 class ArVariableInImplementationDataInstanceRefBuilder:
     """Builder for ArVariableInImplementationDataInstanceRef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ArVariableInImplementationDataInstanceRef()
+        self._obj: ArVariableInImplementationDataInstanceRef = ArVariableInImplementationDataInstanceRef()
 
     def build(self) -> ArVariableInImplementationDataInstanceRef:
         """Build and return ArVariableInImplementationDataInstanceRef object.

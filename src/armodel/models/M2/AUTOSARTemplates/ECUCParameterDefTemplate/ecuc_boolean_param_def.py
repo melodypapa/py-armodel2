@@ -1,29 +1,28 @@
 """EcucBooleanParamDef AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucBooleanParamDef(ARObject):
     """AUTOSAR EcucBooleanParamDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucBooleanParamDef."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucBooleanParamDef to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCBOOLEANPARAMDEF")
+        element = ET.Element("ECUCBOOLEANPARAMDEF")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucBooleanParamDef":
+    def deserialize(cls, element: ET.Element) -> "EcucBooleanParamDef":
         """Create EcucBooleanParamDef from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucBooleanParamDef(ARObject):
         Returns:
             EcucBooleanParamDef instance
         """
-        obj = cls()
+        obj: EcucBooleanParamDef = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucBooleanParamDef(ARObject):
 class EcucBooleanParamDefBuilder:
     """Builder for EcucBooleanParamDef."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucBooleanParamDef()
+        self._obj: EcucBooleanParamDef = EcucBooleanParamDef()
 
     def build(self) -> EcucBooleanParamDef:
         """Build and return EcucBooleanParamDef object.

@@ -1,29 +1,28 @@
 """GlobalTimeFrMaster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeFrMaster(ARObject):
     """AUTOSAR GlobalTimeFrMaster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeFrMaster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeFrMaster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMEFRMASTER")
+        element = ET.Element("GLOBALTIMEFRMASTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeFrMaster":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeFrMaster":
         """Create GlobalTimeFrMaster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeFrMaster(ARObject):
         Returns:
             GlobalTimeFrMaster instance
         """
-        obj = cls()
+        obj: GlobalTimeFrMaster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeFrMaster(ARObject):
 class GlobalTimeFrMasterBuilder:
     """Builder for GlobalTimeFrMaster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeFrMaster()
+        self._obj: GlobalTimeFrMaster = GlobalTimeFrMaster()
 
     def build(self) -> GlobalTimeFrMaster:
         """Build and return GlobalTimeFrMaster object.

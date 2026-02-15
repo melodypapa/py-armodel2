@@ -1,29 +1,28 @@
 """FMFeatureMapElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMFeatureMapElement(ARObject):
     """AUTOSAR FMFeatureMapElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMFeatureMapElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMFeatureMapElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMFEATUREMAPELEMENT")
+        element = ET.Element("FMFEATUREMAPELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMFeatureMapElement":
+    def deserialize(cls, element: ET.Element) -> "FMFeatureMapElement":
         """Create FMFeatureMapElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMFeatureMapElement(ARObject):
         Returns:
             FMFeatureMapElement instance
         """
-        obj = cls()
+        obj: FMFeatureMapElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMFeatureMapElement(ARObject):
 class FMFeatureMapElementBuilder:
     """Builder for FMFeatureMapElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMFeatureMapElement()
+        self._obj: FMFeatureMapElement = FMFeatureMapElement()
 
     def build(self) -> FMFeatureMapElement:
         """Build and return FMFeatureMapElement object.

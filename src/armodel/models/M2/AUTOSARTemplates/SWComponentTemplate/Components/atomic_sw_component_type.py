@@ -1,29 +1,28 @@
 """AtomicSwComponentType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AtomicSwComponentType(ARObject):
     """AUTOSAR AtomicSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AtomicSwComponentType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AtomicSwComponentType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ATOMICSWCOMPONENTTYPE")
+        element = ET.Element("ATOMICSWCOMPONENTTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AtomicSwComponentType":
+    def deserialize(cls, element: ET.Element) -> "AtomicSwComponentType":
         """Create AtomicSwComponentType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AtomicSwComponentType(ARObject):
         Returns:
             AtomicSwComponentType instance
         """
-        obj = cls()
+        obj: AtomicSwComponentType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AtomicSwComponentType(ARObject):
 class AtomicSwComponentTypeBuilder:
     """Builder for AtomicSwComponentType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AtomicSwComponentType()
+        self._obj: AtomicSwComponentType = AtomicSwComponentType()
 
     def build(self) -> AtomicSwComponentType:
         """Build and return AtomicSwComponentType object.

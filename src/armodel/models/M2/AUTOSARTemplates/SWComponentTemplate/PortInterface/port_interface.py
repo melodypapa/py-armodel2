@@ -1,29 +1,28 @@
 """PortInterface AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PortInterface(ARObject):
     """AUTOSAR PortInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortInterface."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PortInterface to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PORTINTERFACE")
+        element = ET.Element("PORTINTERFACE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PortInterface":
+    def deserialize(cls, element: ET.Element) -> "PortInterface":
         """Create PortInterface from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PortInterface(ARObject):
         Returns:
             PortInterface instance
         """
-        obj = cls()
+        obj: PortInterface = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PortInterface(ARObject):
 class PortInterfaceBuilder:
     """Builder for PortInterface."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PortInterface()
+        self._obj: PortInterface = PortInterface()
 
     def build(self) -> PortInterface:
         """Build and return PortInterface object.

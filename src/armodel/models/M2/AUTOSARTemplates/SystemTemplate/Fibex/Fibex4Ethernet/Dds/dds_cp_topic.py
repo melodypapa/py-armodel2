@@ -1,29 +1,28 @@
 """DdsCpTopic AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DdsCpTopic(ARObject):
     """AUTOSAR DdsCpTopic."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DdsCpTopic."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DdsCpTopic to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DDSCPTOPIC")
+        element = ET.Element("DDSCPTOPIC")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DdsCpTopic":
+    def deserialize(cls, element: ET.Element) -> "DdsCpTopic":
         """Create DdsCpTopic from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DdsCpTopic(ARObject):
         Returns:
             DdsCpTopic instance
         """
-        obj = cls()
+        obj: DdsCpTopic = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DdsCpTopic(ARObject):
 class DdsCpTopicBuilder:
     """Builder for DdsCpTopic."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DdsCpTopic()
+        self._obj: DdsCpTopic = DdsCpTopic()
 
     def build(self) -> DdsCpTopic:
         """Build and return DdsCpTopic object.

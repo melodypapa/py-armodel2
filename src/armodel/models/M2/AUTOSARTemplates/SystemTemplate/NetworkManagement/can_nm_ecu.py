@@ -1,29 +1,28 @@
 """CanNmEcu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CanNmEcu(ARObject):
     """AUTOSAR CanNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CanNmEcu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CanNmEcu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CANNMECU")
+        element = ET.Element("CANNMECU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CanNmEcu":
+    def deserialize(cls, element: ET.Element) -> "CanNmEcu":
         """Create CanNmEcu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CanNmEcu(ARObject):
         Returns:
             CanNmEcu instance
         """
-        obj = cls()
+        obj: CanNmEcu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CanNmEcu(ARObject):
 class CanNmEcuBuilder:
     """Builder for CanNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CanNmEcu()
+        self._obj: CanNmEcu = CanNmEcu()
 
     def build(self) -> CanNmEcu:
         """Build and return CanNmEcu object.

@@ -1,29 +1,28 @@
 """CpSoftwareClusterMappingSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CpSoftwareClusterMappingSet(ARObject):
     """AUTOSAR CpSoftwareClusterMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CpSoftwareClusterMappingSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CPSOFTWARECLUSTERMAPPINGSET")
+        element = ET.Element("CPSOFTWARECLUSTERMAPPINGSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CpSoftwareClusterMappingSet":
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterMappingSet":
         """Create CpSoftwareClusterMappingSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CpSoftwareClusterMappingSet(ARObject):
         Returns:
             CpSoftwareClusterMappingSet instance
         """
-        obj = cls()
+        obj: CpSoftwareClusterMappingSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CpSoftwareClusterMappingSet(ARObject):
 class CpSoftwareClusterMappingSetBuilder:
     """Builder for CpSoftwareClusterMappingSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CpSoftwareClusterMappingSet()
+        self._obj: CpSoftwareClusterMappingSet = CpSoftwareClusterMappingSet()
 
     def build(self) -> CpSoftwareClusterMappingSet:
         """Build and return CpSoftwareClusterMappingSet object.

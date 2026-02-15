@@ -1,29 +1,28 @@
 """AutosarEngineeringObject AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AutosarEngineeringObject(ARObject):
     """AUTOSAR AutosarEngineeringObject."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AutosarEngineeringObject."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AutosarEngineeringObject to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("AUTOSARENGINEERINGOBJECT")
+        element = ET.Element("AUTOSARENGINEERINGOBJECT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AutosarEngineeringObject":
+    def deserialize(cls, element: ET.Element) -> "AutosarEngineeringObject":
         """Create AutosarEngineeringObject from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AutosarEngineeringObject(ARObject):
         Returns:
             AutosarEngineeringObject instance
         """
-        obj = cls()
+        obj: AutosarEngineeringObject = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AutosarEngineeringObject(ARObject):
 class AutosarEngineeringObjectBuilder:
     """Builder for AutosarEngineeringObject."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AutosarEngineeringObject()
+        self._obj: AutosarEngineeringObject = AutosarEngineeringObject()
 
     def build(self) -> AutosarEngineeringObject:
         """Build and return AutosarEngineeringObject object.

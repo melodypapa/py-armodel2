@@ -1,29 +1,28 @@
 """ObdControlServiceNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ObdControlServiceNeeds(ARObject):
     """AUTOSAR ObdControlServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ObdControlServiceNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ObdControlServiceNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("OBDCONTROLSERVICENEEDS")
+        element = ET.Element("OBDCONTROLSERVICENEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ObdControlServiceNeeds":
+    def deserialize(cls, element: ET.Element) -> "ObdControlServiceNeeds":
         """Create ObdControlServiceNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ObdControlServiceNeeds(ARObject):
         Returns:
             ObdControlServiceNeeds instance
         """
-        obj = cls()
+        obj: ObdControlServiceNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ObdControlServiceNeeds(ARObject):
 class ObdControlServiceNeedsBuilder:
     """Builder for ObdControlServiceNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ObdControlServiceNeeds()
+        self._obj: ObdControlServiceNeeds = ObdControlServiceNeeds()
 
     def build(self) -> ObdControlServiceNeeds:
         """Build and return ObdControlServiceNeeds object.

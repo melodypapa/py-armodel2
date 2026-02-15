@@ -1,29 +1,28 @@
 """HwAttributeValue AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HwAttributeValue(ARObject):
     """AUTOSAR HwAttributeValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HwAttributeValue."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HwAttributeValue to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HWATTRIBUTEVALUE")
+        element = ET.Element("HWATTRIBUTEVALUE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HwAttributeValue":
+    def deserialize(cls, element: ET.Element) -> "HwAttributeValue":
         """Create HwAttributeValue from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HwAttributeValue(ARObject):
         Returns:
             HwAttributeValue instance
         """
-        obj = cls()
+        obj: HwAttributeValue = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HwAttributeValue(ARObject):
 class HwAttributeValueBuilder:
     """Builder for HwAttributeValue."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HwAttributeValue()
+        self._obj: HwAttributeValue = HwAttributeValue()
 
     def build(self) -> HwAttributeValue:
         """Build and return HwAttributeValue object.

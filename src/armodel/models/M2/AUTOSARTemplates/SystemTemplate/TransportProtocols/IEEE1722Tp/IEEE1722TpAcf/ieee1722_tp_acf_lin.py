@@ -1,29 +1,28 @@
 """IEEE1722TpAcfLin AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IEEE1722TpAcfLin(ARObject):
     """AUTOSAR IEEE1722TpAcfLin."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLin."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IEEE1722TpAcfLin to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IEEE1722TPACFLIN")
+        element = ET.Element("IEEE1722TPACFLIN")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IEEE1722TpAcfLin":
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfLin":
         """Create IEEE1722TpAcfLin from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IEEE1722TpAcfLin(ARObject):
         Returns:
             IEEE1722TpAcfLin instance
         """
-        obj = cls()
+        obj: IEEE1722TpAcfLin = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IEEE1722TpAcfLin(ARObject):
 class IEEE1722TpAcfLinBuilder:
     """Builder for IEEE1722TpAcfLin."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IEEE1722TpAcfLin()
+        self._obj: IEEE1722TpAcfLin = IEEE1722TpAcfLin()
 
     def build(self) -> IEEE1722TpAcfLin:
         """Build and return IEEE1722TpAcfLin object.

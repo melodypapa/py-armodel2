@@ -1,29 +1,28 @@
 """DtcStatusChangeNotificationNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DtcStatusChangeNotificationNeeds(ARObject):
     """AUTOSAR DtcStatusChangeNotificationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DtcStatusChangeNotificationNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DtcStatusChangeNotificationNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DTCSTATUSCHANGENOTIFICATIONNEEDS")
+        element = ET.Element("DTCSTATUSCHANGENOTIFICATIONNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DtcStatusChangeNotificationNeeds":
+    def deserialize(cls, element: ET.Element) -> "DtcStatusChangeNotificationNeeds":
         """Create DtcStatusChangeNotificationNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DtcStatusChangeNotificationNeeds(ARObject):
         Returns:
             DtcStatusChangeNotificationNeeds instance
         """
-        obj = cls()
+        obj: DtcStatusChangeNotificationNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DtcStatusChangeNotificationNeeds(ARObject):
 class DtcStatusChangeNotificationNeedsBuilder:
     """Builder for DtcStatusChangeNotificationNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DtcStatusChangeNotificationNeeds()
+        self._obj: DtcStatusChangeNotificationNeeds = DtcStatusChangeNotificationNeeds()
 
     def build(self) -> DtcStatusChangeNotificationNeeds:
         """Build and return DtcStatusChangeNotificationNeeds object.

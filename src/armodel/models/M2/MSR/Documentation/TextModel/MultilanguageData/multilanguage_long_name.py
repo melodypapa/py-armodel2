@@ -1,29 +1,28 @@
 """MultilanguageLongName AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MultilanguageLongName(ARObject):
     """AUTOSAR MultilanguageLongName."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MultilanguageLongName."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MultilanguageLongName to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MULTILANGUAGELONGNAME")
+        element = ET.Element("MULTILANGUAGELONGNAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MultilanguageLongName":
+    def deserialize(cls, element: ET.Element) -> "MultilanguageLongName":
         """Create MultilanguageLongName from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MultilanguageLongName(ARObject):
         Returns:
             MultilanguageLongName instance
         """
-        obj = cls()
+        obj: MultilanguageLongName = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MultilanguageLongName(ARObject):
 class MultilanguageLongNameBuilder:
     """Builder for MultilanguageLongName."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MultilanguageLongName()
+        self._obj: MultilanguageLongName = MultilanguageLongName()
 
     def build(self) -> MultilanguageLongName:
         """Build and return MultilanguageLongName object.

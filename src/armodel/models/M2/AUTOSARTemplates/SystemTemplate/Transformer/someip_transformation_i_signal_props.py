@@ -1,29 +1,28 @@
 """SOMEIPTransformationISignalProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SOMEIPTransformationISignalProps(ARObject):
     """AUTOSAR SOMEIPTransformationISignalProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SOMEIPTransformationISignalProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SOMEIPTransformationISignalProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SOMEIPTRANSFORMATIONISIGNALPROPS")
+        element = ET.Element("SOMEIPTRANSFORMATIONISIGNALPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SOMEIPTransformationISignalProps":
+    def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationISignalProps":
         """Create SOMEIPTransformationISignalProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SOMEIPTransformationISignalProps(ARObject):
         Returns:
             SOMEIPTransformationISignalProps instance
         """
-        obj = cls()
+        obj: SOMEIPTransformationISignalProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SOMEIPTransformationISignalProps(ARObject):
 class SOMEIPTransformationISignalPropsBuilder:
     """Builder for SOMEIPTransformationISignalProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SOMEIPTransformationISignalProps()
+        self._obj: SOMEIPTransformationISignalProps = SOMEIPTransformationISignalProps()
 
     def build(self) -> SOMEIPTransformationISignalProps:
         """Build and return SOMEIPTransformationISignalProps object.

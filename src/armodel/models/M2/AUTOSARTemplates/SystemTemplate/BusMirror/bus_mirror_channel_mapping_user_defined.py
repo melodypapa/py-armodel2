@@ -1,29 +1,28 @@
 """BusMirrorChannelMappingUserDefined AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BusMirrorChannelMappingUserDefined(ARObject):
     """AUTOSAR BusMirrorChannelMappingUserDefined."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingUserDefined."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BusMirrorChannelMappingUserDefined to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUSMIRRORCHANNELMAPPINGUSERDEFINED")
+        element = ET.Element("BUSMIRRORCHANNELMAPPINGUSERDEFINED")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BusMirrorChannelMappingUserDefined":
+    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingUserDefined":
         """Create BusMirrorChannelMappingUserDefined from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BusMirrorChannelMappingUserDefined(ARObject):
         Returns:
             BusMirrorChannelMappingUserDefined instance
         """
-        obj = cls()
+        obj: BusMirrorChannelMappingUserDefined = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BusMirrorChannelMappingUserDefined(ARObject):
 class BusMirrorChannelMappingUserDefinedBuilder:
     """Builder for BusMirrorChannelMappingUserDefined."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BusMirrorChannelMappingUserDefined()
+        self._obj: BusMirrorChannelMappingUserDefined = BusMirrorChannelMappingUserDefined()
 
     def build(self) -> BusMirrorChannelMappingUserDefined:
         """Build and return BusMirrorChannelMappingUserDefined object.

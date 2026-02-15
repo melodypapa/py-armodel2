@@ -1,29 +1,28 @@
 """DiagnosticWriteDataByIdentifierClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticWriteDataByIdentifierClass(ARObject):
     """AUTOSAR DiagnosticWriteDataByIdentifierClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifierClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticWriteDataByIdentifierClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICWRITEDATABYIDENTIFIERCLASS")
+        element = ET.Element("DIAGNOSTICWRITEDATABYIDENTIFIERCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticWriteDataByIdentifierClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticWriteDataByIdentifierClass":
         """Create DiagnosticWriteDataByIdentifierClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticWriteDataByIdentifierClass(ARObject):
         Returns:
             DiagnosticWriteDataByIdentifierClass instance
         """
-        obj = cls()
+        obj: DiagnosticWriteDataByIdentifierClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticWriteDataByIdentifierClass(ARObject):
 class DiagnosticWriteDataByIdentifierClassBuilder:
     """Builder for DiagnosticWriteDataByIdentifierClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticWriteDataByIdentifierClass()
+        self._obj: DiagnosticWriteDataByIdentifierClass = DiagnosticWriteDataByIdentifierClass()
 
     def build(self) -> DiagnosticWriteDataByIdentifierClass:
         """Build and return DiagnosticWriteDataByIdentifierClass object.

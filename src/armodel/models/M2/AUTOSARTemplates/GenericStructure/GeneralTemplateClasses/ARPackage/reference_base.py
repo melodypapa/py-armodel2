@@ -1,29 +1,28 @@
 """ReferenceBase AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ReferenceBase(ARObject):
     """AUTOSAR ReferenceBase."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ReferenceBase to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("REFERENCEBASE")
+        element = ET.Element("REFERENCEBASE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ReferenceBase":
+    def deserialize(cls, element: ET.Element) -> "ReferenceBase":
         """Create ReferenceBase from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ReferenceBase(ARObject):
         Returns:
             ReferenceBase instance
         """
-        obj = cls()
+        obj: ReferenceBase = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ReferenceBase(ARObject):
 class ReferenceBaseBuilder:
     """Builder for ReferenceBase."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ReferenceBase()
+        self._obj: ReferenceBase = ReferenceBase()
 
     def build(self) -> ReferenceBase:
         """Build and return ReferenceBase object.

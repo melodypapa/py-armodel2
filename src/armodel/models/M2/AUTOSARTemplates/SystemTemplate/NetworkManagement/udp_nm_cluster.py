@@ -1,29 +1,28 @@
 """UdpNmCluster AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class UdpNmCluster(ARObject):
     """AUTOSAR UdpNmCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UdpNmCluster."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert UdpNmCluster to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("UDPNMCLUSTER")
+        element = ET.Element("UDPNMCLUSTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "UdpNmCluster":
+    def deserialize(cls, element: ET.Element) -> "UdpNmCluster":
         """Create UdpNmCluster from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class UdpNmCluster(ARObject):
         Returns:
             UdpNmCluster instance
         """
-        obj = cls()
+        obj: UdpNmCluster = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class UdpNmCluster(ARObject):
 class UdpNmClusterBuilder:
     """Builder for UdpNmCluster."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = UdpNmCluster()
+        self._obj: UdpNmCluster = UdpNmCluster()
 
     def build(self) -> UdpNmCluster:
         """Build and return UdpNmCluster object.

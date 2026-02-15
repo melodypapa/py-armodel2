@@ -1,29 +1,28 @@
 """LinFrame AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class LinFrame(ARObject):
     """AUTOSAR LinFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize LinFrame."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert LinFrame to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("LINFRAME")
+        element = ET.Element("LINFRAME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "LinFrame":
+    def deserialize(cls, element: ET.Element) -> "LinFrame":
         """Create LinFrame from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class LinFrame(ARObject):
         Returns:
             LinFrame instance
         """
-        obj = cls()
+        obj: LinFrame = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class LinFrame(ARObject):
 class LinFrameBuilder:
     """Builder for LinFrame."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = LinFrame()
+        self._obj: LinFrame = LinFrame()
 
     def build(self) -> LinFrame:
         """Build and return LinFrame object.

@@ -1,29 +1,28 @@
 """EcucValueCollection AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class EcucValueCollection(ARObject):
     """AUTOSAR EcucValueCollection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize EcucValueCollection."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert EcucValueCollection to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ECUCVALUECOLLECTION")
+        element = ET.Element("ECUCVALUECOLLECTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "EcucValueCollection":
+    def deserialize(cls, element: ET.Element) -> "EcucValueCollection":
         """Create EcucValueCollection from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class EcucValueCollection(ARObject):
         Returns:
             EcucValueCollection instance
         """
-        obj = cls()
+        obj: EcucValueCollection = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class EcucValueCollection(ARObject):
 class EcucValueCollectionBuilder:
     """Builder for EcucValueCollection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = EcucValueCollection()
+        self._obj: EcucValueCollection = EcucValueCollection()
 
     def build(self) -> EcucValueCollection:
         """Build and return EcucValueCollection object.

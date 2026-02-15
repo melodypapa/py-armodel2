@@ -1,29 +1,28 @@
 """CryptoSignatureScheme AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class CryptoSignatureScheme(ARObject):
     """AUTOSAR CryptoSignatureScheme."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize CryptoSignatureScheme."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert CryptoSignatureScheme to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("CRYPTOSIGNATURESCHEME")
+        element = ET.Element("CRYPTOSIGNATURESCHEME")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "CryptoSignatureScheme":
+    def deserialize(cls, element: ET.Element) -> "CryptoSignatureScheme":
         """Create CryptoSignatureScheme from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class CryptoSignatureScheme(ARObject):
         Returns:
             CryptoSignatureScheme instance
         """
-        obj = cls()
+        obj: CryptoSignatureScheme = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class CryptoSignatureScheme(ARObject):
 class CryptoSignatureSchemeBuilder:
     """Builder for CryptoSignatureScheme."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = CryptoSignatureScheme()
+        self._obj: CryptoSignatureScheme = CryptoSignatureScheme()
 
     def build(self) -> CryptoSignatureScheme:
         """Build and return CryptoSignatureScheme object.

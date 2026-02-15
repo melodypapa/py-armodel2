@@ -1,29 +1,28 @@
 """AclRole AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AclRole(ARObject):
     """AUTOSAR AclRole."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AclRole."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AclRole to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ACLROLE")
+        element = ET.Element("ACLROLE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AclRole":
+    def deserialize(cls, element: ET.Element) -> "AclRole":
         """Create AclRole from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AclRole(ARObject):
         Returns:
             AclRole instance
         """
-        obj = cls()
+        obj: AclRole = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AclRole(ARObject):
 class AclRoleBuilder:
     """Builder for AclRole."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AclRole()
+        self._obj: AclRole = AclRole()
 
     def build(self) -> AclRole:
         """Build and return AclRole object.

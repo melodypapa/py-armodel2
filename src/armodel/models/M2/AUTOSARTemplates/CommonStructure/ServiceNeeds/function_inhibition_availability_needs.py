@@ -1,29 +1,28 @@
 """FunctionInhibitionAvailabilityNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FunctionInhibitionAvailabilityNeeds(ARObject):
     """AUTOSAR FunctionInhibitionAvailabilityNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FunctionInhibitionAvailabilityNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FUNCTIONINHIBITIONAVAILABILITYNEEDS")
+        element = ET.Element("FUNCTIONINHIBITIONAVAILABILITYNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FunctionInhibitionAvailabilityNeeds":
+    def deserialize(cls, element: ET.Element) -> "FunctionInhibitionAvailabilityNeeds":
         """Create FunctionInhibitionAvailabilityNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FunctionInhibitionAvailabilityNeeds(ARObject):
         Returns:
             FunctionInhibitionAvailabilityNeeds instance
         """
-        obj = cls()
+        obj: FunctionInhibitionAvailabilityNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FunctionInhibitionAvailabilityNeeds(ARObject):
 class FunctionInhibitionAvailabilityNeedsBuilder:
     """Builder for FunctionInhibitionAvailabilityNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FunctionInhibitionAvailabilityNeeds()
+        self._obj: FunctionInhibitionAvailabilityNeeds = FunctionInhibitionAvailabilityNeeds()
 
     def build(self) -> FunctionInhibitionAvailabilityNeeds:
         """Build and return FunctionInhibitionAvailabilityNeeds object.

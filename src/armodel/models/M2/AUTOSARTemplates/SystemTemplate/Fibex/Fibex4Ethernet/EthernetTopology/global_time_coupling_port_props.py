@@ -1,29 +1,28 @@
 """GlobalTimeCouplingPortProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class GlobalTimeCouplingPortProps(ARObject):
     """AUTOSAR GlobalTimeCouplingPortProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert GlobalTimeCouplingPortProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("GLOBALTIMECOUPLINGPORTPROPS")
+        element = ET.Element("GLOBALTIMECOUPLINGPORTPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "GlobalTimeCouplingPortProps":
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeCouplingPortProps":
         """Create GlobalTimeCouplingPortProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class GlobalTimeCouplingPortProps(ARObject):
         Returns:
             GlobalTimeCouplingPortProps instance
         """
-        obj = cls()
+        obj: GlobalTimeCouplingPortProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class GlobalTimeCouplingPortProps(ARObject):
 class GlobalTimeCouplingPortPropsBuilder:
     """Builder for GlobalTimeCouplingPortProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = GlobalTimeCouplingPortProps()
+        self._obj: GlobalTimeCouplingPortProps = GlobalTimeCouplingPortProps()
 
     def build(self) -> GlobalTimeCouplingPortProps:
         """Build and return GlobalTimeCouplingPortProps object.

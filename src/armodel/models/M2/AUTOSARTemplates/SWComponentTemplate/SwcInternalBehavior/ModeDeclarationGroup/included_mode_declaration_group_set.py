@@ -1,29 +1,28 @@
 """IncludedModeDeclarationGroupSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IncludedModeDeclarationGroupSet(ARObject):
     """AUTOSAR IncludedModeDeclarationGroupSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IncludedModeDeclarationGroupSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IncludedModeDeclarationGroupSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INCLUDEDMODEDECLARATIONGROUPSET")
+        element = ET.Element("INCLUDEDMODEDECLARATIONGROUPSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IncludedModeDeclarationGroupSet":
+    def deserialize(cls, element: ET.Element) -> "IncludedModeDeclarationGroupSet":
         """Create IncludedModeDeclarationGroupSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
         Returns:
             IncludedModeDeclarationGroupSet instance
         """
-        obj = cls()
+        obj: IncludedModeDeclarationGroupSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IncludedModeDeclarationGroupSet(ARObject):
 class IncludedModeDeclarationGroupSetBuilder:
     """Builder for IncludedModeDeclarationGroupSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IncludedModeDeclarationGroupSet()
+        self._obj: IncludedModeDeclarationGroupSet = IncludedModeDeclarationGroupSet()
 
     def build(self) -> IncludedModeDeclarationGroupSet:
         """Build and return IncludedModeDeclarationGroupSet object.

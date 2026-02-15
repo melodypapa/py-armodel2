@@ -1,29 +1,28 @@
 """SwcToApplicationPartitionMapping AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwcToApplicationPartitionMapping(ARObject):
     """AUTOSAR SwcToApplicationPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwcToApplicationPartitionMapping."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwcToApplicationPartitionMapping to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWCTOAPPLICATIONPARTITIONMAPPING")
+        element = ET.Element("SWCTOAPPLICATIONPARTITIONMAPPING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwcToApplicationPartitionMapping":
+    def deserialize(cls, element: ET.Element) -> "SwcToApplicationPartitionMapping":
         """Create SwcToApplicationPartitionMapping from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwcToApplicationPartitionMapping(ARObject):
         Returns:
             SwcToApplicationPartitionMapping instance
         """
-        obj = cls()
+        obj: SwcToApplicationPartitionMapping = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwcToApplicationPartitionMapping(ARObject):
 class SwcToApplicationPartitionMappingBuilder:
     """Builder for SwcToApplicationPartitionMapping."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwcToApplicationPartitionMapping()
+        self._obj: SwcToApplicationPartitionMapping = SwcToApplicationPartitionMapping()
 
     def build(self) -> SwcToApplicationPartitionMapping:
         """Build and return SwcToApplicationPartitionMapping object.

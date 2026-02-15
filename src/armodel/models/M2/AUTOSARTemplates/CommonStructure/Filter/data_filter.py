@@ -1,29 +1,28 @@
 """DataFilter AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DataFilter(ARObject):
     """AUTOSAR DataFilter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DataFilter to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DATAFILTER")
+        element = ET.Element("DATAFILTER")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DataFilter":
+    def deserialize(cls, element: ET.Element) -> "DataFilter":
         """Create DataFilter from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DataFilter(ARObject):
         Returns:
             DataFilter instance
         """
-        obj = cls()
+        obj: DataFilter = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DataFilter(ARObject):
 class DataFilterBuilder:
     """Builder for DataFilter."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DataFilter()
+        self._obj: DataFilter = DataFilter()
 
     def build(self) -> DataFilter:
         """Build and return DataFilter object.

@@ -1,29 +1,28 @@
 """McSwEmulationMethodSupport AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class McSwEmulationMethodSupport(ARObject):
     """AUTOSAR McSwEmulationMethodSupport."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize McSwEmulationMethodSupport."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert McSwEmulationMethodSupport to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MCSWEMULATIONMETHODSUPPORT")
+        element = ET.Element("MCSWEMULATIONMETHODSUPPORT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "McSwEmulationMethodSupport":
+    def deserialize(cls, element: ET.Element) -> "McSwEmulationMethodSupport":
         """Create McSwEmulationMethodSupport from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class McSwEmulationMethodSupport(ARObject):
         Returns:
             McSwEmulationMethodSupport instance
         """
-        obj = cls()
+        obj: McSwEmulationMethodSupport = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class McSwEmulationMethodSupport(ARObject):
 class McSwEmulationMethodSupportBuilder:
     """Builder for McSwEmulationMethodSupport."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = McSwEmulationMethodSupport()
+        self._obj: McSwEmulationMethodSupport = McSwEmulationMethodSupport()
 
     def build(self) -> McSwEmulationMethodSupport:
         """Build and return McSwEmulationMethodSupport object.

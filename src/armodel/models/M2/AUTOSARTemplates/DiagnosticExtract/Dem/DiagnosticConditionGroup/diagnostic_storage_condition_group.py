@@ -1,29 +1,28 @@
 """DiagnosticStorageConditionGroup AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticStorageConditionGroup(ARObject):
     """AUTOSAR DiagnosticStorageConditionGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionGroup."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticStorageConditionGroup to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICSTORAGECONDITIONGROUP")
+        element = ET.Element("DIAGNOSTICSTORAGECONDITIONGROUP")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticStorageConditionGroup":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticStorageConditionGroup":
         """Create DiagnosticStorageConditionGroup from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticStorageConditionGroup(ARObject):
         Returns:
             DiagnosticStorageConditionGroup instance
         """
-        obj = cls()
+        obj: DiagnosticStorageConditionGroup = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticStorageConditionGroup(ARObject):
 class DiagnosticStorageConditionGroupBuilder:
     """Builder for DiagnosticStorageConditionGroup."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticStorageConditionGroup()
+        self._obj: DiagnosticStorageConditionGroup = DiagnosticStorageConditionGroup()
 
     def build(self) -> DiagnosticStorageConditionGroup:
         """Build and return DiagnosticStorageConditionGroup object.

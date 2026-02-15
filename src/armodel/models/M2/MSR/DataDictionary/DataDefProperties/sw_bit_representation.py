@@ -1,29 +1,28 @@
 """SwBitRepresentation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwBitRepresentation(ARObject):
     """AUTOSAR SwBitRepresentation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwBitRepresentation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwBitRepresentation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWBITREPRESENTATION")
+        element = ET.Element("SWBITREPRESENTATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwBitRepresentation":
+    def deserialize(cls, element: ET.Element) -> "SwBitRepresentation":
         """Create SwBitRepresentation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwBitRepresentation(ARObject):
         Returns:
             SwBitRepresentation instance
         """
-        obj = cls()
+        obj: SwBitRepresentation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwBitRepresentation(ARObject):
 class SwBitRepresentationBuilder:
     """Builder for SwBitRepresentation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwBitRepresentation()
+        self._obj: SwBitRepresentation = SwBitRepresentation()
 
     def build(self) -> SwBitRepresentation:
         """Build and return SwBitRepresentation object.

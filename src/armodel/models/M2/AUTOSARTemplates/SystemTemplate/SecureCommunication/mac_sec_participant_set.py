@@ -1,29 +1,28 @@
 """MacSecParticipantSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MacSecParticipantSet(ARObject):
     """AUTOSAR MacSecParticipantSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MacSecParticipantSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MacSecParticipantSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MACSECPARTICIPANTSET")
+        element = ET.Element("MACSECPARTICIPANTSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MacSecParticipantSet":
+    def deserialize(cls, element: ET.Element) -> "MacSecParticipantSet":
         """Create MacSecParticipantSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MacSecParticipantSet(ARObject):
         Returns:
             MacSecParticipantSet instance
         """
-        obj = cls()
+        obj: MacSecParticipantSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MacSecParticipantSet(ARObject):
 class MacSecParticipantSetBuilder:
     """Builder for MacSecParticipantSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MacSecParticipantSet()
+        self._obj: MacSecParticipantSet = MacSecParticipantSet()
 
     def build(self) -> MacSecParticipantSet:
         """Build and return MacSecParticipantSet object.

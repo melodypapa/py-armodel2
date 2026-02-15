@@ -1,29 +1,28 @@
 """ImplementationDataType AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class ImplementationDataType(ARObject):
     """AUTOSAR ImplementationDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize ImplementationDataType."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert ImplementationDataType to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IMPLEMENTATIONDATATYPE")
+        element = ET.Element("IMPLEMENTATIONDATATYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "ImplementationDataType":
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataType":
         """Create ImplementationDataType from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class ImplementationDataType(ARObject):
         Returns:
             ImplementationDataType instance
         """
-        obj = cls()
+        obj: ImplementationDataType = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class ImplementationDataType(ARObject):
 class ImplementationDataTypeBuilder:
     """Builder for ImplementationDataType."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = ImplementationDataType()
+        self._obj: ImplementationDataType = ImplementationDataType()
 
     def build(self) -> ImplementationDataType:
         """Build and return ImplementationDataType object.

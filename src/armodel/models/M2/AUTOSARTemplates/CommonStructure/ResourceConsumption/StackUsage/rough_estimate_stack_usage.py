@@ -1,29 +1,28 @@
 """RoughEstimateStackUsage AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RoughEstimateStackUsage(ARObject):
     """AUTOSAR RoughEstimateStackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RoughEstimateStackUsage."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RoughEstimateStackUsage to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ROUGHESTIMATESTACKUSAGE")
+        element = ET.Element("ROUGHESTIMATESTACKUSAGE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RoughEstimateStackUsage":
+    def deserialize(cls, element: ET.Element) -> "RoughEstimateStackUsage":
         """Create RoughEstimateStackUsage from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RoughEstimateStackUsage(ARObject):
         Returns:
             RoughEstimateStackUsage instance
         """
-        obj = cls()
+        obj: RoughEstimateStackUsage = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RoughEstimateStackUsage(ARObject):
 class RoughEstimateStackUsageBuilder:
     """Builder for RoughEstimateStackUsage."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RoughEstimateStackUsage()
+        self._obj: RoughEstimateStackUsage = RoughEstimateStackUsage()
 
     def build(self) -> RoughEstimateStackUsage:
         """Build and return RoughEstimateStackUsage object.

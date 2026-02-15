@@ -1,29 +1,28 @@
 """SwDataDependency AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SwDataDependency(ARObject):
     """AUTOSAR SwDataDependency."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SwDataDependency."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SwDataDependency to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SWDATADEPENDENCY")
+        element = ET.Element("SWDATADEPENDENCY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SwDataDependency":
+    def deserialize(cls, element: ET.Element) -> "SwDataDependency":
         """Create SwDataDependency from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SwDataDependency(ARObject):
         Returns:
             SwDataDependency instance
         """
-        obj = cls()
+        obj: SwDataDependency = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SwDataDependency(ARObject):
 class SwDataDependencyBuilder:
     """Builder for SwDataDependency."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SwDataDependency()
+        self._obj: SwDataDependency = SwDataDependency()
 
     def build(self) -> SwDataDependency:
         """Build and return SwDataDependency object.

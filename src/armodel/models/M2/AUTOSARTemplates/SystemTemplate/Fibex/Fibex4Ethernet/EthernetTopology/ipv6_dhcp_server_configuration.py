@@ -1,29 +1,28 @@
 """Ipv6DhcpServerConfiguration AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class Ipv6DhcpServerConfiguration(ARObject):
     """AUTOSAR Ipv6DhcpServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize Ipv6DhcpServerConfiguration."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert Ipv6DhcpServerConfiguration to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IPV6DHCPSERVERCONFIGURATION")
+        element = ET.Element("IPV6DHCPSERVERCONFIGURATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "Ipv6DhcpServerConfiguration":
+    def deserialize(cls, element: ET.Element) -> "Ipv6DhcpServerConfiguration":
         """Create Ipv6DhcpServerConfiguration from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class Ipv6DhcpServerConfiguration(ARObject):
         Returns:
             Ipv6DhcpServerConfiguration instance
         """
-        obj = cls()
+        obj: Ipv6DhcpServerConfiguration = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class Ipv6DhcpServerConfiguration(ARObject):
 class Ipv6DhcpServerConfigurationBuilder:
     """Builder for Ipv6DhcpServerConfiguration."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = Ipv6DhcpServerConfiguration()
+        self._obj: Ipv6DhcpServerConfiguration = Ipv6DhcpServerConfiguration()
 
     def build(self) -> Ipv6DhcpServerConfiguration:
         """Build and return Ipv6DhcpServerConfiguration object.

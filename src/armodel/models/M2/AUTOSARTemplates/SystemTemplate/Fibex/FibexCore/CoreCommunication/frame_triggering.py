@@ -1,29 +1,28 @@
 """FrameTriggering AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FrameTriggering(ARObject):
     """AUTOSAR FrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FrameTriggering to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FRAMETRIGGERING")
+        element = ET.Element("FRAMETRIGGERING")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FrameTriggering":
+    def deserialize(cls, element: ET.Element) -> "FrameTriggering":
         """Create FrameTriggering from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FrameTriggering(ARObject):
         Returns:
             FrameTriggering instance
         """
-        obj = cls()
+        obj: FrameTriggering = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FrameTriggering(ARObject):
 class FrameTriggeringBuilder:
     """Builder for FrameTriggering."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FrameTriggering()
+        self._obj: FrameTriggering = FrameTriggering()
 
     def build(self) -> FrameTriggering:
         """Build and return FrameTriggering object.

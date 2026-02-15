@@ -1,29 +1,28 @@
 """FMFeatureSelectionSet AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FMFeatureSelectionSet(ARObject):
     """AUTOSAR FMFeatureSelectionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FMFeatureSelectionSet."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FMFeatureSelectionSet to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FMFEATURESELECTIONSET")
+        element = ET.Element("FMFEATURESELECTIONSET")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FMFeatureSelectionSet":
+    def deserialize(cls, element: ET.Element) -> "FMFeatureSelectionSet":
         """Create FMFeatureSelectionSet from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FMFeatureSelectionSet(ARObject):
         Returns:
             FMFeatureSelectionSet instance
         """
-        obj = cls()
+        obj: FMFeatureSelectionSet = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FMFeatureSelectionSet(ARObject):
 class FMFeatureSelectionSetBuilder:
     """Builder for FMFeatureSelectionSet."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FMFeatureSelectionSet()
+        self._obj: FMFeatureSelectionSet = FMFeatureSelectionSet()
 
     def build(self) -> FMFeatureSelectionSet:
         """Build and return FMFeatureSelectionSet object.

@@ -1,29 +1,28 @@
 """BuildActionIoElement AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BuildActionIoElement(ARObject):
     """AUTOSAR BuildActionIoElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BuildActionIoElement."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BuildActionIoElement to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUILDACTIONIOELEMENT")
+        element = ET.Element("BUILDACTIONIOELEMENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BuildActionIoElement":
+    def deserialize(cls, element: ET.Element) -> "BuildActionIoElement":
         """Create BuildActionIoElement from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BuildActionIoElement(ARObject):
         Returns:
             BuildActionIoElement instance
         """
-        obj = cls()
+        obj: BuildActionIoElement = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BuildActionIoElement(ARObject):
 class BuildActionIoElementBuilder:
     """Builder for BuildActionIoElement."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BuildActionIoElement()
+        self._obj: BuildActionIoElement = BuildActionIoElement()
 
     def build(self) -> BuildActionIoElement:
         """Build and return BuildActionIoElement object.

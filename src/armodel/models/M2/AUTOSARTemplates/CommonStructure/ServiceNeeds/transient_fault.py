@@ -1,29 +1,28 @@
 """TransientFault AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class TransientFault(ARObject):
     """AUTOSAR TransientFault."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize TransientFault."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert TransientFault to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("TRANSIENTFAULT")
+        element = ET.Element("TRANSIENTFAULT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "TransientFault":
+    def deserialize(cls, element: ET.Element) -> "TransientFault":
         """Create TransientFault from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class TransientFault(ARObject):
         Returns:
             TransientFault instance
         """
-        obj = cls()
+        obj: TransientFault = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class TransientFault(ARObject):
 class TransientFaultBuilder:
     """Builder for TransientFault."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = TransientFault()
+        self._obj: TransientFault = TransientFault()
 
     def build(self) -> TransientFault:
         """Build and return TransientFault object.

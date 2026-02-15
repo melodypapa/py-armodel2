@@ -1,29 +1,28 @@
 """AbstractRequiredPortPrototype AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class AbstractRequiredPortPrototype(ARObject):
     """AUTOSAR AbstractRequiredPortPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert AbstractRequiredPortPrototype to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("ABSTRACTREQUIREDPORTPROTOTYPE")
+        element = ET.Element("ABSTRACTREQUIREDPORTPROTOTYPE")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "AbstractRequiredPortPrototype":
+    def deserialize(cls, element: ET.Element) -> "AbstractRequiredPortPrototype":
         """Create AbstractRequiredPortPrototype from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class AbstractRequiredPortPrototype(ARObject):
         Returns:
             AbstractRequiredPortPrototype instance
         """
-        obj = cls()
+        obj: AbstractRequiredPortPrototype = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class AbstractRequiredPortPrototype(ARObject):
 class AbstractRequiredPortPrototypeBuilder:
     """Builder for AbstractRequiredPortPrototype."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = AbstractRequiredPortPrototype()
+        self._obj: AbstractRequiredPortPrototype = AbstractRequiredPortPrototype()
 
     def build(self) -> AbstractRequiredPortPrototype:
         """Build and return AbstractRequiredPortPrototype object.

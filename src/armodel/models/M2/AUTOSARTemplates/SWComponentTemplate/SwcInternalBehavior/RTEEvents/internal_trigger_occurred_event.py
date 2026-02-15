@@ -1,29 +1,28 @@
 """InternalTriggerOccurredEvent AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class InternalTriggerOccurredEvent(ARObject):
     """AUTOSAR InternalTriggerOccurredEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert InternalTriggerOccurredEvent to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("INTERNALTRIGGEROCCURREDEVENT")
+        element = ET.Element("INTERNALTRIGGEROCCURREDEVENT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "InternalTriggerOccurredEvent":
+    def deserialize(cls, element: ET.Element) -> "InternalTriggerOccurredEvent":
         """Create InternalTriggerOccurredEvent from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class InternalTriggerOccurredEvent(ARObject):
         Returns:
             InternalTriggerOccurredEvent instance
         """
-        obj = cls()
+        obj: InternalTriggerOccurredEvent = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class InternalTriggerOccurredEvent(ARObject):
 class InternalTriggerOccurredEventBuilder:
     """Builder for InternalTriggerOccurredEvent."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = InternalTriggerOccurredEvent()
+        self._obj: InternalTriggerOccurredEvent = InternalTriggerOccurredEvent()
 
     def build(self) -> InternalTriggerOccurredEvent:
         """Build and return InternalTriggerOccurredEvent object.

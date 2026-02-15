@@ -1,29 +1,28 @@
 """IdsPlatformInstantiation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdsPlatformInstantiation(ARObject):
     """AUTOSAR IdsPlatformInstantiation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdsPlatformInstantiation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdsPlatformInstantiation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDSPLATFORMINSTANTIATION")
+        element = ET.Element("IDSPLATFORMINSTANTIATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdsPlatformInstantiation":
+    def deserialize(cls, element: ET.Element) -> "IdsPlatformInstantiation":
         """Create IdsPlatformInstantiation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdsPlatformInstantiation(ARObject):
         Returns:
             IdsPlatformInstantiation instance
         """
-        obj = cls()
+        obj: IdsPlatformInstantiation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdsPlatformInstantiation(ARObject):
 class IdsPlatformInstantiationBuilder:
     """Builder for IdsPlatformInstantiation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdsPlatformInstantiation()
+        self._obj: IdsPlatformInstantiation = IdsPlatformInstantiation()
 
     def build(self) -> IdsPlatformInstantiation:
         """Build and return IdsPlatformInstantiation object.

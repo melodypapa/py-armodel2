@@ -1,29 +1,28 @@
 """HardwareTestNeeds AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class HardwareTestNeeds(ARObject):
     """AUTOSAR HardwareTestNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize HardwareTestNeeds."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert HardwareTestNeeds to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("HARDWARETESTNEEDS")
+        element = ET.Element("HARDWARETESTNEEDS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "HardwareTestNeeds":
+    def deserialize(cls, element: ET.Element) -> "HardwareTestNeeds":
         """Create HardwareTestNeeds from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class HardwareTestNeeds(ARObject):
         Returns:
             HardwareTestNeeds instance
         """
-        obj = cls()
+        obj: HardwareTestNeeds = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class HardwareTestNeeds(ARObject):
 class HardwareTestNeedsBuilder:
     """Builder for HardwareTestNeeds."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = HardwareTestNeeds()
+        self._obj: HardwareTestNeeds = HardwareTestNeeds()
 
     def build(self) -> HardwareTestNeeds:
         """Build and return HardwareTestNeeds object.

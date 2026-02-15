@@ -1,29 +1,28 @@
 """MemorySectionLocation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class MemorySectionLocation(ARObject):
     """AUTOSAR MemorySectionLocation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MemorySectionLocation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert MemorySectionLocation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("MEMORYSECTIONLOCATION")
+        element = ET.Element("MEMORYSECTIONLOCATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "MemorySectionLocation":
+    def deserialize(cls, element: ET.Element) -> "MemorySectionLocation":
         """Create MemorySectionLocation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class MemorySectionLocation(ARObject):
         Returns:
             MemorySectionLocation instance
         """
-        obj = cls()
+        obj: MemorySectionLocation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class MemorySectionLocation(ARObject):
 class MemorySectionLocationBuilder:
     """Builder for MemorySectionLocation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = MemorySectionLocation()
+        self._obj: MemorySectionLocation = MemorySectionLocation()
 
     def build(self) -> MemorySectionLocation:
         """Build and return MemorySectionLocation object.

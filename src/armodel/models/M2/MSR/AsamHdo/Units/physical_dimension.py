@@ -1,29 +1,28 @@
 """PhysicalDimension AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PhysicalDimension(ARObject):
     """AUTOSAR PhysicalDimension."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PhysicalDimension."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PhysicalDimension to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PHYSICALDIMENSION")
+        element = ET.Element("PHYSICALDIMENSION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PhysicalDimension":
+    def deserialize(cls, element: ET.Element) -> "PhysicalDimension":
         """Create PhysicalDimension from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PhysicalDimension(ARObject):
         Returns:
             PhysicalDimension instance
         """
-        obj = cls()
+        obj: PhysicalDimension = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PhysicalDimension(ARObject):
 class PhysicalDimensionBuilder:
     """Builder for PhysicalDimension."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PhysicalDimension()
+        self._obj: PhysicalDimension = PhysicalDimension()
 
     def build(self) -> PhysicalDimension:
         """Build and return PhysicalDimension object.

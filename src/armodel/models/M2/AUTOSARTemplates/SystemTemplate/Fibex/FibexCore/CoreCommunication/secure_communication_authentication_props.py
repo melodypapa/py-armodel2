@@ -1,29 +1,28 @@
 """SecureCommunicationAuthenticationProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class SecureCommunicationAuthenticationProps(ARObject):
     """AUTOSAR SecureCommunicationAuthenticationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SecureCommunicationAuthenticationProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert SecureCommunicationAuthenticationProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("SECURECOMMUNICATIONAUTHENTICATIONPROPS")
+        element = ET.Element("SECURECOMMUNICATIONAUTHENTICATIONPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "SecureCommunicationAuthenticationProps":
+    def deserialize(cls, element: ET.Element) -> "SecureCommunicationAuthenticationProps":
         """Create SecureCommunicationAuthenticationProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class SecureCommunicationAuthenticationProps(ARObject):
         Returns:
             SecureCommunicationAuthenticationProps instance
         """
-        obj = cls()
+        obj: SecureCommunicationAuthenticationProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class SecureCommunicationAuthenticationProps(ARObject):
 class SecureCommunicationAuthenticationPropsBuilder:
     """Builder for SecureCommunicationAuthenticationProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = SecureCommunicationAuthenticationProps()
+        self._obj: SecureCommunicationAuthenticationProps = SecureCommunicationAuthenticationProps()
 
     def build(self) -> SecureCommunicationAuthenticationProps:
         """Build and return SecureCommunicationAuthenticationProps object.

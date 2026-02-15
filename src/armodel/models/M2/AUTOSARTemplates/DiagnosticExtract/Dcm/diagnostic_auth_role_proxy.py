@@ -1,29 +1,28 @@
 """DiagnosticAuthRoleProxy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticAuthRoleProxy(ARObject):
     """AUTOSAR DiagnosticAuthRoleProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticAuthRoleProxy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICAUTHROLEPROXY")
+        element = ET.Element("DIAGNOSTICAUTHROLEPROXY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticAuthRoleProxy":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthRoleProxy":
         """Create DiagnosticAuthRoleProxy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticAuthRoleProxy(ARObject):
         Returns:
             DiagnosticAuthRoleProxy instance
         """
-        obj = cls()
+        obj: DiagnosticAuthRoleProxy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticAuthRoleProxy(ARObject):
 class DiagnosticAuthRoleProxyBuilder:
     """Builder for DiagnosticAuthRoleProxy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticAuthRoleProxy()
+        self._obj: DiagnosticAuthRoleProxy = DiagnosticAuthRoleProxy()
 
     def build(self) -> DiagnosticAuthRoleProxy:
         """Build and return DiagnosticAuthRoleProxy object.

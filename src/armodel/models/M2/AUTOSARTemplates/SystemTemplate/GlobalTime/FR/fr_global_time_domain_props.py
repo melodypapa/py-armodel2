@@ -1,29 +1,28 @@
 """FrGlobalTimeDomainProps AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class FrGlobalTimeDomainProps(ARObject):
     """AUTOSAR FrGlobalTimeDomainProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize FrGlobalTimeDomainProps."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert FrGlobalTimeDomainProps to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("FRGLOBALTIMEDOMAINPROPS")
+        element = ET.Element("FRGLOBALTIMEDOMAINPROPS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "FrGlobalTimeDomainProps":
+    def deserialize(cls, element: ET.Element) -> "FrGlobalTimeDomainProps":
         """Create FrGlobalTimeDomainProps from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class FrGlobalTimeDomainProps(ARObject):
         Returns:
             FrGlobalTimeDomainProps instance
         """
-        obj = cls()
+        obj: FrGlobalTimeDomainProps = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class FrGlobalTimeDomainProps(ARObject):
 class FrGlobalTimeDomainPropsBuilder:
     """Builder for FrGlobalTimeDomainProps."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = FrGlobalTimeDomainProps()
+        self._obj: FrGlobalTimeDomainProps = FrGlobalTimeDomainProps()
 
     def build(self) -> FrGlobalTimeDomainProps:
         """Build and return FrGlobalTimeDomainProps object.

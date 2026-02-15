@@ -1,29 +1,28 @@
 """IdentCaption AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class IdentCaption(ARObject):
     """AUTOSAR IdentCaption."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize IdentCaption."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert IdentCaption to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("IDENTCAPTION")
+        element = ET.Element("IDENTCAPTION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "IdentCaption":
+    def deserialize(cls, element: ET.Element) -> "IdentCaption":
         """Create IdentCaption from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class IdentCaption(ARObject):
         Returns:
             IdentCaption instance
         """
-        obj = cls()
+        obj: IdentCaption = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class IdentCaption(ARObject):
 class IdentCaptionBuilder:
     """Builder for IdentCaption."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = IdentCaption()
+        self._obj: IdentCaption = IdentCaption()
 
     def build(self) -> IdentCaption:
         """Build and return IdentCaption object.

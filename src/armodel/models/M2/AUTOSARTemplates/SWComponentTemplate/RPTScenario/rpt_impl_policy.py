@@ -1,29 +1,28 @@
 """RptImplPolicy AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class RptImplPolicy(ARObject):
     """AUTOSAR RptImplPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize RptImplPolicy."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert RptImplPolicy to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("RPTIMPLPOLICY")
+        element = ET.Element("RPTIMPLPOLICY")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "RptImplPolicy":
+    def deserialize(cls, element: ET.Element) -> "RptImplPolicy":
         """Create RptImplPolicy from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class RptImplPolicy(ARObject):
         Returns:
             RptImplPolicy instance
         """
-        obj = cls()
+        obj: RptImplPolicy = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class RptImplPolicy(ARObject):
 class RptImplPolicyBuilder:
     """Builder for RptImplPolicy."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = RptImplPolicy()
+        self._obj: RptImplPolicy = RptImplPolicy()
 
     def build(self) -> RptImplPolicy:
         """Build and return RptImplPolicy object.

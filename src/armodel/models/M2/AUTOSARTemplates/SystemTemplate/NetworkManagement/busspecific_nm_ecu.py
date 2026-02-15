@@ -1,29 +1,28 @@
 """BusspecificNmEcu AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BusspecificNmEcu(ARObject):
     """AUTOSAR BusspecificNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BusspecificNmEcu."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BusspecificNmEcu to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BUSSPECIFICNMECU")
+        element = ET.Element("BUSSPECIFICNMECU")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BusspecificNmEcu":
+    def deserialize(cls, element: ET.Element) -> "BusspecificNmEcu":
         """Create BusspecificNmEcu from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BusspecificNmEcu(ARObject):
         Returns:
             BusspecificNmEcu instance
         """
-        obj = cls()
+        obj: BusspecificNmEcu = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BusspecificNmEcu(ARObject):
 class BusspecificNmEcuBuilder:
     """Builder for BusspecificNmEcu."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BusspecificNmEcu()
+        self._obj: BusspecificNmEcu = BusspecificNmEcu()
 
     def build(self) -> BusspecificNmEcu:
         """Build and return BusspecificNmEcu object.

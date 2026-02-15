@@ -1,29 +1,28 @@
 """BooleanValueVariationPoint AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class BooleanValueVariationPoint(ARObject):
     """AUTOSAR BooleanValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize BooleanValueVariationPoint."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert BooleanValueVariationPoint to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("BOOLEANVALUEVARIATIONPOINT")
+        element = ET.Element("BOOLEANVALUEVARIATIONPOINT")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "BooleanValueVariationPoint":
+    def deserialize(cls, element: ET.Element) -> "BooleanValueVariationPoint":
         """Create BooleanValueVariationPoint from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class BooleanValueVariationPoint(ARObject):
         Returns:
             BooleanValueVariationPoint instance
         """
-        obj = cls()
+        obj: BooleanValueVariationPoint = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class BooleanValueVariationPoint(ARObject):
 class BooleanValueVariationPointBuilder:
     """Builder for BooleanValueVariationPoint."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = BooleanValueVariationPoint()
+        self._obj: BooleanValueVariationPoint = BooleanValueVariationPoint()
 
     def build(self) -> BooleanValueVariationPoint:
         """Build and return BooleanValueVariationPoint object.

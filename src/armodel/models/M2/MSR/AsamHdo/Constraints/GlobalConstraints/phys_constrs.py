@@ -1,29 +1,28 @@
 """PhysConstrs AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class PhysConstrs(ARObject):
     """AUTOSAR PhysConstrs."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PhysConstrs."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert PhysConstrs to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("PHYSCONSTRS")
+        element = ET.Element("PHYSCONSTRS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "PhysConstrs":
+    def deserialize(cls, element: ET.Element) -> "PhysConstrs":
         """Create PhysConstrs from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class PhysConstrs(ARObject):
         Returns:
             PhysConstrs instance
         """
-        obj = cls()
+        obj: PhysConstrs = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class PhysConstrs(ARObject):
 class PhysConstrsBuilder:
     """Builder for PhysConstrs."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = PhysConstrs()
+        self._obj: PhysConstrs = PhysConstrs()
 
     def build(self) -> PhysConstrs:
         """Build and return PhysConstrs object.

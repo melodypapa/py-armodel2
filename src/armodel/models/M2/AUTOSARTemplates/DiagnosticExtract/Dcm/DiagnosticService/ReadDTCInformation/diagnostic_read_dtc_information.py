@@ -1,29 +1,28 @@
 """DiagnosticReadDTCInformation AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticReadDTCInformation(ARObject):
     """AUTOSAR DiagnosticReadDTCInformation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticReadDTCInformation."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticReadDTCInformation to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICREADDTCINFORMATION")
+        element = ET.Element("DIAGNOSTICREADDTCINFORMATION")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticReadDTCInformation":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadDTCInformation":
         """Create DiagnosticReadDTCInformation from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticReadDTCInformation(ARObject):
         Returns:
             DiagnosticReadDTCInformation instance
         """
-        obj = cls()
+        obj: DiagnosticReadDTCInformation = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticReadDTCInformation(ARObject):
 class DiagnosticReadDTCInformationBuilder:
     """Builder for DiagnosticReadDTCInformation."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticReadDTCInformation()
+        self._obj: DiagnosticReadDTCInformation = DiagnosticReadDTCInformation()
 
     def build(self) -> DiagnosticReadDTCInformation:
         """Build and return DiagnosticReadDTCInformation object.

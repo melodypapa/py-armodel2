@@ -1,29 +1,28 @@
 """DiagnosticWriteMemoryByAddressClass AUTOSAR element."""
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from lxml import etree
-from typing import Optional
+import xml.etree.ElementTree as ET
 
 
 class DiagnosticWriteMemoryByAddressClass(ARObject):
     """AUTOSAR DiagnosticWriteMemoryByAddressClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize DiagnosticWriteMemoryByAddressClass."""
         super().__init__()
 
-    def serialize(self) -> etree.Element:
+    def serialize(self) -> ET.Element:
         """Convert DiagnosticWriteMemoryByAddressClass to XML element.
 
         Returns:
             XML element representing this object
         """
-        element = etree.Element("DIAGNOSTICWRITEMEMORYBYADDRESSCLASS")
+        element = ET.Element("DIAGNOSTICWRITEMEMORYBYADDRESSCLASS")
         # TODO: Add serialization logic
         return element
 
     @classmethod
-    def deserialize(cls, element: etree.Element) -> "DiagnosticWriteMemoryByAddressClass":
+    def deserialize(cls, element: ET.Element) -> "DiagnosticWriteMemoryByAddressClass":
         """Create DiagnosticWriteMemoryByAddressClass from XML element.
 
         Args:
@@ -32,7 +31,7 @@ class DiagnosticWriteMemoryByAddressClass(ARObject):
         Returns:
             DiagnosticWriteMemoryByAddressClass instance
         """
-        obj = cls()
+        obj: DiagnosticWriteMemoryByAddressClass = cls()
         # TODO: Add deserialization logic
         return obj
 
@@ -40,9 +39,9 @@ class DiagnosticWriteMemoryByAddressClass(ARObject):
 class DiagnosticWriteMemoryByAddressClassBuilder:
     """Builder for DiagnosticWriteMemoryByAddressClass."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize builder."""
-        self._obj = DiagnosticWriteMemoryByAddressClass()
+        self._obj: DiagnosticWriteMemoryByAddressClass = DiagnosticWriteMemoryByAddressClass()
 
     def build(self) -> DiagnosticWriteMemoryByAddressClass:
         """Build and return DiagnosticWriteMemoryByAddressClass object.
