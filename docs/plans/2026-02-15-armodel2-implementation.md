@@ -21,7 +21,7 @@
 - Create: `src/armodel/writer/__init__.py`
 - Create: `src/armodel/cli/__init__.py`
 - Create: `src/armodel/models/__init__.py`
-- Create: `cfg/schemas/__init__.py`
+- Create: `src/armodel/cfg/schemas/__init__.py`
 - Create: `src/armodel/utils/__init__.py`
 - Create: `tests/__init__.py`
 - Create: `tests/unit/__init__.py`
@@ -33,7 +33,7 @@
 
 Run:
 ```bash
-mkdir -p src/armodel/{core,reader,writer,cli,models,utils} cfg/schemas
+mkdir -p src/armodel/{core,reader,writer,cli,models,utils,cfg/schemas}
 mkdir -p tests/{unit,integration,fixtures}
 touch src/armodel/{__init__.py,core/__init__.py,reader/__init__.py,writer/__init__.py,cli/__init__.py,models/__init__.py,utils/__init__.py}
 touch tests/{__init__.py,unit/__init__.py,integration/__init__.py,fixtures/__init__.py}
