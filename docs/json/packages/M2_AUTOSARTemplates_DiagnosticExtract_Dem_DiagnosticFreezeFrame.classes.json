@@ -49,7 +49,7 @@
           "note": "This attribute defines a record number for a freeze frame"
         },
         "trigger": {
-          "type": "DiagnosticRecord",
+          "type": "DiagnosticRecordTriggerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

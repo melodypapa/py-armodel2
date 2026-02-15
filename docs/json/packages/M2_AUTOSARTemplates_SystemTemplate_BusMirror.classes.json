@@ -64,7 +64,7 @@
           "is_ref": false,
           "note": "Defines the targetChannel to which frames are forwarded."
         },
-        "targetPdu": {
+        "targetPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -149,22 +149,22 @@
         }
       ],
       "attributes": {
-        "canIdRange": {
-          "type": "BusMirrorCanIdRange",
+        "canIdRanges": {
+          "type": "BusMirrorCanIdRangeMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Rules for remapping of a set of CAN IDs."
         },
-        "canIdToCanId": {
-          "type": "BusMirrorCanIdToCanId",
+        "canIdToCanIds": {
+          "type": "BusMirrorCanIdToCanIdMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Rules for remapping of single CanIds."
         },
-        "linPidToCanId": {
-          "type": "BusMirrorLinPidToCan",
+        "linPidToCanIds": {
+          "type": "BusMirrorLinPidToCanIdMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

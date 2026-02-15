@@ -100,7 +100,7 @@
         }
       ],
       "attributes": {
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -115,7 +115,7 @@
           "note": "This is the particular value of the post-build variant"
         },
         "variantCriterion": {
-          "type": "PostBuildVariant",
+          "type": "any (PostBuildVariant)",
           "multiplicity": "1",
           "kind": "reference",
           "is_ref": false,
@@ -167,22 +167,22 @@
         }
       ],
       "attributes": {
-        "includedVariant": {
+        "includedVariants": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The associated variants are considered part of this means the settings of the are included in the settings of the Nevertheless the included be included in several predefined variants."
         },
-        "postBuildVariant": {
-          "type": "PostBuildVariant",
+        "postBuildVariants": {
+          "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This is the postBuildVariantCriterionValueSet contributing to the predefinded variant."
         },
-        "sw": {
-          "type": "SwSystemconstant",
+        "sws": {
+          "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -252,7 +252,7 @@
         }
       ],
       "attributes": {
-        "sw": {
+        "sws": {
           "type": "SwSystemconstValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -427,7 +427,7 @@
       ],
       "attributes": {
         "matching": {
-          "type": "PostBuildVariant",
+          "type": "any (PostBuildVariant)",
           "multiplicity": "1",
           "kind": "reference",
           "is_ref": false,
@@ -486,8 +486,8 @@
         }
       ],
       "attributes": {
-        "postBuildVariant": {
-          "type": "PostBuildVariant",
+        "postBuildVariants": {
+          "type": "any (PostBuildVariant)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -591,7 +591,7 @@
         }
       ],
       "attributes": {
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -653,7 +653,7 @@
           "is_ref": false,
           "note": "Defines the approval status of a predefined variant. Two"
         },
-        "evaluated": {
+        "evaluateds": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
           "kind": "reference",

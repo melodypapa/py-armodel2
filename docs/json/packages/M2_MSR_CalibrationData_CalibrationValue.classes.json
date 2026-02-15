@@ -49,7 +49,7 @@
           "note": "This represents the physical unit of the provided values."
         },
         "unitDisplay": {
-          "type": "SingleLanguageUnit",
+          "type": "SingleLanguageUnitNames",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -84,7 +84,7 @@
       ],
       "attributes": {
         "category": {
-          "type": "CalprmAxisCategory",
+          "type": "CalprmAxisCategoryEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -119,7 +119,7 @@
           "note": "This represents the physical unit of the provided values."
         },
         "unitDisplay": {
-          "type": "SingleLanguageUnit",
+          "type": "SingleLanguageUnitNames",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -219,7 +219,7 @@
       ],
       "attributes": {
         "label": {
-          "type": "MultilanguageLong",
+          "type": "MultilanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -43,7 +43,7 @@
           "note": "This represents the info type associated with the mode"
         },
         "requestVehicle": {
-          "type": "DiagnosticRequest",
+          "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

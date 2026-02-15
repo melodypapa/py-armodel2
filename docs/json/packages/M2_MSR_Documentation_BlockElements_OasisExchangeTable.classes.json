@@ -59,7 +59,7 @@
           "note": "This specifies an entry point in an online help system to"
         },
         "orient": {
-          "type": "OrientEnum",
+          "type": "any (OrientEnum)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -142,7 +142,7 @@
           "is_ref": false,
           "note": "Indicates if by default a line shall be drawn between the this table group."
         },
-        "colspec": {
+        "colspecs": {
           "type": "Colspec",
           "multiplicity": "*",
           "kind": "attribute",

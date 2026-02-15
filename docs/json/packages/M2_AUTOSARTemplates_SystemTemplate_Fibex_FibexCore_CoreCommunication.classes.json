@@ -117,8 +117,8 @@
           "is_ref": false,
           "note": "Defines and enables the ComTimeoutSubstituition for this"
         },
-        "transformationISignal": {
-          "type": "TransformationISignal",
+        "transformationISignals": {
+          "type": "any (TransformationISignal)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -171,21 +171,21 @@
           "is_ref": false,
           "note": "This attribute defines the use-case for this ISignalIPdu"
         },
-        "contained": {
+        "containeds": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "An I-Pdu group can be included in other I-Pdu groups. I-Pdu groups shall not be referenced by the"
         },
-        "iSignalIPdu": {
+        "iSignalIPdus": {
           "type": "ISignalIPdu",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to a set of Signal I-Pdus, which are contained"
         },
-        "nmPdu": {
+        "nmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
           "kind": "reference",
@@ -245,7 +245,7 @@
           "note": "This attribute is used to identify the actual DMx message,"
         },
         "MessageType": {
-          "type": "e.g",
+          "type": "any (e.g)",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
@@ -374,7 +374,7 @@
           "is_ref": false,
           "note": "The used length (in bytes) of the referencing frame."
         },
-        "pduToFrame": {
+        "pduToFrames": {
           "type": "PduToFrameMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -441,14 +441,14 @@
           "is_ref": false,
           "note": "One frame can be triggered several times, e.g. on"
         },
-        "framePort": {
+        "framePorts": {
           "type": "FramePort",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "References to the FramePort on every ECU of the system and/or receives the frame. both the sender and the receiver side included when the system is completely defined."
         },
-        "pduTriggering": {
+        "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -543,7 +543,7 @@
         }
       ],
       "attributes": {
-        "iSignalToIPdu": {
+        "iSignalToIPdus": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -688,14 +688,14 @@
           "is_ref": false,
           "note": "Reference to the Pdu for which the PduTriggering is"
         },
-        "iPduPort": {
+        "iPduPorts": {
           "type": "IPduPort",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "References to the IPduPort on every ECU of the system and/or receives the I-PDU. both the sender and the receiver side included when the system is completely defined."
         },
-        "iSignal": {
+        "iSignals": {
           "type": "ISignalTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -703,14 +703,14 @@
           "note": "This reference provides the relationship to the ISignal that are implemented by the PduTriggering. is optional since no ISignalTriggering can for DCM and Multiplexed Pdus. atpVariation 318 Document ID 87: AUTOSAR_CP_TPS_ECUConfiguration ECU Configuration R23-11"
         },
         "secOcCryptoService": {
-          "type": "SecOcCryptoService",
+          "type": "SecOcCryptoServiceMapping",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the crypto profile applicable to the usage (send, receive) of the also referenced Secured reference is only applicable if the references a SecuredIPdu in the role i"
         },
-        "triggerIPduSend": {
-          "type": "TriggerIPduSend",
+        "triggerIPduSends": {
+          "type": "TriggerIPduSendCondition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
@@ -817,7 +817,7 @@
           "is_ref": false,
           "note": "Optional reference to a DataTransformation which the transformer chain that is used to transform data that shall be placed inside this ISignalGroup the COMBasedTransformer approach. atpVariation"
         },
-        "iSignal": {
+        "iSignals": {
           "type": "ISignal",
           "multiplicity": "*",
           "kind": "reference",
@@ -831,8 +831,8 @@
           "is_ref": true,
           "note": "Reference to the SystemSignalGroup that is defined on level and that is supposed to be transmitted in the"
         },
-        "transformationISignal": {
-          "type": "TransformationISignal",
+        "transformationISignals": {
+          "type": "any (TransformationISignal)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -890,7 +890,7 @@
           "is_ref": false,
           "note": "Timing specification for Com IPdus (Transmission"
         },
-        "iSignalToPdu": {
+        "iSignalToPdus": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -968,7 +968,7 @@
       ],
       "attributes": {
         "iPduSignal": {
-          "type": "IPduSignalProcessing",
+          "type": "IPduSignalProcessingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1092,7 +1092,7 @@
       ],
       "attributes": {
         "handleOutOfRange": {
-          "type": "HandleOutOfRange",
+          "type": "any (HandleOutOfRange)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1132,7 +1132,7 @@
         }
       ],
       "attributes": {
-        "systemSignal": {
+        "systemSignals": {
           "type": "SystemSignal",
           "multiplicity": "*",
           "kind": "reference",
@@ -1271,7 +1271,7 @@
           "is_ref": true,
           "note": "This reference shall be used if an ISignalGroup is the PhysicalChannel. This reference XOR relationship with the ISignal"
         },
-        "iSignalPort": {
+        "iSignalPorts": {
           "type": "ISignalPort",
           "multiplicity": "*",
           "kind": "reference",
@@ -1618,7 +1618,7 @@
           "note": "Minimum Delay in seconds between successive this I-PDU, independent of the"
         },
         "transmission": {
-          "type": "TransmissionMode",
+          "type": "any (TransmissionMode)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1665,7 +1665,7 @@
           "is_ref": false,
           "note": "This attribute defines the use-case for this PduRIPdu"
         },
-        "iPdu": {
+        "iPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -1711,14 +1711,14 @@
         }
       ],
       "attributes": {
-        "containedIPduProps": {
+        "containedIPduPropses": {
           "type": "ContainedIPduProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines properties for an IPdu that is part of the"
         },
-        "containedPdu": {
+        "containedPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -1733,14 +1733,14 @@
           "note": "When this timeout expires the ContainerIPdu is sent out. respective timer is started when the first Ipdu is put ContainerIPdu. This attribute is ignored on"
         },
         "containerTrigger": {
-          "type": "ContainerIPduTrigger",
+          "type": "ContainerIPduTriggerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
           "note": "Defines if the transmission of the ContainerIPdu shall be right after the first ContainedIPdu was put into attribute shall be ignored on receiver side."
         },
         "headerType": {
-          "type": "ContainerIPduHeader",
+          "type": "ContainerIPduHeaderTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1761,7 +1761,7 @@
           "note": "This attribute defines the minimum queue size for containers."
         },
         "rxAccept": {
-          "type": "RxAcceptContainedI",
+          "type": "RxAcceptContainedIPduEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1811,7 +1811,7 @@
       ],
       "attributes": {
         "collection": {
-          "type": "ContainedIPdu",
+          "type": "any (ContainedIPdu)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1860,7 +1860,7 @@
           "note": "Defines a IPdu specific sender timeout which can reduce timer when this containedIPdu is put ContainerIPdu. This attribute is ignored on"
         },
         "trigger": {
-          "type": "PduCollectionTrigger",
+          "type": "PduCollectionTriggerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": true,
@@ -1913,7 +1913,7 @@
       ],
       "attributes": {
         "authentication": {
-          "type": "SecureCommunication",
+          "type": "any (SecureCommunication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1927,7 +1927,7 @@
           "note": "Defines whether the length information for handling this"
         },
         "freshnessProps": {
-          "type": "SecureCommunication",
+          "type": "any (SecureCommunication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1941,7 +1941,7 @@
           "note": "Reference to a Pdu that will be protected against"
         },
         "secure": {
-          "type": "SecureCommunication",
+          "type": "any (SecureCommunication)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1955,7 +1955,7 @@
           "note": "If this attribute is set to true the SecuredIPdu contains the"
         },
         "useSecuredPdu": {
-          "type": "SecuredPduHeader",
+          "type": "SecuredPduHeaderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2072,15 +2072,15 @@
         }
       ],
       "attributes": {
-        "authentication": {
-          "type": "SecureCommunication",
+        "authentications": {
+          "type": "any (SecureCommunication)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Authentication properties used to configure Secured IPdus."
         },
-        "freshnessProps": {
-          "type": "SecureCommunication",
+        "freshnessPropses": {
+          "type": "any (SecureCommunication)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -2301,7 +2301,7 @@
         }
       ],
       "attributes": {
-        "dynamicPart": {
+        "dynamicParts": {
           "type": "DynamicPartAlternative",
           "multiplicity": "*",
           "kind": "attribute",
@@ -2389,7 +2389,7 @@
         }
       ],
       "attributes": {
-        "segmentPosition": {
+        "segmentPositions": {
           "type": "SegmentPosition",
           "multiplicity": "*",
           "kind": "attribute",

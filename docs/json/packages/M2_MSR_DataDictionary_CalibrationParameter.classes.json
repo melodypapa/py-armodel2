@@ -27,7 +27,7 @@
         }
       ],
       "attributes": {
-        "swCalprmAxis": {
+        "swCalprmAxises": {
           "type": "SwCalprmAxis",
           "multiplicity": "*",
           "kind": "attribute",
@@ -63,7 +63,7 @@
       ],
       "attributes": {
         "category": {
-          "type": "CalprmAxisCategory",
+          "type": "CalprmAxisCategoryEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -84,14 +84,14 @@
           "note": "This attribute specifies which axis is specified by the in a curve this is usually \"1\". In a map this is \"2\"."
         },
         "swCalibrationAccess": {
-          "type": "SwCalibrationAccess",
+          "type": "SwCalibrationAccessEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Describes the applicability of parameters and variables. Tags: xml.sequenceOffset=90"
         },
         "swCalprmAxis": {
-          "type": "SwCalprmAxisType",
+          "type": "SwCalprmAxisTypeProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

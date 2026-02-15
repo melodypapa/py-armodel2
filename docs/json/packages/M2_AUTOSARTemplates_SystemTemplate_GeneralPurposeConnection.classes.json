@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "pduTriggering": {
+        "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",

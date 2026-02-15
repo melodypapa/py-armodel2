@@ -52,7 +52,7 @@
           "is_ref": false,
           "note": "This attribute reflects how far the referenced objects are the collection."
         },
-        "collected": {
+        "collecteds": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -66,7 +66,7 @@
           "is_ref": false,
           "note": "Provides the ability to express the semantics of a"
         },
-        "element": {
+        "elements": {
           "type": "Identifiable",
           "multiplicity": "*",
           "kind": "reference",
@@ -80,14 +80,14 @@
           "is_ref": false,
           "note": "This attribute allows to denote a particular role of the"
         },
-        "sourceElement": {
+        "sourceElements": {
           "type": "Identifiable",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Only if Category = \"RELATION\". This represents the"
         },
-        "sourceInstance": {
+        "sourceInstances": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",

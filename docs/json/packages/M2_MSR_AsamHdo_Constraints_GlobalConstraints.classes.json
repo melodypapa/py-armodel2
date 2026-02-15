@@ -54,7 +54,7 @@
         }
       ],
       "attributes": {
-        "dataConstrRule": {
+        "dataConstrRules": {
           "type": "DataConstrRule",
           "multiplicity": "*",
           "kind": "attribute",
@@ -178,7 +178,7 @@
           "is_ref": false,
           "note": "This specifies the monotony constraints on the data"
         },
-        "scaleConstr": {
+        "scaleConstrs": {
           "type": "ScaleConstr",
           "multiplicity": "*",
           "kind": "attribute",
@@ -255,7 +255,7 @@
           "is_ref": false,
           "note": "This element specifies the monotony characteristics of"
         },
-        "scaleConstr": {
+        "scaleConstrs": {
           "type": "ScaleConstr",
           "multiplicity": "*",
           "kind": "attribute",
@@ -299,7 +299,7 @@
       ],
       "attributes": {
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -327,7 +327,7 @@
           "note": "This specifies the upper limit of a the scale."
         },
         "validity": {
-          "type": "ScaleConstrValidity",
+          "type": "any (ScaleConstrValidity)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

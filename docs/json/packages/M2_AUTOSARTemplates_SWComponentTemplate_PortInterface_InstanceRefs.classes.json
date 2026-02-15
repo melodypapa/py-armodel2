@@ -37,8 +37,8 @@
           "is_ref": false,
           "note": "This represents the SenderReceiverInterface that acts as in this InstanceRef definition"
         },
-        "contextData": {
-          "type": "ApplicationComposite",
+        "contextDatas": {
+          "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -52,7 +52,7 @@
           "note": "This refers to the dataPrototype which is typed by the in which which the target can be"
         },
         "targetData": {
-          "type": "ApplicationComposite",
+          "type": "any (ApplicationComposite)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

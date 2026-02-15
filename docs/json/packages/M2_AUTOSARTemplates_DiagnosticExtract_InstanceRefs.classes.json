@@ -37,15 +37,15 @@
           "is_ref": false,
           "note": "This represents the base of the InstanceRef"
         },
-        "context": {
-          "type": "SwComponent",
+        "contexts": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Tags: xml.sequenceOffset=30"
         },
-        "contextData": {
-          "type": "ApplicationComposite",
+        "contextDatas": {
+          "type": "any (ApplicationComposite)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -59,7 +59,7 @@
           "note": "This represents the PortPrototype that is contained in the"
         },
         "contextRoot": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -115,21 +115,21 @@
       ],
       "attributes": {
         "contextRootSw": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": ""
         },
-        "contextSwPrototype": {
-          "type": "SwComponent",
+        "contextSwPrototypes": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "ref"
         },
         "targetSwc": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -173,7 +173,7 @@
           "note": "Stereotypes: atpDerived"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -187,7 +187,7 @@
           "note": "Tags: xml.sequenceOffset=50"
         },
         "contextPPortPrototype": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

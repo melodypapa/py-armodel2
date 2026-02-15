@@ -45,21 +45,21 @@
           "note": "This attribute defines a crypto algorithm restriction (kAlgId"
         },
         "cryptoObjectTypeEnum": {
-          "type": "CryptoObjectTypeEnum",
+          "type": "any (CryptoObjectTypeEnum)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Object type that can be stored in the slot. If this field \"Undefined\" then mSlotCapacity must be larger then 0."
         },
         "keySlotAllowed": {
-          "type": "CryptoKeySlotAllowed",
+          "type": "any (CryptoKeySlotAllowed)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Restricts how this keySlot may be used Tags: atp.Status=candidate"
         },
-        "keySlotContent": {
-          "type": "CryptoKeySlotContent",
+        "keySlotContents": {
+          "type": "any (CryptoKeySlotContent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -73,7 +73,7 @@
           "note": "Capacity of the slot in bytes to be reserved by the stack use case is to define this value in case that is undefined and the slot size can deduced from cryptoObjectType and cryptoAlgId. slot size can be deduced from cryptoObject cryptoAlgId."
         },
         "slotType": {
-          "type": "CryptoKeySlotType",
+          "type": "any (CryptoKeySlotType)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

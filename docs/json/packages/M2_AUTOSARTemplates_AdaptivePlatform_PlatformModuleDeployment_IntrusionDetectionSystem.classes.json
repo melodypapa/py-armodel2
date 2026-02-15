@@ -41,15 +41,15 @@
         }
       ],
       "attributes": {
-        "network": {
-          "type": "PlatformModule",
+        "networks": {
+          "type": "PlatformModuleEthernetEndpointConfiguration",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This association contains the network configuration that shall be applied to an instance of an IDS entity. atp.Status=candidate"
         },
         "timeBaseResource": {
-          "type": "TimeBaseResource",
+          "type": "any (TimeBaseResource)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

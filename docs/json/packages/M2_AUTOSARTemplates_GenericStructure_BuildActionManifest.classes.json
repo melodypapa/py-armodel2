@@ -48,28 +48,28 @@
         }
       ],
       "attributes": {
-        "buildAction": {
+        "buildActions": {
           "type": "BuildActionEnvironment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents a build action environment. atpSplitable; atpVariation"
         },
-        "dynamicAction": {
+        "dynamicActions": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This denotes an Action which is to be executed as part of action set."
         },
-        "startAction": {
+        "startActions": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This specifies the list of actions to be performed at the the process. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "tearDownAction": {
+        "tearDownActions": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "reference",
@@ -117,35 +117,35 @@
         }
       ],
       "attributes": {
-        "createdData": {
+        "createdDatas": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the artifacts which are created by the"
         },
-        "followUpAction": {
+        "followUpActions": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This association specifies a set of follow up actions."
         },
-        "inputData": {
+        "inputDatas": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the artifacts which are read by the"
         },
-        "modifiedData": {
+        "modifiedDatas": {
           "type": "BuildActionIoElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This denotes the data which are modified by the action."
         },
-        "predecessor": {
+        "predecessors": {
           "type": "BuildAction",
           "multiplicity": "*",
           "kind": "reference",
@@ -210,7 +210,7 @@
           "is_ref": false,
           "note": "This attribute allows to denote a particular role of the"
         },
-        "sdg": {
+        "sdgs": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -257,7 +257,7 @@
         }
       ],
       "attributes": {
-        "sdg": {
+        "sdgs": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -300,8 +300,8 @@
         }
       ],
       "attributes": {
-        "deliveryArtifact": {
-          "type": "AutosarEngineering",
+        "deliveryArtifacts": {
+          "type": "AutosarEngineeringObject",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

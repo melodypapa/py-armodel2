@@ -98,8 +98,8 @@
           "is_ref": false,
           "note": "between the ClientServerInterface and the BswModule atpVariation"
         },
-        "portDefinedArgument": {
-          "type": "PortDefinedArgument",
+        "portDefinedArguments": {
+          "type": "PortDefinedArgumentValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

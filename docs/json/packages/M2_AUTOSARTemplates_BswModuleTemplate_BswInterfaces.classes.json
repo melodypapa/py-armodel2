@@ -60,7 +60,7 @@
         }
       ],
       "attributes": {
-        "argument": {
+        "arguments": {
           "type": "SwServiceArg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -131,7 +131,7 @@
           "note": "Refers to the service identifier of the Standardized AUTOSAR basic software. For it can optionally be used for"
         },
         "swServiceImplPolicy": {
-          "type": "SwServiceImplPolicy",
+          "type": "SwServiceImplPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -225,7 +225,7 @@
         }
       ],
       "attributes": {
-        "bswEntryRelationship": {
+        "bswEntryRelationships": {
           "type": "BswEntryRelationship",
           "multiplicity": "*",
           "kind": "attribute",

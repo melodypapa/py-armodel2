@@ -56,7 +56,7 @@
           "is_ref": false,
           "note": "This represents the ID of the GlobalTimeDomain used in messages sent on behalf of global time"
         },
-        "gateway": {
+        "gateways": {
           "type": "GlobalTimeGateway",
           "multiplicity": "*",
           "kind": "attribute",
@@ -64,7 +64,7 @@
           "note": "A GlobalTimeGateway may exist in the context of a actively update the global time it is routed from one GlobalTimeDomain to atpVariation"
         },
         "globalTime": {
-          "type": "AbstractGlobalTime",
+          "type": "AbstractGlobalTimeDomainProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -77,7 +77,7 @@
           "is_ref": false,
           "note": "This represents the single master of a GlobalTime A GlobalTimeDomain may have no GlobalTime when it gets its time from a GPS atpVariation"
         },
-        "globalTimeSub": {
+        "globalTimeSubs": {
           "type": "GlobalTimeDomain",
           "multiplicity": "*",
           "kind": "reference",
@@ -85,7 +85,7 @@
           "note": "By this means it is possible to create a hierarchy of sub where one global time domain can declare one other global time domains as its subDomains. atpVariation"
         },
         "network": {
-          "type": "NetworkSegment",
+          "type": "NetworkSegmentIdentification",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -105,7 +105,7 @@
           "is_ref": true,
           "note": "This PduTriggering will be taken to transmit the global"
         },
-        "slave": {
+        "slaves": {
           "type": "GlobalTimeSlave",
           "multiplicity": "*",
           "kind": "attribute",
@@ -238,7 +238,7 @@
           "note": "The GlobalTimeMaster is bound to the Communication"
         },
         "icvSecured": {
-          "type": "GlobalTimeIcvSupport",
+          "type": "GlobalTimeIcvSupportEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -322,7 +322,7 @@
           "note": "Rx timeout for the follow-up message."
         },
         "icvVerification": {
-          "type": "GlobalTimeIcv",
+          "type": "any (GlobalTimeIcv)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

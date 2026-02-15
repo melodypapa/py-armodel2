@@ -38,14 +38,14 @@
       ],
       "attributes": {
         "assignedData": {
-          "type": "RoleBasedDataType",
+          "type": "RoleBasedDataTypeAssignment",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is the role of the assignment data type in the given context. atpVariation"
         },
         "diagnostic": {
-          "type": "ServiceDiagnostic",
+          "type": "ServiceDiagnosticRelevanceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -313,7 +313,7 @@
           "note": "Number of ROM Blocks to be provided by the NVRAM this block. Please note that these multiple are given in a contiguous area."
         },
         "ramBlockStatusControl": {
-          "type": "RamBlockStatusControl",
+          "type": "RamBlockStatusControlEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -425,7 +425,7 @@
           "note": "Provides the amount of updates to this block from the point of view. It has to be provided in \"number access per year\"."
         },
         "writingPriority": {
-          "type": "NvBlockNeedsWriting",
+          "type": "NvBlockNeedsWritingPriorityEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -477,8 +477,8 @@
           "is_ref": false,
           "note": "true/false: supervision activation status of Supervised"
         },
-        "checkpoints": {
-          "type": "SupervisedEntity",
+        "checkpointses": {
+          "type": "any (SupervisedEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -833,15 +833,15 @@
         }
       ],
       "attributes": {
-        "audience": {
-          "type": "DiagnosticAudience",
+        "audiences": {
+          "type": "DiagnosticAudienceEnum",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This specifies the intended audience for the diagnostic Note that this is not only for the documentation but audience specific implementation."
         },
         "diag": {
-          "type": "DiagRequirementId",
+          "type": "DiagRequirementIdString",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1012,7 +1012,7 @@
           "note": "This attribute is applicable only if the DiagnosticValue aggregated within a BswModuleDependency. represents the length of data (in bytes) this particular PID signal."
         },
         "diagnosticValueAccess": {
-          "type": "DiagnosticValueAccess",
+          "type": "DiagnosticValueAccessEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1026,7 +1026,7 @@
           "note": "This attribute is applicable only if the DiagnosticValue"
         },
         "processingStyle": {
-          "type": "DiagnosticProcessing",
+          "type": "DiagnosticProcessingStyleEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1079,7 +1079,7 @@
       ],
       "attributes": {
         "diagRoutine": {
-          "type": "DiagnosticRoutineType",
+          "type": "DiagnosticRoutineTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1239,7 +1239,7 @@
       ],
       "attributes": {
         "serviceRequest": {
-          "type": "DiagnosticService",
+          "type": "any (DiagnosticService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1368,7 +1368,7 @@
         }
       ],
       "attributes": {
-        "deferringFid": {
+        "deferringFids": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
           "kind": "reference",
@@ -1376,7 +1376,7 @@
           "note": "This reference contains the link to a function identifier FiM which is used by the monitor before result."
         },
         "diagEventDebounce": {
-          "type": "DiagEventDebounce",
+          "type": "any (DiagEventDebounce)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1389,7 +1389,7 @@
           "is_ref": false,
           "note": "This represents the primary Function Inhibition Identifier inhibition of the diagnostic monitor. The FID inhibit the monitoring of a symptom or the detected faults."
         },
-        "inhibiting": {
+        "inhibitings": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
           "kind": "reference",
@@ -1697,7 +1697,7 @@
         }
       ],
       "attributes": {
-        "tracedFailure": {
+        "tracedFailures": {
           "type": "TracedFailure",
           "multiplicity": "*",
           "kind": "attribute",
@@ -2236,7 +2236,7 @@
           "note": "Unit and scaling ID according to ISO 15031-5."
         },
         "updateKind": {
-          "type": "DiagnosticMonitor",
+          "type": "DiagnosticMonitorUpdateKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2467,7 +2467,7 @@
       ],
       "attributes": {
         "operationCycle": {
-          "type": "OperationCycleType",
+          "type": "any (OperationCycleType)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2508,7 +2508,7 @@
       ],
       "attributes": {
         "initialStatus": {
-          "type": "EventAcceptanceStatus",
+          "type": "EventAcceptanceStatusEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2549,7 +2549,7 @@
       ],
       "attributes": {
         "initialStatus": {
-          "type": "StorageConditionStatus",
+          "type": "StorageConditionStatusEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2589,7 +2589,7 @@
       ],
       "attributes": {
         "typeEnum": {
-          "type": "DiagnosticIndicatorType",
+          "type": "DiagnosticIndicatorTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2630,7 +2630,7 @@
       ],
       "attributes": {
         "notificationTime": {
-          "type": "DiagnosticClearDtc",
+          "type": "any (DiagnosticClearDtc)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2704,7 +2704,7 @@
       ],
       "attributes": {
         "connectionType": {
-          "type": "ObdRatioConnection",
+          "type": "ObdRatioConnectionKindEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2759,7 +2759,7 @@
       ],
       "attributes": {
         "denominator": {
-          "type": "DiagnosticDenominator",
+          "type": "DiagnosticDenominatorConditionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3150,7 +3150,7 @@
       ],
       "attributes": {
         "verification": {
-          "type": "VerificationStatus",
+          "type": "VerificationStatusIndicationModeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3452,8 +3452,8 @@
         }
       ],
       "attributes": {
-        "possibleErrorReaction": {
-          "type": "PossibleErrorReaction",
+        "possibleErrorReactions": {
+          "type": "any (PossibleErrorReaction)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

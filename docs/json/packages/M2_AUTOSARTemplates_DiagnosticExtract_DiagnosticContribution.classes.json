@@ -34,20 +34,20 @@
       ],
       "attributes": {
         "common": {
-          "type": "DiagnosticCommon",
+          "type": "any (DiagnosticCommon)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute represents a collection of diagnostic properties that are shared among the entire Diagnostic"
         },
-        "element": {
-          "type": "DiagnosticCommon",
+        "elements": {
+          "type": "any (DiagnosticCommon)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents a DiagnosticCommonElement considered the context of the DiagnosticContributionSet atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "serviceTable": {
+        "serviceTables": {
           "type": "DiagnosticServiceTable",
           "multiplicity": "*",
           "kind": "reference",
@@ -89,7 +89,7 @@
         }
       ],
       "attributes": {
-        "diagnostic": {
+        "diagnostics": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
           "kind": "reference",
@@ -159,7 +159,7 @@
         }
       ],
       "attributes": {
-        "diagnostic": {
+        "diagnostics": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
           "kind": "reference",
@@ -180,8 +180,8 @@
           "is_ref": false,
           "note": "This identifies the applicable protocol."
         },
-        "serviceInstance": {
-          "type": "DiagnosticService",
+        "serviceInstances": {
+          "type": "any (DiagnosticService)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -222,7 +222,7 @@
         }
       ],
       "attributes": {
-        "ecuInstance": {
+        "ecuInstances": {
           "type": "EcuInstance",
           "multiplicity": "*",
           "kind": "reference",
@@ -230,7 +230,7 @@
           "note": "This represents the actual EcuInstance to which the in the DiagnosticEcuInstance"
         },
         "obdSupport": {
-          "type": "DiagnosticObdSupport",
+          "type": "DiagnosticObdSupportEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

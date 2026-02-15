@@ -42,28 +42,28 @@
         }
       ],
       "attributes": {
-        "aclContext": {
+        "aclContexts": {
           "type": "NameToken",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute is intended to specify the context under"
         },
-        "aclObjectSet": {
+        "aclObjectSets": {
           "type": "AclObjectSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "This denotes an object to which the AclPermission"
         },
-        "aclOperation": {
+        "aclOperations": {
           "type": "AclOperation",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This denotes an operation which is granted by the given"
         },
-        "aclRole": {
+        "aclRoles": {
           "type": "AclRole",
           "multiplicity": "*",
           "kind": "reference",
@@ -120,8 +120,8 @@
         }
       ],
       "attributes": {
-        "aclObjectClass": {
-          "type": "ReferrableSubtypes",
+        "aclObjectClasses": {
+          "type": "ReferrableSubtypesEnum",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
@@ -141,15 +141,15 @@
           "is_ref": true,
           "note": "This indicates that the relevant objects are specified via a"
         },
-        "derivedFrom": {
+        "derivedFroms": {
           "type": "AtpBlueprint",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This association indicates that the considered objects are"
         },
-        "engineering": {
-          "type": "AutosarEngineering",
+        "engineerings": {
+          "type": "AutosarEngineeringObject",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -229,7 +229,7 @@
         }
       ],
       "attributes": {
-        "implied": {
+        "implieds": {
           "type": "AclOperation",
           "multiplicity": "*",
           "kind": "reference",

@@ -30,8 +30,8 @@
         }
       ],
       "attributes": {
-        "component": {
-          "type": "SwComponent",
+        "components": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -207,7 +207,7 @@
         }
       ],
       "attributes": {
-        "application": {
+        "applications": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
           "kind": "reference",
@@ -329,8 +329,8 @@
         }
       ],
       "attributes": {
-        "clustered": {
-          "type": "SwComponent",
+        "clustereds": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -408,7 +408,7 @@
       ],
       "attributes": {
         "j1939Controller": {
-          "type": "J1939Controller",
+          "type": "any (J1939Controller)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -525,7 +525,7 @@
           "is_ref": false,
           "note": "Estimation for the resource consumption of the run time"
         },
-        "swCompToEcu": {
+        "swCompToEcus": {
           "type": "SwcToEcuMapping",
           "multiplicity": "*",
           "kind": "reference",

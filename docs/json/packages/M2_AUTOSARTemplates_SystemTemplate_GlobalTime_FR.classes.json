@@ -32,7 +32,7 @@
       ],
       "attributes": {
         "crcSecured": {
-          "type": "GlobalTimeCrcSupport",
+          "type": "GlobalTimeCrcSupportEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -71,7 +71,7 @@
       ],
       "attributes": {
         "crcValidated": {
-          "type": "GlobalTimeCrc",
+          "type": "any (GlobalTimeCrc)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

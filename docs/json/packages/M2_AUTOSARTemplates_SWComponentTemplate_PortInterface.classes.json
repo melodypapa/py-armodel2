@@ -67,14 +67,14 @@
       ],
       "attributes": {
         "direction": {
-          "type": "ArgumentDirection",
+          "type": "ArgumentDirectionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute specifies the direction of the argument"
         },
         "serverArgumentImpl": {
-          "type": "ServerArgumentImpl",
+          "type": "ServerArgumentImplPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -144,14 +144,14 @@
         }
       ],
       "attributes": {
-        "operation": {
+        "operations": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "ClientServerOperation(s) of this ClientServerInterface. atpVariation"
         },
-        "possibleError": {
+        "possibleErrors": {
           "type": "ApplicationError",
           "multiplicity": "*",
           "kind": "attribute",
@@ -245,7 +245,7 @@
         }
       ],
       "attributes": {
-        "argument": {
+        "arguments": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
@@ -259,7 +259,7 @@
           "is_ref": false,
           "note": "This attribute shall only be used in the implementation of"
         },
-        "possibleError": {
+        "possibleErrors": {
           "type": "ApplicationError",
           "multiplicity": "*",
           "kind": "reference",
@@ -337,21 +337,21 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "The data elements of this SenderReceiverInterface."
         },
-        "invalidationPolicyPolicy": {
+        "invalidationPolicyPolicies": {
           "type": "InvalidationPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "InvalidationPolicy for a particular dataElement"
         },
-        "metaDataItemSet": {
+        "metaDataItemSets": {
           "type": "MetaDataItemSet",
           "multiplicity": "*",
           "kind": "attribute",
@@ -470,7 +470,7 @@
         }
       ],
       "attributes": {
-        "nvData": {
+        "nvDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
@@ -618,7 +618,7 @@
         }
       ],
       "attributes": {
-        "parameter": {
+        "parameters": {
           "type": "ParameterDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
@@ -749,14 +749,14 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "This reference identifies the dataElement for which the of meta-data items is defined."
         },
-        "metaDataItem": {
+        "metaDataItems": {
           "type": "MetaDataItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -853,7 +853,7 @@
         }
       ],
       "attributes": {
-        "trigger": {
+        "triggers": {
           "type": "Trigger",
           "multiplicity": "*",
           "kind": "attribute",
@@ -956,7 +956,7 @@
         }
       ],
       "attributes": {
-        "portInterface": {
+        "portInterfaces": {
           "type": "PortInterfaceMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1059,7 +1059,7 @@
         }
       ],
       "attributes": {
-        "dataMapping": {
+        "dataMappings": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1129,7 +1129,7 @@
           "is_ref": false,
           "note": "This defines the need to execute the reverse Data <Mip>_Inv_<transformerId> functions of transformation chain when communicating from the the Data"
         },
-        "subElement": {
+        "subElements": {
           "type": "SubElementMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1178,14 +1178,14 @@
         }
       ],
       "attributes": {
-        "errorMapping": {
-          "type": "ClientServerApplication",
+        "errorMappings": {
+          "type": "ClientServerApplicationErrorMapping",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Map two different ApplicationErrors defined in the context two different ClientServerInterfaces."
         },
-        "operation": {
+        "operations": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1220,7 +1220,7 @@
         }
       ],
       "attributes": {
-        "argument": {
+        "arguments": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1369,7 +1369,7 @@
         }
       ],
       "attributes": {
-        "mode": {
+        "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1412,7 +1412,7 @@
         }
       ],
       "attributes": {
-        "firstMode": {
+        "firstModes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "reference",
@@ -1461,7 +1461,7 @@
         }
       ],
       "attributes": {
-        "triggerMapping": {
+        "triggerMappings": {
           "type": "TriggerMapping",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1582,14 +1582,14 @@
       ],
       "attributes": {
         "implementation": {
-          "type": "ArVariableIn",
+          "type": "any (ArVariableIn)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the referenced implementationDataType"
         },
         "parameter": {
-          "type": "ArParameterIn",
+          "type": "ArParameterInImplementationDataInstanceRef",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1626,7 +1626,7 @@
       ],
       "attributes": {
         "application": {
-          "type": "ApplicationComposite",
+          "type": "any (ApplicationComposite)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1694,7 +1694,7 @@
           "is_ref": true,
           "note": "Specifies the conversion direction for which the TextTable is applicable."
         },
-        "valuePair": {
+        "valuePairs": {
           "type": "TextTableValuePair",
           "multiplicity": "*",
           "kind": "attribute",

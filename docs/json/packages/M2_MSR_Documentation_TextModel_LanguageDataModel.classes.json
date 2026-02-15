@@ -72,7 +72,7 @@
       ],
       "attributes": {
         "xmlSpace": {
-          "type": "XmlSpaceEnum",
+          "type": "any (XmlSpaceEnum)",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,

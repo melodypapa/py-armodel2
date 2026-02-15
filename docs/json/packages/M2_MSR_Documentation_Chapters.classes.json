@@ -154,7 +154,7 @@
           "note": "This is a parameter table within a chapter."
         },
         "topicContentOrMsr": {
-          "type": "TopicContentOrMsr",
+          "type": "TopicContentOrMsrQuery",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -237,7 +237,7 @@
           "note": "This specifies an entry point in an online help system to"
         },
         "topicContentOrMsr": {
-          "type": "TopicContentOrMsr",
+          "type": "TopicContentOrMsrQuery",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -414,7 +414,7 @@
           "note": "This represents a table within a topic. atpVariation"
         },
         "traceableTable": {
-          "type": "TraceableTable",
+          "type": "any (TraceableTable)",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,

@@ -169,7 +169,7 @@
           "is_ref": false,
           "note": "This attribute is used to declare native qualifiers of the language which can neither be deduced baseType (e.g. because the data object pointer) nor from other more abstract are qualifiers like \"volatile\", \"strict\" or the C-language. All such declarations have to into one string."
         },
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -205,7 +205,7 @@
           "note": "This property describes how a number is to be rendered documents or in a measurement and calibration"
         },
         "display": {
-          "type": "DisplayPresentation",
+          "type": "DisplayPresentationEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -254,7 +254,7 @@
           "note": "Description of the binary representation in case of a bit"
         },
         "swCalibrationAccess": {
-          "type": "SwCalibrationAccess",
+          "type": "SwCalibrationAccessEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -267,7 +267,7 @@
           "is_ref": true,
           "note": "This specifies the properties of the axes in case of a or map etc. This is mainly applicable to calibration"
         },
-        "swComparison": {
+        "swComparisons": {
           "type": "SwVariableRefProxy",
           "multiplicity": "*",
           "kind": "attribute",
@@ -344,7 +344,7 @@
           "is_ref": false,
           "note": "the specific properties if the data object is a text object."
         },
-        "swValueBlock": {
+        "swValueBlocks": {
           "type": "Numerical",
           "multiplicity": "*",
           "kind": "attribute",
@@ -359,7 +359,7 @@
           "note": "Physical unit associated with the semantics of this data"
         },
         "valueAxisData": {
-          "type": "ApplicationPrimitive",
+          "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -412,7 +412,7 @@
       ],
       "attributes": {
         "arraySize": {
-          "type": "ArraySizeSemantics",
+          "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -34,7 +34,7 @@
       ],
       "attributes": {
         "component": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -48,7 +48,7 @@
           "note": "The referenced ExecutableEntity for the ExecutionTime"
         },
         "executionTime": {
-          "type": "ExecutionTimeType",
+          "type": "ExecutionTimeTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

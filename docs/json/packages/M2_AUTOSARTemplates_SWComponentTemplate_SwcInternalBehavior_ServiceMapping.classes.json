@@ -41,7 +41,7 @@
           "note": "This is the role of the associated data type in the given"
         },
         "used": {
-          "type": "ImplementationData",
+          "type": "any (ImplementationData)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -152,15 +152,15 @@
         }
       ],
       "attributes": {
-        "assignedData": {
-          "type": "RoleBasedData",
+        "assignedDatas": {
+          "type": "any (RoleBasedData)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the role of an associated data object of the same atpVariation"
         },
-        "assignedPort": {
-          "type": "RoleBasedPort",
+        "assignedPorts": {
+          "type": "RoleBasedPortAssignment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

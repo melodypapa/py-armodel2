@@ -169,7 +169,7 @@
           "note": "This represents the actual content of the item. It is a DocumentationBlock. This way it is use simple paragraphs to nested lists, or notes."
         },
         "itemLabel": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,

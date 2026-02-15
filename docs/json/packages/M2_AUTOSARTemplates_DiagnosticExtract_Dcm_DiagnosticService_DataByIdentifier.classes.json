@@ -37,7 +37,7 @@
       ],
       "attributes": {
         "readClass": {
-          "type": "DiagnosticReadDataBy",
+          "type": "any (DiagnosticReadDataBy)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -81,7 +81,7 @@
       ],
       "attributes": {
         "writeClass": {
-          "type": "DiagnosticWriteDataBy",
+          "type": "any (DiagnosticWriteDataBy)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -167,7 +167,7 @@
       ],
       "attributes": {
         "dataIdentifier": {
-          "type": "DiagnosticAbstractData",
+          "type": "DiagnosticAbstractDataIdentifier",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -254,7 +254,7 @@
       ],
       "attributes": {
         "readScaling": {
-          "type": "DiagnosticReadScaling",
+          "type": "any (DiagnosticReadScaling)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -82,7 +82,7 @@
           "note": "This association allows to refer to a base type in case a is intended. If no base type is referred, type referenced initially in the corresponding to be used."
         },
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -145,14 +145,14 @@
       ],
       "attributes": {
         "category": {
-          "type": "AsamRecordLayout",
+          "type": "AsamRecordLayoutSemantics",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute denotes the semantics in particular in terms the corresponding A2L-Keyword. This is to support the the more general record layouts in AUTOSAR/ the specific A2l keywords. possible to express the specific semantics of A2l in swRecordlayoutGroup but not versa. Therefore the mapping is provided in attribute."
         },
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -173,7 +173,7 @@
           "note": "This association allows to specify record layout groups to iterate over generic axis parameters. For example, if the parameter is an array, the record layout iterate over this array. axis referred to by swRecordLayoutGroup be a generic axis in which the referenced Sw aggregated."
         },
         "swRecord": {
-          "type": "RecordLayoutIterator",
+          "type": "RecordLayoutIteratorPoint",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

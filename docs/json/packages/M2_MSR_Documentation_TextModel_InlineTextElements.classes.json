@@ -203,7 +203,7 @@
           "note": "This represents the subtitle of the standard."
         },
         "url": {
-          "type": "Url",
+          "type": "any (Url)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -328,7 +328,7 @@
           "note": "This represents version and state of the external"
         },
         "url": {
-          "type": "Url",
+          "type": "any (Url)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -379,7 +379,7 @@
           "note": "This element describes the tool version which was used"
         },
         "url": {
-          "type": "Url",
+          "type": "any (Url)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -416,7 +416,7 @@
       ],
       "attributes": {
         "label1": {
-          "type": "SingleLanguageLong",
+          "type": "SingleLanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -444,42 +444,42 @@
           "note": "Indicates if the content of the xref element shall be default is \"NO-SHOW-CONTENT\"."
         },
         "showResourceAlias": {
-          "type": "ShowResourceAlias",
+          "type": "ShowResourceAliasNameEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This indicates if the alias names of the referenced objects shall be rendered. This means this is some kind of look whether there is an alias for the if yes, print it. is more than one AliasNameSet, Xref might of those. alias is found and showResourceShortName is set to the shortName of the reference be displayed. By this showResourceAlias similar to showResourceShortName but shows instead of the shortName. NO-SHOW-ALIAS-NAME."
         },
         "showResource": {
-          "type": "ShowResourceType",
+          "type": "ShowResourceTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates if the type of the referenced Resource shall be shown. Default is \"SHOW-TYPE\""
         },
         "showResourceLong": {
-          "type": "ShowResourceLong",
+          "type": "ShowResourceLongNameEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates if the longName of the referenced resource shall be rendered. Default is \"SHOW-LONG-NAME\"."
         },
         "showResourceNumber": {
-          "type": "ShowResourceNumber",
+          "type": "ShowResourceNumberEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW–NUMBER\""
         },
         "showResourcePage": {
-          "type": "ShowResourcePage",
+          "type": "ShowResourcePageEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates if the page number of the referenced resource shall be shown. Default is \"SHOW-PAGE\""
         },
         "showResourceShort": {
-          "type": "ShowResourceShort",
+          "type": "ShowResourceShortNameEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

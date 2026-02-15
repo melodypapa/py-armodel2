@@ -41,7 +41,7 @@
           "is_ref": false,
           "note": "The existence of this aggregation indicates that an authentication is foreseen. The details are clarified by the"
         },
-        "diagnosticSession": {
+        "diagnosticSessions": {
           "type": "DiagnosticSession",
           "multiplicity": "*",
           "kind": "reference",
@@ -49,13 +49,13 @@
           "note": "This represents the associated DiagnosticSessions atpSplitable"
         },
         "environmental": {
-          "type": "Diagnostic",
+          "type": "any (Diagnostic)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the environmental conditions associated"
         },
-        "securityLevel": {
+        "securityLevels": {
           "type": "DiagnosticSecurityLevel",
           "multiplicity": "*",
           "kind": "reference",
@@ -105,7 +105,7 @@
           "note": "This is the numerical identifier used to identify the the scope of diagnostic workflow"
         },
         "jumpToBoot": {
-          "type": "DiagnosticJumpToBoot",
+          "type": "DiagnosticJumpToBootLoaderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -223,7 +223,7 @@
         }
       ],
       "attributes": {
-        "authentication": {
+        "authentications": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
           "kind": "reference",

@@ -45,7 +45,7 @@
         }
       ],
       "attributes": {
-        "container": {
+        "containers": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -67,7 +67,7 @@
           "note": "This is the version info of the ModuleDef ECUC to which this values conform to / are Definition of ModuleDef ECUC Parameters the be used to express the semantic compatibility rules between the definition revision labels is up to the module’s vendor."
         },
         "implementation": {
-          "type": "EcucConfiguration",
+          "type": "any (EcucConfiguration)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -133,8 +133,8 @@
         }
       ],
       "attributes": {
-        "ecucValue": {
-          "type": "EcucModule",
+        "ecucValues": {
+          "type": "any (EcucModule)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -245,21 +245,21 @@
           "is_ref": false,
           "note": "Reference to the definition of this Container in the ECU Definition."
         },
-        "parameterValue": {
+        "parameterValues": {
           "type": "EcucParameterValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Aggregates all ECU Configuration Values within this atpVariation"
         },
-        "referenceValue": {
-          "type": "EcucAbstractReference",
+        "referenceValues": {
+          "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Aggregates all References with this container. [RS_ECUC_00079] atpVariation"
         },
-        "subContainer": {
+        "subContainers": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
           "kind": "attribute",
@@ -315,7 +315,7 @@
         }
       ],
       "attributes": {
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -506,7 +506,7 @@
         }
       ],
       "attributes": {
-        "annotation": {
+        "annotations": {
           "type": "Annotation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -514,7 +514,7 @@
           "note": "Possibility to provide additional notes while defining a"
         },
         "definition": {
-          "type": "EcucAbstractReference",
+          "type": "any (EcucAbstractReference)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": true,

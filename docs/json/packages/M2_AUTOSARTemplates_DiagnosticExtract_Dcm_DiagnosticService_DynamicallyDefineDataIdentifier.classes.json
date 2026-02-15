@@ -36,14 +36,14 @@
       ],
       "attributes": {
         "dataIdentifier": {
-          "type": "DiagnosticDynamicData",
+          "type": "DiagnosticDynamicDataIdentifier",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the applicable DiagnosticDynamicData"
         },
         "dynamically": {
-          "type": "DiagnosticDynamically",
+          "type": "any (DiagnosticDynamically)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -100,14 +100,14 @@
           "note": "If set to TRUE, the Dcm module shall check the session,"
         },
         "configuration": {
-          "type": "DiagnosticHandleDDDI",
+          "type": "DiagnosticHandleDDDIConfigurationEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This configuration switch defines whether DDDID definition is handled as non-volatile information or not."
         },
-        "subfunction": {
-          "type": "DiagnosticDynamically",
+        "subfunctions": {
+          "type": "any (DiagnosticDynamically)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

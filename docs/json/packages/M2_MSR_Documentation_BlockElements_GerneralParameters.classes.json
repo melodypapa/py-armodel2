@@ -30,14 +30,14 @@
       ],
       "attributes": {
         "label": {
-          "type": "MultilanguageLong",
+          "type": "MultilanguageLongName",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the caption of the parameter table. xml.sequenceOffset=20 topic1 is given to remain compatible with [22] 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Template R23-11"
         },
         "prm": {
-          "type": "GeneralParameter",
+          "type": "any (GeneralParameter)",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,

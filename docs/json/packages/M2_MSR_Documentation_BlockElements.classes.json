@@ -132,7 +132,7 @@
           "note": "This represents a note in the text flow."
         },
         "p": {
-          "type": "MultiLanguage",
+          "type": "any (MultiLanguage)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -192,7 +192,7 @@
       ],
       "attributes": {
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

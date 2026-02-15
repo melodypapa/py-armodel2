@@ -194,7 +194,7 @@
         }
       ],
       "attributes": {
-        "substituted": {
+        "substituteds": {
           "type": "LinUnconditionalFrame",
           "multiplicity": "*",
           "kind": "reference",
@@ -244,7 +244,7 @@
           "is_ref": false,
           "note": "Reference to the schedule table, which resolves a"
         },
-        "linUnconditionalFrame": {
+        "linUnconditionalFrames": {
           "type": "LinUnconditionalFrame",
           "multiplicity": "*",
           "kind": "reference",
@@ -296,7 +296,7 @@
           "is_ref": false,
           "note": "The schedule table can be executed in two different"
         },
-        "tableEntry": {
+        "tableEntries": {
           "type": "ScheduleTableEntry",
           "multiplicity": "*",
           "kind": "attribute",
@@ -808,7 +808,7 @@
         }
       ],
       "attributes": {
-        "byteValue": {
+        "byteValues": {
           "type": "Integer",
           "multiplicity": "*",
           "kind": "attribute",
@@ -845,7 +845,7 @@
         }
       ],
       "attributes": {
-        "byteValue": {
+        "byteValues": {
           "type": "Integer",
           "multiplicity": "*",
           "kind": "attribute",

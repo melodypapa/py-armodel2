@@ -272,7 +272,7 @@
           "note": "This represents the computation details of the scale."
         },
         "desc": {
-          "type": "MultiLanguageOverview",
+          "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -342,7 +342,7 @@
         }
       ],
       "attributes": {
-        "compuScale": {
+        "compuScales": {
           "type": "CompuScale",
           "multiplicity": "*",
           "kind": "attribute",
@@ -496,7 +496,7 @@
           "note": "This is the denominator of the expression."
         },
         "compu": {
-          "type": "CompuNominator",
+          "type": "CompuNominatorDenominator",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

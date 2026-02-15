@@ -40,29 +40,29 @@
           "is_ref": false,
           "note": "This reference identifies the CpSoftwareCluster to which enclosing CpSoftwareClusterBinaryManifest is an integration phase while the referenced Cp a design element. Therefore, sense to use a reference rather than an the relation of the two meta-classes."
         },
-        "metaDataField": {
-          "type": "BinaryManifestMeta",
+        "metaDataFields": {
+          "type": "BinaryManifestMetaDataField",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation identifies the collection of meta-data in the enclosing binary manifest."
         },
-        "provide": {
-          "type": "BinaryManifestProvide",
+        "provides": {
+          "type": "BinaryManifestProvideResource",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of provided resources in the enclosing binary manifest."
         },
-        "require": {
-          "type": "BinaryManifestRequire",
+        "requires": {
+          "type": "BinaryManifestRequireResource",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of required resources in the enclosing binary manifest."
         },
-        "resource": {
-          "type": "BinaryManifest",
+        "resources": {
+          "type": "any (BinaryManifest)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -164,7 +164,7 @@
           "note": "A unique identifiers per resource used for the connection The identifier is required to be unique in the a single machine. If software clusters are be reused on multiple machines the applies for all the intended BinaryManifestItem * aggr This aggregation represents the collection of binary owned by the enclosing binary manifest"
         },
         "resource": {
-          "type": "BinaryManifest",
+          "type": "any (BinaryManifest)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -247,7 +247,7 @@
         }
       ],
       "attributes": {
-        "itemDefinition": {
+        "itemDefinitions": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -287,7 +287,7 @@
         }
       ],
       "attributes": {
-        "auxiliaryField": {
+        "auxiliaryFields": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",
@@ -347,7 +347,7 @@
         }
       ],
       "attributes": {
-        "auxiliaryField": {
+        "auxiliaryFields": {
           "type": "BinaryManifestItem",
           "multiplicity": "*",
           "kind": "attribute",

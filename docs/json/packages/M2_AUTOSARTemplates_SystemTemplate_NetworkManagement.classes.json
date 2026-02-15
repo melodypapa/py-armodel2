@@ -38,7 +38,7 @@
       ],
       "attributes": {
         "address": {
-          "type": "J1939NmAddress",
+          "type": "J1939NmAddressConfigurationCapabilityEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -88,21 +88,21 @@
         }
       ],
       "attributes": {
-        "nmCluster": {
+        "nmClusters": {
           "type": "NmCluster",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of NM Clusters"
         },
-        "nmClusterCoupling": {
+        "nmClusterCouplings": {
           "type": "NmClusterCoupling",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of NmClusterCouplings Derived, because NmCluster can vary. atpVariation"
         },
-        "nmIfEcu": {
+        "nmIfEcus": {
           "type": "NmEcu",
           "multiplicity": "*",
           "kind": "attribute",
@@ -237,7 +237,7 @@
         }
       ],
       "attributes": {
-        "busDependentNmEcu": {
+        "busDependentNmEcus": {
           "type": "BusspecificNmEcu",
           "multiplicity": "*",
           "kind": "attribute",
@@ -252,7 +252,7 @@
           "note": "Association to an ECUInstance in the topology"
         },
         "nmBusSynchronization": {
-          "type": "BooleanEnabled",
+          "type": "any (BooleanEnabled)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -280,14 +280,14 @@
           "note": "The period between successive calls to the Main Function the NM Interface in seconds."
         },
         "nmPduRxIndication": {
-          "type": "BooleanEnabled",
+          "type": "any (BooleanEnabled)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Switch for enabling the PDU Rx Indication."
         },
         "nmRemoteSleepInd": {
-          "type": "BooleanEnabled",
+          "type": "any (BooleanEnabled)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -393,7 +393,7 @@
           "is_ref": false,
           "note": "This attribute defines the maximum shutdown time (in of a connected and coordinated NM-Cluster."
         },
-        "nmNode": {
+        "nmNodes": {
           "type": "NmNode",
           "multiplicity": "*",
           "kind": "reference",
@@ -442,7 +442,7 @@
       ],
       "attributes": {
         "controller": {
-          "type": "Communication",
+          "type": "any (Communication)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -456,7 +456,7 @@
           "note": "NmCoordinationCluster identification number."
         },
         "nmCoordinatorRole": {
-          "type": "NmCoordinatorRole",
+          "type": "NmCoordinatorRoleEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -483,14 +483,14 @@
           "is_ref": false,
           "note": "Enables support of the Passive Mode. The passive mode"
         },
-        "rxNmPdu": {
+        "rxNmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "receive NM Pdu."
         },
-        "txNmPdu": {
+        "txNmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
           "kind": "reference",
@@ -685,7 +685,7 @@
         }
       ],
       "attributes": {
-        "coupledCluster": {
+        "coupledClusters": {
           "type": "FlexrayNmCluster",
           "multiplicity": "*",
           "kind": "reference",
@@ -693,7 +693,7 @@
           "note": "Reference to coupled FlexRay Clusters."
         },
         "nmSchedule": {
-          "type": "FlexrayNmSchedule",
+          "type": "FlexrayNmScheduleVariant",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -903,7 +903,7 @@
         }
       ],
       "attributes": {
-        "coupledCluster": {
+        "coupledClusters": {
           "type": "CanNmCluster",
           "multiplicity": "*",
           "kind": "reference",
@@ -911,7 +911,7 @@
           "note": "Reference to coupled CAN Clusters."
         },
         "nmBusloadReduction": {
-          "type": "BooleanEnabled",
+          "type": "any (BooleanEnabled)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1080,7 +1080,7 @@
           "note": "Timeout for bus calm down phase in seconds. It denotes time how long the CanNm shall stay in the Prepare before transition into Bus-Sleep Mode place."
         },
         "vlan": {
-          "type": "EthernetPhysical",
+          "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1143,7 +1143,7 @@
         }
       ],
       "attributes": {
-        "coupledCluster": {
+        "coupledClusters": {
           "type": "UdpNmCluster",
           "multiplicity": "*",
           "kind": "reference",
@@ -1278,7 +1278,7 @@
       ],
       "attributes": {
         "arbitraryAddress": {
-          "type": "BooleanCapable",
+          "type": "any (BooleanCapable)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -35,7 +35,7 @@
       ],
       "attributes": {
         "type": {
-          "type": "DiagnosticIndicatorType",
+          "type": "DiagnosticIndicatorTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

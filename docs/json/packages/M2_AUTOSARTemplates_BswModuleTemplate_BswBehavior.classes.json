@@ -60,147 +60,147 @@
         }
       ],
       "attributes": {
-        "arTypedPer": {
+        "arTypedPers": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the Basic Software The aggregation of arTypedPerInstanceMemory to variability with the purpose to support the Basic Software Module’s different algorithms in the requiring different number of memory atpVariation"
         },
-        "bswPerInstance": {
-          "type": "BswPerInstance",
+        "bswPerInstances": {
+          "type": "any (BswPerInstance)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for a arTypedPerInstanceMemory The policy selects the options of the Schedule Manager API atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "clientPolicy": {
-          "type": "BswClientPolicy",
+        "clientPolicies": {
+          "type": "any (BswClientPolicy)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for a requiredClientServerEntry. The policy selects of the Schedule Manager API generation. atpVariation"
         },
-        "distinguished": {
-          "type": "BswDistinguished",
+        "distinguisheds": {
+          "type": "BswDistinguishedPartition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Indicates an abstract partition context in which the enclosing BswModuleEntity can be executed. atpVariation"
         },
-        "entity": {
+        "entities": {
           "type": "BswModuleEntity",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A code entity for which the behavior is described atpVariation"
         },
-        "event": {
+        "events": {
           "type": "BswEvent",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An event required by this module behavior. atpVariation"
         },
-        "exclusiveArea": {
-          "type": "BswExclusiveArea",
+        "exclusiveAreas": {
+          "type": "BswExclusiveAreaPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for an ExclusiveArea in this BswInternalBehavior. The policy selects the options of the Schedule Manager atpVariation"
         },
-        "includedDataTypeSet": {
+        "includedDataTypeSets": {
           "type": "IncludedDataTypeSet",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "The includedDataTypeSet is used by a basic software for its implementation."
         },
-        "includedMode": {
-          "type": "IncludedMode",
+        "includedModes": {
+          "type": "IncludedModeDeclarationGroupSet",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the included Mode DeclarationGroups atpSplitable"
         },
-        "internal": {
-          "type": "BswInternalTriggering",
+        "internals": {
+          "type": "BswInternalTriggeringPoint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Policy for an internalTriggeringPoint in this BswInternal Behavior.. The policy selects the options of the Schedule API generation. atpVariation"
         },
-        "modeReceiver": {
-          "type": "BswModeReceiver",
+        "modeReceivers": {
+          "type": "BswModeReceiverPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Implementation policy for the reception of mode switches. Stereotypes: atpSplitable; atpVariation"
         },
-        "modeSender": {
+        "modeSenders": {
           "type": "BswModeSenderPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Implementation policy for providing a mode group. atpSplitable; atpVariation"
         },
-        "parameterPolicy": {
-          "type": "BswParameterPolicy",
+        "parameterPolicies": {
+          "type": "any (BswParameterPolicy)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for a perInstanceParameter in this BswInternal policy selects the options of the Schedule generation. atpVariation"
         },
-        "perInstance": {
-          "type": "ParameterData",
+        "perInstances": {
+          "type": "ParameterDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Describes a read only memory object containing characteristic value(s) needed by this BswInternal role name perInstanceParameter is chosen to the similar role in the context of SwcInternal to constantMemory, this object is not allocated the module’s code, but by the BSW Scheduler is accessed from the BSW module via the BSW The main use case is the support of of calibration data. is subject to variability with the purpose implementation variants. atpVariation"
         },
-        "receptionPolicy": {
-          "type": "BswDataReception",
+        "receptionPolicies": {
+          "type": "BswDataReceptionPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Data reception policy for inter-partition and/or inter-core atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "releasedTrigger": {
-          "type": "BswReleasedTrigger",
+        "releasedTriggers": {
+          "type": "any (BswReleasedTrigger)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Policy for a releasedTrigger. The policy selects the options of the Schedule Manager API generation. atpVariation"
         },
-        "schedulerName": {
-          "type": "BswSchedulerName",
+        "schedulerNames": {
+          "type": "BswSchedulerNamePrefix",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Optional definition of one or more prefixes to be used for the BswScheduler. atpVariation"
         },
-        "sendPolicy": {
-          "type": "BswDataSendPolicy",
+        "sendPolicies": {
+          "type": "any (BswDataSendPolicy)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for a providedData. The policy selects the options Schedule Manager API generation. atpVariation"
         },
-        "service": {
-          "type": "BswService",
+        "services": {
+          "type": "any (BswService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the requirements on AUTOSAR Services for a particular item. is subject to variability with the purpose the conditional existence of ServiceNeeds. is splitable in order to support that be provided in later development atpVariation"
         },
-        "triggerDirect": {
-          "type": "BswTriggerDirect",
+        "triggerDirects": {
+          "type": "BswTriggerDirectImplementation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Specifies a trigger to be directly implemented via OS calls. atpVariation"
         },
-        "variationPointProxy": {
+        "variationPointProxies": {
           "type": "VariationPointProxy",
           "multiplicity": "*",
           "kind": "attribute",
@@ -259,35 +259,35 @@
         }
       ],
       "attributes": {
-        "accessedMode": {
+        "accessedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "A mode group which is accessed via API call by this entity. It shall be a ModeDeclarationGroupPrototype this module or cluster. atpVariation"
         },
-        "activationPoint": {
-          "type": "BswInternalTriggering",
+        "activationPoints": {
+          "type": "BswInternalTriggeringPoint",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Activation point used by the module entity to activate one more internal triggers. atpVariation"
         },
-        "callPoint": {
+        "callPoints": {
           "type": "BswModuleCallPoint",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A call point used in the code of this entity. of this association is especially targeted at It is possible to have one variant calling AUTOSAR debug module and another one which atpVariation"
         },
-        "dataReceive": {
+        "dataReceives": {
           "type": "BswVariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The data is received via the BSW Scheduler. atpSplitable; atpVariation"
         },
-        "dataSendPoint": {
+        "dataSendPoints": {
           "type": "BswVariableAccess",
           "multiplicity": "*",
           "kind": "attribute",
@@ -301,14 +301,14 @@
           "is_ref": false,
           "note": "The entry which is implemented by this module entity."
         },
-        "issuedTrigger": {
+        "issuedTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "A trigger issued by this entity via BSW Scheduler API call."
         },
-        "managedMode": {
+        "managedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "reference",
@@ -316,7 +316,7 @@
           "note": "A mode group which is managed by this entity. It shall be a ModeDeclarationGroupPrototype provided by this cluster. atpVariation"
         },
         "schedulerName": {
-          "type": "BswSchedulerName",
+          "type": "BswSchedulerNamePrefix",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -490,8 +490,8 @@
         }
       ],
       "attributes": {
-        "context": {
-          "type": "BswDistinguished",
+        "contexts": {
+          "type": "BswDistinguishedPartition",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -535,7 +535,7 @@
           "note": "The BswModuleEntry called at this point."
         },
         "calledFrom": {
-          "type": "ExclusiveAreaNesting",
+          "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -572,14 +572,14 @@
       ],
       "attributes": {
         "calledEntryEntry": {
-          "type": "BswModuleClientServer",
+          "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "The entry to be called."
         },
         "calledFrom": {
-          "type": "ExclusiveAreaNesting",
+          "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -616,7 +616,7 @@
       ],
       "attributes": {
         "calledEntryEntry": {
-          "type": "BswModuleClientServer",
+          "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -653,7 +653,7 @@
       ],
       "attributes": {
         "asynchronous": {
-          "type": "BswAsynchronous",
+          "type": "any (BswAsynchronous)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -696,8 +696,8 @@
           "is_ref": true,
           "note": "The data accessed via the BSW Scheduler."
         },
-        "context": {
-          "type": "BswDistinguished",
+        "contexts": {
+          "type": "BswDistinguishedPartition",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -821,14 +821,14 @@
         }
       ],
       "attributes": {
-        "context": {
-          "type": "BswDistinguished",
+        "contexts": {
+          "type": "BswDistinguishedPartition",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The existence of this reference indicates that the usage of the event is limited to the context of the referred Bsw"
         },
-        "disabledInModeDescriptionInstanceRef": {
+        "disabledInModeDescriptionInstanceRefs": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1114,7 +1114,7 @@
       ],
       "attributes": {
         "eventSourcePoint": {
-          "type": "BswInternalTriggering",
+          "type": "BswInternalTriggeringPoint",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": true,
@@ -1318,7 +1318,7 @@
       ],
       "attributes": {
         "entry": {
-          "type": "BswModuleClientServer",
+          "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1359,7 +1359,7 @@
       ],
       "attributes": {
         "eventSource": {
-          "type": "BswAsynchronous",
+          "type": "any (BswAsynchronous)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1484,7 +1484,7 @@
       ],
       "attributes": {
         "ackRequestRequest": {
-          "type": "BswModeSwitchAck",
+          "type": "BswModeSwitchAckRequest",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1741,22 +1741,22 @@
         }
       ],
       "attributes": {
-        "assignedData": {
-          "type": "RoleBasedData",
+        "assignedDatas": {
+          "type": "any (RoleBasedData)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the role of an associated data object (owned by module or cluster) in the context of the ServiceNeeds atpVariation"
         },
-        "assignedEntry": {
-          "type": "RoleBasedBswModule",
+        "assignedEntries": {
+          "type": "RoleBasedBswModuleEntryAssignment",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the role of an associated BswModuleEntry in the context of the ServiceNeeds element. atpVariation"
         },
         "ident": {
-          "type": "BswService",
+          "type": "any (BswService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

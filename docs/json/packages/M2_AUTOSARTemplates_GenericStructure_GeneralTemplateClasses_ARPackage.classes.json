@@ -412,21 +412,21 @@
         }
       ],
       "attributes": {
-        "arPackage": {
+        "arPackages": {
           "type": "ARPackage",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents a sub package within an ARPackage, for an unlimited package hierarchy. atpVariation"
         },
-        "element": {
+        "elements": {
           "type": "PackageableElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Elements that are part of this package atpVariation"
         },
-        "referenceBase": {
+        "referenceBases": {
           "type": "ReferenceBase",
           "multiplicity": "*",
           "kind": "attribute",
@@ -512,14 +512,14 @@
         }
       ],
       "attributes": {
-        "globalElement": {
-          "type": "ReferrableSubtypes",
+        "globalElements": {
+          "type": "ReferrableSubtypesEnum",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "This attribute represents a meta-class for which the global is supported via this reference base."
         },
-        "globalIn": {
+        "globalIns": {
           "type": "ARPackage",
           "multiplicity": "*",
           "kind": "reference",

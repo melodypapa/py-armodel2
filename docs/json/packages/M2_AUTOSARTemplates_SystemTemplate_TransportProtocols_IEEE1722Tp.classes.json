@@ -34,7 +34,7 @@
         }
       ],
       "attributes": {
-        "tpConnection": {
+        "tpConnections": {
           "type": "IEEE1722TpConnection",
           "multiplicity": "*",
           "kind": "reference",
@@ -175,7 +175,7 @@
           "is_ref": false,
           "note": "Defines the time offset that is added to the current time at in order to get the \"presentation time\" (in content shall be presented at the"
         },
-        "sdu": {
+        "sdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
           "kind": "reference",
@@ -217,7 +217,7 @@
         }
       ],
       "attributes": {
-        "acfTransported": {
+        "acfTransporteds": {
           "type": "IEEE1722TpAcfBus",
           "multiplicity": "*",
           "kind": "attribute",

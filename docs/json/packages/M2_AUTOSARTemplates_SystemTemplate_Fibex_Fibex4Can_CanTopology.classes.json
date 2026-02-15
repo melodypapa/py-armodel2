@@ -108,7 +108,7 @@
       ],
       "attributes": {
         "busOffRecovery": {
-          "type": "CanClusterBusOff",
+          "type": "CanClusterBusOffRecovery",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -299,7 +299,7 @@
       ],
       "attributes": {
         "canControllerControllerAttributes": {
-          "type": "AbstractCan",
+          "type": "any (AbstractCan)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -340,14 +340,14 @@
       ],
       "attributes": {
         "canControllerFd": {
-          "type": "CanControllerFd",
+          "type": "any (CanControllerFd)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Additional CanFD ranges of the bit timing related configuration of a CanFD controller. If this element exists controller supports CanFD frames and the ECU take these ranges as requirements for the the CanFD controller."
         },
         "canControllerXl": {
-          "type": "CanControllerXl",
+          "type": "any (CanControllerXl)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -441,7 +441,7 @@
       ],
       "attributes": {
         "maxNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -462,7 +462,7 @@
           "note": "The max. Synchronization Jump Width value as a"
         },
         "minNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -589,7 +589,7 @@
       ],
       "attributes": {
         "maxNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -617,7 +617,7 @@
           "note": "Specifies the maximum Transceiver Delay Compensation in seconds. If not specified Transceiver Delay is disabled. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "minNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -794,7 +794,7 @@
           "note": "Specifies if error signaling shall be enabled. This is not"
         },
         "maxNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -843,7 +843,7 @@
           "note": "Specifies the maximum Transceiver Delay Compensation in seconds. If not specified Transceiver Delay is disabled."
         },
         "minNumberOfTimeQuantaPer": {
-          "type": "IntegerBit",
+          "type": "any (IntegerBit)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

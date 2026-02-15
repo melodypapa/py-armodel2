@@ -159,7 +159,7 @@
           "note": "Reference to the signal group, which contain all primitive the composite type"
         },
         "typeMapping": {
-          "type": "SenderRecComposite",
+          "type": "SenderRecCompositeTypeMapping",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -233,8 +233,8 @@
         }
       ],
       "attributes": {
-        "arrayElement": {
-          "type": "SenderRecArray",
+        "arrayElements": {
+          "type": "any (SenderRecArray)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -286,8 +286,8 @@
         }
       ],
       "attributes": {
-        "recordElement": {
-          "type": "SenderRecRecord",
+        "recordElements": {
+          "type": "any (SenderRecRecord)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -322,21 +322,21 @@
       ],
       "attributes": {
         "applicationRecord": {
-          "type": "ApplicationRecord",
+          "type": "any (ApplicationRecord)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to an ApplicationRecordElement in the context of the dataElement or in the context of a composite"
         },
         "complexType": {
-          "type": "SenderRecComposite",
+          "type": "SenderRecCompositeTypeMapping",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation will be used if the element is composite."
         },
         "implementation": {
-          "type": "ImplementationData",
+          "type": "any (ImplementationData)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -392,7 +392,7 @@
       ],
       "attributes": {
         "complexType": {
-          "type": "SenderRecComposite",
+          "type": "SenderRecCompositeTypeMapping",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -441,14 +441,14 @@
       ],
       "attributes": {
         "applicationArray": {
-          "type": "ApplicationArray",
+          "type": "any (ApplicationArray)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to an ApplicationArrayElement in an array."
         },
         "implementation": {
-          "type": "ImplementationData",
+          "type": "any (ImplementationData)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -555,7 +555,7 @@
           "note": "Reference to the SystemSignal to which one primitive of"
         },
         "typeMapping": {
-          "type": "SenderRecComposite",
+          "type": "SenderRecCompositeTypeMapping",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

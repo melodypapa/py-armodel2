@@ -377,8 +377,8 @@
           "is_ref": false,
           "note": "Flag indicating whether a Time Gateway Sink node will"
         },
-        "flexrayFifo": {
-          "type": "FlexrayFifo",
+        "flexrayFifos": {
+          "type": "any (FlexrayFifo)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -566,7 +566,7 @@
           "is_ref": false,
           "note": "FrFifoDepth configures the maximum number of"
         },
-        "fifoRange": {
+        "fifoRanges": {
           "type": "FlexrayFifoRange",
           "multiplicity": "*",
           "kind": "attribute",

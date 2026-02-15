@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "readDataClass": {
-          "type": "DiagnosticReadDataBy",
+          "type": "any (DiagnosticReadDataBy)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -85,7 +85,7 @@
           "is_ref": false,
           "note": "This represents the maximum number of data identifiers can be included in one request."
         },
-        "periodicRate": {
+        "periodicRates": {
           "type": "DiagnosticPeriodicRate",
           "multiplicity": "*",
           "kind": "attribute",

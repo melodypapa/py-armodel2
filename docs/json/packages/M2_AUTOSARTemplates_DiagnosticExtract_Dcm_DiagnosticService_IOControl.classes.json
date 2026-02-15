@@ -35,8 +35,8 @@
         }
       ],
       "attributes": {
-        "controlEnable": {
-          "type": "DiagnosticControl",
+        "controlEnables": {
+          "type": "any (DiagnosticControl)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -57,7 +57,7 @@
           "note": "Setting this attribute to true represents the ability of the"
         },
         "ioControlClass": {
-          "type": "DiagnosticIoControl",
+          "type": "DiagnosticIOControl",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -147,7 +147,7 @@
           "is_ref": false,
           "note": "This attribute represents the bit number of the bit in the record. Bit number 0 is the most significant in the first byte of the CEMR in the network"
         },
-        "controlledData": {
+        "controlledDatas": {
           "type": "DiagnosticDataElement",
           "multiplicity": "*",
           "kind": "reference",

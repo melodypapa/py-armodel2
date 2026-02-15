@@ -35,7 +35,7 @@
         }
       ],
       "attributes": {
-        "eventWindow": {
+        "eventWindows": {
           "type": "DiagnosticEventWindow",
           "multiplicity": "*",
           "kind": "attribute",
@@ -43,7 +43,7 @@
           "note": "This represents the applicable DiagnosticEventWindows"
         },
         "responseOn": {
-          "type": "DiagnosticResponseOn",
+          "type": "any (DiagnosticResponseOn)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

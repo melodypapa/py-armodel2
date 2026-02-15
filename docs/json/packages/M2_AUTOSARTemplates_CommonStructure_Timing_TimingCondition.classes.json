@@ -67,7 +67,7 @@
       ],
       "attributes": {
         "timingArgumentArgumentInstance": {
-          "type": "AutosarOperation",
+          "type": "AutosarOperationArgumentInstance",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -95,7 +95,7 @@
           "note": "This refers to a mode declaration."
         },
         "timingVariableInstance": {
-          "type": "AutosarVariable",
+          "type": "any (AutosarVariable)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -132,22 +132,22 @@
         }
       ],
       "attributes": {
-        "timingArgument": {
-          "type": "AutosarOperation",
+        "timingArguments": {
+          "type": "AutosarOperationArgumentInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This refers to an instance reference of an argument of an call. atpVariation 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
-        "timingMode": {
+        "timingModes": {
           "type": "TimingModeInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This refers to an instance reference of a mode atpVariation"
         },
-        "timingVariable": {
-          "type": "AutosarVariable",
+        "timingVariables": {
+          "type": "any (AutosarVariable)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -186,7 +186,7 @@
       ],
       "attributes": {
         "modeInstance": {
-          "type": "ModeInSwcBsw",
+          "type": "any (ModeInSwcBsw)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -280,8 +280,8 @@
           "is_ref": false,
           "note": "Specifies the SW component representing the base of the"
         },
-        "context": {
-          "type": "SwComponent",
+        "contexts": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,

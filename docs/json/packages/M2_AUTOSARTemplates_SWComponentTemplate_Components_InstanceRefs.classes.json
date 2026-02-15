@@ -39,7 +39,7 @@
           "note": "Stereotypes: atpAbstract xml.sequenceOffset=30"
         },
         "base": {
-          "type": "AtomicSwComponent",
+          "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -85,7 +85,7 @@
       ],
       "attributes": {
         "contextRPortPrototype": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -130,7 +130,7 @@
       ],
       "attributes": {
         "base": {
-          "type": "AtomicSwComponent",
+          "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -144,7 +144,7 @@
           "note": "Tags: xml.sequenceOffset=30"
         },
         "contextPortPrototype": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -188,14 +188,14 @@
       ],
       "attributes": {
         "base": {
-          "type": "CompositionSw",
+          "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Stereotypes: atpDerived"
         },
-        "context": {
-          "type": "SwComponent",
+        "contexts": {
+          "type": "any (SwComponent)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -243,7 +243,7 @@
       ],
       "attributes": {
         "base": {
-          "type": "AtomicSwComponent",
+          "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -296,7 +296,7 @@
       ],
       "attributes": {
         "contextRPortPrototype": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -342,7 +342,7 @@
       ],
       "attributes": {
         "contextPPortPrototype": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -390,7 +390,7 @@
       ],
       "attributes": {
         "base": {
-          "type": "AtomicSwComponent",
+          "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -442,7 +442,7 @@
       ],
       "attributes": {
         "contextRPortPrototype": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -488,7 +488,7 @@
       ],
       "attributes": {
         "contextPPortPrototype": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -533,7 +533,7 @@
       ],
       "attributes": {
         "contextRPortPrototype": {
-          "type": "AbstractRequiredPort",
+          "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -581,7 +581,7 @@
       ],
       "attributes": {
         "contextPPortPrototype": {
-          "type": "AbstractProvidedPort",
+          "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -631,7 +631,7 @@
       ],
       "attributes": {
         "base": {
-          "type": "AtomicSwComponent",
+          "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

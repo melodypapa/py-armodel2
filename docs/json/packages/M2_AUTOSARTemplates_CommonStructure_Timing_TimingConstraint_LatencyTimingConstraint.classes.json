@@ -34,7 +34,7 @@
       ],
       "attributes": {
         "latency": {
-          "type": "LatencyConstraintType",
+          "type": "LatencyConstraintTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -37,7 +37,7 @@
         }
       ],
       "attributes": {
-        "networkEndpoint": {
+        "networkEndpoints": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -103,7 +103,7 @@
           "is_ref": false,
           "note": "Switch off delay for CouplingPorts in seconds. It denotes delay of switching off couplingPorts after the request off a couplingPort was issued. (e.g. switch off of ports)."
         },
-        "macMulticastGroup": {
+        "macMulticastGroups": {
           "type": "MacMulticastGroup",
           "multiplicity": "*",
           "kind": "attribute",
@@ -234,7 +234,7 @@
           "is_ref": false,
           "note": "Definition of details for this specific CouplingElement. Stereotypes: atpSplitable; atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "couplingPort": {
+        "couplingPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "attribute",
@@ -255,7 +255,7 @@
           "is_ref": false,
           "note": "Optional reference to the ECU where the Coupling located."
         },
-        "firewallRule": {
+        "firewallRules": {
           "type": "StateDependentFirewall",
           "multiplicity": "*",
           "kind": "reference",
@@ -295,7 +295,7 @@
       ],
       "attributes": {
         "connection": {
-          "type": "EthernetConnection",
+          "type": "EthernetConnectionNegotiationEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -316,27 +316,27 @@
           "note": "Defines the role this CouplingPort takes in the context of CouplingElement."
         },
         "defaultVlan": {
-          "type": "EthernetPhysical",
+          "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "The vLanIdentifier of the referenced VLAN is the (port VLAN ID). A Port VLAN ID is a default that is assigned to an access CouplingPort to VLAN segment to which this port is if a CouplingPort has not been any VLAN memberships, the virtual VLAN ID (pvid) becomes the default VLAN the ports connection. is added for incoming untagged the port (ingress tagging). For outgoing this identifier, the tag is removed at the untagging, depending on the Vlan"
         },
         "macLayerTypeEnum": {
-          "type": "EthernetMacLayerType",
+          "type": "EthernetMacLayerTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the mac layer type of the CouplingPort."
         },
-        "macMulticastGroup": {
+        "macMulticastGroups": {
           "type": "MacMulticastGroup",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Assigns a set of MAC-Multicast-Addresses which are via this CouplingPort. This is a static further addresses may be learned"
         },
-        "macSecProps": {
+        "macSecPropses": {
           "type": "MacSecProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -344,7 +344,7 @@
           "note": "Properties to configure MACsec (Media access control"
         },
         "physicalLayer": {
-          "type": "EthernetPhysicalLayer",
+          "type": "EthernetPhysicalLayerTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -357,7 +357,7 @@
           "is_ref": false,
           "note": "Optional properties for configuration of PLCA (Physical"
         },
-        "pncMappingIdent": {
+        "pncMappingIdents": {
           "type": "PncMappingIdent",
           "multiplicity": "*",
           "kind": "reference",
@@ -365,13 +365,13 @@
           "note": "Reference to the partial networks this CouplingPort"
         },
         "receiveActivity": {
-          "type": "EthernetSwitchVlan",
+          "type": "any (EthernetSwitchVlan)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the handling of frames at the ingress port."
         },
-        "vlan": {
+        "vlans": {
           "type": "VlanMembership",
           "multiplicity": "*",
           "kind": "attribute",
@@ -379,14 +379,14 @@
           "note": "Messages of VLANs that are defined here can be"
         },
         "vlanModifier": {
-          "type": "EthernetPhysical",
+          "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "All incoming messages at this CouplingPort shall be with this VLAN Id. This tagging is performed the message already has a VLAN tag untagged, an existing VLAN tag will be overwritten. is XOR with CoupligPort.defaultVlan. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "wakeupSleep": {
-          "type": "EthernetWakeupSleep",
+          "type": "any (EthernetWakeupSleep)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -428,21 +428,21 @@
           "note": "Standard output-priority outgoing Frames will be tagged priority that received frames are assigned the VLAN Id (defaultVlan). The values from effort) to 7 (highest) are allowed. modifyVlan and an already tagged received actual priority of the received frame is not"
         },
         "dhcpAddress": {
-          "type": "DhcpServer",
+          "type": "any (DhcpServer)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the IP Address which will be assigned to a DHCP Client at this SwitchPort. If no dhcpAddress provided all DHCP-Discover messages this Port will be discarded by the DHCP"
         },
         "sendActivity": {
-          "type": "EthernetSwitchVlan",
+          "type": "any (EthernetSwitchVlan)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Attribute denotes whether a VLAN tagged ethernet frame be with its VLAN tag (sentTagged) without a VLAN tag (sentUntagged) be dropped at this port (notSent or VLAN not this list)"
         },
         "vlan": {
-          "type": "EthernetPhysical",
+          "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -483,7 +483,7 @@
           "is_ref": false,
           "note": "Reference to the first CouplingPort that is connected via 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
-        "nodePort": {
+        "nodePorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "reference",
@@ -545,13 +545,13 @@
       ],
       "attributes": {
         "canXlConfig": {
-          "type": "AbstractCan",
+          "type": "any (AbstractCan)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "If the Ethernet frames handled by this Ethernet"
         },
-        "couplingPort": {
+        "couplingPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "attribute",
@@ -559,7 +559,7 @@
           "note": "Optional CouplingPort that can be used to connect the a CouplingElement (e.g. a switch)."
         },
         "macLayerType": {
-          "type": "EthernetMacLayerType",
+          "type": "EthernetMacLayerTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -689,29 +689,29 @@
         }
       ],
       "attributes": {
-        "couplingPort": {
-          "type": "CouplingPortStructural",
+        "couplingPorts": {
+          "type": "CouplingPortStructuralElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collects all the structural parts at which a CouplingPort may be configurable."
         },
         "ethernetPriority": {
-          "type": "EthernetPriority",
+          "type": "EthernetPriorityRegeneration",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
           "note": "is replaced by regenerated priority."
         },
         "ethernetTraffic": {
-          "type": "CouplingPortTraffic",
+          "type": "CouplingPortTrafficClassAssignment",
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
           "note": ""
         },
         "globalTimeCoupling": {
-          "type": "GlobalTimeCoupling",
+          "type": "GlobalTimeCouplingPortProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -724,7 +724,7 @@
           "is_ref": false,
           "note": "Defines which CouplingPortScheduler is the last in the port structure."
         },
-        "ratePolicy": {
+        "ratePolicies": {
           "type": "CouplingPortRatePolicy",
           "multiplicity": "*",
           "kind": "attribute",
@@ -802,14 +802,14 @@
       ],
       "attributes": {
         "portSchedulerSchedulerEnum": {
-          "type": "EthernetCouplingPort",
+          "type": "EthernetCouplingPortSchedulerEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the schedule algorithm to be used."
         },
-        "predecessor": {
-          "type": "CouplingPortStructural",
+        "predecessors": {
+          "type": "CouplingPortStructuralElement",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -908,7 +908,7 @@
           "note": "FIFO minimum length in Byte. An actual configuration/ may use a bigger value."
         },
         "shaper": {
-          "type": "CouplingPortAbstract",
+          "type": "any (CouplingPortAbstract)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -970,8 +970,8 @@
           "is_ref": false,
           "note": "Time interval used to define the base of the rate policy."
         },
-        "vLan": {
-          "type": "EthernetPhysical",
+        "vLans": {
+          "type": "any (EthernetPhysical)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
@@ -1092,14 +1092,14 @@
       ],
       "attributes": {
         "ipv4DhcpServer": {
-          "type": "Ipv4DhcpServer",
+          "type": "Ipv4DhcpServerConfiguration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of a IPv4 DHCP server that runs on the network endpoint."
         },
         "ipv6DhcpServer": {
-          "type": "Ipv6DhcpServer",
+          "type": "Ipv6DhcpServerConfiguration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1155,7 +1155,7 @@
           "is_ref": false,
           "note": "Amount of time in seconds that a client may keep the IP"
         },
-        "dnsServer": {
+        "dnsServers": {
           "type": "Ip4AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1219,7 +1219,7 @@
           "is_ref": false,
           "note": "Amount of time in seconds that a client may keep the IP"
         },
-        "dnsServer": {
+        "dnsServers": {
           "type": "Ip6AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1299,36 +1299,36 @@
         }
       ],
       "attributes": {
-        "flowMetering": {
-          "type": "SwitchFlowMetering",
+        "flowMeterings": {
+          "type": "SwitchFlowMeteringEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Flow Metering Entries. atp.Status=candidate"
         },
-        "streamFilter": {
+        "streamFilters": {
           "type": "SwitchStreamFilterEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Stream Filter Entries. atp.Status=candidate"
         },
-        "streamGate": {
+        "streamGates": {
           "type": "SwitchStreamGateEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of Stream Gate Entries."
         },
-        "switchStream": {
-          "type": "SwitchStream",
+        "switchStreams": {
+          "type": "any (SwitchStream)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Collection of switch stream identification entries. Tags: atp.Status=candidate (ordered)"
         },
-        "trafficShaper": {
-          "type": "SwitchAsynchronous",
+        "trafficShapers": {
+          "type": "SwitchAsynchronousTrafficShaperGroupEntry",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -1365,7 +1365,7 @@
         }
       ],
       "attributes": {
-        "egressPort": {
+        "egressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "reference",
@@ -1380,7 +1380,7 @@
           "note": "Enables Blocking all frames from the MAC address."
         },
         "filterActionDest": {
-          "type": "SwitchStreamFilter",
+          "type": "any (SwitchStreamFilter)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1400,7 +1400,7 @@
           "is_ref": false,
           "note": "Defines the action to modify the VLAN-ID within a VLAN of an Ethernet frame."
         },
-        "ingressPort": {
+        "ingressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "reference",
@@ -1446,14 +1446,14 @@
       ],
       "attributes": {
         "dataLinkLayer": {
-          "type": "StreamFilterRuleData",
+          "type": "StreamFilterRuleDataLinkLayer",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Definition of a filter rule on the data link layer. Tags: atp.Status=candidate"
         },
         "ieee1722Tp": {
-          "type": "StreamFilterIEEE1722",
+          "type": "StreamFilterIEEE1722Tp",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1495,7 +1495,7 @@
       ],
       "attributes": {
         "destinationMac": {
-          "type": "StreamFilterMAC",
+          "type": "StreamFilterMACAddress",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1509,7 +1509,7 @@
           "note": "Filter to match packets based on the EtherType field in frame."
         },
         "sourceMac": {
-          "type": "StreamFilterMAC",
+          "type": "StreamFilterMACAddress",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1594,13 +1594,13 @@
       ],
       "attributes": {
         "destination": {
-          "type": "StreamFilterIpv6",
+          "type": "StreamFilterIpv6Address",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Filter to match packets with the destination IPv6 address range."
         },
-        "destinationPort": {
+        "destinationPorts": {
           "type": "StreamFilterPortRange",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1608,13 +1608,13 @@
           "note": "Filter to match packets with the set of destination UDP/ ranges."
         },
         "source": {
-          "type": "StreamFilterIpv6",
+          "type": "StreamFilterIpv6Address",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Filter to match packets with the source IPv6 address range."
         },
-        "sourcePort": {
+        "sourcePorts": {
           "type": "StreamFilterPortRange",
           "multiplicity": "*",
           "kind": "attribute",
@@ -1802,7 +1802,7 @@
         }
       ],
       "attributes": {
-        "egressPort": {
+        "egressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
           "kind": "reference",
@@ -1810,7 +1810,7 @@
           "note": "Reference to the egress ports used as the target of the to modify the egress port."
         },
         "modification": {
-          "type": "SwitchStreamFilter",
+          "type": "any (SwitchStreamFilter)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1862,7 +1862,7 @@
           "note": "Defines the Priority of this Stream Filter Entry."
         },
         "flowMetering": {
-          "type": "SwitchFlowMetering",
+          "type": "SwitchFlowMeteringEntry",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -1997,7 +1997,7 @@
       ],
       "attributes": {
         "colorMode": {
-          "type": "FlowMeteringColor",
+          "type": "FlowMeteringColorModeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2131,7 +2131,7 @@
           "note": "Configuration options for Auto-IP (automatic private IP"
         },
         "fragmentation": {
-          "type": "Ipv4Fragmentation",
+          "type": "Ipv4FragmentationProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2313,7 +2313,7 @@
           "note": "Configuration properties for DHCPv6."
         },
         "fragmentation": {
-          "type": "Ipv6Fragmentation",
+          "type": "Ipv6FragmentationProps",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -2678,7 +2678,7 @@
           "note": "The maximal time an acknowledgement is delayed for in seconds."
         },
         "tcpFastRecovery": {
-          "type": "BooleanRecovery",
+          "type": "any (BooleanRecovery)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3009,8 +3009,8 @@
         }
       ],
       "attributes": {
-        "ethernet": {
-          "type": "EthernetWakeupSleep",
+        "ethernets": {
+          "type": "any (EthernetWakeupSleep)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -3089,8 +3089,8 @@
         }
       ],
       "attributes": {
-        "consumedService": {
-          "type": "ConsumedService",
+        "consumedServices": {
+          "type": "any (ConsumedService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -3117,22 +3117,22 @@
           "is_ref": false,
           "note": "Defines the frame priority where values from 0 (best 7 (highest) are allowed."
         },
-        "providedService": {
-          "type": "ProvidedService",
+        "providedServices": {
+          "type": "any (ProvidedService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Provided service instances. Tags: atp.Status=obsolete"
         },
         "tlsCryptoService": {
-          "type": "TlsCryptoService",
+          "type": "TlsCryptoServiceMapping",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the applicable TlsCryptoService Mapping that adds the ability for TLS-based encryption enclosing ApplicationEndpoint."
         },
         "tpConfigurationConfiguration": {
-          "type": "TransportProtocol",
+          "type": "TransportProtocolConfiguration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3521,7 +3521,7 @@
           "note": "HTTP Protocol version (e.g. 1.1)"
         },
         "requestMethodEnum": {
-          "type": "RequestMethodEnum",
+          "type": "any (RequestMethodEnum)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3636,7 +3636,7 @@
           "is_ref": false,
           "note": "Optional IPSec configuration that provides security"
         },
-        "networkEndpoint": {
+        "networkEndpoints": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3728,7 +3728,7 @@
           "is_ref": false,
           "note": "IP address of the default gateway."
         },
-        "dnsServer": {
+        "dnsServers": {
           "type": "Ip4AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3750,7 +3750,7 @@
           "note": "IPv4 Address. Notation: 255.255.255.255. The IP be declared in case the ipv4AddressSource and thus no auto-configuration mechanism is"
         },
         "ipv4AddressSource": {
-          "type": "Ipv4AddressSource",
+          "type": "Ipv4AddressSourceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3813,7 +3813,7 @@
           "is_ref": false,
           "note": "IP address of the default router."
         },
-        "dnsServer": {
+        "dnsServers": {
           "type": "Ip6AddressString",
           "multiplicity": "*",
           "kind": "attribute",
@@ -3856,7 +3856,7 @@
           "note": "IPv6 Address. Notation: FFFF:...:FFFF. The IP Address declared in case the ipv6AddressSource is thus no auto-configuration mechanism is"
         },
         "ipv6AddressSource": {
-          "type": "Ipv6AddressSource",
+          "type": "Ipv6AddressSourceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -3969,14 +3969,14 @@
       ],
       "attributes": {
         "timeSyncClientConfiguration": {
-          "type": "TimeSyncClient",
+          "type": "TimeSyncClientConfiguration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Configuration of the time synchronisation client."
         },
         "timeSyncServerConfiguration": {
-          "type": "TimeSyncServer",
+          "type": "TimeSyncServerConfiguration",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -4010,7 +4010,7 @@
         }
       ],
       "attributes": {
-        "orderedMaster": {
+        "orderedMasters": {
           "type": "OrderedMaster",
           "multiplicity": "*",
           "kind": "attribute",
@@ -4018,7 +4018,7 @@
           "note": "Defines a list of ordered NetworkEndpoints."
         },
         "timeSync": {
-          "type": "TimeSyncTechnology",
+          "type": "TimeSyncTechnologyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -4075,7 +4075,7 @@
           "note": "Identifier of the TimeSyncServer."
         },
         "timeSync": {
-          "type": "TimeSyncTechnology",
+          "type": "TimeSyncTechnologyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -4117,7 +4117,7 @@
           "note": "Defines the order of the network endpoint list (e.g. 0, 1, 2,"
         },
         "timeSyncServerConfiguration": {
-          "type": "TimeSyncServer",
+          "type": "TimeSyncServerConfiguration",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -4240,7 +4240,7 @@
           "note": "Defines the rate at which the token bucket is refilled with in bit per second."
         },
         "trafficShaper": {
-          "type": "SwitchAsynchronous",
+          "type": "SwitchAsynchronousTrafficShaperGroupEntry",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

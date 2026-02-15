@@ -89,21 +89,21 @@
         }
       ],
       "attributes": {
-        "customSdgDef": {
+        "customSdgDefs": {
           "type": "SdgDef",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to custom SdgDefs that extend the data format"
         },
-        "custom": {
+        "customs": {
           "type": "Documentation",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to custom specifications that extend this"
         },
-        "standard": {
+        "standards": {
           "type": "String",
           "multiplicity": "*",
           "kind": "attribute",

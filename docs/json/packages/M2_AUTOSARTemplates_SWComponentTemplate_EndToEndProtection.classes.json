@@ -122,7 +122,7 @@
         }
       ],
       "attributes": {
-        "endToEnd": {
+        "endToEnds": {
           "type": "EndToEndProtection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -166,7 +166,7 @@
         }
       ],
       "attributes": {
-        "endToEnd": {
+        "endToEnds": {
           "type": "EndToEndProtection",
           "multiplicity": "*",
           "kind": "attribute",
@@ -207,7 +207,7 @@
         }
       ],
       "attributes": {
-        "receiver": {
+        "receivers": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",

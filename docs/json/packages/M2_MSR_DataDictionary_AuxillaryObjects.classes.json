@@ -49,13 +49,13 @@
       ],
       "attributes": {
         "memory": {
-          "type": "MemoryAllocation",
+          "type": "MemoryAllocationKeywordPolicyType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Enumeration to specify the name pattern of the Memory Allocation Keyword. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "option": {
+        "options": {
           "type": "Identifier",
           "multiplicity": "*",
           "kind": "attribute",
@@ -63,7 +63,7 @@
           "note": "This attribute introduces the ability to specify further"
         },
         "section": {
-          "type": "SectionInitialization",
+          "type": "SectionInitializationPolicyType",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

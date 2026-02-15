@@ -35,7 +35,7 @@
         }
       ],
       "attributes": {
-        "sendingNode": {
+        "sendingNodes": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "*",
           "kind": "reference",

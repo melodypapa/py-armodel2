@@ -74,14 +74,14 @@
           "is_ref": false,
           "note": "The hardware element (e.g. type of ECU) for which the is specified."
         },
-        "includedLibrary": {
+        "includedLibraries": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "If this dependency is specified, the execution time of the is included in the execution time data for the"
         },
-        "memorySectionLocation": {
+        "memorySectionLocations": {
           "type": "MemorySectionLocation",
           "multiplicity": "*",
           "kind": "attribute",

@@ -93,7 +93,7 @@
         }
       ],
       "attributes": {
-        "contextElement": {
+        "contextElements": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
           "kind": "reference",
@@ -195,21 +195,21 @@
           "note": "This represents the applicable payload that corresponds to the referenced DataPrototype in the role mappedData"
         },
         "mappedBsw": {
-          "type": "BswService",
+          "type": "any (BswService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This is supposed to represent a reference to a Bsw ServiceDependency. the latter is not derived from and therefore this detour needs to be still let BswServiceDependency become of a reference. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "mappedFlatSwc": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the ability to refer to an AtomicSw ComponentType that is available without the definition of it will be embedded into the component hierarchy."
         },
         "mappedSwc": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -223,7 +223,7 @@
           "note": "This aggregation represents the single point of access to the reference to one specific DiagnosticParameter"
         },
         "serviceInstance": {
-          "type": "DiagnosticService",
+          "type": "any (DiagnosticService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -309,7 +309,7 @@
           "note": "This reference identifies the data element that carries the the reporting mode."
         },
         "securityEventContext": {
-          "type": "SecurityEventContext",
+          "type": "any (SecurityEventContext)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -403,28 +403,28 @@
       ],
       "attributes": {
         "mappedBsw": {
-          "type": "BswService",
+          "type": "any (BswService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This is supposed to represent a reference to a Bsw ServiceDependency. the latter is not derived from and therefore this detour needs to be still let BswServiceDependency become of a reference."
         },
         "mappedFlatSwc": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the ability to refer to an AtomicSw ComponentType that is available without the definition of it will be embedded into the component hierarchy."
         },
         "mapped": {
-          "type": "DiagnosticFunction",
+          "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "This represents the mapped FID. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "mappedSwc": {
-          "type": "SwcService",
+          "type": "any (SwcService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

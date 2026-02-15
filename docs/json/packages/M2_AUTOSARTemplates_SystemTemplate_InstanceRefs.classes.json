@@ -43,14 +43,14 @@
           "note": "Stereotypes: atpDerived"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "target": {
-          "type": "SwComponent",
+          "type": "any (SwComponent)",
           "multiplicity": "1",
           "kind": "reference",
           "is_ref": false,
@@ -97,7 +97,7 @@
           "note": "Stereotypes: atpDerived"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -162,7 +162,7 @@
           "note": "Stereotypes: atpDerived"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -221,7 +221,7 @@
           "note": "This represents that base of the InstanceRef"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -280,7 +280,7 @@
           "note": "Stereotypes: atpDerived"
         },
         "context": {
-          "type": "RootSwComposition",
+          "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

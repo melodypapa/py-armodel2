@@ -56,7 +56,7 @@
       ],
       "attributes": {
         "direction": {
-          "type": "ArgumentDirection",
+          "type": "ArgumentDirectionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

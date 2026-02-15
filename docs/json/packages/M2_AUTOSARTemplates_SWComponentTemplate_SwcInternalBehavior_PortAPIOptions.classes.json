@@ -47,7 +47,7 @@
           "note": "Specifies the actual value."
         },
         "valueType": {
-          "type": "ImplementationData",
+          "type": "any (ImplementationData)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -115,14 +115,14 @@
           "is_ref": true,
           "note": "The option is valid for generated functions related to this port"
         },
-        "portArgValue": {
-          "type": "PortDefinedArgument",
+        "portArgValues": {
+          "type": "PortDefinedArgumentValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An argument value defined by this port."
         },
-        "supported": {
+        "supporteds": {
           "type": "SwcSupportedFeature",
           "multiplicity": "*",
           "kind": "attribute",
@@ -197,7 +197,7 @@
       ],
       "attributes": {
         "supportBufferLocking": {
-          "type": "SupportBufferLocking",
+          "type": "SupportBufferLockingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

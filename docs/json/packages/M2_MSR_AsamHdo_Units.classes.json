@@ -52,7 +52,7 @@
       ],
       "attributes": {
         "displayName": {
-          "type": "SingleLanguageUnit",
+          "type": "SingleLanguageUnitNames",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -119,7 +119,7 @@
         }
       ],
       "attributes": {
-        "unit": {
+        "units": {
           "type": "Unit",
           "multiplicity": "*",
           "kind": "reference",
@@ -285,7 +285,7 @@
         }
       ],
       "attributes": {
-        "physical": {
+        "physicals": {
           "type": "PhysicalDimension",
           "multiplicity": "*",
           "kind": "attribute",

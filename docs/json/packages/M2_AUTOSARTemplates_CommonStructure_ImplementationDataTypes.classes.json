@@ -89,8 +89,8 @@
           "is_ref": false,
           "note": "Specifies the profile which the array will follow in case this"
         },
-        "subElement": {
-          "type": "ImplementationData",
+        "subElements": {
+          "type": "any (ImplementationData)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -174,14 +174,14 @@
           "note": "This attribute controls the implementation of the payload array. It shall only be used if the enclosing an array. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "arraySize": {
-          "type": "ArraySizeSemantics",
+          "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute controls the meaning of the value of the array size."
         },
         "arraySizeHandling": {
-          "type": "ArraySizeHandling",
+          "type": "ArraySizeHandlingEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -194,8 +194,8 @@
           "is_ref": false,
           "note": "This attribute represents the ability to declare the"
         },
-        "subElement": {
-          "type": "ImplementationData",
+        "subElements": {
+          "type": "any (ImplementationData)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

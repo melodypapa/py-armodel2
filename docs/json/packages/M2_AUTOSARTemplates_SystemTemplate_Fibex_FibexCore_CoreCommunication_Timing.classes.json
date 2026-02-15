@@ -27,15 +27,15 @@
         }
       ],
       "attributes": {
-        "modeDriven": {
-          "type": "ModeDriven",
+        "modeDrivens": {
+          "type": "ModeDrivenTransmissionModeCondition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines the trigger for the Com_SwitchIpduTxMode"
         },
         "transmission": {
-          "type": "TransmissionMode",
+          "type": "any (TransmissionMode)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -112,7 +112,7 @@
         }
       ],
       "attributes": {
-        "mode": {
+        "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "reference",
@@ -392,7 +392,7 @@
         }
       ],
       "attributes": {
-        "mode": {
+        "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "reference",

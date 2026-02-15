@@ -42,21 +42,21 @@
         }
       ],
       "attributes": {
-        "control": {
+        "controls": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Reference to the EventGroup which encapsulates the payload."
         },
-        "controlPnc": {
+        "controlPncs": {
           "type": "PncMappingIdent",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Reference to the PNCs which control the offer/subscribe the translated service instance."
         },
-        "controlProvided": {
+        "controlProvideds": {
           "type": "EventHandler",
           "multiplicity": "*",
           "kind": "reference",
@@ -64,14 +64,14 @@
           "note": "Reference to the provided event group (aka Event which is automatically available when service translationStart."
         },
         "serviceControl": {
-          "type": "SignalService",
+          "type": "any (SignalService)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines how the service instance control shall behave."
         },
-        "signalServiceEventProps": {
-          "type": "SignalService",
+        "signalServiceEventPropses": {
+          "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -113,8 +113,8 @@
         }
       ],
       "attributes": {
-        "signalServiceProps": {
-          "type": "SignalService",
+        "signalServicePropses": {
+          "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -151,8 +151,8 @@
         }
       ],
       "attributes": {
-        "elementProps": {
-          "type": "SignalService",
+        "elementPropses": {
+          "type": "any (SignalService)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

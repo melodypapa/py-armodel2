@@ -33,28 +33,28 @@
         }
       ],
       "attributes": {
-        "sourceEec": {
-          "type": "EOCExecutableEntity",
+        "sourceEecs": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The source executable entities cluster containing the entities that shall finish execution before the"
         },
-        "sourceEvent": {
+        "sourceEvents": {
           "type": "AbstractEvent",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The executable entities — referenced by their events — finish execution before the synchronization"
         },
-        "targetEec": {
-          "type": "EOCExecutableEntity",
+        "targetEecs": {
+          "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The target executable entities cluster containing the entities that shall start execution after the"
         },
-        "targetEvent": {
+        "targetEvents": {
           "type": "AbstractEvent",
           "multiplicity": "*",
           "kind": "reference",

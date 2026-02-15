@@ -39,21 +39,21 @@
         }
       ],
       "attributes": {
-        "attribute": {
+        "attributes": {
           "type": "Field",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the set of attributes defined in the context"
         },
-        "command": {
+        "commands": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the collection of commands or function optional data arguments) defined in the context ApplicationInterface. atpVariation"
         },
-        "indication": {
+        "indications": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",

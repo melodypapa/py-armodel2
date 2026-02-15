@@ -37,7 +37,7 @@
       ],
       "attributes": {
         "rptEnablerImpl": {
-          "type": "RptEnablerImplType",
+          "type": "RptEnablerImplTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -100,7 +100,7 @@
           "note": "Lowest RPT event id usable for RTE generated service attribute is relevant, if dedicated id range applied to the ExecutableEntitys of a software specific ExecutableEntitys."
         },
         "rptExecutionControl": {
-          "type": "RptExecutionControl",
+          "type": "RptExecutionControlEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -160,14 +160,14 @@
           "is_ref": false,
           "note": "System which describes the software components of the"
         },
-        "rptContainer": {
+        "rptContainers": {
           "type": "RptContainer",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Top-level rptContainer definitions of this specific rapid atpVariation"
         },
-        "rptProfile": {
+        "rptProfiles": {
           "type": "RptProfile",
           "multiplicity": "*",
           "kind": "attribute",
@@ -263,21 +263,21 @@
         }
       ],
       "attributes": {
-        "byPassPoint": {
+        "byPassPoints": {
           "type": "AtpFeature",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "byPassPoint describes the required preparation of the"
         },
-        "explicitRpt": {
+        "explicitRpts": {
           "type": "RptProfile",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This attribute defines the applicable RptProfiles for the"
         },
-        "rptContainer": {
+        "rptContainers": {
           "type": "RptContainer",
           "multiplicity": "*",
           "kind": "attribute",
@@ -306,7 +306,7 @@
           "note": "Describes the required code preparation for rapid"
         },
         "rptSw": {
-          "type": "RptSwPrototyping",
+          "type": "RptSwPrototypingAccess",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -361,7 +361,7 @@
           "is_ref": false,
           "note": "This describes the hook with the means of another"
         },
-        "sdg": {
+        "sdgs": {
           "type": "Sdg",
           "multiplicity": "*",
           "kind": "attribute",
@@ -495,7 +495,7 @@
           "note": "Complete symbol of the function implementing the pre"
         },
         "stimEnabler": {
-          "type": "RptEnablerImplType",
+          "type": "RptEnablerImplTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

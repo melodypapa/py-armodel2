@@ -28,14 +28,14 @@
         }
       ],
       "attributes": {
-        "operation": {
-          "type": "SwcToSwcOperation",
+        "operations": {
+          "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The arguments sent in one direction (either from client to or server to client) of the operations that shall take signal path."
         },
-        "signal": {
+        "signals": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -73,7 +73,7 @@
         }
       ],
       "attributes": {
-        "dataElement": {
+        "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
@@ -111,13 +111,13 @@
       ],
       "attributes": {
         "direction": {
-          "type": "SwcToSwcOperation",
+          "type": "any (SwcToSwcOperation)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Direction addressed by this SwcToSwcClientServer element."
         },
-        "operation": {
+        "operations": {
           "type": "ClientServerOperation",
           "multiplicity": "*",
           "kind": "attribute",
@@ -153,21 +153,21 @@
         }
       ],
       "attributes": {
-        "operation": {
-          "type": "SwcToSwcOperation",
+        "operations": {
+          "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Reference to the operation arguments of one operation shall not take the predefined way in the topology."
         },
-        "physicalChannel": {
+        "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The SwcToSwcSignal shall not be transmitted on one of physical channels."
         },
-        "signal": {
+        "signals": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -203,21 +203,21 @@
         }
       ],
       "attributes": {
-        "operation": {
-          "type": "SwcToSwcOperation",
+        "operations": {
+          "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The arguments of an operation that can take the way in the topology."
         },
-        "physicalChannel": {
+        "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "The SwcToSwcSignal can be transmitted on one of these channels."
         },
-        "signal": {
+        "signals": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",
@@ -253,14 +253,14 @@
         }
       ],
       "attributes": {
-        "operation": {
-          "type": "SwcToSwcOperation",
+        "operations": {
+          "type": "any (SwcToSwcOperation)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The SwcToSwcOperationArguments that shall not take same way (Signal Path) in the topology."
         },
-        "signal": {
+        "signals": {
           "type": "SwcToSwcSignal",
           "multiplicity": "*",
           "kind": "attribute",

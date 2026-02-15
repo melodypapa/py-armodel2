@@ -86,7 +86,7 @@
       ],
       "attributes": {
         "respondTo": {
-          "type": "DiagnosticResponseTo",
+          "type": "DiagnosticResponseToEcuResetEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

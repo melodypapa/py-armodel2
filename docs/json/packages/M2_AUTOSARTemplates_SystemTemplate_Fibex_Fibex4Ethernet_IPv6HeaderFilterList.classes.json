@@ -33,7 +33,7 @@
         }
       ],
       "attributes": {
-        "extHeaderFilter": {
+        "extHeaderFilters": {
           "type": "IPv6ExtHeaderFilterList",
           "multiplicity": "*",
           "kind": "attribute",
@@ -71,7 +71,7 @@
         }
       ],
       "attributes": {
-        "allowedIPv6Ext": {
+        "allowedIPv6Exts": {
           "type": "PositiveInteger",
           "multiplicity": "*",
           "kind": "attribute",

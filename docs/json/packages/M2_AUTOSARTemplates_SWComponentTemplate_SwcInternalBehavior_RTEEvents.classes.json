@@ -139,7 +139,7 @@
         }
       ],
       "attributes": {
-        "disabledModeInstanceRef": {
+        "disabledModeInstanceRefs": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
@@ -250,7 +250,7 @@
       ],
       "attributes": {
         "eventSource": {
-          "type": "AsynchronousServer",
+          "type": "any (AsynchronousServer)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

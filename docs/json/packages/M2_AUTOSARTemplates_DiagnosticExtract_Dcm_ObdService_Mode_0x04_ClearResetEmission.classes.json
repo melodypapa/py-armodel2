@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "clearReset": {
-          "type": "DiagnosticClearReset",
+          "type": "any (DiagnosticClearReset)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,

@@ -37,14 +37,14 @@
       ],
       "attributes": {
         "contextData": {
-          "type": "SecurityEventContext",
+          "type": "any (SecurityEventContext)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the definition of optional data for security events. atpVariation"
         },
         "default": {
-          "type": "SecurityEventReporting",
+          "type": "any (SecurityEventReporting)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -122,7 +122,7 @@
       ],
       "attributes": {
         "eventSymbolName": {
-          "type": "SymbolPropsName",
+          "type": "any (SymbolPropsName)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -171,7 +171,7 @@
         }
       ],
       "attributes": {
-        "element": {
+        "elements": {
           "type": "IdsCommonElement",
           "multiplicity": "*",
           "kind": "reference",
@@ -216,14 +216,14 @@
       ],
       "attributes": {
         "aggregation": {
-          "type": "SecurityEvent",
+          "type": "any (SecurityEvent)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the aggregation filter in the chain."
         },
         "oneEveryN": {
-          "type": "SecurityEventOneEvery",
+          "type": "SecurityEventOneEveryNFilter",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -237,7 +237,7 @@
           "note": "This aggregation represents the state filter in the event 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
         "threshold": {
-          "type": "SecurityEventThreshold",
+          "type": "SecurityEventThresholdFilter",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -313,7 +313,7 @@
         }
       ],
       "attributes": {
-        "blockIfState": {
+        "blockIfStates": {
           "type": "BlockState",
           "multiplicity": "*",
           "kind": "reference",
@@ -392,7 +392,7 @@
       ],
       "attributes": {
         "contextData": {
-          "type": "SecurityEventContext",
+          "type": "any (SecurityEventContext)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -592,7 +592,7 @@
       ],
       "attributes": {
         "filterChain": {
-          "type": "SecurityEventFilter",
+          "type": "any (SecurityEventFilter)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -605,8 +605,8 @@
           "is_ref": false,
           "note": "This reference defines the IdsmInstance onto which the are mapped. atpVariation 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
-        "mappedSecurity": {
-          "type": "SecurityEventContext",
+        "mappedSecurities": {
+          "type": "any (SecurityEventContext)",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -743,7 +743,7 @@
         }
       ],
       "attributes": {
-        "commConnector": {
+        "commConnectors": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
           "kind": "reference",
@@ -833,7 +833,7 @@
         }
       ],
       "attributes": {
-        "blockState": {
+        "blockStates": {
           "type": "BlockState",
           "multiplicity": "*",
           "kind": "attribute",
@@ -855,7 +855,7 @@
           "note": "This attribute is used to provide a source identification in of reporting security events.."
         },
         "idsmModule": {
-          "type": "IdsmModule",
+          "type": "IdsmModuleInstantiation",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
@@ -869,7 +869,7 @@
           "note": "This reference identifies the applicable rate limitation filter all security events on the related EcuInstance. atpVariation"
         },
         "signature": {
-          "type": "IdsmSignatureSupport",
+          "type": "any (IdsmSignatureSupport)",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -1043,14 +1043,14 @@
         }
       ],
       "attributes": {
-        "rateLimitation": {
+        "rateLimitations": {
           "type": "IdsmRateLimitation",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This aggregation represents the collection of rate filters for security events in the enclosing 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
-        "trafficLimitation": {
+        "trafficLimitations": {
           "type": "IdsmTrafficLimitation",
           "multiplicity": "*",
           "kind": "attribute",

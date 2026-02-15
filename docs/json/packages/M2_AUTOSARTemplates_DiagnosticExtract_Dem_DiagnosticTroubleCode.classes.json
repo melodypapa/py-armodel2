@@ -50,7 +50,7 @@
           "note": "Defined properties associated with the DemDTC."
         },
         "eventReadiness": {
-          "type": "EventObdReadiness",
+          "type": "EventObdReadinessGroup",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -71,7 +71,7 @@
           "note": "3 Byte OBD DTC value based on the definition from SAE The existence of this attribute is only required if and OBD DTC values are used for SAE this attribute does not exist, then UDS DTC used with J1979-2."
         },
         "severity": {
-          "type": "DiagnosticUdsSeverity",
+          "type": "DiagnosticUdsSeverityEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -85,7 +85,7 @@
           "note": "Unique Diagnostic Trouble Code value for UDS."
         },
         "wwhObdDtc": {
-          "type": "DiagnosticWwhObdDtc",
+          "type": "DiagnosticWwhObdDtcClassEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -142,7 +142,7 @@
           "note": "Defined properties associated with the DemDTC. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "eventReadiness": {
-          "type": "EventObdReadiness",
+          "type": "EventObdReadinessGroup",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -268,7 +268,7 @@
         }
       ],
       "attributes": {
-        "dtc": {
+        "dtcs": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "*",
           "kind": "reference",
@@ -325,20 +325,20 @@
           "note": "Reference to an aging algorithm in case that an aging/ the event is allowed."
         },
         "diagnosticMemory": {
-          "type": "DiagnosticMemory",
+          "type": "any (DiagnosticMemory)",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Reference to the applicable DiagnosticMemory Destination. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "extendedData": {
-          "type": "DiagnosticExtended",
+        "extendedDatas": {
+          "type": "DiagnosticExtendedDataRecord",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "Defines the links to an extended data class sampler. Stereotypes: atpSplitable; atpVariation"
         },
-        "freezeFrame": {
+        "freezeFrames": {
           "type": "DiagnosticFreezeFrame",
           "multiplicity": "*",
           "kind": "reference",
@@ -374,7 +374,7 @@
           "note": "Priority of the event, in view of full event buffer. A lower higher priority."
         },
         "significance": {
-          "type": "DiagnosticSignificance",
+          "type": "DiagnosticSignificanceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -422,7 +422,7 @@
         }
       ],
       "attributes": {
-        "dataIdentifier": {
+        "dataIdentifiers": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "*",
           "kind": "reference",
