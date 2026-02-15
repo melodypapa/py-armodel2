@@ -1,6 +1,6 @@
 """AUTOSAR root element - singleton pattern."""
 
-from armodel.core.base import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 
 
 class AUTOSAR(ARObject):
