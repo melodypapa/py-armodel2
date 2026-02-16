@@ -12,6 +12,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Installation
 pip install -e ".[dev]"
 
+# Regenerate all model classes (after generator or mapping changes)
+python tools/generate_models.py
+
 # Run tests (requires PYTHONPATH)
 PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
 
@@ -40,8 +43,34 @@ All AUTOSAR model classes in `src/armodel/models/M2/` are generated from mapping
 - Each class has `serialize()` and `deserialize()` methods
 - Each class includes a Builder for fluent API construction
 - Generated classes follow AUTOSAR package structure
+- Uses registry-based serialization framework with XMLMember metadata
 
 **Generator**: `tools/generate_models.py` (standalone tool)
+
+**Regenerate after**: Modifying the generator, changing mapping JSON files, or updating serialization framework
+
+### Serialization Framework (Registry Pattern)
+
+The project uses a declarative, registry-based serialization framework that eliminates boilerplate:
+
+**Key Components**:
+- `ARObject.serialize()` - Base method that uses registry and strategies
+- `XMLMember` - Declarative metadata descriptor for XML mapping
+- `SerializationRegistry` - Global singleton for metadata and strategies
+- `SerializationStrategy` - Pluggable serialization behaviors
+
+**Each class defines metadata**:
+```python
+_xml_members: dict[str, XMLMember] = {
+    "short_name": XMLMember(xml_tag="SHORT-NAME", is_attribute=False, multiplicity="1"),
+    "category": XMLMember(xml_tag="CATEGORY", is_attribute=True, multiplicity="0..1"),
+}
+```
+
+**The base class handles the rest**:
+- Automatically collects metadata from entire class hierarchy (MRO)
+- Serializes/deserializes based on metadata descriptors
+- Supports both dict-based XMLMember and legacy tuple format for backward compatibility
 
 ### Class-Based Architecture
 
@@ -50,6 +79,7 @@ Infrastructure modules use class-based design (not module-based functions):
 **Singletons** (shared state):
 - `SchemaVersionManager` (`src/armodel/core/version.py`) - Schema version detection and config
 - `AUTOSAR` (`src/armodel/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element
+- `SerializationRegistry` (`src/armodel/serialization/registry.py`) - Global serialization registry
 
 **Dependency Injection** (testable):
 - `ARXMLReader` (`src/armodel/reader/__init__.py`) - ARXML file loading and parsing
@@ -93,10 +123,39 @@ Version detection automatically parses XML namespace declarations from ARXML fil
 
 Key rules from `docs/designs/design_rules.md`:
 - **Naming**: snake_case files, PascalCase classes
-- **Serialization**: `serialize()` returns `xml.etree.ElementTree.Element`
+- **Serialization**: `serialize(namespace, element)` returns `xml.etree.ElementTree.Element`
 - **Deserialization**: `@classmethod deserialize(element)` accepts XML element
 - **All infrastructure classes**: Class-based with dependency injection
 - **Singletons**: Used for shared state managers
+- **Circular imports**: Use `from __future__ import annotations` with `TYPE_CHECKING` for type hints only
+- **Imports**: All imports at file beginning, use relative imports within same package
+
+## Important Implementation Details
+
+### Circular Import Handling
+
+The codebase uses `from __future__ import annotations` combined with `TYPE_CHECKING` to avoid circular import issues:
+
+```python
+from __future__ import annotations  # Must be first import
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from armodel.models.M2.SomeModule import SomeClass
+
+class MyClass(ARObject):
+    def __init__(self) -> None:
+        self.related: Optional[SomeClass] = None  # Type hint works, no runtime import
+```
+
+For `_xml_members` that reference classes in circular dependencies, use string class names:
+```python
+_xml_members = [
+    ("item_contents", None, False, False, "DocumentationBlock"),  # String, not class
+]
+```
+
+The `ARObject.deserialize()` method automatically resolves string class names to actual classes.
 
 ## Important Implementation Details
 
@@ -106,6 +165,7 @@ Key rules from `docs/designs/design_rules.md`:
 - **ARXMLWriter**: Uses `xml.etree.ElementTree` for serialization (not lxml)
 - Both accept optional `SchemaVersionManager` injection for testability
 - `ARXMLReader.get_schema_version()` detects version without full file load
+- **Namespace handling**: All serialize() methods accept namespace parameter; deserialize() strips namespaces from tags
 
 ### Type Checking
 
@@ -169,6 +229,21 @@ pkg = (ARPackageBuilder()
 autosar.ar_packages.append(pkg)
 ```
 
+### After modifying generator
+
+When you modify `tools/generate_models.py` or the mapping JSON files, regenerate all classes:
+
+```bash
+python tools/generate_models.py
+```
+
+Then verify:
+```bash
+ruff check src/
+mypy src/
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+```
+
 ## Project Structure
 
 ```
@@ -180,6 +255,7 @@ src/armodel/
 │   └── MSR/              # MSR documentation classes
 ├── reader/              # ARXML reading (ARXMLReader class)
 ├── writer/              # ARXML writing (ARXMLWriter class)
+├── serialization/       # Serialization framework (registry, strategies, metadata)
 ├── cli/                 # CLI (main.py not yet implemented)
 └── utils/               # Utilities (not yet implemented)
 
@@ -188,9 +264,18 @@ tests/
 ├── integration/         # Integration tests (read, write, cycles)
 └── fixtures/arxml/      # Test ARXML files
 
+tools/
+└── generate_models.py   # Code generator for AUTOSAR classes
+
 demos/
 ├── xsd/                 # AUTOSAR XSD schema files
 └── arxml/               # Sample ARXML files
+
+docs/
+├── designs/             # Design rules and architecture
+├── json/                # Type mapping metadata for generator
+├── requirements/        # Software requirements
+└── tests/               # Test documentation
 ```
 
 ## Known Limitations
@@ -199,3 +284,10 @@ demos/
 - Utils module not implemented
 - Some complex nested structures may have incomplete `deserialize()` implementations
 - Performance optimization for very large files (100MB+) could be improved
+- Generator has known issues with import path resolution for certain types (e.g., TableSeparatorString, enums in OasisExchangeTable) requiring manual fixes
+
+## Key Reference Documents
+
+- **Design Rules**: `docs/designs/design_rules.md` - Complete list of design rules including naming, structure, and import patterns
+- **Generator Skill**: `.claude/commands/gen-class.md` - Interactive command for generating classes from ARXML files
+- **Requirements**: `docs/requirements/` - Detailed functional and non-functional requirements for each module

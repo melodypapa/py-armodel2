@@ -1,0 +1,39 @@
+"""UserDefinedEthernetFrame AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.abstract_ethernet_frame import (
+    AbstractEthernetFrame,
+)
+
+
+class UserDefinedEthernetFrame(AbstractEthernetFrame):
+    """AUTOSAR UserDefinedEthernetFrame."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+    }
+
+    def __init__(self) -> None:
+        """Initialize UserDefinedEthernetFrame."""
+        super().__init__()
+
+
+class UserDefinedEthernetFrameBuilder:
+    """Builder for UserDefinedEthernetFrame."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: UserDefinedEthernetFrame = UserDefinedEthernetFrame()
+
+    def build(self) -> UserDefinedEthernetFrame:
+        """Build and return UserDefinedEthernetFrame object.
+
+        Returns:
+            UserDefinedEthernetFrame instance
+        """
+        # TODO: Add validation
+        return self._obj

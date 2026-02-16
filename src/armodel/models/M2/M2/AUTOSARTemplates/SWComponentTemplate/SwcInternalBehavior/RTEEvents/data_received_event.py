@@ -1,0 +1,49 @@
+"""DataReceivedEvent AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
+
+
+class DataReceivedEvent(RTEEvent):
+    """AUTOSAR DataReceivedEvent."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # data
+    }
+
+    def __init__(self) -> None:
+        """Initialize DataReceivedEvent."""
+        super().__init__()
+        self.data: Optional[VariableDataPrototype] = None
+
+
+class DataReceivedEventBuilder:
+    """Builder for DataReceivedEvent."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: DataReceivedEvent = DataReceivedEvent()
+
+    def build(self) -> DataReceivedEvent:
+        """Build and return DataReceivedEvent object.
+
+        Returns:
+            DataReceivedEvent instance
+        """
+        # TODO: Add validation
+        return self._obj

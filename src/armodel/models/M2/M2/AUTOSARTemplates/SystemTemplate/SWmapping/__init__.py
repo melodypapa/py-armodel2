@@ -1,0 +1,14 @@
+"""SWmapping module."""
+from .swc_to_ecu_mapping import SwcToEcuMapping
+from .swc_to_impl_mapping import SwcToImplMapping
+from .swc_to_application_partition_mapping import SwcToApplicationPartitionMapping
+from .application_partition import ApplicationPartition
+from .application_partition_to_ecu_partition_mapping import ApplicationPartitionToEcuPartitionMapping
+from .ecu_partition import EcuPartition
+from .mapping_constraint import MappingConstraint
+from .component_clustering import ComponentClustering
+from .component_separation import ComponentSeparation
+from .j1939_controller_application_to_j1939_nm_node_mapping import J1939ControllerApplicationToJ1939NmNodeMapping
+from .j1939_controller_application import J1939ControllerApplication
+from .ecu_resource_estimation import EcuResourceEstimation
+

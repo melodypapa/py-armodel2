@@ -1,0 +1,4 @@
+"""SectionInitializationPolicyType primitive type."""
+
+# SectionInitializationPolicyType describes the intended initialization of MemorySections. The following values are standardized in AUTOSAR Methodology: • INIT: To be used for (explicitly or not explicitly) initialized variables. • CLEARED: To be used for not explicitly initialized variables. • POWER-ON-CLEARED: To be used for variables that are not explicitly initialized (cleared) during normal start-up. Instead these are cleared only after power on reset. Please note that the values are defined similar to the representation of enumeration types in the XML schema to ensure backward compatibility. Tags: xml.xsd.customType=SECTION-INITIALIZATION-POLICY-TYPE xml.xsd.type=NMTOKEN Table 8.6: SectionInitializationPolicyType
+SectionInitializationPolicyType = str

@@ -1,0 +1,47 @@
+"""DdsDestinationOrder AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_destination_order import (
+    DdsDestinationOrder,
+)
+
+
+class DdsDestinationOrder(ARObject):
+    """AUTOSAR DdsDestinationOrder."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "destination": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDestinationOrder,
+        ),  # destination
+    }
+
+    def __init__(self) -> None:
+        """Initialize DdsDestinationOrder."""
+        super().__init__()
+        self.destination: Optional[DdsDestinationOrder] = None
+
+
+class DdsDestinationOrderBuilder:
+    """Builder for DdsDestinationOrder."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: DdsDestinationOrder = DdsDestinationOrder()
+
+    def build(self) -> DdsDestinationOrder:
+        """Build and return DdsDestinationOrder object.
+
+        Returns:
+            DdsDestinationOrder instance
+        """
+        # TODO: Add validation
+        return self._obj

@@ -1,0 +1,59 @@
+"""Code AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+
+
+class Code(Identifiable):
+    """AUTOSAR Code."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "artifacts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AutosarEngineeringObject,
+        ),  # artifacts
+        "callback_headers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ServiceNeeds,
+        ),  # callbackHeaders
+    }
+
+    def __init__(self) -> None:
+        """Initialize Code."""
+        super().__init__()
+        self.artifacts: list[AutosarEngineeringObject] = []
+        self.callback_headers: list[ServiceNeeds] = []
+
+
+class CodeBuilder:
+    """Builder for Code."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: Code = Code()
+
+    def build(self) -> Code:
+        """Build and return Code object.
+
+        Returns:
+            Code instance
+        """
+        # TODO: Add validation
+        return self._obj

@@ -1,0 +1,66 @@
+"""CpSoftwareClusterResource AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.role_based_resource_dependency import (
+    RoleBasedResourceDependency,
+)
+
+
+class CpSoftwareClusterResource(Identifiable):
+    """AUTOSAR CpSoftwareClusterResource."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "dependents": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RoleBasedResourceDependency,
+        ),  # dependents
+        "global_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # globalResource
+        "is_mandatory": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isMandatory
+    }
+
+    def __init__(self) -> None:
+        """Initialize CpSoftwareClusterResource."""
+        super().__init__()
+        self.dependents: list[RoleBasedResourceDependency] = []
+        self.global_resource: Optional[PositiveInteger] = None
+        self.is_mandatory: Optional[Boolean] = None
+
+
+class CpSoftwareClusterResourceBuilder:
+    """Builder for CpSoftwareClusterResource."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: CpSoftwareClusterResource = CpSoftwareClusterResource()
+
+    def build(self) -> CpSoftwareClusterResource:
+        """Build and return CpSoftwareClusterResource object.
+
+        Returns:
+            CpSoftwareClusterResource instance
+        """
+        # TODO: Add validation
+        return self._obj

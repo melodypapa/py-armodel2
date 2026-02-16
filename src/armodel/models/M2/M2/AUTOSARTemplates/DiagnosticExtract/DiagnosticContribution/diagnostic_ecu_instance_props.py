@@ -1,0 +1,56 @@
+"""DiagnosticEcuInstanceProps AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+
+
+class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
+    """AUTOSAR DiagnosticEcuInstanceProps."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ecu_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcuInstance,
+        ),  # ecuInstances
+        "obd_support": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticObdSupportEnum,
+        ),  # obdSupport
+    }
+
+    def __init__(self) -> None:
+        """Initialize DiagnosticEcuInstanceProps."""
+        super().__init__()
+        self.ecu_instances: list[EcuInstance] = []
+        self.obd_support: Optional[DiagnosticObdSupportEnum] = None
+
+
+class DiagnosticEcuInstancePropsBuilder:
+    """Builder for DiagnosticEcuInstanceProps."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: DiagnosticEcuInstanceProps = DiagnosticEcuInstanceProps()
+
+    def build(self) -> DiagnosticEcuInstanceProps:
+        """Build and return DiagnosticEcuInstanceProps object.
+
+        Returns:
+            DiagnosticEcuInstanceProps instance
+        """
+        # TODO: Add validation
+        return self._obj

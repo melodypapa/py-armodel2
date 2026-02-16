@@ -74,3 +74,32 @@ Design rules are categorized by their type and scope:
   - When importing from different packages, use full absolute imports (e.g., `from armodel.models.M2.AUTOSARTemplates.Package.module import Class`)
   - Avoid wildcard imports (`from module import *`)
   - Prefer explicit imports over `__init__.py` re-exports when possible to clarify dependencies
+- **DESIGN_RULE_042**: Use `from __future__ import annotations` combined with TYPE_CHECKING for circular imports
+  - Add `from __future__ import annotations` at the top of files that may have circular dependencies
+  - Use `TYPE_CHECKING` to import classes only for type hints: `if TYPE_CHECKING: from ... import SomeClass`
+  - For `_xml_members` tuples that reference classes involved in circular imports, use string class names instead of class objects
+  - Example: `_xml_members = [("item_contents", None, False, False, "DocumentationBlock")]`
+  - The `ARObject.deserialize()` method automatically resolves string class names to actual class objects
+  - This approach maintains type safety (annotations are strings and not evaluated at runtime) while avoiding circular imports
+- **DESIGN_RULE_042**: Handle circular imports using future annotations and TYPE_CHECKING
+  - When circular imports are unavoidable, use `from __future__ import annotations` at the top of the file
+  - Use `TYPE_CHECKING` to import types only for type checking, not at runtime
+  - Use lazy import functions for classes needed in `_xml_members` to break circular dependencies
+  - Example pattern:
+    ```python
+    from __future__ import annotations  # Must be first import
+    from typing import TYPE_CHECKING
+    
+    if TYPE_CHECKING:
+        from armodel.models.M2.SomeModule import SomeClass
+    
+    def _get_some_class():
+        from armodel.models.M2.SomeModule import SomeClass
+        return SomeClass
+    
+    class MyClass:
+        _xml_members = [("attr", None, False, False, _get_some_class)]
+        
+        def __init__(self) -> None:
+            self.attr: SomeClass = None  # Type hint works because of future annotations
+    ```

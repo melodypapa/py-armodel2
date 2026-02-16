@@ -1,0 +1,49 @@
+"""InternalTriggerOccurredEvent AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.internal_triggering_point import (
+    InternalTriggeringPoint,
+)
+
+
+class InternalTriggerOccurredEvent(RTEEvent):
+    """AUTOSAR InternalTriggerOccurredEvent."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "event_source": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=InternalTriggeringPoint,
+        ),  # eventSource
+    }
+
+    def __init__(self) -> None:
+        """Initialize InternalTriggerOccurredEvent."""
+        super().__init__()
+        self.event_source: Optional[InternalTriggeringPoint] = None
+
+
+class InternalTriggerOccurredEventBuilder:
+    """Builder for InternalTriggerOccurredEvent."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: InternalTriggerOccurredEvent = InternalTriggerOccurredEvent()
+
+    def build(self) -> InternalTriggerOccurredEvent:
+        """Build and return InternalTriggerOccurredEvent object.
+
+        Returns:
+            InternalTriggerOccurredEvent instance
+        """
+        # TODO: Add validation
+        return self._obj

@@ -1,0 +1,57 @@
+"""McFunctionDataRefSet AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+    McDataInstance,
+)
+
+
+class McFunctionDataRefSet(ARObject):
+    """AUTOSAR McFunctionDataRefSet."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "flat_map_entries": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FlatInstanceDescriptor,
+        ),  # flatMapEntries
+        "mc_data_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McDataInstance,
+        ),  # mcDataInstances
+    }
+
+    def __init__(self) -> None:
+        """Initialize McFunctionDataRefSet."""
+        super().__init__()
+        self.flat_map_entries: list[FlatInstanceDescriptor] = []
+        self.mc_data_instances: list[McDataInstance] = []
+
+
+class McFunctionDataRefSetBuilder:
+    """Builder for McFunctionDataRefSet."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: McFunctionDataRefSet = McFunctionDataRefSet()
+
+    def build(self) -> McFunctionDataRefSet:
+        """Build and return McFunctionDataRefSet object.
+
+        Returns:
+            McFunctionDataRefSet instance
+        """
+        # TODO: Add validation
+        return self._obj

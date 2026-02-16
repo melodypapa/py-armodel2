@@ -1,0 +1,5 @@
+"""InstanceRefs module."""
+from .data_prototype_in_system_instance_ref import DataPrototypeInSystemInstanceRef
+from .swc_service_dependency_in_system_instance_ref import SwcServiceDependencyInSystemInstanceRef
+from .p_mode_in_system_instance_ref import PModeInSystemInstanceRef
+

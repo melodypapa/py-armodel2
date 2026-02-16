@@ -1,0 +1,82 @@
+"""SecureCommunicationProps AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+
+
+class SecureCommunicationProps(ARObject):
+    """AUTOSAR SecureCommunicationProps."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "auth_data": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # authData
+        "authentication": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # authentication
+        "data_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dataId
+        "freshness_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # freshnessValue
+        "message_link": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # messageLink
+        "secondary": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # secondary
+        "secured_area": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # securedArea
+    }
+
+    def __init__(self) -> None:
+        """Initialize SecureCommunicationProps."""
+        super().__init__()
+        self.auth_data: Optional[PositiveInteger] = None
+        self.authentication: Optional[PositiveInteger] = None
+        self.data_id: Optional[PositiveInteger] = None
+        self.freshness_value: Optional[PositiveInteger] = None
+        self.message_link: Optional[PositiveInteger] = None
+        self.secondary: Optional[PositiveInteger] = None
+        self.secured_area: Optional[PositiveInteger] = None
+
+
+class SecureCommunicationPropsBuilder:
+    """Builder for SecureCommunicationProps."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: SecureCommunicationProps = SecureCommunicationProps()
+
+    def build(self) -> SecureCommunicationProps:
+        """Build and return SecureCommunicationProps object.
+
+        Returns:
+            SecureCommunicationProps instance
+        """
+        # TODO: Add validation
+        return self._obj

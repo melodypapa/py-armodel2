@@ -222,11 +222,25 @@ def generate_class_code(
         parent_class = None
 
     # Generate class code
-    # Include cast in imports for non-ARObject classes
-    cast_import = "from typing import Optional, cast\n" if class_name != "ARObject" else "from typing import Optional\n"
-    code = f'''"""{class_name} AUTOSAR element."""
+    # For ARObject, we need TYPE_CHECKING import for XMLMember type hint
+    if class_name == "ARObject":
+        type_checking_import = "from typing import TYPE_CHECKING, Optional, Union\n"
+        base_import = "import xml.etree.ElementTree as ET\n"
+        code = f'''"""{class_name} AUTOSAR element."""
 
-{cast_import}import xml.etree.ElementTree as ET
+{type_checking_import}{base_import}
+
+if TYPE_CHECKING:
+    from armodel.serialization.metadata import XMLMember
+'''
+    else:
+        # For other classes, add Optional import and XMLMember
+        basic_import = "from typing import Optional\n"
+        base_import = "import xml.etree.ElementTree as ET\n"
+        xmlmember_import = "from armodel.serialization import XMLMember\n"
+        code = f'''"""{class_name} AUTOSAR element."""
+
+{basic_import}{base_import}{xmlmember_import}
 '''
 
     # Add parent class import
@@ -321,9 +335,10 @@ class {class_name}:
 
     # Add _xml_members class attribute BEFORE __init__
     # This defines the member-to-XML mapping for this class only (not inherited)
+    # Using new XMLMember dict format for declarative metadata
     code += '''    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
 '''
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
@@ -331,27 +346,46 @@ class {class_name}:
             multiplicity = attr_info['multiplicity']
 
             # Determine if it's a list
-            is_list = multiplicity in ('*', '0..*')
+            is_list = multiplicity in ('*', '0..*', '1..*')
+
+            # Determine multiplicity string
+            if multiplicity in ('*', '0..*'):
+                multiplicity_str = "*"
+            elif multiplicity == '1..*':
+                multiplicity_str = "1..*"
+            elif multiplicity in ('0..1', '1'):
+                multiplicity_str = multiplicity
+            else:
+                multiplicity_str = "*" if is_list else "0..1"
 
             # Determine if it should be an attribute (simple types can be attributes)
             # For now, we'll assume single primitives can be attributes, lists are elements
             is_attribute = not is_list and is_primitive_type(attr_type, package_data)
 
             # Get element class for child elements (non-primitives)
-            element_class = attr_type if not is_primitive_type(attr_type, package_data) else 'None'
-            if is_attribute:
-                element_class = 'None'
+            element_class = attr_type if not is_primitive_type(attr_type, package_data) else None
 
             # Get Python identifier and XML tag (handles Python keywords)
             python_name, xml_tag_override = get_python_identifier(attr_name)
 
-            # Generate the member tuple - use proper Python boolean literals
-            if element_class != 'None':
-                code += f'        ("{python_name}", {repr(xml_tag_override)}, {str(is_attribute)}, {str(is_list)}, {element_class}),  # {attr_name}\n'
-            else:
-                code += f'        ("{python_name}", {repr(xml_tag_override)}, {str(is_attribute)}, {str(is_list)}, None),  # {attr_name}\n'
+            # Generate the XMLMember entry
+            code += f'        "{python_name}": XMLMember(\n'
+            code += f'            xml_tag={repr(xml_tag_override)},\n'
+            code += f'            is_attribute={str(is_attribute)},\n'
+            code += f'            multiplicity="{multiplicity_str}",\n'
 
-    code += '''    ]
+            if element_class:
+                code += f'            element_class={element_class},\n'
+
+            # Add xml_name_override if tag was modified for Python keyword
+            if xml_tag_override and xml_tag_override != python_name.replace('_', '-').upper():
+                # The original tag name was preserved, it's a Python keyword escape
+                # We need to pass the original XML tag
+                code += f'            xml_name_override={repr(xml_tag_override)},\n'
+
+            code += f'        ),  # {attr_name}\n'
+
+    code += '''    }
 
 '''
 
@@ -389,133 +423,14 @@ class {class_name}:
             attr_code = f'        self.{python_name}: {python_type} = {initial_value}\n'
             code += attr_code
 
-    # Add serialize method using the new _xml_members pattern
+    # Add serialize/deserialize methods
     # Special handling for ARObject which implements the base pattern
+    # All other classes inherit serialize/deserialize from ARObject
     if class_name == "ARObject":
-        # ARObject has the full implementation with _get_all_xml_members()
+        # ARObject uses the new registry-based serialization framework
+        # It already has serialize/deserialize methods that delegate to the registry
+        # Just add a helper method for backward compatibility
         code += '''
-    @classmethod
-    def _get_all_xml_members(cls) -> list:
-        """Collect all _xml_members from the class hierarchy.
-
-        Returns members in parent-to-child order (base classes first).
-
-        Returns:
-            List of (member_name, xml_tag, is_attribute, is_list, element_class) tuples
-        """
-        all_members = []
-        # Iterate through MRO in reverse to get parent-to-child order
-        for base_class in reversed(cls.__mro__):
-            if hasattr(base_class, '_xml_members') and base_class._xml_members:
-                all_members.extend(base_class._xml_members)
-        return all_members
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Serialize this object's members to XML element.
-
-        Collects and serializes all members from the class hierarchy.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element with this object's members serialized
-        """
-        if element is None:
-            # Create element if this is the root call
-            tag = f"{{{namespace}}}{self.__class__.__name__.upper()}"
-            element = ET.Element(tag)
-
-        # Serialize all members from class hierarchy (parent to child order)
-        all_members = self._get_all_xml_members()
-        for member_name, xml_tag, is_attribute, is_list, _ in all_members:
-            value = getattr(self, member_name, None)
-
-            if value is None:
-                continue
-
-            # Infer XML tag from member name if not provided
-            tag = xml_tag or self._member_to_xml_tag(member_name)
-
-            if is_attribute:
-                # Serialize as XML attribute
-                element.set(tag, str(value))
-            elif is_list:
-                # Serialize list of items as child elements
-                for item in value:
-                    if hasattr(item, 'serialize'):
-                        # Item has serialize method
-                        child_elem = item.serialize(namespace)
-                        element.append(child_elem)
-                    else:
-                        # Primitive item
-                        child_tag = f"{{{namespace}}}{tag}"
-                        child_elem = ET.SubElement(element, child_tag)
-                        child_elem.text = str(item)
-            else:
-                # Serialize single item as child element
-                if hasattr(value, 'serialize'):
-                    # Item has serialize method
-                    child_elem = value.serialize(namespace)
-                    element.append(child_elem)
-                else:
-                    # Primitive item
-                    child_tag = f"{{{namespace}}}{tag}"
-                    child_elem = ET.SubElement(element, child_tag)
-                    child_elem.text = str(value)
-
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ARObject":
-        """Deserialize XML element to object.
-
-        Collects and deserializes all members from the class hierarchy.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized object instance
-        """
-        obj = cls()
-
-        # Deserialize all members from class hierarchy (parent to child order)
-        all_members = cls._get_all_xml_members()
-        for member_name, xml_tag, is_attribute, is_list, element_class in all_members:
-            tag = xml_tag or cls._member_to_xml_tag(member_name)
-
-            if is_attribute:
-                # Deserialize from XML attribute
-                if tag in element.attrib:
-                    setattr(obj, member_name, element.attrib[tag])
-            elif is_list:
-                # Deserialize list of items from child elements
-                items = []
-                for child in element:
-                    child_tag = child.tag.split('}')[1] if '}' in child.tag else child.tag
-                    if child_tag == tag:
-                        if element_class and hasattr(element_class, 'deserialize'):
-                            # Deserialize to class instance
-                            items.append(element_class.deserialize(child))
-                        else:
-                            # Primitive value
-                            items.append(child.text if child.text else None)
-                setattr(obj, member_name, items)
-            else:
-                # Deserialize single item from child element
-                for child in element:
-                    child_tag = child.tag.split('}')[1] if '}' in child.tag else child.tag
-                    if child_tag == tag:
-                        if element_class and hasattr(element_class, 'deserialize'):
-                            setattr(obj, member_name, element_class.deserialize(child))
-                        else:
-                            setattr(obj, member_name, child.text if child.text else None)
-                        break
-
-        return obj
-
     @staticmethod
     def _member_to_xml_tag(member_name: str) -> str:
         """Convert Python member name to XML tag name.
@@ -533,36 +448,9 @@ class {class_name}:
         return member_name.replace('_', '-').upper()
 '''
     else:
-        # Other classes use the simplified pattern with super() calls
-        code += f'''
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert {class_name} to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "{class_name}":
-        """Create {class_name} from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            {class_name} instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to {class_name} since parent returns ARObject
-        return cast("{class_name}", obj)
-'''
+        # Other classes inherit serialize/deserialize from ARObject
+        # No need to generate these methods anymore - they're handled by the framework!
+        pass
 
     return code
 

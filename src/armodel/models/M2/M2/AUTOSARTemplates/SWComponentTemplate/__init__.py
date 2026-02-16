@@ -1,0 +1,1 @@
+"""SWComponentTemplate module."""

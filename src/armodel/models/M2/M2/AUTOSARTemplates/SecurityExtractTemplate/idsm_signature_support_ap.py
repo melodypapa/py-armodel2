@@ -1,0 +1,56 @@
+"""IdsmSignatureSupportAp AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.CryptoDeployment.crypto_key_slot import (
+    CryptoKeySlot,
+)
+
+
+class IdsmSignatureSupportAp(ARObject):
+    """AUTOSAR IdsmSignatureSupportAp."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "crypto_primitive": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # cryptoPrimitive
+        "key_slot": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CryptoKeySlot,
+        ),  # keySlot
+    }
+
+    def __init__(self) -> None:
+        """Initialize IdsmSignatureSupportAp."""
+        super().__init__()
+        self.crypto_primitive: String = None
+        self.key_slot: Optional[CryptoKeySlot] = None
+
+
+class IdsmSignatureSupportApBuilder:
+    """Builder for IdsmSignatureSupportAp."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: IdsmSignatureSupportAp = IdsmSignatureSupportAp()
+
+    def build(self) -> IdsmSignatureSupportAp:
+        """Build and return IdsmSignatureSupportAp object.
+
+        Returns:
+            IdsmSignatureSupportAp instance
+        """
+        # TODO: Add validation
+        return self._obj

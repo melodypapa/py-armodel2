@@ -1,0 +1,63 @@
+"""EndToEndProtectionVariablePrototype AUTOSAR element."""
+
+from typing import Optional
+import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
+
+
+class EndToEndProtectionVariablePrototype(ARObject):
+    """AUTOSAR EndToEndProtectionVariablePrototype."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableDataPrototype,
+        ),  # receivers
+        "sender": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # sender
+        "short_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortLabel
+    }
+
+    def __init__(self) -> None:
+        """Initialize EndToEndProtectionVariablePrototype."""
+        super().__init__()
+        self.receivers: list[VariableDataPrototype] = []
+        self.sender: Optional[VariableDataPrototype] = None
+        self.short_label: Optional[Identifier] = None
+
+
+class EndToEndProtectionVariablePrototypeBuilder:
+    """Builder for EndToEndProtectionVariablePrototype."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: EndToEndProtectionVariablePrototype = EndToEndProtectionVariablePrototype()
+
+    def build(self) -> EndToEndProtectionVariablePrototype:
+        """Build and return EndToEndProtectionVariablePrototype object.
+
+        Returns:
+            EndToEndProtectionVariablePrototype instance
+        """
+        # TODO: Add validation
+        return self._obj
