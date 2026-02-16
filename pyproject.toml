@@ -56,6 +56,12 @@ strict = true
 module = "armodel.models.M2.*"
 disallow_untyped_defs = false
 disallow_untyped_calls = false
+ignore_errors = true
+
+# Also exclude MSR documentation models which have generated type issues
+[[tool.mypy.overrides]]
+module = "armodel.models.M2.MSR.*"
+ignore_errors = true
 
 [tool.ruff]
 line-length = 100

@@ -1,6 +1,6 @@
 """WhitespaceControlled AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Any, Optional, cast
 import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 

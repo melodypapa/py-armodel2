@@ -3,6 +3,7 @@
 from typing import Optional, cast
 import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_enum import LEnum
 
 
 class LanguageSpecific(ARObject):
@@ -18,7 +19,7 @@ class LanguageSpecific(ARObject):
     def __init__(self) -> None:
         """Initialize LanguageSpecific."""
         super().__init__()
-        self.l: LEnum = None
+        self.l: Optional[LEnum] = None
 
     def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert LanguageSpecific to XML element.
