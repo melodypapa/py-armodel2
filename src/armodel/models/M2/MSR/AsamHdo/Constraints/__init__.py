@@ -1,1 +1,1 @@
-"""AUTOSAR model package."""
+"""Constraints module."""
