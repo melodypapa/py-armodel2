@@ -1,7 +1,9 @@
 """StreamFilterRuleDataLinkLayer AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -15,14 +17,36 @@ class StreamFilterRuleDataLinkLayer(ARObject):
     """AUTOSAR StreamFilterRuleDataLinkLayer."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("destination_mac", None, False, False, StreamFilterMACAddress),  # destinationMac
-        ("ether_type", None, True, False, None),  # etherType
-        ("source_mac", None, False, False, StreamFilterMACAddress),  # sourceMac
-        ("vlan_id", None, True, False, None),  # vlanId
-        ("vlan_priority", None, True, False, None),  # vlanPriority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "destination_mac": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterMACAddress,
+        ),  # destinationMac
+        "ether_type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # etherType
+        "source_mac": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterMACAddress,
+        ),  # sourceMac
+        "vlan_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vlanId
+        "vlan_priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vlanPriority
+    }
 
     def __init__(self) -> None:
         """Initialize StreamFilterRuleDataLinkLayer."""
@@ -32,34 +56,6 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         self.source_mac: Optional[StreamFilterMACAddress] = None
         self.vlan_id: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert StreamFilterRuleDataLinkLayer to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StreamFilterRuleDataLinkLayer":
-        """Create StreamFilterRuleDataLinkLayer from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StreamFilterRuleDataLinkLayer instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to StreamFilterRuleDataLinkLayer since parent returns ARObject
-        return cast("StreamFilterRuleDataLinkLayer", obj)
 
 
 class StreamFilterRuleDataLinkLayerBuilder:

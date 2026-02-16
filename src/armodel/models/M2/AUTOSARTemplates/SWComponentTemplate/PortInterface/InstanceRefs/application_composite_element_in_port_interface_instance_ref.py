@@ -1,7 +1,9 @@
 """ApplicationCompositeElementInPortInterfaceInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -15,13 +17,33 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
     """AUTOSAR ApplicationCompositeElementInPortInterfaceInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, DataInterface),  # base
-        ("context_datas", None, False, True, any (ApplicationComposite)),  # contextDatas
-        ("root_data", None, False, False, AutosarDataPrototype),  # rootData
-        ("target_data", None, False, False, any (ApplicationComposite)),  # targetData
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataInterface,
+        ),  # base
+        "context_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ApplicationComposite),
+        ),  # contextDatas
+        "root_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarDataPrototype,
+        ),  # rootData
+        "target_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ApplicationComposite),
+        ),  # targetData
+    }
 
     def __init__(self) -> None:
         """Initialize ApplicationCompositeElementInPortInterfaceInstanceRef."""
@@ -30,34 +52,6 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
         self.context_datas: list[Any] = []
         self.root_data: Optional[AutosarDataPrototype] = None
         self.target_data: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ApplicationCompositeElementInPortInterfaceInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeElementInPortInterfaceInstanceRef":
-        """Create ApplicationCompositeElementInPortInterfaceInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationCompositeElementInPortInterfaceInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ApplicationCompositeElementInPortInterfaceInstanceRef since parent returns ARObject
-        return cast("ApplicationCompositeElementInPortInterfaceInstanceRef", obj)
 
 
 class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder:

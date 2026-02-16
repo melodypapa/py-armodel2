@@ -1,7 +1,9 @@
 """NvBlockNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
@@ -19,31 +21,122 @@ class NvBlockNeeds(ServiceNeeds):
     """AUTOSAR NvBlockNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("calc_ram_block", None, True, False, None),  # calcRamBlock
-        ("check_static_block_id", None, True, False, None),  # checkStaticBlockId
-        ("cyclic_writing", None, True, False, None),  # cyclicWriting
-        ("n_data_sets", None, True, False, None),  # nDataSets
-        ("n_rom_blocks", None, True, False, None),  # nRomBlocks
-        ("ram_block_status_control", None, False, False, RamBlockStatusControlEnum),  # ramBlockStatusControl
-        ("readonly", None, True, False, None),  # readonly
-        ("reliability_reliability_enum", None, False, False, NvBlockNeeds),  # reliabilityReliabilityEnum
-        ("resistant_to", None, True, False, None),  # resistantTo
-        ("restore_at_start", None, True, False, None),  # restoreAtStart
-        ("select_block_for", None, True, False, None),  # selectBlockFor
-        ("store_at", None, True, False, None),  # storeAt
-        ("store_cyclic", None, True, False, None),  # storeCyclic
-        ("store", None, True, False, None),  # store
-        ("store_immediate", None, True, False, None),  # storeImmediate
-        ("store_on_change", None, True, False, None),  # storeOnChange
-        ("use_auto", None, True, False, None),  # useAuto
-        ("use_crc_comp", None, True, False, None),  # useCRCComp
-        ("write_only_once", None, True, False, None),  # writeOnlyOnce
-        ("write_verification", None, True, False, None),  # writeVerification
-        ("writing", None, True, False, None),  # writing
-        ("writing_priority", None, False, False, NvBlockNeedsWritingPriorityEnum),  # writingPriority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "calc_ram_block": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # calcRamBlock
+        "check_static_block_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # checkStaticBlockId
+        "cyclic_writing": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cyclicWriting
+        "n_data_sets": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nDataSets
+        "n_rom_blocks": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nRomBlocks
+        "ram_block_status_control": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RamBlockStatusControlEnum,
+        ),  # ramBlockStatusControl
+        "readonly": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # readonly
+        "reliability_reliability_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NvBlockNeeds,
+        ),  # reliabilityReliabilityEnum
+        "resistant_to": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # resistantTo
+        "restore_at_start": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # restoreAtStart
+        "select_block_for": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # selectBlockFor
+        "store_at": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # storeAt
+        "store_cyclic": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # storeCyclic
+        "store": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # store
+        "store_immediate": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # storeImmediate
+        "store_on_change": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # storeOnChange
+        "use_auto": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useAuto
+        "use_crc_comp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useCRCComp
+        "write_only_once": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # writeOnlyOnce
+        "write_verification": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # writeVerification
+        "writing": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # writing
+        "writing_priority": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NvBlockNeedsWritingPriorityEnum,
+        ),  # writingPriority
+    }
 
     def __init__(self) -> None:
         """Initialize NvBlockNeeds."""
@@ -70,34 +163,6 @@ class NvBlockNeeds(ServiceNeeds):
         self.write_verification: Optional[Boolean] = None
         self.writing: Optional[PositiveInteger] = None
         self.writing_priority: Optional[NvBlockNeedsWritingPriorityEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NvBlockNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvBlockNeeds":
-        """Create NvBlockNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvBlockNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NvBlockNeeds since parent returns ARObject
-        return cast("NvBlockNeeds", obj)
 
 
 class NvBlockNeedsBuilder:

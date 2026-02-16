@@ -1,7 +1,9 @@
 """AUTOSAR AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
     ARPackage,
@@ -21,13 +23,33 @@ class AUTOSAR(ARObject):
     """AUTOSAR AUTOSAR."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("admin_data", None, False, False, AdminData),  # adminData
-        ("ar_packages", None, False, True, ARPackage),  # arPackages
-        ("file_info", None, False, False, FileInfoComment),  # fileInfo
-        ("introduction", None, False, False, DocumentationBlock),  # introduction
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "admin_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AdminData,
+        ),  # adminData
+        "ar_packages": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ARPackage,
+        ),  # arPackages
+        "file_info": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FileInfoComment,
+        ),  # fileInfo
+        "introduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # introduction
+    }
 
     def __init__(self) -> None:
         """Initialize AUTOSAR."""
@@ -36,34 +58,6 @@ class AUTOSAR(ARObject):
         self.ar_packages: list[ARPackage] = []
         self.file_info: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert AUTOSAR to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AUTOSAR":
-        """Create AUTOSAR from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AUTOSAR instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to AUTOSAR since parent returns ARObject
-        return cast("AUTOSAR", obj)
 
 
 class AUTOSARBuilder:

@@ -1,7 +1,9 @@
 """NonqueuedReceiverComSpec AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import (
     ReceiverComSpec,
 )
@@ -21,17 +23,53 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
     """AUTOSAR NonqueuedReceiverComSpec."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("alive_timeout", None, True, False, None),  # aliveTimeout
-        ("enable_update", None, True, False, None),  # enableUpdate
-        ("filter", None, False, False, DataFilter),  # filter
-        ("handle_data", None, True, False, None),  # handleData
-        ("handle_never", None, True, False, None),  # handleNever
-        ("handle_timeout_enum", None, False, False, HandleTimeoutEnum),  # handleTimeoutEnum
-        ("init_value", None, False, False, ValueSpecification),  # initValue
-        ("timeout", None, False, False, ValueSpecification),  # timeout
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "alive_timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # aliveTimeout
+        "enable_update": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # enableUpdate
+        "filter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataFilter,
+        ),  # filter
+        "handle_data": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # handleData
+        "handle_never": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # handleNever
+        "handle_timeout_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=HandleTimeoutEnum,
+        ),  # handleTimeoutEnum
+        "init_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # initValue
+        "timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # timeout
+    }
 
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
@@ -44,34 +82,6 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         self.handle_timeout_enum: Optional[HandleTimeoutEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.timeout: Optional[ValueSpecification] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NonqueuedReceiverComSpec to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NonqueuedReceiverComSpec":
-        """Create NonqueuedReceiverComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NonqueuedReceiverComSpec instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NonqueuedReceiverComSpec since parent returns ARObject
-        return cast("NonqueuedReceiverComSpec", obj)
 
 
 class NonqueuedReceiverComSpecBuilder:

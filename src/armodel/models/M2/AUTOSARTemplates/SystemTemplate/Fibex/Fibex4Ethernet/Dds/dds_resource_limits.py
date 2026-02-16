@@ -1,7 +1,9 @@
 """DdsResourceLimits AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -12,12 +14,24 @@ class DdsResourceLimits(ARObject):
     """AUTOSAR DdsResourceLimits."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("max_instances", None, True, False, None),  # maxInstances
-        ("max_samples", None, True, False, None),  # maxSamples
-        ("max_samples_per_instance", None, True, False, None),  # maxSamplesPerInstance
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "max_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxInstances
+        "max_samples": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSamples
+        "max_samples_per_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSamplesPerInstance
+    }
 
     def __init__(self) -> None:
         """Initialize DdsResourceLimits."""
@@ -25,34 +39,6 @@ class DdsResourceLimits(ARObject):
         self.max_instances: Optional[PositiveInteger] = None
         self.max_samples: Optional[PositiveInteger] = None
         self.max_samples_per_instance: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DdsResourceLimits to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsResourceLimits":
-        """Create DdsResourceLimits from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsResourceLimits instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DdsResourceLimits since parent returns ARObject
-        return cast("DdsResourceLimits", obj)
 
 
 class DdsResourceLimitsBuilder:

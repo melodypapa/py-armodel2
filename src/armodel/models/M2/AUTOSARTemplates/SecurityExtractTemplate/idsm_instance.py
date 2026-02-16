@@ -1,7 +1,9 @@
 """IdsmInstance AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
 )
@@ -30,17 +32,55 @@ class IdsmInstance(IdsCommonElement):
     """AUTOSAR IdsmInstance."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("block_states", None, False, True, BlockState),  # blockStates
-        ("ecu_instance", None, False, False, EcuInstance),  # ecuInstance
-        ("idsm_instance_id", None, True, False, None),  # idsmInstanceId
-        ("idsm_module", None, False, False, IdsmModuleInstantiation),  # idsmModule
-        ("rate_limitation", None, False, False, IdsmRateLimitation),  # rateLimitation
-        ("signature", None, False, False, any (IdsmSignatureSupport)),  # signature
-        ("timestamp", None, True, False, None),  # timestamp
-        ("traffic_limitation", None, False, False, IdsmTrafficLimitation),  # trafficLimitation
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "block_states": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BlockState,
+        ),  # blockStates
+        "ecu_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcuInstance,
+        ),  # ecuInstance
+        "idsm_instance_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # idsmInstanceId
+        "idsm_module": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IdsmModuleInstantiation,
+        ),  # idsmModule
+        "rate_limitation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IdsmRateLimitation,
+        ),  # rateLimitation
+        "signature": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IdsmSignatureSupport),
+        ),  # signature
+        "timestamp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timestamp
+        "traffic_limitation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IdsmTrafficLimitation,
+        ),  # trafficLimitation
+    }
 
     def __init__(self) -> None:
         """Initialize IdsmInstance."""
@@ -53,34 +93,6 @@ class IdsmInstance(IdsCommonElement):
         self.signature: Optional[Any] = None
         self.timestamp: Optional[String] = None
         self.traffic_limitation: Optional[IdsmTrafficLimitation] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IdsmInstance to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmInstance":
-        """Create IdsmInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmInstance instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IdsmInstance since parent returns ARObject
-        return cast("IdsmInstance", obj)
 
 
 class IdsmInstanceBuilder:

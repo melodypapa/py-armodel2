@@ -1,7 +1,9 @@
 """PortAPIOption AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -24,16 +26,49 @@ class PortAPIOption(ARObject):
     """AUTOSAR PortAPIOption."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("enable_take", None, True, False, None),  # enableTake
-        ("error_handling", None, False, False, DataTransformation),  # errorHandling
-        ("indirect_api", None, True, False, None),  # indirectAPI
-        ("port", None, False, False, PortPrototype),  # port
-        ("port_arg_values", None, False, True, PortDefinedArgumentValue),  # portArgValues
-        ("supporteds", None, False, True, SwcSupportedFeature),  # supporteds
-        ("transformer", None, False, False, DataTransformation),  # transformer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "enable_take": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # enableTake
+        "error_handling": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformation,
+        ),  # errorHandling
+        "indirect_api": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # indirectAPI
+        "port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # port
+        "port_arg_values": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortDefinedArgumentValue,
+        ),  # portArgValues
+        "supporteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcSupportedFeature,
+        ),  # supporteds
+        "transformer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformation,
+        ),  # transformer
+    }
 
     def __init__(self) -> None:
         """Initialize PortAPIOption."""
@@ -45,34 +80,6 @@ class PortAPIOption(ARObject):
         self.port_arg_values: list[PortDefinedArgumentValue] = []
         self.supporteds: list[SwcSupportedFeature] = []
         self.transformer: Optional[DataTransformation] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PortAPIOption to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortAPIOption":
-        """Create PortAPIOption from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortAPIOption instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PortAPIOption since parent returns ARObject
-        return cast("PortAPIOption", obj)
 
 
 class PortAPIOptionBuilder:

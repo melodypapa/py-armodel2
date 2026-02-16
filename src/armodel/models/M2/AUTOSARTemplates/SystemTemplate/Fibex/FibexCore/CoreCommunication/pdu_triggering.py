@@ -1,7 +1,9 @@
 """PduTriggering AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -26,14 +28,39 @@ class PduTriggering(Identifiable):
     """AUTOSAR PduTriggering."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("i_pdu", None, False, False, Pdu),  # iPdu
-        ("i_pdu_ports", None, False, True, IPduPort),  # iPduPorts
-        ("i_signals", None, False, True, ISignalTriggering),  # iSignals
-        ("sec_oc_crypto_service", None, False, False, SecOcCryptoServiceMapping),  # secOcCryptoService
-        ("trigger_i_pdu_sends", None, False, True, TriggerIPduSendCondition),  # triggerIPduSends
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "i_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Pdu,
+        ),  # iPdu
+        "i_pdu_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IPduPort,
+        ),  # iPduPorts
+        "i_signals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalTriggering,
+        ),  # iSignals
+        "sec_oc_crypto_service": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SecOcCryptoServiceMapping,
+        ),  # secOcCryptoService
+        "trigger_i_pdu_sends": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TriggerIPduSendCondition,
+        ),  # triggerIPduSends
+    }
 
     def __init__(self) -> None:
         """Initialize PduTriggering."""
@@ -43,34 +70,6 @@ class PduTriggering(Identifiable):
         self.i_signals: list[ISignalTriggering] = []
         self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
         self.trigger_i_pdu_sends: list[TriggerIPduSendCondition] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PduTriggering to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PduTriggering":
-        """Create PduTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PduTriggering instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PduTriggering since parent returns ARObject
-        return cast("PduTriggering", obj)
 
 
 class PduTriggeringBuilder:

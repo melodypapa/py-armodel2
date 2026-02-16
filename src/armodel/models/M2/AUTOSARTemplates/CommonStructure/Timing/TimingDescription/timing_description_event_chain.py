@@ -1,7 +1,9 @@
 """TimingDescriptionEventChain AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
     TimingDescription,
 )
@@ -17,13 +19,32 @@ class TimingDescriptionEventChain(TimingDescription):
     """AUTOSAR TimingDescriptionEventChain."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("is_pipelining", None, True, False, None),  # isPipelining
-        ("response", None, False, False, TimingDescriptionEvent),  # response
-        ("segments", None, False, True, TimingDescriptionEvent),  # segments
-        ("stimulus", None, False, False, TimingDescriptionEvent),  # stimulus
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "is_pipelining": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isPipelining
+        "response": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingDescriptionEvent,
+        ),  # response
+        "segments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingDescriptionEvent,
+        ),  # segments
+        "stimulus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingDescriptionEvent,
+        ),  # stimulus
+    }
 
     def __init__(self) -> None:
         """Initialize TimingDescriptionEventChain."""
@@ -32,34 +53,6 @@ class TimingDescriptionEventChain(TimingDescription):
         self.response: Optional[TimingDescriptionEvent] = None
         self.segments: list[TimingDescriptionEvent] = []
         self.stimulus: Optional[TimingDescriptionEvent] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TimingDescriptionEventChain to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingDescriptionEventChain":
-        """Create TimingDescriptionEventChain from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingDescriptionEventChain instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TimingDescriptionEventChain since parent returns ARObject
-        return cast("TimingDescriptionEventChain", obj)
 
 
 class TimingDescriptionEventChainBuilder:

@@ -1,7 +1,9 @@
 """TransformerHardErrorEvent AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
@@ -17,45 +19,27 @@ class TransformerHardErrorEvent(RTEEvent):
     """AUTOSAR TransformerHardErrorEvent."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("operation", None, False, False, ClientServerOperation),  # operation
-        ("required_trigger", None, False, False, Trigger),  # requiredTrigger
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "operation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ClientServerOperation,
+        ),  # operation
+        "required_trigger": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Trigger,
+        ),  # requiredTrigger
+    }
 
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
         self.required_trigger: Optional[Trigger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TransformerHardErrorEvent to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransformerHardErrorEvent":
-        """Create TransformerHardErrorEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransformerHardErrorEvent instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TransformerHardErrorEvent since parent returns ARObject
-        return cast("TransformerHardErrorEvent", obj)
 
 
 class TransformerHardErrorEventBuilder:

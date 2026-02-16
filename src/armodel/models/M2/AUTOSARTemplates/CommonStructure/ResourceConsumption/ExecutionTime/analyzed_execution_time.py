@@ -1,7 +1,9 @@
 """AnalyzedExecutionTime AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
     ExecutionTime,
 )
@@ -14,45 +16,27 @@ class AnalyzedExecutionTime(ExecutionTime):
     """AUTOSAR AnalyzedExecutionTime."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("best_case", None, False, False, MultidimensionalTime),  # bestCase
-        ("worst_case", None, False, False, MultidimensionalTime),  # worstCase
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "best_case": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # bestCase
+        "worst_case": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # worstCase
+    }
 
     def __init__(self) -> None:
         """Initialize AnalyzedExecutionTime."""
         super().__init__()
         self.best_case: Optional[MultidimensionalTime] = None
         self.worst_case: Optional[MultidimensionalTime] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert AnalyzedExecutionTime to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AnalyzedExecutionTime":
-        """Create AnalyzedExecutionTime from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AnalyzedExecutionTime instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to AnalyzedExecutionTime since parent returns ARObject
-        return cast("AnalyzedExecutionTime", obj)
 
 
 class AnalyzedExecutionTimeBuilder:

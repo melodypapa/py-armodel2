@@ -1,7 +1,9 @@
 """EcucCommonAttributes AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
@@ -22,14 +24,36 @@ class EcucCommonAttributes(EcucDefinitionElement):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("multiplicities", None, False, True, EcucMultiplicityConfigurationClass),  # multiplicities
-        ("origin", None, True, False, None),  # origin
-        ("post_build_variant", None, True, False, None),  # postBuildVariant
-        ("requires_index", None, True, False, None),  # requiresIndex
-        ("value_configs", None, False, True, EcucValueConfigurationClass),  # valueConfigs
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "multiplicities": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcucMultiplicityConfigurationClass,
+        ),  # multiplicities
+        "origin": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # origin
+        "post_build_variant": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # postBuildVariant
+        "requires_index": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # requiresIndex
+        "value_configs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcucValueConfigurationClass,
+        ),  # valueConfigs
+    }
 
     def __init__(self) -> None:
         """Initialize EcucCommonAttributes."""
@@ -39,34 +63,6 @@ class EcucCommonAttributes(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.requires_index: Optional[Boolean] = None
         self.value_configs: list[EcucValueConfigurationClass] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcucCommonAttributes to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucCommonAttributes":
-        """Create EcucCommonAttributes from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucCommonAttributes instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcucCommonAttributes since parent returns ARObject
-        return cast("EcucCommonAttributes", obj)
 
 
 class EcucCommonAttributesBuilder:

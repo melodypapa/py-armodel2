@@ -1,7 +1,9 @@
 """FirewallRule AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -14,19 +16,67 @@ class FirewallRule(ARElement):
     """AUTOSAR FirewallRule."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bucket_size", None, True, False, None),  # bucketSize
-        ("data_link_layer_rule", None, False, False, any (DataLinkLayerRule)),  # dataLinkLayerRule
-        ("dds_rule", None, False, False, any (DdsRule)),  # ddsRule
-        ("do_ip_rule", None, False, False, any (DoIpRule)),  # doIpRule
-        ("network_layer_rule", None, False, False, any (NetworkLayerRule)),  # networkLayerRule
-        ("payload_byte_patterns", None, False, True, any (PayloadBytePattern)),  # payloadBytePatterns
-        ("refill_amount", None, True, False, None),  # refillAmount
-        ("someip_rule", None, False, False, any (SomeipProtocolRule)),  # someipRule
-        ("someip_sd_rule", None, False, False, any (SomeipSdRule)),  # someipSdRule
-        ("transport_layer_rule", None, False, False, any (TransportLayerRule)),  # transportLayerRule
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bucket_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # bucketSize
+        "data_link_layer_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DataLinkLayerRule),
+        ),  # dataLinkLayerRule
+        "dds_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DdsRule),
+        ),  # ddsRule
+        "do_ip_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DoIpRule),
+        ),  # doIpRule
+        "network_layer_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (NetworkLayerRule),
+        ),  # networkLayerRule
+        "payload_byte_patterns": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (PayloadBytePattern),
+        ),  # payloadBytePatterns
+        "refill_amount": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # refillAmount
+        "someip_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SomeipProtocolRule),
+        ),  # someipRule
+        "someip_sd_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SomeipSdRule),
+        ),  # someipSdRule
+        "transport_layer_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (TransportLayerRule),
+        ),  # transportLayerRule
+    }
 
     def __init__(self) -> None:
         """Initialize FirewallRule."""
@@ -41,34 +91,6 @@ class FirewallRule(ARElement):
         self.someip_rule: Optional[Any] = None
         self.someip_sd_rule: Optional[Any] = None
         self.transport_layer_rule: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FirewallRule to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FirewallRule":
-        """Create FirewallRule from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FirewallRule instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FirewallRule since parent returns ARObject
-        return cast("FirewallRule", obj)
 
 
 class FirewallRuleBuilder:

@@ -1,7 +1,9 @@
 """ExecutableEntity AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -27,16 +29,50 @@ class ExecutableEntity(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("activations", None, False, True, ExecutableEntity),  # activations
-        ("can_enters", None, False, True, ExclusiveArea),  # canEnters
-        ("exclusive_area_nestings", None, False, True, ExclusiveAreaNestingOrder),  # exclusiveAreaNestings
-        ("minimum_start", None, True, False, None),  # minimumStart
-        ("reentrancy_level_enum", None, False, False, ReentrancyLevelEnum),  # reentrancyLevelEnum
-        ("runs_insides", None, False, True, ExclusiveArea),  # runsInsides
-        ("sw_addr_method", None, False, False, SwAddrMethod),  # swAddrMethod
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "activations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExecutableEntity,
+        ),  # activations
+        "can_enters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExclusiveArea,
+        ),  # canEnters
+        "exclusive_area_nestings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExclusiveAreaNestingOrder,
+        ),  # exclusiveAreaNestings
+        "minimum_start": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minimumStart
+        "reentrancy_level_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ReentrancyLevelEnum,
+        ),  # reentrancyLevelEnum
+        "runs_insides": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExclusiveArea,
+        ),  # runsInsides
+        "sw_addr_method": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwAddrMethod,
+        ),  # swAddrMethod
+    }
 
     def __init__(self) -> None:
         """Initialize ExecutableEntity."""
@@ -48,34 +84,6 @@ class ExecutableEntity(Identifiable):
         self.reentrancy_level_enum: Optional[ReentrancyLevelEnum] = None
         self.runs_insides: list[ExclusiveArea] = []
         self.sw_addr_method: Optional[SwAddrMethod] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ExecutableEntity to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ExecutableEntity":
-        """Create ExecutableEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ExecutableEntity instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ExecutableEntity since parent returns ARObject
-        return cast("ExecutableEntity", obj)
 
 
 class ExecutableEntityBuilder:

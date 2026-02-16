@@ -1,7 +1,9 @@
 """CanControllerConfigurationRequirements AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_communication_controller_attributes import (
     AbstractCanCommunicationControllerAttributes,
 )
@@ -14,15 +16,41 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
     """AUTOSAR CanControllerConfigurationRequirements."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("max_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # maxNumberOfTimeQuantaPer
-        ("max_sample", None, True, False, None),  # maxSample
-        ("max_sync_jump", None, True, False, None),  # maxSyncJump
-        ("min_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # minNumberOfTimeQuantaPer
-        ("min_sample_point", None, True, False, None),  # minSamplePoint
-        ("min_sync_jump", None, True, False, None),  # minSyncJump
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "max_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # maxNumberOfTimeQuantaPer
+        "max_sample": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSample
+        "max_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSyncJump
+        "min_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # minNumberOfTimeQuantaPer
+        "min_sample_point": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSamplePoint
+        "min_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSyncJump
+    }
 
     def __init__(self) -> None:
         """Initialize CanControllerConfigurationRequirements."""
@@ -33,34 +61,6 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         self.min_number_of_time_quanta_per: Optional[Any] = None
         self.min_sample_point: Optional[Float] = None
         self.min_sync_jump: Optional[Float] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanControllerConfigurationRequirements to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanControllerConfigurationRequirements":
-        """Create CanControllerConfigurationRequirements from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanControllerConfigurationRequirements instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanControllerConfigurationRequirements since parent returns ARObject
-        return cast("CanControllerConfigurationRequirements", obj)
 
 
 class CanControllerConfigurationRequirementsBuilder:

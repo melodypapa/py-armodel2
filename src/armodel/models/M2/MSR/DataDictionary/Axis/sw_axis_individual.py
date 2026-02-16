@@ -1,7 +1,9 @@
 """SwAxisIndividual AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
 )
@@ -32,17 +34,55 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisIndividual."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("compu_method", None, False, False, CompuMethod),  # compuMethod
-        ("data_constr", None, False, False, DataConstr),  # dataConstr
-        ("input_variable", None, False, False, ApplicationPrimitiveDataType),  # inputVariable
-        ("sw_axis_generic", None, False, False, SwAxisGeneric),  # swAxisGeneric
-        ("sw_max_axis", None, True, False, None),  # swMaxAxis
-        ("sw_min_axis", None, True, False, None),  # swMinAxis
-        ("sw_variable_ref_proxies", None, False, True, SwVariableRefProxy),  # swVariableRefProxies
-        ("unit", None, False, False, Unit),  # unit
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "compu_method": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CompuMethod,
+        ),  # compuMethod
+        "data_constr": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataConstr,
+        ),  # dataConstr
+        "input_variable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationPrimitiveDataType,
+        ),  # inputVariable
+        "sw_axis_generic": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwAxisGeneric,
+        ),  # swAxisGeneric
+        "sw_max_axis": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swMaxAxis
+        "sw_min_axis": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swMinAxis
+        "sw_variable_ref_proxies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwVariableRefProxy,
+        ),  # swVariableRefProxies
+        "unit": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Unit,
+        ),  # unit
+    }
 
     def __init__(self) -> None:
         """Initialize SwAxisIndividual."""
@@ -55,34 +95,6 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_min_axis: Optional[Integer] = None
         self.sw_variable_ref_proxies: list[SwVariableRefProxy] = []
         self.unit: Optional[Unit] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwAxisIndividual to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwAxisIndividual":
-        """Create SwAxisIndividual from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwAxisIndividual instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwAxisIndividual since parent returns ARObject
-        return cast("SwAxisIndividual", obj)
 
 
 class SwAxisIndividualBuilder:

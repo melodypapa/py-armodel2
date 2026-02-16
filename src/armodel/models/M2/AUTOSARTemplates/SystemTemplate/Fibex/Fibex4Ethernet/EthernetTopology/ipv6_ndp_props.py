@@ -1,7 +1,9 @@
 """Ipv6NdpProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -14,22 +16,74 @@ class Ipv6NdpProps(ARObject):
     """AUTOSAR Ipv6NdpProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("tcp_ip_ndp_default", None, True, False, None),  # tcpIpNdpDefault
-        ("tcp_ip_ndp_default_router_list_size", None, True, False, None),  # tcpIpNdpDefaultRouterListSize
-        ("tcp_ip_ndp", None, True, False, None),  # tcpIpNdp
-        ("tcp_ip_ndp_delay_first_probe_time_value", None, True, False, None),  # tcpIpNdpDelayFirstProbeTimeValue
-        ("tcp_ip_ndp_max_random_factor", None, True, False, None),  # tcpIpNdpMaxRandomFactor
-        ("tcp_ip_ndp_max_rtr", None, True, False, None),  # tcpIpNdpMaxRtr
-        ("tcp_ip_ndp_min_random_factor", None, True, False, None),  # tcpIpNdpMinRandomFactor
-        ("tcp_ip_ndp_num", None, True, False, None),  # tcpIpNdpNum
-        ("tcp_ip_ndp_packet", None, True, False, None),  # tcpIpNdpPacket
-        ("tcp_ip_ndp_prefix", None, True, False, None),  # tcpIpNdpPrefix
-        ("tcp_ip_ndp_rnd_rtr", None, True, False, None),  # tcpIpNdpRndRtr
-        ("tcp_ip_ndp_rtr", None, True, False, None),  # tcpIpNdpRtr
-        ("tcp_ip_ndp_slaac", None, True, False, None),  # tcpIpNdpSlaac
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "tcp_ip_ndp_default": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpDefault
+        "tcp_ip_ndp_default_router_list_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpDefaultRouterListSize
+        "tcp_ip_ndp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdp
+        "tcp_ip_ndp_delay_first_probe_time_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpDelayFirstProbeTimeValue
+        "tcp_ip_ndp_max_random_factor": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpMaxRandomFactor
+        "tcp_ip_ndp_max_rtr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpMaxRtr
+        "tcp_ip_ndp_min_random_factor": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpMinRandomFactor
+        "tcp_ip_ndp_num": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpNum
+        "tcp_ip_ndp_packet": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpPacket
+        "tcp_ip_ndp_prefix": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpPrefix
+        "tcp_ip_ndp_rnd_rtr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpRndRtr
+        "tcp_ip_ndp_rtr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpRtr
+        "tcp_ip_ndp_slaac": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpNdpSlaac
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv6NdpProps."""
@@ -47,34 +101,6 @@ class Ipv6NdpProps(ARObject):
         self.tcp_ip_ndp_rnd_rtr: Optional[Boolean] = None
         self.tcp_ip_ndp_rtr: Optional[TimeValue] = None
         self.tcp_ip_ndp_slaac: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv6NdpProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv6NdpProps":
-        """Create Ipv6NdpProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv6NdpProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv6NdpProps since parent returns ARObject
-        return cast("Ipv6NdpProps", obj)
 
 
 class Ipv6NdpPropsBuilder:

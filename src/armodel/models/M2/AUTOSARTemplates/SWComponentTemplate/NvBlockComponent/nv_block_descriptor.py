@@ -1,7 +1,9 @@
 """NvBlockDescriptor AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -41,21 +43,80 @@ class NvBlockDescriptor(Identifiable):
     """AUTOSAR NvBlockDescriptor."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_server_ports", None, False, True, RoleBasedPortAssignment),  # clientServerPorts
-        ("constant_values", None, False, True, ConstantSpecification),  # constantValues
-        ("data_types", None, False, True, DataTypeMappingSet),  # dataTypes
-        ("instantiation_data_defs", None, False, True, InstantiationDataDefProps),  # instantiationDataDefs
-        ("mode_switch_events", None, False, True, any (ModeSwitchEvent)),  # modeSwitchEvents
-        ("nv_block_datas", None, False, True, NvBlockDataMapping),  # nvBlockDatas
-        ("nv_block_needs", None, False, False, NvBlockNeeds),  # nvBlockNeeds
-        ("ram_block", None, False, False, VariableDataPrototype),  # ramBlock
-        ("rom_block", None, False, False, ParameterDataPrototype),  # romBlock
-        ("support_dirty", None, True, False, None),  # supportDirty
-        ("timing_event", None, False, False, TimingEvent),  # timingEvent
-        ("writing_strategies", None, False, True, any (RoleBasedData)),  # writingStrategies
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_server_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RoleBasedPortAssignment,
+        ),  # clientServerPorts
+        "constant_values": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConstantSpecification,
+        ),  # constantValues
+        "data_types": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DataTypeMappingSet,
+        ),  # dataTypes
+        "instantiation_data_defs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=InstantiationDataDefProps,
+        ),  # instantiationDataDefs
+        "mode_switch_events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ModeSwitchEvent),
+        ),  # modeSwitchEvents
+        "nv_block_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NvBlockDataMapping,
+        ),  # nvBlockDatas
+        "nv_block_needs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NvBlockNeeds,
+        ),  # nvBlockNeeds
+        "ram_block": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # ramBlock
+        "rom_block": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ParameterDataPrototype,
+        ),  # romBlock
+        "support_dirty": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # supportDirty
+        "timing_event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingEvent,
+        ),  # timingEvent
+        "writing_strategies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (RoleBasedData),
+        ),  # writingStrategies
+    }
 
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
@@ -72,34 +133,6 @@ class NvBlockDescriptor(Identifiable):
         self.support_dirty: Optional[Boolean] = None
         self.timing_event: Optional[TimingEvent] = None
         self.writing_strategies: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NvBlockDescriptor to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvBlockDescriptor":
-        """Create NvBlockDescriptor from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvBlockDescriptor instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NvBlockDescriptor since parent returns ARObject
-        return cast("NvBlockDescriptor", obj)
 
 
 class NvBlockDescriptorBuilder:

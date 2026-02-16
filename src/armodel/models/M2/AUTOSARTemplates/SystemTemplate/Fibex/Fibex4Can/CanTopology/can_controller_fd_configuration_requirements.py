@@ -1,7 +1,9 @@
 """CanControllerFdConfigurationRequirements AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -15,19 +17,61 @@ class CanControllerFdConfigurationRequirements(ARObject):
     """AUTOSAR CanControllerFdConfigurationRequirements."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("max_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # maxNumberOfTimeQuantaPer
-        ("max_sample", None, True, False, None),  # maxSample
-        ("max_sync_jump", None, True, False, None),  # maxSyncJump
-        ("max_trcv_delay", None, True, False, None),  # maxTrcvDelay
-        ("min_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # minNumberOfTimeQuantaPer
-        ("min_sample_point", None, True, False, None),  # minSamplePoint
-        ("min_sync_jump", None, True, False, None),  # minSyncJump
-        ("min_trcv_delay", None, True, False, None),  # minTrcvDelay
-        ("padding_value", None, True, False, None),  # paddingValue
-        ("tx_bit_rate_switch", None, True, False, None),  # txBitRateSwitch
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "max_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # maxNumberOfTimeQuantaPer
+        "max_sample": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSample
+        "max_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSyncJump
+        "max_trcv_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxTrcvDelay
+        "min_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # minNumberOfTimeQuantaPer
+        "min_sample_point": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSamplePoint
+        "min_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSyncJump
+        "min_trcv_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minTrcvDelay
+        "padding_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # paddingValue
+        "tx_bit_rate_switch": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # txBitRateSwitch
+    }
 
     def __init__(self) -> None:
         """Initialize CanControllerFdConfigurationRequirements."""
@@ -42,34 +86,6 @@ class CanControllerFdConfigurationRequirements(ARObject):
         self.min_trcv_delay: Optional[TimeValue] = None
         self.padding_value: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanControllerFdConfigurationRequirements to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanControllerFdConfigurationRequirements":
-        """Create CanControllerFdConfigurationRequirements from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanControllerFdConfigurationRequirements instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanControllerFdConfigurationRequirements since parent returns ARObject
-        return cast("CanControllerFdConfigurationRequirements", obj)
 
 
 class CanControllerFdConfigurationRequirementsBuilder:

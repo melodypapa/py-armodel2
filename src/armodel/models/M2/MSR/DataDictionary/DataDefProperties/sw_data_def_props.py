@@ -1,7 +1,9 @@
 """SwDataDefProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     AlignmentType,
@@ -69,38 +71,175 @@ class SwDataDefProps(ARObject):
     """AUTOSAR SwDataDefProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("additional_native", None, True, False, None),  # additionalNative
-        ("annotations", None, False, True, Annotation),  # annotations
-        ("base_type", None, False, False, SwBaseType),  # baseType
-        ("compu_method", None, False, False, CompuMethod),  # compuMethod
-        ("data_constr", None, False, False, DataConstr),  # dataConstr
-        ("display_format_string", None, True, False, None),  # displayFormatString
-        ("display", None, False, False, DisplayPresentationEnum),  # display
-        ("implementation", None, False, False, AbstractImplementationDataType),  # implementation
-        ("invalid_value", None, False, False, ValueSpecification),  # invalidValue
-        ("step_size", None, True, False, None),  # stepSize
-        ("sw_addr_method", None, False, False, SwAddrMethod),  # swAddrMethod
-        ("sw_alignment", None, True, False, None),  # swAlignment
-        ("sw_bit", None, False, False, SwBitRepresentation),  # swBit
-        ("sw_calibration_access", None, False, False, SwCalibrationAccessEnum),  # swCalibrationAccess
-        ("sw_calprm_axis_set", None, False, False, SwCalprmAxisSet),  # swCalprmAxisSet
-        ("sw_comparisons", None, False, True, SwVariableRefProxy),  # swComparisons
-        ("sw_data", None, False, False, SwDataDependency),  # swData
-        ("sw_host_variable", None, False, False, SwVariableRefProxy),  # swHostVariable
-        ("sw_impl_policy_enum", None, False, False, SwImplPolicyEnum),  # swImplPolicyEnum
-        ("sw_intended", None, True, False, None),  # swIntended
-        ("sw_interpolation", None, True, False, None),  # swInterpolation
-        ("sw_is_virtual", None, True, False, None),  # swIsVirtual
-        ("sw_pointer_target_props", None, False, False, SwPointerTargetProps),  # swPointerTargetProps
-        ("sw_record", None, False, False, SwRecordLayout),  # swRecord
-        ("sw_refresh", None, False, False, MultidimensionalTime),  # swRefresh
-        ("sw_text_props", None, False, False, SwTextProps),  # swTextProps
-        ("sw_value_blocks", None, False, True, None),  # swValueBlocks
-        ("unit", None, False, False, Unit),  # unit
-        ("value_axis_data", None, False, False, ApplicationPrimitiveDataType),  # valueAxisData
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "additional_native": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # additionalNative
+        "annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Annotation,
+        ),  # annotations
+        "base_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwBaseType,
+        ),  # baseType
+        "compu_method": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CompuMethod,
+        ),  # compuMethod
+        "data_constr": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataConstr,
+        ),  # dataConstr
+        "display_format_string": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # displayFormatString
+        "display": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DisplayPresentationEnum,
+        ),  # display
+        "implementation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AbstractImplementationDataType,
+        ),  # implementation
+        "invalid_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # invalidValue
+        "step_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # stepSize
+        "sw_addr_method": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwAddrMethod,
+        ),  # swAddrMethod
+        "sw_alignment": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swAlignment
+        "sw_bit": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwBitRepresentation,
+        ),  # swBit
+        "sw_calibration_access": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwCalibrationAccessEnum,
+        ),  # swCalibrationAccess
+        "sw_calprm_axis_set": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwCalprmAxisSet,
+        ),  # swCalprmAxisSet
+        "sw_comparisons": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwVariableRefProxy,
+        ),  # swComparisons
+        "sw_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDependency,
+        ),  # swData
+        "sw_host_variable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwVariableRefProxy,
+        ),  # swHostVariable
+        "sw_impl_policy_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwImplPolicyEnum,
+        ),  # swImplPolicyEnum
+        "sw_intended": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swIntended
+        "sw_interpolation": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swInterpolation
+        "sw_is_virtual": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swIsVirtual
+        "sw_pointer_target_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwPointerTargetProps,
+        ),  # swPointerTargetProps
+        "sw_record": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwRecordLayout,
+        ),  # swRecord
+        "sw_refresh": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # swRefresh
+        "sw_text_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwTextProps,
+        ),  # swTextProps
+        "sw_value_blocks": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # swValueBlocks
+        "unit": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Unit,
+        ),  # unit
+        "value_axis_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationPrimitiveDataType,
+        ),  # valueAxisData
+    }
 
     def __init__(self) -> None:
         """Initialize SwDataDefProps."""
@@ -134,34 +273,6 @@ class SwDataDefProps(ARObject):
         self.sw_value_blocks: list[Numerical] = []
         self.unit: Optional[Unit] = None
         self.value_axis_data: Optional[ApplicationPrimitiveDataType] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwDataDefProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwDataDefProps":
-        """Create SwDataDefProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwDataDefProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwDataDefProps since parent returns ARObject
-        return cast("SwDataDefProps", obj)
 
 
 class SwDataDefPropsBuilder:

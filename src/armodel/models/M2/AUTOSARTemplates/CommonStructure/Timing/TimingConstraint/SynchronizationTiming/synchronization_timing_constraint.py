@@ -1,7 +1,9 @@
 """SynchronizationTimingConstraint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
@@ -17,14 +19,39 @@ class SynchronizationTimingConstraint(TimingConstraint):
     """AUTOSAR SynchronizationTimingConstraint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("event", None, False, False, EventOccurrenceKindEnum),  # event
-        ("scopes", None, False, True, TimingDescriptionEvent),  # scopes
-        ("scope_events", None, False, True, TimingDescriptionEvent),  # scopeEvents
-        ("synchronization", None, False, False, SynchronizationTypeEnum),  # synchronization
-        ("tolerance", None, False, False, MultidimensionalTime),  # tolerance
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EventOccurrenceKindEnum,
+        ),  # event
+        "scopes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingDescriptionEvent,
+        ),  # scopes
+        "scope_events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingDescriptionEvent,
+        ),  # scopeEvents
+        "synchronization": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SynchronizationTypeEnum,
+        ),  # synchronization
+        "tolerance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # tolerance
+    }
 
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
@@ -34,34 +61,6 @@ class SynchronizationTimingConstraint(TimingConstraint):
         self.scope_events: list[TimingDescriptionEvent] = []
         self.synchronization: Optional[SynchronizationTypeEnum] = None
         self.tolerance: Optional[MultidimensionalTime] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SynchronizationTimingConstraint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SynchronizationTimingConstraint":
-        """Create SynchronizationTimingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SynchronizationTimingConstraint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SynchronizationTimingConstraint since parent returns ARObject
-        return cast("SynchronizationTimingConstraint", obj)
 
 
 class SynchronizationTimingConstraintBuilder:

@@ -1,7 +1,9 @@
 """FlexrayCluster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -15,42 +17,174 @@ class FlexrayCluster(ARObject):
     """AUTOSAR FlexrayCluster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("action_point_offset", None, True, False, None),  # actionPointOffset
-        ("bit", None, True, False, None),  # bit
-        ("cas_rx_low_max", None, True, False, None),  # casRxLowMax
-        ("cold_start", None, True, False, None),  # coldStart
-        ("cycle", None, True, False, None),  # cycle
-        ("cycle_count_max", None, True, False, None),  # cycleCountMax
-        ("detect_nit_error", None, True, False, None),  # detectNitError
-        ("dynamic_slot_idle_phase", None, True, False, None),  # dynamicSlotIdlePhase
-        ("ignore_after_tx", None, True, False, None),  # ignoreAfterTx
-        ("listen_noise", None, True, False, None),  # listenNoise
-        ("macro_per_cycle", None, True, False, None),  # macroPerCycle
-        ("macrotick", None, True, False, None),  # macrotick
-        ("max_without", None, True, False, None),  # maxWithout
-        ("minislot_action", None, True, False, None),  # minislotAction
-        ("minislot_duration", None, True, False, None),  # minislotDuration
-        ("network_idle_time", None, True, False, None),  # networkIdleTime
-        ("network", None, True, False, None),  # network
-        ("number_of_minislots", None, True, False, None),  # numberOfMinislots
-        ("number_of_static_slots", None, True, False, None),  # numberOfStaticSlots
-        ("offset_correction", None, True, False, None),  # offsetCorrection
-        ("payload_length", None, True, False, None),  # payloadLength
-        ("safety_margin", None, True, False, None),  # safetyMargin
-        ("sample_clock_period", None, True, False, None),  # sampleClockPeriod
-        ("static_slot", None, True, False, None),  # staticSlot
-        ("symbol_window", None, True, False, None),  # symbolWindow
-        ("sync_frame_id", None, True, False, None),  # syncFrameId
-        ("tranceiver", None, True, False, None),  # tranceiver
-        ("transmission", None, True, False, None),  # transmission
-        ("wakeup_rx_idle", None, True, False, None),  # wakeupRxIdle
-        ("wakeup_rx_low", None, True, False, None),  # wakeupRxLow
-        ("wakeup_rx", None, True, False, None),  # wakeupRx
-        ("wakeup_tx_active", None, True, False, None),  # wakeupTxActive
-        ("wakeup_tx_idle", None, True, False, None),  # wakeupTxIdle
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "action_point_offset": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # actionPointOffset
+        "bit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # bit
+        "cas_rx_low_max": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # casRxLowMax
+        "cold_start": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # coldStart
+        "cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cycle
+        "cycle_count_max": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cycleCountMax
+        "detect_nit_error": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # detectNitError
+        "dynamic_slot_idle_phase": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dynamicSlotIdlePhase
+        "ignore_after_tx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ignoreAfterTx
+        "listen_noise": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # listenNoise
+        "macro_per_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # macroPerCycle
+        "macrotick": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # macrotick
+        "max_without": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxWithout
+        "minislot_action": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minislotAction
+        "minislot_duration": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minislotDuration
+        "network_idle_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # networkIdleTime
+        "network": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # network
+        "number_of_minislots": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # numberOfMinislots
+        "number_of_static_slots": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # numberOfStaticSlots
+        "offset_correction": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # offsetCorrection
+        "payload_length": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # payloadLength
+        "safety_margin": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # safetyMargin
+        "sample_clock_period": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sampleClockPeriod
+        "static_slot": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # staticSlot
+        "symbol_window": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # symbolWindow
+        "sync_frame_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # syncFrameId
+        "tranceiver": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tranceiver
+        "transmission": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # transmission
+        "wakeup_rx_idle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupRxIdle
+        "wakeup_rx_low": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupRxLow
+        "wakeup_rx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupRx
+        "wakeup_tx_active": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupTxActive
+        "wakeup_tx_idle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupTxIdle
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayCluster."""
@@ -88,34 +222,6 @@ class FlexrayCluster(ARObject):
         self.wakeup_rx: Optional[Integer] = None
         self.wakeup_tx_active: Optional[Integer] = None
         self.wakeup_tx_idle: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayCluster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayCluster":
-        """Create FlexrayCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayCluster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayCluster since parent returns ARObject
-        return cast("FlexrayCluster", obj)
 
 
 class FlexrayClusterBuilder:

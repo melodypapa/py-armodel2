@@ -1,7 +1,9 @@
 """CpSoftwareCluster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -17,12 +19,26 @@ class CpSoftwareCluster(ARElement):
     """AUTOSAR CpSoftwareCluster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("software_cluster", None, True, False, None),  # softwareCluster
-        ("sw_components", None, False, True, any (SwComponent)),  # swComponents
-        ("sw_composition_component_types", None, False, True, CompositionSwComponentType),  # swCompositionComponentTypes
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "software_cluster": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # softwareCluster
+        "sw_components": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (SwComponent),
+        ),  # swComponents
+        "sw_composition_component_types": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CompositionSwComponentType,
+        ),  # swCompositionComponentTypes
+    }
 
     def __init__(self) -> None:
         """Initialize CpSoftwareCluster."""
@@ -30,34 +46,6 @@ class CpSoftwareCluster(ARElement):
         self.software_cluster: Optional[PositiveInteger] = None
         self.sw_components: list[Any] = []
         self.sw_composition_component_types: list[CompositionSwComponentType] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CpSoftwareCluster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareCluster":
-        """Create CpSoftwareCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareCluster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CpSoftwareCluster since parent returns ARObject
-        return cast("CpSoftwareCluster", obj)
 
 
 class CpSoftwareClusterBuilder:

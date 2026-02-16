@@ -1,7 +1,9 @@
 """DiagEventDebounceTimeBased AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_debounce_algorithm import (
     DiagEventDebounceAlgorithm,
 )
@@ -14,12 +16,24 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceTimeBased."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("time_based_fdc", None, True, False, None),  # timeBasedFdc
-        ("time_failed", None, True, False, None),  # timeFailed
-        ("time_passed", None, True, False, None),  # timePassed
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "time_based_fdc": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeBasedFdc
+        "time_failed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeFailed
+        "time_passed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timePassed
+    }
 
     def __init__(self) -> None:
         """Initialize DiagEventDebounceTimeBased."""
@@ -27,34 +41,6 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         self.time_based_fdc: Optional[TimeValue] = None
         self.time_failed: Optional[TimeValue] = None
         self.time_passed: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagEventDebounceTimeBased to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceTimeBased":
-        """Create DiagEventDebounceTimeBased from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagEventDebounceTimeBased instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagEventDebounceTimeBased since parent returns ARObject
-        return cast("DiagEventDebounceTimeBased", obj)
 
 
 class DiagEventDebounceTimeBasedBuilder:

@@ -1,7 +1,9 @@
 """MultiplexedIPdu AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
@@ -17,12 +19,25 @@ class MultiplexedIPdu(IPdu):
     """AUTOSAR MultiplexedIPdu."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("dynamic_part", None, False, False, DynamicPart),  # dynamicPart
-        ("selector_field", None, True, False, None),  # selectorField
-        ("unused_bit", None, True, False, None),  # unusedBit
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "dynamic_part": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DynamicPart,
+        ),  # dynamicPart
+        "selector_field": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # selectorField
+        "unused_bit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # unusedBit
+    }
 
     def __init__(self) -> None:
         """Initialize MultiplexedIPdu."""
@@ -30,34 +45,6 @@ class MultiplexedIPdu(IPdu):
         self.dynamic_part: Optional[DynamicPart] = None
         self.selector_field: Optional[Integer] = None
         self.unused_bit: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert MultiplexedIPdu to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiplexedIPdu":
-        """Create MultiplexedIPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultiplexedIPdu instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to MultiplexedIPdu since parent returns ARObject
-        return cast("MultiplexedIPdu", obj)
 
 
 class MultiplexedIPduBuilder:

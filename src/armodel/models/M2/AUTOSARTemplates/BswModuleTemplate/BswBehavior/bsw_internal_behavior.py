@@ -1,7 +1,9 @@
 """BswInternalBehavior AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
 )
@@ -56,30 +58,135 @@ class BswInternalBehavior(InternalBehavior):
     """AUTOSAR BswInternalBehavior."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ar_typed_pers", None, False, True, VariableDataPrototype),  # arTypedPers
-        ("bsw_per_instances", None, False, True, any (BswPerInstance)),  # bswPerInstances
-        ("client_policies", None, False, True, any (BswClientPolicy)),  # clientPolicies
-        ("distinguisheds", None, False, True, BswDistinguishedPartition),  # distinguisheds
-        ("entities", None, False, True, BswModuleEntity),  # entities
-        ("events", None, False, True, BswEvent),  # events
-        ("exclusive_areas", None, False, True, BswExclusiveAreaPolicy),  # exclusiveAreas
-        ("included_data_type_sets", None, False, True, IncludedDataTypeSet),  # includedDataTypeSets
-        ("included_modes", None, False, True, IncludedModeDeclarationGroupSet),  # includedModes
-        ("internals", None, False, True, BswInternalTriggeringPoint),  # internals
-        ("mode_receivers", None, False, True, BswModeReceiverPolicy),  # modeReceivers
-        ("mode_senders", None, False, True, BswModeSenderPolicy),  # modeSenders
-        ("parameter_policies", None, False, True, any (BswParameterPolicy)),  # parameterPolicies
-        ("per_instances", None, False, True, ParameterDataPrototype),  # perInstances
-        ("reception_policies", None, False, True, BswDataReceptionPolicy),  # receptionPolicies
-        ("released_triggers", None, False, True, any (BswReleasedTrigger)),  # releasedTriggers
-        ("scheduler_names", None, False, True, BswSchedulerNamePrefix),  # schedulerNames
-        ("send_policies", None, False, True, any (BswDataSendPolicy)),  # sendPolicies
-        ("services", None, False, True, any (BswService)),  # services
-        ("trigger_directs", None, False, True, BswTriggerDirectImplementation),  # triggerDirects
-        ("variation_point_proxies", None, False, True, VariationPointProxy),  # variationPointProxies
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ar_typed_pers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableDataPrototype,
+        ),  # arTypedPers
+        "bsw_per_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswPerInstance),
+        ),  # bswPerInstances
+        "client_policies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswClientPolicy),
+        ),  # clientPolicies
+        "distinguisheds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswDistinguishedPartition,
+        ),  # distinguisheds
+        "entities": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswModuleEntity,
+        ),  # entities
+        "events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswEvent,
+        ),  # events
+        "exclusive_areas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswExclusiveAreaPolicy,
+        ),  # exclusiveAreas
+        "included_data_type_sets": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IncludedDataTypeSet,
+        ),  # includedDataTypeSets
+        "included_modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IncludedModeDeclarationGroupSet,
+        ),  # includedModes
+        "internals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswInternalTriggeringPoint,
+        ),  # internals
+        "mode_receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswModeReceiverPolicy,
+        ),  # modeReceivers
+        "mode_senders": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswModeSenderPolicy,
+        ),  # modeSenders
+        "parameter_policies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswParameterPolicy),
+        ),  # parameterPolicies
+        "per_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ParameterDataPrototype,
+        ),  # perInstances
+        "reception_policies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswDataReceptionPolicy,
+        ),  # receptionPolicies
+        "released_triggers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswReleasedTrigger),
+        ),  # releasedTriggers
+        "scheduler_names": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswSchedulerNamePrefix,
+        ),  # schedulerNames
+        "send_policies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswDataSendPolicy),
+        ),  # sendPolicies
+        "services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (BswService),
+        ),  # services
+        "trigger_directs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswTriggerDirectImplementation,
+        ),  # triggerDirects
+        "variation_point_proxies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariationPointProxy,
+        ),  # variationPointProxies
+    }
 
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
@@ -105,34 +212,6 @@ class BswInternalBehavior(InternalBehavior):
         self.services: list[Any] = []
         self.trigger_directs: list[BswTriggerDirectImplementation] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BswInternalBehavior to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswInternalBehavior":
-        """Create BswInternalBehavior from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswInternalBehavior instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BswInternalBehavior since parent returns ARObject
-        return cast("BswInternalBehavior", obj)
 
 
 class BswInternalBehaviorBuilder:

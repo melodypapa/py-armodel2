@@ -1,7 +1,9 @@
 """ContainerIPdu AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
@@ -21,19 +23,64 @@ class ContainerIPdu(IPdu):
     """AUTOSAR ContainerIPdu."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("contained_i_pdu_propses", None, False, True, ContainedIPduProps),  # containedIPduPropses
-        ("contained_pdus", None, False, True, PduTriggering),  # containedPdus
-        ("container", None, True, False, None),  # container
-        ("container_trigger", None, False, False, ContainerIPduTriggerEnum),  # containerTrigger
-        ("header_type", None, False, False, ContainerIPduHeaderTypeEnum),  # headerType
-        ("minimum_rx", None, True, False, None),  # minimumRx
-        ("minimum_tx", None, True, False, None),  # minimumTx
-        ("rx_accept", None, False, False, RxAcceptContainedIPduEnum),  # rxAccept
-        ("threshold_size", None, True, False, None),  # thresholdSize
-        ("unused_bit", None, True, False, None),  # unusedBit
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "contained_i_pdu_propses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ContainedIPduProps,
+        ),  # containedIPduPropses
+        "contained_pdus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PduTriggering,
+        ),  # containedPdus
+        "container": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # container
+        "container_trigger": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ContainerIPduTriggerEnum,
+        ),  # containerTrigger
+        "header_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ContainerIPduHeaderTypeEnum,
+        ),  # headerType
+        "minimum_rx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minimumRx
+        "minimum_tx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minimumTx
+        "rx_accept": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RxAcceptContainedIPduEnum,
+        ),  # rxAccept
+        "threshold_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # thresholdSize
+        "unused_bit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # unusedBit
+    }
 
     def __init__(self) -> None:
         """Initialize ContainerIPdu."""
@@ -48,34 +95,6 @@ class ContainerIPdu(IPdu):
         self.rx_accept: Optional[RxAcceptContainedIPduEnum] = None
         self.threshold_size: Optional[PositiveInteger] = None
         self.unused_bit: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ContainerIPdu to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ContainerIPdu":
-        """Create ContainerIPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ContainerIPdu instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ContainerIPdu since parent returns ARObject
-        return cast("ContainerIPdu", obj)
 
 
 class ContainerIPduBuilder:

@@ -1,7 +1,9 @@
 """DiagnosticRequestFileTransfer AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
@@ -11,43 +13,20 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestFileTransfer."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("request_file", None, False, False, any (DiagnosticRequestFile)),  # requestFile
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "request_file": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagnosticRequestFile),
+        ),  # requestFile
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransfer."""
         super().__init__()
         self.request_file: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticRequestFileTransfer to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestFileTransfer":
-        """Create DiagnosticRequestFileTransfer from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestFileTransfer instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticRequestFileTransfer since parent returns ARObject
-        return cast("DiagnosticRequestFileTransfer", obj)
 
 
 class DiagnosticRequestFileTransferBuilder:

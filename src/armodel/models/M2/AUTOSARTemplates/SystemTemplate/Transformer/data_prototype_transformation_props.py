@@ -1,7 +1,9 @@
 """DataPrototypeTransformationProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -18,12 +20,27 @@ class DataPrototypeTransformationProps(ARObject):
     """AUTOSAR DataPrototypeTransformationProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_prototype_in", None, False, False, DataPrototype),  # dataPrototypeIn
-        ("network", None, False, False, SwDataDefProps),  # network
-        ("transformation_props", None, False, False, TransformationProps),  # transformationProps
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_prototype_in": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataPrototype,
+        ),  # dataPrototypeIn
+        "network": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDefProps,
+        ),  # network
+        "transformation_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TransformationProps,
+        ),  # transformationProps
+    }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
@@ -31,34 +48,6 @@ class DataPrototypeTransformationProps(ARObject):
         self.data_prototype_in: Optional[DataPrototype] = None
         self.network: Optional[SwDataDefProps] = None
         self.transformation_props: Optional[TransformationProps] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DataPrototypeTransformationProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeTransformationProps":
-        """Create DataPrototypeTransformationProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeTransformationProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DataPrototypeTransformationProps since parent returns ARObject
-        return cast("DataPrototypeTransformationProps", obj)
 
 
 class DataPrototypeTransformationPropsBuilder:

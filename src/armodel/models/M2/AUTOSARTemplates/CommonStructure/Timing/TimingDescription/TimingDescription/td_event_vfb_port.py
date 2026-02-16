@@ -1,7 +1,9 @@
 """TDEventVfbPort AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb import (
     TDEventVfb,
 )
@@ -21,12 +23,26 @@ class TDEventVfbPort(TDEventVfb):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("is_external", None, True, False, None),  # isExternal
-        ("port", None, False, False, PortPrototype),  # port
-        ("port_prototype", None, False, False, PortPrototypeBlueprint),  # portPrototype
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "is_external": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isExternal
+        "port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # port
+        "port_prototype": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototypeBlueprint,
+        ),  # portPrototype
+    }
 
     def __init__(self) -> None:
         """Initialize TDEventVfbPort."""
@@ -34,34 +50,6 @@ class TDEventVfbPort(TDEventVfb):
         self.is_external: Optional[Boolean] = None
         self.port: Optional[PortPrototype] = None
         self.port_prototype: Optional[PortPrototypeBlueprint] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TDEventVfbPort to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventVfbPort":
-        """Create TDEventVfbPort from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventVfbPort instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TDEventVfbPort since parent returns ARObject
-        return cast("TDEventVfbPort", obj)
 
 
 class TDEventVfbPortBuilder:

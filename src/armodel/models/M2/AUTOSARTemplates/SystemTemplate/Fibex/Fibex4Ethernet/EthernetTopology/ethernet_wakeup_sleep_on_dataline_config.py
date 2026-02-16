@@ -1,7 +1,9 @@
 """EthernetWakeupSleepOnDatalineConfig AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -16,16 +18,44 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
     """AUTOSAR EthernetWakeupSleepOnDatalineConfig."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("sleep_mode", None, True, False, None),  # sleepMode
-        ("sleep_repetition", None, True, False, None),  # sleepRepetition
-        ("sleep", None, True, False, None),  # sleep
-        ("wakeup_forward", None, True, False, None),  # wakeupForward
-        ("wakeup_local", None, True, False, None),  # wakeupLocal
-        ("wakeup_remote", None, True, False, None),  # wakeupRemote
-        ("wakeup", None, True, False, None),  # wakeup
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "sleep_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sleepMode
+        "sleep_repetition": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sleepRepetition
+        "sleep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sleep
+        "wakeup_forward": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupForward
+        "wakeup_local": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupLocal
+        "wakeup_remote": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeupRemote
+        "wakeup": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeup
+    }
 
     def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfig."""
@@ -37,34 +67,6 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         self.wakeup_local: Optional[Boolean] = None
         self.wakeup_remote: Optional[Boolean] = None
         self.wakeup: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EthernetWakeupSleepOnDatalineConfig to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthernetWakeupSleepOnDatalineConfig":
-        """Create EthernetWakeupSleepOnDatalineConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthernetWakeupSleepOnDatalineConfig instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EthernetWakeupSleepOnDatalineConfig since parent returns ARObject
-        return cast("EthernetWakeupSleepOnDatalineConfig", obj)
 
 
 class EthernetWakeupSleepOnDatalineConfigBuilder:

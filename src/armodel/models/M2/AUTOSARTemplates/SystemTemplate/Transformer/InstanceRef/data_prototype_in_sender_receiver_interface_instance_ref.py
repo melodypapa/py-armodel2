@@ -1,7 +1,9 @@
 """DataPrototypeInSenderReceiverInterfaceInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.InstanceRef.data_prototype_in_port_interface_instance_ref import (
     DataPrototypeInPortInterfaceInstanceRef,
 )
@@ -17,13 +19,33 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
     """AUTOSAR DataPrototypeInSenderReceiverInterfaceInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base_interface", None, False, False, any (SenderReceiver)),  # baseInterface
-        ("context_datas", None, False, True, any (ApplicationComposite)),  # contextDatas
-        ("root_data_prototype_in_sr", None, False, False, AutosarDataPrototype),  # rootDataPrototypeInSr
-        ("target_data_prototype_in_sr", None, False, False, DataPrototype),  # targetDataPrototypeInSr
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base_interface": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SenderReceiver),
+        ),  # baseInterface
+        "context_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ApplicationComposite),
+        ),  # contextDatas
+        "root_data_prototype_in_sr": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarDataPrototype,
+        ),  # rootDataPrototypeInSr
+        "target_data_prototype_in_sr": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataPrototype,
+        ),  # targetDataPrototypeInSr
+    }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeInSenderReceiverInterfaceInstanceRef."""
@@ -32,34 +54,6 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         self.context_datas: list[Any] = []
         self.root_data_prototype_in_sr: Optional[AutosarDataPrototype] = None
         self.target_data_prototype_in_sr: Optional[DataPrototype] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DataPrototypeInSenderReceiverInterfaceInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSenderReceiverInterfaceInstanceRef":
-        """Create DataPrototypeInSenderReceiverInterfaceInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeInSenderReceiverInterfaceInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DataPrototypeInSenderReceiverInterfaceInstanceRef since parent returns ARObject
-        return cast("DataPrototypeInSenderReceiverInterfaceInstanceRef", obj)
 
 
 class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder:

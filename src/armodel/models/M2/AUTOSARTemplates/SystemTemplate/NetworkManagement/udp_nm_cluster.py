@@ -1,7 +1,9 @@
 """UdpNmCluster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import (
     NmCluster,
 )
@@ -16,19 +18,60 @@ class UdpNmCluster(NmCluster):
     """AUTOSAR UdpNmCluster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("nm_cbv_position", None, True, False, None),  # nmCbvPosition
-        ("nm_immediate", None, True, False, None),  # nmImmediate
-        ("nm_message", None, True, False, None),  # nmMessage
-        ("nm_msg_cycle", None, True, False, None),  # nmMsgCycle
-        ("nm_network", None, True, False, None),  # nmNetwork
-        ("nm_nid_position", None, True, False, None),  # nmNidPosition
-        ("nm_remote", None, True, False, None),  # nmRemote
-        ("nm_repeat", None, True, False, None),  # nmRepeat
-        ("nm_wait_bus", None, True, False, None),  # nmWaitBus
-        ("vlan", None, False, False, any (EthernetPhysical)),  # vlan
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "nm_cbv_position": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmCbvPosition
+        "nm_immediate": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmImmediate
+        "nm_message": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmMessage
+        "nm_msg_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmMsgCycle
+        "nm_network": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmNetwork
+        "nm_nid_position": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmNidPosition
+        "nm_remote": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRemote
+        "nm_repeat": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRepeat
+        "nm_wait_bus": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmWaitBus
+        "vlan": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetPhysical),
+        ),  # vlan
+    }
 
     def __init__(self) -> None:
         """Initialize UdpNmCluster."""
@@ -43,34 +86,6 @@ class UdpNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_wait_bus: Optional[TimeValue] = None
         self.vlan: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert UdpNmCluster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UdpNmCluster":
-        """Create UdpNmCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UdpNmCluster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to UdpNmCluster since parent returns ARObject
-        return cast("UdpNmCluster", obj)
 
 
 class UdpNmClusterBuilder:

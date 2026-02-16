@@ -1,7 +1,9 @@
 """Baseline AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -18,12 +20,26 @@ class Baseline(ARObject):
     """AUTOSAR Baseline."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("custom_sdg_defs", None, False, True, SdgDef),  # customSdgDefs
-        ("customs", None, False, True, Documentation),  # customs
-        ("standards", None, False, True, None),  # standards
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "custom_sdg_defs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SdgDef,
+        ),  # customSdgDefs
+        "customs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Documentation,
+        ),  # customs
+        "standards": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # standards
+    }
 
     def __init__(self) -> None:
         """Initialize Baseline."""
@@ -31,34 +47,6 @@ class Baseline(ARObject):
         self.custom_sdg_defs: list[SdgDef] = []
         self.customs: list[Documentation] = []
         self.standards: list[String] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Baseline to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Baseline":
-        """Create Baseline from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Baseline instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Baseline since parent returns ARObject
-        return cast("Baseline", obj)
 
 
 class BaselineBuilder:

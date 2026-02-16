@@ -1,7 +1,9 @@
 """BswEntryRelationship AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_entry_relationship import (
     BswEntryRelationship,
@@ -15,12 +17,28 @@ class BswEntryRelationship(ARObject):
     """AUTOSAR BswEntryRelationship."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bsw_entry", None, False, False, BswEntryRelationship),  # bswEntry
-        ("from_", 'FROM', False, False, BswModuleEntry),  # from
-        ("to", None, False, False, BswModuleEntry),  # to
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bsw_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswEntryRelationship,
+        ),  # bswEntry
+        "from_": XMLMember(
+            xml_tag='FROM',
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswModuleEntry,
+            xml_name_override='FROM',
+        ),  # from
+        "to": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswModuleEntry,
+        ),  # to
+    }
 
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
@@ -28,34 +46,6 @@ class BswEntryRelationship(ARObject):
         self.bsw_entry: Optional[BswEntryRelationship] = None
         self.from_: Optional[BswModuleEntry] = None
         self.to: Optional[BswModuleEntry] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BswEntryRelationship to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswEntryRelationship":
-        """Create BswEntryRelationship from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswEntryRelationship instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BswEntryRelationship since parent returns ARObject
-        return cast("BswEntryRelationship", obj)
 
 
 class BswEntryRelationshipBuilder:

@@ -1,7 +1,9 @@
 """DiagnosticCommonProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -17,20 +19,69 @@ class DiagnosticCommonProps(ARObject):
     """AUTOSAR DiagnosticCommonProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("authentication", None, True, False, None),  # authentication
-        ("debounces", None, False, True, any (DiagnosticDebounce)),  # debounces
-        ("default", None, False, False, ByteOrderEnum),  # default
-        ("event", None, False, False, DiagnosticEvent),  # event
-        ("max_number_of", None, True, False, None),  # maxNumberOf
-        ("occurrence", None, False, False, DiagnosticOccurrenceCounterProcessingEnum),  # occurrence
-        ("reset_confirmed", None, True, False, None),  # resetConfirmed
-        ("reset_pending_bit", None, True, False, None),  # resetPendingBit
-        ("response_on_all", None, True, False, None),  # responseOnAll
-        ("response_on", None, True, False, None),  # responseOn
-        ("type_of_event", None, False, False, DiagnosticEvent),  # typeOfEvent
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "authentication": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # authentication
+        "debounces": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (DiagnosticDebounce),
+        ),  # debounces
+        "default": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ByteOrderEnum,
+        ),  # default
+        "event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticEvent,
+        ),  # event
+        "max_number_of": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxNumberOf
+        "occurrence": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticOccurrenceCounterProcessingEnum,
+        ),  # occurrence
+        "reset_confirmed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # resetConfirmed
+        "reset_pending_bit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # resetPendingBit
+        "response_on_all": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # responseOnAll
+        "response_on": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # responseOn
+        "type_of_event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticEvent,
+        ),  # typeOfEvent
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticCommonProps."""
@@ -46,34 +97,6 @@ class DiagnosticCommonProps(ARObject):
         self.response_on_all: Optional[Boolean] = None
         self.response_on: Optional[Boolean] = None
         self.type_of_event: Optional[DiagnosticEvent] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticCommonProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticCommonProps":
-        """Create DiagnosticCommonProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticCommonProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticCommonProps since parent returns ARObject
-        return cast("DiagnosticCommonProps", obj)
 
 
 class DiagnosticCommonPropsBuilder:

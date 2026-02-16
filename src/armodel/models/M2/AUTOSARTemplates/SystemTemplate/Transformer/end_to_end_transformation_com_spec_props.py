@@ -1,7 +1,9 @@
 """EndToEndTransformationComSpecProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
     TransformationComSpecProps,
 )
@@ -18,20 +20,65 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
     """AUTOSAR EndToEndTransformationComSpecProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("clear_from_valid", None, True, False, None),  # clearFromValid
-        ("disable_end_to", None, True, False, None),  # disableEndTo
-        ("e2e_profile", None, False, False, E2EProfileCompatibilityProps),  # e2eProfile
-        ("max_delta", None, True, False, None),  # maxDelta
-        ("max_error_state", None, True, False, None),  # maxErrorState
-        ("max_no_new_or", None, True, False, None),  # maxNoNewOr
-        ("min_ok_state_init", None, True, False, None),  # minOkStateInit
-        ("min_ok_state", None, True, False, None),  # minOkState
-        ("sync_counter_init", None, True, False, None),  # syncCounterInit
-        ("window_size_init", None, True, False, None),  # windowSizeInit
-        ("window_size", None, True, False, None),  # windowSize
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "clear_from_valid": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # clearFromValid
+        "disable_end_to": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # disableEndTo
+        "e2e_profile": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=E2EProfileCompatibilityProps,
+        ),  # e2eProfile
+        "max_delta": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxDelta
+        "max_error_state": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxErrorState
+        "max_no_new_or": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxNoNewOr
+        "min_ok_state_init": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minOkStateInit
+        "min_ok_state": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minOkState
+        "sync_counter_init": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # syncCounterInit
+        "window_size_init": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # windowSizeInit
+        "window_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # windowSize
+    }
 
     def __init__(self) -> None:
         """Initialize EndToEndTransformationComSpecProps."""
@@ -47,34 +94,6 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         self.sync_counter_init: Optional[PositiveInteger] = None
         self.window_size_init: Optional[PositiveInteger] = None
         self.window_size: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EndToEndTransformationComSpecProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EndToEndTransformationComSpecProps":
-        """Create EndToEndTransformationComSpecProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EndToEndTransformationComSpecProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EndToEndTransformationComSpecProps since parent returns ARObject
-        return cast("EndToEndTransformationComSpecProps", obj)
 
 
 class EndToEndTransformationComSpecPropsBuilder:

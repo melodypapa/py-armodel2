@@ -1,7 +1,9 @@
 """DiagnosticEcuInstanceProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -14,45 +16,27 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEcuInstanceProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ecu_instances", None, False, True, EcuInstance),  # ecuInstances
-        ("obd_support", None, False, False, DiagnosticObdSupportEnum),  # obdSupport
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ecu_instances": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcuInstance,
+        ),  # ecuInstances
+        "obd_support": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticObdSupportEnum,
+        ),  # obdSupport
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEcuInstanceProps."""
         super().__init__()
         self.ecu_instances: list[EcuInstance] = []
         self.obd_support: Optional[DiagnosticObdSupportEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticEcuInstanceProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuInstanceProps":
-        """Create DiagnosticEcuInstanceProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEcuInstanceProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticEcuInstanceProps since parent returns ARObject
-        return cast("DiagnosticEcuInstanceProps", obj)
 
 
 class DiagnosticEcuInstancePropsBuilder:

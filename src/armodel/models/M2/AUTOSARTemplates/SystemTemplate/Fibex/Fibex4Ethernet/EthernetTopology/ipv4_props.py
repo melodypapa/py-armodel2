@@ -1,7 +1,9 @@
 """Ipv4Props AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_arp_props import (
     Ipv4ArpProps,
@@ -18,12 +20,27 @@ class Ipv4Props(ARObject):
     """AUTOSAR Ipv4Props."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("arp_props", None, False, False, Ipv4ArpProps),  # arpProps
-        ("auto_ip_props", None, False, False, Ipv4AutoIpProps),  # autoIpProps
-        ("fragmentation", None, False, False, Ipv4FragmentationProps),  # fragmentation
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "arp_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Ipv4ArpProps,
+        ),  # arpProps
+        "auto_ip_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Ipv4AutoIpProps,
+        ),  # autoIpProps
+        "fragmentation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Ipv4FragmentationProps,
+        ),  # fragmentation
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv4Props."""
@@ -31,34 +48,6 @@ class Ipv4Props(ARObject):
         self.arp_props: Optional[Ipv4ArpProps] = None
         self.auto_ip_props: Optional[Ipv4AutoIpProps] = None
         self.fragmentation: Optional[Ipv4FragmentationProps] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv4Props to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv4Props":
-        """Create Ipv4Props from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv4Props instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv4Props since parent returns ARObject
-        return cast("Ipv4Props", obj)
 
 
 class Ipv4PropsBuilder:

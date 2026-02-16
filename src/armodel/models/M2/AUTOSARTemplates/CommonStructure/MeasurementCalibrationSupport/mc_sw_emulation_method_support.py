@@ -1,7 +1,9 @@
 """McSwEmulationMethodSupport AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -18,14 +20,37 @@ class McSwEmulationMethodSupport(ARObject):
     """AUTOSAR McSwEmulationMethodSupport."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base_reference", None, False, False, VariableDataPrototype),  # baseReference
-        ("category", None, True, False, None),  # category
-        ("element_groups", None, False, True, McParameterElementGroup),  # elementGroups
-        ("reference_table", None, False, False, VariableDataPrototype),  # referenceTable
-        ("short_label", None, True, False, None),  # shortLabel
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base_reference": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # baseReference
+        "category": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # category
+        "element_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McParameterElementGroup,
+        ),  # elementGroups
+        "reference_table": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # referenceTable
+        "short_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortLabel
+    }
 
     def __init__(self) -> None:
         """Initialize McSwEmulationMethodSupport."""
@@ -35,34 +60,6 @@ class McSwEmulationMethodSupport(ARObject):
         self.element_groups: list[McParameterElementGroup] = []
         self.reference_table: Optional[VariableDataPrototype] = None
         self.short_label: Optional[Identifier] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert McSwEmulationMethodSupport to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McSwEmulationMethodSupport":
-        """Create McSwEmulationMethodSupport from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McSwEmulationMethodSupport instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to McSwEmulationMethodSupport since parent returns ARObject
-        return cast("McSwEmulationMethodSupport", obj)
 
 
 class McSwEmulationMethodSupportBuilder:

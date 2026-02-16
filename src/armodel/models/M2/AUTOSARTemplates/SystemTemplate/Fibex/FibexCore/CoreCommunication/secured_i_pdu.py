@@ -1,7 +1,9 @@
 """SecuredIPdu AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
@@ -17,16 +19,49 @@ class SecuredIPdu(IPdu):
     """AUTOSAR SecuredIPdu."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("authentication", None, False, False, any (SecureCommunication)),  # authentication
-        ("dynamic", None, True, False, None),  # dynamic
-        ("freshness_props", None, False, False, any (SecureCommunication)),  # freshnessProps
-        ("payload", None, False, False, PduTriggering),  # payload
-        ("secure", None, False, False, any (SecureCommunication)),  # secure
-        ("use_as", None, True, False, None),  # useAs
-        ("use_secured_pdu", None, False, False, SecuredPduHeaderEnum),  # useSecuredPdu
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "authentication": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SecureCommunication),
+        ),  # authentication
+        "dynamic": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dynamic
+        "freshness_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SecureCommunication),
+        ),  # freshnessProps
+        "payload": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PduTriggering,
+        ),  # payload
+        "secure": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SecureCommunication),
+        ),  # secure
+        "use_as": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useAs
+        "use_secured_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SecuredPduHeaderEnum,
+        ),  # useSecuredPdu
+    }
 
     def __init__(self) -> None:
         """Initialize SecuredIPdu."""
@@ -38,34 +73,6 @@ class SecuredIPdu(IPdu):
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SecuredIPdu to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecuredIPdu":
-        """Create SecuredIPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecuredIPdu instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SecuredIPdu since parent returns ARObject
-        return cast("SecuredIPdu", obj)
 
 
 class SecuredIPduBuilder:

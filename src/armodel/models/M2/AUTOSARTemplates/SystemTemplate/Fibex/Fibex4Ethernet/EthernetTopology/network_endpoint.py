@@ -1,7 +1,9 @@
 """NetworkEndpoint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -24,14 +26,37 @@ class NetworkEndpoint(Identifiable):
     """AUTOSAR NetworkEndpoint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("fully_qualified", None, True, False, None),  # fullyQualified
-        ("infrastructure_services", None, False, False, InfrastructureServices),  # infrastructureServices
-        ("ip_sec_config", None, False, False, IPSecConfig),  # ipSecConfig
-        ("network_endpoints", None, False, True, NetworkEndpoint),  # networkEndpoints
-        ("priority", None, True, False, None),  # priority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "fully_qualified": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # fullyQualified
+        "infrastructure_services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=InfrastructureServices,
+        ),  # infrastructureServices
+        "ip_sec_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPSecConfig,
+        ),  # ipSecConfig
+        "network_endpoints": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NetworkEndpoint,
+        ),  # networkEndpoints
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+    }
 
     def __init__(self) -> None:
         """Initialize NetworkEndpoint."""
@@ -41,34 +66,6 @@ class NetworkEndpoint(Identifiable):
         self.ip_sec_config: Optional[IPSecConfig] = None
         self.network_endpoints: list[NetworkEndpoint] = []
         self.priority: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NetworkEndpoint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NetworkEndpoint":
-        """Create NetworkEndpoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NetworkEndpoint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NetworkEndpoint since parent returns ARObject
-        return cast("NetworkEndpoint", obj)
 
 
 class NetworkEndpointBuilder:

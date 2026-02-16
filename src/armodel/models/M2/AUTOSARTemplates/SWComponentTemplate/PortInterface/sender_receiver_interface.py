@@ -1,7 +1,9 @@
 """SenderReceiverInterface AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
@@ -20,12 +22,27 @@ class SenderReceiverInterface(DataInterface):
     """AUTOSAR SenderReceiverInterface."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_elements", None, False, True, VariableDataPrototype),  # dataElements
-        ("invalidation_policy_policies", None, False, True, InvalidationPolicy),  # invalidationPolicyPolicies
-        ("meta_data_item_sets", None, False, True, MetaDataItemSet),  # metaDataItemSets
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableDataPrototype,
+        ),  # dataElements
+        "invalidation_policy_policies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=InvalidationPolicy,
+        ),  # invalidationPolicyPolicies
+        "meta_data_item_sets": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=MetaDataItemSet,
+        ),  # metaDataItemSets
+    }
 
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
@@ -33,34 +50,6 @@ class SenderReceiverInterface(DataInterface):
         self.data_elements: list[VariableDataPrototype] = []
         self.invalidation_policy_policies: list[InvalidationPolicy] = []
         self.meta_data_item_sets: list[MetaDataItemSet] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SenderReceiverInterface to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverInterface":
-        """Create SenderReceiverInterface from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverInterface instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SenderReceiverInterface since parent returns ARObject
-        return cast("SenderReceiverInterface", obj)
 
 
 class SenderReceiverInterfaceBuilder:

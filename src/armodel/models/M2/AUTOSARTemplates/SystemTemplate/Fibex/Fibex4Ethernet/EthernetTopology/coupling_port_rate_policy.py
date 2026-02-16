@@ -1,7 +1,9 @@
 """CouplingPortRatePolicy AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -16,14 +18,36 @@ class CouplingPortRatePolicy(ARObject):
     """AUTOSAR CouplingPortRatePolicy."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_length", None, True, False, None),  # dataLength
-        ("policy_action", None, False, False, CouplingPortRatePolicy),  # policyAction
-        ("priority", None, True, False, None),  # priority
-        ("time_interval", None, True, False, None),  # timeInterval
-        ("v_lans", None, False, True, any (EthernetPhysical)),  # vLans
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_length": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dataLength
+        "policy_action": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPortRatePolicy,
+        ),  # policyAction
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "time_interval": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeInterval
+        "v_lans": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EthernetPhysical),
+        ),  # vLans
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingPortRatePolicy."""
@@ -33,34 +57,6 @@ class CouplingPortRatePolicy(ARObject):
         self.priority: Optional[PositiveInteger] = None
         self.time_interval: Optional[TimeValue] = None
         self.v_lans: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingPortRatePolicy to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortRatePolicy":
-        """Create CouplingPortRatePolicy from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortRatePolicy instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingPortRatePolicy since parent returns ARObject
-        return cast("CouplingPortRatePolicy", obj)
 
 
 class CouplingPortRatePolicyBuilder:

@@ -1,7 +1,9 @@
 """Ipv4Configuration AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint_address import (
     NetworkEndpointAddress,
 )
@@ -15,17 +17,51 @@ class Ipv4Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv4Configuration."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("assignment", None, True, False, None),  # assignment
-        ("default_gateway", None, True, False, None),  # defaultGateway
-        ("dns_servers", None, False, True, None),  # dnsServers
-        ("ip_address_keep_enum", None, False, False, IpAddressKeepEnum),  # ipAddressKeepEnum
-        ("ipv4_address", None, True, False, None),  # ipv4Address
-        ("ipv4_address_source", None, False, False, Ipv4AddressSourceEnum),  # ipv4AddressSource
-        ("network_mask", None, True, False, None),  # networkMask
-        ("ttl", None, True, False, None),  # ttl
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "assignment": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # assignment
+        "default_gateway": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # defaultGateway
+        "dns_servers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # dnsServers
+        "ip_address_keep_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IpAddressKeepEnum,
+        ),  # ipAddressKeepEnum
+        "ipv4_address": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ipv4Address
+        "ipv4_address_source": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Ipv4AddressSourceEnum,
+        ),  # ipv4AddressSource
+        "network_mask": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # networkMask
+        "ttl": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ttl
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv4Configuration."""
@@ -38,34 +74,6 @@ class Ipv4Configuration(NetworkEndpointAddress):
         self.ipv4_address_source: Optional[Ipv4AddressSourceEnum] = None
         self.network_mask: Optional[Ip4AddressString] = None
         self.ttl: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv4Configuration to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv4Configuration":
-        """Create Ipv4Configuration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv4Configuration instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv4Configuration since parent returns ARObject
-        return cast("Ipv4Configuration", obj)
 
 
 class Ipv4ConfigurationBuilder:

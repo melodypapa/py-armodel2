@@ -1,7 +1,9 @@
 """InstantiationDataDefProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
     AutosarParameterRef,
@@ -18,12 +20,27 @@ class InstantiationDataDefProps(ARObject):
     """AUTOSAR InstantiationDataDefProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("parameter", None, False, False, AutosarParameterRef),  # parameter
-        ("sw_data_def", None, False, False, SwDataDefProps),  # swDataDef
-        ("variable_instance", None, False, False, AutosarVariableRef),  # variableInstance
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "parameter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarParameterRef,
+        ),  # parameter
+        "sw_data_def": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDefProps,
+        ),  # swDataDef
+        "variable_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarVariableRef,
+        ),  # variableInstance
+    }
 
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
@@ -31,34 +48,6 @@ class InstantiationDataDefProps(ARObject):
         self.parameter: Optional[AutosarParameterRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.variable_instance: Optional[AutosarVariableRef] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert InstantiationDataDefProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InstantiationDataDefProps":
-        """Create InstantiationDataDefProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InstantiationDataDefProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to InstantiationDataDefProps since parent returns ARObject
-        return cast("InstantiationDataDefProps", obj)
 
 
 class InstantiationDataDefPropsBuilder:

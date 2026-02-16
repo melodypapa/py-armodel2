@@ -1,7 +1,9 @@
 """NmCluster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -19,17 +21,50 @@ class NmCluster(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("communication_cluster", None, False, False, CommunicationCluster),  # communicationCluster
-        ("nm_channel", None, True, False, None),  # nmChannel
-        ("nm_node", None, True, False, None),  # nmNode
-        ("nm_node_id_enabled", None, True, False, None),  # nmNodeIdEnabled
-        ("nm_pnc", None, True, False, None),  # nmPnc
-        ("nm_repeat_msg_ind_enabled", None, True, False, None),  # nmRepeatMsgIndEnabled
-        ("nm", None, True, False, None),  # nm
-        ("pnc_cluster", None, True, False, None),  # pncCluster
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "communication_cluster": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CommunicationCluster,
+        ),  # communicationCluster
+        "nm_channel": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmChannel
+        "nm_node": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmNode
+        "nm_node_id_enabled": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmNodeIdEnabled
+        "nm_pnc": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmPnc
+        "nm_repeat_msg_ind_enabled": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRepeatMsgIndEnabled
+        "nm": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nm
+        "pnc_cluster": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncCluster
+    }
 
     def __init__(self) -> None:
         """Initialize NmCluster."""
@@ -42,34 +77,6 @@ class NmCluster(Identifiable):
         self.nm_repeat_msg_ind_enabled: Optional[Boolean] = None
         self.nm: Optional[Boolean] = None
         self.pnc_cluster: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NmCluster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NmCluster":
-        """Create NmCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NmCluster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NmCluster since parent returns ARObject
-        return cast("NmCluster", obj)
 
 
 class NmClusterBuilder:

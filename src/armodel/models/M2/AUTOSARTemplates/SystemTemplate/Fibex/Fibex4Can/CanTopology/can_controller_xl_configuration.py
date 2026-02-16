@@ -1,7 +1,9 @@
 """CanControllerXlConfiguration AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -13,19 +15,59 @@ class CanControllerXlConfiguration(ARObject):
     """AUTOSAR CanControllerXlConfiguration."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("error_signaling", None, True, False, None),  # errorSignaling
-        ("prop_seg", None, True, False, None),  # propSeg
-        ("pwm_l", None, True, False, None),  # pwmL
-        ("pwm_o", None, True, False, None),  # pwmO
-        ("pwm_s", None, True, False, None),  # pwmS
-        ("ssp_offset", None, True, False, None),  # sspOffset
-        ("sync_jump_width", None, True, False, None),  # syncJumpWidth
-        ("time_seg1", None, True, False, None),  # timeSeg1
-        ("time_seg2", None, True, False, None),  # timeSeg2
-        ("trcv_pwm_mode", None, True, False, None),  # trcvPwmMode
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "error_signaling": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # errorSignaling
+        "prop_seg": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # propSeg
+        "pwm_l": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pwmL
+        "pwm_o": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pwmO
+        "pwm_s": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pwmS
+        "ssp_offset": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sspOffset
+        "sync_jump_width": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # syncJumpWidth
+        "time_seg1": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeSeg1
+        "time_seg2": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeSeg2
+        "trcv_pwm_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # trcvPwmMode
+    }
 
     def __init__(self) -> None:
         """Initialize CanControllerXlConfiguration."""
@@ -40,34 +82,6 @@ class CanControllerXlConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanControllerXlConfiguration to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfiguration":
-        """Create CanControllerXlConfiguration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanControllerXlConfiguration instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanControllerXlConfiguration since parent returns ARObject
-        return cast("CanControllerXlConfiguration", obj)
 
 
 class CanControllerXlConfigurationBuilder:

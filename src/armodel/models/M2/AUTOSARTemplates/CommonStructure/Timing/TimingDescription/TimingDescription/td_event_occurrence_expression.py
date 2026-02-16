@@ -1,7 +1,9 @@
 """TDEventOccurrenceExpression AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
     AutosarOperationArgumentInstance,
@@ -15,13 +17,33 @@ class TDEventOccurrenceExpression(ARObject):
     """AUTOSAR TDEventOccurrenceExpression."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("arguments", None, False, True, AutosarOperationArgumentInstance),  # arguments
-        ("formula", None, False, False, any (TDEventOccurrence)),  # formula
-        ("modes", None, False, True, TimingModeInstance),  # modes
-        ("variables", None, False, True, any (AutosarVariable)),  # variables
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "arguments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AutosarOperationArgumentInstance,
+        ),  # arguments
+        "formula": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (TDEventOccurrence),
+        ),  # formula
+        "modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingModeInstance,
+        ),  # modes
+        "variables": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (AutosarVariable),
+        ),  # variables
+    }
 
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpression."""
@@ -30,34 +52,6 @@ class TDEventOccurrenceExpression(ARObject):
         self.formula: Optional[Any] = None
         self.modes: list[TimingModeInstance] = []
         self.variables: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TDEventOccurrenceExpression to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpression":
-        """Create TDEventOccurrenceExpression from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventOccurrenceExpression instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TDEventOccurrenceExpression since parent returns ARObject
-        return cast("TDEventOccurrenceExpression", obj)
 
 
 class TDEventOccurrenceExpressionBuilder:

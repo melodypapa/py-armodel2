@@ -1,7 +1,9 @@
 """DdsCpQosProfile AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -47,21 +49,81 @@ class DdsCpQosProfile(Identifiable):
     """AUTOSAR DdsCpQosProfile."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("deadline", None, False, False, DdsDeadline),  # deadline
-        ("destination_order", None, False, False, DdsDestinationOrder),  # destinationOrder
-        ("durability", None, False, False, DdsDurabilityService),  # durability
-        ("history", None, False, False, DdsHistory),  # history
-        ("latency_budget", None, False, False, DdsLatencyBudget),  # latencyBudget
-        ("lifespan", None, False, False, DdsLifespan),  # lifespan
-        ("liveliness", None, False, False, DdsLiveliness),  # liveliness
-        ("ownership", None, False, False, DdsOwnershipStrength),  # ownership
-        ("reliability", None, False, False, DdsReliability),  # reliability
-        ("resource_limits", None, False, False, DdsResourceLimits),  # resourceLimits
-        ("topic_data", None, False, False, DdsTopicData),  # topicData
-        ("transport_priority", None, False, False, DdsTransportPriority),  # transportPriority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "deadline": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDeadline,
+        ),  # deadline
+        "destination_order": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDestinationOrder,
+        ),  # destinationOrder
+        "durability": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDurabilityService,
+        ),  # durability
+        "history": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsHistory,
+        ),  # history
+        "latency_budget": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsLatencyBudget,
+        ),  # latencyBudget
+        "lifespan": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsLifespan,
+        ),  # lifespan
+        "liveliness": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsLiveliness,
+        ),  # liveliness
+        "ownership": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsOwnershipStrength,
+        ),  # ownership
+        "reliability": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsReliability,
+        ),  # reliability
+        "resource_limits": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsResourceLimits,
+        ),  # resourceLimits
+        "topic_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsTopicData,
+        ),  # topicData
+        "transport_priority": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsTransportPriority,
+        ),  # transportPriority
+    }
 
     def __init__(self) -> None:
         """Initialize DdsCpQosProfile."""
@@ -78,34 +140,6 @@ class DdsCpQosProfile(Identifiable):
         self.resource_limits: Optional[DdsResourceLimits] = None
         self.topic_data: Optional[DdsTopicData] = None
         self.transport_priority: Optional[DdsTransportPriority] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DdsCpQosProfile to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsCpQosProfile":
-        """Create DdsCpQosProfile from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsCpQosProfile instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DdsCpQosProfile since parent returns ARObject
-        return cast("DdsCpQosProfile", obj)
 
 
 class DdsCpQosProfileBuilder:

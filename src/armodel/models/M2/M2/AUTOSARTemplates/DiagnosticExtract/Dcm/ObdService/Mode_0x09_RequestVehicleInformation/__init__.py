@@ -1,4 +1,0 @@
-"""Mode_0x09_RequestVehicleInformation module."""
-from .diagnostic_request_vehicle_info import DiagnosticRequestVehicleInfo
-from .diagnostic_request_vehicle_info_class import DiagnosticRequestVehicleInfoClass
-

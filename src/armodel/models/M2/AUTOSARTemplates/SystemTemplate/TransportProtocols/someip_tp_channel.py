@@ -1,7 +1,9 @@
 """SomeipTpChannel AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -15,12 +17,24 @@ class SomeipTpChannel(Identifiable):
     """AUTOSAR SomeipTpChannel."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("burst_size", None, True, False, None),  # burstSize
-        ("rx_timeout_time", None, True, False, None),  # rxTimeoutTime
-        ("separation_time", None, True, False, None),  # separationTime
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "burst_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # burstSize
+        "rx_timeout_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rxTimeoutTime
+        "separation_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # separationTime
+    }
 
     def __init__(self) -> None:
         """Initialize SomeipTpChannel."""
@@ -28,34 +42,6 @@ class SomeipTpChannel(Identifiable):
         self.burst_size: Optional[PositiveInteger] = None
         self.rx_timeout_time: Optional[TimeValue] = None
         self.separation_time: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SomeipTpChannel to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipTpChannel":
-        """Create SomeipTpChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipTpChannel instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SomeipTpChannel since parent returns ARObject
-        return cast("SomeipTpChannel", obj)
 
 
 class SomeipTpChannelBuilder:

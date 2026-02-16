@@ -1,7 +1,9 @@
 """FlexrayTpConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
@@ -29,18 +31,62 @@ class FlexrayTpConnection(TpConnection):
     """AUTOSAR FlexrayTpConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bandwidth", None, True, False, None),  # bandwidth
-        ("direct_tp_sdu", None, False, False, IPdu),  # directTpSdu
-        ("multicast", None, False, False, TpAddress),  # multicast
-        ("receivers", None, False, True, FlexrayTpNode),  # receivers
-        ("reversed_tp_sdu", None, False, False, IPdu),  # reversedTpSdu
-        ("rx_pdu_pool", None, False, False, FlexrayTpPduPool),  # rxPduPool
-        ("tp_connection", None, False, False, FlexrayTpConnection),  # tpConnection
-        ("transmitter", None, False, False, FlexrayTpNode),  # transmitter
-        ("tx_pdu_pool", None, False, False, FlexrayTpPduPool),  # txPduPool
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bandwidth": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # bandwidth
+        "direct_tp_sdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPdu,
+        ),  # directTpSdu
+        "multicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TpAddress,
+        ),  # multicast
+        "receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FlexrayTpNode,
+        ),  # receivers
+        "reversed_tp_sdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPdu,
+        ),  # reversedTpSdu
+        "rx_pdu_pool": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlexrayTpPduPool,
+        ),  # rxPduPool
+        "tp_connection": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlexrayTpConnection,
+        ),  # tpConnection
+        "transmitter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlexrayTpNode,
+        ),  # transmitter
+        "tx_pdu_pool": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlexrayTpPduPool,
+        ),  # txPduPool
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayTpConnection."""
@@ -54,34 +100,6 @@ class FlexrayTpConnection(TpConnection):
         self.tp_connection: Optional[FlexrayTpConnection] = None
         self.transmitter: Optional[FlexrayTpNode] = None
         self.tx_pdu_pool: Optional[FlexrayTpPduPool] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayTpConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayTpConnection":
-        """Create FlexrayTpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayTpConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayTpConnection since parent returns ARObject
-        return cast("FlexrayTpConnection", obj)
 
 
 class FlexrayTpConnectionBuilder:

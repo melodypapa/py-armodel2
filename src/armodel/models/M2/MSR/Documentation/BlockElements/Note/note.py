@@ -1,7 +1,9 @@
 """Note AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
@@ -17,12 +19,27 @@ class Note(Paginateable):
     """AUTOSAR Note."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("label", None, False, False, MultilanguageLongName),  # label
-        ("note_text", None, False, False, DocumentationBlock),  # noteText
-        ("note_type", None, False, False, NoteTypeEnum),  # noteType
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "label": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultilanguageLongName,
+        ),  # label
+        "note_text": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=DocumentationBlock,
+        ),  # noteText
+        "note_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NoteTypeEnum,
+        ),  # noteType
+    }
 
     def __init__(self) -> None:
         """Initialize Note."""
@@ -30,34 +47,6 @@ class Note(Paginateable):
         self.label: Optional[MultilanguageLongName] = None
         self.note_text: DocumentationBlock = None
         self.note_type: Optional[NoteTypeEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Note to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Note":
-        """Create Note from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Note instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Note since parent returns ARObject
-        return cast("Note", obj)
 
 
 class NoteBuilder:

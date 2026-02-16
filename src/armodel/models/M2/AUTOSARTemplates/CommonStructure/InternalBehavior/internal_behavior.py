@@ -1,7 +1,9 @@
 """InternalBehavior AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -30,15 +32,45 @@ class InternalBehavior(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("constants", None, False, True, ParameterDataPrototype),  # constants
-        ("constant_values", None, False, True, ConstantSpecification),  # constantValues
-        ("data_types", None, False, True, DataTypeMappingSet),  # dataTypes
-        ("exclusive_areas", None, False, True, ExclusiveArea),  # exclusiveAreas
-        ("exclusive_area_nestings", None, False, True, ExclusiveAreaNestingOrder),  # exclusiveAreaNestings
-        ("static_memories", None, False, True, VariableDataPrototype),  # staticMemories
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "constants": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ParameterDataPrototype,
+        ),  # constants
+        "constant_values": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConstantSpecification,
+        ),  # constantValues
+        "data_types": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DataTypeMappingSet,
+        ),  # dataTypes
+        "exclusive_areas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExclusiveArea,
+        ),  # exclusiveAreas
+        "exclusive_area_nestings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExclusiveAreaNestingOrder,
+        ),  # exclusiveAreaNestings
+        "static_memories": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableDataPrototype,
+        ),  # staticMemories
+    }
 
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
@@ -49,34 +81,6 @@ class InternalBehavior(Identifiable):
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
         self.static_memories: list[VariableDataPrototype] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert InternalBehavior to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InternalBehavior":
-        """Create InternalBehavior from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InternalBehavior instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to InternalBehavior since parent returns ARObject
-        return cast("InternalBehavior", obj)
 
 
 class InternalBehaviorBuilder:

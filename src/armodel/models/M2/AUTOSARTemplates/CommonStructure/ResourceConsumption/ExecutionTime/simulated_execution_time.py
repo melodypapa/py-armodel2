@@ -1,7 +1,9 @@
 """SimulatedExecutionTime AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
     ExecutionTime,
 )
@@ -14,12 +16,27 @@ class SimulatedExecutionTime(ExecutionTime):
     """AUTOSAR SimulatedExecutionTime."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("maximum_execution_time", None, False, False, MultidimensionalTime),  # maximumExecutionTime
-        ("minimum_execution_time", None, False, False, MultidimensionalTime),  # minimumExecutionTime
-        ("nominal_execution_time", None, False, False, MultidimensionalTime),  # nominalExecutionTime
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "maximum_execution_time": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # maximumExecutionTime
+        "minimum_execution_time": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # minimumExecutionTime
+        "nominal_execution_time": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # nominalExecutionTime
+    }
 
     def __init__(self) -> None:
         """Initialize SimulatedExecutionTime."""
@@ -27,34 +44,6 @@ class SimulatedExecutionTime(ExecutionTime):
         self.maximum_execution_time: Optional[MultidimensionalTime] = None
         self.minimum_execution_time: Optional[MultidimensionalTime] = None
         self.nominal_execution_time: Optional[MultidimensionalTime] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SimulatedExecutionTime to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SimulatedExecutionTime":
-        """Create SimulatedExecutionTime from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SimulatedExecutionTime instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SimulatedExecutionTime since parent returns ARObject
-        return cast("SimulatedExecutionTime", obj)
 
 
 class SimulatedExecutionTimeBuilder:

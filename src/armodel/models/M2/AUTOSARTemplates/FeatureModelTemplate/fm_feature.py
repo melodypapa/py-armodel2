@@ -1,7 +1,9 @@
 """FMFeature AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -23,15 +25,45 @@ class FMFeature(ARElement):
     """AUTOSAR FMFeature."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("attribute_defs", None, False, True, FMAttributeDef),  # attributeDefs
-        ("decomposition_decompositions", None, False, True, FMFeature),  # decompositionDecompositions
-        ("maximum", None, False, False, BindingTimeEnum),  # maximum
-        ("minimum", None, False, False, BindingTimeEnum),  # minimum
-        ("relations", None, False, True, FMFeatureRelation),  # relations
-        ("restrictions", None, False, True, FMFeatureRestriction),  # restrictions
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "attribute_defs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FMAttributeDef,
+        ),  # attributeDefs
+        "decomposition_decompositions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FMFeature,
+        ),  # decompositionDecompositions
+        "maximum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BindingTimeEnum,
+        ),  # maximum
+        "minimum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BindingTimeEnum,
+        ),  # minimum
+        "relations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FMFeatureRelation,
+        ),  # relations
+        "restrictions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FMFeatureRestriction,
+        ),  # restrictions
+    }
 
     def __init__(self) -> None:
         """Initialize FMFeature."""
@@ -42,34 +74,6 @@ class FMFeature(ARElement):
         self.minimum: Optional[BindingTimeEnum] = None
         self.relations: list[FMFeatureRelation] = []
         self.restrictions: list[FMFeatureRestriction] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FMFeature to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FMFeature":
-        """Create FMFeature from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FMFeature instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FMFeature since parent returns ARObject
-        return cast("FMFeature", obj)
 
 
 class FMFeatureBuilder:

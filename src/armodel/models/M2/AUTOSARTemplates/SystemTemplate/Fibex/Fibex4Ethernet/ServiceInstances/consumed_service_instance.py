@@ -1,7 +1,9 @@
 """ConsumedServiceInstance AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
     AbstractServiceInstance,
 )
@@ -32,23 +34,89 @@ class ConsumedServiceInstance(AbstractServiceInstance):
     """AUTOSAR ConsumedServiceInstance."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("allowed_services", None, False, True, NetworkEndpoint),  # allowedServices
-        ("auto_require", None, True, False, None),  # autoRequire
-        ("blocklisteds", None, False, True, SomeipServiceVersion),  # blocklisteds
-        ("consumed_event_groups", None, False, True, ConsumedEventGroup),  # consumedEventGroups
-        ("event_multicast", None, False, False, ApplicationEndpoint),  # eventMulticast
-        ("instance", None, True, False, None),  # instance
-        ("local_unicast", None, False, False, ApplicationEndpoint),  # localUnicast
-        ("minor_version", None, True, False, None),  # minorVersion
-        ("provided_service", None, False, False, any (ProvidedService)),  # providedService
-        ("remote_unicast", None, False, False, ApplicationEndpoint),  # remoteUnicast
-        ("sd_client_config", None, False, False, any (SdClientConfig)),  # sdClientConfig
-        ("sd_client_timer", None, False, False, SomeipSdClientServiceInstanceConfig),  # sdClientTimer
-        ("service_identifier", None, True, False, None),  # serviceIdentifier
-        ("version_driven", None, False, False, any (ServiceVersion)),  # versionDriven
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "allowed_services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NetworkEndpoint,
+        ),  # allowedServices
+        "auto_require": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # autoRequire
+        "blocklisteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SomeipServiceVersion,
+        ),  # blocklisteds
+        "consumed_event_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConsumedEventGroup,
+        ),  # consumedEventGroups
+        "event_multicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationEndpoint,
+        ),  # eventMulticast
+        "instance": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # instance
+        "local_unicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ApplicationEndpoint,
+        ),  # localUnicast
+        "minor_version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minorVersion
+        "provided_service": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ProvidedService),
+        ),  # providedService
+        "remote_unicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ApplicationEndpoint,
+        ),  # remoteUnicast
+        "sd_client_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SdClientConfig),
+        ),  # sdClientConfig
+        "sd_client_timer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SomeipSdClientServiceInstanceConfig,
+        ),  # sdClientTimer
+        "service_identifier": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # serviceIdentifier
+        "version_driven": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ServiceVersion),
+        ),  # versionDriven
+    }
 
     def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
@@ -67,34 +135,6 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         self.sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig] = None
         self.service_identifier: Optional[PositiveInteger] = None
         self.version_driven: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ConsumedServiceInstance to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsumedServiceInstance":
-        """Create ConsumedServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsumedServiceInstance instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ConsumedServiceInstance since parent returns ARObject
-        return cast("ConsumedServiceInstance", obj)
 
 
 class ConsumedServiceInstanceBuilder:

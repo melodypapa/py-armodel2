@@ -1,7 +1,9 @@
 """DataTransformation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -14,12 +16,26 @@ class DataTransformation(Identifiable):
     """AUTOSAR DataTransformation."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data", None, False, False, DataTransformationKindEnum),  # data
-        ("execute_despite", None, True, False, None),  # executeDespite
-        ("transformers", None, False, True, any (Transformation)),  # transformers
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformationKindEnum,
+        ),  # data
+        "execute_despite": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # executeDespite
+        "transformers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (Transformation),
+        ),  # transformers
+    }
 
     def __init__(self) -> None:
         """Initialize DataTransformation."""
@@ -27,34 +43,6 @@ class DataTransformation(Identifiable):
         self.data: Optional[DataTransformationKindEnum] = None
         self.execute_despite: Optional[Boolean] = None
         self.transformers: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DataTransformation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataTransformation":
-        """Create DataTransformation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataTransformation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DataTransformation since parent returns ARObject
-        return cast("DataTransformation", obj)
 
 
 class DataTransformationBuilder:

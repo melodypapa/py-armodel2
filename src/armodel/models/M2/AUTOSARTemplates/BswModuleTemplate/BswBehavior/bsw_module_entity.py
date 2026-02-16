@@ -1,7 +1,9 @@
 """BswModuleEntity AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
@@ -33,18 +35,63 @@ class BswModuleEntity(ExecutableEntity):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("accessed_modes", None, False, True, ModeDeclarationGroup),  # accessedModes
-        ("activation_points", None, False, True, BswInternalTriggeringPoint),  # activationPoints
-        ("call_points", None, False, True, BswModuleCallPoint),  # callPoints
-        ("data_receives", None, False, True, BswVariableAccess),  # dataReceives
-        ("data_send_points", None, False, True, BswVariableAccess),  # dataSendPoints
-        ("implemented", None, False, False, BswModuleEntry),  # implemented
-        ("issued_triggers", None, False, True, Trigger),  # issuedTriggers
-        ("managed_modes", None, False, True, ModeDeclarationGroup),  # managedModes
-        ("scheduler_name", None, False, False, BswSchedulerNamePrefix),  # schedulerName
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "accessed_modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeDeclarationGroup,
+        ),  # accessedModes
+        "activation_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswInternalTriggeringPoint,
+        ),  # activationPoints
+        "call_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswModuleCallPoint,
+        ),  # callPoints
+        "data_receives": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswVariableAccess,
+        ),  # dataReceives
+        "data_send_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BswVariableAccess,
+        ),  # dataSendPoints
+        "implemented": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswModuleEntry,
+        ),  # implemented
+        "issued_triggers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Trigger,
+        ),  # issuedTriggers
+        "managed_modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeDeclarationGroup,
+        ),  # managedModes
+        "scheduler_name": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswSchedulerNamePrefix,
+        ),  # schedulerName
+    }
 
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
@@ -58,34 +105,6 @@ class BswModuleEntity(ExecutableEntity):
         self.issued_triggers: list[Trigger] = []
         self.managed_modes: list[ModeDeclarationGroup] = []
         self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BswModuleEntity to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleEntity":
-        """Create BswModuleEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleEntity instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BswModuleEntity since parent returns ARObject
-        return cast("BswModuleEntity", obj)
 
 
 class BswModuleEntityBuilder:

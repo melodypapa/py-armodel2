@@ -1,1 +1,0 @@
-"""DataDictionary module."""

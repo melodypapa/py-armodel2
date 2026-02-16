@@ -1,5 +1,0 @@
-"""DiagnosticJ1939Mapping module."""
-from .diagnostic_j1939_spn_mapping import DiagnosticJ1939SpnMapping
-from .diagnostic_j1939_sw_mapping import DiagnosticJ1939SwMapping
-from .diagnostic_event_to_trouble_code_j1939_mapping import DiagnosticEventToTroubleCodeJ1939Mapping
-

@@ -1,7 +1,9 @@
 """GlobalTimeSlave AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -19,15 +21,41 @@ class GlobalTimeSlave(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("communication_connector", None, False, False, CommunicationConnector),  # communicationConnector
-        ("follow_up_timeout_value", None, True, False, None),  # followUpTimeoutValue
-        ("icv_verification", None, False, False, any (GlobalTimeIcv)),  # icvVerification
-        ("time_leap_future", None, True, False, None),  # timeLeapFuture
-        ("time_leap", None, True, False, None),  # timeLeap
-        ("time_leap_past", None, True, False, None),  # timeLeapPast
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "communication_connector": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CommunicationConnector,
+        ),  # communicationConnector
+        "follow_up_timeout_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # followUpTimeoutValue
+        "icv_verification": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (GlobalTimeIcv),
+        ),  # icvVerification
+        "time_leap_future": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeLeapFuture
+        "time_leap": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeLeap
+        "time_leap_past": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeLeapPast
+    }
 
     def __init__(self) -> None:
         """Initialize GlobalTimeSlave."""
@@ -38,34 +66,6 @@ class GlobalTimeSlave(Identifiable):
         self.time_leap_future: Optional[TimeValue] = None
         self.time_leap: Optional[PositiveInteger] = None
         self.time_leap_past: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert GlobalTimeSlave to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeSlave":
-        """Create GlobalTimeSlave from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeSlave instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to GlobalTimeSlave since parent returns ARObject
-        return cast("GlobalTimeSlave", obj)
 
 
 class GlobalTimeSlaveBuilder:

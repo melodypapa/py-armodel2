@@ -1,7 +1,9 @@
 """Entry AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -16,21 +18,72 @@ class Entry(ARObject):
     """AUTOSAR Entry."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("align", None, False, False, AlignEnum),  # align
-        ("bgcolor", None, True, False, None),  # bgcolor
-        ("colname", None, True, False, None),  # colname
-        ("colsep", None, True, False, None),  # colsep
-        ("entry_contents", None, False, False, DocumentationBlock),  # entryContents
-        ("morerows", None, True, False, None),  # morerows
-        ("nameend", None, True, False, None),  # nameend
-        ("namest", None, True, False, None),  # namest
-        ("rotate", None, True, False, None),  # rotate
-        ("rowsep", None, True, False, None),  # rowsep
-        ("spanname", None, True, False, None),  # spanname
-        ("valign", None, False, False, ValignEnum),  # valign
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "align": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AlignEnum,
+        ),  # align
+        "bgcolor": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # bgcolor
+        "colname": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # colname
+        "colsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # colsep
+        "entry_contents": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=DocumentationBlock,
+        ),  # entryContents
+        "morerows": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # morerows
+        "nameend": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nameend
+        "namest": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # namest
+        "rotate": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rotate
+        "rowsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rowsep
+        "spanname": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # spanname
+        "valign": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValignEnum,
+        ),  # valign
+    }
 
     def __init__(self) -> None:
         """Initialize Entry."""
@@ -47,34 +100,6 @@ class Entry(ARObject):
         self.rowsep: Optional[TableSeparatorString] = None
         self.spanname: Optional[String] = None
         self.valign: Optional[ValignEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Entry to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Entry":
-        """Create Entry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Entry instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Entry since parent returns ARObject
-        return cast("Entry", obj)
 
 
 class EntryBuilder:

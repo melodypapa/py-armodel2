@@ -1,7 +1,9 @@
 """ViewMap AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -17,12 +19,26 @@ class ViewMap(Identifiable):
     """AUTOSAR ViewMap."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("first_elements", None, False, True, AtpFeature),  # firstElements
-        ("role", None, True, False, None),  # role
-        ("second_elements", None, False, True, AtpFeature),  # secondElements
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "first_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AtpFeature,
+        ),  # firstElements
+        "role": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # role
+        "second_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AtpFeature,
+        ),  # secondElements
+    }
 
     def __init__(self) -> None:
         """Initialize ViewMap."""
@@ -30,34 +46,6 @@ class ViewMap(Identifiable):
         self.first_elements: list[AtpFeature] = []
         self.role: Optional[Identifier] = None
         self.second_elements: list[AtpFeature] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ViewMap to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ViewMap":
-        """Create ViewMap from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ViewMap instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ViewMap since parent returns ARObject
-        return cast("ViewMap", obj)
 
 
 class ViewMapBuilder:

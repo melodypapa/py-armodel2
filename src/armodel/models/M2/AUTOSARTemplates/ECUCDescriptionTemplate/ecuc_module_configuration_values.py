@@ -1,7 +1,9 @@
 """EcucModuleConfigurationValues AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -24,15 +26,43 @@ class EcucModuleConfigurationValues(ARElement):
     """AUTOSAR EcucModuleConfigurationValues."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("containers", None, False, True, EcucContainerValue),  # containers
-        ("definition", None, False, False, EcucModuleDef),  # definition
-        ("ecuc_def_edition", None, True, False, None),  # ecucDefEdition
-        ("implementation", None, False, False, any (EcucConfiguration)),  # implementation
-        ("module", None, False, False, BswImplementation),  # module
-        ("post_build_variant", None, True, False, None),  # postBuildVariant
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "containers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcucContainerValue,
+        ),  # containers
+        "definition": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcucModuleDef,
+        ),  # definition
+        "ecuc_def_edition": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ecucDefEdition
+        "implementation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EcucConfiguration),
+        ),  # implementation
+        "module": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswImplementation,
+        ),  # module
+        "post_build_variant": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # postBuildVariant
+    }
 
     def __init__(self) -> None:
         """Initialize EcucModuleConfigurationValues."""
@@ -43,34 +73,6 @@ class EcucModuleConfigurationValues(ARElement):
         self.implementation: Optional[Any] = None
         self.module: Optional[BswImplementation] = None
         self.post_build_variant: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcucModuleConfigurationValues to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucModuleConfigurationValues":
-        """Create EcucModuleConfigurationValues from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucModuleConfigurationValues instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcucModuleConfigurationValues since parent returns ARObject
-        return cast("EcucModuleConfigurationValues", obj)
 
 
 class EcucModuleConfigurationValuesBuilder:

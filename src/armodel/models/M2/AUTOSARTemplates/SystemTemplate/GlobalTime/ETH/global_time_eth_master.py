@@ -1,7 +1,9 @@
 """GlobalTimeEthMaster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
     GlobalTimeMaster,
 )
@@ -17,12 +19,26 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeEthMaster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("crc_secured", None, False, False, GlobalTimeCrcSupportEnum),  # crcSecured
-        ("hold_over_time", None, True, False, None),  # holdOverTime
-        ("sub_tlv_config", None, False, False, EthTSynSubTlvConfig),  # subTlvConfig
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "crc_secured": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=GlobalTimeCrcSupportEnum,
+        ),  # crcSecured
+        "hold_over_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # holdOverTime
+        "sub_tlv_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthTSynSubTlvConfig,
+        ),  # subTlvConfig
+    }
 
     def __init__(self) -> None:
         """Initialize GlobalTimeEthMaster."""
@@ -30,34 +46,6 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
         self.hold_over_time: Optional[TimeValue] = None
         self.sub_tlv_config: Optional[EthTSynSubTlvConfig] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert GlobalTimeEthMaster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeEthMaster":
-        """Create GlobalTimeEthMaster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeEthMaster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to GlobalTimeEthMaster since parent returns ARObject
-        return cast("GlobalTimeEthMaster", obj)
 
 
 class GlobalTimeEthMasterBuilder:

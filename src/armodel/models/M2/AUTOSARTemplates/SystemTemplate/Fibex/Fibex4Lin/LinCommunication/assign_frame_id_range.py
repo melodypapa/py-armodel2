@@ -1,7 +1,9 @@
 """AssignFrameIdRange AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
@@ -17,45 +19,26 @@ class AssignFrameIdRange(LinConfigurationEntry):
     """AUTOSAR AssignFrameIdRange."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("frame_pid", None, False, False, FramePid),  # framePid
-        ("start_index", None, True, False, None),  # startIndex
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "frame_pid": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=FramePid,
+        ),  # framePid
+        "start_index": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # startIndex
+    }
 
     def __init__(self) -> None:
         """Initialize AssignFrameIdRange."""
         super().__init__()
         self.frame_pid: FramePid = None
         self.start_index: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert AssignFrameIdRange to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AssignFrameIdRange":
-        """Create AssignFrameIdRange from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AssignFrameIdRange instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to AssignFrameIdRange since parent returns ARObject
-        return cast("AssignFrameIdRange", obj)
 
 
 class AssignFrameIdRangeBuilder:

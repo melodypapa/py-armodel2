@@ -1,7 +1,9 @@
 """IEEE1722TpConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -19,15 +21,40 @@ class IEEE1722TpConnection(ARElement):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("destination_mac", None, True, False, None),  # destinationMac
-        ("mac_address_string", None, True, False, None),  # macAddressString
-        ("pdu", None, False, False, PduTriggering),  # pdu
-        ("unique_stream_id", None, True, False, None),  # uniqueStreamId
-        ("version", None, True, False, None),  # version
-        ("vlan_priority", None, True, False, None),  # vlanPriority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "destination_mac": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # destinationMac
+        "mac_address_string": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # macAddressString
+        "pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PduTriggering,
+        ),  # pdu
+        "unique_stream_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # uniqueStreamId
+        "version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # version
+        "vlan_priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vlanPriority
+    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpConnection."""
@@ -38,34 +65,6 @@ class IEEE1722TpConnection(ARElement):
         self.unique_stream_id: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IEEE1722TpConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpConnection":
-        """Create IEEE1722TpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IEEE1722TpConnection since parent returns ARObject
-        return cast("IEEE1722TpConnection", obj)
 
 
 class IEEE1722TpConnectionBuilder:

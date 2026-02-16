@@ -1,7 +1,9 @@
 """CryptoServiceNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
@@ -15,13 +17,29 @@ class CryptoServiceNeeds(ServiceNeeds):
     """AUTOSAR CryptoServiceNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("algorithm_family", None, True, False, None),  # algorithmFamily
-        ("algorithm_mode", None, True, False, None),  # algorithmMode
-        ("crypto_key", None, True, False, None),  # cryptoKey
-        ("maximum_key", None, True, False, None),  # maximumKey
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "algorithm_family": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # algorithmFamily
+        "algorithm_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # algorithmMode
+        "crypto_key": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cryptoKey
+        "maximum_key": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maximumKey
+    }
 
     def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
@@ -30,34 +48,6 @@ class CryptoServiceNeeds(ServiceNeeds):
         self.algorithm_mode: Optional[String] = None
         self.crypto_key: Optional[String] = None
         self.maximum_key: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CryptoServiceNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CryptoServiceNeeds":
-        """Create CryptoServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CryptoServiceNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CryptoServiceNeeds since parent returns ARObject
-        return cast("CryptoServiceNeeds", obj)
 
 
 class CryptoServiceNeedsBuilder:

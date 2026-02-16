@@ -1,7 +1,9 @@
 """TcpTp AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_udp_config import (
     TcpUdpConfig,
 )
@@ -19,16 +21,45 @@ class TcpTp(TcpUdpConfig):
     """AUTOSAR TcpTp."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("keep_alive", None, True, False, None),  # keepAlive
-        ("keep_alives", None, True, False, None),  # keepAlives
-        ("keep_alive_time", None, True, False, None),  # keepAliveTime
-        ("nagles_algorithm", None, True, False, None),  # naglesAlgorithm
-        ("receive_window_min", None, True, False, None),  # receiveWindowMin
-        ("tcp", None, True, False, None),  # tcp
-        ("tcp_tp_port", None, False, False, TpPort),  # tcpTpPort
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "keep_alive": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keepAlive
+        "keep_alives": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keepAlives
+        "keep_alive_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keepAliveTime
+        "nagles_algorithm": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # naglesAlgorithm
+        "receive_window_min": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # receiveWindowMin
+        "tcp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcp
+        "tcp_tp_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TpPort,
+        ),  # tcpTpPort
+    }
 
     def __init__(self) -> None:
         """Initialize TcpTp."""
@@ -40,34 +71,6 @@ class TcpTp(TcpUdpConfig):
         self.receive_window_min: Optional[PositiveInteger] = None
         self.tcp: Optional[TimeValue] = None
         self.tcp_tp_port: Optional[TpPort] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TcpTp to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TcpTp":
-        """Create TcpTp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TcpTp instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TcpTp since parent returns ARObject
-        return cast("TcpTp", obj)
 
 
 class TcpTpBuilder:

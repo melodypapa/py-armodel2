@@ -1,7 +1,9 @@
 """SwcBswRunnableMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
@@ -15,45 +17,27 @@ class SwcBswRunnableMapping(ARObject):
     """AUTOSAR SwcBswRunnableMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bsw_entity", None, False, False, BswModuleEntity),  # bswEntity
-        ("swc_runnable", None, False, False, RunnableEntity),  # swcRunnable
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bsw_entity": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswModuleEntity,
+        ),  # bswEntity
+        "swc_runnable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RunnableEntity,
+        ),  # swcRunnable
+    }
 
     def __init__(self) -> None:
         """Initialize SwcBswRunnableMapping."""
         super().__init__()
         self.bsw_entity: Optional[BswModuleEntity] = None
         self.swc_runnable: Optional[RunnableEntity] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwcBswRunnableMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcBswRunnableMapping":
-        """Create SwcBswRunnableMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcBswRunnableMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwcBswRunnableMapping since parent returns ARObject
-        return cast("SwcBswRunnableMapping", obj)
 
 
 class SwcBswRunnableMappingBuilder:

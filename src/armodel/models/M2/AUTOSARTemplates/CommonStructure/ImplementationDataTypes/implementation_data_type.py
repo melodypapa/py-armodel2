@@ -1,7 +1,9 @@
 """ImplementationDataType AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
     AbstractImplementationDataType,
 )
@@ -18,13 +20,31 @@ class ImplementationDataType(AbstractImplementationDataType):
     """AUTOSAR ImplementationDataType."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("dynamic_array", None, True, False, None),  # dynamicArray
-        ("sub_elements", None, False, True, any (ImplementationData)),  # subElements
-        ("symbol_props", None, False, False, SymbolProps),  # symbolProps
-        ("type_emitter", None, True, False, None),  # typeEmitter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "dynamic_array": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dynamicArray
+        "sub_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ImplementationData),
+        ),  # subElements
+        "symbol_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SymbolProps,
+        ),  # symbolProps
+        "type_emitter": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # typeEmitter
+    }
 
     def __init__(self) -> None:
         """Initialize ImplementationDataType."""
@@ -33,34 +53,6 @@ class ImplementationDataType(AbstractImplementationDataType):
         self.sub_elements: list[Any] = []
         self.symbol_props: Optional[SymbolProps] = None
         self.type_emitter: Optional[NameToken] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ImplementationDataType to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationDataType":
-        """Create ImplementationDataType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationDataType instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ImplementationDataType since parent returns ARObject
-        return cast("ImplementationDataType", obj)
 
 
 class ImplementationDataTypeBuilder:

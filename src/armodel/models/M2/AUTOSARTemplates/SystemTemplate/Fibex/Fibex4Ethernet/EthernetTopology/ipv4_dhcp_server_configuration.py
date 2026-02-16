@@ -1,7 +1,9 @@
 """Ipv4DhcpServerConfiguration AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
@@ -15,14 +17,34 @@ class Ipv4DhcpServerConfiguration(Describable):
     """AUTOSAR Ipv4DhcpServerConfiguration."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("address_range", None, True, False, None),  # addressRange
-        ("default_gateway", None, True, False, None),  # defaultGateway
-        ("default_lease", None, True, False, None),  # defaultLease
-        ("dns_servers", None, False, True, None),  # dnsServers
-        ("network_mask", None, True, False, None),  # networkMask
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "address_range": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # addressRange
+        "default_gateway": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # defaultGateway
+        "default_lease": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # defaultLease
+        "dns_servers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # dnsServers
+        "network_mask": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # networkMask
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv4DhcpServerConfiguration."""
@@ -32,34 +54,6 @@ class Ipv4DhcpServerConfiguration(Describable):
         self.default_lease: Optional[TimeValue] = None
         self.dns_servers: list[Ip4AddressString] = []
         self.network_mask: Optional[Ip4AddressString] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv4DhcpServerConfiguration to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv4DhcpServerConfiguration":
-        """Create Ipv4DhcpServerConfiguration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv4DhcpServerConfiguration instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv4DhcpServerConfiguration since parent returns ARObject
-        return cast("Ipv4DhcpServerConfiguration", obj)
 
 
 class Ipv4DhcpServerConfigurationBuilder:

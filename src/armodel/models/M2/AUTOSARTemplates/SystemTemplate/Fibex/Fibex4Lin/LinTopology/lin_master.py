@@ -1,7 +1,9 @@
 """LinMaster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
@@ -15,12 +17,25 @@ class LinMaster(ARObject):
     """AUTOSAR LinMaster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("lin_slaves", None, False, True, LinSlaveConfig),  # linSlaves
-        ("time_base", None, True, False, None),  # timeBase
-        ("time_base_jitter", None, True, False, None),  # timeBaseJitter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "lin_slaves": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=LinSlaveConfig,
+        ),  # linSlaves
+        "time_base": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeBase
+        "time_base_jitter": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeBaseJitter
+    }
 
     def __init__(self) -> None:
         """Initialize LinMaster."""
@@ -28,34 +43,6 @@ class LinMaster(ARObject):
         self.lin_slaves: list[LinSlaveConfig] = []
         self.time_base: Optional[TimeValue] = None
         self.time_base_jitter: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LinMaster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinMaster":
-        """Create LinMaster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinMaster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LinMaster since parent returns ARObject
-        return cast("LinMaster", obj)
 
 
 class LinMasterBuilder:

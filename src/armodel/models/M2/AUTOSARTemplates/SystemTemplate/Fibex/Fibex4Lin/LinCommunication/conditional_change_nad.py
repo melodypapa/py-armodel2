@@ -1,7 +1,9 @@
 """ConditionalChangeNad AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
@@ -15,14 +17,34 @@ class ConditionalChangeNad(LinConfigurationEntry):
     """AUTOSAR ConditionalChangeNad."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("byte", None, True, False, None),  # byte
-        ("id", None, True, False, None),  # id
-        ("invert", None, True, False, None),  # invert
-        ("mask", None, True, False, None),  # mask
-        ("new_nad", None, True, False, None),  # newNad
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "byte": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # byte
+        "id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # id
+        "invert": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # invert
+        "mask": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # mask
+        "new_nad": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # newNad
+    }
 
     def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
@@ -32,34 +54,6 @@ class ConditionalChangeNad(LinConfigurationEntry):
         self.invert: Optional[Integer] = None
         self.mask: Optional[Integer] = None
         self.new_nad: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ConditionalChangeNad to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConditionalChangeNad":
-        """Create ConditionalChangeNad from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConditionalChangeNad instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ConditionalChangeNad since parent returns ARObject
-        return cast("ConditionalChangeNad", obj)
 
 
 class ConditionalChangeNadBuilder:

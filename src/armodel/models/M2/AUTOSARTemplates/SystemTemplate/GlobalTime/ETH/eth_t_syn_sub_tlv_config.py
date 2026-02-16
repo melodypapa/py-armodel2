@@ -1,7 +1,9 @@
 """EthTSynSubTlvConfig AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -12,13 +14,29 @@ class EthTSynSubTlvConfig(ARObject):
     """AUTOSAR EthTSynSubTlvConfig."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ofs_sub_tlv", None, True, False, None),  # ofsSubTlv
-        ("status_sub_tlv", None, True, False, None),  # statusSubTlv
-        ("time_sub_tlv", None, True, False, None),  # timeSubTlv
-        ("user_data_sub_tlv", None, True, False, None),  # userDataSubTlv
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ofs_sub_tlv": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ofsSubTlv
+        "status_sub_tlv": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # statusSubTlv
+        "time_sub_tlv": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeSubTlv
+        "user_data_sub_tlv": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # userDataSubTlv
+    }
 
     def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
@@ -27,34 +45,6 @@ class EthTSynSubTlvConfig(ARObject):
         self.status_sub_tlv: Optional[Boolean] = None
         self.time_sub_tlv: Optional[Boolean] = None
         self.user_data_sub_tlv: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EthTSynSubTlvConfig to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthTSynSubTlvConfig":
-        """Create EthTSynSubTlvConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthTSynSubTlvConfig instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EthTSynSubTlvConfig since parent returns ARObject
-        return cast("EthTSynSubTlvConfig", obj)
 
 
 class EthTSynSubTlvConfigBuilder:

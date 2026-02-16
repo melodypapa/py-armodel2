@@ -1,7 +1,9 @@
 """Gateway AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
@@ -23,13 +25,33 @@ class Gateway(FibexElement):
     """AUTOSAR Gateway."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ecu", None, False, False, EcuInstance),  # ecu
-        ("frame_mappings", None, False, True, FrameMapping),  # frameMappings
-        ("i_pdu_mappings", None, False, True, IPduMapping),  # iPduMappings
-        ("signal_mappings", None, False, True, ISignalMapping),  # signalMappings
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ecu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcuInstance,
+        ),  # ecu
+        "frame_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FrameMapping,
+        ),  # frameMappings
+        "i_pdu_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IPduMapping,
+        ),  # iPduMappings
+        "signal_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalMapping,
+        ),  # signalMappings
+    }
 
     def __init__(self) -> None:
         """Initialize Gateway."""
@@ -38,34 +60,6 @@ class Gateway(FibexElement):
         self.frame_mappings: list[FrameMapping] = []
         self.i_pdu_mappings: list[IPduMapping] = []
         self.signal_mappings: list[ISignalMapping] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Gateway to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Gateway":
-        """Create Gateway from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Gateway instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Gateway since parent returns ARObject
-        return cast("Gateway", obj)
 
 
 class GatewayBuilder:

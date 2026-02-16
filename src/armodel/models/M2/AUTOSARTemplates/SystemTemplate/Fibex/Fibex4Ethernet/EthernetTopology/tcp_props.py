@@ -1,7 +1,9 @@
 """TcpProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -14,24 +16,85 @@ class TcpProps(ARObject):
     """AUTOSAR TcpProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("tcp_congestion", None, True, False, None),  # tcpCongestion
-        ("tcp_delayed_ack", None, True, False, None),  # tcpDelayedAck
-        ("tcp_fast_recovery", None, False, False, any (BooleanRecovery)),  # tcpFastRecovery
-        ("tcp_fast", None, True, False, None),  # tcpFast
-        ("tcp_fin", None, True, False, None),  # tcpFin
-        ("tcp_keep_alive", None, True, False, None),  # tcpKeepAlive
-        ("tcp_max_rtx", None, True, False, None),  # tcpMaxRtx
-        ("tcp_msl", None, True, False, None),  # tcpMsl
-        ("tcp_nagle", None, True, False, None),  # tcpNagle
-        ("tcp_receive_window_max", None, True, False, None),  # tcpReceiveWindowMax
-        ("tcp", None, True, False, None),  # tcp
-        ("tcp_slow_start", None, True, False, None),  # tcpSlowStart
-        ("tcp_syn_max_rtx", None, True, False, None),  # tcpSynMaxRtx
-        ("tcp_syn_received", None, True, False, None),  # tcpSynReceived
-        ("tcp_ttl", None, True, False, None),  # tcpTtl
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "tcp_congestion": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpCongestion
+        "tcp_delayed_ack": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpDelayedAck
+        "tcp_fast_recovery": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BooleanRecovery),
+        ),  # tcpFastRecovery
+        "tcp_fast": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpFast
+        "tcp_fin": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpFin
+        "tcp_keep_alive": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpKeepAlive
+        "tcp_max_rtx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpMaxRtx
+        "tcp_msl": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpMsl
+        "tcp_nagle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpNagle
+        "tcp_receive_window_max": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpReceiveWindowMax
+        "tcp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcp
+        "tcp_slow_start": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpSlowStart
+        "tcp_syn_max_rtx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpSynMaxRtx
+        "tcp_syn_received": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpSynReceived
+        "tcp_ttl": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpTtl
+    }
 
     def __init__(self) -> None:
         """Initialize TcpProps."""
@@ -51,34 +114,6 @@ class TcpProps(ARObject):
         self.tcp_syn_max_rtx: Optional[PositiveInteger] = None
         self.tcp_syn_received: Optional[TimeValue] = None
         self.tcp_ttl: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TcpProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TcpProps":
-        """Create TcpProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TcpProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TcpProps since parent returns ARObject
-        return cast("TcpProps", obj)
 
 
 class TcpPropsBuilder:

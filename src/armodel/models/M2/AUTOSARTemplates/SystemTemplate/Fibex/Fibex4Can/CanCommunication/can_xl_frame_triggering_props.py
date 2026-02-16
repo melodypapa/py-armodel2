@@ -1,7 +1,9 @@
 """CanXlFrameTriggeringProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -12,13 +14,29 @@ class CanXlFrameTriggeringProps(ARObject):
     """AUTOSAR CanXlFrameTriggeringProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("acceptance_field", None, True, False, None),  # acceptanceField
-        ("priority_id", None, True, False, None),  # priorityId
-        ("sdu_type", None, True, False, None),  # sduType
-        ("vcid", None, True, False, None),  # vcid
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "acceptance_field": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # acceptanceField
+        "priority_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priorityId
+        "sdu_type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sduType
+        "vcid": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vcid
+    }
 
     def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
@@ -27,34 +45,6 @@ class CanXlFrameTriggeringProps(ARObject):
         self.priority_id: Optional[PositiveInteger] = None
         self.sdu_type: Optional[PositiveInteger] = None
         self.vcid: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanXlFrameTriggeringProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanXlFrameTriggeringProps":
-        """Create CanXlFrameTriggeringProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanXlFrameTriggeringProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanXlFrameTriggeringProps since parent returns ARObject
-        return cast("CanXlFrameTriggeringProps", obj)
 
 
 class CanXlFrameTriggeringPropsBuilder:

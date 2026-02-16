@@ -1,7 +1,9 @@
 """BusMirrorChannelMappingIp AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
     BusMirrorChannelMapping,
 )
@@ -14,43 +16,19 @@ class BusMirrorChannelMappingIp(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingIp."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("transmission", None, True, False, None),  # transmission
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "transmission": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # transmission
+    }
 
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingIp."""
         super().__init__()
         self.transmission: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BusMirrorChannelMappingIp to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingIp":
-        """Create BusMirrorChannelMappingIp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BusMirrorChannelMappingIp instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BusMirrorChannelMappingIp since parent returns ARObject
-        return cast("BusMirrorChannelMappingIp", obj)
 
 
 class BusMirrorChannelMappingIpBuilder:

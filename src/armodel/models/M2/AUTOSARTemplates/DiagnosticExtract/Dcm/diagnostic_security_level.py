@@ -1,7 +1,9 @@
 """DiagnosticSecurityLevel AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -15,14 +17,34 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSecurityLevel."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("access_data", None, True, False, None),  # accessData
-        ("key_size", None, True, False, None),  # keySize
-        ("num_failed", None, True, False, None),  # numFailed
-        ("security_delay", None, True, False, None),  # securityDelay
-        ("seed_size", None, True, False, None),  # seedSize
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "access_data": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # accessData
+        "key_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keySize
+        "num_failed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # numFailed
+        "security_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # securityDelay
+        "seed_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # seedSize
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityLevel."""
@@ -32,34 +54,6 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         self.num_failed: Optional[PositiveInteger] = None
         self.security_delay: Optional[TimeValue] = None
         self.seed_size: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticSecurityLevel to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSecurityLevel":
-        """Create DiagnosticSecurityLevel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSecurityLevel instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticSecurityLevel since parent returns ARObject
-        return cast("DiagnosticSecurityLevel", obj)
 
 
 class DiagnosticSecurityLevelBuilder:

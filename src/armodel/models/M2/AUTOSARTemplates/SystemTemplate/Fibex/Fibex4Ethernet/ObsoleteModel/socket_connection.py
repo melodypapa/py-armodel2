@@ -1,7 +1,9 @@
 """SocketConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
@@ -22,17 +24,53 @@ class SocketConnection(Describable):
     """AUTOSAR SocketConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_ip_addr", None, True, False, None),  # clientIpAddr
-        ("client_port", None, False, False, SocketAddress),  # clientPort
-        ("client_port_from", None, True, False, None),  # clientPortFrom
-        ("pdus", None, False, True, SocketConnectionIpduIdentifierSet),  # pdus
-        ("pdu_collection", None, True, False, None),  # pduCollection
-        ("runtime_ip", None, False, False, any (RuntimeAddress)),  # runtimeIp
-        ("runtime_port", None, False, False, any (RuntimeAddress)),  # runtimePort
-        ("short_label", None, True, False, None),  # shortLabel
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_ip_addr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # clientIpAddr
+        "client_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SocketAddress,
+        ),  # clientPort
+        "client_port_from": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # clientPortFrom
+        "pdus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SocketConnectionIpduIdentifierSet,
+        ),  # pdus
+        "pdu_collection": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pduCollection
+        "runtime_ip": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (RuntimeAddress),
+        ),  # runtimeIp
+        "runtime_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (RuntimeAddress),
+        ),  # runtimePort
+        "short_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortLabel
+    }
 
     def __init__(self) -> None:
         """Initialize SocketConnection."""
@@ -45,34 +83,6 @@ class SocketConnection(Describable):
         self.runtime_ip: Optional[Any] = None
         self.runtime_port: Optional[Any] = None
         self.short_label: Optional[Identifier] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SocketConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SocketConnection":
-        """Create SocketConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SocketConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SocketConnection since parent returns ARObject
-        return cast("SocketConnection", obj)
 
 
 class SocketConnectionBuilder:

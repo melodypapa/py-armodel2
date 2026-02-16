@@ -1,7 +1,9 @@
 """IEEE1722TpRvfConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
     IEEE1722TpAvConnection,
 )
@@ -15,17 +17,53 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpRvfConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("rvf_active_pixels", None, True, False, None),  # rvfActivePixels
-        ("rvf_color_space", None, False, False, IEEE1722TpRvfColorSpaceEnum),  # rvfColorSpace
-        ("rvf_event_default", None, True, False, None),  # rvfEventDefault
-        ("rvf_frame_rate", None, False, False, IEEE1722TpRvfFrameRateEnum),  # rvfFrameRate
-        ("rvf_interlaced", None, True, False, None),  # rvfInterlaced
-        ("rvf_pixel_depth", None, False, False, any (IEEE1722TpRvfPixel)),  # rvfPixelDepth
-        ("rvf_pixel_format", None, False, False, any (IEEE1722TpRvfPixel)),  # rvfPixelFormat
-        ("rvf_total_lines", None, True, False, None),  # rvfTotalLines
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "rvf_active_pixels": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rvfActivePixels
+        "rvf_color_space": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IEEE1722TpRvfColorSpaceEnum,
+        ),  # rvfColorSpace
+        "rvf_event_default": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rvfEventDefault
+        "rvf_frame_rate": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IEEE1722TpRvfFrameRateEnum,
+        ),  # rvfFrameRate
+        "rvf_interlaced": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rvfInterlaced
+        "rvf_pixel_depth": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IEEE1722TpRvfPixel),
+        ),  # rvfPixelDepth
+        "rvf_pixel_format": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IEEE1722TpRvfPixel),
+        ),  # rvfPixelFormat
+        "rvf_total_lines": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rvfTotalLines
+    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""
@@ -38,34 +76,6 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         self.rvf_pixel_depth: Optional[Any] = None
         self.rvf_pixel_format: Optional[Any] = None
         self.rvf_total_lines: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IEEE1722TpRvfConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpRvfConnection":
-        """Create IEEE1722TpRvfConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpRvfConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IEEE1722TpRvfConnection since parent returns ARObject
-        return cast("IEEE1722TpRvfConnection", obj)
 
 
 class IEEE1722TpRvfConnectionBuilder:

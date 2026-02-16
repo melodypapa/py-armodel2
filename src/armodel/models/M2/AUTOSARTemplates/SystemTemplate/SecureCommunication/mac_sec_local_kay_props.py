@@ -1,7 +1,9 @@
 """MacSecLocalKayProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
@@ -19,15 +21,42 @@ class MacSecLocalKayProps(ARObject):
     """AUTOSAR MacSecLocalKayProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("destination_mac", None, True, False, None),  # destinationMac
-        ("global_kay_props", None, False, False, MacSecGlobalKayProps),  # globalKayProps
-        ("key_server", None, True, False, None),  # keyServer
-        ("mka_participants", None, False, True, MacSecKayParticipant),  # mkaParticipants
-        ("role", None, False, False, MacSecRoleEnum),  # role
-        ("source_mac", None, True, False, None),  # sourceMac
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "destination_mac": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # destinationMac
+        "global_kay_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MacSecGlobalKayProps,
+        ),  # globalKayProps
+        "key_server": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keyServer
+        "mka_participants": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=MacSecKayParticipant,
+        ),  # mkaParticipants
+        "role": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MacSecRoleEnum,
+        ),  # role
+        "source_mac": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sourceMac
+    }
 
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
@@ -38,34 +67,6 @@ class MacSecLocalKayProps(ARObject):
         self.mka_participants: list[MacSecKayParticipant] = []
         self.role: Optional[MacSecRoleEnum] = None
         self.source_mac: Optional[MacAddressString] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert MacSecLocalKayProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MacSecLocalKayProps":
-        """Create MacSecLocalKayProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MacSecLocalKayProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to MacSecLocalKayProps since parent returns ARObject
-        return cast("MacSecLocalKayProps", obj)
 
 
 class MacSecLocalKayPropsBuilder:

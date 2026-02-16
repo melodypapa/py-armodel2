@@ -1,7 +1,9 @@
 """TlsCryptoCipherSuite AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -30,22 +32,84 @@ class TlsCryptoCipherSuite(Identifiable):
     """AUTOSAR TlsCryptoCipherSuite."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("authentication", None, False, False, CryptoServicePrimitive),  # authentication
-        ("certificate", None, False, False, any (CryptoService)),  # certificate
-        ("cipher_suite_id", None, True, False, None),  # cipherSuiteId
-        ("cipher_suite", None, True, False, None),  # cipherSuite
-        ("elliptic_curves", None, False, True, CryptoEllipticCurveProps),  # ellipticCurves
-        ("encryption", None, False, False, CryptoServicePrimitive),  # encryption
-        ("key_exchanges", None, False, True, CryptoServicePrimitive),  # keyExchanges
-        ("priority", None, True, False, None),  # priority
-        ("props", None, False, False, TlsCryptoCipherSuite),  # props
-        ("psk_identity", None, False, False, TlsPskIdentity),  # pskIdentity
-        ("remote", None, False, False, any (CryptoService)),  # remote
-        ("signatures", None, False, True, CryptoSignatureScheme),  # signatures
-        ("version", None, False, False, TlsVersionEnum),  # version
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "authentication": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CryptoServicePrimitive,
+        ),  # authentication
+        "certificate": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (CryptoService),
+        ),  # certificate
+        "cipher_suite_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cipherSuiteId
+        "cipher_suite": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cipherSuite
+        "elliptic_curves": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CryptoEllipticCurveProps,
+        ),  # ellipticCurves
+        "encryption": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CryptoServicePrimitive,
+        ),  # encryption
+        "key_exchanges": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CryptoServicePrimitive,
+        ),  # keyExchanges
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TlsCryptoCipherSuite,
+        ),  # props
+        "psk_identity": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TlsPskIdentity,
+        ),  # pskIdentity
+        "remote": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (CryptoService),
+        ),  # remote
+        "signatures": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CryptoSignatureScheme,
+        ),  # signatures
+        "version": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TlsVersionEnum,
+        ),  # version
+    }
 
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuite."""
@@ -63,34 +127,6 @@ class TlsCryptoCipherSuite(Identifiable):
         self.remote: Optional[Any] = None
         self.signatures: list[CryptoSignatureScheme] = []
         self.version: Optional[TlsVersionEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TlsCryptoCipherSuite to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TlsCryptoCipherSuite":
-        """Create TlsCryptoCipherSuite from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TlsCryptoCipherSuite instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TlsCryptoCipherSuite since parent returns ARObject
-        return cast("TlsCryptoCipherSuite", obj)
 
 
 class TlsCryptoCipherSuiteBuilder:

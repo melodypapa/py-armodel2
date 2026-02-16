@@ -1,7 +1,9 @@
 """J1939TpConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
@@ -24,21 +26,74 @@ class J1939TpConnection(TpConnection):
     """AUTOSAR J1939TpConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("broadcast", None, True, False, None),  # broadcast
-        ("buffer_ratio", None, True, False, None),  # bufferRatio
-        ("cancellation", None, True, False, None),  # cancellation
-        ("data_pdu", None, False, False, NPdu),  # dataPdu
-        ("dynamic_bs", None, True, False, None),  # dynamicBs
-        ("flow_control_pdu", None, False, False, NPdu),  # flowControlPdu
-        ("max_bs", None, True, False, None),  # maxBs
-        ("max_exp_bs", None, True, False, None),  # maxExpBs
-        ("receivers", None, False, True, J1939TpNode),  # receivers
-        ("retry", None, True, False, None),  # retry
-        ("tp_pgs", None, False, True, J1939TpPg),  # tpPgs
-        ("transmitter", None, False, False, J1939TpNode),  # transmitter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "broadcast": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # broadcast
+        "buffer_ratio": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # bufferRatio
+        "cancellation": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cancellation
+        "data_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # dataPdu
+        "dynamic_bs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # dynamicBs
+        "flow_control_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=NPdu,
+        ),  # flowControlPdu
+        "max_bs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxBs
+        "max_exp_bs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxExpBs
+        "receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=J1939TpNode,
+        ),  # receivers
+        "retry": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # retry
+        "tp_pgs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=J1939TpPg,
+        ),  # tpPgs
+        "transmitter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=J1939TpNode,
+        ),  # transmitter
+    }
 
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
@@ -55,34 +110,6 @@ class J1939TpConnection(TpConnection):
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
         self.transmitter: Optional[J1939TpNode] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert J1939TpConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939TpConnection":
-        """Create J1939TpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939TpConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to J1939TpConnection since parent returns ARObject
-        return cast("J1939TpConnection", obj)
 
 
 class J1939TpConnectionBuilder:

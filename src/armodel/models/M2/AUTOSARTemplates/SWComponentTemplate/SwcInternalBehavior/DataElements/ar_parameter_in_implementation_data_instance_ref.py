@@ -1,7 +1,9 @@
 """ArParameterInImplementationDataInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
@@ -15,13 +17,33 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArParameterInImplementationDataInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("context_datas", None, False, True, any (AbstractImplementation)),  # contextDatas
-        ("port_prototype", None, False, False, PortPrototype),  # portPrototype
-        ("root_parameter", None, False, False, ParameterDataPrototype),  # rootParameter
-        ("target_data", None, False, False, any (AbstractImplementation)),  # targetData
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "context_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (AbstractImplementation),
+        ),  # contextDatas
+        "port_prototype": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # portPrototype
+        "root_parameter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ParameterDataPrototype,
+        ),  # rootParameter
+        "target_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (AbstractImplementation),
+        ),  # targetData
+    }
 
     def __init__(self) -> None:
         """Initialize ArParameterInImplementationDataInstanceRef."""
@@ -30,34 +52,6 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         self.port_prototype: Optional[PortPrototype] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ArParameterInImplementationDataInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ArParameterInImplementationDataInstanceRef":
-        """Create ArParameterInImplementationDataInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ArParameterInImplementationDataInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ArParameterInImplementationDataInstanceRef since parent returns ARObject
-        return cast("ArParameterInImplementationDataInstanceRef", obj)
 
 
 class ArParameterInImplementationDataInstanceRefBuilder:

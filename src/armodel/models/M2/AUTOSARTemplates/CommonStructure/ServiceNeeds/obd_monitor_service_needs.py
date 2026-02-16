@@ -1,7 +1,9 @@
 """ObdMonitorServiceNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
@@ -20,13 +22,32 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdMonitorServiceNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("application_data", None, False, False, ApplicationDataType),  # applicationData
-        ("event_needs", None, False, False, DiagnosticEventNeeds),  # eventNeeds
-        ("unit_and_scaling_id", None, True, False, None),  # unitAndScalingId
-        ("update_kind", None, False, False, DiagnosticMonitorUpdateKindEnum),  # updateKind
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "application_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationDataType,
+        ),  # applicationData
+        "event_needs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticEventNeeds,
+        ),  # eventNeeds
+        "unit_and_scaling_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # unitAndScalingId
+        "update_kind": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticMonitorUpdateKindEnum,
+        ),  # updateKind
+    }
 
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""
@@ -35,34 +56,6 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         self.event_needs: Optional[DiagnosticEventNeeds] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ObdMonitorServiceNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ObdMonitorServiceNeeds":
-        """Create ObdMonitorServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ObdMonitorServiceNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ObdMonitorServiceNeeds since parent returns ARObject
-        return cast("ObdMonitorServiceNeeds", obj)
 
 
 class ObdMonitorServiceNeedsBuilder:

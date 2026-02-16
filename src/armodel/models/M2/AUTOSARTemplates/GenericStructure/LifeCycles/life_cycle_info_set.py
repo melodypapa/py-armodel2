@@ -1,7 +1,9 @@
 """LifeCycleInfoSet AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -23,13 +25,33 @@ class LifeCycleInfoSet(ARElement):
     """AUTOSAR LifeCycleInfoSet."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("default_lc_state", None, False, False, LifeCycleState),  # defaultLcState
-        ("default_period", None, False, False, LifeCyclePeriod),  # defaultPeriod
-        ("life_cycle_infos", None, False, True, LifeCycleInfo),  # lifeCycleInfos
-        ("used_life_cycle", None, False, False, LifeCycleStateDefinitionGroup),  # usedLifeCycle
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "default_lc_state": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=LifeCycleState,
+        ),  # defaultLcState
+        "default_period": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LifeCyclePeriod,
+        ),  # defaultPeriod
+        "life_cycle_infos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=LifeCycleInfo,
+        ),  # lifeCycleInfos
+        "used_life_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=LifeCycleStateDefinitionGroup,
+        ),  # usedLifeCycle
+    }
 
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
@@ -38,34 +60,6 @@ class LifeCycleInfoSet(ARElement):
         self.default_period: Optional[LifeCyclePeriod] = None
         self.life_cycle_infos: list[LifeCycleInfo] = []
         self.used_life_cycle: LifeCycleStateDefinitionGroup = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LifeCycleInfoSet to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LifeCycleInfoSet":
-        """Create LifeCycleInfoSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LifeCycleInfoSet instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LifeCycleInfoSet since parent returns ARObject
-        return cast("LifeCycleInfoSet", obj)
 
 
 class LifeCycleInfoSetBuilder:

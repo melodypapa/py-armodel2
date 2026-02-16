@@ -1,7 +1,9 @@
 """ISignalPort AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.comm_connector_port import (
     CommConnectorPort,
 )
@@ -20,14 +22,37 @@ class ISignalPort(CommConnectorPort):
     """AUTOSAR ISignalPort."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_filter", None, False, False, DataFilter),  # dataFilter
-        ("dds_qos_profile", None, False, False, DdsCpQosProfile),  # ddsQosProfile
-        ("first_timeout", None, True, False, None),  # firstTimeout
-        ("handle_invalid_enum", None, False, False, HandleInvalidEnum),  # handleInvalidEnum
-        ("timeout", None, True, False, None),  # timeout
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_filter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataFilter,
+        ),  # dataFilter
+        "dds_qos_profile": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsCpQosProfile,
+        ),  # ddsQosProfile
+        "first_timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # firstTimeout
+        "handle_invalid_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=HandleInvalidEnum,
+        ),  # handleInvalidEnum
+        "timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeout
+    }
 
     def __init__(self) -> None:
         """Initialize ISignalPort."""
@@ -37,34 +62,6 @@ class ISignalPort(CommConnectorPort):
         self.first_timeout: Optional[TimeValue] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
         self.timeout: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ISignalPort to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalPort":
-        """Create ISignalPort from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalPort instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ISignalPort since parent returns ARObject
-        return cast("ISignalPort", obj)
 
 
 class ISignalPortBuilder:

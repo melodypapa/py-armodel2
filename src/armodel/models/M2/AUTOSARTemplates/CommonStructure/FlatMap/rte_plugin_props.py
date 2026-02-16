@@ -1,7 +1,9 @@
 """RtePluginProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
@@ -12,45 +14,27 @@ class RtePluginProps(ARObject):
     """AUTOSAR RtePluginProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("associated", None, False, False, EcucContainerValue),  # associated
-        ("associated_rte", None, False, False, EcucContainerValue),  # associatedRte
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "associated": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcucContainerValue,
+        ),  # associated
+        "associated_rte": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcucContainerValue,
+        ),  # associatedRte
+    }
 
     def __init__(self) -> None:
         """Initialize RtePluginProps."""
         super().__init__()
         self.associated: Optional[EcucContainerValue] = None
         self.associated_rte: Optional[EcucContainerValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert RtePluginProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RtePluginProps":
-        """Create RtePluginProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RtePluginProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to RtePluginProps since parent returns ARObject
-        return cast("RtePluginProps", obj)
 
 
 class RtePluginPropsBuilder:

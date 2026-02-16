@@ -1,7 +1,9 @@
 """RTEEvent AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstract_event import (
     AbstractEvent,
 )
@@ -18,45 +20,27 @@ class RTEEvent(AbstractEvent):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("disabled_mode_instance_refs", None, False, True, ModeDeclaration),  # disabledModeInstanceRefs
-        ("start_on_event", None, False, False, RunnableEntity),  # startOnEvent
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "disabled_mode_instance_refs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeDeclaration,
+        ),  # disabledModeInstanceRefs
+        "start_on_event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RunnableEntity,
+        ),  # startOnEvent
+    }
 
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
         self.disabled_mode_instance_refs: list[ModeDeclaration] = []
         self.start_on_event: Optional[RunnableEntity] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert RTEEvent to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RTEEvent":
-        """Create RTEEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RTEEvent instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to RTEEvent since parent returns ARObject
-        return cast("RTEEvent", obj)
 
 
 class RTEEventBuilder:

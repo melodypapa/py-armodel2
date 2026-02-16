@@ -1,7 +1,9 @@
 """BswModuleEntry AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -20,20 +22,70 @@ class BswModuleEntry(ARElement):
     """AUTOSAR BswModuleEntry."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("arguments", None, False, True, SwServiceArg),  # arguments
-        ("bsw_entry_kind_enum", None, False, False, BswEntryKindEnum),  # bswEntryKindEnum
-        ("call_type", None, False, False, BswCallType),  # callType
-        ("execution", None, False, False, BswExecutionContext),  # execution
-        ("function", None, True, False, None),  # function
-        ("is_reentrant", None, True, False, None),  # isReentrant
-        ("is_synchronous", None, True, False, None),  # isSynchronous
-        ("return_type", None, False, False, SwServiceArg),  # returnType
-        ("role", None, True, False, None),  # role
-        ("service_id", None, True, False, None),  # serviceId
-        ("sw_service_impl_policy", None, False, False, SwServiceImplPolicyEnum),  # swServiceImplPolicy
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "arguments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwServiceArg,
+        ),  # arguments
+        "bsw_entry_kind_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswEntryKindEnum,
+        ),  # bswEntryKindEnum
+        "call_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswCallType,
+        ),  # callType
+        "execution": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswExecutionContext,
+        ),  # execution
+        "function": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # function
+        "is_reentrant": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isReentrant
+        "is_synchronous": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isSynchronous
+        "return_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwServiceArg,
+        ),  # returnType
+        "role": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # role
+        "service_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # serviceId
+        "sw_service_impl_policy": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwServiceImplPolicyEnum,
+        ),  # swServiceImplPolicy
+    }
 
     def __init__(self) -> None:
         """Initialize BswModuleEntry."""
@@ -49,34 +101,6 @@ class BswModuleEntry(ARElement):
         self.role: Optional[Identifier] = None
         self.service_id: Optional[PositiveInteger] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BswModuleEntry to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleEntry":
-        """Create BswModuleEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleEntry instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BswModuleEntry since parent returns ARObject
-        return cast("BswModuleEntry", obj)
 
 
 class BswModuleEntryBuilder:

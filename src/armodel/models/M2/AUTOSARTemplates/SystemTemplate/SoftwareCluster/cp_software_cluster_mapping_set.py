@@ -1,7 +1,9 @@
 """CpSoftwareClusterMappingSet AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -20,13 +22,33 @@ class CpSoftwareClusterMappingSet(ARElement):
     """AUTOSAR CpSoftwareClusterMappingSet."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("port_element_tos", None, False, True, PortElementToCommunicationResourceMapping),  # portElementTos
-        ("resource_tos", None, False, True, CpSoftwareCluster),  # resourceTos
-        ("software_clusters", None, False, True, any (CpSoftwareClusterTo)),  # softwareClusters
-        ("swc_tos", None, False, True, SwcToApplicationPartitionMapping),  # swcTos
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "port_element_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortElementToCommunicationResourceMapping,
+        ),  # portElementTos
+        "resource_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CpSoftwareCluster,
+        ),  # resourceTos
+        "software_clusters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CpSoftwareClusterTo),
+        ),  # softwareClusters
+        "swc_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcToApplicationPartitionMapping,
+        ),  # swcTos
+    }
 
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
@@ -35,34 +57,6 @@ class CpSoftwareClusterMappingSet(ARElement):
         self.resource_tos: list[CpSoftwareCluster] = []
         self.software_clusters: list[Any] = []
         self.swc_tos: list[SwcToApplicationPartitionMapping] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CpSoftwareClusterMappingSet to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterMappingSet":
-        """Create CpSoftwareClusterMappingSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterMappingSet instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CpSoftwareClusterMappingSet since parent returns ARObject
-        return cast("CpSoftwareClusterMappingSet", obj)
 
 
 class CpSoftwareClusterMappingSetBuilder:

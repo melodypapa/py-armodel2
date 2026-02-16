@@ -1,7 +1,9 @@
 """BinaryManifestResource AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -16,12 +18,25 @@ class BinaryManifestResource(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("global_resource", None, True, False, None),  # globalResource
-        ("resource", None, False, False, any (BinaryManifest)),  # resource
-        ("resource_guard", None, True, False, None),  # resourceGuard
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "global_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # globalResource
+        "resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BinaryManifest),
+        ),  # resource
+        "resource_guard": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # resourceGuard
+    }
 
     def __init__(self) -> None:
         """Initialize BinaryManifestResource."""
@@ -29,34 +44,6 @@ class BinaryManifestResource(Identifiable):
         self.global_resource: Optional[PositiveInteger] = None
         self.resource: Optional[Any] = None
         self.resource_guard: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BinaryManifestResource to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BinaryManifestResource":
-        """Create BinaryManifestResource from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BinaryManifestResource instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BinaryManifestResource since parent returns ARObject
-        return cast("BinaryManifestResource", obj)
 
 
 class BinaryManifestResourceBuilder:

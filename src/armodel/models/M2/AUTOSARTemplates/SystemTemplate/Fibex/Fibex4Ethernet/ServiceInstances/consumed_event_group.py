@@ -1,7 +1,9 @@
 """ConsumedEventGroup AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -27,18 +29,60 @@ class ConsumedEventGroup(Identifiable):
     """AUTOSAR ConsumedEventGroup."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("application_endpoint", None, False, False, ApplicationEndpoint),  # applicationEndpoint
-        ("auto_require", None, True, False, None),  # autoRequire
-        ("event_group", None, True, False, None),  # eventGroup
-        ("event_multicasts", None, False, True, ApplicationEndpoint),  # eventMulticasts
-        ("pdu_activation_routings", None, False, True, PduActivationRoutingGroup),  # pduActivationRoutings
-        ("priority", None, True, False, None),  # priority
-        ("routing_groups", None, False, True, SoAdRoutingGroup),  # routingGroups
-        ("sd_client_config", None, False, False, any (SdClientConfig)),  # sdClientConfig
-        ("sd_client_timer", None, False, False, SomeipSdClientEventGroupTimingConfig),  # sdClientTimer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "application_endpoint": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationEndpoint,
+        ),  # applicationEndpoint
+        "auto_require": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # autoRequire
+        "event_group": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # eventGroup
+        "event_multicasts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ApplicationEndpoint,
+        ),  # eventMulticasts
+        "pdu_activation_routings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PduActivationRoutingGroup,
+        ),  # pduActivationRoutings
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "routing_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SoAdRoutingGroup,
+        ),  # routingGroups
+        "sd_client_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SdClientConfig),
+        ),  # sdClientConfig
+        "sd_client_timer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SomeipSdClientEventGroupTimingConfig,
+        ),  # sdClientTimer
+    }
 
     def __init__(self) -> None:
         """Initialize ConsumedEventGroup."""
@@ -52,34 +96,6 @@ class ConsumedEventGroup(Identifiable):
         self.routing_groups: list[SoAdRoutingGroup] = []
         self.sd_client_config: Optional[Any] = None
         self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ConsumedEventGroup to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsumedEventGroup":
-        """Create ConsumedEventGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsumedEventGroup instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ConsumedEventGroup since parent returns ARObject
-        return cast("ConsumedEventGroup", obj)
 
 
 class ConsumedEventGroupBuilder:

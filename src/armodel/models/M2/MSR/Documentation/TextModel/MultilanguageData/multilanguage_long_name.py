@@ -1,7 +1,9 @@
 """MultilanguageLongName AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_name import (
     LLongName,
@@ -12,43 +14,20 @@ class MultilanguageLongName(ARObject):
     """AUTOSAR MultilanguageLongName."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("l4", None, False, False, LLongName),  # l4
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "l4": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=LLongName,
+        ),  # l4
+    }
 
     def __init__(self) -> None:
         """Initialize MultilanguageLongName."""
         super().__init__()
         self.l4: LLongName = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert MultilanguageLongName to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultilanguageLongName":
-        """Create MultilanguageLongName from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultilanguageLongName instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to MultilanguageLongName since parent returns ARObject
-        return cast("MultilanguageLongName", obj)
 
 
 class MultilanguageLongNameBuilder:

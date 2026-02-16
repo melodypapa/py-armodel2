@@ -1,7 +1,9 @@
 """EcucModuleDef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
@@ -21,14 +23,37 @@ class EcucModuleDef(EcucDefinitionElement):
     """AUTOSAR EcucModuleDef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("api_service_prefix", None, True, False, None),  # apiServicePrefix
-        ("containers", None, False, True, EcucContainerDef),  # containers
-        ("post_build_variant", None, True, False, None),  # postBuildVariant
-        ("refined_module", None, False, False, EcucModuleDef),  # refinedModule
-        ("supporteds", None, False, True, any (EcucConfiguration)),  # supporteds
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "api_service_prefix": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # apiServicePrefix
+        "containers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcucContainerDef,
+        ),  # containers
+        "post_build_variant": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # postBuildVariant
+        "refined_module": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcucModuleDef,
+        ),  # refinedModule
+        "supporteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EcucConfiguration),
+        ),  # supporteds
+    }
 
     def __init__(self) -> None:
         """Initialize EcucModuleDef."""
@@ -38,34 +63,6 @@ class EcucModuleDef(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.refined_module: Optional[EcucModuleDef] = None
         self.supporteds: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcucModuleDef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucModuleDef":
-        """Create EcucModuleDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucModuleDef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcucModuleDef since parent returns ARObject
-        return cast("EcucModuleDef", obj)
 
 
 class EcucModuleDefBuilder:

@@ -1,7 +1,0 @@
-"""InstanceRefs module."""
-from .component_in_composition_instance_ref import ComponentInCompositionInstanceRef
-from .port_in_composition_type_instance_ref import PortInCompositionTypeInstanceRef
-from .p_port_in_composition_instance_ref import PPortInCompositionInstanceRef
-from .r_port_in_composition_instance_ref import RPortInCompositionInstanceRef
-from .instance_event_in_composition_instance_ref import InstanceEventInCompositionInstanceRef
-

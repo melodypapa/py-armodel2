@@ -1,7 +1,9 @@
 """ModeDeclarationMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -14,45 +16,27 @@ class ModeDeclarationMapping(Identifiable):
     """AUTOSAR ModeDeclarationMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("first_modes", None, False, True, ModeDeclaration),  # firstModes
-        ("second_mode", None, False, False, ModeDeclaration),  # secondMode
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "first_modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeDeclaration,
+        ),  # firstModes
+        "second_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ModeDeclaration,
+        ),  # secondMode
+    }
 
     def __init__(self) -> None:
         """Initialize ModeDeclarationMapping."""
         super().__init__()
         self.first_modes: list[ModeDeclaration] = []
         self.second_mode: Optional[ModeDeclaration] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ModeDeclarationMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeDeclarationMapping":
-        """Create ModeDeclarationMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeDeclarationMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ModeDeclarationMapping since parent returns ARObject
-        return cast("ModeDeclarationMapping", obj)
 
 
 class ModeDeclarationMappingBuilder:

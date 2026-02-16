@@ -1,7 +1,9 @@
 """Area AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -12,31 +14,122 @@ class Area(ARObject):
     """AUTOSAR Area."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("accesskey", None, True, False, None),  # accesskey
-        ("alt", None, True, False, None),  # alt
-        ("class_", 'CLASS', True, False, None),  # class
-        ("coords", None, True, False, None),  # coords
-        ("href", None, True, False, None),  # href
-        ("nohref", None, False, False, AreaEnumNohref),  # nohref
-        ("onblur", None, True, False, None),  # onblur
-        ("onclick", None, True, False, None),  # onclick
-        ("ondblclick", None, True, False, None),  # ondblclick
-        ("onfocus", None, True, False, None),  # onfocus
-        ("onkeydown", None, True, False, None),  # onkeydown
-        ("onkeypress", None, True, False, None),  # onkeypress
-        ("onkeyup", None, True, False, None),  # onkeyup
-        ("onmousedown", None, True, False, None),  # onmousedown
-        ("onmousemove", None, True, False, None),  # onmousemove
-        ("onmouseout", None, True, False, None),  # onmouseout
-        ("onmouseover", None, True, False, None),  # onmouseover
-        ("onmouseup", None, True, False, None),  # onmouseup
-        ("shape", None, False, False, AreaEnumShape),  # shape
-        ("style", None, True, False, None),  # style
-        ("tabindex", None, True, False, None),  # tabindex
-        ("title", None, True, False, None),  # title
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "accesskey": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # accesskey
+        "alt": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # alt
+        "class_": XMLMember(
+            xml_tag='CLASS',
+            is_attribute=True,
+            multiplicity="0..1",
+            xml_name_override='CLASS',
+        ),  # class
+        "coords": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # coords
+        "href": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # href
+        "nohref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AreaEnumNohref,
+        ),  # nohref
+        "onblur": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onblur
+        "onclick": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onclick
+        "ondblclick": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ondblclick
+        "onfocus": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onfocus
+        "onkeydown": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onkeydown
+        "onkeypress": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onkeypress
+        "onkeyup": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onkeyup
+        "onmousedown": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onmousedown
+        "onmousemove": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onmousemove
+        "onmouseout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onmouseout
+        "onmouseover": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onmouseover
+        "onmouseup": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onmouseup
+        "shape": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AreaEnumShape,
+        ),  # shape
+        "style": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # style
+        "tabindex": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tabindex
+        "title": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # title
+    }
 
     def __init__(self) -> None:
         """Initialize Area."""
@@ -63,34 +156,6 @@ class Area(ARObject):
         self.style: Optional[String] = None
         self.tabindex: Optional[String] = None
         self.title: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Area to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Area":
-        """Create Area from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Area instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Area since parent returns ARObject
-        return cast("Area", obj)
 
 
 class AreaBuilder:

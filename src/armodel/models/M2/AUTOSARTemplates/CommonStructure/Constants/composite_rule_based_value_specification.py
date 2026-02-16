@@ -1,7 +1,9 @@
 """CompositeRuleBasedValueSpecification AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
     AbstractRuleBasedValueSpecification,
 )
@@ -18,13 +20,31 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     """AUTOSAR CompositeRuleBasedValueSpecification."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("arguments", None, False, True, CompositeValueSpecification),  # arguments
-        ("compounds", None, False, True, any (CompositeRuleBased)),  # compounds
-        ("max_size_to_fill", None, True, False, None),  # maxSizeToFill
-        ("rule", None, True, False, None),  # rule
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "arguments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CompositeValueSpecification,
+        ),  # arguments
+        "compounds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CompositeRuleBased),
+        ),  # compounds
+        "max_size_to_fill": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSizeToFill
+        "rule": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rule
+    }
 
     def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueSpecification."""
@@ -33,34 +53,6 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         self.compounds: list[Any] = []
         self.max_size_to_fill: Optional[PositiveInteger] = None
         self.rule: Optional[Identifier] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CompositeRuleBasedValueSpecification to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompositeRuleBasedValueSpecification":
-        """Create CompositeRuleBasedValueSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompositeRuleBasedValueSpecification instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CompositeRuleBasedValueSpecification since parent returns ARObject
-        return cast("CompositeRuleBasedValueSpecification", obj)
 
 
 class CompositeRuleBasedValueSpecificationBuilder:

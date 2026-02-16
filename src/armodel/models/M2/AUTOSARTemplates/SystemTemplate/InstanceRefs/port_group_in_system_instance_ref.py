@@ -1,7 +1,9 @@
 """PortGroupInSystemInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
@@ -18,12 +20,27 @@ class PortGroupInSystemInstanceRef(ARObject):
     """AUTOSAR PortGroupInSystemInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, System),  # base
-        ("context", None, False, False, RootSwCompositionPrototype),  # context
-        ("target", None, False, False, PortGroup),  # target
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=System,
+        ),  # base
+        "context": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RootSwCompositionPrototype,
+        ),  # context
+        "target": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=PortGroup,
+        ),  # target
+    }
 
     def __init__(self) -> None:
         """Initialize PortGroupInSystemInstanceRef."""
@@ -31,34 +48,6 @@ class PortGroupInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target: PortGroup = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PortGroupInSystemInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortGroupInSystemInstanceRef":
-        """Create PortGroupInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortGroupInSystemInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PortGroupInSystemInstanceRef since parent returns ARObject
-        return cast("PortGroupInSystemInstanceRef", obj)
 
 
 class PortGroupInSystemInstanceRefBuilder:

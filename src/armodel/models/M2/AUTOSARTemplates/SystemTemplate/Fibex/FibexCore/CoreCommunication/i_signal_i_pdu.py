@@ -1,7 +1,9 @@
 """ISignalIPdu AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
@@ -20,12 +22,26 @@ class ISignalIPdu(IPdu):
     """AUTOSAR ISignalIPdu."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("i_pdu_timing", None, False, False, IPduTiming),  # iPduTiming
-        ("i_signal_to_pdus", None, False, True, ISignalToIPduMapping),  # iSignalToPdus
-        ("unused_bit", None, True, False, None),  # unusedBit
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "i_pdu_timing": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPduTiming,
+        ),  # iPduTiming
+        "i_signal_to_pdus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalToIPduMapping,
+        ),  # iSignalToPdus
+        "unused_bit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # unusedBit
+    }
 
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
@@ -33,34 +49,6 @@ class ISignalIPdu(IPdu):
         self.i_pdu_timing: Optional[IPduTiming] = None
         self.i_signal_to_pdus: list[ISignalToIPduMapping] = []
         self.unused_bit: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ISignalIPdu to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalIPdu":
-        """Create ISignalIPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalIPdu instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ISignalIPdu since parent returns ARObject
-        return cast("ISignalIPdu", obj)
 
 
 class ISignalIPduBuilder:

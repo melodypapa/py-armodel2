@@ -1,7 +1,9 @@
 """DocumentationContext AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
@@ -17,45 +19,27 @@ class DocumentationContext(MultilanguageReferrable):
     """AUTOSAR DocumentationContext."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("feature", None, False, False, AtpFeature),  # feature
-        ("identifiable", None, False, False, Identifiable),  # identifiable
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "feature": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AtpFeature,
+        ),  # feature
+        "identifiable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Identifiable,
+        ),  # identifiable
+    }
 
     def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()
         self.feature: Optional[AtpFeature] = None
         self.identifiable: Optional[Identifiable] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DocumentationContext to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocumentationContext":
-        """Create DocumentationContext from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocumentationContext instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DocumentationContext since parent returns ARObject
-        return cast("DocumentationContext", obj)
 
 
 class DocumentationContextBuilder:

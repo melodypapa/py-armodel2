@@ -1,7 +1,9 @@
 """Tgroup AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -19,17 +21,54 @@ class Tgroup(ARObject):
     """AUTOSAR Tgroup."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("align", None, False, False, AlignEnum),  # align
-        ("cols", None, True, False, None),  # cols
-        ("colsep", None, True, False, None),  # colsep
-        ("colspecs", None, False, True, Colspec),  # colspecs
-        ("rowsep", None, True, False, None),  # rowsep
-        ("tbody", None, False, False, Tbody),  # tbody
-        ("tfoot", None, False, False, Tbody),  # tfoot
-        ("thead", None, False, False, Tbody),  # thead
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "align": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AlignEnum,
+        ),  # align
+        "cols": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # cols
+        "colsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # colsep
+        "colspecs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Colspec,
+        ),  # colspecs
+        "rowsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rowsep
+        "tbody": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=Tbody,
+        ),  # tbody
+        "tfoot": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Tbody,
+        ),  # tfoot
+        "thead": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Tbody,
+        ),  # thead
+    }
 
     def __init__(self) -> None:
         """Initialize Tgroup."""
@@ -42,34 +81,6 @@ class Tgroup(ARObject):
         self.tbody: Tbody = None
         self.tfoot: Optional[Tbody] = None
         self.thead: Optional[Tbody] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Tgroup to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Tgroup":
-        """Create Tgroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Tgroup instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Tgroup since parent returns ARObject
-        return cast("Tgroup", obj)
 
 
 class TgroupBuilder:

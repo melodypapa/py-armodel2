@@ -1,7 +1,9 @@
 """LinPhysicalChannel AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
@@ -17,45 +19,26 @@ class LinPhysicalChannel(PhysicalChannel):
     """AUTOSAR LinPhysicalChannel."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bus_idle_timeout", None, True, False, None),  # busIdleTimeout
-        ("schedule_tables", None, False, True, LinScheduleTable),  # scheduleTables
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bus_idle_timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # busIdleTimeout
+        "schedule_tables": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=LinScheduleTable,
+        ),  # scheduleTables
+    }
 
     def __init__(self) -> None:
         """Initialize LinPhysicalChannel."""
         super().__init__()
         self.bus_idle_timeout: Optional[TimeValue] = None
         self.schedule_tables: list[LinScheduleTable] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LinPhysicalChannel to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinPhysicalChannel":
-        """Create LinPhysicalChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinPhysicalChannel instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LinPhysicalChannel since parent returns ARObject
-        return cast("LinPhysicalChannel", obj)
 
 
 class LinPhysicalChannelBuilder:

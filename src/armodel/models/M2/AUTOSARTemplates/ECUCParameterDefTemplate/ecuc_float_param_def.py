@@ -1,7 +1,9 @@
 """EcucFloatParamDef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
 )
@@ -15,12 +17,24 @@ class EcucFloatParamDef(EcucParameterDef):
     """AUTOSAR EcucFloatParamDef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("default_value", None, True, False, None),  # defaultValue
-        ("max", None, True, False, None),  # max
-        ("min", None, True, False, None),  # min
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "default_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # defaultValue
+        "max": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # max
+        "min": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # min
+    }
 
     def __init__(self) -> None:
         """Initialize EcucFloatParamDef."""
@@ -28,34 +42,6 @@ class EcucFloatParamDef(EcucParameterDef):
         self.default_value: Optional[Float] = None
         self.max: Optional[Limit] = None
         self.min: Optional[Limit] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcucFloatParamDef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucFloatParamDef":
-        """Create EcucFloatParamDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucFloatParamDef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcucFloatParamDef since parent returns ARObject
-        return cast("EcucFloatParamDef", obj)
 
 
 class EcucFloatParamDefBuilder:

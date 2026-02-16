@@ -1,7 +1,9 @@
 """FlexrayCommunicationController AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -15,37 +17,150 @@ class FlexrayCommunicationController(ARObject):
     """AUTOSAR FlexrayCommunicationController."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("accepted", None, True, False, None),  # accepted
-        ("allow_halt_due_to", None, True, False, None),  # allowHaltDueTo
-        ("allow_passive_to", None, True, False, None),  # allowPassiveTo
-        ("cluster_drift", None, True, False, None),  # clusterDrift
-        ("decoding", None, True, False, None),  # decoding
-        ("delay", None, True, False, None),  # delay
-        ("external_sync", None, True, False, None),  # externalSync
-        ("extern_offset", None, True, False, None),  # externOffset
-        ("extern_rate", None, True, False, None),  # externRate
-        ("fall_back_internal", None, True, False, None),  # fallBackInternal
-        ("flexray_fifos", None, False, True, any (FlexrayFifo)),  # flexrayFifos
-        ("key_slot_id", None, True, False, None),  # keySlotID
-        ("key_slot_only", None, True, False, None),  # keySlotOnly
-        ("key_slot_used_for", None, True, False, None),  # keySlotUsedFor
-        ("latest_tx", None, True, False, None),  # latestTX
-        ("listen_timeout", None, True, False, None),  # listenTimeout
-        ("macro_initial", None, True, False, None),  # macroInitial
-        ("maximum", None, True, False, None),  # maximum
-        ("micro_initial", None, True, False, None),  # microInitial
-        ("micro_per_cycle", None, True, False, None),  # microPerCycle
-        ("microtick", None, True, False, None),  # microtick
-        ("nm_vector_early", None, True, False, None),  # nmVectorEarly
-        ("offset_correction", None, True, False, None),  # offsetCorrection
-        ("rate_correction", None, True, False, None),  # rateCorrection
-        ("samples_per_microtick", None, True, False, None),  # samplesPerMicrotick
-        ("second_key_slot", None, True, False, None),  # secondKeySlot
-        ("two_key_slot", None, True, False, None),  # twoKeySlot
-        ("wake_up_pattern", None, True, False, None),  # wakeUpPattern
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "accepted": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # accepted
+        "allow_halt_due_to": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # allowHaltDueTo
+        "allow_passive_to": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # allowPassiveTo
+        "cluster_drift": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # clusterDrift
+        "decoding": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # decoding
+        "delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # delay
+        "external_sync": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # externalSync
+        "extern_offset": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # externOffset
+        "extern_rate": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # externRate
+        "fall_back_internal": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # fallBackInternal
+        "flexray_fifos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (FlexrayFifo),
+        ),  # flexrayFifos
+        "key_slot_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keySlotID
+        "key_slot_only": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keySlotOnly
+        "key_slot_used_for": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # keySlotUsedFor
+        "latest_tx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # latestTX
+        "listen_timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # listenTimeout
+        "macro_initial": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # macroInitial
+        "maximum": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maximum
+        "micro_initial": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # microInitial
+        "micro_per_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # microPerCycle
+        "microtick": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # microtick
+        "nm_vector_early": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmVectorEarly
+        "offset_correction": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # offsetCorrection
+        "rate_correction": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rateCorrection
+        "samples_per_microtick": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # samplesPerMicrotick
+        "second_key_slot": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # secondKeySlot
+        "two_key_slot": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # twoKeySlot
+        "wake_up_pattern": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeUpPattern
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationController."""
@@ -78,34 +193,6 @@ class FlexrayCommunicationController(ARObject):
         self.second_key_slot: Optional[PositiveInteger] = None
         self.two_key_slot: Optional[Boolean] = None
         self.wake_up_pattern: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayCommunicationController to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayCommunicationController":
-        """Create FlexrayCommunicationController from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayCommunicationController instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayCommunicationController since parent returns ARObject
-        return cast("FlexrayCommunicationController", obj)
 
 
 class FlexrayCommunicationControllerBuilder:

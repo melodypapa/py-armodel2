@@ -1,7 +1,9 @@
 """Topic1 AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
@@ -17,45 +19,26 @@ class Topic1(Paginateable):
     """AUTOSAR Topic1."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("help_entry", None, True, False, None),  # helpEntry
-        ("topic_content_or_msr", None, False, False, TopicContentOrMsrQuery),  # topicContentOrMsr
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "help_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # helpEntry
+        "topic_content_or_msr": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TopicContentOrMsrQuery,
+        ),  # topicContentOrMsr
+    }
 
     def __init__(self) -> None:
         """Initialize Topic1."""
         super().__init__()
         self.help_entry: Optional[String] = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Topic1 to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Topic1":
-        """Create Topic1 from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Topic1 instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Topic1 since parent returns ARObject
-        return cast("Topic1", obj)
 
 
 class Topic1Builder:

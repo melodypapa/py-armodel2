@@ -1,7 +1,9 @@
 """PncMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
@@ -40,21 +42,78 @@ class PncMapping(Describable):
     """AUTOSAR PncMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("dynamic_pncs", None, False, True, ISignalIPduGroup),  # dynamicPncs
-        ("ident", None, False, False, PncMappingIdent),  # ident
-        ("physical_channels", None, False, True, PhysicalChannel),  # physicalChannels
-        ("pnc_consumeds", None, False, True, ConsumedProvidedServiceInstanceGroup),  # pncConsumeds
-        ("pnc_groups", None, False, True, ISignalIPduGroup),  # pncGroups
-        ("pnc_identifier", None, True, False, None),  # pncIdentifier
-        ("pnc_pdur_groups", None, False, True, PdurIPduGroup),  # pncPdurGroups
-        ("pnc_wakeup", None, True, False, None),  # pncWakeup
-        ("relevant_fors", None, False, True, EcuInstance),  # relevantFors
-        ("short_label", None, True, False, None),  # shortLabel
-        ("vfcs", None, False, True, PortGroup),  # vfcs
-        ("wakeup_frames", None, False, True, FrameTriggering),  # wakeupFrames
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "dynamic_pncs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalIPduGroup,
+        ),  # dynamicPncs
+        "ident": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PncMappingIdent,
+        ),  # ident
+        "physical_channels": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PhysicalChannel,
+        ),  # physicalChannels
+        "pnc_consumeds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConsumedProvidedServiceInstanceGroup,
+        ),  # pncConsumeds
+        "pnc_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalIPduGroup,
+        ),  # pncGroups
+        "pnc_identifier": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncIdentifier
+        "pnc_pdur_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PdurIPduGroup,
+        ),  # pncPdurGroups
+        "pnc_wakeup": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncWakeup
+        "relevant_fors": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcuInstance,
+        ),  # relevantFors
+        "short_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortLabel
+        "vfcs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortGroup,
+        ),  # vfcs
+        "wakeup_frames": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FrameTriggering,
+        ),  # wakeupFrames
+    }
 
     def __init__(self) -> None:
         """Initialize PncMapping."""
@@ -71,34 +130,6 @@ class PncMapping(Describable):
         self.short_label: Optional[Identifier] = None
         self.vfcs: list[PortGroup] = []
         self.wakeup_frames: list[FrameTriggering] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PncMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PncMapping":
-        """Create PncMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PncMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PncMapping since parent returns ARObject
-        return cast("PncMapping", obj)
 
 
 class PncMappingBuilder:

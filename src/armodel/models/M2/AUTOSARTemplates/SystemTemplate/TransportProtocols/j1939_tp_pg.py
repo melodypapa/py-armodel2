@@ -1,7 +1,9 @@
 """J1939TpPg AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -19,13 +21,31 @@ class J1939TpPg(ARObject):
     """AUTOSAR J1939TpPg."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("direct_pdu", None, False, False, NPdu),  # directPdu
-        ("pgn", None, True, False, None),  # pgn
-        ("requestable", None, True, False, None),  # requestable
-        ("sdus", None, False, True, IPdu),  # sdus
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "direct_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # directPdu
+        "pgn": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pgn
+        "requestable": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # requestable
+        "sdus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IPdu,
+        ),  # sdus
+    }
 
     def __init__(self) -> None:
         """Initialize J1939TpPg."""
@@ -34,34 +54,6 @@ class J1939TpPg(ARObject):
         self.pgn: Optional[Integer] = None
         self.requestable: Optional[Boolean] = None
         self.sdus: list[IPdu] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert J1939TpPg to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939TpPg":
-        """Create J1939TpPg from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939TpPg instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to J1939TpPg since parent returns ARObject
-        return cast("J1939TpPg", obj)
 
 
 class J1939TpPgBuilder:

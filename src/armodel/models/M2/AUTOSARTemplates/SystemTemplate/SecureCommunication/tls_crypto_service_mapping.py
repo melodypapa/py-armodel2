@@ -1,7 +1,9 @@
 """TlsCryptoServiceMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_mapping import (
     CryptoServiceMapping,
 )
@@ -20,13 +22,31 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR TlsCryptoServiceMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("key_exchanges", None, False, True, CryptoServicePrimitive),  # keyExchanges
-        ("tls_cipher_suites", None, False, True, TlsCryptoCipherSuite),  # tlsCipherSuites
-        ("use_client", None, True, False, None),  # useClient
-        ("use_security", None, True, False, None),  # useSecurity
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "key_exchanges": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CryptoServicePrimitive,
+        ),  # keyExchanges
+        "tls_cipher_suites": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TlsCryptoCipherSuite,
+        ),  # tlsCipherSuites
+        "use_client": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useClient
+        "use_security": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useSecurity
+    }
 
     def __init__(self) -> None:
         """Initialize TlsCryptoServiceMapping."""
@@ -35,34 +55,6 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         self.tls_cipher_suites: list[TlsCryptoCipherSuite] = []
         self.use_client: Optional[Boolean] = None
         self.use_security: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TlsCryptoServiceMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TlsCryptoServiceMapping":
-        """Create TlsCryptoServiceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TlsCryptoServiceMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TlsCryptoServiceMapping since parent returns ARObject
-        return cast("TlsCryptoServiceMapping", obj)
 
 
 class TlsCryptoServiceMappingBuilder:

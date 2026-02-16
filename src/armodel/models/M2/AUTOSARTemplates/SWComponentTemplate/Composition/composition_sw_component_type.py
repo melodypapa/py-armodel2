@@ -1,7 +1,9 @@
 """CompositionSwComponentType AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
@@ -26,15 +28,45 @@ class CompositionSwComponentType(SwComponentType):
     """AUTOSAR CompositionSwComponentType."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("components", None, False, True, any (SwComponent)),  # components
-        ("connectors", None, False, True, SwConnector),  # connectors
-        ("constant_values", None, False, True, ConstantSpecification),  # constantValues
-        ("data_types", None, False, True, DataTypeMappingSet),  # dataTypes
-        ("instantiation_rte_events", None, False, True, InstantiationRTEEventProps),  # instantiationRTEEvents
-        ("physical", None, False, False, PhysicalDimension),  # physical
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "components": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (SwComponent),
+        ),  # components
+        "connectors": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwConnector,
+        ),  # connectors
+        "constant_values": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConstantSpecification,
+        ),  # constantValues
+        "data_types": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DataTypeMappingSet,
+        ),  # dataTypes
+        "instantiation_rte_events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=InstantiationRTEEventProps,
+        ),  # instantiationRTEEvents
+        "physical": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PhysicalDimension,
+        ),  # physical
+    }
 
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
@@ -45,34 +77,6 @@ class CompositionSwComponentType(SwComponentType):
         self.data_types: list[DataTypeMappingSet] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
         self.physical: Optional[PhysicalDimension] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CompositionSwComponentType to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompositionSwComponentType":
-        """Create CompositionSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompositionSwComponentType instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CompositionSwComponentType since parent returns ARObject
-        return cast("CompositionSwComponentType", obj)
 
 
 class CompositionSwComponentTypeBuilder:

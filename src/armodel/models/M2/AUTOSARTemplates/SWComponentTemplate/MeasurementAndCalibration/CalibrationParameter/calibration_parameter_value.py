@@ -1,7 +1,9 @@
 """CalibrationParameterValue AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
     FlatInstanceDescriptor,
@@ -15,12 +17,27 @@ class CalibrationParameterValue(ARObject):
     """AUTOSAR CalibrationParameterValue."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("appl_init_value", None, False, False, ValueSpecification),  # applInitValue
-        ("impl_init_value", None, False, False, ValueSpecification),  # implInitValue
-        ("initialized", None, False, False, FlatInstanceDescriptor),  # initialized
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "appl_init_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # applInitValue
+        "impl_init_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # implInitValue
+        "initialized": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlatInstanceDescriptor,
+        ),  # initialized
+    }
 
     def __init__(self) -> None:
         """Initialize CalibrationParameterValue."""
@@ -28,34 +45,6 @@ class CalibrationParameterValue(ARObject):
         self.appl_init_value: Optional[ValueSpecification] = None
         self.impl_init_value: Optional[ValueSpecification] = None
         self.initialized: Optional[FlatInstanceDescriptor] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CalibrationParameterValue to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValue":
-        """Create CalibrationParameterValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CalibrationParameterValue instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CalibrationParameterValue since parent returns ARObject
-        return cast("CalibrationParameterValue", obj)
 
 
 class CalibrationParameterValueBuilder:

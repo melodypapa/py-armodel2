@@ -1,7 +1,9 @@
 """ApplicationArrayElement AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_composite_element_data_prototype import (
     ApplicationCompositeElementDataPrototype,
 )
@@ -17,13 +19,32 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationArrayElement."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("array_size_handling", None, False, False, ArraySizeHandlingEnum),  # arraySizeHandling
-        ("array_size", None, False, False, ArraySizeSemanticsEnum),  # arraySize
-        ("index_data_type", None, False, False, ApplicationPrimitiveDataType),  # indexDataType
-        ("max_number_of", None, True, False, None),  # maxNumberOf
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "array_size_handling": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ArraySizeHandlingEnum,
+        ),  # arraySizeHandling
+        "array_size": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ArraySizeSemanticsEnum,
+        ),  # arraySize
+        "index_data_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationPrimitiveDataType,
+        ),  # indexDataType
+        "max_number_of": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxNumberOf
+    }
 
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
@@ -32,34 +53,6 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         self.array_size: Optional[ArraySizeSemanticsEnum] = None
         self.index_data_type: Optional[ApplicationPrimitiveDataType] = None
         self.max_number_of: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ApplicationArrayElement to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationArrayElement":
-        """Create ApplicationArrayElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationArrayElement instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ApplicationArrayElement since parent returns ARObject
-        return cast("ApplicationArrayElement", obj)
 
 
 class ApplicationArrayElementBuilder:

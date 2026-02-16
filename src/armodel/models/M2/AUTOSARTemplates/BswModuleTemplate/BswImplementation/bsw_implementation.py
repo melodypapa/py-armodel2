@@ -1,7 +1,9 @@
 """BswImplementation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
     Implementation,
 )
@@ -21,15 +23,43 @@ class BswImplementation(Implementation):
     """AUTOSAR BswImplementation."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ar_release", None, True, False, None),  # arRelease
-        ("behavior", None, False, False, BswInternalBehavior),  # behavior
-        ("preconfigureds", None, False, True, any (EcucModule)),  # preconfigureds
-        ("recommendeds", None, False, True, any (EcucModule)),  # recommendeds
-        ("vendor_api_infix", None, True, False, None),  # vendorApiInfix
-        ("vendor_specifics", None, False, True, EcucModuleDef),  # vendorSpecifics
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ar_release": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # arRelease
+        "behavior": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BswInternalBehavior,
+        ),  # behavior
+        "preconfigureds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EcucModule),
+        ),  # preconfigureds
+        "recommendeds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EcucModule),
+        ),  # recommendeds
+        "vendor_api_infix": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vendorApiInfix
+        "vendor_specifics": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcucModuleDef,
+        ),  # vendorSpecifics
+    }
 
     def __init__(self) -> None:
         """Initialize BswImplementation."""
@@ -40,34 +70,6 @@ class BswImplementation(Implementation):
         self.recommendeds: list[Any] = []
         self.vendor_api_infix: Optional[Identifier] = None
         self.vendor_specifics: list[EcucModuleDef] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BswImplementation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswImplementation":
-        """Create BswImplementation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswImplementation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BswImplementation since parent returns ARObject
-        return cast("BswImplementation", obj)
 
 
 class BswImplementationBuilder:

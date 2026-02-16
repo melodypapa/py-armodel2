@@ -1,7 +1,9 @@
 """TimingExtension AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -27,14 +29,39 @@ class TimingExtension(ARElement):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("timing_clocks", None, False, True, TimingClock),  # timingClocks
-        ("timing_clock_syncs", None, False, True, TimingClockSyncAccuracy),  # timingClockSyncs
-        ("timing_conditions", None, False, True, TimingCondition),  # timingConditions
-        ("timings", None, False, True, TimingConstraint),  # timings
-        ("timing_resource", None, False, False, TimingExtension),  # timingResource
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "timing_clocks": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingClock,
+        ),  # timingClocks
+        "timing_clock_syncs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingClockSyncAccuracy,
+        ),  # timingClockSyncs
+        "timing_conditions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingCondition,
+        ),  # timingConditions
+        "timings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TimingConstraint,
+        ),  # timings
+        "timing_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingExtension,
+        ),  # timingResource
+    }
 
     def __init__(self) -> None:
         """Initialize TimingExtension."""
@@ -44,34 +71,6 @@ class TimingExtension(ARElement):
         self.timing_conditions: list[TimingCondition] = []
         self.timings: list[TimingConstraint] = []
         self.timing_resource: Optional[TimingExtension] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TimingExtension to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingExtension":
-        """Create TimingExtension from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingExtension instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TimingExtension since parent returns ARObject
-        return cast("TimingExtension", obj)
 
 
 class TimingExtensionBuilder:

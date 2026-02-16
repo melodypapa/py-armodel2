@@ -1,7 +1,9 @@
 """CanTpConfig AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
     TpConfig,
 )
@@ -26,14 +28,39 @@ class CanTpConfig(TpConfig):
     """AUTOSAR CanTpConfig."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("tp_addresses", None, False, True, CanTpAddress),  # tpAddresses
-        ("tp_channels", None, False, True, CanTpChannel),  # tpChannels
-        ("tp_connections", None, False, True, CanTpConnection),  # tpConnections
-        ("tp_ecus", None, False, True, CanTpEcu),  # tpEcus
-        ("tp_nodes", None, False, True, CanTpNode),  # tpNodes
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "tp_addresses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpAddress,
+        ),  # tpAddresses
+        "tp_channels": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpChannel,
+        ),  # tpChannels
+        "tp_connections": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpConnection,
+        ),  # tpConnections
+        "tp_ecus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpEcu,
+        ),  # tpEcus
+        "tp_nodes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpNode,
+        ),  # tpNodes
+    }
 
     def __init__(self) -> None:
         """Initialize CanTpConfig."""
@@ -43,34 +70,6 @@ class CanTpConfig(TpConfig):
         self.tp_connections: list[CanTpConnection] = []
         self.tp_ecus: list[CanTpEcu] = []
         self.tp_nodes: list[CanTpNode] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanTpConfig to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanTpConfig":
-        """Create CanTpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanTpConfig instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanTpConfig since parent returns ARObject
-        return cast("CanTpConfig", obj)
 
 
 class CanTpConfigBuilder:

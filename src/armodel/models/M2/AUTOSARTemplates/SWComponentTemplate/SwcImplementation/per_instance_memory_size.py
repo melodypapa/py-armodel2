@@ -1,7 +1,9 @@
 """PerInstanceMemorySize AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -15,12 +17,25 @@ class PerInstanceMemorySize(ARObject):
     """AUTOSAR PerInstanceMemorySize."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("alignment", None, True, False, None),  # alignment
-        ("per_instance_memory_memory", None, False, False, PerInstanceMemory),  # perInstanceMemoryMemory
-        ("size", None, True, False, None),  # size
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "alignment": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # alignment
+        "per_instance_memory_memory": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PerInstanceMemory,
+        ),  # perInstanceMemoryMemory
+        "size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # size
+    }
 
     def __init__(self) -> None:
         """Initialize PerInstanceMemorySize."""
@@ -28,34 +43,6 @@ class PerInstanceMemorySize(ARObject):
         self.alignment: Optional[PositiveInteger] = None
         self.per_instance_memory_memory: Optional[PerInstanceMemory] = None
         self.size: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PerInstanceMemorySize to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PerInstanceMemorySize":
-        """Create PerInstanceMemorySize from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PerInstanceMemorySize instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PerInstanceMemorySize since parent returns ARObject
-        return cast("PerInstanceMemorySize", obj)
 
 
 class PerInstanceMemorySizeBuilder:

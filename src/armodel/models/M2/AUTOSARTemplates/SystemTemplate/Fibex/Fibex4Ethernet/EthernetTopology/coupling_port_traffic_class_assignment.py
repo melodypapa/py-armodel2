@@ -1,7 +1,9 @@
 """CouplingPortTrafficClassAssignment AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
@@ -14,45 +16,25 @@ class CouplingPortTrafficClassAssignment(Referrable):
     """AUTOSAR CouplingPortTrafficClassAssignment."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("priority", None, True, False, None),  # priority
-        ("traffic_class", None, True, False, None),  # trafficClass
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # priority
+        "traffic_class": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # trafficClass
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingPortTrafficClassAssignment."""
         super().__init__()
         self.priority: PositiveInteger = None
         self.traffic_class: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingPortTrafficClassAssignment to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortTrafficClassAssignment":
-        """Create CouplingPortTrafficClassAssignment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortTrafficClassAssignment instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingPortTrafficClassAssignment since parent returns ARObject
-        return cast("CouplingPortTrafficClassAssignment", obj)
 
 
 class CouplingPortTrafficClassAssignmentBuilder:

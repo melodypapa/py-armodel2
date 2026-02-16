@@ -1,7 +1,9 @@
 """SdgClass AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
     SdgElementWithGid,
 )
@@ -21,13 +23,31 @@ class SdgClass(SdgElementWithGid):
     """AUTOSAR SdgClass."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("attributes", None, False, True, SdgAttribute),  # attributes
-        ("caption", None, True, False, None),  # caption
-        ("extends_meta", None, True, False, None),  # extendsMeta
-        ("sdg_constraints", None, False, True, TraceableText),  # sdgConstraints
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "attributes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SdgAttribute,
+        ),  # attributes
+        "caption": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # caption
+        "extends_meta": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # extendsMeta
+        "sdg_constraints": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TraceableText,
+        ),  # sdgConstraints
+    }
 
     def __init__(self) -> None:
         """Initialize SdgClass."""
@@ -36,34 +56,6 @@ class SdgClass(SdgElementWithGid):
         self.caption: Optional[Boolean] = None
         self.extends_meta: Optional[MetaClassName] = None
         self.sdg_constraints: list[TraceableText] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SdgClass to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgClass":
-        """Create SdgClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgClass instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SdgClass since parent returns ARObject
-        return cast("SdgClass", obj)
 
 
 class SdgClassBuilder:

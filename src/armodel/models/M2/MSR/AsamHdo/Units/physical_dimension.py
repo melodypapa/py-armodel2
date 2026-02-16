@@ -1,7 +1,9 @@
 """PhysicalDimension AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -14,16 +16,44 @@ class PhysicalDimension(ARElement):
     """AUTOSAR PhysicalDimension."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("current_exp", None, True, False, None),  # currentExp
-        ("length_exp", None, True, False, None),  # lengthExp
-        ("luminous", None, True, False, None),  # luminous
-        ("mass_exp", None, True, False, None),  # massExp
-        ("molar_amount", None, True, False, None),  # molarAmount
-        ("temperature_exp", None, True, False, None),  # temperatureExp
-        ("time_exp", None, True, False, None),  # timeExp
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "current_exp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # currentExp
+        "length_exp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # lengthExp
+        "luminous": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # luminous
+        "mass_exp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # massExp
+        "molar_amount": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # molarAmount
+        "temperature_exp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # temperatureExp
+        "time_exp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeExp
+    }
 
     def __init__(self) -> None:
         """Initialize PhysicalDimension."""
@@ -35,34 +65,6 @@ class PhysicalDimension(ARElement):
         self.molar_amount: Optional[Numerical] = None
         self.temperature_exp: Optional[Numerical] = None
         self.time_exp: Optional[Numerical] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PhysicalDimension to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PhysicalDimension":
-        """Create PhysicalDimension from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PhysicalDimension instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PhysicalDimension since parent returns ARObject
-        return cast("PhysicalDimension", obj)
 
 
 class PhysicalDimensionBuilder:

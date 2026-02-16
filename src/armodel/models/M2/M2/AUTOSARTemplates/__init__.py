@@ -1,1 +1,0 @@
-"""AUTOSARTemplates module."""

@@ -1,7 +1,9 @@
 """TransformationISignalProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -12,12 +14,27 @@ class TransformationISignalProps(ARObject):
     """AUTOSAR TransformationISignalProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("cs_error_reaction", None, False, False, CSTransformerErrorReactionEnum),  # csErrorReaction
-        ("data_prototypes", None, False, True, DataPrototype),  # dataPrototypes
-        ("transformer", None, False, False, any (Transformation)),  # transformer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "cs_error_reaction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CSTransformerErrorReactionEnum,
+        ),  # csErrorReaction
+        "data_prototypes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DataPrototype,
+        ),  # dataPrototypes
+        "transformer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (Transformation),
+        ),  # transformer
+    }
 
     def __init__(self) -> None:
         """Initialize TransformationISignalProps."""
@@ -25,34 +42,6 @@ class TransformationISignalProps(ARObject):
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototypes: list[DataPrototype] = []
         self.transformer: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TransformationISignalProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransformationISignalProps":
-        """Create TransformationISignalProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransformationISignalProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TransformationISignalProps since parent returns ARObject
-        return cast("TransformationISignalProps", obj)
 
 
 class TransformationISignalPropsBuilder:

@@ -1,7 +1,9 @@
 """SwcServiceDependency AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
     ServiceDependency,
 )
@@ -20,13 +22,33 @@ class SwcServiceDependency(ServiceDependency):
     """AUTOSAR SwcServiceDependency."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("assigned_datas", None, False, True, any (RoleBasedData)),  # assignedDatas
-        ("assigned_ports", None, False, True, RoleBasedPortAssignment),  # assignedPorts
-        ("represented_port", None, False, False, PortGroup),  # representedPort
-        ("service_needs", None, False, False, ServiceNeeds),  # serviceNeeds
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "assigned_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (RoleBasedData),
+        ),  # assignedDatas
+        "assigned_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RoleBasedPortAssignment,
+        ),  # assignedPorts
+        "represented_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortGroup,
+        ),  # representedPort
+        "service_needs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ServiceNeeds,
+        ),  # serviceNeeds
+    }
 
     def __init__(self) -> None:
         """Initialize SwcServiceDependency."""
@@ -35,34 +57,6 @@ class SwcServiceDependency(ServiceDependency):
         self.assigned_ports: list[RoleBasedPortAssignment] = []
         self.represented_port: Optional[PortGroup] = None
         self.service_needs: Optional[ServiceNeeds] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwcServiceDependency to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcServiceDependency":
-        """Create SwcServiceDependency from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcServiceDependency instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwcServiceDependency since parent returns ARObject
-        return cast("SwcServiceDependency", obj)
 
 
 class SwcServiceDependencyBuilder:

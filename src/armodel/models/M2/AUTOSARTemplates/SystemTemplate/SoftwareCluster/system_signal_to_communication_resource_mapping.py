@@ -1,7 +1,9 @@
 """SystemSignalToCommunicationResourceMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -17,45 +19,27 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
     """AUTOSAR SystemSignalToCommunicationResourceMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("software_cluster", None, False, False, CpSoftwareCluster),  # softwareCluster
-        ("system_signal", None, False, False, SystemSignal),  # systemSignal
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "software_cluster": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CpSoftwareCluster,
+        ),  # softwareCluster
+        "system_signal": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SystemSignal,
+        ),  # systemSignal
+    }
 
     def __init__(self) -> None:
         """Initialize SystemSignalToCommunicationResourceMapping."""
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
         self.system_signal: Optional[SystemSignal] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SystemSignalToCommunicationResourceMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SystemSignalToCommunicationResourceMapping":
-        """Create SystemSignalToCommunicationResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SystemSignalToCommunicationResourceMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SystemSignalToCommunicationResourceMapping since parent returns ARObject
-        return cast("SystemSignalToCommunicationResourceMapping", obj)
 
 
 class SystemSignalToCommunicationResourceMappingBuilder:

@@ -1,7 +1,9 @@
 """ISignalMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
@@ -15,12 +17,27 @@ class ISignalMapping(ARObject):
     """AUTOSAR ISignalMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("introduction", None, False, False, DocumentationBlock),  # introduction
-        ("source_signal", None, False, False, ISignalTriggering),  # sourceSignal
-        ("target_signal", None, False, False, ISignalTriggering),  # targetSignal
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "introduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # introduction
+        "source_signal": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ISignalTriggering,
+        ),  # sourceSignal
+        "target_signal": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ISignalTriggering,
+        ),  # targetSignal
+    }
 
     def __init__(self) -> None:
         """Initialize ISignalMapping."""
@@ -28,34 +45,6 @@ class ISignalMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_signal: Optional[ISignalTriggering] = None
         self.target_signal: Optional[ISignalTriggering] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ISignalMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalMapping":
-        """Create ISignalMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ISignalMapping since parent returns ARObject
-        return cast("ISignalMapping", obj)
 
 
 class ISignalMappingBuilder:

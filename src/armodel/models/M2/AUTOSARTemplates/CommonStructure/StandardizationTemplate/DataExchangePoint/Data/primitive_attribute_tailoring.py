@@ -1,7 +1,9 @@
 """PrimitiveAttributeTailoring AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
 )
@@ -14,12 +16,27 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
     """AUTOSAR PrimitiveAttributeTailoring."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("default_value", None, False, False, DefaultValueApplicationStrategyEnum),  # defaultValue
-        ("sub_attributes", None, False, True, any (PrimitiveAttribute)),  # subAttributes
-        ("value_restriction_with_severity", None, False, False, ValueRestrictionWithSeverity),  # valueRestrictionWithSeverity
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "default_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DefaultValueApplicationStrategyEnum,
+        ),  # defaultValue
+        "sub_attributes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (PrimitiveAttribute),
+        ),  # subAttributes
+        "value_restriction_with_severity": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueRestrictionWithSeverity,
+        ),  # valueRestrictionWithSeverity
+    }
 
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeTailoring."""
@@ -27,34 +44,6 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         self.default_value: Optional[DefaultValueApplicationStrategyEnum] = None
         self.sub_attributes: list[Any] = []
         self.value_restriction_with_severity: Optional[ValueRestrictionWithSeverity] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PrimitiveAttributeTailoring to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeTailoring":
-        """Create PrimitiveAttributeTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PrimitiveAttributeTailoring instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PrimitiveAttributeTailoring since parent returns ARObject
-        return cast("PrimitiveAttributeTailoring", obj)
 
 
 class PrimitiveAttributeTailoringBuilder:

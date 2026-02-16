@@ -1,7 +1,9 @@
 """DiagnosticIoControlNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
@@ -17,13 +19,30 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticIoControlNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("current_value", None, False, False, DiagnosticValueNeeds),  # currentValue
-        ("freeze_current", None, True, False, None),  # freezeCurrent
-        ("reset_to_default", None, True, False, None),  # resetToDefault
-        ("short_term", None, True, False, None),  # shortTerm
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "current_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticValueNeeds,
+        ),  # currentValue
+        "freeze_current": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # freezeCurrent
+        "reset_to_default": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # resetToDefault
+        "short_term": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortTerm
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlNeeds."""
@@ -32,34 +51,6 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         self.freeze_current: Optional[Boolean] = None
         self.reset_to_default: Optional[Boolean] = None
         self.short_term: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticIoControlNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIoControlNeeds":
-        """Create DiagnosticIoControlNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIoControlNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticIoControlNeeds since parent returns ARObject
-        return cast("DiagnosticIoControlNeeds", obj)
 
 
 class DiagnosticIoControlNeedsBuilder:

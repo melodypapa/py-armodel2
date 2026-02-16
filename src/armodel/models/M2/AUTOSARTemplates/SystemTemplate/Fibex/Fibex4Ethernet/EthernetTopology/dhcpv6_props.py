@@ -1,7 +1,9 @@
 """Dhcpv6Props AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
@@ -12,12 +14,24 @@ class Dhcpv6Props(ARObject):
     """AUTOSAR Dhcpv6Props."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("tcp_ip_dhcp", None, True, False, None),  # tcpIpDhcp
-        ("tcp_ip_dhcp_v6_inf", None, True, False, None),  # tcpIpDhcpV6Inf
-        ("tcp_ip_dhcp_v6_sol", None, True, False, None),  # tcpIpDhcpV6Sol
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "tcp_ip_dhcp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpDhcp
+        "tcp_ip_dhcp_v6_inf": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpDhcpV6Inf
+        "tcp_ip_dhcp_v6_sol": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpDhcpV6Sol
+    }
 
     def __init__(self) -> None:
         """Initialize Dhcpv6Props."""
@@ -25,34 +39,6 @@ class Dhcpv6Props(ARObject):
         self.tcp_ip_dhcp: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_inf: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_sol: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Dhcpv6Props to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Dhcpv6Props":
-        """Create Dhcpv6Props from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Dhcpv6Props instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Dhcpv6Props since parent returns ARObject
-        return cast("Dhcpv6Props", obj)
 
 
 class Dhcpv6PropsBuilder:

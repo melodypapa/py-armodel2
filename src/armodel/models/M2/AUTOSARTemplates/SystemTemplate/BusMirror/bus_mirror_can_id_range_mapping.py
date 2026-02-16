@@ -1,7 +1,9 @@
 """BusMirrorCanIdRangeMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -12,12 +14,24 @@ class BusMirrorCanIdRangeMapping(ARObject):
     """AUTOSAR BusMirrorCanIdRangeMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("destination_base", None, True, False, None),  # destinationBase
-        ("source_can_id_code", None, True, False, None),  # sourceCanIdCode
-        ("source_can_id", None, True, False, None),  # sourceCanId
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "destination_base": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # destinationBase
+        "source_can_id_code": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sourceCanIdCode
+        "source_can_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sourceCanId
+    }
 
     def __init__(self) -> None:
         """Initialize BusMirrorCanIdRangeMapping."""
@@ -25,34 +39,6 @@ class BusMirrorCanIdRangeMapping(ARObject):
         self.destination_base: Optional[PositiveInteger] = None
         self.source_can_id_code: Optional[PositiveInteger] = None
         self.source_can_id: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BusMirrorCanIdRangeMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BusMirrorCanIdRangeMapping":
-        """Create BusMirrorCanIdRangeMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BusMirrorCanIdRangeMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BusMirrorCanIdRangeMapping since parent returns ARObject
-        return cast("BusMirrorCanIdRangeMapping", obj)
 
 
 class BusMirrorCanIdRangeMappingBuilder:

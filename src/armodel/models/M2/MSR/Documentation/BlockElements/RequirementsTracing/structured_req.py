@@ -1,7 +1,9 @@
 """StructuredReq AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
@@ -21,22 +23,83 @@ class StructuredReq(Paginateable):
     """AUTOSAR StructuredReq."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("applies_tos", None, False, True, StandardNameEnum),  # appliesTos
-        ("conflicts", None, False, False, DocumentationBlock),  # conflicts
-        ("date", None, True, False, None),  # date
-        ("dependencies", None, False, False, DocumentationBlock),  # dependencies
-        ("description", None, False, False, DocumentationBlock),  # description
-        ("importance", None, True, False, None),  # importance
-        ("issued_by", None, True, False, None),  # issuedBy
-        ("rationale", None, False, False, DocumentationBlock),  # rationale
-        ("remark", None, False, False, DocumentationBlock),  # remark
-        ("supporting", None, False, False, DocumentationBlock),  # supporting
-        ("tested_items", None, False, True, Traceable),  # testedItems
-        ("type", None, True, False, None),  # type
-        ("use_case", None, False, False, DocumentationBlock),  # useCase
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "applies_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StandardNameEnum,
+        ),  # appliesTos
+        "conflicts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # conflicts
+        "date": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # date
+        "dependencies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # dependencies
+        "description": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # description
+        "importance": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # importance
+        "issued_by": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # issuedBy
+        "rationale": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # rationale
+        "remark": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # remark
+        "supporting": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # supporting
+        "tested_items": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Traceable,
+        ),  # testedItems
+        "type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # type
+        "use_case": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # useCase
+    }
 
     def __init__(self) -> None:
         """Initialize StructuredReq."""
@@ -54,34 +117,6 @@ class StructuredReq(Paginateable):
         self.tested_items: list[Traceable] = []
         self.type: String = None
         self.use_case: Optional[DocumentationBlock] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert StructuredReq to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StructuredReq":
-        """Create StructuredReq from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StructuredReq instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to StructuredReq since parent returns ARObject
-        return cast("StructuredReq", obj)
 
 
 class StructuredReqBuilder:

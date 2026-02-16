@@ -1,7 +1,9 @@
 """LifeCycleInfo AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
@@ -21,15 +23,45 @@ class LifeCycleInfo(ARObject):
     """AUTOSAR LifeCycleInfo."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("lc_object", None, False, False, Referrable),  # lcObject
-        ("lc_state", None, False, False, LifeCycleState),  # lcState
-        ("period_begin", None, False, False, LifeCyclePeriod),  # periodBegin
-        ("period_end", None, False, False, LifeCyclePeriod),  # periodEnd
-        ("remark", None, False, False, DocumentationBlock),  # remark
-        ("use_insteads", None, False, True, Referrable),  # useInsteads
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "lc_object": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=Referrable,
+        ),  # lcObject
+        "lc_state": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LifeCycleState,
+        ),  # lcState
+        "period_begin": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LifeCyclePeriod,
+        ),  # periodBegin
+        "period_end": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LifeCyclePeriod,
+        ),  # periodEnd
+        "remark": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # remark
+        "use_insteads": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Referrable,
+        ),  # useInsteads
+    }
 
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
@@ -40,34 +72,6 @@ class LifeCycleInfo(ARObject):
         self.period_end: Optional[LifeCyclePeriod] = None
         self.remark: Optional[DocumentationBlock] = None
         self.use_insteads: list[Referrable] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LifeCycleInfo to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LifeCycleInfo":
-        """Create LifeCycleInfo from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LifeCycleInfo instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LifeCycleInfo since parent returns ARObject
-        return cast("LifeCycleInfo", obj)
 
 
 class LifeCycleInfoBuilder:

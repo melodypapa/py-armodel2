@@ -1,7 +1,9 @@
 """CouplingPortConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -15,14 +17,37 @@ class CouplingPortConnection(ARObject):
     """AUTOSAR CouplingPortConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("first_port", None, False, False, CouplingPort),  # firstPort
-        ("node_ports", None, False, True, CouplingPort),  # nodePorts
-        ("plca_local_node", None, True, False, None),  # plcaLocalNode
-        ("plca_transmit", None, True, False, None),  # plcaTransmit
-        ("second_port", None, False, False, CouplingPort),  # secondPort
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "first_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPort,
+        ),  # firstPort
+        "node_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CouplingPort,
+        ),  # nodePorts
+        "plca_local_node": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # plcaLocalNode
+        "plca_transmit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # plcaTransmit
+        "second_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPort,
+        ),  # secondPort
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
@@ -32,34 +57,6 @@ class CouplingPortConnection(ARObject):
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_transmit: Optional[PositiveInteger] = None
         self.second_port: Optional[CouplingPort] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingPortConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortConnection":
-        """Create CouplingPortConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingPortConnection since parent returns ARObject
-        return cast("CouplingPortConnection", obj)
 
 
 class CouplingPortConnectionBuilder:

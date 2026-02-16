@@ -1,7 +1,9 @@
 """DiagnosticServiceSwMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
@@ -20,17 +22,57 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticServiceSwMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("accessed_data", None, False, False, DataPrototype),  # accessedData
-        ("diagnostic_data", None, False, False, DiagnosticDataElement),  # diagnosticData
-        ("diagnostic", None, False, False, DiagnosticParameter),  # diagnostic
-        ("mapped_bsw", None, False, False, any (BswService)),  # mappedBsw
-        ("mapped_flat_swc", None, False, False, any (SwcService)),  # mappedFlatSwc
-        ("mapped_swc", None, False, False, any (SwcService)),  # mappedSwc
-        ("parameter", None, False, False, DiagnosticParameter),  # parameter
-        ("service_instance", None, False, False, any (DiagnosticService)),  # serviceInstance
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "accessed_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataPrototype,
+        ),  # accessedData
+        "diagnostic_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticDataElement,
+        ),  # diagnosticData
+        "diagnostic": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticParameter,
+        ),  # diagnostic
+        "mapped_bsw": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BswService),
+        ),  # mappedBsw
+        "mapped_flat_swc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwcService),
+        ),  # mappedFlatSwc
+        "mapped_swc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwcService),
+        ),  # mappedSwc
+        "parameter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticParameter,
+        ),  # parameter
+        "service_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagnosticService),
+        ),  # serviceInstance
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticServiceSwMapping."""
@@ -43,34 +85,6 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         self.mapped_swc: Optional[Any] = None
         self.parameter: Optional[DiagnosticParameter] = None
         self.service_instance: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticServiceSwMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceSwMapping":
-        """Create DiagnosticServiceSwMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticServiceSwMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticServiceSwMapping since parent returns ARObject
-        return cast("DiagnosticServiceSwMapping", obj)
 
 
 class DiagnosticServiceSwMappingBuilder:

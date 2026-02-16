@@ -1,7 +1,9 @@
 """DataPrototypeInSystemInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -24,16 +26,51 @@ class DataPrototypeInSystemInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInSystemInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, System),  # base
-        ("contexts", None, False, True, any (SwComponent)),  # contexts
-        ("context_datas", None, False, True, any (ApplicationComposite)),  # contextDatas
-        ("context_port", None, False, False, PortPrototype),  # contextPort
-        ("context_root", None, False, False, RootSwCompositionPrototype),  # contextRoot
-        ("root_data_prototype", None, False, False, AutosarDataPrototype),  # rootDataPrototype
-        ("target_data", None, False, False, DataPrototype),  # targetData
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=System,
+        ),  # base
+        "contexts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (SwComponent),
+        ),  # contexts
+        "context_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ApplicationComposite),
+        ),  # contextDatas
+        "context_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # contextPort
+        "context_root": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RootSwCompositionPrototype,
+        ),  # contextRoot
+        "root_data_prototype": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarDataPrototype,
+        ),  # rootDataPrototype
+        "target_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataPrototype,
+        ),  # targetData
+    }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
@@ -45,34 +82,6 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         self.context_root: Optional[RootSwCompositionPrototype] = None
         self.root_data_prototype: Optional[AutosarDataPrototype] = None
         self.target_data: Optional[DataPrototype] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DataPrototypeInSystemInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSystemInstanceRef":
-        """Create DataPrototypeInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeInSystemInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DataPrototypeInSystemInstanceRef since parent returns ARObject
-        return cast("DataPrototypeInSystemInstanceRef", obj)
 
 
 class DataPrototypeInSystemInstanceRefBuilder:

@@ -1,7 +1,9 @@
 """SystemMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -68,32 +70,147 @@ class SystemMapping(Identifiable):
     """AUTOSAR SystemMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("applications", None, False, True, ApplicationPartitionToEcuPartitionMapping),  # applications
-        ("app_os_tasks", None, False, True, AppOsTaskProxyToEcuTaskProxyMapping),  # appOsTasks
-        ("coms", None, False, True, ComManagementMapping),  # coms
-        ("crypto_services", None, False, True, CryptoServiceMapping),  # cryptoServices
-        ("data_mappings", None, False, True, DataMapping),  # dataMappings
-        ("dds_i_signal_tos", None, False, True, DdsCpISignalToDdsTopicMapping),  # ddsISignalTos
-        ("ecu_resources", None, False, True, ECUMapping),  # ecuResources
-        ("j1939_controllers", None, False, True, any (J1939Controller)),  # j1939Controllers
-        ("mappings", None, False, True, MappingConstraint),  # mappings
-        ("pnc_mappings", None, False, True, PncMapping),  # pncMappings
-        ("port_element_tos", None, False, True, PortElementToCommunicationResourceMapping),  # portElementTos
-        ("resources", None, False, True, EcuResourceEstimation),  # resources
-        ("resource_tos", None, False, True, CpSoftwareCluster),  # resourceTos
-        ("rte_event_in_systems", None, False, True, any (RteEventInSystem)),  # rteEventInSystems
-        ("rte_event_to_oses", None, False, True, RteEventInSystemToOsTaskProxyMapping),  # rteEventToOses
-        ("signal_paths", None, False, True, SignalPathConstraint),  # signalPaths
-        ("software_clusters", None, False, True, any (CpSoftwareClusterTo)),  # softwareClusters
-        ("sw_clusters", None, False, True, any (CpSoftwareClusterTo)),  # swClusters
-        ("swc_tos", None, False, True, SwcToApplicationPartitionMapping),  # swcTos
-        ("sw_impl_mappings", None, False, True, SwcToImplMapping),  # swImplMappings
-        ("sw_mappings", None, False, True, SwcToEcuMapping),  # swMappings
-        ("system_signal_group_tos", None, False, True, SystemSignalGroupToCommunicationResourceMapping),  # systemSignalGroupTos
-        ("system_signal_tos", None, False, True, SystemSignalToCommunicationResourceMapping),  # systemSignalTos
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "applications": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ApplicationPartitionToEcuPartitionMapping,
+        ),  # applications
+        "app_os_tasks": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AppOsTaskProxyToEcuTaskProxyMapping,
+        ),  # appOsTasks
+        "coms": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ComManagementMapping,
+        ),  # coms
+        "crypto_services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CryptoServiceMapping,
+        ),  # cryptoServices
+        "data_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DataMapping,
+        ),  # dataMappings
+        "dds_i_signal_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DdsCpISignalToDdsTopicMapping,
+        ),  # ddsISignalTos
+        "ecu_resources": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ECUMapping,
+        ),  # ecuResources
+        "j1939_controllers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (J1939Controller),
+        ),  # j1939Controllers
+        "mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=MappingConstraint,
+        ),  # mappings
+        "pnc_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PncMapping,
+        ),  # pncMappings
+        "port_element_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortElementToCommunicationResourceMapping,
+        ),  # portElementTos
+        "resources": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcuResourceEstimation,
+        ),  # resources
+        "resource_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CpSoftwareCluster,
+        ),  # resourceTos
+        "rte_event_in_systems": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (RteEventInSystem),
+        ),  # rteEventInSystems
+        "rte_event_to_oses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RteEventInSystemToOsTaskProxyMapping,
+        ),  # rteEventToOses
+        "signal_paths": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SignalPathConstraint,
+        ),  # signalPaths
+        "software_clusters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CpSoftwareClusterTo),
+        ),  # softwareClusters
+        "sw_clusters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CpSoftwareClusterTo),
+        ),  # swClusters
+        "swc_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcToApplicationPartitionMapping,
+        ),  # swcTos
+        "sw_impl_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcToImplMapping,
+        ),  # swImplMappings
+        "sw_mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcToEcuMapping,
+        ),  # swMappings
+        "system_signal_group_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SystemSignalGroupToCommunicationResourceMapping,
+        ),  # systemSignalGroupTos
+        "system_signal_tos": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SystemSignalToCommunicationResourceMapping,
+        ),  # systemSignalTos
+    }
 
     def __init__(self) -> None:
         """Initialize SystemMapping."""
@@ -121,34 +238,6 @@ class SystemMapping(Identifiable):
         self.sw_mappings: list[SwcToEcuMapping] = []
         self.system_signal_group_tos: list[SystemSignalGroupToCommunicationResourceMapping] = []
         self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SystemMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SystemMapping":
-        """Create SystemMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SystemMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SystemMapping since parent returns ARObject
-        return cast("SystemMapping", obj)
 
 
 class SystemMappingBuilder:

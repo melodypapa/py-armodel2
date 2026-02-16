@@ -1,7 +1,9 @@
 """McFunction AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -17,15 +19,45 @@ class McFunction(ARElement):
     """AUTOSAR McFunction."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("def_calprm_set", None, False, False, McFunctionDataRefSet),  # defCalprmSet
-        ("in_measurement", None, False, False, McFunctionDataRefSet),  # inMeasurement
-        ("loc", None, False, False, McFunctionDataRefSet),  # loc
-        ("out", None, False, False, McFunctionDataRefSet),  # out
-        ("ref_calprm_set", None, False, False, McFunctionDataRefSet),  # refCalprmSet
-        ("sub_functions", None, False, True, McFunction),  # subFunctions
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "def_calprm_set": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McFunctionDataRefSet,
+        ),  # defCalprmSet
+        "in_measurement": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McFunctionDataRefSet,
+        ),  # inMeasurement
+        "loc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McFunctionDataRefSet,
+        ),  # loc
+        "out": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McFunctionDataRefSet,
+        ),  # out
+        "ref_calprm_set": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McFunctionDataRefSet,
+        ),  # refCalprmSet
+        "sub_functions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McFunction,
+        ),  # subFunctions
+    }
 
     def __init__(self) -> None:
         """Initialize McFunction."""
@@ -36,34 +68,6 @@ class McFunction(ARElement):
         self.out: Optional[McFunctionDataRefSet] = None
         self.ref_calprm_set: Optional[McFunctionDataRefSet] = None
         self.sub_functions: list[McFunction] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert McFunction to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McFunction":
-        """Create McFunction from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McFunction instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to McFunction since parent returns ARObject
-        return cast("McFunction", obj)
 
 
 class McFunctionBuilder:

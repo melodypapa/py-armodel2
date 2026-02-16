@@ -1,7 +1,9 @@
 """AsynchronousServerCallPoint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.server_call_point import (
     ServerCallPoint,
 )
@@ -11,41 +13,13 @@ class AsynchronousServerCallPoint(ServerCallPoint):
     """AUTOSAR AsynchronousServerCallPoint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+    }
 
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallPoint."""
         super().__init__()
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert AsynchronousServerCallPoint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AsynchronousServerCallPoint":
-        """Create AsynchronousServerCallPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AsynchronousServerCallPoint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to AsynchronousServerCallPoint since parent returns ARObject
-        return cast("AsynchronousServerCallPoint", obj)
 
 
 class AsynchronousServerCallPointBuilder:

@@ -1,7 +1,9 @@
 """GlobalTimeDomain AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
@@ -36,20 +38,72 @@ class GlobalTimeDomain(FibexElement):
     """AUTOSAR GlobalTimeDomain."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("debounce_time", None, True, False, None),  # debounceTime
-        ("domain_id", None, True, False, None),  # domainId
-        ("gateways", None, False, True, GlobalTimeGateway),  # gateways
-        ("global_time", None, False, False, AbstractGlobalTimeDomainProps),  # globalTime
-        ("global_time_master", None, False, False, GlobalTimeMaster),  # globalTimeMaster
-        ("global_time_subs", None, False, True, GlobalTimeDomain),  # globalTimeSubs
-        ("network", None, False, False, NetworkSegmentIdentification),  # network
-        ("offset_time", None, False, False, GlobalTimeDomain),  # offsetTime
-        ("pdu_triggering", None, False, False, PduTriggering),  # pduTriggering
-        ("slaves", None, False, True, GlobalTimeSlave),  # slaves
-        ("sync_loss", None, True, False, None),  # syncLoss
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "debounce_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # debounceTime
+        "domain_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # domainId
+        "gateways": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=GlobalTimeGateway,
+        ),  # gateways
+        "global_time": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AbstractGlobalTimeDomainProps,
+        ),  # globalTime
+        "global_time_master": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=GlobalTimeMaster,
+        ),  # globalTimeMaster
+        "global_time_subs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=GlobalTimeDomain,
+        ),  # globalTimeSubs
+        "network": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NetworkSegmentIdentification,
+        ),  # network
+        "offset_time": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=GlobalTimeDomain,
+        ),  # offsetTime
+        "pdu_triggering": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PduTriggering,
+        ),  # pduTriggering
+        "slaves": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=GlobalTimeSlave,
+        ),  # slaves
+        "sync_loss": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # syncLoss
+    }
 
     def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
@@ -65,34 +119,6 @@ class GlobalTimeDomain(FibexElement):
         self.pdu_triggering: Optional[PduTriggering] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert GlobalTimeDomain to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeDomain":
-        """Create GlobalTimeDomain from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeDomain instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to GlobalTimeDomain since parent returns ARObject
-        return cast("GlobalTimeDomain", obj)
 
 
 class GlobalTimeDomainBuilder:

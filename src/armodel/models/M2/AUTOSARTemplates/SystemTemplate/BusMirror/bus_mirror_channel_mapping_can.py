@@ -1,7 +1,9 @@
 """BusMirrorChannelMappingCan AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
     BusMirrorChannelMapping,
 )
@@ -23,14 +25,37 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingCan."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("can_id_ranges", None, False, True, BusMirrorCanIdRangeMapping),  # canIdRanges
-        ("can_id_to_can_ids", None, False, True, BusMirrorCanIdToCanIdMapping),  # canIdToCanIds
-        ("lin_pid_to_can_ids", None, False, True, BusMirrorLinPidToCanIdMapping),  # linPidToCanIds
-        ("mirror_source_lin", None, True, False, None),  # mirrorSourceLin
-        ("mirror_status", None, True, False, None),  # mirrorStatus
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "can_id_ranges": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BusMirrorCanIdRangeMapping,
+        ),  # canIdRanges
+        "can_id_to_can_ids": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BusMirrorCanIdToCanIdMapping,
+        ),  # canIdToCanIds
+        "lin_pid_to_can_ids": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BusMirrorLinPidToCanIdMapping,
+        ),  # linPidToCanIds
+        "mirror_source_lin": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # mirrorSourceLin
+        "mirror_status": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # mirrorStatus
+    }
 
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingCan."""
@@ -40,34 +65,6 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
         self.mirror_source_lin: Optional[PositiveInteger] = None
         self.mirror_status: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BusMirrorChannelMappingCan to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingCan":
-        """Create BusMirrorChannelMappingCan from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BusMirrorChannelMappingCan instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BusMirrorChannelMappingCan since parent returns ARObject
-        return cast("BusMirrorChannelMappingCan", obj)
 
 
 class BusMirrorChannelMappingCanBuilder:

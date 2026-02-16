@@ -1,7 +1,9 @@
 """VariableAccess AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
@@ -14,45 +16,27 @@ class VariableAccess(AbstractAccessPoint):
     """AUTOSAR VariableAccess."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("accessed_variable", None, False, False, AutosarVariableRef),  # accessedVariable
-        ("scope", None, False, False, VariableAccessScopeEnum),  # scope
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "accessed_variable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarVariableRef,
+        ),  # accessedVariable
+        "scope": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableAccessScopeEnum,
+        ),  # scope
+    }
 
     def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()
         self.accessed_variable: Optional[AutosarVariableRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert VariableAccess to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VariableAccess":
-        """Create VariableAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VariableAccess instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to VariableAccess since parent returns ARObject
-        return cast("VariableAccess", obj)
 
 
 class VariableAccessBuilder:

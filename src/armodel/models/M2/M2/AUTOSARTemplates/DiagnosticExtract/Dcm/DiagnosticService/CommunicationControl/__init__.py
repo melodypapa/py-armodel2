@@ -1,6 +1,0 @@
-"""CommunicationControl module."""
-from .diagnostic_com_control import DiagnosticComControl
-from .diagnostic_com_control_specific_channel import DiagnosticComControlSpecificChannel
-from .diagnostic_com_control_class import DiagnosticComControlClass
-from .diagnostic_com_control_sub_node_channel import DiagnosticComControlSubNodeChannel
-

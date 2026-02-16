@@ -1,7 +1,9 @@
 """RunnableEntity AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
@@ -42,26 +44,109 @@ class RunnableEntity(ExecutableEntity):
     """AUTOSAR RunnableEntity."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("arguments", None, False, True, RunnableEntity),  # arguments
-        ("asynchronous_servers", None, False, True, any (AsynchronousServer)),  # asynchronousServers
-        ("can_be_invoked", None, True, False, None),  # canBeInvoked
-        ("data_reads", None, False, True, VariableAccess),  # dataReads
-        ("data_receives", None, False, True, VariableAccess),  # dataReceives
-        ("data_send_points", None, False, True, VariableAccess),  # dataSendPoints
-        ("data_writes", None, False, True, VariableAccess),  # dataWrites
-        ("externals", None, False, True, ExternalTriggeringPoint),  # externals
-        ("internals", None, False, True, InternalTriggeringPoint),  # internals
-        ("mode_access_points", None, False, True, ModeAccessPoint),  # modeAccessPoints
-        ("mode_switch_points", None, False, True, ModeSwitchPoint),  # modeSwitchPoints
-        ("parameter_accesses", None, False, True, ParameterAccess),  # parameterAccesses
-        ("read_locals", None, False, True, VariableAccess),  # readLocals
-        ("server_call_points", None, False, True, ServerCallPoint),  # serverCallPoints
-        ("symbol", None, True, False, None),  # symbol
-        ("wait_points", None, False, True, WaitPoint),  # waitPoints
-        ("written_locals", None, False, True, VariableAccess),  # writtenLocals
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "arguments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RunnableEntity,
+        ),  # arguments
+        "asynchronous_servers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (AsynchronousServer),
+        ),  # asynchronousServers
+        "can_be_invoked": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # canBeInvoked
+        "data_reads": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # dataReads
+        "data_receives": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # dataReceives
+        "data_send_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # dataSendPoints
+        "data_writes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # dataWrites
+        "externals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ExternalTriggeringPoint,
+        ),  # externals
+        "internals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=InternalTriggeringPoint,
+        ),  # internals
+        "mode_access_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeAccessPoint,
+        ),  # modeAccessPoints
+        "mode_switch_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeSwitchPoint,
+        ),  # modeSwitchPoints
+        "parameter_accesses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ParameterAccess,
+        ),  # parameterAccesses
+        "read_locals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # readLocals
+        "server_call_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ServerCallPoint,
+        ),  # serverCallPoints
+        "symbol": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # symbol
+        "wait_points": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=WaitPoint,
+        ),  # waitPoints
+        "written_locals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VariableAccess,
+        ),  # writtenLocals
+    }
 
     def __init__(self) -> None:
         """Initialize RunnableEntity."""
@@ -83,34 +168,6 @@ class RunnableEntity(ExecutableEntity):
         self.symbol: Optional[CIdentifier] = None
         self.wait_points: list[WaitPoint] = []
         self.written_locals: list[VariableAccess] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert RunnableEntity to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RunnableEntity":
-        """Create RunnableEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RunnableEntity instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to RunnableEntity since parent returns ARObject
-        return cast("RunnableEntity", obj)
 
 
 class RunnableEntityBuilder:

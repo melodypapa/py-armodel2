@@ -1,7 +1,9 @@
 """DdsDurability AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 
 
@@ -9,43 +11,20 @@ class DdsDurability(ARObject):
     """AUTOSAR DdsDurability."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("durability_kind", None, False, False, DdsDurabilityKindEnum),  # durabilityKind
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "durability_kind": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDurabilityKindEnum,
+        ),  # durabilityKind
+    }
 
     def __init__(self) -> None:
         """Initialize DdsDurability."""
         super().__init__()
         self.durability_kind: Optional[DdsDurabilityKindEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DdsDurability to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsDurability":
-        """Create DdsDurability from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsDurability instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DdsDurability since parent returns ARObject
-        return cast("DdsDurability", obj)
 
 
 class DdsDurabilityBuilder:

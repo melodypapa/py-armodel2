@@ -1,1 +1,0 @@
-"""MeasurementAndCalibration module."""

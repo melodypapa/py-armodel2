@@ -1,7 +1,9 @@
 """DoIpLogicTesterAddressProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.abstract_do_ip_logic_address_props import (
     AbstractDoIpLogicAddressProps,
 )
@@ -14,43 +16,20 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
     """AUTOSAR DoIpLogicTesterAddressProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("do_ip_testers", None, False, True, DoIpRoutingActivation),  # doIpTesters
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "do_ip_testers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DoIpRoutingActivation,
+        ),  # doIpTesters
+    }
 
     def __init__(self) -> None:
         """Initialize DoIpLogicTesterAddressProps."""
         super().__init__()
         self.do_ip_testers: list[DoIpRoutingActivation] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DoIpLogicTesterAddressProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DoIpLogicTesterAddressProps":
-        """Create DoIpLogicTesterAddressProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DoIpLogicTesterAddressProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DoIpLogicTesterAddressProps since parent returns ARObject
-        return cast("DoIpLogicTesterAddressProps", obj)
 
 
 class DoIpLogicTesterAddressPropsBuilder:

@@ -1,7 +1,9 @@
 """EthGlobalTimeManagedCouplingPort AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -16,16 +18,46 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
     """AUTOSAR EthGlobalTimeManagedCouplingPort."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("coupling_port", None, False, False, CouplingPort),  # couplingPort
-        ("global_time_port_role", None, False, False, GlobalTimePortRoleEnum),  # globalTimePortRole
-        ("global_time_tx_period", None, True, False, None),  # globalTimeTxPeriod
-        ("pdelay_latency", None, True, False, None),  # pdelayLatency
-        ("pdelay_request", None, True, False, None),  # pdelayRequest
-        ("pdelay_resp_and", None, True, False, None),  # pdelayRespAnd
-        ("pdelay", None, True, False, None),  # pdelay
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "coupling_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPort,
+        ),  # couplingPort
+        "global_time_port_role": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=GlobalTimePortRoleEnum,
+        ),  # globalTimePortRole
+        "global_time_tx_period": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # globalTimeTxPeriod
+        "pdelay_latency": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pdelayLatency
+        "pdelay_request": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pdelayRequest
+        "pdelay_resp_and": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pdelayRespAnd
+        "pdelay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pdelay
+    }
 
     def __init__(self) -> None:
         """Initialize EthGlobalTimeManagedCouplingPort."""
@@ -37,34 +69,6 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         self.pdelay_request: Optional[TimeValue] = None
         self.pdelay_resp_and: Optional[TimeValue] = None
         self.pdelay: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EthGlobalTimeManagedCouplingPort to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeManagedCouplingPort":
-        """Create EthGlobalTimeManagedCouplingPort from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthGlobalTimeManagedCouplingPort instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EthGlobalTimeManagedCouplingPort since parent returns ARObject
-        return cast("EthGlobalTimeManagedCouplingPort", obj)
 
 
 class EthGlobalTimeManagedCouplingPortBuilder:

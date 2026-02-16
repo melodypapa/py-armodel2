@@ -1,7 +1,9 @@
 """ClientServerInterfaceToBswModuleEntryBlueprintMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -20,12 +22,27 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
     """AUTOSAR ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_server", None, False, False, ClientServerInterface),  # clientServer
-        ("operation", None, False, False, ClientServerOperation),  # operation
-        ("port_defined_arguments", None, False, True, PortDefinedArgumentValue),  # portDefinedArguments
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_server": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ClientServerInterface,
+        ),  # clientServer
+        "operation": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ClientServerOperation,
+        ),  # operation
+        "port_defined_arguments": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortDefinedArgumentValue,
+        ),  # portDefinedArguments
+    }
 
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
@@ -33,34 +50,6 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         self.client_server: ClientServerInterface = None
         self.operation: ClientServerOperation = None
         self.port_defined_arguments: list[PortDefinedArgumentValue] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ClientServerInterfaceToBswModuleEntryBlueprintMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
-        """Create ClientServerInterfaceToBswModuleEntryBlueprintMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerInterfaceToBswModuleEntryBlueprintMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ClientServerInterfaceToBswModuleEntryBlueprintMapping since parent returns ARObject
-        return cast("ClientServerInterfaceToBswModuleEntryBlueprintMapping", obj)
 
 
 class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder:

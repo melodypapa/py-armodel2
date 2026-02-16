@@ -1,7 +1,9 @@
 """EcucAbstractReferenceValue AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
     EcucIndexableValue,
 )
@@ -18,12 +20,26 @@ class EcucAbstractReferenceValue(EcucIndexableValue):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("annotations", None, False, True, Annotation),  # annotations
-        ("definition", None, False, False, any (EcucAbstractReference)),  # definition
-        ("is_auto_value", None, True, False, None),  # isAutoValue
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Annotation,
+        ),  # annotations
+        "definition": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EcucAbstractReference),
+        ),  # definition
+        "is_auto_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isAutoValue
+    }
 
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""
@@ -31,34 +47,6 @@ class EcucAbstractReferenceValue(EcucIndexableValue):
         self.annotations: list[Annotation] = []
         self.definition: Optional[Any] = None
         self.is_auto_value: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcucAbstractReferenceValue to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAbstractReferenceValue":
-        """Create EcucAbstractReferenceValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucAbstractReferenceValue instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcucAbstractReferenceValue since parent returns ARObject
-        return cast("EcucAbstractReferenceValue", obj)
 
 
 class EcucAbstractReferenceValueBuilder:

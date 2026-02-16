@@ -1,1 +1,0 @@
-"""TextModel module."""

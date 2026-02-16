@@ -1,7 +1,9 @@
 """CanFrameTriggering AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
@@ -25,19 +27,65 @@ class CanFrameTriggering(FrameTriggering):
     """AUTOSAR CanFrameTriggering."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("absolutelies", None, False, True, TtcanAbsolutelyScheduledTiming),  # absolutelies
-        ("can_addressing", None, False, False, CanAddressingModeType),  # canAddressing
-        ("can_frame_rx_behavior", None, False, False, CanFrameRxBehaviorEnum),  # canFrameRxBehavior
-        ("can_frame_tx_behavior", None, False, False, CanFrameTxBehaviorEnum),  # canFrameTxBehavior
-        ("can_xl_frame", None, False, False, CanXlFrameTriggeringProps),  # canXlFrame
-        ("identifier", None, True, False, None),  # identifier
-        ("j1939requestable", None, True, False, None),  # j1939requestable
-        ("rx_identifier_range_range", None, False, False, RxIdentifierRange),  # rxIdentifierRangeRange
-        ("rx_mask", None, True, False, None),  # rxMask
-        ("tx_mask", None, True, False, None),  # txMask
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "absolutelies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TtcanAbsolutelyScheduledTiming,
+        ),  # absolutelies
+        "can_addressing": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanAddressingModeType,
+        ),  # canAddressing
+        "can_frame_rx_behavior": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanFrameRxBehaviorEnum,
+        ),  # canFrameRxBehavior
+        "can_frame_tx_behavior": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanFrameTxBehaviorEnum,
+        ),  # canFrameTxBehavior
+        "can_xl_frame": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanXlFrameTriggeringProps,
+        ),  # canXlFrame
+        "identifier": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # identifier
+        "j1939requestable": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # j1939requestable
+        "rx_identifier_range_range": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RxIdentifierRange,
+        ),  # rxIdentifierRangeRange
+        "rx_mask": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rxMask
+        "tx_mask": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # txMask
+    }
 
     def __init__(self) -> None:
         """Initialize CanFrameTriggering."""
@@ -52,34 +100,6 @@ class CanFrameTriggering(FrameTriggering):
         self.rx_identifier_range_range: Optional[RxIdentifierRange] = None
         self.rx_mask: Optional[PositiveInteger] = None
         self.tx_mask: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanFrameTriggering to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanFrameTriggering":
-        """Create CanFrameTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanFrameTriggering instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanFrameTriggering since parent returns ARObject
-        return cast("CanFrameTriggering", obj)
 
 
 class CanFrameTriggeringBuilder:

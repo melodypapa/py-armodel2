@@ -1,7 +1,9 @@
 """SomeipSdServerServiceInstanceConfig AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -21,14 +23,36 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
     """AUTOSAR SomeipSdServerServiceInstanceConfig."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("initial_offer_behavior", None, False, False, InitialSdDelayConfig),  # initialOfferBehavior
-        ("offer_cyclic_delay", None, True, False, None),  # offerCyclicDelay
-        ("priority", None, True, False, None),  # priority
-        ("request", None, False, False, RequestResponseDelay),  # request
-        ("service_offer", None, True, False, None),  # serviceOffer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "initial_offer_behavior": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=InitialSdDelayConfig,
+        ),  # initialOfferBehavior
+        "offer_cyclic_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # offerCyclicDelay
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "request": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RequestResponseDelay,
+        ),  # request
+        "service_offer": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # serviceOffer
+    }
 
     def __init__(self) -> None:
         """Initialize SomeipSdServerServiceInstanceConfig."""
@@ -38,34 +62,6 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         self.priority: Optional[PositiveInteger] = None
         self.request: Optional[RequestResponseDelay] = None
         self.service_offer: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SomeipSdServerServiceInstanceConfig to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipSdServerServiceInstanceConfig":
-        """Create SomeipSdServerServiceInstanceConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipSdServerServiceInstanceConfig instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SomeipSdServerServiceInstanceConfig since parent returns ARObject
-        return cast("SomeipSdServerServiceInstanceConfig", obj)
 
 
 class SomeipSdServerServiceInstanceConfigBuilder:

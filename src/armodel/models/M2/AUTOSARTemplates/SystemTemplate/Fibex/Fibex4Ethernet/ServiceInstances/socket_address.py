@@ -1,7 +1,9 @@
 """SocketAddress AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -28,20 +30,71 @@ class SocketAddress(Identifiable):
     """AUTOSAR SocketAddress."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("allowed_i_pv6_ext", None, False, False, IPv6ExtHeaderFilterList),  # allowedIPv6Ext
-        ("allowed_tcp", None, False, False, TcpOptionFilterList),  # allowedTcp
-        ("application_endpoint_endpoint", None, False, False, ApplicationEndpoint),  # applicationEndpointEndpoint
-        ("connector", None, False, False, any (EthernetCommunication)),  # connector
-        ("differentiated", None, True, False, None),  # differentiated
-        ("flow_label", None, True, False, None),  # flowLabel
-        ("multicasts", None, False, True, any (EthernetCommunication)),  # multicasts
-        ("path_mtu", None, True, False, None),  # pathMtu
-        ("pdu_collection", None, True, False, None),  # pduCollection
-        ("static_sockets", None, False, True, StaticSocketConnection),  # staticSockets
-        ("udp_checksum", None, False, False, UdpChecksumCalculationEnum),  # udpChecksum
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "allowed_i_pv6_ext": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPv6ExtHeaderFilterList,
+        ),  # allowedIPv6Ext
+        "allowed_tcp": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TcpOptionFilterList,
+        ),  # allowedTcp
+        "application_endpoint_endpoint": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ApplicationEndpoint,
+        ),  # applicationEndpointEndpoint
+        "connector": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetCommunication),
+        ),  # connector
+        "differentiated": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # differentiated
+        "flow_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # flowLabel
+        "multicasts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EthernetCommunication),
+        ),  # multicasts
+        "path_mtu": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pathMtu
+        "pdu_collection": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pduCollection
+        "static_sockets": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StaticSocketConnection,
+        ),  # staticSockets
+        "udp_checksum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=UdpChecksumCalculationEnum,
+        ),  # udpChecksum
+    }
 
     def __init__(self) -> None:
         """Initialize SocketAddress."""
@@ -57,34 +110,6 @@ class SocketAddress(Identifiable):
         self.pdu_collection: Optional[TimeValue] = None
         self.static_sockets: list[StaticSocketConnection] = []
         self.udp_checksum: Optional[UdpChecksumCalculationEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SocketAddress to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SocketAddress":
-        """Create SocketAddress from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SocketAddress instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SocketAddress since parent returns ARObject
-        return cast("SocketAddress", obj)
 
 
 class SocketAddressBuilder:

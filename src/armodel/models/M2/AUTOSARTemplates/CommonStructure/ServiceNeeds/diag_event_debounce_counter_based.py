@@ -1,7 +1,9 @@
 """DiagEventDebounceCounterBased AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_debounce_algorithm import (
     DiagEventDebounceAlgorithm,
 )
@@ -14,15 +16,39 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceCounterBased."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("counter_based", None, True, False, None),  # counterBased
-        ("counter", None, True, False, None),  # counter
-        ("counter_failed", None, True, False, None),  # counterFailed
-        ("counter_jump", None, True, False, None),  # counterJump
-        ("counter_jump_up", None, True, False, None),  # counterJumpUp
-        ("counter_passed", None, True, False, None),  # counterPassed
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "counter_based": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counterBased
+        "counter": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counter
+        "counter_failed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counterFailed
+        "counter_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counterJump
+        "counter_jump_up": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counterJumpUp
+        "counter_passed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # counterPassed
+    }
 
     def __init__(self) -> None:
         """Initialize DiagEventDebounceCounterBased."""
@@ -33,34 +59,6 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         self.counter_jump: Optional[Integer] = None
         self.counter_jump_up: Optional[Integer] = None
         self.counter_passed: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagEventDebounceCounterBased to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceCounterBased":
-        """Create DiagEventDebounceCounterBased from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagEventDebounceCounterBased instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagEventDebounceCounterBased since parent returns ARObject
-        return cast("DiagEventDebounceCounterBased", obj)
 
 
 class DiagEventDebounceCounterBasedBuilder:

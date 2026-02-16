@@ -1,7 +1,9 @@
 """FlexrayNmCluster AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import (
     NmCluster,
 )
@@ -16,16 +18,44 @@ class FlexrayNmCluster(NmCluster):
     """AUTOSAR FlexrayNmCluster."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("nm_car_wake_up", None, True, False, None),  # nmCarWakeUp
-        ("nm_data_cycle", None, True, False, None),  # nmDataCycle
-        ("nm_main", None, True, False, None),  # nmMain
-        ("nm_remote", None, True, False, None),  # nmRemote
-        ("nm_repeat", None, True, False, None),  # nmRepeat
-        ("nm_repetition", None, True, False, None),  # nmRepetition
-        ("nm_voting_cycle", None, True, False, None),  # nmVotingCycle
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "nm_car_wake_up": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmCarWakeUp
+        "nm_data_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmDataCycle
+        "nm_main": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmMain
+        "nm_remote": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRemote
+        "nm_repeat": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRepeat
+        "nm_repetition": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmRepetition
+        "nm_voting_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmVotingCycle
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayNmCluster."""
@@ -37,34 +67,6 @@ class FlexrayNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_repetition: Optional[Integer] = None
         self.nm_voting_cycle: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayNmCluster to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayNmCluster":
-        """Create FlexrayNmCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayNmCluster instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayNmCluster since parent returns ARObject
-        return cast("FlexrayNmCluster", obj)
 
 
 class FlexrayNmClusterBuilder:

@@ -1,7 +1,9 @@
 """DocumentationBlock AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_list import (
     DefList,
@@ -39,20 +41,75 @@ class DocumentationBlock(ARObject):
     """AUTOSAR DocumentationBlock."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("def_list", None, False, False, DefList),  # defList
-        ("figure", None, False, False, MlFigure),  # figure
-        ("formula", None, False, False, MlFormula),  # formula
-        ("labeled_list_label", None, False, False, LabeledList),  # labeledListLabel
-        ("list", None, False, False, List),  # list
-        ("msr_query_p2", None, False, False, MsrQueryP2),  # msrQueryP2
-        ("note", None, False, False, Note),  # note
-        ("p", None, False, False, any (MultiLanguage)),  # p
-        ("structured_req", None, False, False, StructuredReq),  # structuredReq
-        ("trace", None, False, False, TraceableText),  # trace
-        ("verbatim", None, False, False, MultiLanguageVerbatim),  # verbatim
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "def_list": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DefList,
+        ),  # defList
+        "figure": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MlFigure,
+        ),  # figure
+        "formula": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MlFormula,
+        ),  # formula
+        "labeled_list_label": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LabeledList,
+        ),  # labeledListLabel
+        "list": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=List,
+        ),  # list
+        "msr_query_p2": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MsrQueryP2,
+        ),  # msrQueryP2
+        "note": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Note,
+        ),  # note
+        "p": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (MultiLanguage),
+        ),  # p
+        "structured_req": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StructuredReq,
+        ),  # structuredReq
+        "trace": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TraceableText,
+        ),  # trace
+        "verbatim": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultiLanguageVerbatim,
+        ),  # verbatim
+    }
 
     def __init__(self) -> None:
         """Initialize DocumentationBlock."""
@@ -68,34 +125,6 @@ class DocumentationBlock(ARObject):
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DocumentationBlock to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocumentationBlock":
-        """Create DocumentationBlock from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocumentationBlock instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DocumentationBlock since parent returns ARObject
-        return cast("DocumentationBlock", obj)
 
 
 class DocumentationBlockBuilder:

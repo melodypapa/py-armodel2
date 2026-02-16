@@ -1,7 +1,9 @@
 """LinSlave AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -18,17 +20,50 @@ class LinSlave(ARObject):
     """AUTOSAR LinSlave."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("assign_nad", None, True, False, None),  # assignNad
-        ("configured_nad", None, True, False, None),  # configuredNad
-        ("function_id", None, True, False, None),  # functionId
-        ("initial_nad", None, True, False, None),  # initialNad
-        ("lin_error_response", None, False, False, LinErrorResponse),  # linErrorResponse
-        ("nas_timeout", None, True, False, None),  # nasTimeout
-        ("supplier_id", None, True, False, None),  # supplierId
-        ("variant_id", None, True, False, None),  # variantId
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "assign_nad": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # assignNad
+        "configured_nad": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # configuredNad
+        "function_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # functionId
+        "initial_nad": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # initialNad
+        "lin_error_response": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LinErrorResponse,
+        ),  # linErrorResponse
+        "nas_timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nasTimeout
+        "supplier_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # supplierId
+        "variant_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # variantId
+    }
 
     def __init__(self) -> None:
         """Initialize LinSlave."""
@@ -41,34 +76,6 @@ class LinSlave(ARObject):
         self.nas_timeout: Optional[TimeValue] = None
         self.supplier_id: Optional[PositiveInteger] = None
         self.variant_id: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LinSlave to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinSlave":
-        """Create LinSlave from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinSlave instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LinSlave since parent returns ARObject
-        return cast("LinSlave", obj)
 
 
 class LinSlaveBuilder:

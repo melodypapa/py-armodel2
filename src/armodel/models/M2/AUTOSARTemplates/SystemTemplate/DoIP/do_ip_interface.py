@@ -1,7 +1,9 @@
 """DoIpInterface AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -28,22 +30,78 @@ class DoIpInterface(Identifiable):
     """AUTOSAR DoIpInterface."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("alive_check", None, True, False, None),  # aliveCheck
-        ("doip_channel", None, False, False, DoIpTpConfig),  # doipChannel
-        ("doip_connections", None, False, True, SocketConnection),  # doipConnections
-        ("do_ip_routings", None, False, True, DoIpRoutingActivation),  # doIpRoutings
-        ("general_inactivity", None, True, False, None),  # generalInactivity
-        ("initial_inactivity", None, True, False, None),  # initialInactivity
-        ("initial_vehicle", None, True, False, None),  # initialVehicle
-        ("is_activation_line", None, True, False, None),  # isActivationLine
-        ("max_tester", None, True, False, None),  # maxTester
-        ("sockets", None, False, True, StaticSocketConnection),  # sockets
-        ("use_mac_address", None, True, False, None),  # useMacAddress
-        ("use_vehicle", None, True, False, None),  # useVehicle
-        ("vehicle", None, True, False, None),  # vehicle
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "alive_check": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # aliveCheck
+        "doip_channel": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DoIpTpConfig,
+        ),  # doipChannel
+        "doip_connections": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SocketConnection,
+        ),  # doipConnections
+        "do_ip_routings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DoIpRoutingActivation,
+        ),  # doIpRoutings
+        "general_inactivity": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # generalInactivity
+        "initial_inactivity": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # initialInactivity
+        "initial_vehicle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # initialVehicle
+        "is_activation_line": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isActivationLine
+        "max_tester": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxTester
+        "sockets": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StaticSocketConnection,
+        ),  # sockets
+        "use_mac_address": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useMacAddress
+        "use_vehicle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # useVehicle
+        "vehicle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vehicle
+    }
 
     def __init__(self) -> None:
         """Initialize DoIpInterface."""
@@ -61,34 +119,6 @@ class DoIpInterface(Identifiable):
         self.use_mac_address: Optional[Boolean] = None
         self.use_vehicle: Optional[Boolean] = None
         self.vehicle: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DoIpInterface to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DoIpInterface":
-        """Create DoIpInterface from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DoIpInterface instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DoIpInterface since parent returns ARObject
-        return cast("DoIpInterface", obj)
 
 
 class DoIpInterfaceBuilder:

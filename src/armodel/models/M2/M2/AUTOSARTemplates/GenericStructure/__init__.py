@@ -1,1 +1,0 @@
-"""GenericStructure module."""

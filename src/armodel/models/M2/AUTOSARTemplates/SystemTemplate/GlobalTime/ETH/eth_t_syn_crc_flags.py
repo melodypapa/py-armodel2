@@ -1,7 +1,9 @@
 """EthTSynCrcFlags AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -12,15 +14,39 @@ class EthTSynCrcFlags(ARObject):
     """AUTOSAR EthTSynCrcFlags."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("crc_correction", None, True, False, None),  # crcCorrection
-        ("crc_domain", None, True, False, None),  # crcDomain
-        ("crc_message", None, True, False, None),  # crcMessage
-        ("crc_precise", None, True, False, None),  # crcPrecise
-        ("crc_sequence_id", None, True, False, None),  # crcSequenceId
-        ("crc_source_port", None, True, False, None),  # crcSourcePort
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "crc_correction": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcCorrection
+        "crc_domain": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcDomain
+        "crc_message": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcMessage
+        "crc_precise": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcPrecise
+        "crc_sequence_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcSequenceId
+        "crc_source_port": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # crcSourcePort
+    }
 
     def __init__(self) -> None:
         """Initialize EthTSynCrcFlags."""
@@ -31,34 +57,6 @@ class EthTSynCrcFlags(ARObject):
         self.crc_precise: Optional[Boolean] = None
         self.crc_sequence_id: Optional[Boolean] = None
         self.crc_source_port: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EthTSynCrcFlags to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthTSynCrcFlags":
-        """Create EthTSynCrcFlags from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthTSynCrcFlags instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EthTSynCrcFlags since parent returns ARObject
-        return cast("EthTSynCrcFlags", obj)
 
 
 class EthTSynCrcFlagsBuilder:

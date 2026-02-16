@@ -1,7 +1,9 @@
 """E2EProfileCompatibilityProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -14,43 +16,19 @@ class E2EProfileCompatibilityProps(ARElement):
     """AUTOSAR E2EProfileCompatibilityProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("transit_to_invalid", None, True, False, None),  # transitToInvalid
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "transit_to_invalid": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # transitToInvalid
+    }
 
     def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
         self.transit_to_invalid: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert E2EProfileCompatibilityProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "E2EProfileCompatibilityProps":
-        """Create E2EProfileCompatibilityProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            E2EProfileCompatibilityProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to E2EProfileCompatibilityProps since parent returns ARObject
-        return cast("E2EProfileCompatibilityProps", obj)
 
 
 class E2EProfileCompatibilityPropsBuilder:

@@ -1,7 +1,9 @@
 """HwPin AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -15,12 +17,24 @@ class HwPin(Identifiable):
     """AUTOSAR HwPin."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("function_names", None, False, True, None),  # functionNames
-        ("packaging_pin", None, True, False, None),  # packagingPin
-        ("pin_number", None, True, False, None),  # pinNumber
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "function_names": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # functionNames
+        "packaging_pin": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # packagingPin
+        "pin_number": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pinNumber
+    }
 
     def __init__(self) -> None:
         """Initialize HwPin."""
@@ -28,34 +42,6 @@ class HwPin(Identifiable):
         self.function_names: list[String] = []
         self.packaging_pin: Optional[String] = None
         self.pin_number: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert HwPin to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwPin":
-        """Create HwPin from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwPin instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to HwPin since parent returns ARObject
-        return cast("HwPin", obj)
 
 
 class HwPinBuilder:

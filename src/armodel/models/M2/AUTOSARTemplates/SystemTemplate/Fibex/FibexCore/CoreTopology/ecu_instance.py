@@ -1,7 +1,9 @@
 """EcuInstance AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
@@ -48,33 +50,143 @@ class EcuInstance(FibexElement):
     """AUTOSAR EcuInstance."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("associated_coms", None, False, True, ISignalIPduGroup),  # associatedComs
-        ("associateds", None, False, True, ConsumedProvidedServiceInstanceGroup),  # associateds
-        ("associated_pdurs", None, False, True, PdurIPduGroup),  # associatedPdurs
-        ("channel", None, True, False, None),  # channel
-        ("client_id_range", None, False, False, ClientIdRange),  # clientIdRange
-        ("com", None, True, False, None),  # com
-        ("com_enable", None, True, False, None),  # comEnable
-        ("comm_controllers", None, False, True, any (Communication)),  # commControllers
-        ("connectors", None, False, True, any (Communication)),  # connectors
-        ("dlt_config", None, False, False, DltConfig),  # dltConfig
-        ("do_ip_config", None, False, False, DoIpConfig),  # doIpConfig
-        ("ecu_task_proxies", None, False, True, OsTaskProxy),  # ecuTaskProxies
-        ("eth_switch_port", None, True, False, None),  # ethSwitchPort
-        ("firewall_rules", None, False, True, StateDependentFirewall),  # firewallRules
-        ("partitions", None, False, True, EcuPartition),  # partitions
-        ("pnc_nm_request", None, True, False, None),  # pncNmRequest
-        ("pnc_prepare", None, True, False, None),  # pncPrepare
-        ("pnc", None, True, False, None),  # pnc
-        ("pn_reset_time", None, True, False, None),  # pnResetTime
-        ("sleep_mode", None, True, False, None),  # sleepMode
-        ("tcp_ip_icmp_props", None, False, False, EthTcpIpIcmpProps),  # tcpIpIcmpProps
-        ("tcp_ip_props", None, False, False, EthTcpIpProps),  # tcpIpProps
-        ("v2x_supported", None, False, False, any (V2xSupportEnum)),  # v2xSupported
-        ("wake_up_over_bus_supported", None, True, False, None),  # wakeUpOverBusSupported
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "associated_coms": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ISignalIPduGroup,
+        ),  # associatedComs
+        "associateds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ConsumedProvidedServiceInstanceGroup,
+        ),  # associateds
+        "associated_pdurs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PdurIPduGroup,
+        ),  # associatedPdurs
+        "channel": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # channel
+        "client_id_range": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ClientIdRange,
+        ),  # clientIdRange
+        "com": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # com
+        "com_enable": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # comEnable
+        "comm_controllers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (Communication),
+        ),  # commControllers
+        "connectors": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (Communication),
+        ),  # connectors
+        "dlt_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DltConfig,
+        ),  # dltConfig
+        "do_ip_config": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DoIpConfig,
+        ),  # doIpConfig
+        "ecu_task_proxies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=OsTaskProxy,
+        ),  # ecuTaskProxies
+        "eth_switch_port": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ethSwitchPort
+        "firewall_rules": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StateDependentFirewall,
+        ),  # firewallRules
+        "partitions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=EcuPartition,
+        ),  # partitions
+        "pnc_nm_request": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncNmRequest
+        "pnc_prepare": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncPrepare
+        "pnc": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pnc
+        "pn_reset_time": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pnResetTime
+        "sleep_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sleepMode
+        "tcp_ip_icmp_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthTcpIpIcmpProps,
+        ),  # tcpIpIcmpProps
+        "tcp_ip_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthTcpIpProps,
+        ),  # tcpIpProps
+        "v2x_supported": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (V2xSupportEnum),
+        ),  # v2xSupported
+        "wake_up_over_bus_supported": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # wakeUpOverBusSupported
+    }
 
     def __init__(self) -> None:
         """Initialize EcuInstance."""
@@ -103,34 +215,6 @@ class EcuInstance(FibexElement):
         self.tcp_ip_props: Optional[EthTcpIpProps] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcuInstance to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcuInstance":
-        """Create EcuInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcuInstance instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcuInstance since parent returns ARObject
-        return cast("EcuInstance", obj)
 
 
 class EcuInstanceBuilder:

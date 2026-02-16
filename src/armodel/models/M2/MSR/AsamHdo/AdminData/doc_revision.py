@@ -1,7 +1,9 @@
 """DocRevision AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
@@ -18,16 +20,45 @@ class DocRevision(ARObject):
     """AUTOSAR DocRevision."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("date", None, True, False, None),  # date
-        ("issued_by", None, True, False, None),  # issuedBy
-        ("modifications", None, False, True, Modification),  # modifications
-        ("revision_label_string", None, True, False, None),  # revisionLabelString
-        ("revision_label_p1", None, True, False, None),  # revisionLabelP1
-        ("revision_label_p2", None, True, False, None),  # revisionLabelP2
-        ("state", None, True, False, None),  # state
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "date": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # date
+        "issued_by": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # issuedBy
+        "modifications": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Modification,
+        ),  # modifications
+        "revision_label_string": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # revisionLabelString
+        "revision_label_p1": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # revisionLabelP1
+        "revision_label_p2": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # revisionLabelP2
+        "state": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # state
+    }
 
     def __init__(self) -> None:
         """Initialize DocRevision."""
@@ -39,34 +70,6 @@ class DocRevision(ARObject):
         self.revision_label_p1: Optional[RevisionLabelString] = None
         self.revision_label_p2: Optional[RevisionLabelString] = None
         self.state: Optional[NameToken] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DocRevision to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocRevision":
-        """Create DocRevision from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocRevision instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DocRevision since parent returns ARObject
-        return cast("DocRevision", obj)
 
 
 class DocRevisionBuilder:

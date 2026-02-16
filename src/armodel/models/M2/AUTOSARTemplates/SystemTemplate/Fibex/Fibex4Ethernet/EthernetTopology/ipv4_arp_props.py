@@ -1,7 +1,9 @@
 """Ipv4ArpProps AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -14,13 +16,29 @@ class Ipv4ArpProps(ARObject):
     """AUTOSAR Ipv4ArpProps."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("tcp_ip_arp_num", None, True, False, None),  # tcpIpArpNum
-        ("tcp_ip_arp_packet", None, True, False, None),  # tcpIpArpPacket
-        ("tcp_ip_arp", None, True, False, None),  # tcpIpArp
-        ("tcp_ip_arp_table", None, True, False, None),  # tcpIpArpTable
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "tcp_ip_arp_num": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpArpNum
+        "tcp_ip_arp_packet": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpArpPacket
+        "tcp_ip_arp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpArp
+        "tcp_ip_arp_table": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpIpArpTable
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv4ArpProps."""
@@ -29,34 +47,6 @@ class Ipv4ArpProps(ARObject):
         self.tcp_ip_arp_packet: Optional[Boolean] = None
         self.tcp_ip_arp: Optional[TimeValue] = None
         self.tcp_ip_arp_table: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv4ArpProps to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv4ArpProps":
-        """Create Ipv4ArpProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv4ArpProps instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv4ArpProps since parent returns ARObject
-        return cast("Ipv4ArpProps", obj)
 
 
 class Ipv4ArpPropsBuilder:

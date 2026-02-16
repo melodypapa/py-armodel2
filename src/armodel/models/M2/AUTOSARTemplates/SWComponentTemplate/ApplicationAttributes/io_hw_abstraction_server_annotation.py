@@ -1,7 +1,9 @@
 """IoHwAbstractionServerAnnotation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
@@ -29,17 +31,56 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     """AUTOSAR IoHwAbstractionServerAnnotation."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("age", None, False, False, MultidimensionalTime),  # age
-        ("argument", None, False, False, ArgumentDataPrototype),  # argument
-        ("bsw_resolution", None, True, False, None),  # bswResolution
-        ("data_element", None, False, False, VariableDataPrototype),  # dataElement
-        ("failure", None, False, False, PortPrototype),  # failure
-        ("filtering", None, False, False, FilterDebouncingEnum),  # filtering
-        ("pulse_test", None, False, False, PulseTestEnum),  # pulseTest
-        ("trigger", None, False, False, Trigger),  # trigger
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "age": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # age
+        "argument": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ArgumentDataPrototype,
+        ),  # argument
+        "bsw_resolution": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # bswResolution
+        "data_element": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # dataElement
+        "failure": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # failure
+        "filtering": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FilterDebouncingEnum,
+        ),  # filtering
+        "pulse_test": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PulseTestEnum,
+        ),  # pulseTest
+        "trigger": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Trigger,
+        ),  # trigger
+    }
 
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
@@ -52,34 +93,6 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         self.filtering: Optional[FilterDebouncingEnum] = None
         self.pulse_test: Optional[PulseTestEnum] = None
         self.trigger: Optional[Trigger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IoHwAbstractionServerAnnotation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IoHwAbstractionServerAnnotation":
-        """Create IoHwAbstractionServerAnnotation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IoHwAbstractionServerAnnotation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IoHwAbstractionServerAnnotation since parent returns ARObject
-        return cast("IoHwAbstractionServerAnnotation", obj)
 
 
 class IoHwAbstractionServerAnnotationBuilder:

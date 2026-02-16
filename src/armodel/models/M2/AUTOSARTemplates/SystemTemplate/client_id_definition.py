@@ -1,7 +1,9 @@
 """ClientIdDefinition AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -17,45 +19,26 @@ class ClientIdDefinition(Identifiable):
     """AUTOSAR ClientIdDefinition."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_id", None, True, False, None),  # clientId
-        ("client_server_instance_ref", None, False, False, ClientServerOperation),  # clientServerInstanceRef
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # clientId
+        "client_server_instance_ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ClientServerOperation,
+        ),  # clientServerInstanceRef
+    }
 
     def __init__(self) -> None:
         """Initialize ClientIdDefinition."""
         super().__init__()
         self.client_id: Optional[Numerical] = None
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ClientIdDefinition to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientIdDefinition":
-        """Create ClientIdDefinition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientIdDefinition instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ClientIdDefinition since parent returns ARObject
-        return cast("ClientIdDefinition", obj)
 
 
 class ClientIdDefinitionBuilder:

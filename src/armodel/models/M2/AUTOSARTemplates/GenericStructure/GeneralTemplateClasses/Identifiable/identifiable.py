@@ -1,7 +1,9 @@
 """Identifiable AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
@@ -28,15 +30,43 @@ class Identifiable(MultilanguageReferrable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("admin_data", None, False, False, AdminData),  # adminData
-        ("annotations", None, False, True, Annotation),  # annotations
-        ("category", None, True, False, None),  # category
-        ("desc", None, False, False, MultiLanguageOverviewParagraph),  # desc
-        ("introduction", None, False, False, DocumentationBlock),  # introduction
-        ("uuid", None, True, False, None),  # uuid
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "admin_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AdminData,
+        ),  # adminData
+        "annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Annotation,
+        ),  # annotations
+        "category": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # category
+        "desc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultiLanguageOverviewParagraph,
+        ),  # desc
+        "introduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # introduction
+        "uuid": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # uuid
+    }
 
     def __init__(self) -> None:
         """Initialize Identifiable."""
@@ -47,34 +77,6 @@ class Identifiable(MultilanguageReferrable):
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.uuid: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Identifiable to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Identifiable":
-        """Create Identifiable from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Identifiable instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Identifiable since parent returns ARObject
-        return cast("Identifiable", obj)
 
 
 class IdentifiableBuilder:

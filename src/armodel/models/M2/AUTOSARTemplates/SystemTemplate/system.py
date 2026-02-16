@@ -1,7 +1,9 @@
 """System AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -39,22 +41,83 @@ class System(ARElement):
     """AUTOSAR System."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_ids", None, False, True, ClientIdDefinitionSet),  # clientIds
-        ("container_i_pdu_header_byte", None, False, False, any (ByteOrderEnumOrder)),  # containerIPduHeaderByte
-        ("ecu_extract_version", None, True, False, None),  # ecuExtractVersion
-        ("fibex_elements", None, False, True, FibexElement),  # fibexElements
-        ("interpolation_routines", None, False, True, InterpolationRoutine),  # interpolationRoutines
-        ("j1939_shared_addresses", None, False, True, J1939SharedAddressCluster),  # j1939SharedAddresses
-        ("mappings", None, False, True, SystemMapping),  # mappings
-        ("pnc_vector", None, True, False, None),  # pncVector
-        ("pnc_vector_offset", None, True, False, None),  # pncVectorOffset
-        ("root_software", None, False, False, RootSwCompositionPrototype),  # rootSoftware
-        ("sw_clusters", None, False, True, CpSoftwareCluster),  # swClusters
-        ("systems", None, False, True, Chapter),  # systems
-        ("system_version", None, True, False, None),  # systemVersion
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_ids": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ClientIdDefinitionSet,
+        ),  # clientIds
+        "container_i_pdu_header_byte": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ByteOrderEnumOrder),
+        ),  # containerIPduHeaderByte
+        "ecu_extract_version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ecuExtractVersion
+        "fibex_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FibexElement,
+        ),  # fibexElements
+        "interpolation_routines": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=InterpolationRoutine,
+        ),  # interpolationRoutines
+        "j1939_shared_addresses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=J1939SharedAddressCluster,
+        ),  # j1939SharedAddresses
+        "mappings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SystemMapping,
+        ),  # mappings
+        "pnc_vector": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncVector
+        "pnc_vector_offset": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pncVectorOffset
+        "root_software": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RootSwCompositionPrototype,
+        ),  # rootSoftware
+        "sw_clusters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CpSoftwareCluster,
+        ),  # swClusters
+        "systems": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Chapter,
+        ),  # systems
+        "system_version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # systemVersion
+    }
 
     def __init__(self) -> None:
         """Initialize System."""
@@ -72,34 +135,6 @@ class System(ARElement):
         self.sw_clusters: list[CpSoftwareCluster] = []
         self.systems: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert System to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "System":
-        """Create System from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            System instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to System since parent returns ARObject
-        return cast("System", obj)
 
 
 class SystemBuilder:

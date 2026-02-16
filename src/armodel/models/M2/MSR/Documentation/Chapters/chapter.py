@@ -1,7 +1,9 @@
 """Chapter AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
@@ -17,45 +19,26 @@ class Chapter(Paginateable):
     """AUTOSAR Chapter."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("chapter_model", None, False, False, ChapterModel),  # chapterModel
-        ("help_entry", None, True, False, None),  # helpEntry
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "chapter_model": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ChapterModel,
+        ),  # chapterModel
+        "help_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # helpEntry
+    }
 
     def __init__(self) -> None:
         """Initialize Chapter."""
         super().__init__()
         self.chapter_model: ChapterModel = None
         self.help_entry: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Chapter to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Chapter":
-        """Create Chapter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Chapter instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Chapter since parent returns ARObject
-        return cast("Chapter", obj)
 
 
 class ChapterBuilder:

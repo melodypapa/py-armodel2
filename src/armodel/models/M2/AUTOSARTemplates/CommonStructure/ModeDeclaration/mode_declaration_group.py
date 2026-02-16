@@ -1,7 +1,9 @@
 """ModeDeclarationGroup AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -23,15 +25,44 @@ class ModeDeclarationGroup(ARElement):
     """AUTOSAR ModeDeclarationGroup."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("initial_mode", None, False, False, ModeDeclaration),  # initialMode
-        ("modes", None, False, True, ModeDeclaration),  # modes
-        ("mode_manager", None, False, False, ModeErrorBehavior),  # modeManager
-        ("mode_transition_mode_declaration_groups", None, False, True, ModeTransition),  # modeTransitionModeDeclarationGroups
-        ("mode_user_error", None, False, False, ModeErrorBehavior),  # modeUserError
-        ("on_transition", None, True, False, None),  # onTransition
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "initial_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ModeDeclaration,
+        ),  # initialMode
+        "modes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeDeclaration,
+        ),  # modes
+        "mode_manager": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ModeErrorBehavior,
+        ),  # modeManager
+        "mode_transition_mode_declaration_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModeTransition,
+        ),  # modeTransitionModeDeclarationGroups
+        "mode_user_error": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ModeErrorBehavior,
+        ),  # modeUserError
+        "on_transition": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # onTransition
+    }
 
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
@@ -42,34 +73,6 @@ class ModeDeclarationGroup(ARElement):
         self.mode_transition_mode_declaration_groups: list[ModeTransition] = []
         self.mode_user_error: Optional[ModeErrorBehavior] = None
         self.on_transition: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ModeDeclarationGroup to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroup":
-        """Create ModeDeclarationGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeDeclarationGroup instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ModeDeclarationGroup since parent returns ARObject
-        return cast("ModeDeclarationGroup", obj)
 
 
 class ModeDeclarationGroupBuilder:

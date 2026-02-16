@@ -1,7 +1,9 @@
 """Implementation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -44,24 +46,96 @@ class Implementation(ARElement):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("build_action_manifest", None, False, False, BuildActionManifest),  # buildActionManifest
-        ("code_descriptors", None, False, True, Code),  # codeDescriptors
-        ("compilers", None, False, True, Compiler),  # compilers
-        ("generateds", None, False, True, DependencyOnArtifact),  # generateds
-        ("hw_elements", None, False, True, HwElement),  # hwElements
-        ("linkers", None, False, True, Linker),  # linkers
-        ("mc_support", None, False, False, McSupportData),  # mcSupport
-        ("programming", None, False, False, ProgramminglanguageEnum),  # programming
-        ("required_artifacts", None, False, True, DependencyOnArtifact),  # requiredArtifacts
-        ("requireds", None, False, True, DependencyOnArtifact),  # requireds
-        ("resource", None, False, False, ResourceConsumption),  # resource
-        ("swc_bsw", None, False, False, SwcBswMapping),  # swcBsw
-        ("sw_version", None, True, False, None),  # swVersion
-        ("used_code_generator", None, True, False, None),  # usedCodeGenerator
-        ("vendor_id", None, True, False, None),  # vendorId
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "build_action_manifest": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BuildActionManifest,
+        ),  # buildActionManifest
+        "code_descriptors": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Code,
+        ),  # codeDescriptors
+        "compilers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Compiler,
+        ),  # compilers
+        "generateds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DependencyOnArtifact,
+        ),  # generateds
+        "hw_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=HwElement,
+        ),  # hwElements
+        "linkers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=Linker,
+        ),  # linkers
+        "mc_support": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McSupportData,
+        ),  # mcSupport
+        "programming": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ProgramminglanguageEnum,
+        ),  # programming
+        "required_artifacts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DependencyOnArtifact,
+        ),  # requiredArtifacts
+        "requireds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DependencyOnArtifact,
+        ),  # requireds
+        "resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ResourceConsumption,
+        ),  # resource
+        "swc_bsw": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwcBswMapping,
+        ),  # swcBsw
+        "sw_version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # swVersion
+        "used_code_generator": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # usedCodeGenerator
+        "vendor_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vendorId
+    }
 
     def __init__(self) -> None:
         """Initialize Implementation."""
@@ -81,34 +155,6 @@ class Implementation(ARElement):
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Implementation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Implementation":
-        """Create Implementation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Implementation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Implementation since parent returns ARObject
-        return cast("Implementation", obj)
 
 
 class ImplementationBuilder:

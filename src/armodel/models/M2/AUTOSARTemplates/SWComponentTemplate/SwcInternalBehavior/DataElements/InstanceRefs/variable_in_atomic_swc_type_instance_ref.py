@@ -1,7 +1,9 @@
 """VariableInAtomicSWCTypeInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
@@ -21,14 +23,39 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
     """AUTOSAR VariableInAtomicSWCTypeInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, AtomicSwComponentType),  # base
-        ("context_datas", None, False, True, any (ApplicationComposite)),  # contextDatas
-        ("port_prototype", None, False, False, PortPrototype),  # portPrototype
-        ("root_variable_data_prototype", None, False, False, VariableDataPrototype),  # rootVariableDataPrototype
-        ("target_data", None, False, False, DataPrototype),  # targetData
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AtomicSwComponentType,
+        ),  # base
+        "context_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ApplicationComposite),
+        ),  # contextDatas
+        "port_prototype": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # portPrototype
+        "root_variable_data_prototype": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # rootVariableDataPrototype
+        "target_data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataPrototype,
+        ),  # targetData
+    }
 
     def __init__(self) -> None:
         """Initialize VariableInAtomicSWCTypeInstanceRef."""
@@ -38,34 +65,6 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
         self.port_prototype: Optional[PortPrototype] = None
         self.root_variable_data_prototype: Optional[VariableDataPrototype] = None
         self.target_data: Optional[DataPrototype] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert VariableInAtomicSWCTypeInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VariableInAtomicSWCTypeInstanceRef":
-        """Create VariableInAtomicSWCTypeInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VariableInAtomicSWCTypeInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to VariableInAtomicSWCTypeInstanceRef since parent returns ARObject
-        return cast("VariableInAtomicSWCTypeInstanceRef", obj)
 
 
 class VariableInAtomicSWCTypeInstanceRefBuilder:

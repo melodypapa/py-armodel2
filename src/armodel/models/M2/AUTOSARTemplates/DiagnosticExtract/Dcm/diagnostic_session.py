@@ -1,7 +1,9 @@
 """DiagnosticSession AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -15,13 +17,30 @@ class DiagnosticSession(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSession."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("id", None, True, False, None),  # id
-        ("jump_to_boot", None, False, False, DiagnosticJumpToBootLoaderEnum),  # jumpToBoot
-        ("p2_server_max", None, True, False, None),  # p2ServerMax
-        ("p2_star_server", None, True, False, None),  # p2StarServer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # id
+        "jump_to_boot": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticJumpToBootLoaderEnum,
+        ),  # jumpToBoot
+        "p2_server_max": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # p2ServerMax
+        "p2_star_server": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # p2StarServer
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticSession."""
@@ -30,34 +49,6 @@ class DiagnosticSession(DiagnosticCommonElement):
         self.jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum] = None
         self.p2_server_max: Optional[TimeValue] = None
         self.p2_star_server: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticSession to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSession":
-        """Create DiagnosticSession from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSession instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticSession since parent returns ARObject
-        return cast("DiagnosticSession", obj)
 
 
 class DiagnosticSessionBuilder:

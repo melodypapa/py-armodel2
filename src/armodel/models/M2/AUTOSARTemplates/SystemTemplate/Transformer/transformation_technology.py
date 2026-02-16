@@ -1,7 +1,9 @@
 """TransformationTechnology AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -21,16 +23,47 @@ class TransformationTechnology(Identifiable):
     """AUTOSAR TransformationTechnology."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("buffer_properties", None, False, False, BufferProperties),  # bufferProperties
-        ("has_internal", None, True, False, None),  # hasInternal
-        ("needs_original", None, True, False, None),  # needsOriginal
-        ("protocol", None, True, False, None),  # protocol
-        ("transformation_description", None, False, False, TransformationDescription),  # transformationDescription
-        ("transformer", None, False, False, TransformerClassEnum),  # transformer
-        ("version", None, True, False, None),  # version
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "buffer_properties": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BufferProperties,
+        ),  # bufferProperties
+        "has_internal": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # hasInternal
+        "needs_original": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # needsOriginal
+        "protocol": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # protocol
+        "transformation_description": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TransformationDescription,
+        ),  # transformationDescription
+        "transformer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TransformerClassEnum,
+        ),  # transformer
+        "version": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # version
+    }
 
     def __init__(self) -> None:
         """Initialize TransformationTechnology."""
@@ -42,34 +75,6 @@ class TransformationTechnology(Identifiable):
         self.transformation_description: Optional[TransformationDescription] = None
         self.transformer: Optional[TransformerClassEnum] = None
         self.version: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TransformationTechnology to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransformationTechnology":
-        """Create TransformationTechnology from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransformationTechnology instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TransformationTechnology since parent returns ARObject
-        return cast("TransformationTechnology", obj)
 
 
 class TransformationTechnologyBuilder:

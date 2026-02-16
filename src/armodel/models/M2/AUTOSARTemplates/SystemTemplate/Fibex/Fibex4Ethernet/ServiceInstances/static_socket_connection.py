@@ -1,7 +1,9 @@
 """StaticSocketConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -20,13 +22,32 @@ class StaticSocketConnection(Identifiable):
     """AUTOSAR StaticSocketConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("i_pdu_identifiers", None, False, True, SoConIPduIdentifier),  # iPduIdentifiers
-        ("remote_address", None, False, False, SocketAddress),  # remoteAddress
-        ("tcp_connect", None, True, False, None),  # tcpConnect
-        ("tcp_role", None, False, False, TcpRoleEnum),  # tcpRole
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "i_pdu_identifiers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SoConIPduIdentifier,
+        ),  # iPduIdentifiers
+        "remote_address": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SocketAddress,
+        ),  # remoteAddress
+        "tcp_connect": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tcpConnect
+        "tcp_role": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TcpRoleEnum,
+        ),  # tcpRole
+    }
 
     def __init__(self) -> None:
         """Initialize StaticSocketConnection."""
@@ -35,34 +56,6 @@ class StaticSocketConnection(Identifiable):
         self.remote_address: Optional[SocketAddress] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert StaticSocketConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StaticSocketConnection":
-        """Create StaticSocketConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StaticSocketConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to StaticSocketConnection since parent returns ARObject
-        return cast("StaticSocketConnection", obj)
 
 
 class StaticSocketConnectionBuilder:

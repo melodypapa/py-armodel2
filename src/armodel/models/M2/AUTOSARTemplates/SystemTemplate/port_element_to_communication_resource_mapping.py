@@ -1,7 +1,9 @@
 """PortElementToCommunicationResourceMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -29,15 +31,45 @@ class PortElementToCommunicationResourceMapping(Identifiable):
     """AUTOSAR PortElementToCommunicationResourceMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_server_instance_ref", None, False, False, ClientServerOperation),  # clientServerInstanceRef
-        ("communication", None, False, False, CpSoftwareCluster),  # communication
-        ("mode", None, False, False, ModeDeclarationGroup),  # mode
-        ("parameter_data_in_system_instance_ref", None, False, False, ParameterDataPrototype),  # parameterDataInSystemInstanceRef
-        ("trigger", None, False, False, Trigger),  # trigger
-        ("variable_data_system_instance_ref", None, False, False, VariableDataPrototype),  # variableDataSystemInstanceRef
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_server_instance_ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ClientServerOperation,
+        ),  # clientServerInstanceRef
+        "communication": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CpSoftwareCluster,
+        ),  # communication
+        "mode": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ModeDeclarationGroup,
+        ),  # mode
+        "parameter_data_in_system_instance_ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ParameterDataPrototype,
+        ),  # parameterDataInSystemInstanceRef
+        "trigger": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Trigger,
+        ),  # trigger
+        "variable_data_system_instance_ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # variableDataSystemInstanceRef
+    }
 
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
@@ -48,34 +80,6 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         self.parameter_data_in_system_instance_ref: Optional[ParameterDataPrototype] = None
         self.trigger: Optional[Trigger] = None
         self.variable_data_system_instance_ref: Optional[VariableDataPrototype] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PortElementToCommunicationResourceMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortElementToCommunicationResourceMapping":
-        """Create PortElementToCommunicationResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortElementToCommunicationResourceMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PortElementToCommunicationResourceMapping since parent returns ARObject
-        return cast("PortElementToCommunicationResourceMapping", obj)
 
 
 class PortElementToCommunicationResourceMappingBuilder:

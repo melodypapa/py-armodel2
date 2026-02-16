@@ -1,7 +1,9 @@
 """MeasuredStackUsage AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.StackUsage.stack_usage import (
     StackUsage,
 )
@@ -15,13 +17,29 @@ class MeasuredStackUsage(StackUsage):
     """AUTOSAR MeasuredStackUsage."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("average_memory_consumption", None, True, False, None),  # averageMemoryConsumption
-        ("maximum_memory_consumption", None, True, False, None),  # maximumMemoryConsumption
-        ("minimum_memory_consumption", None, True, False, None),  # minimumMemoryConsumption
-        ("test_pattern", None, True, False, None),  # testPattern
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "average_memory_consumption": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # averageMemoryConsumption
+        "maximum_memory_consumption": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maximumMemoryConsumption
+        "minimum_memory_consumption": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minimumMemoryConsumption
+        "test_pattern": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # testPattern
+    }
 
     def __init__(self) -> None:
         """Initialize MeasuredStackUsage."""
@@ -30,34 +48,6 @@ class MeasuredStackUsage(StackUsage):
         self.maximum_memory_consumption: Optional[PositiveInteger] = None
         self.minimum_memory_consumption: Optional[PositiveInteger] = None
         self.test_pattern: Optional[String] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert MeasuredStackUsage to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MeasuredStackUsage":
-        """Create MeasuredStackUsage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MeasuredStackUsage instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to MeasuredStackUsage since parent returns ARObject
-        return cast("MeasuredStackUsage", obj)
 
 
 class MeasuredStackUsageBuilder:

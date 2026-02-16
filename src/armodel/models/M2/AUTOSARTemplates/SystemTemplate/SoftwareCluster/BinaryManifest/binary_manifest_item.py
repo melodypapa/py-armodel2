@@ -1,7 +1,9 @@
 """BinaryManifestItem AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_addressable_object import (
     BinaryManifestAddressableObject,
 )
@@ -17,13 +19,32 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
     """AUTOSAR BinaryManifestItem."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("auxiliary_fields", None, False, True, BinaryManifestItem),  # auxiliaryFields
-        ("default_value", None, False, False, BinaryManifestItem),  # defaultValue
-        ("is_unused", None, True, False, None),  # isUnused
-        ("value", None, False, False, BinaryManifestItem),  # value
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "auxiliary_fields": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BinaryManifestItem,
+        ),  # auxiliaryFields
+        "default_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BinaryManifestItem,
+        ),  # defaultValue
+        "is_unused": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isUnused
+        "value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=BinaryManifestItem,
+        ),  # value
+    }
 
     def __init__(self) -> None:
         """Initialize BinaryManifestItem."""
@@ -32,34 +53,6 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         self.default_value: Optional[BinaryManifestItem] = None
         self.is_unused: Optional[Boolean] = None
         self.value: Optional[BinaryManifestItem] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert BinaryManifestItem to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BinaryManifestItem":
-        """Create BinaryManifestItem from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BinaryManifestItem instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to BinaryManifestItem since parent returns ARObject
-        return cast("BinaryManifestItem", obj)
 
 
 class BinaryManifestItemBuilder:

@@ -1,7 +1,9 @@
 """CpSoftwareClusterToResourceMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -14,12 +16,27 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToResourceMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("provider", None, False, False, CpSoftwareCluster),  # provider
-        ("requesters", None, False, True, CpSoftwareCluster),  # requesters
-        ("service", None, False, False, CpSoftwareCluster),  # service
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "provider": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CpSoftwareCluster,
+        ),  # provider
+        "requesters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CpSoftwareCluster,
+        ),  # requesters
+        "service": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CpSoftwareCluster,
+        ),  # service
+    }
 
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToResourceMapping."""
@@ -27,34 +44,6 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requesters: list[CpSoftwareCluster] = []
         self.service: Optional[CpSoftwareCluster] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CpSoftwareClusterToResourceMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToResourceMapping":
-        """Create CpSoftwareClusterToResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterToResourceMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CpSoftwareClusterToResourceMapping since parent returns ARObject
-        return cast("CpSoftwareClusterToResourceMapping", obj)
 
 
 class CpSoftwareClusterToResourceMappingBuilder:

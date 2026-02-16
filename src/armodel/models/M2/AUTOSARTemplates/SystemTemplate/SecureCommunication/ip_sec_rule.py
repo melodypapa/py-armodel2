@@ -1,7 +1,9 @@
 """IPSecRule AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -21,23 +23,88 @@ class IPSecRule(Identifiable):
     """AUTOSAR IPSecRule."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("direction", None, False, False, any (Communication)),  # direction
-        ("header_type", None, False, False, IPsecHeaderTypeEnum),  # headerType
-        ("ip_protocol", None, False, False, IPsecIpProtocolEnum),  # ipProtocol
-        ("local_certificates", None, False, True, any (CryptoService)),  # localCertificates
-        ("local_id", None, True, False, None),  # localId
-        ("local_port_range", None, True, False, None),  # localPortRange
-        ("mode", None, False, False, IPsecModeEnum),  # mode
-        ("policy", None, False, False, IPsecPolicyEnum),  # policy
-        ("pre_shared_key", None, False, False, CryptoServiceKey),  # preSharedKey
-        ("priority", None, True, False, None),  # priority
-        ("remotes", None, False, True, any (CryptoService)),  # remotes
-        ("remote_id", None, True, False, None),  # remoteId
-        ("remote_ips", None, False, True, NetworkEndpoint),  # remoteIps
-        ("remote_port", None, True, False, None),  # remotePort
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "direction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (Communication),
+        ),  # direction
+        "header_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPsecHeaderTypeEnum,
+        ),  # headerType
+        "ip_protocol": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPsecIpProtocolEnum,
+        ),  # ipProtocol
+        "local_certificates": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CryptoService),
+        ),  # localCertificates
+        "local_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # localId
+        "local_port_range": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # localPortRange
+        "mode": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPsecModeEnum,
+        ),  # mode
+        "policy": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPsecPolicyEnum,
+        ),  # policy
+        "pre_shared_key": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CryptoServiceKey,
+        ),  # preSharedKey
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "remotes": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (CryptoService),
+        ),  # remotes
+        "remote_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # remoteId
+        "remote_ips": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NetworkEndpoint,
+        ),  # remoteIps
+        "remote_port": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # remotePort
+    }
 
     def __init__(self) -> None:
         """Initialize IPSecRule."""
@@ -56,34 +123,6 @@ class IPSecRule(Identifiable):
         self.remote_id: Optional[String] = None
         self.remote_ips: list[NetworkEndpoint] = []
         self.remote_port: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IPSecRule to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IPSecRule":
-        """Create IPSecRule from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IPSecRule instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IPSecRule since parent returns ARObject
-        return cast("IPSecRule", obj)
 
 
 class IPSecRuleBuilder:

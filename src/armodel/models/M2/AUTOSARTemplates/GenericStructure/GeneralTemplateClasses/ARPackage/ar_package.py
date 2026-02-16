@@ -1,7 +1,9 @@
 """ARPackage AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collectable_element import (
     CollectableElement,
 )
@@ -20,12 +22,27 @@ class ARPackage(CollectableElement):
     """AUTOSAR ARPackage."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ar_packages", None, False, True, ARPackage),  # arPackages
-        ("elements", None, False, True, PackageableElement),  # elements
-        ("reference_bases", None, False, True, ReferenceBase),  # referenceBases
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ar_packages": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ARPackage,
+        ),  # arPackages
+        "elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PackageableElement,
+        ),  # elements
+        "reference_bases": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ReferenceBase,
+        ),  # referenceBases
+    }
 
     def __init__(self) -> None:
         """Initialize ARPackage."""
@@ -33,34 +50,6 @@ class ARPackage(CollectableElement):
         self.ar_packages: list[ARPackage] = []
         self.elements: list[PackageableElement] = []
         self.reference_bases: list[ReferenceBase] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ARPackage to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ARPackage":
-        """Create ARPackage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ARPackage instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ARPackage since parent returns ARObject
-        return cast("ARPackage", obj)
 
 
 class ARPackageBuilder:

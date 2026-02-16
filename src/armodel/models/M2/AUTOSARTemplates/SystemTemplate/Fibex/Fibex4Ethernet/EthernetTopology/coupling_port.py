@@ -1,7 +1,9 @@
 """CouplingPort AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -29,23 +31,93 @@ class CouplingPort(Identifiable):
     """AUTOSAR CouplingPort."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("connection", None, False, False, EthernetConnectionNegotiationEnum),  # connection
-        ("coupling_port_details", None, False, False, CouplingPortDetails),  # couplingPortDetails
-        ("coupling_port_role_enum", None, False, False, CouplingPortRoleEnum),  # couplingPortRoleEnum
-        ("default_vlan", None, False, False, any (EthernetPhysical)),  # defaultVlan
-        ("mac_layer_type_enum", None, False, False, EthernetMacLayerTypeEnum),  # macLayerTypeEnum
-        ("mac_multicast_groups", None, False, True, MacMulticastGroup),  # macMulticastGroups
-        ("mac_sec_propses", None, False, True, MacSecProps),  # macSecPropses
-        ("physical_layer", None, False, False, EthernetPhysicalLayerTypeEnum),  # physicalLayer
-        ("plca_props", None, False, False, PlcaProps),  # plcaProps
-        ("pnc_mapping_idents", None, False, True, PncMappingIdent),  # pncMappingIdents
-        ("receive_activity", None, False, False, any (EthernetSwitchVlan)),  # receiveActivity
-        ("vlans", None, False, True, VlanMembership),  # vlans
-        ("vlan_modifier", None, False, False, any (EthernetPhysical)),  # vlanModifier
-        ("wakeup_sleep", None, False, False, any (EthernetWakeupSleep)),  # wakeupSleep
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "connection": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthernetConnectionNegotiationEnum,
+        ),  # connection
+        "coupling_port_details": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPortDetails,
+        ),  # couplingPortDetails
+        "coupling_port_role_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingPortRoleEnum,
+        ),  # couplingPortRoleEnum
+        "default_vlan": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetPhysical),
+        ),  # defaultVlan
+        "mac_layer_type_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthernetMacLayerTypeEnum,
+        ),  # macLayerTypeEnum
+        "mac_multicast_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=MacMulticastGroup,
+        ),  # macMulticastGroups
+        "mac_sec_propses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=MacSecProps,
+        ),  # macSecPropses
+        "physical_layer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthernetPhysicalLayerTypeEnum,
+        ),  # physicalLayer
+        "plca_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PlcaProps,
+        ),  # plcaProps
+        "pnc_mapping_idents": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PncMappingIdent,
+        ),  # pncMappingIdents
+        "receive_activity": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetSwitchVlan),
+        ),  # receiveActivity
+        "vlans": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=VlanMembership,
+        ),  # vlans
+        "vlan_modifier": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetPhysical),
+        ),  # vlanModifier
+        "wakeup_sleep": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (EthernetWakeupSleep),
+        ),  # wakeupSleep
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingPort."""
@@ -64,34 +136,6 @@ class CouplingPort(Identifiable):
         self.vlans: list[VlanMembership] = []
         self.vlan_modifier: Optional[Any] = None
         self.wakeup_sleep: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingPort to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPort":
-        """Create CouplingPort from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPort instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingPort since parent returns ARObject
-        return cast("CouplingPort", obj)
 
 
 class CouplingPortBuilder:

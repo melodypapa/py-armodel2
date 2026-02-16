@@ -1,7 +1,12 @@
 """InvertCondition AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
+    AbstractCondition,
+)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
     AbstractCondition,
 )
@@ -11,43 +16,20 @@ class InvertCondition(AbstractCondition):
     """AUTOSAR InvertCondition."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("condition", None, False, False, AbstractCondition),  # condition
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "condition": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=AbstractCondition,
+        ),  # condition
+    }
 
     def __init__(self) -> None:
         """Initialize InvertCondition."""
         super().__init__()
         self.condition: AbstractCondition = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert InvertCondition to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InvertCondition":
-        """Create InvertCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InvertCondition instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to InvertCondition since parent returns ARObject
-        return cast("InvertCondition", obj)
 
 
 class InvertConditionBuilder:

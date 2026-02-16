@@ -1,6 +1,0 @@
-"""CddSupport module."""
-from .user_defined_cluster import UserDefinedCluster
-from .user_defined_physical_channel import UserDefinedPhysicalChannel
-from .user_defined_communication_connector import UserDefinedCommunicationConnector
-from .user_defined_communication_controller import UserDefinedCommunicationController
-

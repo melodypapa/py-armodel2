@@ -1,7 +1,9 @@
 """SenderReceiverAnnotation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
@@ -18,13 +20,32 @@ class SenderReceiverAnnotation(GeneralAnnotation):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("computed", None, True, False, None),  # computed
-        ("data_element", None, False, False, VariableDataPrototype),  # dataElement
-        ("limit_kind", None, False, False, DataLimitKindEnum),  # limitKind
-        ("processing_kind_enum", None, False, False, ProcessingKindEnum),  # processingKindEnum
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "computed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # computed
+        "data_element": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=VariableDataPrototype,
+        ),  # dataElement
+        "limit_kind": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataLimitKindEnum,
+        ),  # limitKind
+        "processing_kind_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ProcessingKindEnum,
+        ),  # processingKindEnum
+    }
 
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
@@ -33,34 +54,6 @@ class SenderReceiverAnnotation(GeneralAnnotation):
         self.data_element: Optional[VariableDataPrototype] = None
         self.limit_kind: Optional[DataLimitKindEnum] = None
         self.processing_kind_enum: Optional[ProcessingKindEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SenderReceiverAnnotation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverAnnotation":
-        """Create SenderReceiverAnnotation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverAnnotation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SenderReceiverAnnotation since parent returns ARObject
-        return cast("SenderReceiverAnnotation", obj)
 
 
 class SenderReceiverAnnotationBuilder:

@@ -1,7 +1,9 @@
 """ISignal AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
@@ -29,19 +31,68 @@ class ISignal(FibexElement):
     """AUTOSAR ISignal."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data", None, False, False, DataTransformation),  # data
-        ("data_type_policy_enum", None, False, False, DataTypePolicyEnum),  # dataTypePolicyEnum
-        ("init_value", None, False, False, ValueSpecification),  # initValue
-        ("i_signal_props", None, False, False, ISignalProps),  # iSignalProps
-        ("i_signal_type_enum", None, False, False, ISignalTypeEnum),  # iSignalTypeEnum
-        ("length", None, True, False, None),  # length
-        ("network", None, False, False, SwDataDefProps),  # network
-        ("system_signal", None, False, False, SystemSignal),  # systemSignal
-        ("timeout", None, False, False, ValueSpecification),  # timeout
-        ("transformation_i_signals", None, False, True, any (TransformationISignal)),  # transformationISignals
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformation,
+        ),  # data
+        "data_type_policy_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTypePolicyEnum,
+        ),  # dataTypePolicyEnum
+        "init_value": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # initValue
+        "i_signal_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ISignalProps,
+        ),  # iSignalProps
+        "i_signal_type_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ISignalTypeEnum,
+        ),  # iSignalTypeEnum
+        "length": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # length
+        "network": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDefProps,
+        ),  # network
+        "system_signal": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SystemSignal,
+        ),  # systemSignal
+        "timeout": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ValueSpecification,
+        ),  # timeout
+        "transformation_i_signals": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (TransformationISignal),
+        ),  # transformationISignals
+    }
 
     def __init__(self) -> None:
         """Initialize ISignal."""
@@ -56,34 +107,6 @@ class ISignal(FibexElement):
         self.system_signal: Optional[SystemSignal] = None
         self.timeout: Optional[ValueSpecification] = None
         self.transformation_i_signals: list[Any] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ISignal to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignal":
-        """Create ISignal from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignal instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ISignal since parent returns ARObject
-        return cast("ISignal", obj)
 
 
 class ISignalBuilder:

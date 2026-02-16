@@ -1,7 +1,9 @@
 """LinTpConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
@@ -26,18 +28,60 @@ class LinTpConnection(TpConnection):
     """AUTOSAR LinTpConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_pdu", None, False, False, NPdu),  # dataPdu
-        ("flow_control", None, False, False, NPdu),  # flowControl
-        ("lin_tp_n_sdu", None, False, False, IPdu),  # linTpNSdu
-        ("multicast", None, False, False, TpAddress),  # multicast
-        ("receivers", None, False, True, LinTpNode),  # receivers
-        ("timeout_as", None, True, False, None),  # timeoutAs
-        ("timeout_cr", None, True, False, None),  # timeoutCr
-        ("timeout_cs", None, True, False, None),  # timeoutCs
-        ("transmitter", None, False, False, LinTpNode),  # transmitter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # dataPdu
+        "flow_control": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # flowControl
+        "lin_tp_n_sdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPdu,
+        ),  # linTpNSdu
+        "multicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TpAddress,
+        ),  # multicast
+        "receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=LinTpNode,
+        ),  # receivers
+        "timeout_as": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutAs
+        "timeout_cr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutCr
+        "timeout_cs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutCs
+        "transmitter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=LinTpNode,
+        ),  # transmitter
+    }
 
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
@@ -51,34 +95,6 @@ class LinTpConnection(TpConnection):
         self.timeout_cr: Optional[TimeValue] = None
         self.timeout_cs: Optional[TimeValue] = None
         self.transmitter: Optional[LinTpNode] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert LinTpConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinTpConnection":
-        """Create LinTpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinTpConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to LinTpConnection since parent returns ARObject
-        return cast("LinTpConnection", obj)
 
 
 class LinTpConnectionBuilder:

@@ -1,7 +1,9 @@
 """DiagnosticEvent AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -15,18 +17,58 @@ class DiagnosticEvent(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEvent."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("associated", None, True, False, None),  # associated
-        ("clear_event", None, False, False, DiagnosticClearEventAllowedBehaviorEnum),  # clearEvent
-        ("confirmation", None, True, False, None),  # confirmation
-        ("connecteds", None, False, True, any (DiagnosticConnected)),  # connecteds
-        ("event_clear", None, False, False, DiagnosticEventClearAllowedEnum),  # eventClear
-        ("event_kind", None, False, False, DiagnosticEventKindEnum),  # eventKind
-        ("prestorage", None, True, False, None),  # prestorage
-        ("prestored", None, True, False, None),  # prestored
-        ("recoverable_in", None, True, False, None),  # recoverableIn
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "associated": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # associated
+        "clear_event": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticClearEventAllowedBehaviorEnum,
+        ),  # clearEvent
+        "confirmation": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # confirmation
+        "connecteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (DiagnosticConnected),
+        ),  # connecteds
+        "event_clear": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticEventClearAllowedEnum,
+        ),  # eventClear
+        "event_kind": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticEventKindEnum,
+        ),  # eventKind
+        "prestorage": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # prestorage
+        "prestored": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # prestored
+        "recoverable_in": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # recoverableIn
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEvent."""
@@ -40,34 +82,6 @@ class DiagnosticEvent(DiagnosticCommonElement):
         self.prestorage: Optional[Boolean] = None
         self.prestored: Optional[Boolean] = None
         self.recoverable_in: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticEvent to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEvent":
-        """Create DiagnosticEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEvent instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticEvent since parent returns ARObject
-        return cast("DiagnosticEvent", obj)
 
 
 class DiagnosticEventBuilder:

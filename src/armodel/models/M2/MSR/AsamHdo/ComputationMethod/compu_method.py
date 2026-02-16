@@ -1,7 +1,9 @@
 """CompuMethod AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -20,13 +22,32 @@ class CompuMethod(ARElement):
     """AUTOSAR CompuMethod."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("compu_internal", None, False, False, Compu),  # compuInternal
-        ("compu_phys_to", None, False, False, Compu),  # compuPhysTo
-        ("display_format_string", None, True, False, None),  # displayFormatString
-        ("unit", None, False, False, Unit),  # unit
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "compu_internal": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Compu,
+        ),  # compuInternal
+        "compu_phys_to": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Compu,
+        ),  # compuPhysTo
+        "display_format_string": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # displayFormatString
+        "unit": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Unit,
+        ),  # unit
+    }
 
     def __init__(self) -> None:
         """Initialize CompuMethod."""
@@ -35,34 +56,6 @@ class CompuMethod(ARElement):
         self.compu_phys_to: Optional[Compu] = None
         self.display_format_string: Optional[DisplayFormatString] = None
         self.unit: Optional[Unit] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CompuMethod to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuMethod":
-        """Create CompuMethod from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuMethod instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CompuMethod since parent returns ARObject
-        return cast("CompuMethod", obj)
 
 
 class CompuMethodBuilder:

@@ -1,7 +1,9 @@
 """DiagnosticContributionSet AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -14,12 +16,27 @@ class DiagnosticContributionSet(ARElement):
     """AUTOSAR DiagnosticContributionSet."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("common", None, False, False, any (DiagnosticCommon)),  # common
-        ("elements", None, False, True, any (DiagnosticCommon)),  # elements
-        ("service_tables", None, False, True, DiagnosticServiceTable),  # serviceTables
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "common": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagnosticCommon),
+        ),  # common
+        "elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (DiagnosticCommon),
+        ),  # elements
+        "service_tables": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DiagnosticServiceTable,
+        ),  # serviceTables
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticContributionSet."""
@@ -27,34 +44,6 @@ class DiagnosticContributionSet(ARElement):
         self.common: Optional[Any] = None
         self.elements: list[Any] = []
         self.service_tables: list[DiagnosticServiceTable] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticContributionSet to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticContributionSet":
-        """Create DiagnosticContributionSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticContributionSet instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticContributionSet since parent returns ARObject
-        return cast("DiagnosticContributionSet", obj)
 
 
 class DiagnosticContributionSetBuilder:

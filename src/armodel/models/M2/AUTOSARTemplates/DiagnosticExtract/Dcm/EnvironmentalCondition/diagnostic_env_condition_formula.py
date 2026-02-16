@@ -1,7 +1,9 @@
 """DiagnosticEnvConditionFormula AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_condition_formula_part import (
     DiagnosticEnvConditionFormulaPart,
 )
@@ -14,45 +16,26 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
     """AUTOSAR DiagnosticEnvConditionFormula."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("nrc_value", None, True, False, None),  # nrcValue
-        ("op", None, False, False, DiagnosticLogicalOperatorEnum),  # op
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "nrc_value": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nrcValue
+        "op": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticLogicalOperatorEnum,
+        ),  # op
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()
         self.nrc_value: Optional[PositiveInteger] = None
         self.op: Optional[DiagnosticLogicalOperatorEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticEnvConditionFormula to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvConditionFormula":
-        """Create DiagnosticEnvConditionFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnvConditionFormula instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticEnvConditionFormula since parent returns ARObject
-        return cast("DiagnosticEnvConditionFormula", obj)
 
 
 class DiagnosticEnvConditionFormulaBuilder:

@@ -1,7 +1,9 @@
 """ExecutionOrderConstraint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
@@ -17,15 +19,42 @@ class ExecutionOrderConstraint(TimingConstraint):
     """AUTOSAR ExecutionOrderConstraint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, CompositionSwComponentType),  # base
-        ("execution_order", None, False, False, any (ExecutionOrder)),  # executionOrder
-        ("ignore_order", None, True, False, None),  # ignoreOrder
-        ("is_event", None, True, False, None),  # isEvent
-        ("ordered_elements", None, False, True, any (EOCExecutableEntity)),  # orderedElements
-        ("permit_multiple", None, True, False, None),  # permitMultiple
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CompositionSwComponentType,
+        ),  # base
+        "execution_order": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ExecutionOrder),
+        ),  # executionOrder
+        "ignore_order": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ignoreOrder
+        "is_event": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # isEvent
+        "ordered_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EOCExecutableEntity),
+        ),  # orderedElements
+        "permit_multiple": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # permitMultiple
+    }
 
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
@@ -36,34 +65,6 @@ class ExecutionOrderConstraint(TimingConstraint):
         self.is_event: Optional[Boolean] = None
         self.ordered_elements: list[Any] = []
         self.permit_multiple: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ExecutionOrderConstraint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ExecutionOrderConstraint":
-        """Create ExecutionOrderConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ExecutionOrderConstraint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ExecutionOrderConstraint since parent returns ARObject
-        return cast("ExecutionOrderConstraint", obj)
 
 
 class ExecutionOrderConstraintBuilder:

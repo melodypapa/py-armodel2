@@ -1,7 +1,9 @@
 """ScaleConstr AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -16,14 +18,36 @@ class ScaleConstr(ARObject):
     """AUTOSAR ScaleConstr."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("desc", None, False, False, MultiLanguageOverviewParagraph),  # desc
-        ("lower_limit", None, True, False, None),  # lowerLimit
-        ("short_label", None, True, False, None),  # shortLabel
-        ("upper_limit", None, True, False, None),  # upperLimit
-        ("validity", None, False, False, any (ScaleConstrValidity)),  # validity
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "desc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultiLanguageOverviewParagraph,
+        ),  # desc
+        "lower_limit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # lowerLimit
+        "short_label": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # shortLabel
+        "upper_limit": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # upperLimit
+        "validity": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (ScaleConstrValidity),
+        ),  # validity
+    }
 
     def __init__(self) -> None:
         """Initialize ScaleConstr."""
@@ -33,34 +57,6 @@ class ScaleConstr(ARObject):
         self.short_label: Optional[Identifier] = None
         self.upper_limit: Optional[Limit] = None
         self.validity: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ScaleConstr to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ScaleConstr":
-        """Create ScaleConstr from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ScaleConstr instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ScaleConstr since parent returns ARObject
-        return cast("ScaleConstr", obj)
 
 
 class ScaleConstrBuilder:

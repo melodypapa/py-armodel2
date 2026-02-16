@@ -1,7 +1,9 @@
 """SwitchStreamFilterRule AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -20,12 +22,27 @@ class SwitchStreamFilterRule(Identifiable):
     """AUTOSAR SwitchStreamFilterRule."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("data_link_layer", None, False, False, StreamFilterRuleDataLinkLayer),  # dataLinkLayer
-        ("ieee1722_tp", None, False, False, StreamFilterIEEE1722Tp),  # ieee1722Tp
-        ("ip_tp_rule", None, False, False, StreamFilterRuleIpTp),  # ipTpRule
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "data_link_layer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterRuleDataLinkLayer,
+        ),  # dataLinkLayer
+        "ieee1722_tp": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterIEEE1722Tp,
+        ),  # ieee1722Tp
+        "ip_tp_rule": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterRuleIpTp,
+        ),  # ipTpRule
+    }
 
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterRule."""
@@ -33,34 +50,6 @@ class SwitchStreamFilterRule(Identifiable):
         self.data_link_layer: Optional[StreamFilterRuleDataLinkLayer] = None
         self.ieee1722_tp: Optional[StreamFilterIEEE1722Tp] = None
         self.ip_tp_rule: Optional[StreamFilterRuleIpTp] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwitchStreamFilterRule to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchStreamFilterRule":
-        """Create SwitchStreamFilterRule from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchStreamFilterRule instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwitchStreamFilterRule since parent returns ARObject
-        return cast("SwitchStreamFilterRule", obj)
 
 
 class SwitchStreamFilterRuleBuilder:

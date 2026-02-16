@@ -1,7 +1,9 @@
 """FlexrayFrameTriggering AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
@@ -18,13 +20,31 @@ class FlexrayFrameTriggering(FrameTriggering):
     """AUTOSAR FlexrayFrameTriggering."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("absolutelies", None, False, True, FlexrayAbsolutelyScheduledTiming),  # absolutelies
-        ("allow_dynamic", None, True, False, None),  # allowDynamic
-        ("message_id", None, True, False, None),  # messageId
-        ("payload_preamble", None, False, False, any (BooleanIndicator)),  # payloadPreamble
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "absolutelies": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FlexrayAbsolutelyScheduledTiming,
+        ),  # absolutelies
+        "allow_dynamic": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # allowDynamic
+        "message_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # messageId
+        "payload_preamble": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BooleanIndicator),
+        ),  # payloadPreamble
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
@@ -33,34 +53,6 @@ class FlexrayFrameTriggering(FrameTriggering):
         self.allow_dynamic: Optional[Boolean] = None
         self.message_id: Optional[PositiveInteger] = None
         self.payload_preamble: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayFrameTriggering to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayFrameTriggering":
-        """Create FlexrayFrameTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayFrameTriggering instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayFrameTriggering since parent returns ARObject
-        return cast("FlexrayFrameTriggering", obj)
 
 
 class FlexrayFrameTriggeringBuilder:

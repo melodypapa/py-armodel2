@@ -1,7 +1,9 @@
 """CanTpConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
@@ -31,25 +33,98 @@ class CanTpConnection(TpConnection):
     """AUTOSAR CanTpConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("addressing", None, False, False, CanTpAddressingFormatType),  # addressing
-        ("cancellation", None, True, False, None),  # cancellation
-        ("can_tp_channel", None, False, False, CanTpChannel),  # canTpChannel
-        ("data_pdu", None, False, False, NPdu),  # dataPdu
-        ("flow_control_pdu", None, False, False, NPdu),  # flowControlPdu
-        ("max_block_size", None, True, False, None),  # maxBlockSize
-        ("multicast", None, False, False, CanTpAddress),  # multicast
-        ("padding", None, True, False, None),  # padding
-        ("receivers", None, False, True, CanTpNode),  # receivers
-        ("ta_type_type", None, False, False, NetworkTargetAddressType),  # taTypeType
-        ("timeout_br", None, True, False, None),  # timeoutBr
-        ("timeout_bs", None, True, False, None),  # timeoutBs
-        ("timeout_cr", None, True, False, None),  # timeoutCr
-        ("timeout_cs", None, True, False, None),  # timeoutCs
-        ("tp_sdu", None, False, False, IPdu),  # tpSdu
-        ("transmitter", None, False, False, CanTpNode),  # transmitter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "addressing": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanTpAddressingFormatType,
+        ),  # addressing
+        "cancellation": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cancellation
+        "can_tp_channel": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanTpChannel,
+        ),  # canTpChannel
+        "data_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # dataPdu
+        "flow_control_pdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NPdu,
+        ),  # flowControlPdu
+        "max_block_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxBlockSize
+        "multicast": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanTpAddress,
+        ),  # multicast
+        "padding": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # padding
+        "receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanTpNode,
+        ),  # receivers
+        "ta_type_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NetworkTargetAddressType,
+        ),  # taTypeType
+        "timeout_br": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutBr
+        "timeout_bs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutBs
+        "timeout_cr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutCr
+        "timeout_cs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutCs
+        "tp_sdu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IPdu,
+        ),  # tpSdu
+        "transmitter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CanTpNode,
+        ),  # transmitter
+    }
 
     def __init__(self) -> None:
         """Initialize CanTpConnection."""
@@ -70,34 +145,6 @@ class CanTpConnection(TpConnection):
         self.timeout_cs: Optional[TimeValue] = None
         self.tp_sdu: Optional[IPdu] = None
         self.transmitter: Optional[CanTpNode] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanTpConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanTpConnection":
-        """Create CanTpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanTpConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanTpConnection since parent returns ARObject
-        return cast("CanTpConnection", obj)
 
 
 class CanTpConnectionBuilder:

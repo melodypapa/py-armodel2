@@ -1,7 +1,9 @@
 """IEEE1722TpCrfConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
     IEEE1722TpAvConnection,
 )
@@ -15,14 +17,36 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpCrfConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base_frequency", None, True, False, None),  # baseFrequency
-        ("crf_pull_enum", None, False, False, IEEE1722TpCrfPullEnum),  # crfPullEnum
-        ("crf_type_enum", None, False, False, IEEE1722TpCrfTypeEnum),  # crfTypeEnum
-        ("frame_sync", None, True, False, None),  # frameSync
-        ("timestamp", None, True, False, None),  # timestamp
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base_frequency": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # baseFrequency
+        "crf_pull_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IEEE1722TpCrfPullEnum,
+        ),  # crfPullEnum
+        "crf_type_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IEEE1722TpCrfTypeEnum,
+        ),  # crfTypeEnum
+        "frame_sync": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # frameSync
+        "timestamp": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timestamp
+    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpCrfConnection."""
@@ -32,34 +56,6 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         self.crf_type_enum: Optional[IEEE1722TpCrfTypeEnum] = None
         self.frame_sync: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IEEE1722TpCrfConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpCrfConnection":
-        """Create IEEE1722TpCrfConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpCrfConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IEEE1722TpCrfConnection since parent returns ARObject
-        return cast("IEEE1722TpCrfConnection", obj)
 
 
 class IEEE1722TpCrfConnectionBuilder:

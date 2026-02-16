@@ -1,7 +1,9 @@
 """SwitchStreamIdentification AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -21,16 +23,48 @@ class SwitchStreamIdentification(Identifiable):
     """AUTOSAR SwitchStreamIdentification."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("egress_ports", None, False, True, CouplingPort),  # egressPorts
-        ("filter_action_block", None, True, False, None),  # filterActionBlock
-        ("filter_action_dest", None, False, False, any (SwitchStreamFilter)),  # filterActionDest
-        ("filter_action_drop", None, True, False, None),  # filterActionDrop
-        ("filter_action_vlan", None, True, False, None),  # filterActionVlan
-        ("ingress_ports", None, False, True, CouplingPort),  # ingressPorts
-        ("stream_filter", None, False, False, SwitchStreamFilterRule),  # streamFilter
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "egress_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CouplingPort,
+        ),  # egressPorts
+        "filter_action_block": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # filterActionBlock
+        "filter_action_dest": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwitchStreamFilter),
+        ),  # filterActionDest
+        "filter_action_drop": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # filterActionDrop
+        "filter_action_vlan": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # filterActionVlan
+        "ingress_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CouplingPort,
+        ),  # ingressPorts
+        "stream_filter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwitchStreamFilterRule,
+        ),  # streamFilter
+    }
 
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
@@ -42,34 +76,6 @@ class SwitchStreamIdentification(Identifiable):
         self.filter_action_vlan: Optional[PositiveInteger] = None
         self.ingress_ports: list[CouplingPort] = []
         self.stream_filter: Optional[SwitchStreamFilterRule] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwitchStreamIdentification to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchStreamIdentification":
-        """Create SwitchStreamIdentification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchStreamIdentification instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwitchStreamIdentification since parent returns ARObject
-        return cast("SwitchStreamIdentification", obj)
 
 
 class SwitchStreamIdentificationBuilder:

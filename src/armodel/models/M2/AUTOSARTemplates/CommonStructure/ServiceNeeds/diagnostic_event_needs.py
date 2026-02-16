@@ -1,7 +1,9 @@
 """DiagnosticEventNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
@@ -17,15 +19,43 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("deferring_fids", None, False, True, FunctionInhibitionNeeds),  # deferringFids
-        ("diag_event_debounce", None, False, False, any (DiagEventDebounce)),  # diagEventDebounce
-        ("inhibiting_fid", None, False, False, FunctionInhibitionNeeds),  # inhibitingFid
-        ("inhibitings", None, False, True, FunctionInhibitionNeeds),  # inhibitings
-        ("prestored", None, True, False, None),  # prestored
-        ("uses_monitor", None, True, False, None),  # usesMonitor
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "deferring_fids": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FunctionInhibitionNeeds,
+        ),  # deferringFids
+        "diag_event_debounce": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagEventDebounce),
+        ),  # diagEventDebounce
+        "inhibiting_fid": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FunctionInhibitionNeeds,
+        ),  # inhibitingFid
+        "inhibitings": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=FunctionInhibitionNeeds,
+        ),  # inhibitings
+        "prestored": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # prestored
+        "uses_monitor": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # usesMonitor
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEventNeeds."""
@@ -36,34 +66,6 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         self.inhibitings: list[FunctionInhibitionNeeds] = []
         self.prestored: Optional[Boolean] = None
         self.uses_monitor: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticEventNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventNeeds":
-        """Create DiagnosticEventNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticEventNeeds since parent returns ARObject
-        return cast("DiagnosticEventNeeds", obj)
 
 
 class DiagnosticEventNeedsBuilder:

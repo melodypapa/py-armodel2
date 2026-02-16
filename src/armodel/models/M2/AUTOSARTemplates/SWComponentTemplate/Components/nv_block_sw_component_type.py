@@ -1,7 +1,9 @@
 """NvBlockSwComponentType AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
@@ -17,45 +19,27 @@ class NvBlockSwComponentType(AtomicSwComponentType):
     """AUTOSAR NvBlockSwComponentType."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bulk_nv_datas", None, False, True, BulkNvDataDescriptor),  # bulkNvDatas
-        ("nv_blocks", None, False, True, NvBlockDescriptor),  # nvBlocks
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bulk_nv_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BulkNvDataDescriptor,
+        ),  # bulkNvDatas
+        "nv_blocks": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NvBlockDescriptor,
+        ),  # nvBlocks
+    }
 
     def __init__(self) -> None:
         """Initialize NvBlockSwComponentType."""
         super().__init__()
         self.bulk_nv_datas: list[BulkNvDataDescriptor] = []
         self.nv_blocks: list[NvBlockDescriptor] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert NvBlockSwComponentType to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvBlockSwComponentType":
-        """Create NvBlockSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvBlockSwComponentType instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to NvBlockSwComponentType since parent returns ARObject
-        return cast("NvBlockSwComponentType", obj)
 
 
 class NvBlockSwComponentTypeBuilder:

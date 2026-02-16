@@ -1,7 +1,9 @@
 """TriggerInSystemInstanceRef AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -21,13 +23,33 @@ class TriggerInSystemInstanceRef(ARObject):
     """AUTOSAR TriggerInSystemInstanceRef."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base", None, False, False, System),  # base
-        ("context", None, False, False, RootSwCompositionPrototype),  # context
-        ("context_port", None, False, False, PortPrototype),  # contextPort
-        ("target_trigger", None, False, False, Trigger),  # targetTrigger
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=System,
+        ),  # base
+        "context": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RootSwCompositionPrototype,
+        ),  # context
+        "context_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=PortPrototype,
+        ),  # contextPort
+        "target_trigger": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Trigger,
+        ),  # targetTrigger
+    }
 
     def __init__(self) -> None:
         """Initialize TriggerInSystemInstanceRef."""
@@ -36,34 +58,6 @@ class TriggerInSystemInstanceRef(ARObject):
         self.context: Optional[RootSwCompositionPrototype] = None
         self.context_port: PortPrototype = None
         self.target_trigger: Optional[Trigger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TriggerInSystemInstanceRef to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TriggerInSystemInstanceRef":
-        """Create TriggerInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TriggerInSystemInstanceRef instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TriggerInSystemInstanceRef since parent returns ARObject
-        return cast("TriggerInSystemInstanceRef", obj)
 
 
 class TriggerInSystemInstanceRefBuilder:

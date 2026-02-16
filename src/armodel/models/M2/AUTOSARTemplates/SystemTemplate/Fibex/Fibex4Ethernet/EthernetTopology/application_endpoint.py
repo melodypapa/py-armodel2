@@ -1,7 +1,9 @@
 """ApplicationEndpoint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -23,16 +25,49 @@ class ApplicationEndpoint(Identifiable):
     """AUTOSAR ApplicationEndpoint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("consumed_services", None, False, True, any (ConsumedService)),  # consumedServices
-        ("max_number_of", None, True, False, None),  # maxNumberOf
-        ("network_endpoint_endpoint", None, False, False, NetworkEndpoint),  # networkEndpointEndpoint
-        ("priority", None, True, False, None),  # priority
-        ("provided_services", None, False, True, any (ProvidedService)),  # providedServices
-        ("tls_crypto_service", None, False, False, TlsCryptoServiceMapping),  # tlsCryptoService
-        ("tp_configuration_configuration", None, False, False, TransportProtocolConfiguration),  # tpConfigurationConfiguration
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "consumed_services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ConsumedService),
+        ),  # consumedServices
+        "max_number_of": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxNumberOf
+        "network_endpoint_endpoint": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=NetworkEndpoint,
+        ),  # networkEndpointEndpoint
+        "priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priority
+        "provided_services": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (ProvidedService),
+        ),  # providedServices
+        "tls_crypto_service": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TlsCryptoServiceMapping,
+        ),  # tlsCryptoService
+        "tp_configuration_configuration": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TransportProtocolConfiguration,
+        ),  # tpConfigurationConfiguration
+    }
 
     def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
@@ -44,34 +79,6 @@ class ApplicationEndpoint(Identifiable):
         self.provided_services: list[Any] = []
         self.tls_crypto_service: Optional[TlsCryptoServiceMapping] = None
         self.tp_configuration_configuration: Optional[TransportProtocolConfiguration] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ApplicationEndpoint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationEndpoint":
-        """Create ApplicationEndpoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationEndpoint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ApplicationEndpoint since parent returns ARObject
-        return cast("ApplicationEndpoint", obj)
 
 
 class ApplicationEndpointBuilder:

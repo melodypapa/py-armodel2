@@ -1,7 +1,9 @@
 """CouplingElement AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
@@ -26,15 +28,45 @@ class CouplingElement(FibexElement):
     """AUTOSAR CouplingElement."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("communication", None, False, False, EthernetCluster),  # communication
-        ("coupling", None, False, False, CouplingElement),  # coupling
-        ("coupling_ports", None, False, True, CouplingPort),  # couplingPorts
-        ("coupling_type", None, False, False, CouplingElementEnum),  # couplingType
-        ("ecu_instance", None, False, False, EcuInstance),  # ecuInstance
-        ("firewall_rules", None, False, True, StateDependentFirewall),  # firewallRules
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "communication": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EthernetCluster,
+        ),  # communication
+        "coupling": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingElement,
+        ),  # coupling
+        "coupling_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CouplingPort,
+        ),  # couplingPorts
+        "coupling_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CouplingElementEnum,
+        ),  # couplingType
+        "ecu_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcuInstance,
+        ),  # ecuInstance
+        "firewall_rules": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StateDependentFirewall,
+        ),  # firewallRules
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingElement."""
@@ -45,34 +77,6 @@ class CouplingElement(FibexElement):
         self.coupling_type: Optional[CouplingElementEnum] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.firewall_rules: list[StateDependentFirewall] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingElement to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingElement":
-        """Create CouplingElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingElement instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingElement since parent returns ARObject
-        return cast("CouplingElement", obj)
 
 
 class CouplingElementBuilder:

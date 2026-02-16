@@ -1,7 +1,9 @@
 """Xref AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -15,20 +17,75 @@ class Xref(ARObject):
     """AUTOSAR Xref."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("label1", None, False, False, SingleLanguageLongName),  # label1
-        ("referrable", None, False, False, Referrable),  # referrable
-        ("resolution_policy_enum", None, False, False, ResolutionPolicyEnum),  # resolutionPolicyEnum
-        ("show_content_enum", None, False, False, ShowContentEnum),  # showContentEnum
-        ("show_resource_alias", None, False, False, ShowResourceAliasNameEnum),  # showResourceAlias
-        ("show_resource", None, False, False, ShowResourceTypeEnum),  # showResource
-        ("show_resource_long", None, False, False, ShowResourceLongNameEnum),  # showResourceLong
-        ("show_resource_number", None, False, False, ShowResourceNumberEnum),  # showResourceNumber
-        ("show_resource_page", None, False, False, ShowResourcePageEnum),  # showResourcePage
-        ("show_resource_short", None, False, False, ShowResourceShortNameEnum),  # showResourceShort
-        ("show_see", None, False, False, ShowSeeEnum),  # showSee
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "label1": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SingleLanguageLongName,
+        ),  # label1
+        "referrable": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Referrable,
+        ),  # referrable
+        "resolution_policy_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ResolutionPolicyEnum,
+        ),  # resolutionPolicyEnum
+        "show_content_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowContentEnum,
+        ),  # showContentEnum
+        "show_resource_alias": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourceAliasNameEnum,
+        ),  # showResourceAlias
+        "show_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourceTypeEnum,
+        ),  # showResource
+        "show_resource_long": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourceLongNameEnum,
+        ),  # showResourceLong
+        "show_resource_number": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourceNumberEnum,
+        ),  # showResourceNumber
+        "show_resource_page": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourcePageEnum,
+        ),  # showResourcePage
+        "show_resource_short": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowResourceShortNameEnum,
+        ),  # showResourceShort
+        "show_see": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ShowSeeEnum,
+        ),  # showSee
+    }
 
     def __init__(self) -> None:
         """Initialize Xref."""
@@ -44,34 +101,6 @@ class Xref(ARObject):
         self.show_resource_page: Optional[ShowResourcePageEnum] = None
         self.show_resource_short: Optional[ShowResourceShortNameEnum] = None
         self.show_see: Optional[ShowSeeEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Xref to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Xref":
-        """Create Xref from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Xref instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Xref since parent returns ARObject
-        return cast("Xref", obj)
 
 
 class XrefBuilder:

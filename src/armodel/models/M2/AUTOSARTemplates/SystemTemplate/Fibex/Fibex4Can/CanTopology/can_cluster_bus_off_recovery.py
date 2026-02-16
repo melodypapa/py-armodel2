@@ -1,7 +1,9 @@
 """CanClusterBusOffRecovery AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -13,14 +15,34 @@ class CanClusterBusOffRecovery(ARObject):
     """AUTOSAR CanClusterBusOffRecovery."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bor_counter_l1_to", None, True, False, None),  # borCounterL1To
-        ("bor_time_l1", None, True, False, None),  # borTimeL1
-        ("bor_time_l2", None, True, False, None),  # borTimeL2
-        ("bor_time_tx", None, True, False, None),  # borTimeTx
-        ("main_function", None, True, False, None),  # mainFunction
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bor_counter_l1_to": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # borCounterL1To
+        "bor_time_l1": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # borTimeL1
+        "bor_time_l2": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # borTimeL2
+        "bor_time_tx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # borTimeTx
+        "main_function": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # mainFunction
+    }
 
     def __init__(self) -> None:
         """Initialize CanClusterBusOffRecovery."""
@@ -30,34 +52,6 @@ class CanClusterBusOffRecovery(ARObject):
         self.bor_time_l2: Optional[TimeValue] = None
         self.bor_time_tx: Optional[TimeValue] = None
         self.main_function: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanClusterBusOffRecovery to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanClusterBusOffRecovery":
-        """Create CanClusterBusOffRecovery from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanClusterBusOffRecovery instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanClusterBusOffRecovery since parent returns ARObject
-        return cast("CanClusterBusOffRecovery", obj)
 
 
 class CanClusterBusOffRecoveryBuilder:

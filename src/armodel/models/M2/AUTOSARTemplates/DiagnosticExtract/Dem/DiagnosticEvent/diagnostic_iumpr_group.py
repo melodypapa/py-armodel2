@@ -1,7 +1,9 @@
 """DiagnosticIumprGroup AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -17,45 +19,27 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIumprGroup."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("iumprs", None, False, True, DiagnosticIumpr),  # iumprs
-        ("iumpr_group", None, False, False, DiagnosticIumprGroup),  # iumprGroup
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "iumprs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=DiagnosticIumpr,
+        ),  # iumprs
+        "iumpr_group": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticIumprGroup,
+        ),  # iumprGroup
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticIumprGroup."""
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
         self.iumpr_group: Optional[DiagnosticIumprGroup] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticIumprGroup to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprGroup":
-        """Create DiagnosticIumprGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIumprGroup instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticIumprGroup since parent returns ARObject
-        return cast("DiagnosticIumprGroup", obj)
 
 
 class DiagnosticIumprGroupBuilder:

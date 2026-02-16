@@ -1,7 +1,9 @@
 """IEEE1722TpAcfConnection AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
     IEEE1722TpConnection,
 )
@@ -18,12 +20,25 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
     """AUTOSAR IEEE1722TpAcfConnection."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("acf_transporteds", None, False, True, IEEE1722TpAcfBus),  # acfTransporteds
-        ("collection", None, True, False, None),  # collection
-        ("mixed_bus_type", None, True, False, None),  # mixedBusType
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "acf_transporteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IEEE1722TpAcfBus,
+        ),  # acfTransporteds
+        "collection": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # collection
+        "mixed_bus_type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # mixedBusType
+    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfConnection."""
@@ -31,34 +46,6 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         self.acf_transporteds: list[IEEE1722TpAcfBus] = []
         self.collection: Optional[TimeValue] = None
         self.mixed_bus_type: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert IEEE1722TpAcfConnection to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfConnection":
-        """Create IEEE1722TpAcfConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfConnection instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to IEEE1722TpAcfConnection since parent returns ARObject
-        return cast("IEEE1722TpAcfConnection", obj)
 
 
 class IEEE1722TpAcfConnectionBuilder:

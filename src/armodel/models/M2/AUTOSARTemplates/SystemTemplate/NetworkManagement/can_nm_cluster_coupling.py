@@ -1,7 +1,9 @@
 """CanNmClusterCoupling AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
     NmClusterCoupling,
 )
@@ -17,12 +19,26 @@ class CanNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR CanNmClusterCoupling."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("coupled_clusters", None, False, True, CanNmCluster),  # coupledClusters
-        ("nm_busload_reduction", None, False, False, any (BooleanEnabled)),  # nmBusloadReduction
-        ("nm_immediate", None, True, False, None),  # nmImmediate
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "coupled_clusters": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=CanNmCluster,
+        ),  # coupledClusters
+        "nm_busload_reduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BooleanEnabled),
+        ),  # nmBusloadReduction
+        "nm_immediate": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # nmImmediate
+    }
 
     def __init__(self) -> None:
         """Initialize CanNmClusterCoupling."""
@@ -30,34 +46,6 @@ class CanNmClusterCoupling(NmClusterCoupling):
         self.coupled_clusters: list[CanNmCluster] = []
         self.nm_busload_reduction: Optional[Any] = None
         self.nm_immediate: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanNmClusterCoupling to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanNmClusterCoupling":
-        """Create CanNmClusterCoupling from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanNmClusterCoupling instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanNmClusterCoupling since parent returns ARObject
-        return cast("CanNmClusterCoupling", obj)
 
 
 class CanNmClusterCouplingBuilder:

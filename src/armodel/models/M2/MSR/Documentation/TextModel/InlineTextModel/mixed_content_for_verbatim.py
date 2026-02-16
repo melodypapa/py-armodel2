@@ -1,7 +1,9 @@
 """MixedContentForVerbatim AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
     Br,
@@ -21,13 +23,33 @@ class MixedContentForVerbatim(ARObject):
     """AUTOSAR MixedContentForVerbatim."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("br", None, False, False, Br),  # br
-        ("e", None, False, False, EmphasisText),  # e
-        ("tt", None, False, False, Tt),  # tt
-        ("xref", None, False, False, Xref),  # xref
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "br": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=Br,
+        ),  # br
+        "e": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=EmphasisText,
+        ),  # e
+        "tt": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=Tt,
+        ),  # tt
+        "xref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=Xref,
+        ),  # xref
+    }
 
     def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""
@@ -36,34 +58,6 @@ class MixedContentForVerbatim(ARObject):
         self.e: EmphasisText = None
         self.tt: Tt = None
         self.xref: Xref = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert MixedContentForVerbatim to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MixedContentForVerbatim":
-        """Create MixedContentForVerbatim from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MixedContentForVerbatim instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to MixedContentForVerbatim since parent returns ARObject
-        return cast("MixedContentForVerbatim", obj)
 
 
 class MixedContentForVerbatimBuilder:

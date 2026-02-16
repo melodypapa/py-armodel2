@@ -1,7 +1,9 @@
 """CycleRepetition AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cycle import (
     CommunicationCycle,
 )
@@ -14,45 +16,26 @@ class CycleRepetition(CommunicationCycle):
     """AUTOSAR CycleRepetition."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("base_cycle", None, True, False, None),  # BaseCycle
-        ("cycle_repetition", None, False, False, CycleRepetitionType),  # CycleRepetition
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "base_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # BaseCycle
+        "cycle_repetition": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CycleRepetitionType,
+        ),  # CycleRepetition
+    }
 
     def __init__(self) -> None:
         """Initialize CycleRepetition."""
         super().__init__()
         self.base_cycle: Optional[Integer] = None
         self.cycle_repetition: Optional[CycleRepetitionType] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CycleRepetition to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CycleRepetition":
-        """Create CycleRepetition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CycleRepetition instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CycleRepetition since parent returns ARObject
-        return cast("CycleRepetition", obj)
 
 
 class CycleRepetitionBuilder:

@@ -1,7 +1,9 @@
 """SupervisedEntityNeeds AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
@@ -16,16 +18,45 @@ class SupervisedEntityNeeds(ServiceNeeds):
     """AUTOSAR SupervisedEntityNeeds."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("activate_at_start", None, True, False, None),  # activateAtStart
-        ("checkpointses", None, False, True, any (SupervisedEntity)),  # checkpointses
-        ("enable", None, True, False, None),  # enable
-        ("expected_alive", None, True, False, None),  # expectedAlive
-        ("max_alive_cycle", None, True, False, None),  # maxAliveCycle
-        ("min_alive_cycle", None, True, False, None),  # minAliveCycle
-        ("tolerated_failed", None, True, False, None),  # toleratedFailed
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "activate_at_start": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # activateAtStart
+        "checkpointses": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (SupervisedEntity),
+        ),  # checkpointses
+        "enable": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # enable
+        "expected_alive": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # expectedAlive
+        "max_alive_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxAliveCycle
+        "min_alive_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minAliveCycle
+        "tolerated_failed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # toleratedFailed
+    }
 
     def __init__(self) -> None:
         """Initialize SupervisedEntityNeeds."""
@@ -37,34 +68,6 @@ class SupervisedEntityNeeds(ServiceNeeds):
         self.max_alive_cycle: Optional[TimeValue] = None
         self.min_alive_cycle: Optional[TimeValue] = None
         self.tolerated_failed: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SupervisedEntityNeeds to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SupervisedEntityNeeds":
-        """Create SupervisedEntityNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SupervisedEntityNeeds instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SupervisedEntityNeeds since parent returns ARObject
-        return cast("SupervisedEntityNeeds", obj)
 
 
 class SupervisedEntityNeedsBuilder:

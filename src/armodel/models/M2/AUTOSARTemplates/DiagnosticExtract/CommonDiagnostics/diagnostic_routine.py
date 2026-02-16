@@ -1,7 +1,9 @@
 """DiagnosticRoutine AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
@@ -20,14 +22,37 @@ class DiagnosticRoutine(DiagnosticCommonElement):
     """AUTOSAR DiagnosticRoutine."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("id", None, True, False, None),  # id
-        ("request_result", None, False, False, any (DiagnosticRequest)),  # requestResult
-        ("routine_info", None, True, False, None),  # routineInfo
-        ("start", None, False, False, DiagnosticStartRoutine),  # start
-        ("stop", None, False, False, DiagnosticStopRoutine),  # stop
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # id
+        "request_result": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagnosticRequest),
+        ),  # requestResult
+        "routine_info": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # routineInfo
+        "start": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticStartRoutine,
+        ),  # start
+        "stop": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticStopRoutine,
+        ),  # stop
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticRoutine."""
@@ -37,34 +62,6 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         self.routine_info: Optional[PositiveInteger] = None
         self.start: Optional[DiagnosticStartRoutine] = None
         self.stop: Optional[DiagnosticStopRoutine] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticRoutine to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRoutine":
-        """Create DiagnosticRoutine from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRoutine instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticRoutine since parent returns ARObject
-        return cast("DiagnosticRoutine", obj)
 
 
 class DiagnosticRoutineBuilder:

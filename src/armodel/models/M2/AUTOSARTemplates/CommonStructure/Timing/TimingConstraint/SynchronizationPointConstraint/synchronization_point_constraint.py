@@ -1,7 +1,9 @@
 """SynchronizationPointConstraint AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
@@ -14,13 +16,33 @@ class SynchronizationPointConstraint(TimingConstraint):
     """AUTOSAR SynchronizationPointConstraint."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("source_eecs", None, False, True, any (EOCExecutableEntity)),  # sourceEecs
-        ("source_events", None, False, True, AbstractEvent),  # sourceEvents
-        ("target_eecs", None, False, True, any (EOCExecutableEntity)),  # targetEecs
-        ("target_events", None, False, True, AbstractEvent),  # targetEvents
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "source_eecs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EOCExecutableEntity),
+        ),  # sourceEecs
+        "source_events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AbstractEvent,
+        ),  # sourceEvents
+        "target_eecs": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (EOCExecutableEntity),
+        ),  # targetEecs
+        "target_events": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AbstractEvent,
+        ),  # targetEvents
+    }
 
     def __init__(self) -> None:
         """Initialize SynchronizationPointConstraint."""
@@ -29,34 +51,6 @@ class SynchronizationPointConstraint(TimingConstraint):
         self.source_events: list[AbstractEvent] = []
         self.target_eecs: list[Any] = []
         self.target_events: list[AbstractEvent] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SynchronizationPointConstraint to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SynchronizationPointConstraint":
-        """Create SynchronizationPointConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SynchronizationPointConstraint instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SynchronizationPointConstraint since parent returns ARObject
-        return cast("SynchronizationPointConstraint", obj)
 
 
 class SynchronizationPointConstraintBuilder:

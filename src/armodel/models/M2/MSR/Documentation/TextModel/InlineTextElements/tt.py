@@ -1,7 +1,9 @@
 """Tt AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
@@ -13,12 +15,24 @@ class Tt(ARObject):
     """AUTOSAR Tt."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("term", None, True, False, None),  # term
-        ("tex_render", None, True, False, None),  # texRender
-        ("type", None, True, False, None),  # type
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "term": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # term
+        "tex_render": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # texRender
+        "type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="1",
+        ),  # type
+    }
 
     def __init__(self) -> None:
         """Initialize Tt."""
@@ -26,34 +40,6 @@ class Tt(ARObject):
         self.term: String = None
         self.tex_render: Optional[String] = None
         self.type: NameToken = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Tt to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Tt":
-        """Create Tt from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Tt instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Tt since parent returns ARObject
-        return cast("Tt", obj)
 
 
 class TtBuilder:

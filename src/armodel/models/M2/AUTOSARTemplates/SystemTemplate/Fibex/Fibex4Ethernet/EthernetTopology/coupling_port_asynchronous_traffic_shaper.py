@@ -1,7 +1,9 @@
 """CouplingPortAsynchronousTrafficShaper AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -17,12 +19,25 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
     """AUTOSAR CouplingPortAsynchronousTrafficShaper."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("committed_burst", None, True, False, None),  # committedBurst
-        ("committed", None, True, False, None),  # committed
-        ("traffic_shaper", None, False, False, SwitchAsynchronousTrafficShaperGroupEntry),  # trafficShaper
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "committed_burst": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # committedBurst
+        "committed": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # committed
+        "traffic_shaper": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwitchAsynchronousTrafficShaperGroupEntry,
+        ),  # trafficShaper
+    }
 
     def __init__(self) -> None:
         """Initialize CouplingPortAsynchronousTrafficShaper."""
@@ -30,34 +45,6 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         self.committed_burst: Optional[PositiveInteger] = None
         self.committed: Optional[PositiveInteger] = None
         self.traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CouplingPortAsynchronousTrafficShaper to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortAsynchronousTrafficShaper":
-        """Create CouplingPortAsynchronousTrafficShaper from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortAsynchronousTrafficShaper instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CouplingPortAsynchronousTrafficShaper since parent returns ARObject
-        return cast("CouplingPortAsynchronousTrafficShaper", obj)
 
 
 class CouplingPortAsynchronousTrafficShaperBuilder:

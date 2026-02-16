@@ -1,5 +1,0 @@
-"""DiagnosticMemoryDestination module."""
-from .diagnostic_memory_destination import DiagnosticMemoryDestination
-from .diagnostic_memory_destination_primary import DiagnosticMemoryDestinationPrimary
-from .diagnostic_memory_destination_user_defined import DiagnosticMemoryDestinationUserDefined
-

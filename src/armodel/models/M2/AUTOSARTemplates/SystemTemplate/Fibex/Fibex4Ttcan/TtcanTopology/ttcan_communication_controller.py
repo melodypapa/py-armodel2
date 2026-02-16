@@ -1,7 +1,9 @@
 """TtcanCommunicationController AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -13,17 +15,49 @@ class TtcanCommunicationController(ARObject):
     """AUTOSAR TtcanCommunicationController."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("appl_watchdog", None, True, False, None),  # applWatchdog
-        ("expected_tx", None, True, False, None),  # expectedTx
-        ("external_clock", None, True, False, None),  # externalClock
-        ("initial_ref_offset", None, True, False, None),  # initialRefOffset
-        ("master", None, True, False, None),  # master
-        ("time_master", None, True, False, None),  # timeMaster
-        ("time_triggered", None, True, False, None),  # timeTriggered
-        ("tx_enable", None, True, False, None),  # txEnable
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "appl_watchdog": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # applWatchdog
+        "expected_tx": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # expectedTx
+        "external_clock": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # externalClock
+        "initial_ref_offset": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # initialRefOffset
+        "master": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # master
+        "time_master": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeMaster
+        "time_triggered": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeTriggered
+        "tx_enable": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # txEnable
+    }
 
     def __init__(self) -> None:
         """Initialize TtcanCommunicationController."""
@@ -36,34 +70,6 @@ class TtcanCommunicationController(ARObject):
         self.time_master: Optional[Integer] = None
         self.time_triggered: Optional[Integer] = None
         self.tx_enable: Optional[Integer] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert TtcanCommunicationController to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TtcanCommunicationController":
-        """Create TtcanCommunicationController from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TtcanCommunicationController instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to TtcanCommunicationController since parent returns ARObject
-        return cast("TtcanCommunicationController", obj)
 
 
 class TtcanCommunicationControllerBuilder:

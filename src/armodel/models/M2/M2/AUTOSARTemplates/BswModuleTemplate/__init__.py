@@ -1,1 +1,0 @@
-"""BswModuleTemplate module."""

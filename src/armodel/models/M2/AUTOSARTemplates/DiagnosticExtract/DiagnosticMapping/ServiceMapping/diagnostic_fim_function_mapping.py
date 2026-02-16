@@ -1,7 +1,9 @@
 """DiagnosticFimFunctionMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
@@ -11,13 +13,33 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticFimFunctionMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("mapped_bsw", None, False, False, any (BswService)),  # mappedBsw
-        ("mapped_flat_swc", None, False, False, any (SwcService)),  # mappedFlatSwc
-        ("mapped", None, False, False, any (DiagnosticFunction)),  # mapped
-        ("mapped_swc", None, False, False, any (SwcService)),  # mappedSwc
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "mapped_bsw": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (BswService),
+        ),  # mappedBsw
+        "mapped_flat_swc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwcService),
+        ),  # mappedFlatSwc
+        "mapped": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (DiagnosticFunction),
+        ),  # mapped
+        "mapped_swc": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwcService),
+        ),  # mappedSwc
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticFimFunctionMapping."""
@@ -26,34 +48,6 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         self.mapped_flat_swc: Optional[Any] = None
         self.mapped: Optional[Any] = None
         self.mapped_swc: Optional[Any] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticFimFunctionMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFimFunctionMapping":
-        """Create DiagnosticFimFunctionMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFimFunctionMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticFimFunctionMapping since parent returns ARObject
-        return cast("DiagnosticFimFunctionMapping", obj)
 
 
 class DiagnosticFimFunctionMappingBuilder:

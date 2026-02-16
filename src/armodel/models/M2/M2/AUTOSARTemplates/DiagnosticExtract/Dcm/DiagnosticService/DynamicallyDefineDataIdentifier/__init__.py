@@ -1,4 +1,0 @@
-"""DynamicallyDefineDataIdentifier module."""
-from .diagnostic_dynamically_define_data_identifier import DiagnosticDynamicallyDefineDataIdentifier
-from .diagnostic_dynamically_define_data_identifier_class import DiagnosticDynamicallyDefineDataIdentifierClass
-

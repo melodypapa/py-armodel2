@@ -1,7 +1,9 @@
 """EcuResourceEstimation AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
@@ -21,14 +23,39 @@ class EcuResourceEstimation(ARObject):
     """AUTOSAR EcuResourceEstimation."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("bsw_resource", None, False, False, ResourceConsumption),  # bswResource
-        ("ecu_instance", None, False, False, EcuInstance),  # ecuInstance
-        ("introduction", None, False, False, DocumentationBlock),  # introduction
-        ("rte_resource", None, False, False, ResourceConsumption),  # rteResource
-        ("sw_comp_to_ecus", None, False, True, SwcToEcuMapping),  # swCompToEcus
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "bsw_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ResourceConsumption,
+        ),  # bswResource
+        "ecu_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcuInstance,
+        ),  # ecuInstance
+        "introduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # introduction
+        "rte_resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ResourceConsumption,
+        ),  # rteResource
+        "sw_comp_to_ecus": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcToEcuMapping,
+        ),  # swCompToEcus
+    }
 
     def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
@@ -38,34 +65,6 @@ class EcuResourceEstimation(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecus: list[SwcToEcuMapping] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert EcuResourceEstimation to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcuResourceEstimation":
-        """Create EcuResourceEstimation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcuResourceEstimation instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to EcuResourceEstimation since parent returns ARObject
-        return cast("EcuResourceEstimation", obj)
 
 
 class EcuResourceEstimationBuilder:

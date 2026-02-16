@@ -1,7 +1,9 @@
 """PortPrototype AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -33,17 +35,57 @@ class PortPrototype(Identifiable):
     """Abstract base class - do not instantiate directly."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("client_servers", None, False, True, ClientServerAnnotation),  # clientServers
-        ("delegated_port", None, False, False, DelegatedPortAnnotation),  # delegatedPort
-        ("io_hw_abstraction_server_annotations", None, False, True, IoHwAbstractionServerAnnotation),  # ioHwAbstractionServerAnnotations
-        ("mode_port_annotations", None, False, True, ModePortAnnotation),  # modePortAnnotations
-        ("nv_data_port_annotations", None, False, True, NvDataPortAnnotation),  # nvDataPortAnnotations
-        ("parameter_ports", None, False, True, ParameterPortAnnotation),  # parameterPorts
-        ("sender_receivers", None, False, True, any (SenderReceiver)),  # senderReceivers
-        ("trigger_port_annotations", None, False, True, TriggerPortAnnotation),  # triggerPortAnnotations
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "client_servers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ClientServerAnnotation,
+        ),  # clientServers
+        "delegated_port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DelegatedPortAnnotation,
+        ),  # delegatedPort
+        "io_hw_abstraction_server_annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=IoHwAbstractionServerAnnotation,
+        ),  # ioHwAbstractionServerAnnotations
+        "mode_port_annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ModePortAnnotation,
+        ),  # modePortAnnotations
+        "nv_data_port_annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=NvDataPortAnnotation,
+        ),  # nvDataPortAnnotations
+        "parameter_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ParameterPortAnnotation,
+        ),  # parameterPorts
+        "sender_receivers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=any (SenderReceiver),
+        ),  # senderReceivers
+        "trigger_port_annotations": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=TriggerPortAnnotation,
+        ),  # triggerPortAnnotations
+    }
 
     def __init__(self) -> None:
         """Initialize PortPrototype."""
@@ -56,34 +98,6 @@ class PortPrototype(Identifiable):
         self.parameter_ports: list[ParameterPortAnnotation] = []
         self.sender_receivers: list[Any] = []
         self.trigger_port_annotations: list[TriggerPortAnnotation] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert PortPrototype to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortPrototype":
-        """Create PortPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortPrototype instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to PortPrototype since parent returns ARObject
-        return cast("PortPrototype", obj)
 
 
 class PortPrototypeBuilder:

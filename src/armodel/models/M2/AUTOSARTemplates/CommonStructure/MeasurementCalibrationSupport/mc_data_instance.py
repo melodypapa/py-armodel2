@@ -1,7 +1,9 @@
 """McDataInstance AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -41,21 +43,77 @@ class McDataInstance(Identifiable):
     """AUTOSAR McDataInstance."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("array_size", None, True, False, None),  # arraySize
-        ("display_identifier", None, True, False, None),  # displayIdentifier
-        ("flat_map_entry", None, False, False, FlatInstanceDescriptor),  # flatMapEntry
-        ("instance_in", None, False, False, ImplementationElementInParameterInstanceRef),  # instanceIn
-        ("mc_data_access_details", None, False, False, McDataAccessDetails),  # mcDataAccessDetails
-        ("mc_datas", None, False, True, RoleBasedMcDataAssignment),  # mcDatas
-        ("resulting", None, False, False, SwDataDefProps),  # resulting
-        ("resulting_rpt_sw", None, False, False, RptSwPrototypingAccess),  # resultingRptSw
-        ("role", None, True, False, None),  # role
-        ("rpt_impl_policy", None, False, False, RptImplPolicy),  # rptImplPolicy
-        ("sub_elements", None, False, True, McDataInstance),  # subElements
-        ("symbol", None, True, False, None),  # symbol
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "array_size": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # arraySize
+        "display_identifier": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # displayIdentifier
+        "flat_map_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FlatInstanceDescriptor,
+        ),  # flatMapEntry
+        "instance_in": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ImplementationElementInParameterInstanceRef,
+        ),  # instanceIn
+        "mc_data_access_details": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McDataAccessDetails,
+        ),  # mcDataAccessDetails
+        "mc_datas": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=RoleBasedMcDataAssignment,
+        ),  # mcDatas
+        "resulting": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDefProps,
+        ),  # resulting
+        "resulting_rpt_sw": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RptSwPrototypingAccess,
+        ),  # resultingRptSw
+        "role": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # role
+        "rpt_impl_policy": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RptImplPolicy,
+        ),  # rptImplPolicy
+        "sub_elements": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McDataInstance,
+        ),  # subElements
+        "symbol": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # symbol
+    }
 
     def __init__(self) -> None:
         """Initialize McDataInstance."""
@@ -72,34 +130,6 @@ class McDataInstance(Identifiable):
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.sub_elements: list[McDataInstance] = []
         self.symbol: Optional[SymbolString] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert McDataInstance to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McDataInstance":
-        """Create McDataInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McDataInstance instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to McDataInstance since parent returns ARObject
-        return cast("McDataInstance", obj)
 
 
 class McDataInstanceBuilder:

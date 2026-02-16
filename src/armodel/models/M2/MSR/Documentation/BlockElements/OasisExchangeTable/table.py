@@ -1,7 +1,9 @@
 """Table AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
@@ -19,18 +21,58 @@ class Table(Paginateable):
     """AUTOSAR Table."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("colsep", None, True, False, None),  # colsep
-        ("float", None, False, False, FloatEnum),  # float
-        ("frame", None, False, False, FrameEnum),  # frame
-        ("help_entry", None, True, False, None),  # helpEntry
-        ("orient", None, False, False, any (OrientEnum)),  # orient
-        ("pgwide", None, True, False, None),  # pgwide
-        ("rowsep", None, True, False, None),  # rowsep
-        ("table_caption", None, False, False, Caption),  # tableCaption
-        ("tabstyle", None, True, False, None),  # tabstyle
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "colsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # colsep
+        "float": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=FloatEnum,
+        ),  # float
+        "frame": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FrameEnum,
+        ),  # frame
+        "help_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # helpEntry
+        "orient": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (OrientEnum),
+        ),  # orient
+        "pgwide": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # pgwide
+        "rowsep": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # rowsep
+        "table_caption": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Caption,
+        ),  # tableCaption
+        "tabstyle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # tabstyle
+    }
 
     def __init__(self) -> None:
         """Initialize Table."""
@@ -44,34 +86,6 @@ class Table(Paginateable):
         self.rowsep: Optional[TableSeparatorString] = None
         self.table_caption: Optional[Caption] = None
         self.tabstyle: Optional[NameToken] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Table to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Table":
-        """Create Table from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Table instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Table since parent returns ARObject
-        return cast("Table", obj)
 
 
 class TableBuilder:

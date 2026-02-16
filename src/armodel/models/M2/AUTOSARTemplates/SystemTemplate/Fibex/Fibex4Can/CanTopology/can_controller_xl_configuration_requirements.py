@@ -1,7 +1,9 @@
 """CanControllerXlConfigurationRequirements AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -15,25 +17,91 @@ class CanControllerXlConfigurationRequirements(ARObject):
     """AUTOSAR CanControllerXlConfigurationRequirements."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("error_signaling", None, True, False, None),  # errorSignaling
-        ("max_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # maxNumberOfTimeQuantaPer
-        ("max_pwm_l", None, True, False, None),  # maxPwmL
-        ("max_pwm_o", None, True, False, None),  # maxPwmO
-        ("max_pwm_s", None, True, False, None),  # maxPwmS
-        ("max_sample", None, True, False, None),  # maxSample
-        ("max_sync_jump", None, True, False, None),  # maxSyncJump
-        ("max_trcv_delay", None, True, False, None),  # maxTrcvDelay
-        ("min_number_of_time_quanta_per", None, False, False, any (IntegerBit)),  # minNumberOfTimeQuantaPer
-        ("min_pwm_l", None, True, False, None),  # minPwmL
-        ("min_pwm_o", None, True, False, None),  # minPwmO
-        ("min_pwm_s", None, True, False, None),  # minPwmS
-        ("min_sample_point", None, True, False, None),  # minSamplePoint
-        ("min_sync_jump", None, True, False, None),  # minSyncJump
-        ("min_trcv_delay", None, True, False, None),  # minTrcvDelay
-        ("trcv_pwm_mode", None, True, False, None),  # trcvPwmMode
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "error_signaling": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # errorSignaling
+        "max_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # maxNumberOfTimeQuantaPer
+        "max_pwm_l": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxPwmL
+        "max_pwm_o": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxPwmO
+        "max_pwm_s": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxPwmS
+        "max_sample": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSample
+        "max_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxSyncJump
+        "max_trcv_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxTrcvDelay
+        "min_number_of_time_quanta_per": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (IntegerBit),
+        ),  # minNumberOfTimeQuantaPer
+        "min_pwm_l": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minPwmL
+        "min_pwm_o": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minPwmO
+        "min_pwm_s": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minPwmS
+        "min_sample_point": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSamplePoint
+        "min_sync_jump": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minSyncJump
+        "min_trcv_delay": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # minTrcvDelay
+        "trcv_pwm_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # trcvPwmMode
+    }
 
     def __init__(self) -> None:
         """Initialize CanControllerXlConfigurationRequirements."""
@@ -54,34 +122,6 @@ class CanControllerXlConfigurationRequirements(ARObject):
         self.min_sync_jump: Optional[Float] = None
         self.min_trcv_delay: Optional[TimeValue] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert CanControllerXlConfigurationRequirements to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfigurationRequirements":
-        """Create CanControllerXlConfigurationRequirements from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanControllerXlConfigurationRequirements instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to CanControllerXlConfigurationRequirements since parent returns ARObject
-        return cast("CanControllerXlConfigurationRequirements", obj)
 
 
 class CanControllerXlConfigurationRequirementsBuilder:

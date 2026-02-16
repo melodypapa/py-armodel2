@@ -1,7 +1,9 @@
 """ClientServerOperationBlueprintMapping AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
@@ -18,12 +20,27 @@ class ClientServerOperationBlueprintMapping(ARObject):
     """AUTOSAR ClientServerOperationBlueprintMapping."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("blueprint", None, False, False, DocumentationBlock),  # blueprint
-        ("bsw_module_entry", None, False, False, BswModuleEntry),  # bswModuleEntry
-        ("client_server", None, False, False, ClientServerOperation),  # clientServer
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "blueprint": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # blueprint
+        "bsw_module_entry": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=BswModuleEntry,
+        ),  # bswModuleEntry
+        "client_server": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=ClientServerOperation,
+        ),  # clientServer
+    }
 
     def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
@@ -31,34 +48,6 @@ class ClientServerOperationBlueprintMapping(ARObject):
         self.blueprint: Optional[DocumentationBlock] = None
         self.bsw_module_entry: BswModuleEntry = None
         self.client_server: ClientServerOperation = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert ClientServerOperationBlueprintMapping to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerOperationBlueprintMapping":
-        """Create ClientServerOperationBlueprintMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerOperationBlueprintMapping instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to ClientServerOperationBlueprintMapping since parent returns ARObject
-        return cast("ClientServerOperationBlueprintMapping", obj)
 
 
 class ClientServerOperationBlueprintMappingBuilder:

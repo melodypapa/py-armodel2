@@ -1,7 +1,9 @@
 """SwitchStreamGateEntry AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -14,43 +16,19 @@ class SwitchStreamGateEntry(Identifiable):
     """AUTOSAR SwitchStreamGateEntry."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("internal_priority", None, True, False, None),  # internalPriority
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "internal_priority": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # internalPriority
+    }
 
     def __init__(self) -> None:
         """Initialize SwitchStreamGateEntry."""
         super().__init__()
         self.internal_priority: Optional[PositiveInteger] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert SwitchStreamGateEntry to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchStreamGateEntry":
-        """Create SwitchStreamGateEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchStreamGateEntry instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to SwitchStreamGateEntry since parent returns ARObject
-        return cast("SwitchStreamGateEntry", obj)
 
 
 class SwitchStreamGateEntryBuilder:

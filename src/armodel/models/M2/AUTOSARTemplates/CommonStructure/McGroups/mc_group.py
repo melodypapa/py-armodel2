@@ -1,7 +1,9 @@
 """McGroup AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
@@ -20,13 +22,33 @@ class McGroup(ARElement):
     """AUTOSAR McGroup."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("mc_functions", None, False, True, McFunction),  # mcFunctions
-        ("ref_calprm_set", None, False, False, McGroupDataRefSet),  # refCalprmSet
-        ("ref", None, False, False, McGroupDataRefSet),  # ref
-        ("sub_groups", None, False, True, McGroup),  # subGroups
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "mc_functions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McFunction,
+        ),  # mcFunctions
+        "ref_calprm_set": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McGroupDataRefSet,
+        ),  # refCalprmSet
+        "ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=McGroupDataRefSet,
+        ),  # ref
+        "sub_groups": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=McGroup,
+        ),  # subGroups
+    }
 
     def __init__(self) -> None:
         """Initialize McGroup."""
@@ -35,34 +57,6 @@ class McGroup(ARElement):
         self.ref_calprm_set: Optional[McGroupDataRefSet] = None
         self.ref: Optional[McGroupDataRefSet] = None
         self.sub_groups: list[McGroup] = []
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert McGroup to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McGroup":
-        """Create McGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McGroup instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to McGroup since parent returns ARObject
-        return cast("McGroup", obj)
 
 
 class McGroupBuilder:

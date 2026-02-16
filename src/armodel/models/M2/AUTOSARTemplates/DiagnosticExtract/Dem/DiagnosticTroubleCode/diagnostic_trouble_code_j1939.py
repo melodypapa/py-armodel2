@@ -1,7 +1,9 @@
 """DiagnosticTroubleCodeJ1939 AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
     DiagnosticTroubleCode,
 )
@@ -14,20 +16,47 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
     DiagnosticJ1939Spn,
 )
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
+    DiagnosticTroubleCode,
+)
 
 
 class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeJ1939."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("dtc_props_props", None, False, False, DiagnosticTroubleCode),  # dtcPropsProps
-        ("fmi", None, True, False, None),  # fmi
-        ("kind", None, False, False, DiagnosticTroubleCode),  # kind
-        ("node", None, False, False, DiagnosticJ1939Node),  # node
-        ("spn", None, False, False, DiagnosticJ1939Spn),  # spn
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "dtc_props_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticTroubleCode,
+        ),  # dtcPropsProps
+        "fmi": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # fmi
+        "kind": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticTroubleCode,
+        ),  # kind
+        "node": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticJ1939Node,
+        ),  # node
+        "spn": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticJ1939Spn,
+        ),  # spn
+    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeJ1939."""
@@ -37,34 +66,6 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         self.kind: Optional[DiagnosticTroubleCode] = None
         self.node: Optional[DiagnosticJ1939Node] = None
         self.spn: Optional[DiagnosticJ1939Spn] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert DiagnosticTroubleCodeJ1939 to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeJ1939":
-        """Create DiagnosticTroubleCodeJ1939 from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTroubleCodeJ1939 instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to DiagnosticTroubleCodeJ1939 since parent returns ARObject
-        return cast("DiagnosticTroubleCodeJ1939", obj)
 
 
 class DiagnosticTroubleCodeJ1939Builder:

@@ -1,7 +1,9 @@
 """Ipv6Configuration AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint_address import (
     NetworkEndpointAddress,
 )
@@ -16,18 +18,56 @@ class Ipv6Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv6Configuration."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("assignment", None, True, False, None),  # assignment
-        ("default_router", None, True, False, None),  # defaultRouter
-        ("dns_servers", None, False, True, None),  # dnsServers
-        ("enable_anycast", None, True, False, None),  # enableAnycast
-        ("hop_count", None, True, False, None),  # hopCount
-        ("ip_address_keep_enum", None, False, False, IpAddressKeepEnum),  # ipAddressKeepEnum
-        ("ip_address_prefix", None, True, False, None),  # ipAddressPrefix
-        ("ipv6_address", None, True, False, None),  # ipv6Address
-        ("ipv6_address_source", None, False, False, Ipv6AddressSourceEnum),  # ipv6AddressSource
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "assignment": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # assignment
+        "default_router": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # defaultRouter
+        "dns_servers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+        ),  # dnsServers
+        "enable_anycast": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # enableAnycast
+        "hop_count": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # hopCount
+        "ip_address_keep_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=IpAddressKeepEnum,
+        ),  # ipAddressKeepEnum
+        "ip_address_prefix": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ipAddressPrefix
+        "ipv6_address": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # ipv6Address
+        "ipv6_address_source": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=Ipv6AddressSourceEnum,
+        ),  # ipv6AddressSource
+    }
 
     def __init__(self) -> None:
         """Initialize Ipv6Configuration."""
@@ -41,34 +81,6 @@ class Ipv6Configuration(NetworkEndpointAddress):
         self.ip_address_prefix: Optional[PositiveInteger] = None
         self.ipv6_address: Optional[Ip6AddressString] = None
         self.ipv6_address_source: Optional[Ipv6AddressSourceEnum] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert Ipv6Configuration to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv6Configuration":
-        """Create Ipv6Configuration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv6Configuration instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to Ipv6Configuration since parent returns ARObject
-        return cast("Ipv6Configuration", obj)
 
 
 class Ipv6ConfigurationBuilder:

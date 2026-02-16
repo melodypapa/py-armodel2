@@ -1,7 +1,9 @@
 """FlexrayTpConnectionControl AUTOSAR element."""
 
-from typing import Optional, cast
+from typing import Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization import XMLMember
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
@@ -15,21 +17,70 @@ class FlexrayTpConnectionControl(Identifiable):
     """AUTOSAR FlexrayTpConnectionControl."""
 
     # XML member definitions for this class only (not inherited from parent classes)
-    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
-    _xml_members = [
-        ("ack_type", None, False, False, FrArTpAckType),  # ackType
-        ("max_fc_wait", None, True, False, None),  # maxFcWait
-        ("max_number_of", None, True, False, None),  # maxNumberOf
-        ("max_retries", None, True, False, None),  # maxRetries
-        ("separation_cycle", None, True, False, None),  # separationCycle
-        ("time_br", None, True, False, None),  # timeBr
-        ("time_buffer", None, True, False, None),  # timeBuffer
-        ("time_cs", None, True, False, None),  # timeCs
-        ("timeout_ar", None, True, False, None),  # timeoutAr
-        ("timeout_as", None, True, False, None),  # timeoutAs
-        ("timeout_bs", None, True, False, None),  # timeoutBs
-        ("timeout_cr", None, True, False, None),  # timeoutCr
-    ]
+    # Format: dict[str, XMLMember] for declarative metadata
+    _xml_members: dict[str, "XMLMember"] = {
+        "ack_type": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FrArTpAckType,
+        ),  # ackType
+        "max_fc_wait": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxFcWait
+        "max_number_of": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxNumberOf
+        "max_retries": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # maxRetries
+        "separation_cycle": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # separationCycle
+        "time_br": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeBr
+        "time_buffer": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeBuffer
+        "time_cs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeCs
+        "timeout_ar": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutAr
+        "timeout_as": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutAs
+        "timeout_bs": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutBs
+        "timeout_cr": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # timeoutCr
+    }
 
     def __init__(self) -> None:
         """Initialize FlexrayTpConnectionControl."""
@@ -46,34 +97,6 @@ class FlexrayTpConnectionControl(Identifiable):
         self.timeout_as: Optional[TimeValue] = None
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
-
-    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
-        """Convert FlexrayTpConnectionControl to XML element.
-
-        Args:
-            namespace: XML namespace for the element
-            element: Optional existing element to add members to (for subclass chaining)
-
-        Returns:
-            XML element representing this object
-        """
-        # ARObject.serialize() handles entire class hierarchy automatically
-        return super().serialize(namespace, element)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayTpConnectionControl":
-        """Create FlexrayTpConnectionControl from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayTpConnectionControl instance
-        """
-        # ARObject.deserialize() handles entire class hierarchy automatically
-        obj = super().deserialize(element)
-        # Cast to FlexrayTpConnectionControl since parent returns ARObject
-        return cast("FlexrayTpConnectionControl", obj)
 
 
 class FlexrayTpConnectionControlBuilder:
