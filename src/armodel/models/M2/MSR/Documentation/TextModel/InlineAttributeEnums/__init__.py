@@ -1,1 +1,3 @@
-"""M2::MSR::Documentation::TextModel::InlineAttributeEnums"""
+"""InlineAttributeEnums module."""
+from .ext_id_class_enum import ExtIdClassEnum
+

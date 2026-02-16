@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::AgeConstraint"""
+"""AgeConstraint module."""
+from .age_constraint import AgeConstraint
+

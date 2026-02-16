@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionTimeConstraint"""
+"""ExecutionTimeConstraint module."""
+from .execution_time_constraint import ExecutionTimeConstraint
+

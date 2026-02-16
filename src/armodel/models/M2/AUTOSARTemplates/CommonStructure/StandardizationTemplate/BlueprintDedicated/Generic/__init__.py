@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintDedicated::Generic"""
+"""Generic module."""
+from .blueprint_mapping import BlueprintMapping
+

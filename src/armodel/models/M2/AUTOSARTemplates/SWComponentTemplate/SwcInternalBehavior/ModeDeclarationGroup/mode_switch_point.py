@@ -1,27 +1,41 @@
 """ModeSwitchPoint AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
+    AbstractAccessPoint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
-class ModeSwitchPoint(ARObject):
+class ModeSwitchPoint(AbstractAccessPoint):
     """AUTOSAR ModeSwitchPoint."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("mode_group_swc_instance_ref", None, False, False, ModeDeclarationGroup),  # modeGroupSwcInstanceRef
+    ]
 
     def __init__(self) -> None:
         """Initialize ModeSwitchPoint."""
         super().__init__()
+        self.mode_group_swc_instance_ref: Optional[ModeDeclarationGroup] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ModeSwitchPoint to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("MODESWITCHPOINT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeSwitchPoint":
@@ -33,9 +47,10 @@ class ModeSwitchPoint(ARObject):
         Returns:
             ModeSwitchPoint instance
         """
-        obj: ModeSwitchPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ModeSwitchPoint since parent returns ARObject
+        return cast("ModeSwitchPoint", obj)
 
 
 class ModeSwitchPointBuilder:

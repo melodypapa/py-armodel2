@@ -1,27 +1,41 @@
 """CompuScaleRationalFormula AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import (
+    CompuScaleContents,
+)
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import (
+    CompuRationalCoeffs,
+)
 
 
-class CompuScaleRationalFormula(ARObject):
+class CompuScaleRationalFormula(CompuScaleContents):
     """AUTOSAR CompuScaleRationalFormula."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("compu_rational_coeffs", None, False, False, CompuRationalCoeffs),  # compuRationalCoeffs
+    ]
 
     def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
+        self.compu_rational_coeffs: Optional[CompuRationalCoeffs] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CompuScaleRationalFormula to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COMPUSCALERATIONALFORMULA")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CompuScaleRationalFormula":
@@ -33,9 +47,10 @@ class CompuScaleRationalFormula(ARObject):
         Returns:
             CompuScaleRationalFormula instance
         """
-        obj: CompuScaleRationalFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CompuScaleRationalFormula since parent returns ARObject
+        return cast("CompuScaleRationalFormula", obj)
 
 
 class CompuScaleRationalFormulaBuilder:

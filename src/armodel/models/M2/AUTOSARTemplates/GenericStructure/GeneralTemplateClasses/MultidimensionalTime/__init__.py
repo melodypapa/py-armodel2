@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::MultidimensionalTime"""
+"""MultidimensionalTime module."""
+from .multidimensional_time import MultidimensionalTime
+

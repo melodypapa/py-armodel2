@@ -1,27 +1,41 @@
 """J1939SharedAddressCluster AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.j1939_cluster import (
+    J1939Cluster,
+)
 
 
-class J1939SharedAddressCluster(ARObject):
+class J1939SharedAddressCluster(Identifiable):
     """AUTOSAR J1939SharedAddressCluster."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("participatings", None, False, True, J1939Cluster),  # participatings
+    ]
 
     def __init__(self) -> None:
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
+        self.participatings: list[J1939Cluster] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert J1939SharedAddressCluster to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("J1939SHAREDADDRESSCLUSTER")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939SharedAddressCluster":
@@ -33,9 +47,10 @@ class J1939SharedAddressCluster(ARObject):
         Returns:
             J1939SharedAddressCluster instance
         """
-        obj: J1939SharedAddressCluster = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to J1939SharedAddressCluster since parent returns ARObject
+        return cast("J1939SharedAddressCluster", obj)
 
 
 class J1939SharedAddressClusterBuilder:

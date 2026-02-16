@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ttcan::TtcanCommunication"""
+"""TtcanCommunication module."""
+from .ttcan_absolutely_scheduled_timing import TtcanAbsolutelyScheduledTiming
+

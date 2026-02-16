@@ -1,27 +1,51 @@
 """DdsCpDomain AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_partition import (
+    DdsCpPartition,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_topic import (
+    DdsCpTopic,
+)
 
 
-class DdsCpDomain(ARObject):
+class DdsCpDomain(Identifiable):
     """AUTOSAR DdsCpDomain."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("dds_partitions", None, False, True, DdsCpPartition),  # ddsPartitions
+        ("dds_topics", None, False, True, DdsCpTopic),  # ddsTopics
+        ("domain_id", None, True, False, None),  # domainId
+    ]
 
     def __init__(self) -> None:
         """Initialize DdsCpDomain."""
         super().__init__()
+        self.dds_partitions: list[DdsCpPartition] = []
+        self.dds_topics: list[DdsCpTopic] = []
+        self.domain_id: Optional[PositiveInteger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DdsCpDomain to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DDSCPDOMAIN")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsCpDomain":
@@ -33,9 +57,10 @@ class DdsCpDomain(ARObject):
         Returns:
             DdsCpDomain instance
         """
-        obj: DdsCpDomain = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DdsCpDomain since parent returns ARObject
+        return cast("DdsCpDomain", obj)
 
 
 class DdsCpDomainBuilder:

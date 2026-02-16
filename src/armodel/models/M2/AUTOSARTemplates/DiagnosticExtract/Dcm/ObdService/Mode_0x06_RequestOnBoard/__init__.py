@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dcm::ObdService::Mode_0x06_RequestOnBoard"""
+"""Mode_0x06_RequestOnBoard module."""
+from .diagnostic_request_on_board_monitoring_test_results import DiagnosticRequestOnBoardMonitoringTestResults
+from .diagnostic_request_on_board_monitoring_test_results_class import DiagnosticRequestOnBoardMonitoringTestResultsClass
+

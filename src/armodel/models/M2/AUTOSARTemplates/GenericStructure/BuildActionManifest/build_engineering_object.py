@@ -1,27 +1,47 @@
 """BuildEngineeringObject AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
+    EngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    RegularExpression,
+    UriString,
+)
 
 
-class BuildEngineeringObject(ARObject):
+class BuildEngineeringObject(EngineeringObject):
     """AUTOSAR BuildEngineeringObject."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("file_type", None, True, False, None),  # fileType
+        ("file_type_pattern", None, True, False, None),  # fileTypePattern
+        ("intended", None, True, False, None),  # intended
+    ]
 
     def __init__(self) -> None:
         """Initialize BuildEngineeringObject."""
         super().__init__()
+        self.file_type: NameToken = None
+        self.file_type_pattern: RegularExpression = None
+        self.intended: Optional[UriString] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert BuildEngineeringObject to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("BUILDENGINEERINGOBJECT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BuildEngineeringObject":
@@ -33,9 +53,10 @@ class BuildEngineeringObject(ARObject):
         Returns:
             BuildEngineeringObject instance
         """
-        obj: BuildEngineeringObject = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to BuildEngineeringObject since parent returns ARObject
+        return cast("BuildEngineeringObject", obj)
 
 
 class BuildEngineeringObjectBuilder:

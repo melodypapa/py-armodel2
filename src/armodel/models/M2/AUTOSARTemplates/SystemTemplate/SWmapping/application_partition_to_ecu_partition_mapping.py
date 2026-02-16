@@ -1,27 +1,46 @@
 """ApplicationPartitionToEcuPartitionMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
+    ApplicationPartition,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_partition import (
+    EcuPartition,
+)
 
 
-class ApplicationPartitionToEcuPartitionMapping(ARObject):
+class ApplicationPartitionToEcuPartitionMapping(Identifiable):
     """AUTOSAR ApplicationPartitionToEcuPartitionMapping."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("applications", None, False, True, ApplicationPartition),  # applications
+        ("ecu_partition", None, False, False, EcuPartition),  # ecuPartition
+    ]
 
     def __init__(self) -> None:
         """Initialize ApplicationPartitionToEcuPartitionMapping."""
         super().__init__()
+        self.applications: list[ApplicationPartition] = []
+        self.ecu_partition: Optional[EcuPartition] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ApplicationPartitionToEcuPartitionMapping to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("APPLICATIONPARTITIONTOECUPARTITIONMAPPING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ApplicationPartitionToEcuPartitionMapping":
@@ -33,9 +52,10 @@ class ApplicationPartitionToEcuPartitionMapping(ARObject):
         Returns:
             ApplicationPartitionToEcuPartitionMapping instance
         """
-        obj: ApplicationPartitionToEcuPartitionMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ApplicationPartitionToEcuPartitionMapping since parent returns ARObject
+        return cast("ApplicationPartitionToEcuPartitionMapping", obj)
 
 
 class ApplicationPartitionToEcuPartitionMappingBuilder:
@@ -43,9 +63,7 @@ class ApplicationPartitionToEcuPartitionMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ApplicationPartitionToEcuPartitionMapping = (
-            ApplicationPartitionToEcuPartitionMapping()
-        )
+        self._obj: ApplicationPartitionToEcuPartitionMapping = ApplicationPartitionToEcuPartitionMapping()
 
     def build(self) -> ApplicationPartitionToEcuPartitionMapping:
         """Build and return ApplicationPartitionToEcuPartitionMapping object.

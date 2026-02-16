@@ -1,27 +1,46 @@
 """AssignFrameIdRange AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
+    LinConfigurationEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.frame_pid import (
+    FramePid,
+)
 
 
-class AssignFrameIdRange(ARObject):
+class AssignFrameIdRange(LinConfigurationEntry):
     """AUTOSAR AssignFrameIdRange."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("frame_pid", None, False, False, FramePid),  # framePid
+        ("start_index", None, True, False, None),  # startIndex
+    ]
 
     def __init__(self) -> None:
         """Initialize AssignFrameIdRange."""
         super().__init__()
+        self.frame_pid: FramePid = None
+        self.start_index: Optional[Integer] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert AssignFrameIdRange to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("ASSIGNFRAMEIDRANGE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AssignFrameIdRange":
@@ -33,9 +52,10 @@ class AssignFrameIdRange(ARObject):
         Returns:
             AssignFrameIdRange instance
         """
-        obj: AssignFrameIdRange = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to AssignFrameIdRange since parent returns ARObject
+        return cast("AssignFrameIdRange", obj)
 
 
 class AssignFrameIdRangeBuilder:

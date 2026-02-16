@@ -1,1 +1,8 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Fim"""
+"""Fim module."""
+from .diagnostic_fim_alias_event import DiagnosticFimAliasEvent
+from .diagnostic_function_identifier import DiagnosticFunctionIdentifier
+from .diagnostic_function_identifier_inhibit import DiagnosticFunctionIdentifierInhibit
+from .diagnostic_function_inhibit_source import DiagnosticFunctionInhibitSource
+from .diagnostic_fim_event_group import DiagnosticFimEventGroup
+from .diagnostic_fim_alias_event_group import DiagnosticFimAliasEventGroup
+

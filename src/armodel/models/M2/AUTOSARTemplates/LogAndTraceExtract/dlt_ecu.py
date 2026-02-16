@@ -1,27 +1,46 @@
 """DltEcu AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_application import (
+    DltApplication,
+)
 
 
-class DltEcu(ARObject):
+class DltEcu(ARElement):
     """AUTOSAR DltEcu."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("applications", None, False, True, DltApplication),  # applications
+        ("ecu_id", None, True, False, None),  # ecuId
+    ]
 
     def __init__(self) -> None:
         """Initialize DltEcu."""
         super().__init__()
+        self.applications: list[DltApplication] = []
+        self.ecu_id: Optional[String] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DltEcu to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DLTECU")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DltEcu":
@@ -33,9 +52,10 @@ class DltEcu(ARObject):
         Returns:
             DltEcu instance
         """
-        obj: DltEcu = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DltEcu since parent returns ARObject
+        return cast("DltEcu", obj)
 
 
 class DltEcuBuilder:

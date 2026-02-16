@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore"""
+"""FibexCore module."""
+from .fibex_element import FibexElement
+

@@ -1,27 +1,48 @@
 """TimingClockSyncAccuracy AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
+    TimingClock,
+)
 
 
-class TimingClockSyncAccuracy(ARObject):
+class TimingClockSyncAccuracy(Identifiable):
     """AUTOSAR TimingClockSyncAccuracy."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("accuracy", None, False, False, MultidimensionalTime),  # accuracy
+        ("lower", None, False, False, TimingClock),  # lower
+        ("upper", None, False, False, TimingClock),  # upper
+    ]
 
     def __init__(self) -> None:
         """Initialize TimingClockSyncAccuracy."""
         super().__init__()
+        self.accuracy: Optional[MultidimensionalTime] = None
+        self.lower: Optional[TimingClock] = None
+        self.upper: Optional[TimingClock] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TimingClockSyncAccuracy to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TIMINGCLOCKSYNCACCURACY")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimingClockSyncAccuracy":
@@ -33,9 +54,10 @@ class TimingClockSyncAccuracy(ARObject):
         Returns:
             TimingClockSyncAccuracy instance
         """
-        obj: TimingClockSyncAccuracy = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TimingClockSyncAccuracy since parent returns ARObject
+        return cast("TimingClockSyncAccuracy", obj)
 
 
 class TimingClockSyncAccuracyBuilder:

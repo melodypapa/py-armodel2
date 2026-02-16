@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::TcpOptionFilterSet"""
+"""TcpOptionFilterSet module."""
+from .tcp_option_filter_set import TcpOptionFilterSet
+from .tcp_option_filter_list import TcpOptionFilterList
+

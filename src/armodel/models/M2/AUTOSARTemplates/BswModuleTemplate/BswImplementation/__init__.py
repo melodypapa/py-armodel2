@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::BswModuleTemplate::BswImplementation"""
+"""BswImplementation module."""
+from .bsw_implementation import BswImplementation
+

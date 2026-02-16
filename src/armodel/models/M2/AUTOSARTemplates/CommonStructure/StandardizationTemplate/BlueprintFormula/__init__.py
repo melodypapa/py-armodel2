@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintFormula"""
+"""BlueprintFormula module."""
+from .blueprint_formula import BlueprintFormula
+

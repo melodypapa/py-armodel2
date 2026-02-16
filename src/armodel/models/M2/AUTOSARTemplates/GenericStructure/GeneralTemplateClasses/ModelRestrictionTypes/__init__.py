@@ -1,1 +1,5 @@
-"""M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ModelRestrictionTypes"""
+"""ModelRestrictionTypes module."""
+from .abstract_value_restriction import AbstractValueRestriction
+from .abstract_variation_restriction import AbstractVariationRestriction
+from .abstract_multiplicity_restriction import AbstractMultiplicityRestriction
+

@@ -1,1 +1,14 @@
-"""M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::SpecialDataDef"""
+"""SpecialDataDef module."""
+from .sdg_def import SdgDef
+from .sdg_element_with_gid import SdgElementWithGid
+from .sdg_class import SdgClass
+from .sdg_attribute import SdgAttribute
+from .sdg_abstract_primitive_attribute import SdgAbstractPrimitiveAttribute
+from .sdg_primitive_attribute import SdgPrimitiveAttribute
+from .sdg_primitive_attribute_with_variation import SdgPrimitiveAttributeWithVariation
+from .sdg_aggregation_with_variation import SdgAggregationWithVariation
+from .sdg_reference import SdgReference
+from .sdg_abstract_foreign_reference import SdgAbstractForeignReference
+from .sdg_foreign_reference import SdgForeignReference
+from .sdg_foreign_reference_with_variation import SdgForeignReferenceWithVariation
+

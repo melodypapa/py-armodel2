@@ -28,7 +28,12 @@ class TestGenerateModels:
     def test_create_directory_structure(self):
         """Test generating directory structure from package paths."""
         # Create directory structure
-        create_directory_structure(self.test_types, self.temp_dir)
+        package_data = {
+            "M2::Test::SubPackage": {
+                "attributes": []
+            }
+        }
+        create_directory_structure(self.test_types, self.temp_dir, package_data)
 
         # Verify directories were created
         assert (self.temp_dir / "M2").exists()

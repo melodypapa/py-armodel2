@@ -1,27 +1,46 @@
 """IEEE1722TpAcfLin AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
+    IEEE1722TpAcfBus,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
 
-class IEEE1722TpAcfLin(ARObject):
+class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfLin."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("base_frequency", None, True, False, None),  # baseFrequency
+        ("frame_sync_enabled", None, True, False, None),  # frameSyncEnabled
+        ("timestamp", None, True, False, None),  # timestamp
+    ]
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLin."""
         super().__init__()
+        self.base_frequency: Optional[PositiveInteger] = None
+        self.frame_sync_enabled: Optional[Boolean] = None
+        self.timestamp: Optional[PositiveInteger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert IEEE1722TpAcfLin to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("IEEE1722TPACFLIN")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfLin":
@@ -33,9 +52,10 @@ class IEEE1722TpAcfLin(ARObject):
         Returns:
             IEEE1722TpAcfLin instance
         """
-        obj: IEEE1722TpAcfLin = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to IEEE1722TpAcfLin since parent returns ARObject
+        return cast("IEEE1722TpAcfLin", obj)
 
 
 class IEEE1722TpAcfLinBuilder:

@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::Keyword"""
+"""Keyword module."""
+from .keyword import Keyword
+from .keyword_set import KeywordSet
+

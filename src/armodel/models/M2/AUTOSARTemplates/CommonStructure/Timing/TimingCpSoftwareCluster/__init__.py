@@ -1,1 +1,5 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingCpSoftwareCluster"""
+"""TimingCpSoftwareCluster module."""
+from .td_cp_software_cluster_mapping_set import TDCpSoftwareClusterMappingSet
+from .td_cp_software_cluster_mapping import TDCpSoftwareClusterMapping
+from .td_cp_software_cluster_resource_mapping import TDCpSoftwareClusterResourceMapping
+

@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::GenericStructure::ImpositionTimes"""
+"""ImpositionTimes module."""
+from .imposition_time import ImpositionTime
+

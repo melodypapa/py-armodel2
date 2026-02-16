@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SystemTemplate::GeneralPurposeConnection"""
+"""GeneralPurposeConnection module."""
+from .general_purpose_connection import GeneralPurposeConnection
+

@@ -1,1 +1,10 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::ServiceMapping"""
+"""ServiceMapping module."""
+from .diagnostic_service_data_mapping import DiagnosticServiceDataMapping
+from .diagnostic_parameter_element_access import DiagnosticParameterElementAccess
+from .diagnostic_service_mapping_diag_target import DiagnosticServiceMappingDiagTarget
+from .diagnostic_service_sw_mapping import DiagnosticServiceSwMapping
+from .bsw_service_dependency_ident import BswServiceDependencyIdent
+from .diagnostic_security_event_reporting_mode_mapping import DiagnosticSecurityEventReportingModeMapping
+from .diagnostic_dem_provided_data_mapping import DiagnosticDemProvidedDataMapping
+from .diagnostic_fim_function_mapping import DiagnosticFimFunctionMapping
+

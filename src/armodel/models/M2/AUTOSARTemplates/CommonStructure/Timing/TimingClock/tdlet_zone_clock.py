@@ -1,27 +1,43 @@
 """TDLETZoneClock AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
+    TimingClock,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
 
-class TDLETZoneClock(ARObject):
+class TDLETZoneClock(TimingClock):
     """AUTOSAR TDLETZoneClock."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("accuracy_ext", None, False, False, MultidimensionalTime),  # accuracyExt
+        ("accuracy_int", None, False, False, MultidimensionalTime),  # accuracyInt
+    ]
 
     def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()
+        self.accuracy_ext: Optional[MultidimensionalTime] = None
+        self.accuracy_int: Optional[MultidimensionalTime] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TDLETZoneClock to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TDLETZONECLOCK")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDLETZoneClock":
@@ -33,9 +49,10 @@ class TDLETZoneClock(ARObject):
         Returns:
             TDLETZoneClock instance
         """
-        obj: TDLETZoneClock = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TDLETZoneClock since parent returns ARObject
+        return cast("TDLETZoneClock", obj)
 
 
 class TDLETZoneClockBuilder:

@@ -1,27 +1,41 @@
 """LogAndTraceMessageCollectionSet AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
+    DltMessage,
+)
 
 
-class LogAndTraceMessageCollectionSet(ARObject):
+class LogAndTraceMessageCollectionSet(ARElement):
     """AUTOSAR LogAndTraceMessageCollectionSet."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("dlt_messages", None, False, True, DltMessage),  # dltMessages
+    ]
 
     def __init__(self) -> None:
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()
+        self.dlt_messages: list[DltMessage] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert LogAndTraceMessageCollectionSet to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("LOGANDTRACEMESSAGECOLLECTIONSET")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LogAndTraceMessageCollectionSet":
@@ -33,9 +47,10 @@ class LogAndTraceMessageCollectionSet(ARObject):
         Returns:
             LogAndTraceMessageCollectionSet instance
         """
-        obj: LogAndTraceMessageCollectionSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to LogAndTraceMessageCollectionSet since parent returns ARObject
+        return cast("LogAndTraceMessageCollectionSet", obj)
 
 
 class LogAndTraceMessageCollectionSetBuilder:

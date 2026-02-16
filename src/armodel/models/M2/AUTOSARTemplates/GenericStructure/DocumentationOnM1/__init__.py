@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::GenericStructure::DocumentationOnM1"""
+"""DocumentationOnM1 module."""
+from .documentation import Documentation
+from .documentation_context import DocumentationContext
+

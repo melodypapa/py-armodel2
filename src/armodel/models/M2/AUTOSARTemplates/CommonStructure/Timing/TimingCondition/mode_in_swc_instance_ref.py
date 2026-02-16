@@ -1,27 +1,56 @@
 """ModeInSwcInstanceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
 
 
 class ModeInSwcInstanceRef(ARObject):
     """AUTOSAR ModeInSwcInstanceRef."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("base", None, False, False, SwComponentType),  # base
+        ("contexts", None, False, True, any (SwComponent)),  # contexts
+        ("context_mode", None, False, False, ModeDeclarationGroup),  # contextMode
+        ("context_port", None, False, False, PortPrototype),  # contextPort
+        ("target_mode", None, False, False, ModeDeclaration),  # targetMode
+    ]
+
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()
+        self.base: Optional[SwComponentType] = None
+        self.contexts: list[Any] = []
+        self.context_mode: Optional[ModeDeclarationGroup] = None
+        self.context_port: Optional[PortPrototype] = None
+        self.target_mode: Optional[ModeDeclaration] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ModeInSwcInstanceRef to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("MODEINSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeInSwcInstanceRef":
@@ -33,9 +62,10 @@ class ModeInSwcInstanceRef(ARObject):
         Returns:
             ModeInSwcInstanceRef instance
         """
-        obj: ModeInSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ModeInSwcInstanceRef since parent returns ARObject
+        return cast("ModeInSwcInstanceRef", obj)
 
 
 class ModeInSwcInstanceRefBuilder:

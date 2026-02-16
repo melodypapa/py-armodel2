@@ -1,27 +1,46 @@
 """SpecificationDocumentScope AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.spec_element_reference import (
+    SpecElementReference,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchange.document_element_scope import (
+    DocumentElementScope,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.documentation import (
+    Documentation,
+)
 
 
-class SpecificationDocumentScope(ARObject):
+class SpecificationDocumentScope(SpecElementReference):
     """AUTOSAR SpecificationDocumentScope."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("custom_documentation", None, False, False, Documentation),  # customDocumentation
+        ("documents", None, False, True, DocumentElementScope),  # documents
+    ]
 
     def __init__(self) -> None:
         """Initialize SpecificationDocumentScope."""
         super().__init__()
+        self.custom_documentation: Optional[Documentation] = None
+        self.documents: list[DocumentElementScope] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SpecificationDocumentScope to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SPECIFICATIONDOCUMENTSCOPE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SpecificationDocumentScope":
@@ -33,9 +52,10 @@ class SpecificationDocumentScope(ARObject):
         Returns:
             SpecificationDocumentScope instance
         """
-        obj: SpecificationDocumentScope = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SpecificationDocumentScope since parent returns ARObject
+        return cast("SpecificationDocumentScope", obj)
 
 
 class SpecificationDocumentScopeBuilder:

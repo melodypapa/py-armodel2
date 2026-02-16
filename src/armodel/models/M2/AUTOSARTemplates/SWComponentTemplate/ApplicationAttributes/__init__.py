@@ -1,1 +1,12 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes"""
+"""ApplicationAttributes module."""
+from .sender_receiver_annotation import SenderReceiverAnnotation
+from .sender_annotation import SenderAnnotation
+from .receiver_annotation import ReceiverAnnotation
+from .client_server_annotation import ClientServerAnnotation
+from .io_hw_abstraction_server_annotation import IoHwAbstractionServerAnnotation
+from .parameter_port_annotation import ParameterPortAnnotation
+from .mode_port_annotation import ModePortAnnotation
+from .trigger_port_annotation import TriggerPortAnnotation
+from .nv_data_port_annotation import NvDataPortAnnotation
+from .delegated_port_annotation import DelegatedPortAnnotation
+

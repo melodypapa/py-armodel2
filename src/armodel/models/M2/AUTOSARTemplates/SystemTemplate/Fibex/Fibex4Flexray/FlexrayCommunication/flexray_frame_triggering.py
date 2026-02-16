@@ -1,27 +1,51 @@
 """FlexrayFrameTriggering AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayCommunication.flexray_absolutely_scheduled_timing import (
+    FlexrayAbsolutelyScheduledTiming,
+)
 
 
-class FlexrayFrameTriggering(ARObject):
+class FlexrayFrameTriggering(FrameTriggering):
     """AUTOSAR FlexrayFrameTriggering."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("absolutelies", None, False, True, FlexrayAbsolutelyScheduledTiming),  # absolutelies
+        ("allow_dynamic", None, True, False, None),  # allowDynamic
+        ("message_id", None, True, False, None),  # messageId
+        ("payload_preamble", None, False, False, any (BooleanIndicator)),  # payloadPreamble
+    ]
 
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()
+        self.absolutelies: list[FlexrayAbsolutelyScheduledTiming] = []
+        self.allow_dynamic: Optional[Boolean] = None
+        self.message_id: Optional[PositiveInteger] = None
+        self.payload_preamble: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert FlexrayFrameTriggering to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("FLEXRAYFRAMETRIGGERING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayFrameTriggering":
@@ -33,9 +57,10 @@ class FlexrayFrameTriggering(ARObject):
         Returns:
             FlexrayFrameTriggering instance
         """
-        obj: FlexrayFrameTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to FlexrayFrameTriggering since parent returns ARObject
+        return cast("FlexrayFrameTriggering", obj)
 
 
 class FlexrayFrameTriggeringBuilder:

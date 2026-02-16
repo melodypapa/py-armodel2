@@ -1,27 +1,51 @@
 """ApplicationInterface AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.ApplicationDesign.PortInterface.field import (
+    Field,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
 
-class ApplicationInterface(ARObject):
+class ApplicationInterface(PortInterface):
     """AUTOSAR ApplicationInterface."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("attributes", None, False, True, Field),  # attributes
+        ("commands", None, False, True, ClientServerOperation),  # commands
+        ("indications", None, False, True, VariableDataPrototype),  # indications
+    ]
 
     def __init__(self) -> None:
         """Initialize ApplicationInterface."""
         super().__init__()
+        self.attributes: list[Field] = []
+        self.commands: list[ClientServerOperation] = []
+        self.indications: list[VariableDataPrototype] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ApplicationInterface to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("APPLICATIONINTERFACE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ApplicationInterface":
@@ -33,9 +57,10 @@ class ApplicationInterface(ARObject):
         Returns:
             ApplicationInterface instance
         """
-        obj: ApplicationInterface = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ApplicationInterface since parent returns ARObject
+        return cast("ApplicationInterface", obj)
 
 
 class ApplicationInterfaceBuilder:

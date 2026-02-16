@@ -1,27 +1,45 @@
 """SimulatedExecutionTime AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
+    ExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
 
-class SimulatedExecutionTime(ARObject):
+class SimulatedExecutionTime(ExecutionTime):
     """AUTOSAR SimulatedExecutionTime."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("maximum_execution_time", None, False, False, MultidimensionalTime),  # maximumExecutionTime
+        ("minimum_execution_time", None, False, False, MultidimensionalTime),  # minimumExecutionTime
+        ("nominal_execution_time", None, False, False, MultidimensionalTime),  # nominalExecutionTime
+    ]
 
     def __init__(self) -> None:
         """Initialize SimulatedExecutionTime."""
         super().__init__()
+        self.maximum_execution_time: Optional[MultidimensionalTime] = None
+        self.minimum_execution_time: Optional[MultidimensionalTime] = None
+        self.nominal_execution_time: Optional[MultidimensionalTime] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SimulatedExecutionTime to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SIMULATEDEXECUTIONTIME")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SimulatedExecutionTime":
@@ -33,9 +51,10 @@ class SimulatedExecutionTime(ARObject):
         Returns:
             SimulatedExecutionTime instance
         """
-        obj: SimulatedExecutionTime = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SimulatedExecutionTime since parent returns ARObject
+        return cast("SimulatedExecutionTime", obj)
 
 
 class SimulatedExecutionTimeBuilder:

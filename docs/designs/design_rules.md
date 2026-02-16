@@ -68,3 +68,9 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_029**: No hardcoded values (use config where appropriate)
 - **DESIGN_RULE_030**: Follow PEP 8 style guide
 - **DESIGN_RULE_031**: Maximum line length 100 characters
+- **DESIGN_RULE_040**: All import statements must be defined at the beginning of the file
+- **DESIGN_RULE_041**: Use full names for import statements to avoid circular import issues
+  - When importing from the same package, use relative imports (e.g., `from .module import Class`)
+  - When importing from different packages, use full absolute imports (e.g., `from armodel.models.M2.AUTOSARTemplates.Package.module import Class`)
+  - Avoid wildcard imports (`from module import *`)
+  - Prefer explicit imports over `__init__.py` re-exports when possible to clarify dependencies

@@ -1,27 +1,46 @@
 """LabeledList AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.indent_sample import (
+    IndentSample,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_item import (
+    LabeledItem,
+)
 
 
-class LabeledList(ARObject):
+class LabeledList(Paginateable):
     """AUTOSAR LabeledList."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("indent_sample", None, False, False, IndentSample),  # indentSample
+        ("labeled_item_label", None, False, False, LabeledItem),  # labeledItemLabel
+    ]
 
     def __init__(self) -> None:
         """Initialize LabeledList."""
         super().__init__()
+        self.indent_sample: Optional[IndentSample] = None
+        self.labeled_item_label: LabeledItem = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert LabeledList to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("LABELEDLIST")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LabeledList":
@@ -33,9 +52,10 @@ class LabeledList(ARObject):
         Returns:
             LabeledList instance
         """
-        obj: LabeledList = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to LabeledList since parent returns ARObject
+        return cast("LabeledList", obj)
 
 
 class LabeledListBuilder:

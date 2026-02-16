@@ -1,27 +1,38 @@
 """BswAsynchronousServerCallResultPoint AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
+    BswModuleCallPoint,
+)
 
 
-class BswAsynchronousServerCallResultPoint(ARObject):
+class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
     """AUTOSAR BswAsynchronousServerCallResultPoint."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("asynchronous", None, False, False, any (BswAsynchronous)),  # asynchronous
+    ]
 
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
+        self.asynchronous: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert BswAsynchronousServerCallResultPoint to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("BSWASYNCHRONOUSSERVERCALLRESULTPOINT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallResultPoint":
@@ -33,9 +44,10 @@ class BswAsynchronousServerCallResultPoint(ARObject):
         Returns:
             BswAsynchronousServerCallResultPoint instance
         """
-        obj: BswAsynchronousServerCallResultPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to BswAsynchronousServerCallResultPoint since parent returns ARObject
+        return cast("BswAsynchronousServerCallResultPoint", obj)
 
 
 class BswAsynchronousServerCallResultPointBuilder:

@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticMapping::FimMapping"""
+"""FimMapping module."""
+from .diagnostic_inhibit_source_event_mapping import DiagnosticInhibitSourceEventMapping
+from .diagnostic_fim_alias_event_group_mapping import DiagnosticFimAliasEventGroupMapping
+

@@ -58,6 +58,31 @@ Manage AUTOSAR project requirements with traceability.
 /req search parser
 ```
 
+### `/gen-class` - Class Generator for AUTOSAR Models
+Generate Python classes from AUTOSAR ARXML files based on M2 model definitions with proper type handling and inheritance.
+
+**Usage:**
+```
+/gen-class                    # Run full workflow with defaults
+/gen-class --arxml-file demos/arxml/CustomTypes.arxml
+/gen-class --dry-run          # Analysis only, no code changes
+/gen-class --update-only      # Update code based on existing report
+```
+
+**Workflow Phases:**
+1. **Analysis Phase**: Analyze ARXML files, collect class hierarchy information, create documentation
+2. **Update Phase**: Update class inheritance chains, verify class members/attributes with proper AUTOSAR type aliases
+
+**Output:**
+- Documentation report: `docs/reports/class-todo-items.md`
+- Updated class files with correct inheritance
+- Summary report of changes
+
+**Key Features:**
+- Uses AUTOSAR type aliases (Identifier, CategoryString, String, etc.) instead of raw Python types for better semantics
+- All initial values are `None` or `[]` (never `""`, `0`, or `False`)
+- Proper list handling with `list[Type]` not `Optional[list[Type]]`
+
 ## Creating New Commands
 
 To create a new slash command:

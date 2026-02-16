@@ -1,27 +1,53 @@
 """SecurityEventFilterChain AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
+    IdsCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_one_every_n_filter import (
+    SecurityEventOneEveryNFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_state_filter import (
+    SecurityEventStateFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_threshold_filter import (
+    SecurityEventThresholdFilter,
+)
 
 
-class SecurityEventFilterChain(ARObject):
+class SecurityEventFilterChain(IdsCommonElement):
     """AUTOSAR SecurityEventFilterChain."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("aggregation", None, False, False, any (SecurityEvent)),  # aggregation
+        ("one_every_n", None, False, False, SecurityEventOneEveryNFilter),  # oneEveryN
+        ("state", None, False, False, SecurityEventStateFilter),  # state
+        ("threshold", None, False, False, SecurityEventThresholdFilter),  # threshold
+    ]
 
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""
         super().__init__()
+        self.aggregation: Optional[Any] = None
+        self.one_every_n: Optional[SecurityEventOneEveryNFilter] = None
+        self.state: Optional[SecurityEventStateFilter] = None
+        self.threshold: Optional[SecurityEventThresholdFilter] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SecurityEventFilterChain to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SECURITYEVENTFILTERCHAIN")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SecurityEventFilterChain":
@@ -33,9 +59,10 @@ class SecurityEventFilterChain(ARObject):
         Returns:
             SecurityEventFilterChain instance
         """
-        obj: SecurityEventFilterChain = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SecurityEventFilterChain since parent returns ARObject
+        return cast("SecurityEventFilterChain", obj)
 
 
 class SecurityEventFilterChainBuilder:

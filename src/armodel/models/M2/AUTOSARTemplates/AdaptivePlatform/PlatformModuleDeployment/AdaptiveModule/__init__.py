@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::AdaptivePlatform::PlatformModuleDeployment::AdaptiveModule"""
+"""AdaptiveModule module."""
+from .platform_module_ethernet_endpoint_configuration import PlatformModuleEthernetEndpointConfiguration
+

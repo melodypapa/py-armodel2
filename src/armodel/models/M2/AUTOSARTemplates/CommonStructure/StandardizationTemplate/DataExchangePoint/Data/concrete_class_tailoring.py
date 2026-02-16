@@ -1,27 +1,41 @@
 """ConcreteClassTailoring AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
+    DataFormatElementScope,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
 
-class ConcreteClassTailoring(ARObject):
+class ConcreteClassTailoring(DataFormatElementScope):
     """AUTOSAR ConcreteClassTailoring."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("validation_root", None, True, False, None),  # validationRoot
+    ]
 
     def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()
+        self.validation_root: Optional[Boolean] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ConcreteClassTailoring to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("CONCRETECLASSTAILORING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConcreteClassTailoring":
@@ -33,9 +47,10 @@ class ConcreteClassTailoring(ARObject):
         Returns:
             ConcreteClassTailoring instance
         """
-        obj: ConcreteClassTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ConcreteClassTailoring since parent returns ARObject
+        return cast("ConcreteClassTailoring", obj)
 
 
 class ConcreteClassTailoringBuilder:

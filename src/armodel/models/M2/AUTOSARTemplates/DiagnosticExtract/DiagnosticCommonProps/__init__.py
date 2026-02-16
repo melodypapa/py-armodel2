@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticCommonProps"""
+"""DiagnosticCommonProps module."""
+from .diagnostic_common_props import DiagnosticCommonProps
+

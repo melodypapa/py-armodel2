@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::AdaptivePlatform::ApplicationDesign::PortInterface"""
+"""PortInterface module."""
+from .field import Field
+

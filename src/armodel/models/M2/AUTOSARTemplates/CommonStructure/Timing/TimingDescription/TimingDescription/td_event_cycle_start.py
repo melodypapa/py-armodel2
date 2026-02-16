@@ -1,27 +1,42 @@
 """TDEventCycleStart AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
+    TDEventCom,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
 
-class TDEventCycleStart(ARObject):
+class TDEventCycleStart(TDEventCom):
     """AUTOSAR TDEventCycleStart."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("cycle_repetition", None, True, False, None),  # cycleRepetition
+    ]
 
     def __init__(self) -> None:
         """Initialize TDEventCycleStart."""
         super().__init__()
+        self.cycle_repetition: Optional[Integer] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TDEventCycleStart to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TDEVENTCYCLESTART")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventCycleStart":
@@ -33,9 +48,10 @@ class TDEventCycleStart(ARObject):
         Returns:
             TDEventCycleStart instance
         """
-        obj: TDEventCycleStart = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TDEventCycleStart since parent returns ARObject
+        return cast("TDEventCycleStart", obj)
 
 
 class TDEventCycleStartBuilder:

@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::CommonStructure::ResourceConsumption::MemorySectionUsage"""
+"""MemorySectionUsage module."""
+from .memory_section import MemorySection
+from .section_name_prefix import SectionNamePrefix
+

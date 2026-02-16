@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticAging"""
+"""DiagnosticAging module."""
+from .diagnostic_aging import DiagnosticAging
+

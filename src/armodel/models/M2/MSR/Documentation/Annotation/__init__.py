@@ -1,1 +1,3 @@
-"""M2::MSR::Documentation::Annotation"""
+"""Annotation module."""
+from .annotation import Annotation
+

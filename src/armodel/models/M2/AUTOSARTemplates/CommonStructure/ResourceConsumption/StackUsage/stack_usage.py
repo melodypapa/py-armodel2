@@ -1,27 +1,57 @@
 """StackUsage AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
+    ExecutableEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.hardware_configuration import (
+    HardwareConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.software_context import (
+    SoftwareContext,
+)
 
 
-class StackUsage(ARObject):
+class StackUsage(Identifiable):
     """AUTOSAR StackUsage."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("executable_entity", None, False, False, ExecutableEntity),  # executableEntity
+        ("hardware", None, False, False, HardwareConfiguration),  # hardware
+        ("hw_element", None, False, False, HwElement),  # hwElement
+        ("software_context", None, False, False, SoftwareContext),  # softwareContext
+    ]
 
     def __init__(self) -> None:
         """Initialize StackUsage."""
         super().__init__()
+        self.executable_entity: Optional[ExecutableEntity] = None
+        self.hardware: Optional[HardwareConfiguration] = None
+        self.hw_element: Optional[HwElement] = None
+        self.software_context: Optional[SoftwareContext] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert StackUsage to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("STACKUSAGE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StackUsage":
@@ -33,9 +63,10 @@ class StackUsage(ARObject):
         Returns:
             StackUsage instance
         """
-        obj: StackUsage = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to StackUsage since parent returns ARObject
+        return cast("StackUsage", obj)
 
 
 class StackUsageBuilder:

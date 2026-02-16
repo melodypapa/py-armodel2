@@ -1,1 +1,5 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ReadDataByPeriodicID"""
+"""ReadDataByPeriodicID module."""
+from .diagnostic_read_data_by_periodic_id import DiagnosticReadDataByPeriodicID
+from .diagnostic_read_data_by_periodic_id_class import DiagnosticReadDataByPeriodicIDClass
+from .diagnostic_periodic_rate import DiagnosticPeriodicRate
+

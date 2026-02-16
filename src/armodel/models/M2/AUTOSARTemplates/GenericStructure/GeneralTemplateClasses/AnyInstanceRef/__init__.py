@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::AnyInstanceRef"""
+"""AnyInstanceRef module."""
+from .any_instance_ref import AnyInstanceRef
+

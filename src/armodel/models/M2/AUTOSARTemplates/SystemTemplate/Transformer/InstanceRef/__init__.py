@@ -1,1 +1,6 @@
-"""M2::AUTOSARTemplates::SystemTemplate::Transformer::InstanceRef"""
+"""InstanceRef module."""
+from .data_prototype_in_sender_receiver_interface_instance_ref import DataPrototypeInSenderReceiverInterfaceInstanceRef
+from .data_prototype_in_client_server_interface_instance_ref import DataPrototypeInClientServerInterfaceInstanceRef
+from .implementation_data_type_element_in_port_interface_ref import ImplementationDataTypeElementInPortInterfaceRef
+from .data_prototype_in_port_interface_instance_ref import DataPrototypeInPortInterfaceInstanceRef
+

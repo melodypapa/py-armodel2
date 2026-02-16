@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::Blueprint"""
+"""Blueprint module."""
+from .consistency_needs_blueprint_set import ConsistencyNeedsBlueprintSet
+

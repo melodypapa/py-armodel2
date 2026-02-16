@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SoftwareComponentDocumentation"""
+"""SoftwareComponentDocumentation module."""
+from .sw_component_documentation import SwComponentDocumentation
+

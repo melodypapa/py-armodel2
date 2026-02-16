@@ -1,1 +1,5 @@
-"""M2::MSR::Documentation::BlockElements::RequirementsTracing"""
+"""RequirementsTracing module."""
+from .structured_req import StructuredReq
+from .traceable_text import TraceableText
+from .traceable import Traceable
+

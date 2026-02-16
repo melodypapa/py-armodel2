@@ -1,27 +1,53 @@
 """DiagnosticServiceDataMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
 
-class DiagnosticServiceDataMapping(ARObject):
+class DiagnosticServiceDataMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticServiceDataMapping."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("diagnostic_data", None, False, False, DiagnosticDataElement),  # diagnosticData
+        ("diagnostic", None, False, False, DiagnosticParameter),  # diagnostic
+        ("mapped_data", None, False, False, DataPrototype),  # mappedData
+        ("parameter", None, False, False, DiagnosticParameter),  # parameter
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()
+        self.diagnostic_data: Optional[DiagnosticDataElement] = None
+        self.diagnostic: Optional[DiagnosticParameter] = None
+        self.mapped_data: Optional[DataPrototype] = None
+        self.parameter: Optional[DiagnosticParameter] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticServiceDataMapping to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICSERVICEDATAMAPPING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticServiceDataMapping":
@@ -33,9 +59,10 @@ class DiagnosticServiceDataMapping(ARObject):
         Returns:
             DiagnosticServiceDataMapping instance
         """
-        obj: DiagnosticServiceDataMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticServiceDataMapping since parent returns ARObject
+        return cast("DiagnosticServiceDataMapping", obj)
 
 
 class DiagnosticServiceDataMappingBuilder:

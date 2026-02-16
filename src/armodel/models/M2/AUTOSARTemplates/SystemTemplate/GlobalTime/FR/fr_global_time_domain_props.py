@@ -1,27 +1,43 @@
 """FrGlobalTimeDomainProps AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
+    AbstractGlobalTimeDomainProps,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
-class FrGlobalTimeDomainProps(ARObject):
+class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR FrGlobalTimeDomainProps."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("ofs_data_id_list", None, True, False, None),  # ofsDataIDList
+        ("sync_data_id_list", None, True, False, None),  # syncDataIDList
+    ]
 
     def __init__(self) -> None:
         """Initialize FrGlobalTimeDomainProps."""
         super().__init__()
+        self.ofs_data_id_list: PositiveInteger = None
+        self.sync_data_id_list: PositiveInteger = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert FrGlobalTimeDomainProps to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("FRGLOBALTIMEDOMAINPROPS")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FrGlobalTimeDomainProps":
@@ -33,9 +49,10 @@ class FrGlobalTimeDomainProps(ARObject):
         Returns:
             FrGlobalTimeDomainProps instance
         """
-        obj: FrGlobalTimeDomainProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to FrGlobalTimeDomainProps since parent returns ARObject
+        return cast("FrGlobalTimeDomainProps", obj)
 
 
 class FrGlobalTimeDomainPropsBuilder:

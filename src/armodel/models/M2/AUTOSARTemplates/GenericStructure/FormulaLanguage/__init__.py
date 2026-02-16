@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::GenericStructure::FormulaLanguage"""
+"""FormulaLanguage module."""
+from .formula_expression import FormulaExpression
+

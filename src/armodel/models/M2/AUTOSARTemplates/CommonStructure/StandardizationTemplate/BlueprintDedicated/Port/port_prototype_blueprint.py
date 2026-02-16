@@ -1,27 +1,56 @@
 """PortPrototypeBlueprint AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
+    PPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.BlueprintDedicated.Port.port_prototype_blueprint import (
+    PortPrototypeBlueprint,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
 
 
-class PortPrototypeBlueprint(ARObject):
+class PortPrototypeBlueprint(ARElement):
     """AUTOSAR PortPrototypeBlueprint."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("init_values", None, False, True, PortPrototypeBlueprint),  # initValues
+        ("interface", None, False, False, PortInterface),  # interface
+        ("provided_coms", None, False, True, PPortComSpec),  # providedComs
+        ("required_coms", None, False, True, RPortComSpec),  # requiredComs
+    ]
 
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
+        self.init_values: list[PortPrototypeBlueprint] = []
+        self.interface: PortInterface = None
+        self.provided_coms: list[PPortComSpec] = []
+        self.required_coms: list[RPortComSpec] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert PortPrototypeBlueprint to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("PORTPROTOTYPEBLUEPRINT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprint":
@@ -33,9 +62,10 @@ class PortPrototypeBlueprint(ARObject):
         Returns:
             PortPrototypeBlueprint instance
         """
-        obj: PortPrototypeBlueprint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to PortPrototypeBlueprint since parent returns ARObject
+        return cast("PortPrototypeBlueprint", obj)
 
 
 class PortPrototypeBlueprintBuilder:

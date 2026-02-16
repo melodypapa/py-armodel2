@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::PerInstanceMemory"""
+"""PerInstanceMemory module."""
+from .per_instance_memory import PerInstanceMemory
+

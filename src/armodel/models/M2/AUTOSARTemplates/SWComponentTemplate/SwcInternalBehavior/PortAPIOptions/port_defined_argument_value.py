@@ -1,27 +1,41 @@
 """PortDefinedArgumentValue AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
 
 class PortDefinedArgumentValue(ARObject):
     """AUTOSAR PortDefinedArgumentValue."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("value", None, False, False, ValueSpecification),  # value
+        ("value_type", None, False, False, any (ImplementationData)),  # valueType
+    ]
+
     def __init__(self) -> None:
         """Initialize PortDefinedArgumentValue."""
         super().__init__()
+        self.value: Optional[ValueSpecification] = None
+        self.value_type: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert PortDefinedArgumentValue to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("PORTDEFINEDARGUMENTVALUE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortDefinedArgumentValue":
@@ -33,9 +47,10 @@ class PortDefinedArgumentValue(ARObject):
         Returns:
             PortDefinedArgumentValue instance
         """
-        obj: PortDefinedArgumentValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to PortDefinedArgumentValue since parent returns ARObject
+        return cast("PortDefinedArgumentValue", obj)
 
 
 class PortDefinedArgumentValueBuilder:

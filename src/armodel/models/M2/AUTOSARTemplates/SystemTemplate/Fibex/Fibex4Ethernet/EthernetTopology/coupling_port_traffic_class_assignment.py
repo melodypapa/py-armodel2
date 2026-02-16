@@ -1,27 +1,43 @@
 """CouplingPortTrafficClassAssignment AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
-class CouplingPortTrafficClassAssignment(ARObject):
+class CouplingPortTrafficClassAssignment(Referrable):
     """AUTOSAR CouplingPortTrafficClassAssignment."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("priority", None, True, False, None),  # priority
+        ("traffic_class", None, True, False, None),  # trafficClass
+    ]
 
     def __init__(self) -> None:
         """Initialize CouplingPortTrafficClassAssignment."""
         super().__init__()
+        self.priority: PositiveInteger = None
+        self.traffic_class: Optional[PositiveInteger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CouplingPortTrafficClassAssignment to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COUPLINGPORTTRAFFICCLASSASSIGNMENT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortTrafficClassAssignment":
@@ -33,9 +49,10 @@ class CouplingPortTrafficClassAssignment(ARObject):
         Returns:
             CouplingPortTrafficClassAssignment instance
         """
-        obj: CouplingPortTrafficClassAssignment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CouplingPortTrafficClassAssignment since parent returns ARObject
+        return cast("CouplingPortTrafficClassAssignment", obj)
 
 
 class CouplingPortTrafficClassAssignmentBuilder:

@@ -1,27 +1,41 @@
 """SensorActuatorSwComponentType AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
+    HwDescriptionEntity,
+)
 
 
-class SensorActuatorSwComponentType(ARObject):
+class SensorActuatorSwComponentType(AtomicSwComponentType):
     """AUTOSAR SensorActuatorSwComponentType."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("sensor_actuator", None, False, False, HwDescriptionEntity),  # sensorActuator
+    ]
 
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
+        self.sensor_actuator: Optional[HwDescriptionEntity] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SensorActuatorSwComponentType to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SENSORACTUATORSWCOMPONENTTYPE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SensorActuatorSwComponentType":
@@ -33,9 +47,10 @@ class SensorActuatorSwComponentType(ARObject):
         Returns:
             SensorActuatorSwComponentType instance
         """
-        obj: SensorActuatorSwComponentType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SensorActuatorSwComponentType since parent returns ARObject
+        return cast("SensorActuatorSwComponentType", obj)
 
 
 class SensorActuatorSwComponentTypeBuilder:

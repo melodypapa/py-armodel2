@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::OffsetConstraint"""
+"""OffsetConstraint module."""
+from .offset_timing_constraint import OffsetTimingConstraint
+

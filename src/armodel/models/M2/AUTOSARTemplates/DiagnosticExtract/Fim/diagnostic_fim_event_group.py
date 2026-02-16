@@ -1,27 +1,41 @@
 """DiagnosticFimEventGroup AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
 
 
-class DiagnosticFimEventGroup(ARObject):
+class DiagnosticFimEventGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFimEventGroup."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("events", None, False, True, DiagnosticEvent),  # events
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticFimEventGroup."""
         super().__init__()
+        self.events: list[DiagnosticEvent] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticFimEventGroup to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICFIMEVENTGROUP")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticFimEventGroup":
@@ -33,9 +47,10 @@ class DiagnosticFimEventGroup(ARObject):
         Returns:
             DiagnosticFimEventGroup instance
         """
-        obj: DiagnosticFimEventGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticFimEventGroup since parent returns ARObject
+        return cast("DiagnosticFimEventGroup", obj)
 
 
 class DiagnosticFimEventGroupBuilder:

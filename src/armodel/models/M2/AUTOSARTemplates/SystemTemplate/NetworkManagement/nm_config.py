@@ -1,27 +1,51 @@
 """NmConfig AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import (
+    NmCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
+    NmClusterCoupling,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_ecu import (
+    NmEcu,
+)
 
 
-class NmConfig(ARObject):
+class NmConfig(FibexElement):
     """AUTOSAR NmConfig."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("nm_clusters", None, False, True, NmCluster),  # nmClusters
+        ("nm_cluster_couplings", None, False, True, NmClusterCoupling),  # nmClusterCouplings
+        ("nm_if_ecus", None, False, True, NmEcu),  # nmIfEcus
+    ]
 
     def __init__(self) -> None:
         """Initialize NmConfig."""
         super().__init__()
+        self.nm_clusters: list[NmCluster] = []
+        self.nm_cluster_couplings: list[NmClusterCoupling] = []
+        self.nm_if_ecus: list[NmEcu] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert NmConfig to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("NMCONFIG")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NmConfig":
@@ -33,9 +57,10 @@ class NmConfig(ARObject):
         Returns:
             NmConfig instance
         """
-        obj: NmConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to NmConfig since parent returns ARObject
+        return cast("NmConfig", obj)
 
 
 class NmConfigBuilder:

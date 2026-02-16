@@ -1,27 +1,39 @@
 """StreamFilterIEEE1722Tp AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveUnlimitedInteger,
+)
 
 
 class StreamFilterIEEE1722Tp(ARObject):
     """AUTOSAR StreamFilterIEEE1722Tp."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("stream_id", None, True, False, None),  # streamId
+    ]
+
     def __init__(self) -> None:
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
+        self.stream_id: Optional[PositiveUnlimitedInteger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert StreamFilterIEEE1722Tp to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("STREAMFILTERIEEE1722TP")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StreamFilterIEEE1722Tp":
@@ -33,9 +45,10 @@ class StreamFilterIEEE1722Tp(ARObject):
         Returns:
             StreamFilterIEEE1722Tp instance
         """
-        obj: StreamFilterIEEE1722Tp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to StreamFilterIEEE1722Tp since parent returns ARObject
+        return cast("StreamFilterIEEE1722Tp", obj)
 
 
 class StreamFilterIEEE1722TpBuilder:

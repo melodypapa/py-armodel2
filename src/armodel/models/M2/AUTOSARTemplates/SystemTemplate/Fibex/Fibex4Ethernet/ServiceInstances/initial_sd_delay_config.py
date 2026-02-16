@@ -1,27 +1,44 @@
 """InitialSdDelayConfig AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
 
 class InitialSdDelayConfig(ARObject):
     """AUTOSAR InitialSdDelayConfig."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("initial_delay_max", None, True, False, None),  # initialDelayMax
+        ("initial_delay_min", None, True, False, None),  # initialDelayMin
+        ("initial", None, True, False, None),  # initial
+    ]
+
     def __init__(self) -> None:
         """Initialize InitialSdDelayConfig."""
         super().__init__()
+        self.initial_delay_max: Optional[TimeValue] = None
+        self.initial_delay_min: Optional[TimeValue] = None
+        self.initial: Optional[PositiveInteger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert InitialSdDelayConfig to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("INITIALSDDELAYCONFIG")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "InitialSdDelayConfig":
@@ -33,9 +50,10 @@ class InitialSdDelayConfig(ARObject):
         Returns:
             InitialSdDelayConfig instance
         """
-        obj: InitialSdDelayConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to InitialSdDelayConfig since parent returns ARObject
+        return cast("InitialSdDelayConfig", obj)
 
 
 class InitialSdDelayConfigBuilder:

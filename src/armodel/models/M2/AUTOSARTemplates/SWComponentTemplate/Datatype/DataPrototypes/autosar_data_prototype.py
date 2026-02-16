@@ -1,27 +1,42 @@
 """AutosarDataPrototype AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
+    AutosarDataType,
+)
 
 
-class AutosarDataPrototype(ARObject):
+class AutosarDataPrototype(DataPrototype):
     """AUTOSAR AutosarDataPrototype."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("type", None, False, False, AutosarDataType),  # type
+    ]
 
     def __init__(self) -> None:
         """Initialize AutosarDataPrototype."""
         super().__init__()
+        self.type: Optional[AutosarDataType] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert AutosarDataPrototype to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("AUTOSARDATAPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AutosarDataPrototype":
@@ -33,9 +48,10 @@ class AutosarDataPrototype(ARObject):
         Returns:
             AutosarDataPrototype instance
         """
-        obj: AutosarDataPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to AutosarDataPrototype since parent returns ARObject
+        return cast("AutosarDataPrototype", obj)
 
 
 class AutosarDataPrototypeBuilder:

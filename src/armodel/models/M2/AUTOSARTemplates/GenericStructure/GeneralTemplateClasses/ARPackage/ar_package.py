@@ -1,76 +1,51 @@
 """ARPackage AUTOSAR element."""
 
-from typing import Any
-
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collectable_element import (
+    CollectableElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+    ARPackage,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
+    PackageableElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.reference_base import (
+    ReferenceBase,
+)
 
 
-class ARPackage(ARObject):
+class ARPackage(CollectableElement):
     """AUTOSAR ARPackage."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("ar_packages", None, False, True, ARPackage),  # arPackages
+        ("elements", None, False, True, PackageableElement),  # elements
+        ("reference_bases", None, False, True, ReferenceBase),  # referenceBases
+    ]
 
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
-        self.short_name: str = ""
-        self.long_name: str = ""
-        self.category: str = ""
-        self.reference_bases: list[Any] = []
-        self.elements: list[Any] = []
-        self.ar_packages: list[Any] = []
+        self.ar_packages: list[ARPackage] = []
+        self.elements: list[PackageableElement] = []
+        self.reference_bases: list[ReferenceBase] = []
 
-    def serialize(self, namespace: str = "http://autosar.org/schema/r4.0") -> ET.Element:
-        """Convert ARPackage to XML element with proper namespace handling.
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
+        """Convert ARPackage to XML element.
 
         Args:
-            namespace: XML namespace URI to use for elements
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element(f"{{{namespace}}}AR-PACKAGE")
-
-        # SHORT-NAME
-        if self.short_name:
-            short_name_elem = ET.SubElement(element, f"{{{namespace}}}SHORT-NAME")
-            short_name_elem.text = self.short_name
-
-        # LONG-NAME
-        if self.long_name:
-            long_name_elem = ET.SubElement(element, f"{{{namespace}}}LONG-NAME")
-            l4_elem = ET.SubElement(long_name_elem, f"{{{namespace}}}L-4")
-            l4_elem.set("L", "EN")
-            l4_elem.text = self.long_name
-
-        # CATEGORY
-        if self.category:
-            category_elem = ET.SubElement(element, f"{{{namespace}}}CATEGORY")
-            category_elem.text = self.category
-
-        # REFERENCE-BASES
-        if self.reference_bases:
-            ref_bases_elem = ET.SubElement(element, f"{{{namespace}}}REFERENCE-BASES")
-            for ref_base in self.reference_bases:
-                if hasattr(ref_base, "serialize"):
-                    ref_bases_elem.append(ref_base.serialize(namespace))
-
-        # ELEMENTS
-        if self.elements:
-            elements_elem = ET.SubElement(element, f"{{{namespace}}}ELEMENTS")
-            for elem in self.elements:
-                if hasattr(elem, "serialize"):
-                    elements_elem.append(elem.serialize(namespace))
-
-        # AR-PACKAGES (nested packages)
-        if self.ar_packages:
-            packages_elem = ET.SubElement(element, f"{{{namespace}}}AR-PACKAGES")
-            for pkg in self.ar_packages:
-                if hasattr(pkg, "serialize"):
-                    packages_elem.append(pkg.serialize(namespace))
-
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ARPackage":
@@ -82,36 +57,10 @@ class ARPackage(ARObject):
         Returns:
             ARPackage instance
         """
-        obj: ARPackage = cls()
-
-        for child in element:
-            tag_name = child.tag.split("}")[-1] if "}" in child.tag else child.tag
-
-            if tag_name == "SHORT-NAME":
-                obj.short_name = child.text or ""
-            elif tag_name == "LONG-NAME":
-                # Handle L-4 elements with language
-                l_elem = child.find(".//{*}L-4")
-                if l_elem is not None and l_elem.text:
-                    obj.long_name = l_elem.text
-                elif child.text:
-                    obj.long_name = child.text
-            elif tag_name == "CATEGORY":
-                obj.category = child.text or ""
-            elif tag_name == "REFERENCE-BASES":
-                # TODO: Parse reference bases
-                pass
-            elif tag_name == "ELEMENTS":
-                # TODO: Parse elements (Application Data Types, etc.)
-                pass
-            elif tag_name == "AR-PACKAGES":
-                # Recursively deserialize nested packages
-                for pkg_elem in child:
-                    if pkg_elem.tag.endswith("AR-PACKAGE"):
-                        pkg = cls.deserialize(pkg_elem)
-                        obj.ar_packages.append(pkg)
-
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ARPackage since parent returns ARObject
+        return cast("ARPackage", obj)
 
 
 class ARPackageBuilder:

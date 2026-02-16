@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::CustomServiceInstance"""
+"""CustomServiceInstance module."""
+from .diagnostic_custom_service_instance import DiagnosticCustomServiceInstance
+

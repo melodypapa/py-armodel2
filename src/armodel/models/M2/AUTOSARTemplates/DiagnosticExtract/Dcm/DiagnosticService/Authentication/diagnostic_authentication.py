@@ -1,27 +1,39 @@
 """DiagnosticAuthentication AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
 
 
-class DiagnosticAuthentication(ARObject):
+class DiagnosticAuthentication(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticAuthentication."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("authentication", None, False, False, any (Diagnostic)),  # authentication
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticAuthentication."""
         super().__init__()
+        self.authentication: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticAuthentication to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICAUTHENTICATION")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticAuthentication":
@@ -33,9 +45,10 @@ class DiagnosticAuthentication(ARObject):
         Returns:
             DiagnosticAuthentication instance
         """
-        obj: DiagnosticAuthentication = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticAuthentication since parent returns ARObject
+        return cast("DiagnosticAuthentication", obj)
 
 
 class DiagnosticAuthenticationBuilder:

@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintGenerator"""
+"""BlueprintGenerator module."""
+from .blueprint_generator import BlueprintGenerator
+

@@ -1,27 +1,41 @@
 """CompuScales AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import (
+    CompuContent,
+)
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale import (
+    CompuScale,
+)
 
 
-class CompuScales(ARObject):
+class CompuScales(CompuContent):
     """AUTOSAR CompuScales."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("compu_scales", None, False, True, CompuScale),  # compuScales
+    ]
 
     def __init__(self) -> None:
         """Initialize CompuScales."""
         super().__init__()
+        self.compu_scales: list[CompuScale] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CompuScales to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COMPUSCALES")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CompuScales":
@@ -33,9 +47,10 @@ class CompuScales(ARObject):
         Returns:
             CompuScales instance
         """
-        obj: CompuScales = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CompuScales since parent returns ARObject
+        return cast("CompuScales", obj)
 
 
 class CompuScalesBuilder:

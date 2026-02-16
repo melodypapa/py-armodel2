@@ -1,1 +1,3 @@
-"""M2::MSR::Documentation::BlockElements::GerneralParameters"""
+"""GerneralParameters module."""
+from .prms import Prms
+

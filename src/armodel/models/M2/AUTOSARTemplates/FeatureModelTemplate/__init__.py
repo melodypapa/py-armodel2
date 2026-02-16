@@ -1,1 +1,19 @@
-"""M2::AUTOSARTemplates::FeatureModelTemplate"""
+"""FeatureModelTemplate module."""
+from .fm_feature_model import FMFeatureModel
+from .fm_feature import FMFeature
+from .fm_attribute_def import FMAttributeDef
+from .fm_feature_decomposition import FMFeatureDecomposition
+from .fm_feature_restriction import FMFeatureRestriction
+from .fm_feature_relation import FMFeatureRelation
+from .fm_feature_selection import FMFeatureSelection
+from .fm_attribute_value import FMAttributeValue
+from .fm_feature_selection_set import FMFeatureSelectionSet
+from .fm_feature_map import FMFeatureMap
+from .fm_feature_map_element import FMFeatureMapElement
+from .fm_feature_map_condition import FMFeatureMapCondition
+from .fm_feature_map_assertion import FMFeatureMapAssertion
+from .fm_formula_by_features_and_attributes import FMFormulaByFeaturesAndAttributes
+from .fm_condition_by_features_and_attributes import FMConditionByFeaturesAndAttributes
+from .fm_formula_by_features_and_sw_systemconsts import FMFormulaByFeaturesAndSwSystemconsts
+from .fm_condition_by_features_and_sw_systemconsts import FMConditionByFeaturesAndSwSystemconsts
+

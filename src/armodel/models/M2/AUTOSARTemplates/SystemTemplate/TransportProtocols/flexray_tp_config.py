@@ -1,27 +1,61 @@
 """FlexrayTpConfig AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.flexray_tp_connection import (
+    FlexrayTpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.flexray_tp_ecu import (
+    FlexrayTpEcu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.flexray_tp_node import (
+    FlexrayTpNode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.flexray_tp_pdu_pool import (
+    FlexrayTpPduPool,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_address import (
+    TpAddress,
+)
 
 
-class FlexrayTpConfig(ARObject):
+class FlexrayTpConfig(TpConfig):
     """AUTOSAR FlexrayTpConfig."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("pdu_pools", None, False, True, FlexrayTpPduPool),  # pduPools
+        ("tp_addresses", None, False, True, TpAddress),  # tpAddresses
+        ("tp_connections", None, False, True, FlexrayTpConnection),  # tpConnections
+        ("tp_ecus", None, False, True, FlexrayTpEcu),  # tpEcus
+        ("tp_nodes", None, False, True, FlexrayTpNode),  # tpNodes
+    ]
 
     def __init__(self) -> None:
         """Initialize FlexrayTpConfig."""
         super().__init__()
+        self.pdu_pools: list[FlexrayTpPduPool] = []
+        self.tp_addresses: list[TpAddress] = []
+        self.tp_connections: list[FlexrayTpConnection] = []
+        self.tp_ecus: list[FlexrayTpEcu] = []
+        self.tp_nodes: list[FlexrayTpNode] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert FlexrayTpConfig to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("FLEXRAYTPCONFIG")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayTpConfig":
@@ -33,9 +67,10 @@ class FlexrayTpConfig(ARObject):
         Returns:
             FlexrayTpConfig instance
         """
-        obj: FlexrayTpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to FlexrayTpConfig since parent returns ARObject
+        return cast("FlexrayTpConfig", obj)
 
 
 class FlexrayTpConfigBuilder:

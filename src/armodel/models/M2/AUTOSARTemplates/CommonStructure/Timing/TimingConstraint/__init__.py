@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint"""
+"""TimingConstraint module."""
+from .timing_constraint import TimingConstraint
+

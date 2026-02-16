@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint"""
+"""DataExchangePoint module."""
+from .data_exchange_point import DataExchangePoint
+from .baseline import Baseline
+

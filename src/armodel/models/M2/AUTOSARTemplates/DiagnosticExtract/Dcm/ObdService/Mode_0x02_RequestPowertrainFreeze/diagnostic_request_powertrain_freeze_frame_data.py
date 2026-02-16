@@ -1,27 +1,43 @@
 """DiagnosticRequestPowertrainFreezeFrameData AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x02_RequestPowertrainFreeze.diagnostic_powertrain_freeze_frame import (
+    DiagnosticPowertrainFreezeFrame,
+)
 
 
-class DiagnosticRequestPowertrainFreezeFrameData(ARObject):
+class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestPowertrainFreezeFrameData."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("freeze_frame_freeze_frame", None, False, False, DiagnosticPowertrainFreezeFrame),  # freezeFrameFreezeFrame
+        ("request", None, False, False, any (DiagnosticRequest)),  # request
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameData."""
         super().__init__()
+        self.freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame] = None
+        self.request: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticRequestPowertrainFreezeFrameData to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICREQUESTPOWERTRAINFREEZEFRAMEDATA")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticRequestPowertrainFreezeFrameData":
@@ -33,9 +49,10 @@ class DiagnosticRequestPowertrainFreezeFrameData(ARObject):
         Returns:
             DiagnosticRequestPowertrainFreezeFrameData instance
         """
-        obj: DiagnosticRequestPowertrainFreezeFrameData = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticRequestPowertrainFreezeFrameData since parent returns ARObject
+        return cast("DiagnosticRequestPowertrainFreezeFrameData", obj)
 
 
 class DiagnosticRequestPowertrainFreezeFrameDataBuilder:
@@ -43,9 +60,7 @@ class DiagnosticRequestPowertrainFreezeFrameDataBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestPowertrainFreezeFrameData = (
-            DiagnosticRequestPowertrainFreezeFrameData()
-        )
+        self._obj: DiagnosticRequestPowertrainFreezeFrameData = DiagnosticRequestPowertrainFreezeFrameData()
 
     def build(self) -> DiagnosticRequestPowertrainFreezeFrameData:
         """Build and return DiagnosticRequestPowertrainFreezeFrameData object.

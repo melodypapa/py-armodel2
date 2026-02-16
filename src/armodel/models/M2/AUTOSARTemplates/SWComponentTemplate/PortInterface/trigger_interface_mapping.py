@@ -1,27 +1,41 @@
 """TriggerInterfaceMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
+    PortInterfaceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger_mapping import (
+    TriggerMapping,
+)
 
 
-class TriggerInterfaceMapping(ARObject):
+class TriggerInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR TriggerInterfaceMapping."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("trigger_mappings", None, False, True, TriggerMapping),  # triggerMappings
+    ]
 
     def __init__(self) -> None:
         """Initialize TriggerInterfaceMapping."""
         super().__init__()
+        self.trigger_mappings: list[TriggerMapping] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TriggerInterfaceMapping to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TRIGGERINTERFACEMAPPING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TriggerInterfaceMapping":
@@ -33,9 +47,10 @@ class TriggerInterfaceMapping(ARObject):
         Returns:
             TriggerInterfaceMapping instance
         """
-        obj: TriggerInterfaceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TriggerInterfaceMapping since parent returns ARObject
+        return cast("TriggerInterfaceMapping", obj)
 
 
 class TriggerInterfaceMappingBuilder:

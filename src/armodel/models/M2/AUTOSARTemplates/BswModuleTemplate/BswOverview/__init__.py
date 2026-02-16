@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::BswModuleTemplate::BswOverview"""
+"""BswOverview module."""
+from .bsw_module_description import BswModuleDescription
+

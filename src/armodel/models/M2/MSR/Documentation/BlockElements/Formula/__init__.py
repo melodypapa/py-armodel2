@@ -1,1 +1,3 @@
-"""M2::MSR::Documentation::BlockElements::Formula"""
+"""Formula module."""
+from .ml_formula import MlFormula
+

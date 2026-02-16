@@ -1,1 +1,8 @@
-"""M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping"""
+"""RteEventToOsTaskMapping module."""
+from .os_task_proxy import OsTaskProxy
+from .app_os_task_proxy_to_ecu_task_proxy_mapping import AppOsTaskProxyToEcuTaskProxyMapping
+from .rte_event_in_composition_to_os_task_proxy_mapping import RteEventInCompositionToOsTaskProxyMapping
+from .rte_event_in_composition_separation import RteEventInCompositionSeparation
+from .rte_event_in_system_to_os_task_proxy_mapping import RteEventInSystemToOsTaskProxyMapping
+from .rte_event_in_system_separation import RteEventInSystemSeparation
+

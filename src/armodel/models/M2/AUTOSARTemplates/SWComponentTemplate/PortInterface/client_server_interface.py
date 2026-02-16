@@ -1,27 +1,46 @@
 """ClientServerInterface AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.application_error import (
+    ApplicationError,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
 
-class ClientServerInterface(ARObject):
+class ClientServerInterface(PortInterface):
     """AUTOSAR ClientServerInterface."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("operations", None, False, True, ClientServerOperation),  # operations
+        ("possible_errors", None, False, True, ApplicationError),  # possibleErrors
+    ]
 
     def __init__(self) -> None:
         """Initialize ClientServerInterface."""
         super().__init__()
+        self.operations: list[ClientServerOperation] = []
+        self.possible_errors: list[ApplicationError] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ClientServerInterface to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("CLIENTSERVERINTERFACE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ClientServerInterface":
@@ -33,9 +52,10 @@ class ClientServerInterface(ARObject):
         Returns:
             ClientServerInterface instance
         """
-        obj: ClientServerInterface = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ClientServerInterface since parent returns ARObject
+        return cast("ClientServerInterface", obj)
 
 
 class ClientServerInterfaceBuilder:

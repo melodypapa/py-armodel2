@@ -1,1 +1,7 @@
-"""M2::AUTOSARTemplates::SystemTemplate::InstanceRefs"""
+"""InstanceRefs module."""
+from .component_in_system_instance_ref import ComponentInSystemInstanceRef
+from .operation_in_system_instance_ref import OperationInSystemInstanceRef
+from .variable_data_prototype_in_system_instance_ref import VariableDataPrototypeInSystemInstanceRef
+from .trigger_in_system_instance_ref import TriggerInSystemInstanceRef
+from .port_group_in_system_instance_ref import PortGroupInSystemInstanceRef
+

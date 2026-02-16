@@ -1,1 +1,9 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::EventTriggeringConstraint"""
+"""EventTriggeringConstraint module."""
+from .event_triggering_constraint import EventTriggeringConstraint
+from .periodic_event_triggering import PeriodicEventTriggering
+from .sporadic_event_triggering import SporadicEventTriggering
+from .concrete_pattern_event_triggering import ConcretePatternEventTriggering
+from .burst_pattern_event_triggering import BurstPatternEventTriggering
+from .arbitrary_event_triggering import ArbitraryEventTriggering
+from .confidence_interval import ConfidenceInterval
+

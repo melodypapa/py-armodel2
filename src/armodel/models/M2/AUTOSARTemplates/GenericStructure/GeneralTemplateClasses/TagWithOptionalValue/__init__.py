@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::TagWithOptionalValue"""
+"""TagWithOptionalValue module."""
+from .tag_with_optional_value import TagWithOptionalValue
+

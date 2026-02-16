@@ -1,27 +1,56 @@
 """Gateway AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.frame_mapping import (
+    FrameMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.i_pdu_mapping import (
+    IPduMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.i_signal_mapping import (
+    ISignalMapping,
+)
 
 
-class Gateway(ARObject):
+class Gateway(FibexElement):
     """AUTOSAR Gateway."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("ecu", None, False, False, EcuInstance),  # ecu
+        ("frame_mappings", None, False, True, FrameMapping),  # frameMappings
+        ("i_pdu_mappings", None, False, True, IPduMapping),  # iPduMappings
+        ("signal_mappings", None, False, True, ISignalMapping),  # signalMappings
+    ]
 
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
+        self.ecu: Optional[EcuInstance] = None
+        self.frame_mappings: list[FrameMapping] = []
+        self.i_pdu_mappings: list[IPduMapping] = []
+        self.signal_mappings: list[ISignalMapping] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert Gateway to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("GATEWAY")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Gateway":
@@ -33,9 +62,10 @@ class Gateway(ARObject):
         Returns:
             Gateway instance
         """
-        obj: Gateway = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to Gateway since parent returns ARObject
+        return cast("Gateway", obj)
 
 
 class GatewayBuilder:

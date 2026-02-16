@@ -1,27 +1,44 @@
 """ModeSwitchEventTriggeredActivity AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.swc_mode_switch_event import (
+    SwcModeSwitchEvent,
+)
 
 
 class ModeSwitchEventTriggeredActivity(ARObject):
     """AUTOSAR ModeSwitchEventTriggeredActivity."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("role", None, True, False, None),  # role
+        ("swc_mode_switch_event", None, False, False, SwcModeSwitchEvent),  # swcModeSwitchEvent
+    ]
+
     def __init__(self) -> None:
         """Initialize ModeSwitchEventTriggeredActivity."""
         super().__init__()
+        self.role: Optional[Identifier] = None
+        self.swc_mode_switch_event: Optional[SwcModeSwitchEvent] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ModeSwitchEventTriggeredActivity to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("MODESWITCHEVENTTRIGGEREDACTIVITY")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeSwitchEventTriggeredActivity":
@@ -33,9 +50,10 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         Returns:
             ModeSwitchEventTriggeredActivity instance
         """
-        obj: ModeSwitchEventTriggeredActivity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ModeSwitchEventTriggeredActivity since parent returns ARObject
+        return cast("ModeSwitchEventTriggeredActivity", obj)
 
 
 class ModeSwitchEventTriggeredActivityBuilder:

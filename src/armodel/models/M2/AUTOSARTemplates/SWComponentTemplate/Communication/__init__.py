@@ -1,1 +1,25 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::Communication"""
+"""Communication module."""
+from .p_port_com_spec import PPortComSpec
+from .r_port_com_spec import RPortComSpec
+from .receiver_com_spec import ReceiverComSpec
+from .nonqueued_receiver_com_spec import NonqueuedReceiverComSpec
+from .queued_receiver_com_spec import QueuedReceiverComSpec
+from .reception_com_spec_props import ReceptionComSpecProps
+from .sender_com_spec import SenderComSpec
+from .queued_sender_com_spec import QueuedSenderComSpec
+from .nonqueued_sender_com_spec import NonqueuedSenderComSpec
+from .transmission_com_spec_props import TransmissionComSpecProps
+from .transmission_acknowledgement_request import TransmissionAcknowledgementRequest
+from .composite_network_representation import CompositeNetworkRepresentation
+from .client_com_spec import ClientComSpec
+from .server_com_spec import ServerComSpec
+from .mode_switch_sender_com_spec import ModeSwitchSenderComSpec
+from .mode_switched_ack_request import ModeSwitchedAckRequest
+from .mode_switch_receiver_com_spec import ModeSwitchReceiverComSpec
+from .parameter_provide_com_spec import ParameterProvideComSpec
+from .parameter_require_com_spec import ParameterRequireComSpec
+from .nv_require_com_spec import NvRequireComSpec
+from .nv_provide_com_spec import NvProvideComSpec
+from .transformation_com_spec_props import TransformationComSpecProps
+from .user_defined_transformation_com_spec_props import UserDefinedTransformationComSpecProps
+

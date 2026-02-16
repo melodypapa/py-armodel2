@@ -1,27 +1,41 @@
 """SwRecordLayout AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
+    SwRecordLayoutGroup,
+)
 
 
-class SwRecordLayout(ARObject):
+class SwRecordLayout(ARElement):
     """AUTOSAR SwRecordLayout."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("sw_record", None, False, False, SwRecordLayoutGroup),  # swRecord
+    ]
 
     def __init__(self) -> None:
         """Initialize SwRecordLayout."""
         super().__init__()
+        self.sw_record: Optional[SwRecordLayoutGroup] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SwRecordLayout to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SWRECORDLAYOUT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwRecordLayout":
@@ -33,9 +47,10 @@ class SwRecordLayout(ARObject):
         Returns:
             SwRecordLayout instance
         """
-        obj: SwRecordLayout = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SwRecordLayout since parent returns ARObject
+        return cast("SwRecordLayout", obj)
 
 
 class SwRecordLayoutBuilder:

@@ -1,27 +1,47 @@
 """ConcretePatternEventTriggering AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
+    EventTriggeringConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
 
-class ConcretePatternEventTriggering(ARObject):
+class ConcretePatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR ConcretePatternEventTriggering."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("offsets", None, False, True, MultidimensionalTime),  # offsets
+        ("pattern_jitter", None, False, False, MultidimensionalTime),  # patternJitter
+        ("pattern_length", None, False, False, MultidimensionalTime),  # patternLength
+        ("pattern_period", None, False, False, MultidimensionalTime),  # patternPeriod
+    ]
 
     def __init__(self) -> None:
         """Initialize ConcretePatternEventTriggering."""
         super().__init__()
+        self.offsets: list[MultidimensionalTime] = []
+        self.pattern_jitter: Optional[MultidimensionalTime] = None
+        self.pattern_length: Optional[MultidimensionalTime] = None
+        self.pattern_period: Optional[MultidimensionalTime] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ConcretePatternEventTriggering to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("CONCRETEPATTERNEVENTTRIGGERING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConcretePatternEventTriggering":
@@ -33,9 +53,10 @@ class ConcretePatternEventTriggering(ARObject):
         Returns:
             ConcretePatternEventTriggering instance
         """
-        obj: ConcretePatternEventTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ConcretePatternEventTriggering since parent returns ARObject
+        return cast("ConcretePatternEventTriggering", obj)
 
 
 class ConcretePatternEventTriggeringBuilder:

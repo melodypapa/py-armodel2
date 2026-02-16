@@ -1,27 +1,44 @@
 """TimingDescriptionEvent AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
+    TimingDescription,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
+    TimingClock,
+)
 
 
-class TimingDescriptionEvent(ARObject):
+class TimingDescriptionEvent(TimingDescription):
     """AUTOSAR TimingDescriptionEvent."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("clock_reference", None, False, False, TimingClock),  # clockReference
+        ("occurrence", None, False, False, any (TDEventOccurrence)),  # occurrence
+    ]
 
     def __init__(self) -> None:
         """Initialize TimingDescriptionEvent."""
         super().__init__()
+        self.clock_reference: Optional[TimingClock] = None
+        self.occurrence: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TimingDescriptionEvent to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TIMINGDESCRIPTIONEVENT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimingDescriptionEvent":
@@ -33,9 +50,10 @@ class TimingDescriptionEvent(ARObject):
         Returns:
             TimingDescriptionEvent instance
         """
-        obj: TimingDescriptionEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TimingDescriptionEvent since parent returns ARObject
+        return cast("TimingDescriptionEvent", obj)
 
 
 class TimingDescriptionEventBuilder:

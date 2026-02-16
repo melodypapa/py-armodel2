@@ -1,1 +1,8 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements"""
+"""DataElements module."""
+from .autosar_parameter_ref import AutosarParameterRef
+from .autosar_variable_ref import AutosarVariableRef
+from .parameter_access import ParameterAccess
+from .variable_access import VariableAccess
+from .ar_variable_in_implementation_data_instance_ref import ArVariableInImplementationDataInstanceRef
+from .ar_parameter_in_implementation_data_instance_ref import ArParameterInImplementationDataInstanceRef
+

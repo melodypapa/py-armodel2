@@ -1,27 +1,38 @@
 """DiagnosticMemoryDestinationPrimary AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDestination.diagnostic_memory_destination import (
+    DiagnosticMemoryDestination,
+)
 
 
-class DiagnosticMemoryDestinationPrimary(ARObject):
+class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationPrimary."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("type_of_dtc", None, False, False, DiagnosticTypeOfDtcSupportedEnum),  # typeOfDtc
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()
+        self.type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticMemoryDestinationPrimary to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICMEMORYDESTINATIONPRIMARY")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestinationPrimary":
@@ -33,9 +44,10 @@ class DiagnosticMemoryDestinationPrimary(ARObject):
         Returns:
             DiagnosticMemoryDestinationPrimary instance
         """
-        obj: DiagnosticMemoryDestinationPrimary = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticMemoryDestinationPrimary since parent returns ARObject
+        return cast("DiagnosticMemoryDestinationPrimary", obj)
 
 
 class DiagnosticMemoryDestinationPrimaryBuilder:

@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::ClientServerInterfaceToBsw"""
+"""ClientServerInterfaceToBsw module."""
+from .client_server_operation_blueprint_mapping import ClientServerOperationBlueprintMapping
+from .client_server_interface_to_bsw_module_entry_blueprint_mapping import ClientServerInterfaceToBswModuleEntryBlueprintMapping
+

@@ -1,27 +1,46 @@
 """DiagnosticEventToTroubleCodeJ1939Mapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
+    DiagnosticTroubleCode,
+)
 
 
-class DiagnosticEventToTroubleCodeJ1939Mapping(ARObject):
+class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToTroubleCodeJ1939Mapping."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("diagnostic_event", None, False, False, DiagnosticEvent),  # diagnosticEvent
+        ("trouble_code", None, False, False, DiagnosticTroubleCode),  # troubleCode
+    ]
 
     def __init__(self) -> None:
         """Initialize DiagnosticEventToTroubleCodeJ1939Mapping."""
         super().__init__()
+        self.diagnostic_event: Optional[DiagnosticEvent] = None
+        self.trouble_code: Optional[DiagnosticTroubleCode] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert DiagnosticEventToTroubleCodeJ1939Mapping to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("DIAGNOSTICEVENTTOTROUBLECODEJ1939MAPPING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticEventToTroubleCodeJ1939Mapping":
@@ -33,9 +52,10 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(ARObject):
         Returns:
             DiagnosticEventToTroubleCodeJ1939Mapping instance
         """
-        obj: DiagnosticEventToTroubleCodeJ1939Mapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to DiagnosticEventToTroubleCodeJ1939Mapping since parent returns ARObject
+        return cast("DiagnosticEventToTroubleCodeJ1939Mapping", obj)
 
 
 class DiagnosticEventToTroubleCodeJ1939MappingBuilder:
@@ -43,9 +63,7 @@ class DiagnosticEventToTroubleCodeJ1939MappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticEventToTroubleCodeJ1939Mapping = (
-            DiagnosticEventToTroubleCodeJ1939Mapping()
-        )
+        self._obj: DiagnosticEventToTroubleCodeJ1939Mapping = DiagnosticEventToTroubleCodeJ1939Mapping()
 
     def build(self) -> DiagnosticEventToTroubleCodeJ1939Mapping:
         """Build and return DiagnosticEventToTroubleCodeJ1939Mapping object.

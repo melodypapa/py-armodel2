@@ -1,27 +1,43 @@
 """TDEventTrigger AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
+    TDEventVfbPort,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
 
-class TDEventTrigger(ARObject):
+class TDEventTrigger(TDEventVfbPort):
     """AUTOSAR TDEventTrigger."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("td_event_trigger", None, False, False, TDEventTriggerTypeEnum),  # tdEventTrigger
+        ("trigger", None, False, False, Trigger),  # trigger
+    ]
 
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
+        self.td_event_trigger: Optional[TDEventTriggerTypeEnum] = None
+        self.trigger: Optional[Trigger] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert TDEventTrigger to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("TDEVENTTRIGGER")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventTrigger":
@@ -33,9 +49,10 @@ class TDEventTrigger(ARObject):
         Returns:
             TDEventTrigger instance
         """
-        obj: TDEventTrigger = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to TDEventTrigger since parent returns ARObject
+        return cast("TDEventTrigger", obj)
 
 
 class TDEventTriggerBuilder:

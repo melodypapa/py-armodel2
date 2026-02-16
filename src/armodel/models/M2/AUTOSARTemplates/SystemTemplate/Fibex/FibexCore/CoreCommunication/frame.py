@@ -1,27 +1,47 @@
 """Frame AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_to_frame_mapping import (
+    PduToFrameMapping,
+)
 
 
-class Frame(ARObject):
+class Frame(FibexElement):
     """AUTOSAR Frame."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("frame_length", None, True, False, None),  # frameLength
+        ("pdu_to_frames", None, False, True, PduToFrameMapping),  # pduToFrames
+    ]
 
     def __init__(self) -> None:
         """Initialize Frame."""
         super().__init__()
+        self.frame_length: Optional[Integer] = None
+        self.pdu_to_frames: list[PduToFrameMapping] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert Frame to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("FRAME")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Frame":
@@ -33,9 +53,10 @@ class Frame(ARObject):
         Returns:
             Frame instance
         """
-        obj: Frame = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to Frame since parent returns ARObject
+        return cast("Frame", obj)
 
 
 class FrameBuilder:

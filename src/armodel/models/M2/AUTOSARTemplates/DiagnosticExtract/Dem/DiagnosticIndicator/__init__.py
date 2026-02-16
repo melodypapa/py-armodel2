@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticIndicator"""
+"""DiagnosticIndicator module."""
+from .diagnostic_indicator import DiagnosticIndicator
+

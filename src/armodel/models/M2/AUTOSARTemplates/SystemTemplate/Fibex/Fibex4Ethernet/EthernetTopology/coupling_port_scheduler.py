@@ -1,27 +1,40 @@
 """CouplingPortScheduler AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_structural_element import (
+    CouplingPortStructuralElement,
+)
 
 
-class CouplingPortScheduler(ARObject):
+class CouplingPortScheduler(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortScheduler."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("port_scheduler_scheduler_enum", None, False, False, EthernetCouplingPortSchedulerEnum),  # portSchedulerSchedulerEnum
+        ("predecessors", None, False, True, CouplingPortStructuralElement),  # predecessors
+    ]
 
     def __init__(self) -> None:
         """Initialize CouplingPortScheduler."""
         super().__init__()
+        self.port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum] = None
+        self.predecessors: list[CouplingPortStructuralElement] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CouplingPortScheduler to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COUPLINGPORTSCHEDULER")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortScheduler":
@@ -33,9 +46,10 @@ class CouplingPortScheduler(ARObject):
         Returns:
             CouplingPortScheduler instance
         """
-        obj: CouplingPortScheduler = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CouplingPortScheduler since parent returns ARObject
+        return cast("CouplingPortScheduler", obj)
 
 
 class CouplingPortSchedulerBuilder:

@@ -1,1 +1,3 @@
-"""M2::MSR::DataDictionary::ServiceProcessTask"""
+"""ServiceProcessTask module."""
+from .sw_service_arg import SwServiceArg
+

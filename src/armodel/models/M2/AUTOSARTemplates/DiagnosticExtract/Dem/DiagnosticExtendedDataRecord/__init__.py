@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticExtendedDataRecord"""
+"""DiagnosticExtendedDataRecord module."""
+from .diagnostic_extended_data_record import DiagnosticExtendedDataRecord
+

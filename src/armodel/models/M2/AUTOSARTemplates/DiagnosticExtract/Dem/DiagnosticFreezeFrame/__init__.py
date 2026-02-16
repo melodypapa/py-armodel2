@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticFreezeFrame"""
+"""DiagnosticFreezeFrame module."""
+from .diagnostic_freeze_frame import DiagnosticFreezeFrame
+

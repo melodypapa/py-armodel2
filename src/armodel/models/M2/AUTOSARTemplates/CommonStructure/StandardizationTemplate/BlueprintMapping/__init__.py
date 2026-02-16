@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::BlueprintMapping"""
+"""BlueprintMapping module."""
+from .blueprint_mapping_set import BlueprintMappingSet
+

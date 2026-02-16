@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements::InstanceRefs"""
+"""InstanceRefs module."""
+from .parameter_in_atomic_swc_type_instance_ref import ParameterInAtomicSWCTypeInstanceRef
+from .variable_in_atomic_swc_type_instance_ref import VariableInAtomicSWCTypeInstanceRef
+

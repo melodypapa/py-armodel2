@@ -1,27 +1,48 @@
 """ImplementationDataTypeElementInPortInterfaceRef AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
+    DataPrototypeReference,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
 
 
-class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
+class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR ImplementationDataTypeElementInPortInterfaceRef."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("contexts", None, False, True, any (AbstractImplementation)),  # contexts
+        ("root_data", None, False, False, AutosarDataPrototype),  # rootData
+        ("target", None, False, False, AbstractImplementationDataType),  # target
+    ]
 
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElementInPortInterfaceRef."""
         super().__init__()
+        self.contexts: list[Any] = []
+        self.root_data: Optional[AutosarDataPrototype] = None
+        self.target: Optional[AbstractImplementationDataType] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ImplementationDataTypeElementInPortInterfaceRef to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("IMPLEMENTATIONDATATYPEELEMENTINPORTINTERFACEREF")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElementInPortInterfaceRef":
@@ -33,9 +54,10 @@ class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
         Returns:
             ImplementationDataTypeElementInPortInterfaceRef instance
         """
-        obj: ImplementationDataTypeElementInPortInterfaceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ImplementationDataTypeElementInPortInterfaceRef since parent returns ARObject
+        return cast("ImplementationDataTypeElementInPortInterfaceRef", obj)
 
 
 class ImplementationDataTypeElementInPortInterfaceRefBuilder:
@@ -43,9 +65,7 @@ class ImplementationDataTypeElementInPortInterfaceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ImplementationDataTypeElementInPortInterfaceRef = (
-            ImplementationDataTypeElementInPortInterfaceRef()
-        )
+        self._obj: ImplementationDataTypeElementInPortInterfaceRef = ImplementationDataTypeElementInPortInterfaceRef()
 
     def build(self) -> ImplementationDataTypeElementInPortInterfaceRef:
         """Build and return ImplementationDataTypeElementInPortInterfaceRef object.

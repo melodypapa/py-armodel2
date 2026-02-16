@@ -1,27 +1,41 @@
 """EcucNumericalParamValue AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_value import (
+    EcucParameterValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
 
-class EcucNumericalParamValue(ARObject):
+class EcucNumericalParamValue(EcucParameterValue):
     """AUTOSAR EcucNumericalParamValue."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("value", None, True, False, None),  # value
+    ]
 
     def __init__(self) -> None:
         """Initialize EcucNumericalParamValue."""
         super().__init__()
+        self.value: Optional[Numerical] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert EcucNumericalParamValue to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("ECUCNUMERICALPARAMVALUE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucNumericalParamValue":
@@ -33,9 +47,10 @@ class EcucNumericalParamValue(ARObject):
         Returns:
             EcucNumericalParamValue instance
         """
-        obj: EcucNumericalParamValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to EcucNumericalParamValue since parent returns ARObject
+        return cast("EcucNumericalParamValue", obj)
 
 
 class EcucNumericalParamValueBuilder:

@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::IncludedDataTypes"""
+"""IncludedDataTypes module."""
+from .included_data_type_set import IncludedDataTypeSet
+

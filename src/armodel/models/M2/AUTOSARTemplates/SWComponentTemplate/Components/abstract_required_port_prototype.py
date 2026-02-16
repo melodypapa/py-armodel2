@@ -1,27 +1,42 @@
 """AbstractRequiredPortPrototype AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
 
 
-class AbstractRequiredPortPrototype(ARObject):
+class AbstractRequiredPortPrototype(PortPrototype):
     """AUTOSAR AbstractRequiredPortPrototype."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("required_coms", None, False, True, RPortComSpec),  # requiredComs
+    ]
 
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
+        self.required_coms: list[RPortComSpec] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert AbstractRequiredPortPrototype to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("ABSTRACTREQUIREDPORTPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbstractRequiredPortPrototype":
@@ -33,9 +48,10 @@ class AbstractRequiredPortPrototype(ARObject):
         Returns:
             AbstractRequiredPortPrototype instance
         """
-        obj: AbstractRequiredPortPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to AbstractRequiredPortPrototype since parent returns ARObject
+        return cast("AbstractRequiredPortPrototype", obj)
 
 
 class AbstractRequiredPortPrototypeBuilder:

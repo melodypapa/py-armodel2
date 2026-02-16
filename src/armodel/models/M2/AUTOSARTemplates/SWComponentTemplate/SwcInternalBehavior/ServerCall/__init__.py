@@ -1,1 +1,6 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall"""
+"""ServerCall module."""
+from .asynchronous_server_call_result_point import AsynchronousServerCallResultPoint
+from .server_call_point import ServerCallPoint
+from .synchronous_server_call_point import SynchronousServerCallPoint
+from .asynchronous_server_call_point import AsynchronousServerCallPoint
+

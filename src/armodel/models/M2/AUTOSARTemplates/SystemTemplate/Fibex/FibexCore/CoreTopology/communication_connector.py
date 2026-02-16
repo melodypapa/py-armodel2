@@ -1,27 +1,56 @@
 """CommunicationConnector AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.comm_connector_port import (
+    CommConnectorPort,
+)
 
 
-class CommunicationConnector(ARObject):
+class CommunicationConnector(Identifiable):
     """AUTOSAR CommunicationConnector."""
+    """Abstract base class - do not instantiate directly."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("comm_controller", None, False, False, any (Communication)),  # commController
+        ("create_ecu", None, True, False, None),  # createEcu
+        ("dynamic_pnc_to", None, True, False, None),  # dynamicPncTo
+        ("ecu_comm_ports", None, False, True, CommConnectorPort),  # ecuCommPorts
+        ("pnc_filter_arrays", None, False, True, None),  # pncFilterArrays
+        ("pnc_gateway_type_enum", None, False, False, PncGatewayTypeEnum),  # pncGatewayTypeEnum
+    ]
 
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
+        self.comm_controller: Optional[Any] = None
+        self.create_ecu: Optional[Boolean] = None
+        self.dynamic_pnc_to: Optional[Boolean] = None
+        self.ecu_comm_ports: list[CommConnectorPort] = []
+        self.pnc_filter_arrays: list[PositiveInteger] = []
+        self.pnc_gateway_type_enum: Optional[PncGatewayTypeEnum] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CommunicationConnector to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COMMUNICATIONCONNECTOR")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CommunicationConnector":
@@ -33,9 +62,10 @@ class CommunicationConnector(ARObject):
         Returns:
             CommunicationConnector instance
         """
-        obj: CommunicationConnector = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CommunicationConnector since parent returns ARObject
+        return cast("CommunicationConnector", obj)
 
 
 class CommunicationConnectorBuilder:

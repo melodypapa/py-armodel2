@@ -1,27 +1,41 @@
 """SectionNamePrefix AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
+    ImplementationProps,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
+    DependencyOnArtifact,
+)
 
 
-class SectionNamePrefix(ARObject):
+class SectionNamePrefix(ImplementationProps):
     """AUTOSAR SectionNamePrefix."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("implemented_in", None, False, False, DependencyOnArtifact),  # implementedIn
+    ]
 
     def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()
+        self.implemented_in: Optional[DependencyOnArtifact] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SectionNamePrefix to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SECTIONNAMEPREFIX")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SectionNamePrefix":
@@ -33,9 +47,10 @@ class SectionNamePrefix(ARObject):
         Returns:
             SectionNamePrefix instance
         """
-        obj: SectionNamePrefix = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SectionNamePrefix since parent returns ARObject
+        return cast("SectionNamePrefix", obj)
 
 
 class SectionNamePrefixBuilder:

@@ -1,27 +1,61 @@
 """SwAxisCont AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    AxisIndexType,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_unit_names import (
+    SingleLanguageUnitNames,
+)
+from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_values import (
+    SwValues,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.unit import (
+    Unit,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
+    ValueList,
+)
 
 
 class SwAxisCont(ARObject):
     """AUTOSAR SwAxisCont."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("category", None, False, False, CalprmAxisCategoryEnum),  # category
+        ("sw_arraysize", None, False, False, ValueList),  # swArraysize
+        ("sw_axis_index", None, True, False, None),  # swAxisIndex
+        ("sw_values_phys", None, False, False, SwValues),  # swValuesPhys
+        ("unit", None, False, False, Unit),  # unit
+        ("unit_display", None, False, False, SingleLanguageUnitNames),  # unitDisplay
+    ]
+
     def __init__(self) -> None:
         """Initialize SwAxisCont."""
         super().__init__()
+        self.category: Optional[CalprmAxisCategoryEnum] = None
+        self.sw_arraysize: Optional[ValueList] = None
+        self.sw_axis_index: Optional[AxisIndexType] = None
+        self.sw_values_phys: Optional[SwValues] = None
+        self.unit: Optional[Unit] = None
+        self.unit_display: Optional[SingleLanguageUnitNames] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert SwAxisCont to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("SWAXISCONT")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwAxisCont":
@@ -33,9 +67,10 @@ class SwAxisCont(ARObject):
         Returns:
             SwAxisCont instance
         """
-        obj: SwAxisCont = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to SwAxisCont since parent returns ARObject
+        return cast("SwAxisCont", obj)
 
 
 class SwAxisContBuilder:

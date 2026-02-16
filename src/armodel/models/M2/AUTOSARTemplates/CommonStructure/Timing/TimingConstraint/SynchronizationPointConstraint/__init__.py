@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::SynchronizationPointConstraint"""
+"""SynchronizationPointConstraint module."""
+from .synchronization_point_constraint import SynchronizationPointConstraint
+

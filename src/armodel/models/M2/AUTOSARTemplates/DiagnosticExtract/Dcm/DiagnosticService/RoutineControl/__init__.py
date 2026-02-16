@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::RoutineControl"""
+"""RoutineControl module."""
+from .diagnostic_routine_control import DiagnosticRoutineControl
+from .diagnostic_routine_control_class import DiagnosticRoutineControlClass
+

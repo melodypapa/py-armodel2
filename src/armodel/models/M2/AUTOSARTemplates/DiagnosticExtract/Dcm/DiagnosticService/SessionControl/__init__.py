@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::SessionControl"""
+"""SessionControl module."""
+from .diagnostic_session_control import DiagnosticSessionControl
+from .diagnostic_session_control_class import DiagnosticSessionControlClass
+

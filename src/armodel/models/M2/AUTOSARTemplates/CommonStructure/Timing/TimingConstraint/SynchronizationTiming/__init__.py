@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::SynchronizationTiming"""
+"""SynchronizationTiming module."""
+from .synchronization_timing_constraint import SynchronizationTimingConstraint
+

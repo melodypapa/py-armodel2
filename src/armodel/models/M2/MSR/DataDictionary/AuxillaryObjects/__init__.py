@@ -1,1 +1,3 @@
-"""M2::MSR::DataDictionary::AuxillaryObjects"""
+"""AuxillaryObjects module."""
+from .sw_addr_method import SwAddrMethod
+

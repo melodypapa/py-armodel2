@@ -1,27 +1,48 @@
 """ModeSwitchReceiverComSpec AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
-class ModeSwitchReceiverComSpec(ARObject):
+class ModeSwitchReceiverComSpec(RPortComSpec):
     """AUTOSAR ModeSwitchReceiverComSpec."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("enhanced_mode", None, True, False, None),  # enhancedMode
+        ("mode_group", None, False, False, ModeDeclarationGroup),  # modeGroup
+        ("supports", None, True, False, None),  # supports
+    ]
 
     def __init__(self) -> None:
         """Initialize ModeSwitchReceiverComSpec."""
         super().__init__()
+        self.enhanced_mode: Optional[Boolean] = None
+        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.supports: Optional[Boolean] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ModeSwitchReceiverComSpec to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("MODESWITCHRECEIVERCOMSPEC")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeSwitchReceiverComSpec":
@@ -33,9 +54,10 @@ class ModeSwitchReceiverComSpec(ARObject):
         Returns:
             ModeSwitchReceiverComSpec instance
         """
-        obj: ModeSwitchReceiverComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ModeSwitchReceiverComSpec since parent returns ARObject
+        return cast("ModeSwitchReceiverComSpec", obj)
 
 
 class ModeSwitchReceiverComSpecBuilder:

@@ -1,27 +1,41 @@
 """ApplicationEntry AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
+    ScheduleTableEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
+    LinFrameTriggering,
+)
 
 
-class ApplicationEntry(ARObject):
+class ApplicationEntry(ScheduleTableEntry):
     """AUTOSAR ApplicationEntry."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("frame_triggering", None, False, False, LinFrameTriggering),  # frameTriggering
+    ]
 
     def __init__(self) -> None:
         """Initialize ApplicationEntry."""
         super().__init__()
+        self.frame_triggering: Optional[LinFrameTriggering] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert ApplicationEntry to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("APPLICATIONENTRY")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ApplicationEntry":
@@ -33,9 +47,10 @@ class ApplicationEntry(ARObject):
         Returns:
             ApplicationEntry instance
         """
-        obj: ApplicationEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to ApplicationEntry since parent returns ARObject
+        return cast("ApplicationEntry", obj)
 
 
 class ApplicationEntryBuilder:

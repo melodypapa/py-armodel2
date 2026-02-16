@@ -1,27 +1,43 @@
 """CpSwClusterResourceToDiagFunctionIdMapping AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
 
-class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
+class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterResourceToDiagFunctionIdMapping."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("cp_software_cluster", None, False, False, CpSoftwareCluster),  # cpSoftwareCluster
+        ("function", None, False, False, any (DiagnosticFunction)),  # function
+    ]
 
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
+        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
+        self.function: Optional[Any] = None
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CpSwClusterResourceToDiagFunctionIdMapping to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("CPSWCLUSTERRESOURCETODIAGFUNCTIONIDMAPPING")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSwClusterResourceToDiagFunctionIdMapping":
@@ -33,9 +49,10 @@ class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
         Returns:
             CpSwClusterResourceToDiagFunctionIdMapping instance
         """
-        obj: CpSwClusterResourceToDiagFunctionIdMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CpSwClusterResourceToDiagFunctionIdMapping since parent returns ARObject
+        return cast("CpSwClusterResourceToDiagFunctionIdMapping", obj)
 
 
 class CpSwClusterResourceToDiagFunctionIdMappingBuilder:
@@ -43,9 +60,7 @@ class CpSwClusterResourceToDiagFunctionIdMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSwClusterResourceToDiagFunctionIdMapping = (
-            CpSwClusterResourceToDiagFunctionIdMapping()
-        )
+        self._obj: CpSwClusterResourceToDiagFunctionIdMapping = CpSwClusterResourceToDiagFunctionIdMapping()
 
     def build(self) -> CpSwClusterResourceToDiagFunctionIdMapping:
         """Build and return CpSwClusterResourceToDiagFunctionIdMapping object.

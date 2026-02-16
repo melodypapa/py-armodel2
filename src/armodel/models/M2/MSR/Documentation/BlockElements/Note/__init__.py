@@ -1,1 +1,3 @@
-"""M2::MSR::Documentation::BlockElements::Note"""
+"""Note module."""
+from .note import Note
+

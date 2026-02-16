@@ -1,1 +1,3 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::PortInterface::InstanceRefs"""
+"""InstanceRefs module."""
+from .application_composite_element_in_port_interface_instance_ref import ApplicationCompositeElementInPortInterfaceInstanceRef
+

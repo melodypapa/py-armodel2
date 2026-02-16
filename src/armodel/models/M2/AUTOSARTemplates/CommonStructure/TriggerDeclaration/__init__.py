@@ -1,1 +1,4 @@
-"""M2::AUTOSARTemplates::CommonStructure::TriggerDeclaration"""
+"""TriggerDeclaration module."""
+from .trigger import Trigger
+from .trigger_mapping import TriggerMapping
+

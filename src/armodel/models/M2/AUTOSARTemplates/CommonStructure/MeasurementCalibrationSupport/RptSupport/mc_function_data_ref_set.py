@@ -1,27 +1,44 @@
 """McFunctionDataRefSet AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+    McDataInstance,
+)
 
 
 class McFunctionDataRefSet(ARObject):
     """AUTOSAR McFunctionDataRefSet."""
 
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("flat_map_entries", None, False, True, FlatInstanceDescriptor),  # flatMapEntries
+        ("mc_data_instances", None, False, True, McDataInstance),  # mcDataInstances
+    ]
+
     def __init__(self) -> None:
         """Initialize McFunctionDataRefSet."""
         super().__init__()
+        self.flat_map_entries: list[FlatInstanceDescriptor] = []
+        self.mc_data_instances: list[McDataInstance] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert McFunctionDataRefSet to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("MCFUNCTIONDATAREFSET")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McFunctionDataRefSet":
@@ -33,9 +50,10 @@ class McFunctionDataRefSet(ARObject):
         Returns:
             McFunctionDataRefSet instance
         """
-        obj: McFunctionDataRefSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to McFunctionDataRefSet since parent returns ARObject
+        return cast("McFunctionDataRefSet", obj)
 
 
 class McFunctionDataRefSetBuilder:

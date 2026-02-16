@@ -1,27 +1,58 @@
 """CouplingElementSwitchDetails AUTOSAR element."""
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+from typing import Optional, cast
 import xml.etree.ElementTree as ET
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_element_abstract_details import (
+    CouplingElementAbstractDetails,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_asynchronous_traffic_shaper_group_entry import (
+    SwitchAsynchronousTrafficShaperGroupEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_flow_metering_entry import (
+    SwitchFlowMeteringEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_filter_entry import (
+    SwitchStreamFilterEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_gate_entry import (
+    SwitchStreamGateEntry,
+)
 
 
-class CouplingElementSwitchDetails(ARObject):
+class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
     """AUTOSAR CouplingElementSwitchDetails."""
+
+    # XML member definitions for this class only (not inherited from parent classes)
+    # Format: (member_name, xml_tag_name, is_attribute, is_list, element_class)
+    _xml_members = [
+        ("flow_meterings", None, False, True, SwitchFlowMeteringEntry),  # flowMeterings
+        ("stream_filters", None, False, True, SwitchStreamFilterEntry),  # streamFilters
+        ("stream_gates", None, False, True, SwitchStreamGateEntry),  # streamGates
+        ("switch_streams", None, False, True, any (SwitchStream)),  # switchStreams
+        ("traffic_shapers", None, False, True, SwitchAsynchronousTrafficShaperGroupEntry),  # trafficShapers
+    ]
 
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()
+        self.flow_meterings: list[SwitchFlowMeteringEntry] = []
+        self.stream_filters: list[SwitchStreamFilterEntry] = []
+        self.stream_gates: list[SwitchStreamGateEntry] = []
+        self.switch_streams: list[Any] = []
+        self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
 
-    def serialize(self) -> ET.Element:
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
         """Convert CouplingElementSwitchDetails to XML element.
+
+        Args:
+            namespace: XML namespace for the element
+            element: Optional existing element to add members to (for subclass chaining)
 
         Returns:
             XML element representing this object
         """
-        element = ET.Element("COUPLINGELEMENTSWITCHDETAILS")
-        # TODO: Add serialization logic
-        return element
+        # ARObject.serialize() handles entire class hierarchy automatically
+        return super().serialize(namespace, element)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingElementSwitchDetails":
@@ -33,9 +64,10 @@ class CouplingElementSwitchDetails(ARObject):
         Returns:
             CouplingElementSwitchDetails instance
         """
-        obj: CouplingElementSwitchDetails = cls()
-        # TODO: Add deserialization logic
-        return obj
+        # ARObject.deserialize() handles entire class hierarchy automatically
+        obj = super().deserialize(element)
+        # Cast to CouplingElementSwitchDetails since parent returns ARObject
+        return cast("CouplingElementSwitchDetails", obj)
 
 
 class CouplingElementSwitchDetailsBuilder:

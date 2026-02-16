@@ -1,1 +1,3 @@
-"""M2::MSR::DataDictionary::SystemConstant"""
+"""SystemConstant module."""
+from .sw_systemconst import SwSystemconst
+
