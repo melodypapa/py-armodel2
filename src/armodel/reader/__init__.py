@@ -25,23 +25,39 @@ class ARXMLReader:
         """
         self._version_manager = version_manager or SchemaVersionManager()
 
-    def load_arxml(self, filepath: Union[str, Path], validate: bool = False) -> AUTOSAR:
-        """Load ARXML file and return AUTOSAR object.
+    def load_arxml(
+        self,
+        autosar: AUTOSAR,
+        filepath: Union[str, Path],
+        validate: bool = False
+    ) -> AUTOSAR:
+        """Load ARXML file into existing AUTOSAR object.
+
+        This method reads an ARXML file and populates the provided AUTOSAR
+        object with the file's contents. The same AUTOSAR instance can be
+        reused for multiple load operations.
 
         Args:
+            autosar: AUTOSAR object to populate with file contents
             filepath: Path to ARXML file
             validate: Whether to validate against XSD schema
 
         Returns:
-            AUTOSAR object representing document
+            The populated AUTOSAR object (same instance as passed in)
 
         Raises:
             FileNotFoundError: If file doesn't exist
             etree.XMLSyntaxError: If XML is malformed
             Exception: If validation fails
+
+        Example:
+            >>> autosar = AUTOSAR()
+            >>> reader = ARXMLReader()
+            >>> reader.load_arxml(autosar, "file1.arxml")
+            >>> reader.load_arxml(autosar, "file2.arxml")  # Appends to same object
         """
         root = self._load_file(filepath)
-        autosar = self._map_to_autosar(root)
+        self._populate_autosar(autosar, root)
 
         if validate:
             self._validate_against_schema(root, autosar)
@@ -69,21 +85,33 @@ class ARXMLReader:
         tree = etree.parse(str(filepath))
         return tree.getroot()
 
-    def _map_to_autosar(self, root: etree._Element) -> AUTOSAR:
-        """Map XML element to AUTOSAR object.
+    def _populate_autosar(self, autosar: AUTOSAR, root: etree._Element) -> AUTOSAR:
+        """Populate AUTOSAR object from XML element.
+
+        This method deserializes the XML element and merges its contents
+        into the existing AUTOSAR object.
 
         Args:
+            autosar: AUTOSAR object to populate
             root: Root XML element
 
         Returns:
-            AUTOSAR object instance
+            The populated AUTOSAR object
         """
         # Convert lxml Element to ElementTree Element
         xml_str = etree.tostring(root, encoding='unicode')
         et_root = ET.fromstring(xml_str)
 
-        # Use deserialize method to create AUTOSAR object
-        autosar = cast(AUTOSAR, AUTOSAR.deserialize(et_root))
+        # Deserialize to get a new AUTOSAR object
+        loaded_autosar = cast(AUTOSAR, AUTOSAR.deserialize(et_root))
+
+        # Merge the loaded data into the provided autosar object
+        # Copy all attributes from loaded_autosar to autosar
+        if hasattr(loaded_autosar, 'ar_packages') and loaded_autosar.ar_packages:
+            if not hasattr(autosar, 'ar_packages'):
+                autosar.ar_packages = []
+            # Append all packages from loaded file
+            autosar.ar_packages.extend(loaded_autosar.ar_packages)
 
         return autosar
 
