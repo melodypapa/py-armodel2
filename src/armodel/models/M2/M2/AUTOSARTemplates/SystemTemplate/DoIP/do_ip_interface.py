@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DoIP.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -34,80 +33,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 
 class DoIpInterface(Identifiable):
     """AUTOSAR DoIpInterface."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "alive_check": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # aliveCheck
-        "doip_channel": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DoIpTpConfig,
-        ),  # doipChannel
-        "doip_connections": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SocketConnection,
-        ),  # doipConnections
-        "do_ip_routings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DoIpRoutingActivation,
-        ),  # doIpRoutings
-        "general_inactivity": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # generalInactivity
-        "initial_inactivity": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # initialInactivity
-        "initial_vehicle": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # initialVehicle
-        "is_activation_line": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # isActivationLine
-        "max_tester": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # maxTester
-        "sockets": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=StaticSocketConnection,
-        ),  # sockets
-        "use_mac_address": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # useMacAddress
-        "use_vehicle": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # useVehicle
-        "vehicle": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # vehicle
-    }
 
     def __init__(self) -> None:
         """Initialize DoIpInterface."""

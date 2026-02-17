@@ -6,9 +6,9 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ArObject.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union, get_type_hints
 import xml.etree.ElementTree as ET
-from armodel.serialization.metadata import XMLMember
+from armodel.serialization.name_converter import NameConverter
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
@@ -19,21 +19,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "checksum": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # checksum
-        "timestamp": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timestamp
-    }
 
     def __init__(self) -> None:
         """Initialize ARObject."""

@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_name import (
@@ -20,17 +19,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_name
 
 class MultilanguageLongName(ARObject):
     """AUTOSAR MultilanguageLongName."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "l4": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=LLongName,
-        ),  # l4
-    }
 
     def __init__(self) -> None:
         """Initialize MultilanguageLongName."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -25,32 +24,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class TimeSyncServerConfiguration(Referrable):
     """AUTOSAR TimeSyncServerConfiguration."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "priority": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # priority
-        "sync_interval": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # syncInterval
-        "time_sync_server_identifier": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timeSyncServerIdentifier
-        "time_sync": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TimeSyncTechnologyEnum,
-        ),  # timeSync
-    }
 
     def __init__(self) -> None:
         """Initialize TimeSyncServerConfiguration."""

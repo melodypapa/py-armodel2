@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communic
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
@@ -24,33 +23,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 
 class ModeSwitchSenderComSpec(PPortComSpec):
     """AUTOSAR ModeSwitchSenderComSpec."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "enhanced_mode": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # enhancedMode
-        "mode_group": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeDeclarationGroup,
-        ),  # modeGroup
-        "mode_switched_ack": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # modeSwitchedAck
-        "queue_length": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # queueLength
-    }
 
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""

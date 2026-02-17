@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Componen
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -21,17 +20,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
 class AbstractProvidedPortPrototype(PortPrototype):
     """AUTOSAR AbstractProvidedPortPrototype."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "provided_coms": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PPortComSpec,
-        ),  # providedComs
-    }
 
     def __init__(self) -> None:
         """Initialize AbstractProvidedPortPrototype."""

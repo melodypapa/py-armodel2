@@ -11,7 +11,6 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
@@ -27,33 +26,6 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import (
 
 class SwTextProps(ARObject):
     """AUTOSAR SwTextProps."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "array_size": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ArraySizeSemanticsEnum,
-        ),  # arraySize
-        "base_type": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwBaseType,
-        ),  # baseType
-        "sw_fill_character": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # swFillCharacter
-        "sw_max_text_size": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # swMaxTextSize
-    }
 
     def __init__(self) -> None:
         """Initialize SwTextProps."""

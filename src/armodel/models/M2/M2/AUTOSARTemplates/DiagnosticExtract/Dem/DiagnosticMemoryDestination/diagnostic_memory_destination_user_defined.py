@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_Diagno
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDestination.diagnostic_memory_destination import (
     DiagnosticMemoryDestination,
@@ -23,22 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_ro
 
 class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationUserDefined."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "auth_roles": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DiagnosticAuthRole,
-        ),  # authRoles
-        "memory_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # memoryId
-    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationUserDefined."""

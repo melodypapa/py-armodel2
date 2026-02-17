@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
@@ -18,17 +17,6 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
 
 class FMFormulaByFeaturesAndSwSystemconsts(ARObject):
     """AUTOSAR FMFormulaByFeaturesAndSwSystemconsts."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "feature": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=FMFeature,
-        ),  # feature
-    }
 
     def __init__(self) -> None:
         """Initialize FMFormulaByFeaturesAndSwSystemconsts."""

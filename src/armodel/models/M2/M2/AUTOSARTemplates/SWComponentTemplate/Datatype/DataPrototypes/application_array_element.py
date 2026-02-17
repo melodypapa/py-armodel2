@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_composite_element_data_prototype import (
     ApplicationCompositeElementDataPrototype,
@@ -30,34 +29,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 
 class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationArrayElement."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "array_size_handling": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ArraySizeHandlingEnum,
-        ),  # arraySizeHandling
-        "array_size": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ArraySizeSemanticsEnum,
-        ),  # arraySize
-        "index_data_type": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ApplicationPrimitiveDataType,
-        ),  # indexDataType
-        "max_number_of": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # maxNumberOf
-    }
 
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""

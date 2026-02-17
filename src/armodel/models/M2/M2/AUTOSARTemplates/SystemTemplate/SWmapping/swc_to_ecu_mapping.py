@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -23,35 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 
 class SwcToEcuMapping(Identifiable):
     """AUTOSAR SwcToEcuMapping."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "components": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # components
-        "controlled_hw": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HwElement,
-        ),  # controlledHw
-        "ecu_instance": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EcuInstance,
-        ),  # ecuInstance
-        "processing_unit": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HwElement,
-        ),  # processingUnit
-    }
 
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""

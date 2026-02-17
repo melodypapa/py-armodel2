@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
@@ -19,23 +18,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 
 class AutosarVariableRef(ARObject):
     """AUTOSAR AutosarVariableRef."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "autosar_variable": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # autosarVariable
-        "local_variable": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # localVariable
-    }
 
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""

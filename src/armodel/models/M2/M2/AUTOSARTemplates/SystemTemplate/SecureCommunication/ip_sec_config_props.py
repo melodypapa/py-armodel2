@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommuni
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -25,72 +24,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class IPSecConfigProps(ARElement):
     """AUTOSAR IPSecConfigProps."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "ah_cipher_suites": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-        ),  # ahCipherSuites
-        "dpd_action": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IPsecDpdActionEnum,
-        ),  # dpdAction
-        "dpd_delay": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # dpdDelay
-        "esp_cipher_suites": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-        ),  # espCipherSuites
-        "ike_cipher_suite": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ikeCipherSuite
-        "ike_over_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ikeOverTime
-        "ike_rand_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ikeRandTime
-        "ike_reauth_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ikeReauthTime
-        "ike_rekey_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ikeRekeyTime
-        "sa_over_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # saOverTime
-        "sa_rand_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # saRandTime
-        "sa_rekey_time": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # saRekeyTime
-    }
 
     def __init__(self) -> None:
         """Initialize IPSecConfigProps."""

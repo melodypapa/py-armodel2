@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_Enviro
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_condition_formula_part import (
     DiagnosticEnvConditionFormulaPart,
@@ -23,22 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
     """AUTOSAR DiagnosticEnvConditionFormula."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "nrc_value": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # nrcValue
-        "op": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticLogicalOperatorEnum,
-        ),  # op
-    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""

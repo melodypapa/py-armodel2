@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProt
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
     IEEE1722TpAcfBus,
@@ -17,17 +16,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfCan."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "message_type_message_type_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="IEEE1722TpAcfCan",
-        ),  # messageTypeMessageTypeEnum
-    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""

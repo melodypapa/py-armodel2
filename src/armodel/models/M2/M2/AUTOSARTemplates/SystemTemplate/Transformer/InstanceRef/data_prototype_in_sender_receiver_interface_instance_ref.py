@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer_I
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.InstanceRef.data_prototype_in_port_interface_instance_ref import (
     DataPrototypeInPortInterfaceInstanceRef,
@@ -23,35 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 
 class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInterfaceInstanceRef):
     """AUTOSAR DataPrototypeInSenderReceiverInterfaceInstanceRef."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "base_interface": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # baseInterface
-        "context_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # contextDatas
-        "root_data_prototype_in_sr": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AutosarDataPrototype,
-        ),  # rootDataPrototypeInSr
-        "target_data_prototype_in_sr": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataPrototype,
-        ),  # targetDataPrototypeInSr
-    }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeInSenderReceiverInterfaceInstanceRef."""

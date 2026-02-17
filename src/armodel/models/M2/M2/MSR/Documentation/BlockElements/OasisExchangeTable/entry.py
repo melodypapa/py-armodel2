@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchange
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
@@ -28,74 +27,6 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 
 class Entry(ARObject):
     """AUTOSAR Entry."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "align": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AlignEnum,
-        ),  # align
-        "bgcolor": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # bgcolor
-        "colname": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # colname
-        "colsep": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # colsep
-        "entry_contents": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=DocumentationBlock,
-        ),  # entryContents
-        "morerows": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # morerows
-        "nameend": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # nameend
-        "namest": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # namest
-        "rotate": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rotate
-        "rowsep": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rowsep
-        "spanname": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # spanname
-        "valign": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ValignEnum,
-        ),  # valign
-    }
 
     def __init__(self) -> None:
         """Initialize Entry."""

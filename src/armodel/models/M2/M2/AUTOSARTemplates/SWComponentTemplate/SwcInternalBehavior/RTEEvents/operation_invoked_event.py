@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
@@ -21,17 +20,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 
 class OperationInvokedEvent(RTEEvent):
     """AUTOSAR OperationInvokedEvent."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "operation_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ClientServerOperation,
-        ),  # operationInstanceRef
-    }
 
     def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_RteEventToOsT
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -26,28 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 
 class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
     """AUTOSAR RteEventInCompositionToOsTaskProxyMapping."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "offset": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # offset
-        "os_task_proxy": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=OsTaskProxy,
-        ),  # osTaskProxy
-        "rte_event_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RTEEvent,
-        ),  # rteEventInstanceRef
-    }
 
     def __init__(self) -> None:
         """Initialize RteEventInCompositionToOsTaskProxyMapping."""

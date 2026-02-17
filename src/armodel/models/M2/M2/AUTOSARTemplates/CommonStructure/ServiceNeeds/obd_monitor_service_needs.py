@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
@@ -30,34 +29,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 
 class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdMonitorServiceNeeds."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "application_data": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ApplicationDataType,
-        ),  # applicationData
-        "event_needs": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticEventNeeds,
-        ),  # eventNeeds
-        "unit_and_scaling_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # unitAndScalingId
-        "update_kind": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticMonitorUpdateKindEnum,
-        ),  # updateKind
-    }
 
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""

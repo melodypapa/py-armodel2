@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communic
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
@@ -29,50 +28,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.compos
 class ReceiverComSpec(RPortComSpec):
     """AUTOSAR ReceiverComSpec."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "composite_networks": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CompositeNetworkRepresentation,
-        ),  # compositeNetworks
-        "data_element": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AutosarDataPrototype,
-        ),  # dataElement
-        "handle_out_of_range": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # handleOutOfRange
-        "max_delta": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # maxDelta
-        "sync_counter_init": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # syncCounterInit
-        "transformation_coms": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # transformationComs
-        "uses_end_to_end": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # usesEndToEnd
-    }
 
     def __init__(self) -> None:
         """Initialize ReceiverComSpec."""

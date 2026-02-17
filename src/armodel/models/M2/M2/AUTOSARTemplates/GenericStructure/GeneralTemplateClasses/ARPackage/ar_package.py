@@ -17,7 +17,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemp
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collectable_element import (
     CollectableElement,
@@ -35,29 +34,6 @@ if TYPE_CHECKING:
 
 class ARPackage(CollectableElement):
     """AUTOSAR ARPackage."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "ar_packages": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="ARPackage",
-        ),  # arPackages
-        "elements": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PackageableElement,
-        ),  # elements
-        "reference_bases": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="ReferenceBase",
-        ),  # referenceBases
-    }
 
     def __init__(self) -> None:
         """Initialize ARPackage."""

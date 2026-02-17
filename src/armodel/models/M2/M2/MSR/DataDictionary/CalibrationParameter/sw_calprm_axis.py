@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_CalibrationParameter.class
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
@@ -30,39 +29,6 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
 
 class SwCalprmAxis(ARObject):
     """AUTOSAR SwCalprmAxis."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "category": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CalprmAxisCategoryEnum,
-        ),  # category
-        "display_format_string": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # displayFormatString
-        "sw_axis_index": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # swAxisIndex
-        "sw_calibration_access": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwCalibrationAccessEnum,
-        ),  # swCalibrationAccess
-        "sw_calprm_axis": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwCalprmAxisTypeProps,
-        ),  # swCalprmAxis
-    }
 
     def __init__(self) -> None:
         """Initialize SwCalprmAxis."""

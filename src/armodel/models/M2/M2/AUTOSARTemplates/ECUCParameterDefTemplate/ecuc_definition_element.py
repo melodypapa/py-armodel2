@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -35,45 +34,6 @@ if TYPE_CHECKING:
 class EcucDefinitionElement(Identifiable):
     """AUTOSAR EcucDefinitionElement."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "ecuc_cond": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # ecucCond
-        "ecuc_validations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="EcucValidationCondition",
-        ),  # ecucValidations
-        "lower_multiplicity": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # lowerMultiplicity
-        "related_trace": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Traceable,
-        ),  # relatedTrace
-        "scope": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EcucScopeEnum,
-        ),  # scope
-        "upper_multiplicity": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # upperMultiplicity
-    }
 
     def __init__(self) -> None:
         """Initialize EcucDefinitionElement."""

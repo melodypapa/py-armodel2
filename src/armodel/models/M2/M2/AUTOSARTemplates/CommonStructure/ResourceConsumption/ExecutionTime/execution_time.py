@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceCons
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -40,53 +39,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.soft
 class ExecutionTime(Identifiable):
     """AUTOSAR ExecutionTime."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "exclusive_area": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ExclusiveArea,
-        ),  # exclusiveArea
-        "executable_entity": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ExecutableEntity,
-        ),  # executableEntity
-        "hardware": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HardwareConfiguration,
-        ),  # hardware
-        "hw_element": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HwElement,
-        ),  # hwElement
-        "included_libraries": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DependencyOnArtifact,
-        ),  # includedLibraries
-        "memory_section_locations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=MemorySectionLocation,
-        ),  # memorySectionLocations
-        "software_context": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SoftwareContext,
-        ),  # softwareContext
-    }
 
     def __init__(self) -> None:
         """Initialize ExecutionTime."""

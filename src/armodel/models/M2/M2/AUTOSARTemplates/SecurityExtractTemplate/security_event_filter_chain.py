@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.clas
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
@@ -26,35 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_t
 
 class SecurityEventFilterChain(IdsCommonElement):
     """AUTOSAR SecurityEventFilterChain."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "aggregation": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # aggregation
-        "one_every_n": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SecurityEventOneEveryNFilter,
-        ),  # oneEveryN
-        "state": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SecurityEventStateFilter,
-        ),  # state
-        "threshold": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SecurityEventThresholdFilter,
-        ),  # threshold
-    }
 
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""

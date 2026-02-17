@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
@@ -24,23 +23,6 @@ if TYPE_CHECKING:
 
 class HwPinGroupContent(ARObject):
     """AUTOSAR HwPinGroupContent."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "hw_pin": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HwPin,
-        ),  # hwPin
-        "hw_pin_group": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="HwPinGroup",
-        ),  # hwPinGroup
-    }
 
     def __init__(self) -> None:
         """Initialize HwPinGroupContent."""

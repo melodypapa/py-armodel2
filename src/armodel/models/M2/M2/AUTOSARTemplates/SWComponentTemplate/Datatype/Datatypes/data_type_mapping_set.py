@@ -11,7 +11,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -26,23 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_req
 
 class DataTypeMappingSet(ARElement):
     """AUTOSAR DataTypeMappingSet."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "data_type_maps": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DataTypeMap,
-        ),  # dataTypeMaps
-        "mode_request_type_maps": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ModeRequestTypeMap,
-        ),  # modeRequestTypeMaps
-    }
 
     def __init__(self) -> None:
         """Initialize DataTypeMappingSet."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_Timin
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
@@ -27,41 +26,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 
 class SynchronizationTimingConstraint(TimingConstraint):
     """AUTOSAR SynchronizationTimingConstraint."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "event": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EventOccurrenceKindEnum,
-        ),  # event
-        "scopes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=TimingDescriptionEvent,
-        ),  # scopes
-        "scope_events": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=TimingDescriptionEvent,
-        ),  # scopeEvents
-        "synchronization": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SynchronizationTypeEnum,
-        ),  # synchronization
-        "tolerance": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # tolerance
-    }
 
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""

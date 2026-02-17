@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -29,44 +28,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CommunicationConnector(Identifiable):
     """AUTOSAR CommunicationConnector."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "comm_controller": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # commController
-        "create_ecu": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # createEcu
-        "dynamic_pnc_to": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # dynamicPncTo
-        "ecu_comm_ports": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CommConnectorPort,
-        ),  # ecuCommPorts
-        "pnc_filter_arrays": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-        ),  # pncFilterArrays
-        "pnc_gateway_type_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PncGatewayTypeEnum,
-        ),  # pncGatewayTypeEnum
-    }
 
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""

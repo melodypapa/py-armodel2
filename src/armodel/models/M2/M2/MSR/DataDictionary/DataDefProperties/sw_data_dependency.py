@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
@@ -18,17 +17,6 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
 
 class SwDataDependency(ARObject):
     """AUTOSAR SwDataDependency."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "sw_data": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CompuGenericMath,
-        ),  # swData
-    }
 
     def __init__(self) -> None:
         """Initialize SwDataDependency."""

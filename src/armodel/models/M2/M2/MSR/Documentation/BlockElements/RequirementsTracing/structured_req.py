@@ -11,7 +11,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_RequirementsT
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -36,85 +35,6 @@ if TYPE_CHECKING:
 
 class StructuredReq(Paginateable):
     """AUTOSAR StructuredReq."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "applies_tos": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=StandardNameEnum,
-        ),  # appliesTos
-        "conflicts": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # conflicts
-        "date": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # date
-        "dependencies": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # dependencies
-        "description": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # description
-        "importance": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # importance
-        "issued_by": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # issuedBy
-        "rationale": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # rationale
-        "remark": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # remark
-        "supporting": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # supporting
-        "tested_items": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Traceable,
-        ),  # testedItems
-        "type": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # type
-        "use_case": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="DocumentationBlock",
-        ),  # useCase
-    }
 
     def __init__(self) -> None:
         """Initialize StructuredReq."""

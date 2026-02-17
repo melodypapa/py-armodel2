@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composit
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.port_in_composition_type_instance_ref import (
     PortInCompositionTypeInstanceRef,
@@ -20,23 +19,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 
 class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
     """AUTOSAR PPortInCompositionInstanceRef."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "context": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # context
-        "target_p_port_prototype": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AbstractProvidedPortPrototype,
-        ),  # targetPPortPrototype
-    }
 
     def __init__(self) -> None:
         """Initialize PPortInCompositionInstanceRef."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -47,82 +46,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 
 class NvBlockDescriptor(Identifiable):
     """AUTOSAR NvBlockDescriptor."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "client_server_ports": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RoleBasedPortAssignment,
-        ),  # clientServerPorts
-        "constant_values": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ConstantSpecification,
-        ),  # constantValues
-        "data_types": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DataTypeMappingSet,
-        ),  # dataTypes
-        "instantiation_data_defs": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=InstantiationDataDefProps,
-        ),  # instantiationDataDefs
-        "mode_switch_events": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # modeSwitchEvents
-        "nv_block_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=NvBlockDataMapping,
-        ),  # nvBlockDatas
-        "nv_block_needs": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=NvBlockNeeds,
-        ),  # nvBlockNeeds
-        "ram_block": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # ramBlock
-        "rom_block": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ParameterDataPrototype,
-        ),  # romBlock
-        "support_dirty": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # supportDirty
-        "timing_event": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TimingEvent,
-        ),  # timingEvent
-        "writing_strategies": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # writingStrategies
-    }
 
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""

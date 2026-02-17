@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommuni
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_mapping import (
     CryptoServiceMapping,
@@ -26,29 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 
 class SecOcCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR SecOcCryptoServiceMapping."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "authentication": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServicePrimitive,
-        ),  # authentication
-        "crypto_service_key": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceKey,
-        ),  # cryptoServiceKey
-        "crypto_service_queue": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceQueue,
-        ),  # cryptoServiceQueue
-    }
 
     def __init__(self) -> None:
         """Initialize SecOcCryptoServiceMapping."""

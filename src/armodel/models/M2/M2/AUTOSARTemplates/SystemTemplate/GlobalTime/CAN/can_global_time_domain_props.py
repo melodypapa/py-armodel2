@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_CA
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
     AbstractGlobalTimeDomainProps,
@@ -20,31 +19,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR CanGlobalTimeDomainProps."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "fup_data_id_list": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # fupDataIDList
-        "ofns_data_id_list": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # ofnsDataIDList
-        "ofs_data_id_list": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # ofsDataIDList
-        "sync_data_id_list": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # syncDataIDList
-    }
 
     def __init__(self) -> None:
         """Initialize CanGlobalTimeDomainProps."""

@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.cl
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_rule_based_value_argument import (
     CompositeRuleBasedValueArgument,
@@ -27,28 +26,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_val
 
 class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
     """AUTOSAR ApplicationRuleBasedValueSpecification."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "category_specification": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # categorySpecification
-        "sw_axis_conts": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RuleBasedAxisCont,
-        ),  # swAxisConts
-        "sw_value_cont": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RuleBasedValueCont,
-        ),  # swValueCont
-    }
 
     def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""

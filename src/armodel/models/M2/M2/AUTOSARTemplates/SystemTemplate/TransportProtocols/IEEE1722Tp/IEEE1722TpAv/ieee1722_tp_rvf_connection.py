@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProt
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
     IEEE1722TpAvConnection,
@@ -25,55 +24,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpRvfConnection."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "rvf_active_pixels": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rvfActivePixels
-        "rvf_color_space": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IEEE1722TpRvfColorSpaceEnum,
-        ),  # rvfColorSpace
-        "rvf_event_default": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rvfEventDefault
-        "rvf_frame_rate": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IEEE1722TpRvfFrameRateEnum,
-        ),  # rvfFrameRate
-        "rvf_interlaced": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rvfInterlaced
-        "rvf_pixel_depth": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # rvfPixelDepth
-        "rvf_pixel_format": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # rvfPixelFormat
-        "rvf_total_lines": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rvfTotalLines
-    }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""

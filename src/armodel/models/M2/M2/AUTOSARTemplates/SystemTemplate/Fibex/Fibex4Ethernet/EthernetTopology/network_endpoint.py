@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -30,39 +29,6 @@ if TYPE_CHECKING:
 
 class NetworkEndpoint(Identifiable):
     """AUTOSAR NetworkEndpoint."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "fully_qualified": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # fullyQualified
-        "infrastructure_services": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=InfrastructureServices,
-        ),  # infrastructureServices
-        "ip_sec_config": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="IPSecConfig",
-        ),  # ipSecConfig
-        "network_endpoints": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="NetworkEndpoint",
-        ),  # networkEndpoints
-        "priority": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # priority
-    }
 
     def __init__(self) -> None:
         """Initialize NetworkEndpoint."""

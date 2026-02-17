@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
@@ -18,29 +17,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_proto
 
 class SwcServiceDependencyInSystemInstanceRef(ARObject):
     """AUTOSAR SwcServiceDependencyInSystemInstanceRef."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "context_root_sw": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RootSwCompositionPrototype,
-        ),  # contextRootSw
-        "context_sw_prototypes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # contextSwPrototypes
-        "target_swc": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # targetSwc
-    }
 
     def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""

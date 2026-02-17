@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_debounce_algorithm import (
     DiagEventDebounceAlgorithm,
@@ -22,26 +21,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceTimeBased."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "time_based_fdc": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timeBasedFdc
-        "time_failed": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timeFailed
-        "time_passed": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timePassed
-    }
 
     def __init__(self) -> None:
         """Initialize DiagEventDebounceTimeBased."""

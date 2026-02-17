@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElement
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.InlineAttributeEnums import (
@@ -32,77 +31,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_lan
 
 class Xref(ARObject):
     """AUTOSAR Xref."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "label1": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SingleLanguageLongName,
-        ),  # label1
-        "referrable": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Referrable,
-        ),  # referrable
-        "resolution_policy_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ResolutionPolicyEnum,
-        ),  # resolutionPolicyEnum
-        "show_content_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowContentEnum,
-        ),  # showContentEnum
-        "show_resource_alias": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourceAliasNameEnum,
-        ),  # showResourceAlias
-        "show_resource": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourceTypeEnum,
-        ),  # showResource
-        "show_resource_long": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourceLongNameEnum,
-        ),  # showResourceLong
-        "show_resource_number": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourceNumberEnum,
-        ),  # showResourceNumber
-        "show_resource_page": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourcePageEnum,
-        ),  # showResourcePage
-        "show_resource_short": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowResourceShortNameEnum,
-        ),  # showResourceShort
-        "show_see": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ShowSeeEnum,
-        ),  # showSee
-    }
 
     def __init__(self) -> None:
         """Initialize Xref."""

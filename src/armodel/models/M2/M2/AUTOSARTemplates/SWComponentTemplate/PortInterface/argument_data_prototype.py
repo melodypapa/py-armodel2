@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInte
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -28,23 +27,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import
 
 class ArgumentDataPrototype(AutosarDataPrototype):
     """AUTOSAR ArgumentDataPrototype."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "direction": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ArgumentDirectionEnum,
-        ),  # direction
-        "server_argument_impl": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ServerArgumentImplPolicyEnum,
-        ),  # serverArgumentImpl
-    }
 
     def __init__(self) -> None:
         """Initialize ArgumentDataPrototype."""
