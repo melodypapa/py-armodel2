@@ -116,7 +116,7 @@
         }
       ],
       "attributes": {
-        "baseType": {
+        "baseTypeDefinition": {
           "type": "BaseTypeDefinition",
           "multiplicity": "1",
           "kind": "attribute",

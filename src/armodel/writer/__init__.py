@@ -46,24 +46,21 @@ class ARXMLWriter:
     def _serialize_to_xml(self, autosar: AUTOSAR) -> ET.Element:
         """Serialize AUTOSAR object to XML element.
 
+        The AUTOSAR root element handles namespace attributes internally.
+        No namespace parameter is needed as it's managed by AUTOSAR class.
+
         Args:
             autosar: AUTOSAR object to serialize
 
         Returns:
             Root XML element
         """
-        # Get default namespace for version-aware XML output
-        version = self._version_manager.get_default_version()
-        namespace = self._version_manager.get_namespace(version)
-
-        if namespace:
-            # Register default namespace (empty prefix)
-            ET.register_namespace("", namespace)
-        # Register xsi namespace
+        # Register xsi namespace for proper XML serialization
         ET.register_namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
 
         # Use reflection-based serialize method
-        root = autosar.serialize(namespace=namespace or "")
+        # AUTOSAR class handles namespace attributes internally
+        root = autosar.serialize()
         return root
 
     def _save_to_file(self, root: ET.Element, filepath: Union[str, Path]) -> None:
@@ -102,47 +99,29 @@ class ARXMLWriter:
                 elem.text = indent_str + "  "
             if not elem.tail or not elem.tail.strip():
                 elem.tail = indent_str
-            child = None
             for child in elem:
                 self._indent(child, level + 1)
-            if child is not None and (not child.tail or not child.tail.strip()):
+            if not child.tail or not child.tail.strip():
                 child.tail = indent_str
         else:
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = indent_str
 
-    def configure(
-        self, pretty_print: Optional[bool] = None, encoding: Optional[str] = None
-    ) -> None:
-        """Update writer configuration.
-
-        Args:
-            pretty_print: Whether to format XML with indentation
-            encoding: File encoding
-        """
-        if pretty_print is not None:
-            self._pretty_print = pretty_print
-        if encoding is not None:
-            self._encoding = encoding
-
     def to_string(self, autosar: AUTOSAR) -> str:
-        """Convert AUTOSAR object to XML string.
+        """Serialize AUTOSAR object to XML string.
 
         Args:
-            autosar: AUTOSAR object to convert
+            autosar: AUTOSAR object to serialize
 
         Returns:
             XML string representation
         """
         root = self._serialize_to_xml(autosar)
+        tree = ET.ElementTree(root)
 
         if self._pretty_print:
-            self._indent(root)
+            self._indent(tree.getroot())
 
+        # Convert to string (ET.tostring returns bytes, need to decode)
         xml_bytes = ET.tostring(root, encoding=self._encoding, xml_declaration=True)
-        return xml_bytes.decode(self._encoding) if xml_bytes else ""
-
-
-__all__ = [
-    "ARXMLWriter",
-]
+        return xml_bytes.decode(self._encoding)

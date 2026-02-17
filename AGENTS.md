@@ -54,6 +54,9 @@ mypy src/
 ```bash
 # Regenerate all model classes (after generator or mapping changes)
 python tools/generate_models.py docs/json/mapping.json docs/json/hierarchy.json src/armodel/models/M2 --members --classes --enums --primitives
+
+# Generate YAML model mappings (after model class changes)
+python tools/generate_model_mappings.py
 ```
 
 **Special Classes:**
@@ -234,14 +237,63 @@ class NameConverter:
     def to_xml_tag(name: str) -> str:
         """short_name → SHORT-NAME"""
         return name.upper().replace('_', '-')
-    
+
     @staticmethod
     def to_python_name(tag: str) -> str:
         """SHORT-NAME → short_name"""
         return tag.lower().replace('-', '_')
+
+    @staticmethod
+    def tag_to_class_name(tag: str) -> str:
+        """SW-BASE-TYPE → SwBaseType"""
+        # Handles AR prefix and acronyms
 ```
 
-#### 3. Decorators
+#### 3. ModelFactory
+
+Location: `src/armodel/serialization/model_factory.py`
+
+The ModelFactory provides efficient class instantiation from XML tags with support for polymorphic type resolution.
+
+```python
+from armodel.serialization import ModelFactory
+
+# Get singleton instance
+factory = ModelFactory()
+
+# Load mappings (automatic if not loaded)
+if not factory.is_initialized():
+    factory.load_mappings()
+
+# Get class from XML tag
+cls = factory.get_class("SW-BASE-TYPE")  # Returns SwBaseType class
+
+# Resolve polymorphic type
+concrete_cls = factory.resolve_polymorphic_type(
+    "SW-BASE-TYPE",
+    "PackageableElement"
+)
+```
+
+**Features:**
+- Singleton pattern for global access
+- Cached class imports for performance
+- Polymorphic type resolution using YAML mappings
+- Automatic XML tag to class name conversion
+
+**YAML Mappings File:** `src/armodel/cfg/model_mappings.yaml`
+
+The YAML file is generated from JSON mapping data and contains:
+- XML tag to class name mappings (1623+ classes)
+- Polymorphic type mappings (233 base classes with concrete implementations)
+- Class name to import path mappings
+
+**Generating YAML Mappings:**
+```bash
+python tools/generate_model_mappings.py
+```
+
+#### 4. Decorators
 
 Location: `src/armodel/serialization/decorators.py`
 
@@ -308,6 +360,7 @@ class AUTOSAR(ARObject):
 ### Core Infrastructure
 - **SchemaVersionManager** (`src/armodel/core/version.py`) - Schema version detection
 - **NameConverter** (`src/armodel/serialization/name_converter.py`) - Name conversion utility
+- **ModelFactory** (`src/armodel/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
 - **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators
 - **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 

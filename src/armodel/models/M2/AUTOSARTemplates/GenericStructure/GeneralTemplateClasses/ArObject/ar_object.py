@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Union, get_type_hints, get_args, get_origin
 import xml.etree.ElementTree as ET
 from armodel.serialization.name_converter import NameConverter
+from armodel.serialization.model_factory import ModelFactory
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
@@ -27,14 +28,14 @@ class ARObject:
         self.checksum: Optional[String] = None
         self.timestamp: Optional[DateTime] = None
 
-    def serialize(self, namespace: str = "") -> ET.Element:
+    def serialize(self) -> ET.Element:
         """Serialize object to XML element using reflection.
 
         Automatically discovers all non-private attributes via vars(self),
         converts names to XML tags, and serializes them as child elements.
 
-        Args:
-            namespace: XML namespace URI (optional)
+        Note: This is a base class for all AUTOSAR elements. Namespace handling
+        should be done by the root AUTOSAR element only, not by child elements.
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -42,10 +43,6 @@ class ARObject:
         # Get XML tag name for this class
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
-
-        # Add namespace if provided
-        if namespace:
-            elem.set("xmlns", namespace)
 
         # Get all instance attributes
         for name, value in vars(self).items():
@@ -65,14 +62,14 @@ class ARObject:
                 elem.set(xml_tag, str(value))
             elif hasattr(value, 'serialize'):
                 # Recursively serialize child objects
-                child = value.serialize(namespace)
+                child = value.serialize()
                 elem.append(child)
             elif isinstance(value, list):
                 # Serialize list items - create wrapper element
                 wrapper = ET.Element(xml_tag)
                 for item in value:
                     if hasattr(item, 'serialize'):
-                        wrapper.append(item.serialize(namespace))
+                        wrapper.append(item.serialize())
                     else:
                         child = ET.Element(xml_tag)
                         child.text = str(item)
@@ -286,7 +283,37 @@ class ARObject:
         return None
 
     @staticmethod
+    def _strip_namespace(tag: str) -> str:
+        """Strip namespace from XML tag.
+
+        Args:
+            tag: XML tag with optional namespace
+
+        Returns:
+            Tag without namespace
+        """
+        if '}' in tag:
+            return tag.split('}')[1]
+        return tag
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
+        """Extract value from XML element based on type.
+
+        Args:
+            element: XML element
+            attr_type: Expected type (from type hints) - can be type object or string
+
+        Returns:
+            Extracted value
+        """
+        if element is None:
+            return None
+
+        # Get factory instance
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
         """Extract value from XML element based on type.
 
         Args:
@@ -311,17 +338,47 @@ class ARObject:
                 # Find all direct child elements
                 children = list(element)
 
-                # Try to import the class and deserialize
+                # Try to import the base class to check for polymorphic types
+                base_class = ARObject._import_class_by_name(inner_type_str)
+
+                # Deserialize each child element
                 result = []
                 for child in children:
-                    # Try to deserialize using the class
-                    item_class = ARObject._import_class_by_name(inner_type_str)
-                    if item_class and hasattr(item_class, 'deserialize'):
-                        item = item_class.deserialize(child)
-                        result.append(item)
+                    # Get the child's XML tag name (strip namespace if present)
+                    child_tag = ARObject._strip_namespace(child.tag)
+
+                    # Check if base class is an ARObject subclass (polymorphic case)
+                    if base_class and isinstance(base_class, type) and issubclass(base_class, ARObject):
+                        # Get the expected XML tag for the base class
+                        expected_tag = NameConverter.to_xml_tag(base_class.__name__)
+
+                        # If child tag differs from base class tag, try to use concrete class
+                        if child_tag != expected_tag:
+                            # Get concrete class from factory
+                            concrete_class = factory.get_class(child_tag)
+
+                            # Check if concrete class is a subclass of base_class
+                            if concrete_class and issubclass(concrete_class, base_class):
+                                # Use concrete class for deserialization
+                                item = concrete_class.deserialize(child)
+                                result.append(item)
+                                continue
+
+                        # Fallback to base class deserialization
+                        if hasattr(base_class, 'deserialize'):
+                            item = base_class.deserialize(child)
+                            result.append(item)
+                        else:
+                            result.append(child.text if child.text else None)
                     else:
-                        # Fallback to text content
-                        result.append(child.text if child.text else None)
+                        # For non-polymorphic types, try to deserialize using the class name directly
+                        item_class = ARObject._import_class_by_name(inner_type_str)
+                        if item_class and hasattr(item_class, 'deserialize'):
+                            item = item_class.deserialize(child)
+                            result.append(item)
+                        else:
+                            # Fallback to text content
+                            result.append(child.text if child.text else None)
 
                 return result
 
@@ -358,8 +415,34 @@ class ARObject:
                 # Deserialize each child element
                 result = []
                 for child in children:
-                    # For object types, deserialize recursively
-                    if hasattr(item_type, 'deserialize'):
+                    # Get the child's XML tag name (strip namespace if present)
+                    child_tag = ARObject._strip_namespace(child.tag)
+
+                    # Check if this is an ARObject subclass (polymorphic case)
+                    if isinstance(item_type, type) and issubclass(item_type, ARObject):
+                        # Get the expected XML tag for the base class
+                        expected_tag = NameConverter.to_xml_tag(item_type.__name__)
+
+                        # If child tag differs from base class tag, try to use concrete class
+                        if child_tag != expected_tag:
+                            # Get concrete class from factory
+                            concrete_class = factory.get_class(child_tag)
+
+                            # Check if concrete class is a subclass of item_type
+                            if concrete_class and issubclass(concrete_class, item_type):
+                                # Use concrete class for deserialization
+                                item = concrete_class.deserialize(child)
+                                result.append(item)
+                                continue
+
+                        # Fallback to base class deserialization
+                        if hasattr(item_type, 'deserialize'):
+                            item = item_type.deserialize(child)
+                            result.append(item)
+                        else:
+                            result.append(child.text if child.text else None)
+                    elif hasattr(item_type, 'deserialize'):
+                        # For non-ARObject types with deserialize method
                         item = item_type.deserialize(child)
                         result.append(item)
                     else:

@@ -22,6 +22,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.serialization.name_converter import NameConverter
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
     ARPackage,
@@ -38,7 +39,11 @@ from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.file_info_comme
 
 
 class AUTOSAR(ARObject):
-    """AUTOSAR AUTOSAR."""
+    """AUTOSAR AUTOSAR root element.
+
+    This is the root element of any ARXML document. As the root element,
+    it handles namespace attributes that should appear only once in the document.
+    """
 
     admin_data: Optional[AdminData]
     ar_packages: list[ARPackage]
@@ -51,6 +56,64 @@ class AUTOSAR(ARObject):
         self.ar_packages: list[ARPackage] = []
         self.file_info: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize AUTOSAR root element to XML with namespace attributes.
+
+        As the root element of ARXML documents, AUTOSAR handles namespace
+        attributes. Child elements inherit from this root and do not need
+        their own namespace declarations.
+
+        Returns:
+            xml.etree.ElementTree.Element representing the AUTOSAR root element
+        """
+        # Get XML tag name using parent method
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+
+        # Add AUTOSAR namespace attributes (root element only)
+        elem.set("xmlns", "http://autosar.org/schema/r4.0")
+        elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+        elem.set("xsi:schemaLocation", "http://autosar.org/schema/r4.0 AUTOSAR_4-0-3.xsd")
+
+        # Serialize all instance attributes
+        for name, value in vars(self).items():
+            # Skip private attributes
+            if name.startswith('_'):
+                continue
+
+            # Convert Python name to XML tag
+            xml_tag = NameConverter.to_xml_tag(name)
+
+            # Skip None values
+            if value is None:
+                continue
+
+            # Check if this should be an XML attribute (via decorator)
+            if self._is_xml_attribute(name):
+                elem.set(xml_tag, str(value))
+            elif hasattr(value, 'serialize'):
+                # Recursively serialize child objects (no namespace parameter)
+                child = value.serialize()
+                elem.append(child)
+            elif isinstance(value, list):
+                # Serialize list items - create wrapper element
+                wrapper = ET.Element(xml_tag)
+                for item in value:
+                    if hasattr(item, 'serialize'):
+                        wrapper.append(item.serialize())
+                    else:
+                        child = ET.Element(xml_tag)
+                        child.text = str(item)
+                        wrapper.append(child)
+                elem.append(wrapper)
+            else:
+                # Primitive value - create element with text content
+                child = ET.Element(xml_tag)
+                child.text = str(value)
+                elem.append(child)
+
+        return elem
 
 
 class AUTOSARBuilder:
