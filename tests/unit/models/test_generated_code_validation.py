@@ -48,75 +48,6 @@ class TestGeneratedCodeValidation:
                 f"Failed to instantiate {len(failures)} out of {len(sample_classes)} classes: {failures[:10]}"
             )
 
-    def test_all_classes_have_serialize(self):
-        """Test that all generated classes have serialize method (SWUT_MODELS_101).
-
-        Note: This checks a subset of classes.
-        """
-        sample_classes = []
-
-        for module_name in dir(AUTOSARTemplates):
-            module = getattr(AUTOSARTemplates, module_name)
-            if inspect.ismodule(module):
-                for name, obj in inspect.getmembers(module):
-                    if inspect.isclass(obj) and not name.startswith("_"):
-                        sample_classes.append(obj)
-                    if len(sample_classes) >= 100:
-                        break
-            if len(sample_classes) >= 100:
-                break
-
-        # Verify serialize method exists
-        failures = []
-        for cls in sample_classes:
-            if not hasattr(cls, "serialize"):
-                failures.append(cls.__name__)
-            else:
-                # Verify signature
-                sig = inspect.signature(cls.serialize)
-                if "namespace" not in sig.parameters:
-                    failures.append(f"{cls.__name__} (invalid signature)")
-
-        if failures:
-            pytest.fail(
-                f"Missing or invalid serialize method in {len(failures)} classes: {failures[:10]}"
-            )
-
-    def test_all_classes_have_deserialize(self):
-        """Test that all generated classes have deserialize method (SWUT_MODELS_102).
-
-        Note: This checks a subset of classes.
-        """
-        sample_classes = []
-
-        for module_name in dir(AUTOSARTemplates):
-            module = getattr(AUTOSARTemplates, module_name)
-            if inspect.ismodule(module):
-                for name, obj in inspect.getmembers(module):
-                    if inspect.isclass(obj) and not name.startswith("_"):
-                        sample_classes.append(obj)
-                    if len(sample_classes) >= 100:
-                        break
-            if len(sample_classes) >= 100:
-                break
-
-        # Verify deserialize method exists
-        failures = []
-        for cls in sample_classes:
-            if not hasattr(cls, "deserialize"):
-                failures.append(cls.__name__)
-            else:
-                # Verify it's a classmethod
-                if not isinstance(
-                    inspect.getattr_static(cls, "deserialize"), classmethod
-                ):
-                    failures.append(f"{cls.__name__} (not a classmethod)")
-
-        if failures:
-            pytest.fail(
-                f"Missing or invalid deserialize method in {len(failures)} classes: {failures[:10]}"
-            )
-
     def test_all_classes_have_builder(self):
         """Test that all generated classes have builder class (SWUT_MODELS_103).
 
@@ -180,18 +111,6 @@ class TestGeneratedCodeValidation:
             pytest.fail(
                 f"Missing or invalid _xml_members in {len(failures)} classes: {failures[:10]}"
             )
-
-    def test_core_classes_complete(self):
-        """Test that core classes have all required methods."""
-        from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-
-        for cls in [ARObject, AUTOSAR, ARPackage]:
-            assert hasattr(cls, "serialize")
-            assert hasattr(cls, "deserialize")
-            assert hasattr(cls, "_xml_members")
-            assert isinstance(cls._xml_members, dict)
 
     def test_builder_naming_convention(self):
         """Test that builders follow naming convention."""

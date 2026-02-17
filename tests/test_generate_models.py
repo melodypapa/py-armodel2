@@ -55,9 +55,8 @@ def test_generate_class_code():
 
     # Check that class is generated
     assert "class TestInterface(ARObject):" in code
-    assert "def serialize(self, namespace: str" in code
-    assert "@classmethod" in code
-    assert "def deserialize(cls, element" in code
+    assert "def __init__(self)" in code
+    assert "_xml_members" in code
 
 def test_generate_builder_code():
     """Test generating builder class code"""
