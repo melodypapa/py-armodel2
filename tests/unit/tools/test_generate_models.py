@@ -1,5 +1,4 @@
 import pytest
-import json
 from pathlib import Path
 
 from tools.generate_models import create_directory_structure

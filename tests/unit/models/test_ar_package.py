@@ -1,7 +1,5 @@
 """Unit tests for ARPackage class."""
 
-import pytest
-import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
     ARPackage,

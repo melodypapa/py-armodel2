@@ -7,7 +7,10 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemp
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Union, get_type_hints, get_args, get_origin
+import warnings
 import xml.etree.ElementTree as ET
+
+from armodel.core.global_settings import GlobalSettingsManager
 from armodel.serialization.name_converter import NameConverter
 from armodel.serialization.model_factory import ModelFactory
 
@@ -204,7 +207,57 @@ class ARObject:
             # Set attribute
             setattr(obj, attr_name, value)
 
+        # Validate deserialization - check for unrecognized XML elements
+        cls._validate_deserialization(element, type_hints)
+
         return obj
+
+    @classmethod
+    def _validate_deserialization(
+        cls,
+        element: ET.Element,
+        type_hints: dict,
+    ) -> None:
+        """Validate deserialization by checking for unrecognized XML elements.
+
+        This private method checks if any XML elements in the input were not
+        matched to Python attributes, based on global settings.
+
+        Note: Validation is skipped for classes that override deserialize(),
+        since they may handle additional elements in custom logic.
+
+        Args:
+            element: XML element that was deserialized
+            type_hints: Type hints dictionary used for deserialization
+
+        Raises:
+            ValueError: If strict_validation is enabled and unrecognized elements found
+        """
+        # Skip validation for classes with custom deserialize (override check)
+        # If the class's deserialize method is different from ARObject.deserialize,
+        # it has custom logic that may handle additional elements
+        if cls.deserialize.__func__ is not ARObject.deserialize.__func__:
+            return
+
+        settings = GlobalSettingsManager()
+
+        # Skip validation if both settings are disabled
+        if not (settings.warn_on_unrecognized or settings.strict_validation):
+            return
+
+        # Build set of expected XML tags from type hints
+        expected_tags = {NameConverter.to_xml_tag(name) for name in type_hints.keys()}
+
+        # Check each child element
+        for child in element:
+            child_tag = cls._strip_namespace(child.tag)
+            if child_tag not in expected_tags:
+                msg = f"Unrecognized XML element <{child_tag}> in {cls.__name__}. " \
+                      f"Element will be ignored during deserialization."
+                if settings.strict_validation:
+                    raise ValueError(msg)
+                else:
+                    warnings.warn(msg, UserWarning, stacklevel=3)
 
     @staticmethod
     def _is_xml_attribute_static(cls, attr_name: str) -> bool:

@@ -1,6 +1,5 @@
 """Unit tests for SwBaseType class."""
 
-import pytest
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType

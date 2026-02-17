@@ -38,7 +38,7 @@ class TestGeneratedCodeValidation:
         failures = []
         for cls in sample_classes:
             try:
-                instance = cls()
+                cls()
             except Exception as e:
                 failures.append((cls.__name__, str(e)))
 

@@ -1,6 +1,5 @@
 """Unit tests for NameConverter."""
 
-import pytest
 from armodel.serialization.name_converter import NameConverter
 
 

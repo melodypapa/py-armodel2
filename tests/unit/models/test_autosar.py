@@ -1,7 +1,6 @@
 """Unit tests for AUTOSAR class."""
 
 import pytest
-import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import (
     AUTOSAR,

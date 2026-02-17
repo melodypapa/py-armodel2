@@ -72,21 +72,21 @@
         }
       ],
       "attributes": {
-        "compuInternal": {
+        "compuInternalToPhys": {
           "type": "Compu",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This specifies the computation from internal values to"
         },
-        "compuPhysTo": {
+        "compuPhysToInternal": {
           "type": "Compu",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the computation from physical values to"
         },
-        "displayFormatString": {
+        "displayFormat": {
           "type": "DisplayFormatString",
           "multiplicity": "0..1",
           "kind": "attribute",
