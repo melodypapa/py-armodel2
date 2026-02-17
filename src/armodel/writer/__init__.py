@@ -5,7 +5,7 @@ from typing import Union, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.core import SchemaVersionManager
-from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
+from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
 
 class ARXMLWriter:
