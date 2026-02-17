@@ -137,6 +137,99 @@ class ARObject:
 
         return False
 
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> ARObject:
+        """Deserialize XML element to Python object.
+
+        Creates a new instance and populates attributes by matching
+        XML tags to Python attribute names.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Python object
+        """
+        # Create instance without calling __init__
+        obj = cls.__new__(cls)
+
+        # Call __init__ to set default values
+        obj.__init__()
+
+        # Get type hints to know what attributes to expect
+        try:
+            type_hints = get_type_hints(cls)
+        except Exception:
+            type_hints = {}
+
+        # Process each attribute from type hints
+        for attr_name, attr_type in type_hints.items():
+            # Convert Python name to XML tag
+            xml_tag = NameConverter.to_xml_tag(attr_name)
+
+            # Check if this should be an XML attribute
+            if ARObject._is_xml_attribute_static(cls, attr_name):
+                value = element.get(xml_tag)
+            else:
+                # Find child element
+                child = element.find(xml_tag)
+                if child is not None:
+                    # Get value based on type
+                    value = cls._extract_value(child, attr_type)
+                else:
+                    value = None
+
+            # Set attribute
+            setattr(obj, attr_name, value)
+
+        return obj
+
+    @staticmethod
+    def _is_xml_attribute_static(cls, attr_name: str) -> bool:
+        """Static version to check if attribute should be XML attribute.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute
+
+        Returns:
+            True if should be XML attribute
+        """
+        prop = getattr(cls, attr_name, None)
+        if prop and hasattr(prop, 'fget'):
+            return hasattr(prop.fget, '_is_xml_attribute') and prop.fget._is_xml_attribute
+
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_is_xml_attribute'):
+            return attr._is_xml_attribute
+
+        return False
+
+    @staticmethod
+    def _extract_value(element: ET.Element, attr_type):
+        """Extract value from XML element based on type.
+
+        Args:
+            element: XML element
+            attr_type: Expected type (from type hints)
+
+        Returns:
+            Extracted value
+        """
+        if element is None:
+            return None
+
+        # Get text content
+        text = element.text
+
+        # Handle None
+        if text is None:
+            return None
+
+        # For now, return as string
+        # Type conversion will be added later
+        return text
+
     @staticmethod
     def _member_to_xml_tag(member_name: str) -> str:
         """Convert Python member name to XML tag name.
