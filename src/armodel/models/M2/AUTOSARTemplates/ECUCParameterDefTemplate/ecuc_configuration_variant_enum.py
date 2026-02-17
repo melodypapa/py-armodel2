@@ -1,4 +1,9 @@
-"""EcucConfigurationVariantEnum enumeration."""
+"""AUTOSAR EcucConfigurationVariantEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 52)
+
+JSON Source: packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.enums.json"""
 
 from enum import Enum
 

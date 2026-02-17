@@ -1,15 +1,11 @@
-"""RestrictionWithSeverity AUTOSAR element.
+"""RestrictionWithSeverity AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 86)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Common.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class RestrictionWithSeverity(ARObject):
@@ -19,18 +15,11 @@ class RestrictionWithSeverity(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "severity": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=SeverityEnum,
-        ),  # severity
     }
 
     def __init__(self) -> None:
         """Initialize RestrictionWithSeverity."""
         super().__init__()
-        self.severity: SeverityEnum = None
 
 
 class RestrictionWithSeverityBuilder:

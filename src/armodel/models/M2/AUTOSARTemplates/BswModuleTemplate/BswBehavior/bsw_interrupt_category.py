@@ -1,4 +1,9 @@
-"""BswInterruptCategory enumeration."""
+"""AUTOSAR BswInterruptCategory enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 76)
+
+JSON Source: packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.enums.json"""
 
 from enum import Enum
 

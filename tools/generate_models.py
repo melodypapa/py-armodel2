@@ -627,20 +627,41 @@ def generate_builder_code(type_def: dict) -> str:
     return code
 
 
-def generate_enum_code(enum_def: dict) -> str:
+def generate_enum_code(enum_def: dict, json_file_path: str = "") -> str:
     """Generate Python Enum code from enum definition.
 
     Args:
         enum_def: Enum definition from enum JSON file
+        json_file_path: Path to the JSON file containing the enum definition
 
     Returns:
         Generated Python Enum code as string
     """
     enum_name = enum_def["name"]
     literals = enum_def.get("literals", [])
+    sources = enum_def.get("sources", [])
+
+    # Build docstring with PDF references and JSON file path
+    docstring_lines = [f"AUTOSAR {enum_name} enumeration."]
+
+    # Add PDF file references if available
+    if sources:
+        docstring_lines.append("")
+        docstring_lines.append("References:")
+        for source in sources:
+            pdf_file = source.get("pdf_file", "N/A")
+            page_number = source.get("page_number", "N/A")
+            docstring_lines.append(f"  - {pdf_file} (page {page_number})")
+
+    # Add JSON file path if available
+    if json_file_path:
+        docstring_lines.append("")
+        docstring_lines.append(f"JSON Source: {json_file_path}")
+
+    docstring = "\n".join(docstring_lines)
 
     # Generate enum code
-    code = f'''"""{enum_name} enumeration."""
+    code = f'''"""{docstring}"""
 
 from enum import Enum
 
@@ -658,17 +679,38 @@ class {enum_name}(Enum):
     return code
 
 
-def generate_primitive_code(primitive_def: dict) -> str:
+def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> str:
     """Generate Python primitive type definition from primitive definition.
 
     Args:
         primitive_def: Primitive definition from primitive JSON file
+        json_file_path: Path to the JSON file containing the primitive definition
 
     Returns:
         Generated Python code as string
     """
     primitive_name = primitive_def["name"]
     note = primitive_def.get("note", "")
+    sources = primitive_def.get("sources", [])
+
+    # Build docstring with PDF references and JSON file path
+    docstring_lines = [f"{primitive_name} primitive type."]
+
+    # Add PDF file references if available
+    if sources:
+        docstring_lines.append("")
+        docstring_lines.append("References:")
+        for source in sources:
+            pdf_file = source.get("pdf_file", "N/A")
+            page_number = source.get("page_number", "N/A")
+            docstring_lines.append(f"  - {pdf_file} (page {page_number})")
+
+    # Add JSON file path if available
+    if json_file_path:
+        docstring_lines.append("")
+        docstring_lines.append(f"JSON Source: {json_file_path}")
+
+    docstring = "\n".join(docstring_lines)
 
     # Determine Python type mapping
     primitive_type_map = {
@@ -692,7 +734,7 @@ def generate_primitive_code(primitive_def: dict) -> str:
     python_type = primitive_type_map.get(primitive_name, "str")
 
     # Generate primitive type code
-    code = f'''"""{primitive_name} primitive type."""
+    code = f'''"""{docstring}"""
 
 # {note}
 {primitive_name} = {python_type}
@@ -897,11 +939,16 @@ def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]
         if "classes" in data:
             for cls in data["classes"]:
                 if cls["name"] == type_name:
+                    # Use the package field from the class itself to ensure correct directory structure
+                    # This is important because some classes have different directory names than expected
+                    # (e.g., ARObject is in ArObject directory, not ar_object)
+                    class_package_path = cls.get("package", package_path)
+                    
                     # Convert package path to Python import path
                     # Package path format: M2::AUTOSARTemplates::...
                     # Python import path: armodel.models.M2.AUTOSARTemplates...
                     # Import from the specific class file, not module
-                    python_path = package_path.replace("::", ".")
+                    python_path = class_package_path.replace("::", ".")
 
                     # Return import path in format: from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import (\n    AdminData,\n)
                     # Use block import format as required by DESIGN_RULE_041
@@ -1057,8 +1104,9 @@ def generate_all_models(
                 enum_name = enum_def["name"]
                 filename = dir_path / f"{to_snake_case(enum_name)}.py"
 
-                # Generate enum code
-                enum_code = generate_enum_code(enum_def)
+                # Generate enum code with JSON file path
+                json_file_path = f"packages/{enum_file.name}"
+                enum_code = generate_enum_code(enum_def, json_file_path)
 
                 # Write to file
                 filename.write_text(enum_code)
@@ -1084,8 +1132,9 @@ def generate_all_models(
                 primitive_name = primitive_def["name"]
                 filename = dir_path / f"{to_snake_case(primitive_name)}.py"
 
-                # Generate primitive code
-                primitive_code = generate_primitive_code(primitive_def)
+                # Generate primitive code with JSON file path
+                json_file_path = f"packages/{primitive_file.name}"
+                primitive_code = generate_primitive_code(primitive_def, json_file_path)
 
                 # Write to file
                 filename.write_text(primitive_code)

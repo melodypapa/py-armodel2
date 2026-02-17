@@ -1,20 +1,11 @@
-"""SwGenericAxisParamType AUTOSAR element.
+"""SwGenericAxisParamType AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 356)
-
-JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr import (
-    DataConstr,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SwGenericAxisParamType(Identifiable):
@@ -23,18 +14,11 @@ class SwGenericAxisParamType(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "data_constr": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataConstr,
-        ),  # dataConstr
     }
 
     def __init__(self) -> None:
         """Initialize SwGenericAxisParamType."""
         super().__init__()
-        self.data_constr: Optional[DataConstr] = None
 
 
 class SwGenericAxisParamTypeBuilder:

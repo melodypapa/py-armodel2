@@ -1,18 +1,11 @@
-"""DataInterface AUTOSAR element.
+"""DataInterface AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 310)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 87)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
-    PortInterface,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DataInterface(PortInterface):

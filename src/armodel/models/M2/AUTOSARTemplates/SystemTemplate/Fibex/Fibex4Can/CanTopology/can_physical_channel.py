@@ -1,17 +1,11 @@
-"""CanPhysicalChannel AUTOSAR element.
+"""CanPhysicalChannel AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 73)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_physical_channel import (
-    AbstractCanPhysicalChannel,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class CanPhysicalChannel(AbstractCanPhysicalChannel):

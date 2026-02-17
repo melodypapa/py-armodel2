@@ -1,23 +1,11 @@
-"""AutosarDataPrototype AUTOSAR element.
+"""AutosarDataPrototype AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 305)
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 301)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 306)
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2001)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_DataPrototypes.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
-    DataPrototype,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
-    AutosarDataType,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AutosarDataPrototype(DataPrototype):
@@ -27,18 +15,11 @@ class AutosarDataPrototype(DataPrototype):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "type": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AutosarDataType,
-        ),  # type
     }
 
     def __init__(self) -> None:
         """Initialize AutosarDataPrototype."""
         super().__init__()
-        self.type: Optional[AutosarDataType] = None
 
 
 class AutosarDataPrototypeBuilder:

@@ -1,8 +1,5 @@
 """Note module."""
-from armodel.models.M2.MSR.Documentation.BlockElements.Note.note import (
-    Note,
-)
 
-__all__ = [
-    "Note",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

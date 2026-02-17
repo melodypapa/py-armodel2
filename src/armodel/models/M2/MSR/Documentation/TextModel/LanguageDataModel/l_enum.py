@@ -1,4 +1,9 @@
-"""LEnum enumeration."""
+"""AUTOSAR LEnum enumeration.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 350)
+
+JSON Source: packages/M2_MSR_Documentation_TextModel_LanguageDataModel.enums.json"""
 
 from enum import Enum
 

@@ -8,7 +8,7 @@ class TestInheritance:
 
     def test_arobject_inheritance(self):
         """Test that classes inherit from ARObject (SWUT_MODELS_400)."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
@@ -20,7 +20,7 @@ class TestInheritance:
 
     def test_method_resolution_order(self):
         """Test that MRO is correct (SWUT_MODELS_401)."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Referrable.referrable import Referrable
 
@@ -32,7 +32,7 @@ class TestInheritance:
 
     def test_xml_member_inheritance(self):
         """Test that XMLMember metadata is inherited (SWUT_MODELS_402)."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # AUTOSAR should inherit ARObject's _xml_members
@@ -48,7 +48,7 @@ class TestInheritance:
 
     def test_referrable_inherits_from_arobject(self):
         """Test that Referrable inherits from ARObject."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Referrable.referrable import Referrable
 
         ref = Referrable()
@@ -64,7 +64,7 @@ class TestInheritance:
 
     def test_serialize_method_inheritance(self):
         """Test that serialize method is inherited."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
         pkg = ARPackage()
@@ -73,7 +73,7 @@ class TestInheritance:
 
     def test_deserialize_method_inheritance(self):
         """Test that deserialize method is inherited."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
         assert hasattr(ARPackage, "deserialize")

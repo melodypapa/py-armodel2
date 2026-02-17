@@ -1,20 +1,11 @@
-"""SpecElementReference AUTOSAR element.
+"""SpecElementReference AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 82)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Common.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SpecElementReference(Identifiable):
@@ -24,17 +15,11 @@ class SpecElementReference(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "alternative": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # alternative
     }
 
     def __init__(self) -> None:
         """Initialize SpecElementReference."""
         super().__init__()
-        self.alternative: Optional[String] = None
 
 
 class SpecElementReferenceBuilder:

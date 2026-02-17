@@ -1,21 +1,11 @@
-"""MultiLanguageOverviewParagraph AUTOSAR element.
+"""MultiLanguageOverviewParagraph AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 53)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 389)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 347)
-  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 65)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
-    LOverviewParagraph,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class MultiLanguageOverviewParagraph(ARObject):
@@ -24,18 +14,11 @@ class MultiLanguageOverviewParagraph(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "l2": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=LOverviewParagraph,
-        ),  # l2
     }
 
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
-        self.l2: LOverviewParagraph = None
 
 
 class MultiLanguageOverviewParagraphBuilder:

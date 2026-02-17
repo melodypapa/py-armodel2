@@ -1,17 +1,11 @@
-"""EcucAbstractExternalReferenceDef AUTOSAR element.
+"""EcucAbstractExternalReferenceDef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 72)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_reference_def import (
-    EcucAbstractReferenceDef,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucAbstractExternalReferenceDef(EcucAbstractReferenceDef):

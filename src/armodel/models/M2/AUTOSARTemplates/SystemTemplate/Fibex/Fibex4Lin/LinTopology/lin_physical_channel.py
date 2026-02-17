@@ -1,23 +1,11 @@
-"""LinPhysicalChannel AUTOSAR element.
+"""LinPhysicalChannel AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 99)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
-    PhysicalChannel,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    TimeValue,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_schedule_table import (
-    LinScheduleTable,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LinPhysicalChannel(PhysicalChannel):
@@ -26,24 +14,11 @@ class LinPhysicalChannel(PhysicalChannel):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "bus_idle_timeout": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # busIdleTimeout
-        "schedule_tables": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=LinScheduleTable,
-        ),  # scheduleTables
     }
 
     def __init__(self) -> None:
         """Initialize LinPhysicalChannel."""
         super().__init__()
-        self.bus_idle_timeout: Optional[TimeValue] = None
-        self.schedule_tables: list[LinScheduleTable] = []
 
 
 class LinPhysicalChannelBuilder:

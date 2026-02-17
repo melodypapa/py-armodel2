@@ -1,21 +1,11 @@
-"""FlexrayCommunicationConnector AUTOSAR element.
+"""FlexrayCommunicationConnector AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 89)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Flexray_FlexrayTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
-    CommunicationConnector,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Boolean,
-    Float,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class FlexrayCommunicationConnector(CommunicationConnector):
@@ -24,23 +14,11 @@ class FlexrayCommunicationConnector(CommunicationConnector):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "nm_ready_sleep": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # nmReadySleep
-        "wake_up": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # wakeUp
     }
 
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationConnector."""
         super().__init__()
-        self.nm_ready_sleep: Optional[Float] = None
-        self.wake_up: Optional[Boolean] = None
 
 
 class FlexrayCommunicationConnectorBuilder:

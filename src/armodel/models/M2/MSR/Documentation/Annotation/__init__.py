@@ -1,8 +1,5 @@
 """Annotation module."""
-from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
-    Annotation,
-)
 
-__all__ = [
-    "Annotation",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

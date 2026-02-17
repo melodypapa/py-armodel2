@@ -1,21 +1,11 @@
-"""IdsmSignatureSupportAp AUTOSAR element.
+"""IdsmSignatureSupportAp AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 64)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
-from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.CryptoDeployment.crypto_key_slot import (
-    CryptoKeySlot,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IdsmSignatureSupportAp(ARObject):
@@ -24,24 +14,11 @@ class IdsmSignatureSupportAp(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "crypto_primitive": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # cryptoPrimitive
-        "key_slot": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoKeySlot,
-        ),  # keySlot
     }
 
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportAp."""
         super().__init__()
-        self.crypto_primitive: String = None
-        self.key_slot: Optional[CryptoKeySlot] = None
 
 
 class IdsmSignatureSupportApBuilder:

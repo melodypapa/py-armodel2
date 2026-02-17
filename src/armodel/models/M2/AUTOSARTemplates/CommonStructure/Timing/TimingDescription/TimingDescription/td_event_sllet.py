@@ -1,17 +1,11 @@
-"""TDEventSLLET AUTOSAR element.
+"""TDEventSLLET AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 251)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
-    TimingDescriptionEvent,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TDEventSLLET(TimingDescriptionEvent):

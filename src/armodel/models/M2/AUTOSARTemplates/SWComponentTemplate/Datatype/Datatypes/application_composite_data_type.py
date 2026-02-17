@@ -1,19 +1,11 @@
-"""ApplicationCompositeDataType AUTOSAR element.
+"""ApplicationCompositeDataType AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 241)
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1996)
-  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 34)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
-    ApplicationDataType,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ApplicationCompositeDataType(ApplicationDataType):

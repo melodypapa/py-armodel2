@@ -1,17 +1,11 @@
-"""UserDefinedCommunicationConnector AUTOSAR element.
+"""UserDefinedCommunicationConnector AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 179)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_CddSupport.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
-    CommunicationConnector,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedCommunicationConnector(CommunicationConnector):

@@ -1,21 +1,11 @@
-"""RptServicePoint AUTOSAR element.
+"""RptServicePoint AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 206)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    CIdentifier,
-    PositiveInteger,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class RptServicePoint(Identifiable):
@@ -24,23 +14,11 @@ class RptServicePoint(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "service_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # serviceId
-        "symbol": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # symbol
     }
 
     def __init__(self) -> None:
         """Initialize RptServicePoint."""
         super().__init__()
-        self.service_id: Optional[PositiveInteger] = None
-        self.symbol: Optional[CIdentifier] = None
 
 
 class RptServicePointBuilder:

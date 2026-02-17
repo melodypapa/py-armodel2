@@ -1,4 +1,9 @@
-"""DiagnosticRecordTriggerEnum enumeration."""
+"""AUTOSAR DiagnosticRecordTriggerEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 191)
+
+JSON Source: packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticFreezeFrame.enums.json"""
 
 from enum import Enum
 

@@ -1,21 +1,11 @@
-"""MemorySectionLocation AUTOSAR element.
+"""MemorySectionLocation AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 162)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_ExecutionTime.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
-    HwElement,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.MemorySectionUsage.memory_section import (
-    MemorySection,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class MemorySectionLocation(ARObject):
@@ -24,25 +14,11 @@ class MemorySectionLocation(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "provided_memory": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=HwElement,
-        ),  # providedMemory
-        "software": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MemorySection,
-        ),  # software
     }
 
     def __init__(self) -> None:
         """Initialize MemorySectionLocation."""
         super().__init__()
-        self.provided_memory: Optional[HwElement] = None
-        self.software: Optional[MemorySection] = None
 
 
 class MemorySectionLocationBuilder:

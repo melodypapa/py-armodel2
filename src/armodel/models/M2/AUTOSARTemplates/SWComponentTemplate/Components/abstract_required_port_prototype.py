@@ -1,22 +1,11 @@
-"""AbstractRequiredPortPrototype AUTOSAR element.
+"""AbstractRequiredPortPrototype AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 67)
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 204)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 422)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
-    RPortComSpec,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AbstractRequiredPortPrototype(PortPrototype):
@@ -26,18 +15,11 @@ class AbstractRequiredPortPrototype(PortPrototype):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "required_coms": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RPortComSpec,
-        ),  # requiredComs
     }
 
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
-        self.required_coms: list[RPortComSpec] = []
 
 
 class AbstractRequiredPortPrototypeBuilder:

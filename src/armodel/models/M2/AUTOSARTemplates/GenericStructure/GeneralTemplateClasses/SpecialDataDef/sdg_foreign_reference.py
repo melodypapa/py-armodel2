@@ -1,17 +1,11 @@
-"""SdgForeignReference AUTOSAR element.
+"""SdgForeignReference AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 102)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_abstract_foreign_reference import (
-    SdgAbstractForeignReference,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SdgForeignReference(SdgAbstractForeignReference):

@@ -89,7 +89,7 @@ class TestAUTOSAR:
 
     def test_autosar_arobject_inheritance(self):
         """Test that AUTOSAR inherits from ARObject (SWUT_MODELS_400)."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
         autosar = AUTOSAR()
         assert isinstance(autosar, ARObject)

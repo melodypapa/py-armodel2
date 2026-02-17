@@ -1,26 +1,11 @@
-"""DiagnosticParameterIdentifier AUTOSAR element.
+"""DiagnosticParameterIdentifier AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 149)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
-    DiagnosticCommonElement,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    PositiveInteger,
-)
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
-    DiagnosticParameter,
-)
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_support_info_byte import (
-    DiagnosticSupportInfoByte,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticParameterIdentifier(DiagnosticCommonElement):
@@ -29,37 +14,11 @@ class DiagnosticParameterIdentifier(DiagnosticCommonElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "data_elements": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DiagnosticParameter,
-        ),  # dataElements
-        "id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # id
-        "pid_size": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # pidSize
-        "support_info_byte": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticSupportInfoByte,
-        ),  # supportInfoByte
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticParameterIdentifier."""
         super().__init__()
-        self.data_elements: list[DiagnosticParameter] = []
-        self.id: Optional[PositiveInteger] = None
-        self.pid_size: Optional[PositiveInteger] = None
-        self.support_info_byte: Optional[DiagnosticSupportInfoByte] = None
 
 
 class DiagnosticParameterIdentifierBuilder:

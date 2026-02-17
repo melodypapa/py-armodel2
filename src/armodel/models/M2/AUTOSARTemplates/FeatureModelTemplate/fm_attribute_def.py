@@ -1,21 +1,11 @@
-"""FMAttributeDef AUTOSAR element.
+"""FMAttributeDef AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 26)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Limit,
-    Numerical,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class FMAttributeDef(Identifiable):
@@ -24,29 +14,11 @@ class FMAttributeDef(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "default_value": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # defaultValue
-        "max": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # max
-        "min": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # min
     }
 
     def __init__(self) -> None:
         """Initialize FMAttributeDef."""
         super().__init__()
-        self.default_value: Optional[Numerical] = None
-        self.max: Optional[Limit] = None
-        self.min: Optional[Limit] = None
 
 
 class FMAttributeDefBuilder:

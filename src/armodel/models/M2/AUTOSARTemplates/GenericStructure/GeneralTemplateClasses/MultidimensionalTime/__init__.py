@@ -1,8 +1,5 @@
 """MultidimensionalTime module."""
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
-    MultidimensionalTime,
-)
 
-__all__ = [
-    "MultidimensionalTime",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

@@ -1,15 +1,11 @@
-"""EcucAbstractConfigurationClass AUTOSAR element.
+"""EcucAbstractConfigurationClass AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 51)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucAbstractConfigurationClass(ARObject):
@@ -19,25 +15,11 @@ class EcucAbstractConfigurationClass(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "config_class": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EcucConfigurationClassEnum,
-        ),  # configClass
-        "config_variant": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (EcucConfiguration),
-        ),  # configVariant
     }
 
     def __init__(self) -> None:
         """Initialize EcucAbstractConfigurationClass."""
         super().__init__()
-        self.config_class: Optional[EcucConfigurationClassEnum] = None
-        self.config_variant: Optional[Any] = None
 
 
 class EcucAbstractConfigurationClassBuilder:

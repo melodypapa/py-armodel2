@@ -1,22 +1,11 @@
-"""ServiceDependency AUTOSAR element.
+"""ServiceDependency AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 225)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 609)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_data_type_assignment import (
-    RoleBasedDataTypeAssignment,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.symbolic_name_props import (
-    SymbolicNameProps,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ServiceDependency(ARObject):
@@ -26,32 +15,11 @@ class ServiceDependency(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "assigned_data": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RoleBasedDataTypeAssignment,
-        ),  # assignedData
-        "diagnostic": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ServiceDiagnosticRelevanceEnum,
-        ),  # diagnostic
-        "symbolic_name_props": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SymbolicNameProps,
-        ),  # symbolicNameProps
     }
 
     def __init__(self) -> None:
         """Initialize ServiceDependency."""
         super().__init__()
-        self.assigned_data: Optional[RoleBasedDataTypeAssignment] = None
-        self.diagnostic: Optional[ServiceDiagnosticRelevanceEnum] = None
-        self.symbolic_name_props: Optional[SymbolicNameProps] = None
 
 
 class ServiceDependencyBuilder:

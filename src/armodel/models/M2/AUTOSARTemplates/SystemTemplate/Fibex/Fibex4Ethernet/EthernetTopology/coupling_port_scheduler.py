@@ -1,17 +1,11 @@
-"""CouplingPortScheduler AUTOSAR element.
+"""CouplingPortScheduler AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 123)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_structural_element import (
-    CouplingPortStructuralElement,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class CouplingPortScheduler(CouplingPortStructuralElement):
@@ -20,25 +14,11 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "port_scheduler_scheduler_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EthernetCouplingPortSchedulerEnum,
-        ),  # portSchedulerSchedulerEnum
-        "predecessors": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CouplingPortStructuralElement,
-        ),  # predecessors
     }
 
     def __init__(self) -> None:
         """Initialize CouplingPortScheduler."""
         super().__init__()
-        self.port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum] = None
-        self.predecessors: list[CouplingPortStructuralElement] = []
 
 
 class CouplingPortSchedulerBuilder:

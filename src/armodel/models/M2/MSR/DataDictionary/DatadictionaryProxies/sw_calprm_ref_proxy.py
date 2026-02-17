@@ -1,21 +1,11 @@
-"""SwCalprmRefProxy AUTOSAR element.
+"""SwCalprmRefProxy AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 370)
-
-JSON Source: docs/json/packages/M2_MSR_DataDictionary_DatadictionaryProxies.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
-    AutosarParameterRef,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
-    McDataInstance,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SwCalprmRefProxy(ARObject):
@@ -24,25 +14,11 @@ class SwCalprmRefProxy(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "ar_parameter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AutosarParameterRef,
-        ),  # arParameter
-        "mc_data_instance": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=McDataInstance,
-        ),  # mcDataInstance
     }
 
     def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()
-        self.ar_parameter: Optional[AutosarParameterRef] = None
-        self.mc_data_instance: Optional[McDataInstance] = None
 
 
 class SwCalprmRefProxyBuilder:

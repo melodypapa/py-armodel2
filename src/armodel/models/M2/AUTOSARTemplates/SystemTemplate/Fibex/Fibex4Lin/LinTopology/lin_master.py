@@ -1,21 +1,11 @@
-"""LinMaster AUTOSAR element.
+"""LinMaster AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 94)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    TimeValue,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_slave_config import (
-    LinSlaveConfig,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LinMaster(ARObject):
@@ -24,30 +14,11 @@ class LinMaster(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "lin_slaves": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=LinSlaveConfig,
-        ),  # linSlaves
-        "time_base": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timeBase
-        "time_base_jitter": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # timeBaseJitter
     }
 
     def __init__(self) -> None:
         """Initialize LinMaster."""
         super().__init__()
-        self.lin_slaves: list[LinSlaveConfig] = []
-        self.time_base: Optional[TimeValue] = None
-        self.time_base_jitter: Optional[TimeValue] = None
 
 
 class LinMasterBuilder:

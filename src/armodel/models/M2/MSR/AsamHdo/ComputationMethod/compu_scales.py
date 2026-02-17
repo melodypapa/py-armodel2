@@ -1,20 +1,11 @@
-"""CompuScales AUTOSAR element.
+"""CompuScales AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 388)
-
-JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import (
-    CompuContent,
-)
-from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale import (
-    CompuScale,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class CompuScales(CompuContent):
@@ -23,18 +14,11 @@ class CompuScales(CompuContent):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "compu_scales": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CompuScale,
-        ),  # compuScales
     }
 
     def __init__(self) -> None:
         """Initialize CompuScales."""
         super().__init__()
-        self.compu_scales: list[CompuScale] = []
 
 
 class CompuScalesBuilder:

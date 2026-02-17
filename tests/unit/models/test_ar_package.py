@@ -75,7 +75,7 @@ class TestARPackage:
 
     def test_ar_package_method_resolution_order(self):
         """Test that MRO is correct (SWUT_MODELS_401)."""
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
         mro = ARPackage.__mro__
         assert ARObject in mro

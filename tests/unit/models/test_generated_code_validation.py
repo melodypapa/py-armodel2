@@ -185,7 +185,7 @@ class TestGeneratedCodeValidation:
         """Test that core classes have all required methods."""
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
         for cls in [ARObject, AUTOSAR, ARPackage]:
             assert hasattr(cls, "serialize")

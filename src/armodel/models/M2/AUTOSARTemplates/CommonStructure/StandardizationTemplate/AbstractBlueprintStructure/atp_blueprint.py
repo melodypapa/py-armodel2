@@ -1,22 +1,11 @@
-"""AtpBlueprint AUTOSAR element.
+"""AtpBlueprint AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 305)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 424)
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 161)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_AbstractBlueprintStructure.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
-    BlueprintPolicy,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AtpBlueprint(Identifiable):
@@ -26,18 +15,11 @@ class AtpBlueprint(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "blueprint_policies": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BlueprintPolicy,
-        ),  # blueprintPolicies
     }
 
     def __init__(self) -> None:
         """Initialize AtpBlueprint."""
         super().__init__()
-        self.blueprint_policies: list[BlueprintPolicy] = []
 
 
 class AtpBlueprintBuilder:

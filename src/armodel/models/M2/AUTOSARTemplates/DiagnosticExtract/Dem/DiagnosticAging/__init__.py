@@ -1,8 +1,5 @@
 """DiagnosticAging module."""
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticAging.diagnostic_aging import (
-    DiagnosticAging,
-)
 
-__all__ = [
-    "DiagnosticAging",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

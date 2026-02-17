@@ -1,26 +1,11 @@
-"""IEEE1722TpAcfCanPart AUTOSAR element.
+"""IEEE1722TpAcfCanPart AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
-    IEEE1722TpAcfBusPart,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Boolean,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
-    PduTriggering,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication.rx_identifier_range import (
-    RxIdentifierRange,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
@@ -29,45 +14,11 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "can_addressing": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CanAddressingModeType,
-        ),  # canAddressing
-        "can_bit_rate_switch": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # canBitRateSwitch
-        "can_frame_tx_behavior": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CanFrameTxBehaviorEnum,
-        ),  # canFrameTxBehavior
-        "can_identifier": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RxIdentifierRange,
-        ),  # canIdentifier
-        "sdu": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PduTriggering,
-        ),  # sdu
     }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCanPart."""
         super().__init__()
-        self.can_addressing: Optional[CanAddressingModeType] = None
-        self.can_bit_rate_switch: Optional[Boolean] = None
-        self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
-        self.can_identifier: Optional[RxIdentifierRange] = None
-        self.sdu: Optional[PduTriggering] = None
 
 
 class IEEE1722TpAcfCanPartBuilder:

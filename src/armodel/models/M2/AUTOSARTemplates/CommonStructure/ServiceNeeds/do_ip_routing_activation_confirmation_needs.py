@@ -1,21 +1,11 @@
-"""DoIpRoutingActivationConfirmationNeeds AUTOSAR element.
+"""DoIpRoutingActivationConfirmationNeeds AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 807)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.do_ip_service_needs import (
-    DoIpServiceNeeds,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    NameToken,
-    PositiveInteger,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
@@ -24,23 +14,11 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "data_length": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # dataLength
-        "routing": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # routing
     }
 
     def __init__(self) -> None:
         """Initialize DoIpRoutingActivationConfirmationNeeds."""
         super().__init__()
-        self.data_length: Optional[PositiveInteger] = None
-        self.routing: Optional[NameToken] = None
 
 
 class DoIpRoutingActivationConfirmationNeedsBuilder:

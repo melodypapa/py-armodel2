@@ -1,20 +1,11 @@
-"""EcucInstanceReferenceDef AUTOSAR element.
+"""EcucInstanceReferenceDef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 77)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_external_reference_def import (
-    EcucAbstractExternalReferenceDef,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
@@ -23,23 +14,11 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "destination": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # destination
-        "destination_type": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # destinationType
     }
 
     def __init__(self) -> None:
         """Initialize EcucInstanceReferenceDef."""
         super().__init__()
-        self.destination: Optional[String] = None
-        self.destination_type: Optional[String] = None
 
 
 class EcucInstanceReferenceDefBuilder:

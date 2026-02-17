@@ -1,4 +1,10 @@
-"""FullBindingTimeEnum enumeration."""
+"""AUTOSAR FullBindingTimeEnum enumeration.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 104)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 89)
+
+JSON Source: packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ModelRestrictionTypes.enums.json"""
 
 from enum import Enum
 

@@ -1,23 +1,11 @@
-"""ObdRatioServiceNeeds AUTOSAR element.
+"""ObdRatioServiceNeeds AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 795)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
-    DiagnosticCapabilityElement,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_event_needs import (
-    DiagnosticEventNeeds,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_inhibition_needs import (
-    FunctionInhibitionNeeds,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
@@ -26,32 +14,11 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "connection_type": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ObdRatioConnectionKindEnum,
-        ),  # connectionType
-        "rate_based_monitored_event": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticEventNeeds,
-        ),  # rateBasedMonitoredEvent
-        "used_fid": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=FunctionInhibitionNeeds,
-        ),  # usedFid
     }
 
     def __init__(self) -> None:
         """Initialize ObdRatioServiceNeeds."""
         super().__init__()
-        self.connection_type: Optional[ObdRatioConnectionKindEnum] = None
-        self.rate_based_monitored_event: Optional[DiagnosticEventNeeds] = None
-        self.used_fid: Optional[FunctionInhibitionNeeds] = None
 
 
 class ObdRatioServiceNeedsBuilder:

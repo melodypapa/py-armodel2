@@ -1,17 +1,11 @@
-"""DiagnosticFunctionIdentifier AUTOSAR element.
+"""DiagnosticFunctionIdentifier AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 215)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Fim.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
-    DiagnosticCommonElement,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticFunctionIdentifier(DiagnosticCommonElement):

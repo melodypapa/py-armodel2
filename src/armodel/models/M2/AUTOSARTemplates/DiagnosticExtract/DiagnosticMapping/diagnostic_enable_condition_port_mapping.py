@@ -1,17 +1,11 @@
-"""DiagnosticEnableConditionPortMapping AUTOSAR element.
+"""DiagnosticEnableConditionPortMapping AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 251)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
-    DiagnosticSwMapping,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
@@ -20,32 +14,11 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "enable_condition": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (DiagnosticEnable),
-        ),  # enableCondition
-        "swc_flat_service": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (SwcService),
-        ),  # swcFlatService
-        "swc_service": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (SwcService),
-        ),  # swcService
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionPortMapping."""
         super().__init__()
-        self.enable_condition: Optional[Any] = None
-        self.swc_flat_service: Optional[Any] = None
-        self.swc_service: Optional[Any] = None
 
 
 class DiagnosticEnableConditionPortMappingBuilder:

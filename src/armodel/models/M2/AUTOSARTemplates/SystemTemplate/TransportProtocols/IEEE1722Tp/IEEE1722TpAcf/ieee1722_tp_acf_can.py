@@ -1,17 +1,11 @@
-"""IEEE1722TpAcfCan AUTOSAR element.
+"""IEEE1722TpAcfCan AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
-    IEEE1722TpAcfBus,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
@@ -20,18 +14,11 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "message_type_message_type_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IEEE1722TpAcfCan,
-        ),  # messageTypeMessageTypeEnum
     }
 
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()
-        self.message_type_message_type_enum: Optional[IEEE1722TpAcfCan] = None
 
 
 class IEEE1722TpAcfCanBuilder:

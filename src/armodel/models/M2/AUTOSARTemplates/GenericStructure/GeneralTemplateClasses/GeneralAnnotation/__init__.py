@@ -1,8 +1,5 @@
 """GeneralAnnotation module."""
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
-    GeneralAnnotation,
-)
 
-__all__ = [
-    "GeneralAnnotation",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

@@ -1,20 +1,11 @@
-"""TDLETZoneClock AUTOSAR element.
+"""TDLETZoneClock AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 252)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingClock.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
-    TimingClock,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
-    MultidimensionalTime,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TDLETZoneClock(TimingClock):
@@ -23,25 +14,11 @@ class TDLETZoneClock(TimingClock):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "accuracy_ext": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # accuracyExt
-        "accuracy_int": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # accuracyInt
     }
 
     def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()
-        self.accuracy_ext: Optional[MultidimensionalTime] = None
-        self.accuracy_int: Optional[MultidimensionalTime] = None
 
 
 class TDLETZoneClockBuilder:

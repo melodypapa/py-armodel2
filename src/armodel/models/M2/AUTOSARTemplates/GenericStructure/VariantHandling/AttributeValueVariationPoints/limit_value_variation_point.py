@@ -1,15 +1,11 @@
-"""LimitValueVariationPoint AUTOSAR element.
+"""LimitValueVariationPoint AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 241)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LimitValueVariationPoint(ARObject):
@@ -18,18 +14,11 @@ class LimitValueVariationPoint(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "interval_type_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IntervalTypeEnum,
-        ),  # intervalTypeEnum
     }
 
     def __init__(self) -> None:
         """Initialize LimitValueVariationPoint."""
         super().__init__()
-        self.interval_type_enum: Optional[IntervalTypeEnum] = None
 
 
 class LimitValueVariationPointBuilder:

@@ -1,21 +1,11 @@
-"""DiagnosticDebounceAlgorithmProps AUTOSAR element.
+"""DiagnosticDebounceAlgorithmProps AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 195)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 438)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticDebouncingAlgorithm.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Boolean,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticDebounceAlgorithmProps(Identifiable):
@@ -24,17 +14,11 @@ class DiagnosticDebounceAlgorithmProps(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "debounce": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # debounce
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticDebounceAlgorithmProps."""
         super().__init__()
-        self.debounce: Optional[Boolean] = None
 
 
 class DiagnosticDebounceAlgorithmPropsBuilder:

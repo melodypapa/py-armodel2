@@ -1,4 +1,9 @@
-"""MaximumMessageLengthType enumeration."""
+"""AUTOSAR MaximumMessageLengthType enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 604)
+
+JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.enums.json"""
 
 from enum import Enum
 

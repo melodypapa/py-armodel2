@@ -1,23 +1,11 @@
-"""SenderReceiverAnnotation AUTOSAR element.
+"""SenderReceiverAnnotation AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 152)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ApplicationAttributes.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
-    GeneralAnnotation,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Boolean,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SenderReceiverAnnotation(GeneralAnnotation):
@@ -27,38 +15,11 @@ class SenderReceiverAnnotation(GeneralAnnotation):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "computed": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # computed
-        "data_element": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # dataElement
-        "limit_kind": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataLimitKindEnum,
-        ),  # limitKind
-        "processing_kind_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ProcessingKindEnum,
-        ),  # processingKindEnum
     }
 
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()
-        self.computed: Optional[Boolean] = None
-        self.data_element: Optional[VariableDataPrototype] = None
-        self.limit_kind: Optional[DataLimitKindEnum] = None
-        self.processing_kind_enum: Optional[ProcessingKindEnum] = None
 
 
 class SenderReceiverAnnotationBuilder:

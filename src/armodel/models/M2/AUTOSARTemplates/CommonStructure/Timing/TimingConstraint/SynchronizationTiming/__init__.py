@@ -1,8 +1,5 @@
 """SynchronizationTiming module."""
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.SynchronizationTiming.synchronization_timing_constraint import (
-    SynchronizationTimingConstraint,
-)
 
-__all__ = [
-    "SynchronizationTimingConstraint",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

@@ -1,26 +1,11 @@
-"""ARElement AUTOSAR element.
+"""ARElement AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 300)
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 297)
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 286)
-  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 58)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 967)
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1992)
-  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 71)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 54)
-  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 55)
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 156)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ARPackage.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
-    PackageableElement,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ARElement(PackageableElement):

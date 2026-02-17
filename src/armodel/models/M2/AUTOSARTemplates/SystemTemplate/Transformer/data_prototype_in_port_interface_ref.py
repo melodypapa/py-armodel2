@@ -1,20 +1,11 @@
-"""DataPrototypeInPortInterfaceRef AUTOSAR element.
+"""DataPrototypeInPortInterfaceRef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 787)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
-    DataPrototypeReference,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
-    DataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
@@ -23,18 +14,11 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "data_prototype_in": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataPrototype,
-        ),  # dataPrototypeIn
     }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
-        self.data_prototype_in: Optional[DataPrototype] = None
 
 
 class DataPrototypeInPortInterfaceRefBuilder:

@@ -1,20 +1,11 @@
-"""EcucEnumerationLiteralDef AUTOSAR element.
+"""EcucEnumerationLiteralDef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 67)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucEnumerationLiteralDef(Identifiable):
@@ -23,24 +14,11 @@ class EcucEnumerationLiteralDef(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "ecuc_cond": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (EcucCondition),
-        ),  # ecucCond
-        "origin": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # origin
     }
 
     def __init__(self) -> None:
         """Initialize EcucEnumerationLiteralDef."""
         super().__init__()
-        self.ecuc_cond: Optional[Any] = None
-        self.origin: Optional[String] = None
 
 
 class EcucEnumerationLiteralDefBuilder:

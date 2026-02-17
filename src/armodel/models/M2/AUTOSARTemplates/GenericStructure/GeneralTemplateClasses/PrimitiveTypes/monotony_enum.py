@@ -1,4 +1,9 @@
-"""MonotonyEnum enumeration."""
+"""AUTOSAR MonotonyEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 408)
+
+JSON Source: packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_PrimitiveTypes.enums.json"""
 
 from enum import Enum
 

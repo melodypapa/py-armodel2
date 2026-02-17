@@ -1,24 +1,11 @@
-"""MultiLanguageVerbatim AUTOSAR element.
+"""MultiLanguageVerbatim AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 291)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
-    Paginateable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    NameToken,
-    String,
-)
-from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim import (
-    LVerbatim,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class MultiLanguageVerbatim(Paginateable):
@@ -27,44 +14,11 @@ class MultiLanguageVerbatim(Paginateable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "allow_break": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # allowBreak
-        "float": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=FloatEnum,
-        ),  # float
-        "help_entry": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # helpEntry
-        "l5": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=LVerbatim,
-        ),  # l5
-        "pgwide": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PgwideEnum,
-        ),  # pgwide
     }
 
     def __init__(self) -> None:
         """Initialize MultiLanguageVerbatim."""
         super().__init__()
-        self.allow_break: Optional[NameToken] = None
-        self.float: Optional[FloatEnum] = None
-        self.help_entry: Optional[String] = None
-        self.l5: LVerbatim = None
-        self.pgwide: Optional[PgwideEnum] = None
 
 
 class MultiLanguageVerbatimBuilder:

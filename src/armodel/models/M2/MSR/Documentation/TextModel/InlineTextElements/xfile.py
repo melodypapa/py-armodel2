@@ -1,20 +1,11 @@
-"""Xfile AUTOSAR element.
+"""Xfile AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 319)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.single_language_referrable import (
-    SingleLanguageReferrable,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class Xfile(SingleLanguageReferrable):
@@ -23,30 +14,11 @@ class Xfile(SingleLanguageReferrable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "tool": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # tool
-        "tool_version": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # toolVersion
-        "url": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (Url),
-        ),  # url
     }
 
     def __init__(self) -> None:
         """Initialize Xfile."""
         super().__init__()
-        self.tool: Optional[String] = None
-        self.tool_version: Optional[String] = None
-        self.url: Optional[Any] = None
 
 
 class XfileBuilder:

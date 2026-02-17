@@ -1,18 +1,11 @@
-"""ImplementationElementInParameterInstanceRef AUTOSAR element.
+"""ImplementationElementInParameterInstanceRef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 184)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
-    ParameterDataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ImplementationElementInParameterInstanceRef(ARObject):
@@ -21,25 +14,11 @@ class ImplementationElementInParameterInstanceRef(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "context": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ParameterDataPrototype,
-        ),  # context
-        "target": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (AbstractImplementation),
-        ),  # target
     }
 
     def __init__(self) -> None:
         """Initialize ImplementationElementInParameterInstanceRef."""
         super().__init__()
-        self.context: Optional[ParameterDataPrototype] = None
-        self.target: Optional[Any] = None
 
 
 class ImplementationElementInParameterInstanceRefBuilder:

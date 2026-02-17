@@ -1,20 +1,11 @@
-"""AutosarVariableInstance AUTOSAR element.
+"""AutosarVariableInstance AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 85)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
-    DataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AutosarVariableInstance(Identifiable):
@@ -23,18 +14,11 @@ class AutosarVariableInstance(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "variable_instance_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataPrototype,
-        ),  # variableInstanceInstanceRef
     }
 
     def __init__(self) -> None:
         """Initialize AutosarVariableInstance."""
         super().__init__()
-        self.variable_instance_instance_ref: Optional[DataPrototype] = None
 
 
 class AutosarVariableInstanceBuilder:

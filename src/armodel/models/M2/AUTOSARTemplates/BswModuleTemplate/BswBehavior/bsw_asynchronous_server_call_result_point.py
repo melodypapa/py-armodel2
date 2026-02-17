@@ -1,17 +1,11 @@
-"""BswAsynchronousServerCallResultPoint AUTOSAR element.
+"""BswAsynchronousServerCallResultPoint AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 80)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
-    BswModuleCallPoint,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
@@ -20,18 +14,11 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "asynchronous": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (BswAsynchronous),
-        ),  # asynchronous
     }
 
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
-        self.asynchronous: Optional[Any] = None
 
 
 class BswAsynchronousServerCallResultPointBuilder:

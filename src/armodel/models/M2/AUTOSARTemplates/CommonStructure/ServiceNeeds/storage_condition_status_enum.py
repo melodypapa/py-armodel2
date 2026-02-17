@@ -1,4 +1,9 @@
-"""StorageConditionStatusEnum enumeration."""
+"""AUTOSAR StorageConditionStatusEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 762)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.enums.json"""
 
 from enum import Enum
 

@@ -1,18 +1,11 @@
-"""LifeCycleState AUTOSAR element.
+"""LifeCycleState AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 388)
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 196)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LifeCycleState(Identifiable):

@@ -1,20 +1,11 @@
-"""SystemTiming AUTOSAR element.
+"""SystemTiming AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 26)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
-    TimingExtension,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
-    System,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SystemTiming(TimingExtension):
@@ -23,18 +14,11 @@ class SystemTiming(TimingExtension):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "system": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=System,
-        ),  # system
     }
 
     def __init__(self) -> None:
         """Initialize SystemTiming."""
         super().__init__()
-        self.system: Optional[System] = None
 
 
 class SystemTimingBuilder:

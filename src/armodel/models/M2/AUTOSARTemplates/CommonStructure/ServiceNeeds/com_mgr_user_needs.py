@@ -1,18 +1,11 @@
-"""ComMgrUserNeeds AUTOSAR element.
+"""ComMgrUserNeeds AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 235)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 711)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
-    ServiceNeeds,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ComMgrUserNeeds(ServiceNeeds):
@@ -21,18 +14,11 @@ class ComMgrUserNeeds(ServiceNeeds):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "max_comm_mode_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MaxCommModeEnum,
-        ),  # maxCommModeEnum
     }
 
     def __init__(self) -> None:
         """Initialize ComMgrUserNeeds."""
         super().__init__()
-        self.max_comm_mode_enum: Optional[MaxCommModeEnum] = None
 
 
 class ComMgrUserNeedsBuilder:

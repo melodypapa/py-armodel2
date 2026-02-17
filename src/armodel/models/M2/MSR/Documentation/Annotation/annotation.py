@@ -1,18 +1,11 @@
-"""Annotation AUTOSAR element.
+"""Annotation AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 334)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 163)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_Annotation.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
-    GeneralAnnotation,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class Annotation(GeneralAnnotation):

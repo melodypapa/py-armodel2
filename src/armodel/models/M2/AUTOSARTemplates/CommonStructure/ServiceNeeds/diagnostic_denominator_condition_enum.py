@@ -1,4 +1,9 @@
-"""DiagnosticDenominatorConditionEnum enumeration."""
+"""AUTOSAR DiagnosticDenominatorConditionEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 803)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.enums.json"""
 
 from enum import Enum
 

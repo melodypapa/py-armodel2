@@ -1,17 +1,11 @@
-"""NumericalRuleBasedValueSpecification AUTOSAR element.
+"""NumericalRuleBasedValueSpecification AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 467)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
-    AbstractRuleBasedValueSpecification,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
@@ -20,18 +14,11 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "rule_based": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (RuleBasedValue),
-        ),  # ruleBased
     }
 
     def __init__(self) -> None:
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
-        self.rule_based: Optional[Any] = None
 
 
 class NumericalRuleBasedValueSpecificationBuilder:

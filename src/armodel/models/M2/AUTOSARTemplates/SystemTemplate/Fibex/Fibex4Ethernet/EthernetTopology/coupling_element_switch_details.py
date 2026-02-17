@@ -1,29 +1,11 @@
-"""CouplingElementSwitchDetails AUTOSAR element.
+"""CouplingElementSwitchDetails AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 133)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_element_abstract_details import (
-    CouplingElementAbstractDetails,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_asynchronous_traffic_shaper_group_entry import (
-    SwitchAsynchronousTrafficShaperGroupEntry,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_flow_metering_entry import (
-    SwitchFlowMeteringEntry,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_filter_entry import (
-    SwitchStreamFilterEntry,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_gate_entry import (
-    SwitchStreamGateEntry,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
@@ -32,46 +14,11 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "flow_meterings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwitchFlowMeteringEntry,
-        ),  # flowMeterings
-        "stream_filters": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwitchStreamFilterEntry,
-        ),  # streamFilters
-        "stream_gates": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwitchStreamGateEntry,
-        ),  # streamGates
-        "switch_streams": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=any (SwitchStream),
-        ),  # switchStreams
-        "traffic_shapers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwitchAsynchronousTrafficShaperGroupEntry,
-        ),  # trafficShapers
     }
 
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()
-        self.flow_meterings: list[SwitchFlowMeteringEntry] = []
-        self.stream_filters: list[SwitchStreamFilterEntry] = []
-        self.stream_gates: list[SwitchStreamGateEntry] = []
-        self.switch_streams: list[Any] = []
-        self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
 
 
 class CouplingElementSwitchDetailsBuilder:

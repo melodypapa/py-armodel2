@@ -1,23 +1,11 @@
-"""ArbitraryEventTriggering AUTOSAR element.
+"""ArbitraryEventTriggering AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 111)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
-    EventTriggeringConstraint,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.confidence_interval import (
-    ConfidenceInterval,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
-    MultidimensionalTime,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ArbitraryEventTriggering(EventTriggeringConstraint):
@@ -26,32 +14,11 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "confidence_intervals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ConfidenceInterval,
-        ),  # confidenceIntervals
-        "maximums": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=MultidimensionalTime,
-        ),  # maximums
-        "minimums": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=MultidimensionalTime,
-        ),  # minimums
     }
 
     def __init__(self) -> None:
         """Initialize ArbitraryEventTriggering."""
         super().__init__()
-        self.confidence_intervals: list[ConfidenceInterval] = []
-        self.maximums: list[MultidimensionalTime] = []
-        self.minimums: list[MultidimensionalTime] = []
 
 
 class ArbitraryEventTriggeringBuilder:

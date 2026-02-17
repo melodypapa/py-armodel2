@@ -1,4 +1,9 @@
-"""J1939NmAddressConfigurationCapabilityEnum enumeration."""
+"""AUTOSAR J1939NmAddressConfigurationCapabilityEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 692)
+
+JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.enums.json"""
 
 from enum import Enum
 

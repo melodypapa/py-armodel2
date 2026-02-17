@@ -1,8 +1,5 @@
 """BlueprintMapping module."""
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.BlueprintMapping.blueprint_mapping_set import (
-    BlueprintMappingSet,
-)
 
-__all__ = [
-    "BlueprintMappingSet",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

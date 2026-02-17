@@ -1,4 +1,9 @@
-"""TDEventIPduTypeEnum enumeration."""
+"""AUTOSAR TDEventIPduTypeEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 67)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.enums.json"""
 
 from enum import Enum
 

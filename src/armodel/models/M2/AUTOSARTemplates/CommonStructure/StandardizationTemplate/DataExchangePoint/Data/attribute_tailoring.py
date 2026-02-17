@@ -1,20 +1,11 @@
-"""AttributeTailoring AUTOSAR element.
+"""AttributeTailoring AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 109)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
-    DataFormatElementScope,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (
-    VariationRestrictionWithSeverity,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AttributeTailoring(DataFormatElementScope):
@@ -24,25 +15,11 @@ class AttributeTailoring(DataFormatElementScope):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "multiplicity": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (MultiplicityRestriction),
-        ),  # multiplicity
-        "variation": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariationRestrictionWithSeverity,
-        ),  # variation
     }
 
     def __init__(self) -> None:
         """Initialize AttributeTailoring."""
         super().__init__()
-        self.multiplicity: Optional[Any] = None
-        self.variation: Optional[VariationRestrictionWithSeverity] = None
 
 
 class AttributeTailoringBuilder:

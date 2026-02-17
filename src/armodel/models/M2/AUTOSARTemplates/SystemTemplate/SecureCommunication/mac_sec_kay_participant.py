@@ -1,23 +1,11 @@
-"""MacSecKayParticipant AUTOSAR element.
+"""MacSecKayParticipant AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 175)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
-    CryptoServiceKey,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_sec_crypto_algo_config import (
-    MacSecCryptoAlgoConfig,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class MacSecKayParticipant(Identifiable):
@@ -26,32 +14,11 @@ class MacSecKayParticipant(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "ckn": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceKey,
-        ),  # ckn
-        "crypto_algo": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MacSecCryptoAlgoConfig,
-        ),  # cryptoAlgo
-        "sak": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceKey,
-        ),  # sak
     }
 
     def __init__(self) -> None:
         """Initialize MacSecKayParticipant."""
         super().__init__()
-        self.ckn: Optional[CryptoServiceKey] = None
-        self.crypto_algo: Optional[MacSecCryptoAlgoConfig] = None
-        self.sak: Optional[CryptoServiceKey] = None
 
 
 class MacSecKayParticipantBuilder:

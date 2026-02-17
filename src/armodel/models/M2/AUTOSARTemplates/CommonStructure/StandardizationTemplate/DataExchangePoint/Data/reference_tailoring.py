@@ -1,23 +1,11 @@
-"""ReferenceTailoring AUTOSAR element.
+"""ReferenceTailoring AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 115)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
-    AttributeTailoring,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
-    ClassTailoring,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.unresolved_reference_restriction_with_severity import (
-    UnresolvedReferenceRestrictionWithSeverity,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ReferenceTailoring(AttributeTailoring):
@@ -26,25 +14,11 @@ class ReferenceTailoring(AttributeTailoring):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "type_tailorings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ClassTailoring,
-        ),  # typeTailorings
-        "unresolved_restriction": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=UnresolvedReferenceRestrictionWithSeverity,
-        ),  # unresolvedRestriction
     }
 
     def __init__(self) -> None:
         """Initialize ReferenceTailoring."""
         super().__init__()
-        self.type_tailorings: list[ClassTailoring] = []
-        self.unresolved_restriction: Optional[UnresolvedReferenceRestrictionWithSeverity] = None
 
 
 class ReferenceTailoringBuilder:

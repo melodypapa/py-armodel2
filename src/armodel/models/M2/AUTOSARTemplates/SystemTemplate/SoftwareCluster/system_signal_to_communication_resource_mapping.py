@@ -1,23 +1,11 @@
-"""SystemSignalToCommunicationResourceMapping AUTOSAR element.
+"""SystemSignalToCommunicationResourceMapping AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 289)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
-    CpSoftwareCluster,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
-    SystemSignal,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SystemSignalToCommunicationResourceMapping(Identifiable):
@@ -26,25 +14,11 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "software_cluster": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CpSoftwareCluster,
-        ),  # softwareCluster
-        "system_signal": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SystemSignal,
-        ),  # systemSignal
     }
 
     def __init__(self) -> None:
         """Initialize SystemSignalToCommunicationResourceMapping."""
         super().__init__()
-        self.software_cluster: Optional[CpSoftwareCluster] = None
-        self.system_signal: Optional[SystemSignal] = None
 
 
 class SystemSignalToCommunicationResourceMappingBuilder:

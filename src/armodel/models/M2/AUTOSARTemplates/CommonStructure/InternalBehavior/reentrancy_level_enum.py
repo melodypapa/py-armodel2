@@ -1,4 +1,9 @@
-"""ReentrancyLevelEnum enumeration."""
+"""AUTOSAR ReentrancyLevelEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 73)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.enums.json"""
 
 from enum import Enum
 

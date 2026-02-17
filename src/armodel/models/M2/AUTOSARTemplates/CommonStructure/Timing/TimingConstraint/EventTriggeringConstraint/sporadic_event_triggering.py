@@ -1,20 +1,11 @@
-"""SporadicEventTriggering AUTOSAR element.
+"""SporadicEventTriggering AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 105)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
-    EventTriggeringConstraint,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
-    MultidimensionalTime,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SporadicEventTriggering(EventTriggeringConstraint):
@@ -23,39 +14,11 @@ class SporadicEventTriggering(EventTriggeringConstraint):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "jitter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # jitter
-        "maximum_inter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # maximumInter
-        "minimum_inter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # minimumInter
-        "period": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # period
     }
 
     def __init__(self) -> None:
         """Initialize SporadicEventTriggering."""
         super().__init__()
-        self.jitter: Optional[MultidimensionalTime] = None
-        self.maximum_inter: Optional[MultidimensionalTime] = None
-        self.minimum_inter: Optional[MultidimensionalTime] = None
-        self.period: Optional[MultidimensionalTime] = None
 
 
 class SporadicEventTriggeringBuilder:

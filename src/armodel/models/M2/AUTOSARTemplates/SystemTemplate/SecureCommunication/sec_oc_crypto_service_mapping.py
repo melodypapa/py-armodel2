@@ -1,26 +1,11 @@
-"""SecOcCryptoServiceMapping AUTOSAR element.
+"""SecOcCryptoServiceMapping AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 375)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_mapping import (
-    CryptoServiceMapping,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
-    CryptoServiceKey,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_primitive import (
-    CryptoServicePrimitive,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_queue import (
-    CryptoServiceQueue,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SecOcCryptoServiceMapping(CryptoServiceMapping):
@@ -29,32 +14,11 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "authentication": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServicePrimitive,
-        ),  # authentication
-        "crypto_service_key": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceKey,
-        ),  # cryptoServiceKey
-        "crypto_service_queue": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServiceQueue,
-        ),  # cryptoServiceQueue
     }
 
     def __init__(self) -> None:
         """Initialize SecOcCryptoServiceMapping."""
         super().__init__()
-        self.authentication: Optional[CryptoServicePrimitive] = None
-        self.crypto_service_key: Optional[CryptoServiceKey] = None
-        self.crypto_service_queue: Optional[CryptoServiceQueue] = None
 
 
 class SecOcCryptoServiceMappingBuilder:

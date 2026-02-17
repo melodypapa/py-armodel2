@@ -1,4 +1,9 @@
-"""ServiceProviderEnum enumeration."""
+"""AUTOSAR ServiceProviderEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 90)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.enums.json"""
 
 from enum import Enum
 

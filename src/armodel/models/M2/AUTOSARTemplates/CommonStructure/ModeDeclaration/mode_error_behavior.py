@@ -1,19 +1,11 @@
-"""ModeErrorBehavior AUTOSAR element.
+"""ModeErrorBehavior AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 44)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 637)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
-    ModeDeclaration,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ModeErrorBehavior(ARObject):
@@ -22,25 +14,11 @@ class ModeErrorBehavior(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "default_mode": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeDeclaration,
-        ),  # defaultMode
-        "error_reaction": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeErrorReactionPolicyEnum,
-        ),  # errorReaction
     }
 
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
-        self.default_mode: Optional[ModeDeclaration] = None
-        self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
 
 
 class ModeErrorBehaviorBuilder:

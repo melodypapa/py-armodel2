@@ -1,4 +1,9 @@
-"""DiagnosticTypeOfDtcSupportedEnum enumeration."""
+"""AUTOSAR DiagnosticTypeOfDtcSupportedEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 66)
+
+JSON Source: packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticTroubleCode.enums.json"""
 
 from enum import Enum
 

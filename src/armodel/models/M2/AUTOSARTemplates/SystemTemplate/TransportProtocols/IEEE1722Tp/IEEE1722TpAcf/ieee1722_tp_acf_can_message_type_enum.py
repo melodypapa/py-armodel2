@@ -1,4 +1,9 @@
-"""IEEE1722TpAcfCanMessageTypeEnum enumeration."""
+"""AUTOSAR IEEE1722TpAcfCanMessageTypeEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
+
+JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.enums.json"""
 
 from enum import Enum
 

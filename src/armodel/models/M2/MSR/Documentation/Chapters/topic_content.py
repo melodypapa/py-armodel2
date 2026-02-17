@@ -1,21 +1,11 @@
-"""TopicContent AUTOSAR element.
+"""TopicContent AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 478)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
-    DocumentationBlock,
-)
-from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
-    Table,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TopicContent(ARObject):
@@ -24,32 +14,11 @@ class TopicContent(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "block_level": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=DocumentationBlock,
-        ),  # blockLevel
-        "table": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Table,
-        ),  # table
-        "traceable_table": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=any (TraceableTable),
-        ),  # traceableTable
     }
 
     def __init__(self) -> None:
         """Initialize TopicContent."""
         super().__init__()
-        self.block_level: DocumentationBlock = None
-        self.table: Optional[Table] = None
-        self.traceable_table: Any = None
 
 
 class TopicContentBuilder:

@@ -1,22 +1,11 @@
-"""PredefinedVariant AUTOSAR element.
+"""PredefinedVariant AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 305)
-  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 77)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 257)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
-    ARElement,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
-    SwSystemconstantValueSet,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class PredefinedVariant(ARElement):
@@ -25,32 +14,11 @@ class PredefinedVariant(ARElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "included_variants": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PredefinedVariant,
-        ),  # includedVariants
-        "post_build_variants": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=any (PostBuildVariant),
-        ),  # postBuildVariants
-        "sws": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwSystemconstantValueSet,
-        ),  # sws
     }
 
     def __init__(self) -> None:
         """Initialize PredefinedVariant."""
         super().__init__()
-        self.included_variants: list[PredefinedVariant] = []
-        self.post_build_variants: list[Any] = []
-        self.sws: list[SwSystemconstantValueSet] = []
 
 
 class PredefinedVariantBuilder:

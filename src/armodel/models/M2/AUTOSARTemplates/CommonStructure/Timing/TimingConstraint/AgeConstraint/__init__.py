@@ -1,8 +1,5 @@
 """AgeConstraint module."""
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.AgeConstraint.age_constraint import (
-    AgeConstraint,
-)
 
-__all__ = [
-    "AgeConstraint",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

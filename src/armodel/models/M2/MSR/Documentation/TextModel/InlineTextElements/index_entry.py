@@ -1,18 +1,11 @@
-"""IndexEntry AUTOSAR element.
+"""IndexEntry AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 317)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Superscript,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IndexEntry(ARObject):
@@ -21,23 +14,11 @@ class IndexEntry(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "sub": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # sub
-        "sup": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="1",
-        ),  # sup
     }
 
     def __init__(self) -> None:
         """Initialize IndexEntry."""
         super().__init__()
-        self.sub: Superscript = None
-        self.sup: Superscript = None
 
 
 class IndexEntryBuilder:

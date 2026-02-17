@@ -1,15 +1,11 @@
-"""AbstractCanCommunicationControllerAttributes AUTOSAR element.
+"""AbstractCanCommunicationControllerAttributes AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 64)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AbstractCanCommunicationControllerAttributes(ARObject):
@@ -19,25 +15,11 @@ class AbstractCanCommunicationControllerAttributes(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "can_controller_fd": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (CanControllerFd),
-        ),  # canControllerFd
-        "can_controller_xl": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (CanControllerXl),
-        ),  # canControllerXl
     }
 
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationControllerAttributes."""
         super().__init__()
-        self.can_controller_fd: Optional[Any] = None
-        self.can_controller_xl: Optional[Any] = None
 
 
 class AbstractCanCommunicationControllerAttributesBuilder:

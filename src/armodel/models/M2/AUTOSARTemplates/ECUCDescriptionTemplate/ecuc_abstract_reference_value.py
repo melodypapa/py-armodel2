@@ -1,23 +1,11 @@
-"""EcucAbstractReferenceValue AUTOSAR element.
+"""EcucAbstractReferenceValue AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 131)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
-    EcucIndexableValue,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    Boolean,
-)
-from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
-    Annotation,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucAbstractReferenceValue(EcucIndexableValue):
@@ -27,31 +15,11 @@ class EcucAbstractReferenceValue(EcucIndexableValue):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "annotations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Annotation,
-        ),  # annotations
-        "definition": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (EcucAbstractReference),
-        ),  # definition
-        "is_auto_value": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # isAutoValue
     }
 
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""
         super().__init__()
-        self.annotations: list[Annotation] = []
-        self.definition: Optional[Any] = None
-        self.is_auto_value: Optional[Boolean] = None
 
 
 class EcucAbstractReferenceValueBuilder:

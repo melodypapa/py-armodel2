@@ -1,17 +1,11 @@
-"""ApplicationDeferredDataType AUTOSAR element.
+"""ApplicationDeferredDataType AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 37)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_AbstractPlatform.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
-    ApplicationDataType,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ApplicationDeferredDataType(ApplicationDataType):

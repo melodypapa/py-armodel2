@@ -1,19 +1,11 @@
-"""DiagEventDebounceAlgorithm AUTOSAR element.
+"""DiagEventDebounceAlgorithm AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 259)
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 196)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 756)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagEventDebounceAlgorithm(Identifiable):

@@ -1,8 +1,5 @@
 """AuxillaryObjects module."""
-from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
-    SwAddrMethod,
-)
 
-__all__ = [
-    "SwAddrMethod",
-]
+from __future__ import annotations
+from typing import TYPE_CHECKING
+

@@ -1,18 +1,11 @@
-"""HwType AUTOSAR element.
+"""HwType AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 17)
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 991)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate_HwElementCategory.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
-    HwDescriptionEntity,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class HwType(HwDescriptionEntity):

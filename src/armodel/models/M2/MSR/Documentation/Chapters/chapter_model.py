@@ -1,25 +1,11 @@
-"""ChapterModel AUTOSAR element.
+"""ChapterModel AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 699)
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 329)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.Chapters.chapter_content import (
-    ChapterContent,
-)
-from armodel.models.M2.MSR.Documentation.Chapters.chapter_or_msr_query import (
-    ChapterOrMsrQuery,
-)
-from armodel.models.M2.MSR.Documentation.Chapters.topic_or_msr_query import (
-    TopicOrMsrQuery,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ChapterModel(ARObject):
@@ -28,32 +14,11 @@ class ChapterModel(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "chapter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ChapterOrMsrQuery,
-        ),  # chapter
-        "chapter_content": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ChapterContent,
-        ),  # chapterContent
-        "topic1": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TopicOrMsrQuery,
-        ),  # topic1
     }
 
     def __init__(self) -> None:
         """Initialize ChapterModel."""
         super().__init__()
-        self.chapter: Optional[ChapterOrMsrQuery] = None
-        self.chapter_content: Optional[ChapterContent] = None
-        self.topic1: Optional[TopicOrMsrQuery] = None
 
 
 class ChapterModelBuilder:

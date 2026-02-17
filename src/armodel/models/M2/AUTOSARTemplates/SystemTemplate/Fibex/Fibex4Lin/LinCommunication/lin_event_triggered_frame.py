@@ -1,23 +1,11 @@
-"""LinEventTriggeredFrame AUTOSAR element.
+"""LinEventTriggeredFrame AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 430)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
-    LinFrame,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_schedule_table import (
-    LinScheduleTable,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_unconditional_frame import (
-    LinUnconditionalFrame,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LinEventTriggeredFrame(LinFrame):
@@ -26,25 +14,11 @@ class LinEventTriggeredFrame(LinFrame):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "collision_schedule": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=LinScheduleTable,
-        ),  # collisionSchedule
-        "lin_unconditional_frames": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=LinUnconditionalFrame,
-        ),  # linUnconditionalFrames
     }
 
     def __init__(self) -> None:
         """Initialize LinEventTriggeredFrame."""
         super().__init__()
-        self.collision_schedule: Optional[LinScheduleTable] = None
-        self.lin_unconditional_frames: list[LinUnconditionalFrame] = []
 
 
 class LinEventTriggeredFrameBuilder:

@@ -1,17 +1,11 @@
-"""ImpositionTime AUTOSAR element.
+"""ImpositionTime AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 194)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_ImpositionTimes.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ImpositionTime(Identifiable):

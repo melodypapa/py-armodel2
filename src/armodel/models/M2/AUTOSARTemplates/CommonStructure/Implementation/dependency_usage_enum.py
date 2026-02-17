@@ -1,4 +1,9 @@
-"""DependencyUsageEnum enumeration."""
+"""AUTOSAR DependencyUsageEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 132)
+
+JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_Implementation.enums.json"""
 
 from enum import Enum
 

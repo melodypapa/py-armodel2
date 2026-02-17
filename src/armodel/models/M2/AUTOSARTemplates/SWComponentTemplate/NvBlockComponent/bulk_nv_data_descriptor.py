@@ -1,23 +1,11 @@
-"""BulkNvDataDescriptor AUTOSAR element.
+"""BulkNvDataDescriptor AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 692)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockComponent.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
-    Identifiable,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.nv_block_data_mapping import (
-    NvBlockDataMapping,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BulkNvDataDescriptor(Identifiable):
@@ -26,25 +14,11 @@ class BulkNvDataDescriptor(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "bulk_nv_block": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # bulkNvBlock
-        "nv_block_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=NvBlockDataMapping,
-        ),  # nvBlockDatas
     }
 
     def __init__(self) -> None:
         """Initialize BulkNvDataDescriptor."""
         super().__init__()
-        self.bulk_nv_block: Optional[VariableDataPrototype] = None
-        self.nv_block_datas: list[NvBlockDataMapping] = []
 
 
 class BulkNvDataDescriptorBuilder:

@@ -1,20 +1,11 @@
-"""TpConfig AUTOSAR element.
+"""TpConfig AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 587)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
-    FibexElement,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
-    CommunicationCluster,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TpConfig(FibexElement):
@@ -24,18 +15,11 @@ class TpConfig(FibexElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "communication_cluster": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CommunicationCluster,
-        ),  # communicationCluster
     }
 
     def __init__(self) -> None:
         """Initialize TpConfig."""
         super().__init__()
-        self.communication_cluster: Optional[CommunicationCluster] = None
 
 
 class TpConfigBuilder:

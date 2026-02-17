@@ -1,17 +1,11 @@
-"""DiagnosticFimFunctionMapping AUTOSAR element.
+"""DiagnosticFimFunctionMapping AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 264)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
-    DiagnosticSwMapping,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
@@ -20,39 +14,11 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "mapped_bsw": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (BswService),
-        ),  # mappedBsw
-        "mapped_flat_swc": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (SwcService),
-        ),  # mappedFlatSwc
-        "mapped": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (DiagnosticFunction),
-        ),  # mapped
-        "mapped_swc": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (SwcService),
-        ),  # mappedSwc
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticFimFunctionMapping."""
         super().__init__()
-        self.mapped_bsw: Optional[Any] = None
-        self.mapped_flat_swc: Optional[Any] = None
-        self.mapped: Optional[Any] = None
-        self.mapped_swc: Optional[Any] = None
 
 
 class DiagnosticFimFunctionMappingBuilder:

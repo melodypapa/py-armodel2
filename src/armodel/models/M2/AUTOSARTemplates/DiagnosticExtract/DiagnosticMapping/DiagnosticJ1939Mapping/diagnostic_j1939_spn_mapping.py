@@ -1,26 +1,11 @@
-"""DiagnosticJ1939SpnMapping AUTOSAR element.
+"""DiagnosticJ1939SpnMapping AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 267)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
-    DiagnosticMapping,
-)
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
-    DiagnosticJ1939Node,
-)
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
-    DiagnosticJ1939Spn,
-)
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
-    SystemSignal,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticJ1939SpnMapping(DiagnosticMapping):
@@ -29,32 +14,11 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "sending_nodes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DiagnosticJ1939Node,
-        ),  # sendingNodes
-        "spn": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticJ1939Spn,
-        ),  # spn
-        "system_signal": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SystemSignal,
-        ),  # systemSignal
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SpnMapping."""
         super().__init__()
-        self.sending_nodes: list[DiagnosticJ1939Node] = []
-        self.spn: Optional[DiagnosticJ1939Spn] = None
-        self.system_signal: Optional[SystemSignal] = None
 
 
 class DiagnosticJ1939SpnMappingBuilder:

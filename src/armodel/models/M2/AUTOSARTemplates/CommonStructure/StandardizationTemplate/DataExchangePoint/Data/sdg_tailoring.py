@@ -1,20 +1,11 @@
-"""SdgTailoring AUTOSAR element.
+"""SdgTailoring AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 118)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
-    RestrictionWithSeverity,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
-    SdgClass,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SdgTailoring(RestrictionWithSeverity):
@@ -23,18 +14,11 @@ class SdgTailoring(RestrictionWithSeverity):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "sdg_class": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SdgClass,
-        ),  # sdgClass
     }
 
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
-        self.sdg_class: Optional[SdgClass] = None
 
 
 class SdgTailoringBuilder:

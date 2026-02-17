@@ -1,21 +1,11 @@
-"""ArVariableInImplementationDataInstanceRef AUTOSAR element.
+"""ArVariableInImplementationDataInstanceRef AUTOSAR element."""
 
-References:
-  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 322)
-
-JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ArVariableInImplementationDataInstanceRef(ARObject):
@@ -24,39 +14,11 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "context_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=any (AbstractImplementation),
-        ),  # contextDatas
-        "port_prototype": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PortPrototype,
-        ),  # portPrototype
-        "root_variable": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # rootVariable
-        "target_data": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=any (AbstractImplementation),
-        ),  # targetData
     }
 
     def __init__(self) -> None:
         """Initialize ArVariableInImplementationDataInstanceRef."""
         super().__init__()
-        self.context_datas: list[Any] = []
-        self.port_prototype: Optional[PortPrototype] = None
-        self.root_variable: Optional[VariableDataPrototype] = None
-        self.target_data: Optional[Any] = None
 
 
 class ArVariableInImplementationDataInstanceRefBuilder:

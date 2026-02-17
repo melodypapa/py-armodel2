@@ -1,4 +1,9 @@
-"""MacSecConfidentialityOffsetEnum enumeration."""
+"""AUTOSAR MacSecConfidentialityOffsetEnum enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 176)
+
+JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.enums.json"""
 
 from enum import Enum
 

@@ -1,18 +1,11 @@
-"""IndentSample AUTOSAR element.
+"""IndentSample AUTOSAR element."""
 
-References:
-  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 297)
-
-JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
-
-from typing import Optional
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
-    LOverviewParagraph,
-)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IndentSample(ARObject):
@@ -21,25 +14,11 @@ class IndentSample(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-        "item_label_pos_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ItemLabelPosEnum,
-        ),  # itemLabelPosEnum
-        "l2": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=LOverviewParagraph,
-        ),  # l2
     }
 
     def __init__(self) -> None:
         """Initialize IndentSample."""
         super().__init__()
-        self.item_label_pos_enum: Optional[ItemLabelPosEnum] = None
-        self.l2: LOverviewParagraph = None
 
 
 class IndentSampleBuilder:

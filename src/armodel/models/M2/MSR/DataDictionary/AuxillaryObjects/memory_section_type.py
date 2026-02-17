@@ -1,4 +1,10 @@
-"""MemorySectionType enumeration."""
+"""AUTOSAR MemorySectionType enumeration.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 146)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 417)
+
+JSON Source: packages/M2_MSR_DataDictionary_AuxillaryObjects.enums.json"""
 
 from enum import Enum
 
