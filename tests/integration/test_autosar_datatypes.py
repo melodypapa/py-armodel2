@@ -382,7 +382,7 @@ class TestAUTOSARDatatypes:
     @pytest.mark.xfail(
         reason="Binary comparison fails due to XML structural normalization (flat → nested format). "
                "All semantic data is preserved - see test_xml_content_comparison. "
-               "Requires implementation per docs/plans/2025-02-17-fix-binary-comparison-test.md"
+               "File size difference: 8,070 bytes (34.5%) due to BASE-TYPE-DEFINITION wrapper normalization"
     )
     def test_binary_file_comparison(self, datatypes_file, tmp_path):
         """Test that generated file is binary identical to original file.
