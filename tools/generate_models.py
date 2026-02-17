@@ -1567,6 +1567,11 @@ def generate_all_models(
             class_name = type_def["name"]
             package_path = type_def.get("package_path", "")
 
+            # Skip AUTOSAR and ARObject - these are special classes that must be maintained manually
+            if class_name in ["AUTOSAR", "ARObject"]:
+                print(f"Skipping {class_name} - manually maintained special class")
+                continue
+
             # Get the JSON file path for this class
             json_file_path = class_json_file_map.get(class_name, "")
 
