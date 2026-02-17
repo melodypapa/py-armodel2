@@ -52,21 +52,18 @@ class ARXMLWriter:
         Returns:
             Root XML element
         """
-        # Register namespaces for proper XML output
-        # Get the namespace from the AUTOSAR object's version
-        version = autosar.get_schema_version()
-        if version is None:
-            version = self._version_manager.get_default_version()
-
+        # Get default namespace for version-aware XML output
+        version = self._version_manager.get_default_version()
         namespace = self._version_manager.get_namespace(version)
+
         if namespace:
             # Register default namespace (empty prefix)
             ET.register_namespace("", namespace)
         # Register xsi namespace
         ET.register_namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
 
-        # Serialize with version-aware namespace handling
-        root = autosar.serialize(schema_version=version)
+        # Use reflection-based serialize method
+        root = autosar.serialize(namespace=namespace or "")
         return root
 
     def _save_to_file(self, root: ET.Element, filepath: Union[str, Path]) -> None:

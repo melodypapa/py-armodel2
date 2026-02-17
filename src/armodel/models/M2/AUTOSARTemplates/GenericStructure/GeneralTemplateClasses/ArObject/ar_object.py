@@ -68,14 +68,16 @@ class ARObject:
                 child = value.serialize(namespace)
                 elem.append(child)
             elif isinstance(value, list):
-                # Serialize list items
+                # Serialize list items - create wrapper element
+                wrapper = ET.Element(xml_tag)
                 for item in value:
                     if hasattr(item, 'serialize'):
-                        elem.append(item.serialize(namespace))
+                        wrapper.append(item.serialize(namespace))
                     else:
                         child = ET.Element(xml_tag)
                         child.text = str(item)
-                        elem.append(child)
+                        wrapper.append(child)
+                elem.append(wrapper)
             else:
                 # Primitive value - create element with text content
                 child = ET.Element(xml_tag)
