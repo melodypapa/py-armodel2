@@ -104,15 +104,13 @@ class TestARObject:
         obj = ARObject()
         obj.checksum = "test_checksum"
 
-        # Test with 00046 namespace
-        namespace_46 = "http://autosar.org/schema/r4.0"
-        element_46 = obj.serialize(namespace_46)
-        assert element_46.tag == "AROBJECT"
+        # Serialize creates element without namespace parameter
+        element_46 = obj.serialize()
+        assert element_46.tag == "AR-OBJECT"
 
-        # Test with 00052 namespace
-        namespace_52 = "http://autosar.org/schema/r5.0"
-        element_52 = obj.serialize(namespace_52)
-        assert element_52.tag == "AROBJECT"
+        # Serialize creates element without namespace parameter
+        element_52 = obj.serialize()
+        assert element_52.tag == "AR-OBJECT"
 
     def test_deserialize_with_different_namespaces(self):
         """Test deserialization with different schema versions."""
