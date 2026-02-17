@@ -15,9 +15,6 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
-    ApplicationPrimitiveDataType,
-)
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
     CompuMethod,
 )
@@ -33,6 +30,12 @@ from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
+        ApplicationPrimitiveDataType,
+    )
+
 
 
 class SwAxisIndividual(SwCalprmAxisTypeProps):

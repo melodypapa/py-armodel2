@@ -16,9 +16,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
     AutosarVariableRef,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class InstantiationDataDefProps(ARObject):

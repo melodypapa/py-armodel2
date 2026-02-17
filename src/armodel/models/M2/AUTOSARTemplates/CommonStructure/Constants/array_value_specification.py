@@ -17,9 +17,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_valu
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
+    )
+
 
 
 class ArrayValueSpecification(CompositeValueSpecification):

@@ -380,9 +380,9 @@ class TestAUTOSARDatatypes:
     # ========================================================================
 
     @pytest.mark.xfail(
-        reason="Binary comparison fails due to XML structural normalization (flat → nested format). "
+        reason="Binary comparison may fail due to XML formatting differences (attribute ordering, whitespace). "
                "All semantic data is preserved - see test_xml_content_comparison. "
-               "Requires implementation per docs/plans/2025-02-17-fix-binary-comparison-test.md"
+               "BaseType now uses flat format serialization matching the original ARXML structure."
     )
     def test_binary_file_comparison(self, datatypes_file, tmp_path):
         """Test that generated file is binary identical to original file.

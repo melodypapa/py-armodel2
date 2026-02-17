@@ -30,15 +30,18 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transfor
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_props import (
     ISignalProps,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
+    )
+
 
 
 class ISignal(FibexElement):

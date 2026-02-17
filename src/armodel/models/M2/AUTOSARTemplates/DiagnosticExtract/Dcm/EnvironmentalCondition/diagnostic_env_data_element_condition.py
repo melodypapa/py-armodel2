@@ -15,12 +15,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
+    )
+
 
 
 class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):

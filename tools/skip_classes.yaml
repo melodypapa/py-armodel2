@@ -14,3 +14,39 @@ skip_classes:
 
   # Base ARObject class - implements reflection-based serialization framework
   - "ARObject"
+
+  # Abstract base class for SwBaseType - requires custom handling
+  - "BaseType"
+
+# Force TYPE_CHECKING Imports
+# These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.
+# This is needed when the automatic circular import detection doesn't catch all cases,
+# or when you want to explicitly declare that a type should use TYPE_CHECKING.
+#
+# Format: mapping from class name to list of attribute types that should use TYPE_CHECKING
+# Use "*" to force all imports of a type into TYPE_CHECKING regardless of which class imports it.
+#
+# Example:
+#   force_type_checking_imports:
+#     # Always import AbstractImplementationDataType in TYPE_CHECKING block
+#     "AbstractImplementationDataType": "*"
+#     # When SwDataDefProps imports these types, use TYPE_CHECKING
+#     "SwDataDefProps":
+#       - "AbstractImplementationDataType"
+#       - "ApplicationPrimitiveDataType"
+#
+force_type_checking_imports:
+  # SwDataDefProps has circular import with AbstractImplementationDataType
+  # The chain: SwDataDefProps -> AbstractImplementationDataType -> AutosarDataType -> SwDataDefProps
+  "AbstractImplementationDataType": "*"
+  
+  # SwDataDefProps is imported by AutosarDataType, creating a circular chain
+  # The chain: AutosarDataType -> SwDataDefProps -> AbstractImplementationDataType -> AutosarDataType
+  "SwDataDefProps": "*"
+  
+  # ApplicationPrimitiveDataType creates a circular chain with AutosarDataType
+  # The chain: AutosarDataType -> SwDataDefProps -> ApplicationPrimitiveDataType -> ApplicationDataType -> AutosarDataType
+  "ApplicationPrimitiveDataType": "*"
+  
+  # ValueSpecification may have circular imports with various types
+  "ValueSpecification": "*"

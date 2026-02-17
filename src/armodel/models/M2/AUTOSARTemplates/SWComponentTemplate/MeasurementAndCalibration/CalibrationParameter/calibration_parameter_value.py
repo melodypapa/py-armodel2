@@ -14,9 +14,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
     FlatInstanceDescriptor,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
+    )
+
 
 
 class CalibrationParameterValue(ARObject):

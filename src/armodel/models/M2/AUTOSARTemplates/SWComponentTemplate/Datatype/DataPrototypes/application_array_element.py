@@ -22,9 +22,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes i
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
-    ApplicationPrimitiveDataType,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
+        ApplicationPrimitiveDataType,
+    )
+
 
 
 class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):

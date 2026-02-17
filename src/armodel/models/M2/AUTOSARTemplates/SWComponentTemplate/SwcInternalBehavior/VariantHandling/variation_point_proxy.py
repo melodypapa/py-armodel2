@@ -13,12 +13,15 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
-    AbstractImplementationDataType,
-)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
     ConditionByFormula,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+        AbstractImplementationDataType,
+    )
+
 
 
 class VariationPointProxy(Identifiable):

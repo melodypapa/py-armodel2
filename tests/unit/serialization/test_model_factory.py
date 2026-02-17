@@ -87,9 +87,17 @@ class TestModelFactory:
         assert cls2.__name__ == "SwBaseType"
 
     def test_nonexistent_class(self) -> None:
-        """Test getting a nonexistent class returns None."""
+        """Test getting a nonexistent class returns None when raise_on_failure=False."""
         factory = ModelFactory()
         factory.load_mappings()
 
-        cls = factory.get_class("NONEXISTENT-TAG")
+        cls = factory.get_class("NONEXISTENT-TAG", raise_on_failure=False)
         assert cls is None
+
+    def test_nonexistent_class_raises(self) -> None:
+        """Test getting a nonexistent class raises ImportError by default."""
+        factory = ModelFactory()
+        factory.load_mappings()
+
+        with pytest.raises(ImportError):
+            factory.get_class("NONEXISTENT-TAG")

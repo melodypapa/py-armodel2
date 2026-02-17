@@ -13,12 +13,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_props import (
     TransformationProps,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class DataPrototypeTransformationProps(ARObject):

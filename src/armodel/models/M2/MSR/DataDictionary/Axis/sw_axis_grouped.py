@@ -15,12 +15,15 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
 from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
     AxisIndexType,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
-    ApplicationPrimitiveDataType,
-)
 from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_calprm_ref_proxy import (
     SwCalprmRefProxy,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
+        ApplicationPrimitiveDataType,
+    )
+
 
 
 class SwAxisGrouped(SwCalprmAxisTypeProps):

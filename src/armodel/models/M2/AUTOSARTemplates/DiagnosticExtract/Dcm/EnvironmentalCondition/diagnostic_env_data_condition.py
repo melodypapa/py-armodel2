@@ -15,9 +15,12 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
     DiagnosticDataElement,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
+    )
+
 
 
 class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):

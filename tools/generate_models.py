@@ -104,30 +104,37 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
     return class_info
 
 
-def load_skip_list(skip_list_file: Path) -> List[str]:
+def load_skip_list(skip_list_file: Path) -> tuple[List[str], Dict[str, List[str]]]:
     """Parse skip_classes.yaml file to get list of classes to skip during generation.
 
     Args:
         skip_list_file: Path to skip_classes.yaml file
 
     Returns:
-        List of class names to skip (empty list if file doesn't exist or yaml not available)
+        Tuple of (skip_classes_list, force_type_checking_imports)
+        - skip_classes_list: List of class names to skip
+        - force_type_checking_imports: Dict mapping class names to list of types to force into TYPE_CHECKING
+          (empty dicts if file doesn't exist or yaml not available)
     """
+    empty_result = ([], {})
+    
     if yaml is None:
-        # YAML module not available, return empty list
-        return []
+        # YAML module not available, return empty result
+        return empty_result
 
     if not skip_list_file.exists():
-        # File doesn't exist, return empty list
-        return []
+        # File doesn't exist, return empty result
+        return empty_result
 
     try:
         with open(skip_list_file, "r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
-            return data.get("skip_classes", [])
+            skip_classes = data.get("skip_classes", [])
+            force_type_checking = data.get("force_type_checking_imports", {})
+            return skip_classes, force_type_checking
     except Exception:
-        # If there's any error loading the file, return empty list
-        return []
+        # If there's any error loading the file, return empty result
+        return empty_result
 
 
 def create_directory_structure(
@@ -268,6 +275,7 @@ def generate_class_code(
     include_members: bool = False,
     json_file_path: str = "",
     dependency_graph: Dict[str, set] = None,
+    force_type_checking_imports: Dict[str, List[str]] = None,
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -278,12 +286,15 @@ def generate_class_code(
         include_members: Whether to include member lists from package definitions
         json_file_path: Path to the JSON file containing the class definition
         dependency_graph: Complete dependency graph for circular import detection
+        force_type_checking_imports: Dict mapping class names to types that should use TYPE_CHECKING
 
     Returns:
         Generated Python code as string
     """
     if dependency_graph is None:
         dependency_graph = {}
+    if force_type_checking_imports is None:
+        force_type_checking_imports = {}
     class_name = type_def["name"]
     is_splitable = type_def.get("splitable", False)
     split_file_name = type_def.get("split_file_name", "")
@@ -487,6 +498,9 @@ def generate_class_code(
         if class_import_path:
             added_imports.add(class_import_path)
 
+        # Get forced TYPE_CHECKING imports for this class
+        forced_type_checking_for_class = force_type_checking_imports.get(class_name, [])
+        
         # Separate circular and non-circular imports
         circular_imports = set()
         non_circular_imports = set()
@@ -498,8 +512,15 @@ def generate_class_code(
                     continue
                 import_path = get_type_import_path(import_type, package_data)
                 if import_path and import_path not in added_imports:
-                    # Check for circular import
-                    if detect_circular_import(class_name, import_type, package_data, dependency_graph):
+                    # Check if this import should be forced into TYPE_CHECKING
+                    # 1. Check if the import_type is globally forced ("*")
+                    forced_globally = force_type_checking_imports.get(import_type) == "*"
+                    # 2. Check if this class has specific types forced
+                    forced_for_this_class = import_type in forced_type_checking_for_class
+                    # 3. Check for circular import via dependency graph
+                    is_circular = detect_circular_import(class_name, import_type, package_data, dependency_graph)
+                    
+                    if forced_globally or forced_for_this_class or is_circular:
                         circular_imports.add((import_type, import_path))
                     else:
                         non_circular_imports.add((import_type, import_path))
@@ -1566,11 +1587,11 @@ def generate_all_models(
     """
     total_generated = 0
 
-    # Load skip list for classes that should not be generated
+    # Load skip list and force_type_checking_imports from YAML configuration
     if skip_list_file is None:
         # Default to the skip_classes.yaml in the tools directory
         skip_list_file = Path(__file__).parent / "skip_classes.yaml"
-    skip_list = load_skip_list(skip_list_file)
+    skip_list, force_type_checking_imports = load_skip_list(skip_list_file)
 
     # Parse hierarchy.json for parent and abstract information
     hierarchy_info = parse_hierarchy_json(hierarchy_file)
@@ -1620,7 +1641,7 @@ def generate_all_models(
 
             # Generate class code
             class_code = generate_class_code(
-                type_def, hierarchy_info, package_data, include_members, json_file_path, dependency_graph
+                type_def, hierarchy_info, package_data, include_members, json_file_path, dependency_graph, force_type_checking_imports
             )
             builder_code = generate_builder_code(type_def)
 

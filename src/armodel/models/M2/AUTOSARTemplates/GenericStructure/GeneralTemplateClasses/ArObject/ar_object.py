@@ -303,6 +303,54 @@ class ARObject:
         return tag
 
     @staticmethod
+    def _add_text_element(parent: ET.Element, tag: str, value) -> None:
+        """Add a child element with text content to parent if value is not None.
+
+        Protected static helper method for serialization. Accessible to all subclasses.
+
+        Args:
+            parent: Parent XML element to add child to
+            tag: XML tag name for the child element
+            value: Value to serialize. If None, no element is added.
+        """
+        if value is not None:
+            child = ET.Element(tag)
+            child.text = str(value)
+            parent.append(child)
+
+    @staticmethod
+    def _extract_text(element: ET.Element, tag: Optional[str] = None) -> Optional[str]:
+        """Extract text content from XML element, returning None if missing or empty.
+
+        Protected static helper method for deserialization. Accessible to all subclasses.
+
+        If tag is provided, first finds the child element by tag name with namespace handling.
+
+        Args:
+            element: XML element to extract text from (or parent element if tag is provided)
+            tag: Optional tag name to find child element. Handles namespace prefixes.
+
+        Returns:
+            Text content or None if element is missing or empty
+        """
+        # If tag is provided, find the child element first
+        if tag is not None:
+            # Try direct match first
+            child = element.find(tag)
+            if child is None:
+                # Try matching by stripped tag name (handles namespace)
+                for elem in element:
+                    if ARObject._strip_namespace(elem.tag) == tag:
+                        child = elem
+                        break
+            element = child
+
+        if element is None or element.text is None:
+            return None
+        text = element.text.strip()
+        return text if text else None
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
         """Extract value from XML element based on type.
 
