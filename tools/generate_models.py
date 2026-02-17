@@ -5,7 +5,12 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 def parse_mapping_json(mapping_file: Path) -> Dict[str, Any]:
@@ -97,6 +102,32 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
             indent_stack.append((indent, class_name))
 
     return class_info
+
+
+def load_skip_list(skip_list_file: Path) -> List[str]:
+    """Parse skip_classes.yaml file to get list of classes to skip during generation.
+
+    Args:
+        skip_list_file: Path to skip_classes.yaml file
+
+    Returns:
+        List of class names to skip (empty list if file doesn't exist or yaml not available)
+    """
+    if yaml is None:
+        # YAML module not available, return empty list
+        return []
+
+    if not skip_list_file.exists():
+        # File doesn't exist, return empty list
+        return []
+
+    try:
+        with open(skip_list_file, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+            return data.get("skip_classes", [])
+    except Exception:
+        # If there's any error loading the file, return empty list
+        return []
 
 
 def create_directory_structure(
@@ -1519,6 +1550,7 @@ def generate_all_models(
     generate_enums: bool = True,
     generate_primitives: bool = True,
     include_members: bool = False,
+    skip_list_file: Path = None,
 ) -> None:
     """Generate all model classes, enums, and primitives from JSON definitions.
 
@@ -1530,8 +1562,15 @@ def generate_all_models(
         generate_enums: Whether to generate enum files
         generate_primitives: Whether to generate primitive files
         include_members: Whether to include member lists from package definitions
+        skip_list_file: Path to skip_classes.yaml (optional, defaults to tools/skip_classes.yaml)
     """
     total_generated = 0
+
+    # Load skip list for classes that should not be generated
+    if skip_list_file is None:
+        # Default to the skip_classes.yaml in the tools directory
+        skip_list_file = Path(__file__).parent / "skip_classes.yaml"
+    skip_list = load_skip_list(skip_list_file)
 
     # Parse hierarchy.json for parent and abstract information
     hierarchy_info = parse_hierarchy_json(hierarchy_file)
@@ -1567,8 +1606,8 @@ def generate_all_models(
             class_name = type_def["name"]
             package_path = type_def.get("package_path", "")
 
-            # Skip AUTOSAR and ARObject - these are special classes that must be maintained manually
-            if class_name in ["AUTOSAR", "ARObject"]:
+            # Skip classes that are in the skip list (manually maintained)
+            if class_name in skip_list:
                 print(f"Skipping {class_name} - manually maintained special class")
                 continue
 
@@ -1693,6 +1732,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--no-members", action="store_false", dest="members", help="Skip member list generation"
     )
+    parser.add_argument(
+        "--skip-list",
+        type=Path,
+        default=None,
+        help="Path to skip_classes.yaml file (default: tools/skip_classes.yaml)",
+    )
 
     args = parser.parse_args()
 
@@ -1705,4 +1750,5 @@ if __name__ == "__main__":
         generate_enums=args.enums,
         generate_primitives=args.primitives,
         include_members=args.members,
+        skip_list_file=args.skip_list,
     )

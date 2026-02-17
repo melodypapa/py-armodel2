@@ -11,15 +11,15 @@ class TestARObject(ARObject):
 
 def test_serialize_creates_element():
     obj = TestARObject()
-    elem = obj.serialize("")
+    elem = obj.serialize()
 
-    assert elem.tag == "TESTAROBJECT"
+    assert elem.tag == "TEST-A-R-OBJECT"
     assert elem.find("SHORT-NAME") is not None
     assert elem.find("SHORT-NAME").text == "test_name"
 
 def test_serialize_converts_names():
     obj = TestARObject()
-    elem = obj.serialize("")
+    elem = obj.serialize()
 
     # Verify snake_case → UPPER-CASE conversion
     assert elem.find("SHORT-NAME") is not None

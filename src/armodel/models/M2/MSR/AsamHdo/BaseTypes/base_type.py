@@ -23,11 +23,11 @@ class BaseType(ARElement):
     """AUTOSAR BaseType."""
     """Abstract base class - do not instantiate directly."""
 
-    base_type: BaseTypeDefinition
+    base_type_definition: BaseTypeDefinition
     def __init__(self) -> None:
         """Initialize BaseType."""
         super().__init__()
-        self.base_type: BaseTypeDefinition = None
+        self.base_type_definition: BaseTypeDefinition = None
 
 
 class BaseTypeBuilder:

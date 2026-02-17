@@ -167,3 +167,4 @@ Temporary Items
 
 # Generated models
 src/armodel/models/generated/
+output.arxml
