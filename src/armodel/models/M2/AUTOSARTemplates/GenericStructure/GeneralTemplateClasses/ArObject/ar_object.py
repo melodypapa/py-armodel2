@@ -6,9 +6,10 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ArObject.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union, get_type_hints
 import xml.etree.ElementTree as ET
 from armodel.serialization.metadata import XMLMember
+from armodel.serialization.name_converter import NameConverter
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
@@ -39,6 +40,102 @@ class ARObject:
         """Initialize ARObject."""
         self.checksum: Optional[String] = None
         self.timestamp: Optional[DateTime] = None
+
+    def serialize(self, namespace: str = "") -> ET.Element:
+        """Serialize object to XML element using reflection.
+
+        Automatically discovers all non-private attributes via vars(self),
+        converts names to XML tags, and serializes them as child elements.
+
+        Args:
+            namespace: XML namespace URI (optional)
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+
+        # Add namespace if provided
+        if namespace:
+            elem.set("xmlns", namespace)
+
+        # Get all instance attributes
+        for name, value in vars(self).items():
+            # Skip private attributes
+            if name.startswith('_'):
+                continue
+
+            # Convert Python name to XML tag
+            xml_tag = NameConverter.to_xml_tag(name)
+
+            # Skip None values
+            if value is None:
+                continue
+
+            # Check if this should be an XML attribute (via decorator)
+            if self._is_xml_attribute(name):
+                elem.set(xml_tag, str(value))
+            elif hasattr(value, 'serialize'):
+                # Recursively serialize child objects
+                child = value.serialize(namespace)
+                elem.append(child)
+            elif isinstance(value, list):
+                # Serialize list items
+                for item in value:
+                    if hasattr(item, 'serialize'):
+                        elem.append(item.serialize(namespace))
+                    else:
+                        child = ET.Element(xml_tag)
+                        child.text = str(item)
+                        elem.append(child)
+            else:
+                # Primitive value - create element with text content
+                child = ET.Element(xml_tag)
+                child.text = str(value)
+                elem.append(child)
+
+        return elem
+
+    def _get_xml_tag(self) -> str:
+        """Get XML tag name for this class.
+
+        Checks for @xml_tag decorator override, otherwise auto-generates from class name.
+
+        Returns:
+            XML tag name
+        """
+        # Check for decorator override
+        if hasattr(self.__class__, '_xml_tag'):
+            return self.__class__._xml_tag
+
+        # Auto-generate from class name
+        return NameConverter.to_xml_tag(self.__class__.__name__)
+
+    def _is_xml_attribute(self, attr_name: str) -> bool:
+        """Check if an attribute should be serialized as XML attribute.
+
+        Checks for @xml_attribute decorator on the property.
+
+        Args:
+            attr_name: Name of the attribute to check
+
+        Returns:
+            True if should be XML attribute, False if element
+        """
+        # Get the property if it exists
+        prop = getattr(self.__class__, attr_name, None)
+        if prop and hasattr(prop, 'fget'):
+            # Check if the property getter has the decorator marker
+            return hasattr(prop.fget, '_is_xml_attribute') and prop.fget._is_xml_attribute
+
+        # Check if the attribute itself has the marker
+        attr = getattr(self.__class__, attr_name, None)
+        if attr and hasattr(attr, '_is_xml_attribute'):
+            return attr._is_xml_attribute
+
+        return False
 
     @staticmethod
     def _member_to_xml_tag(member_name: str) -> str:
