@@ -47,9 +47,8 @@ class TestARObject:
         obj = ARObject()
         obj.checksum = "test_checksum"
         obj.timestamp = "2024-01-01T00:00:00Z"
-        namespace = "http://autosar.org/schema/r4.0"
 
-        element = obj.serialize(namespace)
+        element = obj.serialize()
 
         checksum_elem = element.find("CHECKSUM")
         assert checksum_elem is not None
