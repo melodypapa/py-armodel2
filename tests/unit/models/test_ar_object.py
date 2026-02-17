@@ -31,13 +31,12 @@ class TestARObject:
         """Test that ARObject can be serialized to XML (SWUT_MODELS_002)."""
         obj = ARObject()
         obj.checksum = "test_checksum"
-        namespace = "http://autosar.org/schema/r4.0"
 
-        element = obj.serialize(namespace)
+        element = obj.serialize()
 
         assert element is not None
         assert isinstance(element, ET.Element)
-        assert element.tag == "AROBJECT"
+        assert element.tag == "AR-OBJECT"
         # checksum is serialized as a child element, not attribute
         checksum_elem = element.find("CHECKSUM")
         assert checksum_elem is not None
