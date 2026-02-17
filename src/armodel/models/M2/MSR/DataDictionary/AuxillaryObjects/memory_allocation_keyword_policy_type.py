@@ -12,7 +12,7 @@ from enum import Enum
 class MemoryAllocationKeywordPolicyType(Enum):
     """AUTOSAR MemoryAllocationKeywordPolicyType enumeration."""
 
+    # Note: 1 duplicate literal(s) found and removed: addrMethodShort
     ADDRMETHODSHORT = "addrMethodShort"
     NAME = "Name"
-    ADDRMETHODSHORT = "addrMethodShort"
     NAMEANDALIGNMENT = "NameAndAlignment"

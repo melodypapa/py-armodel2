@@ -11,5 +11,5 @@ from enum import Enum
 class DiagnosticServiceRequestCallbackTypeEnum(Enum):
     """AUTOSAR DiagnosticServiceRequestCallbackTypeEnum enumeration."""
 
-    REQUESTCALLBACK = "requestCallback"
+    # Note: 1 duplicate literal(s) found and removed: requestCallback
     REQUESTCALLBACK = "requestCallback"

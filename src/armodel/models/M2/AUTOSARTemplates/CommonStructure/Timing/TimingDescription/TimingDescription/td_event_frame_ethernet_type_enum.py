@@ -11,7 +11,7 @@ from enum import Enum
 class TDEventFrameEthernetTypeEnum(Enum):
     """AUTOSAR TDEventFrameEthernetTypeEnum enumeration."""
 
+    # Note: 1 duplicate literal(s) found and removed: frameEthernet
     FRAMEETHERNETTRANSMISSION = "frameEthernetTransmission"
-    FRAMEETHERNET = "frameEthernet"
     FRAMEETHERNET = "frameEthernet"
     FRAMEETHERNETSENTONBUS = "frameEthernetSentOnBus"

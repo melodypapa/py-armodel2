@@ -1,4 +1,10 @@
-"""PortAPIOption AUTOSAR element."""
+"""PortAPIOption AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 589)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2045)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_PortAPIOptions.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +12,21 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
+    DataTransformation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
+    PortDefinedArgumentValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.swc_supported_feature import (
+    SwcSupportedFeature,
+)
 
 
 class PortAPIOption(ARObject):
@@ -14,11 +35,58 @@ class PortAPIOption(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "enable_take": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # enableTake
+        "error_handling": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformation,
+        ),  # errorHandling
+        "indirect_api": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # indirectAPI
+        "port": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=PortPrototype,
+        ),  # port
+        "port_arg_values": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=PortDefinedArgumentValue,
+        ),  # portArgValues
+        "supporteds": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=SwcSupportedFeature,
+        ),  # supporteds
+        "transformer": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DataTransformation,
+        ),  # transformer
     }
 
     def __init__(self) -> None:
         """Initialize PortAPIOption."""
         super().__init__()
+        self.enable_take: Optional[Boolean] = None
+        self.error_handling: Optional[DataTransformation] = None
+        self.indirect_api: Optional[Boolean] = None
+        self.port: Optional[PortPrototype] = None
+        self.port_arg_values: list[PortDefinedArgumentValue] = []
+        self.supporteds: list[SwcSupportedFeature] = []
+        self.transformer: Optional[DataTransformation] = None
 
 
 class PortAPIOptionBuilder:

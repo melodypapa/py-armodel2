@@ -1,4 +1,9 @@
-"""J1939ControllerApplicationToJ1939NmNodeMapping AUTOSAR element."""
+"""J1939ControllerApplicationToJ1939NmNodeMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 206)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,9 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_nm_node import (
+    J1939NmNode,
+)
 
 
 class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
@@ -14,11 +22,25 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "j1939_controller": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (J1939Controller),
+        ),  # j1939Controller
+        "j1939_nm_node": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=J1939NmNode,
+        ),  # j1939NmNode
     }
 
     def __init__(self) -> None:
         """Initialize J1939ControllerApplicationToJ1939NmNodeMapping."""
         super().__init__()
+        self.j1939_controller: Optional[Any] = None
+        self.j1939_nm_node: Optional[J1939NmNode] = None
 
 
 class J1939ControllerApplicationToJ1939NmNodeMappingBuilder:

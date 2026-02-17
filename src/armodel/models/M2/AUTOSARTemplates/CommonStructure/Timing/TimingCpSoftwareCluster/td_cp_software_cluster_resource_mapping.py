@@ -1,11 +1,24 @@
-"""TDCpSoftwareClusterResourceMapping AUTOSAR element."""
+"""TDCpSoftwareClusterResourceMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCpSoftwareCluster.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
+    TimingDescription,
+)
 
 
 class TDCpSoftwareClusterResourceMapping(Identifiable):
@@ -14,11 +27,25 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "resource": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=CpSoftwareCluster,
+        ),  # resource
+        "timing": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingDescription,
+        ),  # timing
     }
 
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterResourceMapping."""
         super().__init__()
+        self.resource: Optional[CpSoftwareCluster] = None
+        self.timing: Optional[TimingDescription] = None
 
 
 class TDCpSoftwareClusterResourceMappingBuilder:

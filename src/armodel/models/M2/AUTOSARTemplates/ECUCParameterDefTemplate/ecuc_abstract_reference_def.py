@@ -1,11 +1,21 @@
-"""EcucAbstractReferenceDef AUTOSAR element."""
+"""EcucAbstractReferenceDef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 71)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_common_attributes import (
+    EcucCommonAttributes,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
 
 class EcucAbstractReferenceDef(EcucCommonAttributes):
@@ -15,11 +25,17 @@ class EcucAbstractReferenceDef(EcucCommonAttributes):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "with_auto": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # withAuto
     }
 
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceDef."""
         super().__init__()
+        self.with_auto: Optional[Boolean] = None
 
 
 class EcucAbstractReferenceDefBuilder:

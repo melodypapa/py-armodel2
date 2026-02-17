@@ -1,11 +1,21 @@
-"""TDEventCycleStart AUTOSAR element."""
+"""TDEventCycleStart AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 71)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
+    TDEventCom,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
 
 class TDEventCycleStart(TDEventCom):
@@ -15,11 +25,17 @@ class TDEventCycleStart(TDEventCom):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "cycle_repetition": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # cycleRepetition
     }
 
     def __init__(self) -> None:
         """Initialize TDEventCycleStart."""
         super().__init__()
+        self.cycle_repetition: Optional[Integer] = None
 
 
 class TDEventCycleStartBuilder:

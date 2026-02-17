@@ -1,11 +1,19 @@
-"""RecordValueSpecification AUTOSAR element."""
+"""RecordValueSpecification AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 435)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_value_specification import (
+    CompositeValueSpecification,
+)
 
 
 class RecordValueSpecification(CompositeValueSpecification):

@@ -11,6 +11,7 @@ from enum import Enum
 class GraphicFitEnum(Enum):
     """AUTOSAR GraphicFitEnum enumeration."""
 
+    # Note: 1 duplicate literal(s) found and removed: Text
     ASIS = "AsIs"
     FITTOPAGE = "FitToPage"
     GENERIC = "Generic"
@@ -24,4 +25,3 @@ class GraphicFitEnum(Enum):
     TOTEXT = "ToText"
     ROTATE90CW = "Rotate90Cw"
     ROTATE90CWFITTOTEXTROTATE90CWLIMITTO = "Rotate90CwFitToTextRotate90CwLimitTo"
-    TEXT = "Text"

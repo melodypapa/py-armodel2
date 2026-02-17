@@ -1,11 +1,21 @@
-"""IndicatorStatusNeeds AUTOSAR element."""
+"""IndicatorStatusNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 766)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator import (
+    DiagnosticIndicatorTypeEnum,
+)
 
 
 class IndicatorStatusNeeds(ServiceNeeds):
@@ -14,11 +24,18 @@ class IndicatorStatusNeeds(ServiceNeeds):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "type_enum": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticIndicatorTypeEnum,
+        ),  # typeEnum
     }
 
     def __init__(self) -> None:
         """Initialize IndicatorStatusNeeds."""
         super().__init__()
+        self.type_enum: Optional[DiagnosticIndicatorTypeEnum] = None
 
 
 class IndicatorStatusNeedsBuilder:

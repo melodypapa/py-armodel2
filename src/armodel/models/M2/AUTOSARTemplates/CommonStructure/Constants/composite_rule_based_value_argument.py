@@ -1,4 +1,9 @@
-"""CompositeRuleBasedValueArgument AUTOSAR element."""
+"""CompositeRuleBasedValueArgument AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 473)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

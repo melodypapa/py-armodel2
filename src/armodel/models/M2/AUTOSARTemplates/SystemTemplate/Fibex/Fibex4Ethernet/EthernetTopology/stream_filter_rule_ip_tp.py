@@ -1,4 +1,9 @@
-"""StreamFilterRuleIpTp AUTOSAR element."""
+"""StreamFilterRuleIpTp AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 137)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,12 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_ipv6_address import (
+    StreamFilterIpv6Address,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_port_range import (
+    StreamFilterPortRange,
+)
 
 
 class StreamFilterRuleIpTp(ARObject):
@@ -14,11 +25,39 @@ class StreamFilterRuleIpTp(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "destination": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterIpv6Address,
+        ),  # destination
+        "destination_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StreamFilterPortRange,
+        ),  # destinationPorts
+        "source": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=StreamFilterIpv6Address,
+        ),  # source
+        "source_ports": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=StreamFilterPortRange,
+        ),  # sourcePorts
     }
 
     def __init__(self) -> None:
         """Initialize StreamFilterRuleIpTp."""
         super().__init__()
+        self.destination: Optional[StreamFilterIpv6Address] = None
+        self.destination_ports: list[StreamFilterPortRange] = []
+        self.source: Optional[StreamFilterIpv6Address] = None
+        self.source_ports: list[StreamFilterPortRange] = []
 
 
 class StreamFilterRuleIpTpBuilder:

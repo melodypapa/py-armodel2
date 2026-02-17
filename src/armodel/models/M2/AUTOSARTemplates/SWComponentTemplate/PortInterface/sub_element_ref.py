@@ -1,4 +1,9 @@
-"""SubElementRef AUTOSAR element."""
+"""SubElementRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 138)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

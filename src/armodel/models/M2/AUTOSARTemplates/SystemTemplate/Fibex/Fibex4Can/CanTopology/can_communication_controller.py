@@ -1,4 +1,9 @@
-"""CanCommunicationController AUTOSAR element."""
+"""CanCommunicationController AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 63)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

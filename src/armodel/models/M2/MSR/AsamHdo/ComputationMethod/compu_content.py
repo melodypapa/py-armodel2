@@ -1,4 +1,9 @@
-"""CompuContent AUTOSAR element."""
+"""CompuContent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 386)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

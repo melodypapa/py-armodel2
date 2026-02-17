@@ -1,4 +1,9 @@
-"""SenderRecCompositeTypeMapping AUTOSAR element."""
+"""SenderRecCompositeTypeMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

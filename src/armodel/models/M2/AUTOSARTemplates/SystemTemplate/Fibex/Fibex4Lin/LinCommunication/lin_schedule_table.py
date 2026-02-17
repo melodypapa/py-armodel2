@@ -1,11 +1,25 @@
-"""LinScheduleTable AUTOSAR element."""
+"""LinScheduleTable AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 432)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
+    ResumePosition,
+    RunMode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
+    ScheduleTableEntry,
+)
 
 
 class LinScheduleTable(Identifiable):
@@ -14,11 +28,32 @@ class LinScheduleTable(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "resume_position": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ResumePosition,
+        ),  # resumePosition
+        "run_mode": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=RunMode,
+        ),  # runMode
+        "table_entries": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ScheduleTableEntry,
+        ),  # tableEntries
     }
 
     def __init__(self) -> None:
         """Initialize LinScheduleTable."""
         super().__init__()
+        self.resume_position: Optional[ResumePosition] = None
+        self.run_mode: Optional[RunMode] = None
+        self.table_entries: list[ScheduleTableEntry] = []
 
 
 class LinScheduleTableBuilder:

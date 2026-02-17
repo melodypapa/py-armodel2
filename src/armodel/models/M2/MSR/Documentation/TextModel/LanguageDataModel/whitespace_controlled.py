@@ -1,4 +1,9 @@
-"""WhitespaceControlled AUTOSAR element."""
+"""WhitespaceControlled AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 292)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -15,11 +20,18 @@ class WhitespaceControlled(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "xml_space": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=any (XmlSpaceEnum),
+        ),  # xmlSpace
     }
 
     def __init__(self) -> None:
         """Initialize WhitespaceControlled."""
         super().__init__()
+        self.xml_space: Any = None
 
 
 class WhitespaceControlledBuilder:

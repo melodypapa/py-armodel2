@@ -11,6 +11,6 @@ from enum import Enum
 class TDEventBswInternalBehaviorTypeEnum(Enum):
     """AUTOSAR TDEventBswInternalBehaviorTypeEnum enumeration."""
 
-    BSWMODULEENTITY = "bswModuleEntity"
+    # Note: 1 duplicate literal(s) found and removed: bswModuleEntity
     BSWMODULEENTITY = "bswModuleEntity"
     BSWMODULEENTITYTERMINATED = "bswModuleEntityTerminated"

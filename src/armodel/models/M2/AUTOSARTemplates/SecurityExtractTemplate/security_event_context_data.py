@@ -1,4 +1,9 @@
-"""SecurityEventContextData AUTOSAR element."""
+"""SecurityEventContextData AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 66)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

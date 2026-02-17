@@ -11,5 +11,5 @@ from enum import Enum
 class TDEventVariableDataPrototypeTypeEnum(Enum):
     """AUTOSAR TDEventVariableDataPrototypeTypeEnum enumeration."""
 
-    VARIABLEDATA = "variableData"
+    # Note: 1 duplicate literal(s) found and removed: variableData
     VARIABLEDATA = "variableData"

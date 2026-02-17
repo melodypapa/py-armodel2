@@ -1,4 +1,9 @@
-"""AbstractCondition AUTOSAR element."""
+"""AbstractCondition AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

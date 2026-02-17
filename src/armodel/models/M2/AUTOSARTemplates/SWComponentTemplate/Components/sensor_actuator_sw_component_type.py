@@ -1,11 +1,23 @@
-"""SensorActuatorSwComponentType AUTOSAR element."""
+"""SensorActuatorSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 646)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2055)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 244)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
+    HwDescriptionEntity,
+)
 
 
 class SensorActuatorSwComponentType(AtomicSwComponentType):
@@ -14,11 +26,18 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "sensor_actuator": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=HwDescriptionEntity,
+        ),  # sensorActuator
     }
 
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
+        self.sensor_actuator: Optional[HwDescriptionEntity] = None
 
 
 class SensorActuatorSwComponentTypeBuilder:

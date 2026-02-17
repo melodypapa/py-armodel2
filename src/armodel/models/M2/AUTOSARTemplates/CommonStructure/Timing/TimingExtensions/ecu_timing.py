@@ -1,11 +1,21 @@
-"""EcuTiming AUTOSAR element."""
+"""EcuTiming AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 30)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
+    TimingExtension,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_value_collection import (
+    EcucValueCollection,
+)
 
 
 class EcuTiming(TimingExtension):
@@ -14,11 +24,18 @@ class EcuTiming(TimingExtension):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "ecu": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=EcucValueCollection,
+        ),  # ecu
     }
 
     def __init__(self) -> None:
         """Initialize EcuTiming."""
         super().__init__()
+        self.ecu: Optional[EcucValueCollection] = None
 
 
 class EcuTimingBuilder:

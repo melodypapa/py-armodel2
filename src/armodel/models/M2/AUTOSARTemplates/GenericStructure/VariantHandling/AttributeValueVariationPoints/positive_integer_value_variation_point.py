@@ -1,4 +1,9 @@
-"""PositiveIntegerValueVariationPoint AUTOSAR element."""
+"""PositiveIntegerValueVariationPoint AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 241)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

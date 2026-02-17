@@ -1,4 +1,9 @@
-"""BaseTypeDefinition AUTOSAR element."""
+"""BaseTypeDefinition AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 290)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_BaseTypes.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

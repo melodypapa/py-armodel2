@@ -1,11 +1,23 @@
-"""TraceableText AUTOSAR element."""
+"""TraceableText AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 178)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 313)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_RequirementsTracing.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
 
 class TraceableText(Paginateable):
@@ -14,11 +26,18 @@ class TraceableText(Paginateable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "text": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=DocumentationBlock,
+        ),  # text
     }
 
     def __init__(self) -> None:
         """Initialize TraceableText."""
         super().__init__()
+        self.text: DocumentationBlock = None
 
 
 class TraceableTextBuilder:

@@ -1,11 +1,24 @@
-"""DiagnosticJ1939SwMapping AUTOSAR element."""
+"""DiagnosticJ1939SwMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 268)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+    SwComponentPrototype,
+)
 
 
 class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
@@ -14,11 +27,25 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "node": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DiagnosticJ1939Node,
+        ),  # node
+        "sw_component_prototype_composition_instance_ref": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwComponentPrototype,
+        ),  # swComponentPrototypeCompositionInstanceRef
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
+        self.node: Optional[DiagnosticJ1939Node] = None
+        self.sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype] = None
 
 
 class DiagnosticJ1939SwMappingBuilder:

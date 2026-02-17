@@ -11,7 +11,7 @@ from enum import Enum
 class TDEventSwcInternalBehaviorTypeEnum(Enum):
     """AUTOSAR TDEventSwcInternalBehaviorTypeEnum enumeration."""
 
-    RUNNABLEENTITY = "runnableEntity"
+    # Note: 1 duplicate literal(s) found and removed: runnableEntity
     RUNNABLEENTITY = "runnableEntity"
     RUNNABLEENTITYTERMINATED = "runnableEntityTerminated"
     RUNNABLEENTITYVARIABLEACCESS = "runnableEntityVariableAccess"

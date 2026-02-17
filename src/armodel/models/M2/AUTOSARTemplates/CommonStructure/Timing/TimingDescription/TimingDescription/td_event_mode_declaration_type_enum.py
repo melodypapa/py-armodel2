@@ -11,5 +11,5 @@ from enum import Enum
 class TDEventModeDeclarationTypeEnum(Enum):
     """AUTOSAR TDEventModeDeclarationTypeEnum enumeration."""
 
-    MODEDECLARATION = "modeDeclaration"
+    # Note: 1 duplicate literal(s) found and removed: modeDeclaration
     MODEDECLARATION = "modeDeclaration"

@@ -1,4 +1,9 @@
-"""Br AUTOSAR element."""
+"""Br AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 316)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

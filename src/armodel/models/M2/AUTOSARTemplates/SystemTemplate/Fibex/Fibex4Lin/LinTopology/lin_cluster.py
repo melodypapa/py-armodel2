@@ -1,4 +1,9 @@
-"""LinCluster AUTOSAR element."""
+"""LinCluster AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 93)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

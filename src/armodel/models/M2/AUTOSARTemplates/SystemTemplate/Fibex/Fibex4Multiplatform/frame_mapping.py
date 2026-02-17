@@ -1,4 +1,9 @@
-"""FrameMapping AUTOSAR element."""
+"""FrameMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 838)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Multiplatform.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,12 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
 
 
 class FrameMapping(ARObject):
@@ -14,11 +25,32 @@ class FrameMapping(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "introduction": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DocumentationBlock,
+        ),  # introduction
+        "source_frame": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FrameTriggering,
+        ),  # sourceFrame
+        "target_frame": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=FrameTriggering,
+        ),  # targetFrame
     }
 
     def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()
+        self.introduction: Optional[DocumentationBlock] = None
+        self.source_frame: Optional[FrameTriggering] = None
+        self.target_frame: Optional[FrameTriggering] = None
 
 
 class FrameMappingBuilder:

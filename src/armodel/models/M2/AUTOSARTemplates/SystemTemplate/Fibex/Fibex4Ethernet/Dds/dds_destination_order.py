@@ -1,4 +1,9 @@
-"""DdsDestinationOrder AUTOSAR element."""
+"""DdsDestinationOrder AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 536)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -14,11 +19,18 @@ class DdsDestinationOrder(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "destination": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=DdsDestinationOrder,
+        ),  # destination
     }
 
     def __init__(self) -> None:
         """Initialize DdsDestinationOrder."""
         super().__init__()
+        self.destination: Optional[DdsDestinationOrder] = None
 
 
 class DdsDestinationOrderBuilder:

@@ -1,4 +1,9 @@
-"""SingleLanguageUnitNames AUTOSAR element."""
+"""SingleLanguageUnitNames AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 400)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_SingleLanguageData.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

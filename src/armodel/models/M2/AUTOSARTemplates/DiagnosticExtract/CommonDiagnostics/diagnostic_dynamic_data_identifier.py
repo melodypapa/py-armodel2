@@ -1,11 +1,18 @@
-"""DiagnosticDynamicDataIdentifier AUTOSAR element."""
+"""DiagnosticDynamicDataIdentifier AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 34)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
+    DiagnosticAbstractDataIdentifier,
+)
 
 
 class DiagnosticDynamicDataIdentifier(DiagnosticAbstractDataIdentifier):

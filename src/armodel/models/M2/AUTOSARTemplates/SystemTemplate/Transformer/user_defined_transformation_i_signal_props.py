@@ -1,4 +1,9 @@
-"""UserDefinedTransformationISignalProps AUTOSAR element."""
+"""UserDefinedTransformationISignalProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 828)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

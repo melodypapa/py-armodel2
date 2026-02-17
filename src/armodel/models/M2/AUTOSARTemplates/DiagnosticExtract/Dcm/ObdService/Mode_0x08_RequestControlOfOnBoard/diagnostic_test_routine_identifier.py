@@ -1,11 +1,21 @@
-"""DiagnosticTestRoutineIdentifier AUTOSAR element."""
+"""DiagnosticTestRoutineIdentifier AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x08_RequestControlOfOnBoard.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
@@ -14,11 +24,29 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # id
+        "request_data": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # requestData
+        "response_data": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # responseData
     }
 
     def __init__(self) -> None:
         """Initialize DiagnosticTestRoutineIdentifier."""
         super().__init__()
+        self.id: Optional[PositiveInteger] = None
+        self.request_data: Optional[PositiveInteger] = None
+        self.response_data: Optional[PositiveInteger] = None
 
 
 class DiagnosticTestRoutineIdentifierBuilder:

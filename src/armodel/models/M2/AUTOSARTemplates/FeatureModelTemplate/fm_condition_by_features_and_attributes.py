@@ -1,4 +1,9 @@
-"""FMConditionByFeaturesAndAttributes AUTOSAR element."""
+"""FMConditionByFeaturesAndAttributes AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 62)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

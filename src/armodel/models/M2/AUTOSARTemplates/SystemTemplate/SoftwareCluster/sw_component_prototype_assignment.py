@@ -1,4 +1,9 @@
-"""SwComponentPrototypeAssignment AUTOSAR element."""
+"""SwComponentPrototypeAssignment AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 894)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -14,11 +19,18 @@ class SwComponentPrototypeAssignment(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "sw_component": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (SwComponent),
+        ),  # swComponent
     }
 
     def __init__(self) -> None:
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
+        self.sw_component: Optional[Any] = None
 
 
 class SwComponentPrototypeAssignmentBuilder:

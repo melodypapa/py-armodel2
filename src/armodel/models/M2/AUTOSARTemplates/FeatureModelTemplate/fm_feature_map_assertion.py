@@ -1,11 +1,18 @@
-"""FMFeatureMapAssertion AUTOSAR element."""
+"""FMFeatureMapAssertion AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 55)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
 
 class FMFeatureMapAssertion(Identifiable):
@@ -14,11 +21,18 @@ class FMFeatureMapAssertion(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "fm_syscond_and_sw_systemconsts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=any (FMConditionByFeatures),
+        ),  # fmSyscondAndSwSystemconsts
     }
 
     def __init__(self) -> None:
         """Initialize FMFeatureMapAssertion."""
         super().__init__()
+        self.fm_syscond_and_sw_systemconsts: Optional[Any] = None
 
 
 class FMFeatureMapAssertionBuilder:

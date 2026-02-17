@@ -11,9 +11,9 @@ from enum import Enum
 class TransferPropertyEnum(Enum):
     """AUTOSAR TransferPropertyEnum enumeration."""
 
+    # Note: 1 duplicate literal(s) found and removed: triggeredOnChange
     PENDING = "pending"
     TRIGGERED = "triggered"
-    TRIGGEREDONCHANGE = "triggeredOnChange"
     TRIGGEREDONCHANGE = "triggeredOnChange"
     TRIGGEREDWITHOUT = "triggeredWithout"
     REPETITION = "Repetition"

@@ -3,3 +3,57 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table_separator_string import (
+    TableSeparatorString,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
+        Table,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.tgroup import (
+        Tgroup,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.tbody import (
+        Tbody,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.row import (
+        Row,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.entry import (
+        Entry,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.colspec import (
+        Colspec,
+    )
+
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.float_enum import (
+    FloatEnum,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.frame_enum import (
+    FrameEnum,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.align_enum import (
+    AlignEnum,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.valign_enum import (
+    ValignEnum,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.pgwide_enum import (
+    PgwideEnum,
+)
+
+__all__ = [
+    "AlignEnum",
+    "Colspec",
+    "Entry",
+    "FloatEnum",
+    "FrameEnum",
+    "PgwideEnum",
+    "Row",
+    "Table",
+    "TableSeparatorString",
+    "Tbody",
+    "Tgroup",
+    "ValignEnum",
+]

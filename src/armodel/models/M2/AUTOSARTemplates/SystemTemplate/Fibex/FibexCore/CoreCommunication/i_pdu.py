@@ -1,11 +1,22 @@
-"""IPdu AUTOSAR element."""
+"""IPdu AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 341)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 226)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
+    Pdu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.contained_i_pdu_props import (
+    ContainedIPduProps,
+)
 
 
 class IPdu(Pdu):
@@ -15,11 +26,18 @@ class IPdu(Pdu):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "contained_i_pdu_props": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=ContainedIPduProps,
+        ),  # containedIPduProps
     }
 
     def __init__(self) -> None:
         """Initialize IPdu."""
         super().__init__()
+        self.contained_i_pdu_props: Optional[ContainedIPduProps] = None
 
 
 class IPduBuilder:

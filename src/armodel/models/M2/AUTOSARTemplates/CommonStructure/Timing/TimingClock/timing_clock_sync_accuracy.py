@@ -1,11 +1,24 @@
-"""TimingClockSyncAccuracy AUTOSAR element."""
+"""TimingClockSyncAccuracy AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 252)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingClock.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
+    TimingClock,
+)
 
 
 class TimingClockSyncAccuracy(Identifiable):
@@ -14,11 +27,32 @@ class TimingClockSyncAccuracy(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "accuracy": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultidimensionalTime,
+        ),  # accuracy
+        "lower": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingClock,
+        ),  # lower
+        "upper": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=TimingClock,
+        ),  # upper
     }
 
     def __init__(self) -> None:
         """Initialize TimingClockSyncAccuracy."""
         super().__init__()
+        self.accuracy: Optional[MultidimensionalTime] = None
+        self.lower: Optional[TimingClock] = None
+        self.upper: Optional[TimingClock] = None
 
 
 class TimingClockSyncAccuracyBuilder:

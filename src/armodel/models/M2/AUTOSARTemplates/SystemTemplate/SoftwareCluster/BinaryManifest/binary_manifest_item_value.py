@@ -1,4 +1,9 @@
-"""BinaryManifestItemValue AUTOSAR element."""
+"""BinaryManifestItemValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 922)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster_BinaryManifest.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

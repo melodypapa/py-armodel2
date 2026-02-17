@@ -11,8 +11,7 @@ from enum import Enum
 class IEEE1722TpRvfFrameRateEnum(Enum):
     """AUTOSAR IEEE1722TpRvfFrameRateEnum enumeration."""
 
+    # Note: 2 duplicate literal(s) found and removed: AUTOSAR, System
     _1 = "_1"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
     SYSTEM = "System"
     AUTOSAR = "AUTOSAR"

@@ -1,11 +1,25 @@
-"""Code AUTOSAR element."""
+"""Code AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 130)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 622)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
 
 class Code(Identifiable):
@@ -14,11 +28,25 @@ class Code(Identifiable):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "artifacts": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=AutosarEngineeringObject,
+        ),  # artifacts
+        "callback_headers": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=ServiceNeeds,
+        ),  # callbackHeaders
     }
 
     def __init__(self) -> None:
         """Initialize Code."""
         super().__init__()
+        self.artifacts: list[AutosarEngineeringObject] = []
+        self.callback_headers: list[ServiceNeeds] = []
 
 
 class CodeBuilder:

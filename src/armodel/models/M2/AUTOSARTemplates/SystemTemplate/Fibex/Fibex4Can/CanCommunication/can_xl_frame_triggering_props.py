@@ -1,4 +1,9 @@
-"""CanXlFrameTriggeringProps AUTOSAR element."""
+"""CanXlFrameTriggeringProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2007)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanCommunication.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,9 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class CanXlFrameTriggeringProps(ARObject):
@@ -14,11 +22,35 @@ class CanXlFrameTriggeringProps(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "acceptance_field": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # acceptanceField
+        "priority_id": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # priorityId
+        "sdu_type": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # sduType
+        "vcid": XMLMember(
+            xml_tag=None,
+            is_attribute=True,
+            multiplicity="0..1",
+        ),  # vcid
     }
 
     def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
         super().__init__()
+        self.acceptance_field: Optional[PositiveInteger] = None
+        self.priority_id: Optional[PositiveInteger] = None
+        self.sdu_type: Optional[PositiveInteger] = None
+        self.vcid: Optional[PositiveInteger] = None
 
 
 class CanXlFrameTriggeringPropsBuilder:

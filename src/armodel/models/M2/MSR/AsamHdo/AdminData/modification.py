@@ -1,4 +1,9 @@
-"""Modification AUTOSAR element."""
+"""Modification AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 86)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_AdminData.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,9 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
 
 
 class Modification(ARObject):
@@ -14,11 +22,25 @@ class Modification(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "change": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="1",
+            element_class=MultiLanguageOverviewParagraph,
+        ),  # change
+        "reason": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=MultiLanguageOverviewParagraph,
+        ),  # reason
     }
 
     def __init__(self) -> None:
         """Initialize Modification."""
         super().__init__()
+        self.change: MultiLanguageOverviewParagraph = None
+        self.reason: Optional[MultiLanguageOverviewParagraph] = None
 
 
 class ModificationBuilder:

@@ -671,7 +671,26 @@ class {enum_name}(Enum):
 
 '''
 
+    # Deduplicate literals by name (keep first occurrence)
+    seen_names = set()
+    duplicates = []
+    unique_literals = []
+
     for literal in literals:
+        literal_name = literal["name"]
+        if literal_name in seen_names:
+            duplicates.append(literal_name)
+        else:
+            seen_names.add(literal_name)
+            unique_literals.append(literal)
+
+    # Warn about duplicates
+    if duplicates:
+        duplicate_set = set(duplicates)
+        code += f'    # Note: {len(duplicate_set)} duplicate literal(s) found and removed: {", ".join(sorted(duplicate_set))}\n'
+
+    # Generate enum members from unique literals
+    for literal in unique_literals:
         literal_name = literal["name"].upper()
         literal_value = literal["name"]
         code += f'    {literal_name} = "{literal_value}"\n'

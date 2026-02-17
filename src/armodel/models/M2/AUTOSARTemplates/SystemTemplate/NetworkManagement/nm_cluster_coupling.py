@@ -1,4 +1,9 @@
-"""NmClusterCoupling AUTOSAR element."""
+"""NmClusterCoupling AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 676)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional

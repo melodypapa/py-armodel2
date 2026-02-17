@@ -1,4 +1,9 @@
-"""InstantiationDataDefProps AUTOSAR element."""
+"""InstantiationDataDefProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 588)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_InstantiationDataDefProps.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
@@ -6,6 +11,15 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
+    AutosarParameterRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
+    AutosarVariableRef,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
 
 class InstantiationDataDefProps(ARObject):
@@ -14,11 +28,32 @@ class InstantiationDataDefProps(ARObject):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "parameter": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarParameterRef,
+        ),  # parameter
+        "sw_data_def": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=SwDataDefProps,
+        ),  # swDataDef
+        "variable_instance": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="0..1",
+            element_class=AutosarVariableRef,
+        ),  # variableInstance
     }
 
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
         super().__init__()
+        self.parameter: Optional[AutosarParameterRef] = None
+        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.variable_instance: Optional[AutosarVariableRef] = None
 
 
 class InstantiationDataDefPropsBuilder:

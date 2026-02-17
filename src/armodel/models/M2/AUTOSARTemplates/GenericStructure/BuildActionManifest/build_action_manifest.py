@@ -1,11 +1,26 @@
-"""BuildActionManifest AUTOSAR element."""
+"""BuildActionManifest AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 134)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 365)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action import (
+    BuildAction,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_environment import (
+    BuildActionEnvironment,
+)
 
 
 class BuildActionManifest(ARElement):
@@ -14,11 +29,39 @@ class BuildActionManifest(ARElement):
     # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
+        "build_actions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BuildActionEnvironment,
+        ),  # buildActions
+        "dynamic_actions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BuildAction,
+        ),  # dynamicActions
+        "start_actions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BuildAction,
+        ),  # startActions
+        "tear_down_actions": XMLMember(
+            xml_tag=None,
+            is_attribute=False,
+            multiplicity="*",
+            element_class=BuildAction,
+        ),  # tearDownActions
     }
 
     def __init__(self) -> None:
         """Initialize BuildActionManifest."""
         super().__init__()
+        self.build_actions: list[BuildActionEnvironment] = []
+        self.dynamic_actions: list[BuildAction] = []
+        self.start_actions: list[BuildAction] = []
+        self.tear_down_actions: list[BuildAction] = []
 
 
 class BuildActionManifestBuilder:
