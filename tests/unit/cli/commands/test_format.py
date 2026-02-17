@@ -23,13 +23,14 @@ def test_format_command_missing_input_file():
     )
 
     from armodel.cli.commands.format import format_command
+
     result = format_command(args)
 
     assert result == EXIT_FILE_NOT_FOUND
 
 
-@patch('armodel.cli.commands.format.ARXMLReader')
-@patch('armodel.cli.commands.format.ARXMLWriter')
+@patch("armodel.cli.commands.format.ARXMLReader")
+@patch("armodel.cli.commands.format.ARXMLWriter")
 def test_format_command_success(mock_writer_class, mock_reader_class):
     """Test format command with valid file."""
     from argparse import Namespace
@@ -62,6 +63,7 @@ def test_format_command_success(mock_writer_class, mock_reader_class):
         )
 
         from armodel.cli.commands.format import format_command
+
         result = format_command(args)
 
         assert result == EXIT_SUCCESS
@@ -74,6 +76,7 @@ def test_format_command_success(mock_writer_class, mock_reader_class):
         call_args = mock_writer.save_arxml.call_args
         # Check that the first arg is an AUTOSAR instance
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+
         assert isinstance(call_args[0][0], AUTOSAR)
         assert str(call_args[0][1]) == output_path
     finally:

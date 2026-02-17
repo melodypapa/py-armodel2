@@ -20,8 +20,7 @@ def test_format_command_integration():
     try:
         # Run CLI command
         result = subprocess.run(
-            ["python3", "-m", "armodel.cli.main", "format",
-             str(fixture_path), "-o", output_path],
+            ["python3", "-m", "armodel.cli.main", "format", str(fixture_path), "-o", output_path],
             capture_output=True,
             text=True,
             env={"PYTHONPATH": "/Users/ray/Workspace/py-armodel2/src"},
@@ -45,8 +44,15 @@ def test_format_command_integration():
 def test_format_command_nonexistent_file():
     """Test format command with nonexistent input file."""
     result = subprocess.run(
-        ["python3", "-m", "armodel.cli.main", "format",
-         "/nonexistent/file.arxml", "-o", "/tmp/output.arxml"],
+        [
+            "python3",
+            "-m",
+            "armodel.cli.main",
+            "format",
+            "/nonexistent/file.arxml",
+            "-o",
+            "/tmp/output.arxml",
+        ],
         capture_output=True,
         text=True,
         env={"PYTHONPATH": "/Users/ray/Workspace/py-armodel2/src"},

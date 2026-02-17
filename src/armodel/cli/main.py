@@ -8,6 +8,7 @@ def get_version() -> str:
     """Get package version."""
     try:
         from importlib.metadata import version
+
         return version("armodel2")
     except Exception:
         return "0.1.0"
@@ -48,7 +49,8 @@ def create_parser() -> argparse.ArgumentParser:
         help="Input ARXML file to format",
     )
     format_parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         required=True,
         help="Output ARXML file path",
     )
@@ -73,12 +75,14 @@ def create_parser() -> argparse.ArgumentParser:
         help="Disable pretty-printing",
     )
     format_parser.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="store_true",
         help="Show detailed error messages",
     )
     format_parser.add_argument(
-        "-q", "--quiet",
+        "-q",
+        "--quiet",
         action="store_true",
         help="Suppress output messages",
     )
@@ -108,6 +112,7 @@ def main() -> int:
     # Route to command handler
     if args.command == "format":
         from armodel.cli.commands.format import format_command
+
         return format_command(args)
 
     parser.print_help()

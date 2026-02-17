@@ -87,6 +87,7 @@ def format_command(args: Namespace) -> int:
     except Exception as e:
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         else:
             print(f"Unexpected error: {e}", file=sys.stderr)
