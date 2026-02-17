@@ -521,9 +521,6 @@ class {class_name}:
 
 '''
 
-    # Track types that need TYPE_CHECKING imports due to circular dependencies
-    circular_import_types = set()
-
     # Add class-level type annotations for get_type_hints() to work
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
@@ -1400,7 +1397,6 @@ def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> 
                 if "attributes" in cls:
                     for attr_name, attr_info in cls["attributes"].items():
                         attr_type = attr_info["type"]
-                        multiplicity = attr_info["multiplicity"]
                         
                         # Skip primitives, enums, "any" types, and self-references
                         if (is_primitive_type(attr_type, package_data) or 
