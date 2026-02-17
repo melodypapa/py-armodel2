@@ -303,6 +303,23 @@ class ARObject:
         return tag
 
     @staticmethod
+    def _extract_text(element: ET.Element) -> Optional[str]:
+        """Extract text content from XML element, returning None if missing or empty.
+
+        Protected static helper method for deserialization. Accessible to all subclasses.
+
+        Args:
+            element: XML element to extract text from
+
+        Returns:
+            Text content or None if element is missing or empty
+        """
+        if element is None or element.text is None:
+            return None
+        text = element.text.strip()
+        return text if text else None
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
         """Extract value from XML element based on type.
 
