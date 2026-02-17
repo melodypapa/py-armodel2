@@ -49,28 +49,36 @@ All AUTOSAR model classes in `src/armodel/models/M2/` are generated from mapping
 
 **Regenerate after**: Modifying the generator, changing mapping JSON files, or updating serialization framework
 
-### Serialization Framework (Registry Pattern)
+### Serialization Framework (Reflection-Based)
 
-The project uses a declarative, registry-based serialization framework that eliminates boilerplate:
+The project uses a reflection-based serialization framework that eliminates boilerplate:
 
 **Key Components**:
-- `ARObject.serialize()` - Base method that uses registry and strategies
-- `XMLMember` - Declarative metadata descriptor for XML mapping
-- `SerializationRegistry` - Global singleton for metadata and strategies
-- `SerializationStrategy` - Pluggable serialization behaviors
+- `ARObject.serialize()` - Base method that uses reflection to discover attributes
+- `ARObject.deserialize()` - Class method that deserializes using type hints
+- `NameConverter` - Utility for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
+- `@xml_attribute`, `@xml_tag()` - Decorators for edge cases
 
-**Each class defines metadata**:
-```python
-_xml_members: dict[str, XMLMember] = {
-    "short_name": XMLMember(xml_tag="SHORT-NAME", is_attribute=False, multiplicity="1"),
-    "category": XMLMember(xml_tag="CATEGORY", is_attribute=True, multiplicity="0..1"),
-}
-```
+**Each class defines**:
+- Type hints on class attributes (drive deserialization)
+- Optional decorators for edge cases (XML attributes, custom tags)
+- No `_xml_members` dict needed!
 
 **The base class handles the rest**:
-- Automatically collects metadata from entire class hierarchy (MRO)
-- Serializes/deserializes based on metadata descriptors
-- Supports both dict-based XMLMember and legacy tuple format for backward compatibility
+- Uses `vars()` to discover all attributes automatically
+- Uses `get_type_hints()` for type information
+- Converts names automatically via NameConverter
+- Supports nested objects, lists, and primitives
+
+**Example**:
+```python
+class AUTOSAR(ARObject):
+    admin_data: Optional[AdminData]
+    ar_packages: list[ARPackage]  # Automatically serialized as <AR-PACKAGES><AR-PACKAGE>...
+    file_info: Optional[FileInfoComment]
+
+# Automatically discovers these attributes via vars() and serializes!
+```
 
 ### Class-Based Architecture
 
@@ -79,7 +87,6 @@ Infrastructure modules use class-based design (not module-based functions):
 **Singletons** (shared state):
 - `SchemaVersionManager` (`src/armodel/core/version.py`) - Schema version detection and config
 - `AUTOSAR` (`src/armodel/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element
-- `SerializationRegistry` (`src/armodel/serialization/registry.py`) - Global serialization registry
 
 **Dependency Injection** (testable):
 - `ARXMLReader` (`src/armodel/reader/__init__.py`) - ARXML file loading and parsing
@@ -144,18 +151,15 @@ if TYPE_CHECKING:
     from armodel.models.M2.SomeModule import SomeClass
 
 class MyClass(ARObject):
-    def __init__(self) -> None:
-        self.related: Optional[SomeClass] = None  # Type hint works, no runtime import
+    related: Optional[SomeClass] = None  # Type hint works, no runtime import
 ```
 
-For `_xml_members` that reference classes in circular dependencies, use string class names:
-```python
-_xml_members = [
-    ("item_contents", None, False, False, "DocumentationBlock"),  # String, not class
-]
-```
+The `ARObject.deserialize()` method uses dynamic class importing to handle circular dependencies:
+- First tries `get_type_hints()` for actual types
+- Falls back to `__annotations__` (strings) if `get_type_hints()` fails
+- Dynamically imports classes by name using `_import_class_by_name()`
 
-The `ARObject.deserialize()` method automatically resolves string class names to actual classes.
+This allows seamless deserialization even with complex circular dependencies.
 
 ## Important Implementation Details
 
