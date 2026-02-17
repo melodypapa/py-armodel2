@@ -107,8 +107,8 @@ def main() -> int:
 
     # Route to command handler
     if args.command == "format":
-        from armodel.cli.commands.format import format_command  # type: ignore[import-untyped]
-        return format_command(args)  # type: ignore[no-any-return]
+        from armodel.cli.commands.format import format_command
+        return format_command(args)
 
     parser.print_help()
     return 0
