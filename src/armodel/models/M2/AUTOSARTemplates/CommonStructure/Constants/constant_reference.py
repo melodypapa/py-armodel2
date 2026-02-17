@@ -1,41 +1,30 @@
-"""ConstantReference AUTOSAR element."""
+"""ConstantReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 440)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
+    ConstantSpecification,
+)
 
-class ConstantReference(ARObject):
+
+class ConstantReference(ValueSpecification):
     """AUTOSAR ConstantReference."""
 
+    constant: Optional[ConstantSpecification]
     def __init__(self) -> None:
         """Initialize ConstantReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConstantReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSTANTREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConstantReference":
-        """Create ConstantReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConstantReference instance
-        """
-        obj: ConstantReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.constant: Optional[ConstantSpecification] = None
 
 
 class ConstantReferenceBuilder:

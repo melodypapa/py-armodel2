@@ -1,41 +1,27 @@
-"""DtcStatusChangeNotificationNeeds AUTOSAR element."""
+"""DtcStatusChangeNotificationNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 776)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
 
-class DtcStatusChangeNotificationNeeds(ARObject):
+
+class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DtcStatusChangeNotificationNeeds."""
 
+    notification_time: Optional[Any]
     def __init__(self) -> None:
         """Initialize DtcStatusChangeNotificationNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DtcStatusChangeNotificationNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DTCSTATUSCHANGENOTIFICATIONNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DtcStatusChangeNotificationNeeds":
-        """Create DtcStatusChangeNotificationNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DtcStatusChangeNotificationNeeds instance
-        """
-        obj: DtcStatusChangeNotificationNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.notification_time: Optional[Any] = None
 
 
 class DtcStatusChangeNotificationNeedsBuilder:

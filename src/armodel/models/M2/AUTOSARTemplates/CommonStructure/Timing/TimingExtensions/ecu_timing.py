@@ -1,41 +1,30 @@
-"""EcuTiming AUTOSAR element."""
+"""EcuTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 30)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
+    TimingExtension,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_value_collection import (
+    EcucValueCollection,
+)
 
-class EcuTiming(ARObject):
+
+class EcuTiming(TimingExtension):
     """AUTOSAR EcuTiming."""
 
+    ecu: Optional[EcucValueCollection]
     def __init__(self) -> None:
         """Initialize EcuTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcuTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcuTiming":
-        """Create EcuTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcuTiming instance
-        """
-        obj: EcuTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecu: Optional[EcucValueCollection] = None
 
 
 class EcuTimingBuilder:

@@ -1,41 +1,34 @@
-"""McFunctionDataRefSet AUTOSAR element."""
+"""McFunctionDataRefSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 187)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+    McDataInstance,
+)
 
 
 class McFunctionDataRefSet(ARObject):
     """AUTOSAR McFunctionDataRefSet."""
 
+    flat_map_entries: list[FlatInstanceDescriptor]
+    mc_data_instances: list[McDataInstance]
     def __init__(self) -> None:
         """Initialize McFunctionDataRefSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert McFunctionDataRefSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MCFUNCTIONDATAREFSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McFunctionDataRefSet":
-        """Create McFunctionDataRefSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McFunctionDataRefSet instance
-        """
-        obj: McFunctionDataRefSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.flat_map_entries: list[FlatInstanceDescriptor] = []
+        self.mc_data_instances: list[McDataInstance] = []
 
 
 class McFunctionDataRefSetBuilder:

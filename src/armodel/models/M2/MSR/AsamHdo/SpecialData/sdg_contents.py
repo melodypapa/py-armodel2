@@ -1,41 +1,48 @@
-"""SdgContents AUTOSAR element."""
+"""SdgContents AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 90)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sd import (
+    Sd,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sdf import (
+    Sdf,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+        Sdg,
+    )
+
 
 
 class SdgContents(ARObject):
     """AUTOSAR SdgContents."""
 
+    sd: Optional[Sd]
+    sdf: Optional[Sdf]
+    sdg: Optional[Sdg]
+    sdx: Optional[Referrable]
+    sdxf: Optional[Referrable]
     def __init__(self) -> None:
         """Initialize SdgContents."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgContents to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGCONTENTS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgContents":
-        """Create SdgContents from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgContents instance
-        """
-        obj: SdgContents = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sd: Optional[Sd] = None
+        self.sdf: Optional[Sdf] = None
+        self.sdg: Optional[Sdg] = None
+        self.sdx: Optional[Referrable] = None
+        self.sdxf: Optional[Referrable] = None
 
 
 class SdgContentsBuilder:

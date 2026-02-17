@@ -1,41 +1,33 @@
-"""DiagnosticMapping AUTOSAR element."""
+"""DiagnosticMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 223)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
-class DiagnosticMapping(ARObject):
+
+class DiagnosticMapping(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMapping."""
+    """Abstract base class - do not instantiate directly."""
 
+    provider: Optional[CpSoftwareCluster]
+    requester: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize DiagnosticMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticMapping":
-        """Create DiagnosticMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticMapping instance
-        """
-        obj: DiagnosticMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provider: Optional[CpSoftwareCluster] = None
+        self.requester: Optional[CpSoftwareCluster] = None
 
 
 class DiagnosticMappingBuilder:

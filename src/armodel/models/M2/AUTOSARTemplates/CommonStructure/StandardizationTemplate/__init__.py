@@ -1,1 +1,1 @@
-"""AUTOSAR model package."""
+"""StandardizationTemplate module."""

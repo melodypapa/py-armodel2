@@ -1,41 +1,42 @@
-"""RTEEvent AUTOSAR element."""
+"""RTEEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 327)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 541)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 208)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 238)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstract_event import (
+    AbstractEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
 
-class RTEEvent(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+        RunnableEntity,
+    )
+
+
+
+class RTEEvent(AbstractEvent):
     """AUTOSAR RTEEvent."""
+    """Abstract base class - do not instantiate directly."""
 
+    disabled_mode_instance_refs: list[ModeDeclaration]
+    start_on_event: Optional[RunnableEntity]
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RTEEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTEEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RTEEvent":
-        """Create RTEEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RTEEvent instance
-        """
-        obj: RTEEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.disabled_mode_instance_refs: list[ModeDeclaration] = []
+        self.start_on_event: Optional[RunnableEntity] = None
 
 
 class RTEEventBuilder:

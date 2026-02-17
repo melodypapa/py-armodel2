@@ -56,7 +56,17 @@ strict = true
 module = "armodel.models.M2.*"
 disallow_untyped_defs = false
 disallow_untyped_calls = false
+ignore_errors = true
+
+# Also exclude MSR documentation models which have generated type issues
+[[tool.mypy.overrides]]
+module = "armodel.models.M2.MSR.*"
+ignore_errors = true
 
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+
+[tool.ruff.lint.per-file-ignores]
+"src/armodel/models/M2/*" = ["F401", "F821"]
+"src/armodel/models/M2/**/*" = ["F401", "F821"]

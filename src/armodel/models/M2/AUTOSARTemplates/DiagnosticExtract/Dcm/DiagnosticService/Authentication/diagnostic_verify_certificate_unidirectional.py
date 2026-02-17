@@ -1,41 +1,25 @@
-"""DiagnosticVerifyCertificateUnidirectional AUTOSAR element."""
+"""DiagnosticVerifyCertificateUnidirectional AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 100)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_Authentication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.Authentication.diagnostic_authentication import (
+    DiagnosticAuthentication,
+)
 
-class DiagnosticVerifyCertificateUnidirectional(ARObject):
+
+class DiagnosticVerifyCertificateUnidirectional(DiagnosticAuthentication):
     """AUTOSAR DiagnosticVerifyCertificateUnidirectional."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticVerifyCertificateUnidirectional."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticVerifyCertificateUnidirectional to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICVERIFYCERTIFICATEUNIDIRECTIONAL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticVerifyCertificateUnidirectional":
-        """Create DiagnosticVerifyCertificateUnidirectional from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticVerifyCertificateUnidirectional instance
-        """
-        obj: DiagnosticVerifyCertificateUnidirectional = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticVerifyCertificateUnidirectionalBuilder:
@@ -43,9 +27,7 @@ class DiagnosticVerifyCertificateUnidirectionalBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticVerifyCertificateUnidirectional = (
-            DiagnosticVerifyCertificateUnidirectional()
-        )
+        self._obj: DiagnosticVerifyCertificateUnidirectional = DiagnosticVerifyCertificateUnidirectional()
 
     def build(self) -> DiagnosticVerifyCertificateUnidirectional:
         """Build and return DiagnosticVerifyCertificateUnidirectional object.

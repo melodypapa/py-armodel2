@@ -1,41 +1,52 @@
-"""CouplingElement AUTOSAR element."""
+"""CouplingElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 107)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
+    CouplingElementEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port import (
+    CouplingPort,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_cluster import (
+    EthernetCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.Firewall.state_dependent_firewall import (
+    StateDependentFirewall,
+)
 
-class CouplingElement(ARObject):
+
+class CouplingElement(FibexElement):
     """AUTOSAR CouplingElement."""
 
+    communication: Optional[EthernetCluster]
+    coupling: Optional[CouplingElement]
+    coupling_ports: list[CouplingPort]
+    coupling_type: Optional[CouplingElementEnum]
+    ecu_instance: Optional[EcuInstance]
+    firewall_rules: list[StateDependentFirewall]
     def __init__(self) -> None:
         """Initialize CouplingElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingElement":
-        """Create CouplingElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingElement instance
-        """
-        obj: CouplingElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.communication: Optional[EthernetCluster] = None
+        self.coupling: Optional[CouplingElement] = None
+        self.coupling_ports: list[CouplingPort] = []
+        self.coupling_type: Optional[CouplingElementEnum] = None
+        self.ecu_instance: Optional[EcuInstance] = None
+        self.firewall_rules: list[StateDependentFirewall] = []
 
 
 class CouplingElementBuilder:

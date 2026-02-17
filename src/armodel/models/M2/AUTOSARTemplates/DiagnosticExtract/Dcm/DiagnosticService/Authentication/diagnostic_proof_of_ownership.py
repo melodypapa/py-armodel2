@@ -1,41 +1,25 @@
-"""DiagnosticProofOfOwnership AUTOSAR element."""
+"""DiagnosticProofOfOwnership AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 100)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_Authentication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.Authentication.diagnostic_authentication import (
+    DiagnosticAuthentication,
+)
 
-class DiagnosticProofOfOwnership(ARObject):
+
+class DiagnosticProofOfOwnership(DiagnosticAuthentication):
     """AUTOSAR DiagnosticProofOfOwnership."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticProofOfOwnership."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticProofOfOwnership to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICPROOFOFOWNERSHIP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticProofOfOwnership":
-        """Create DiagnosticProofOfOwnership from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticProofOfOwnership instance
-        """
-        obj: DiagnosticProofOfOwnership = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticProofOfOwnershipBuilder:

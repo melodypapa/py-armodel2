@@ -1,41 +1,40 @@
-"""CpSoftwareClusterToEcuInstanceMapping AUTOSAR element."""
+"""CpSoftwareClusterToEcuInstanceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 283)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
 
-class CpSoftwareClusterToEcuInstanceMapping(ARObject):
+
+class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToEcuInstanceMapping."""
 
+    ecu_instance: Optional[EcuInstance]
+    machine_id: Optional[PositiveInteger]
+    sw_clusters: list[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToEcuInstanceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSoftwareClusterToEcuInstanceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSOFTWARECLUSTERTOECUINSTANCEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToEcuInstanceMapping":
-        """Create CpSoftwareClusterToEcuInstanceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterToEcuInstanceMapping instance
-        """
-        obj: CpSoftwareClusterToEcuInstanceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecu_instance: Optional[EcuInstance] = None
+        self.machine_id: Optional[PositiveInteger] = None
+        self.sw_clusters: list[CpSoftwareCluster] = []
 
 
 class CpSoftwareClusterToEcuInstanceMappingBuilder:

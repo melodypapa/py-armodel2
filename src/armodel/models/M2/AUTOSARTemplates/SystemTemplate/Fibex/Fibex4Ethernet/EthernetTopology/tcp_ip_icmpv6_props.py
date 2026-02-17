@@ -1,41 +1,28 @@
-"""TcpIpIcmpv6Props AUTOSAR element."""
+"""TcpIpIcmpv6Props AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 156)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
 
 class TcpIpIcmpv6Props(ARObject):
     """AUTOSAR TcpIpIcmpv6Props."""
 
+    tcp_ip_icmp: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TcpIpIcmpv6Props."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TcpIpIcmpv6Props to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TCPIPICMPV6PROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TcpIpIcmpv6Props":
-        """Create TcpIpIcmpv6Props from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TcpIpIcmpv6Props instance
-        """
-        obj: TcpIpIcmpv6Props = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tcp_ip_icmp: Optional[Boolean] = None
 
 
 class TcpIpIcmpv6PropsBuilder:

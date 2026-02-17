@@ -1,41 +1,24 @@
-"""CompositeRuleBasedValueArgument AUTOSAR element."""
+"""CompositeRuleBasedValueArgument AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 473)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class CompositeRuleBasedValueArgument(ARObject):
     """AUTOSAR CompositeRuleBasedValueArgument."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueArgument."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompositeRuleBasedValueArgument to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPOSITERULEBASEDVALUEARGUMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompositeRuleBasedValueArgument":
-        """Create CompositeRuleBasedValueArgument from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompositeRuleBasedValueArgument instance
-        """
-        obj: CompositeRuleBasedValueArgument = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class CompositeRuleBasedValueArgumentBuilder:

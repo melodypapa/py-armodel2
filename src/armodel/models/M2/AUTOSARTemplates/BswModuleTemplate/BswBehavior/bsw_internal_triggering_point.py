@@ -1,41 +1,30 @@
-"""BswInternalTriggeringPoint AUTOSAR element."""
+"""BswInternalTriggeringPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 91)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
+    SwImplPolicyEnum,
+)
 
-class BswInternalTriggeringPoint(ARObject):
+
+class BswInternalTriggeringPoint(Identifiable):
     """AUTOSAR BswInternalTriggeringPoint."""
 
+    sw_impl_policy_enum: Optional[SwImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize BswInternalTriggeringPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswInternalTriggeringPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWINTERNALTRIGGERINGPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswInternalTriggeringPoint":
-        """Create BswInternalTriggeringPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswInternalTriggeringPoint instance
-        """
-        obj: BswInternalTriggeringPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
 
 
 class BswInternalTriggeringPointBuilder:

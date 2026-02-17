@@ -1,41 +1,36 @@
-"""DependencyOnArtifact AUTOSAR element."""
+"""DependencyOnArtifact AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 131)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 412)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
+    DependencyUsageEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
 
-class DependencyOnArtifact(ARObject):
+
+class DependencyOnArtifact(Identifiable):
     """AUTOSAR DependencyOnArtifact."""
 
+    artifact: Optional[AutosarEngineeringObject]
+    usages: list[DependencyUsageEnum]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DependencyOnArtifact to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DEPENDENCYONARTIFACT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DependencyOnArtifact":
-        """Create DependencyOnArtifact from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DependencyOnArtifact instance
-        """
-        obj: DependencyOnArtifact = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.artifact: Optional[AutosarEngineeringObject] = None
+        self.usages: list[DependencyUsageEnum] = []
 
 
 class DependencyOnArtifactBuilder:

@@ -1,41 +1,33 @@
-"""ComponentInCompositionInstanceRef AUTOSAR element."""
+"""ComponentInCompositionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 950)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 219)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
 
 
 class ComponentInCompositionInstanceRef(ARObject):
     """AUTOSAR ComponentInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    contexts: list[Any]
+    target: Optional[Any]
     def __init__(self) -> None:
         """Initialize ComponentInCompositionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ComponentInCompositionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPONENTINCOMPOSITIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ComponentInCompositionInstanceRef":
-        """Create ComponentInCompositionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ComponentInCompositionInstanceRef instance
-        """
-        obj: ComponentInCompositionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[CompositionSwComponentType] = None
+        self.contexts: list[Any] = []
+        self.target: Optional[Any] = None
 
 
 class ComponentInCompositionInstanceRefBuilder:

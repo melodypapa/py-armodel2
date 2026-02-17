@@ -1,41 +1,39 @@
-"""DiagnosticConnectedIndicator AUTOSAR element."""
+"""DiagnosticConnectedIndicator AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 166)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticEvent.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator.diagnostic_indicator import (
+    DiagnosticIndicator,
+)
 
-class DiagnosticConnectedIndicator(ARObject):
+
+class DiagnosticConnectedIndicator(Identifiable):
     """AUTOSAR DiagnosticConnectedIndicator."""
 
+    behavior_indicator_behavior_enum: Optional[Any]
+    healing_cycle: Optional[PositiveInteger]
+    indicator: Optional[DiagnosticIndicator]
+    indicator_failure: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticConnectedIndicator."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticConnectedIndicator to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCONNECTEDINDICATOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticConnectedIndicator":
-        """Create DiagnosticConnectedIndicator from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticConnectedIndicator instance
-        """
-        obj: DiagnosticConnectedIndicator = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.behavior_indicator_behavior_enum: Optional[Any] = None
+        self.healing_cycle: Optional[PositiveInteger] = None
+        self.indicator: Optional[DiagnosticIndicator] = None
+        self.indicator_failure: Optional[PositiveInteger] = None
 
 
 class DiagnosticConnectedIndicatorBuilder:

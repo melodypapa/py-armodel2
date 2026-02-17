@@ -1,41 +1,31 @@
-"""MsrQueryResultChapter AUTOSAR element."""
+"""MsrQueryResultChapter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 344)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
+        Chapter,
+    )
+
 
 
 class MsrQueryResultChapter(ARObject):
     """AUTOSAR MsrQueryResultChapter."""
 
+    chapters: list[Chapter]
     def __init__(self) -> None:
         """Initialize MsrQueryResultChapter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MsrQueryResultChapter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MSRQUERYRESULTCHAPTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MsrQueryResultChapter":
-        """Create MsrQueryResultChapter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MsrQueryResultChapter instance
-        """
-        obj: MsrQueryResultChapter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.chapters: list[Chapter] = []
 
 
 class MsrQueryResultChapterBuilder:

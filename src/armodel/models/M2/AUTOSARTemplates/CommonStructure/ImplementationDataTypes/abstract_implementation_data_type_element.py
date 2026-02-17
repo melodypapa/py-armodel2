@@ -1,41 +1,26 @@
-"""AbstractImplementationDataTypeElement AUTOSAR element."""
+"""AbstractImplementationDataTypeElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 269)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class AbstractImplementationDataTypeElement(ARObject):
+
+class AbstractImplementationDataTypeElement(Identifiable):
     """AUTOSAR AbstractImplementationDataTypeElement."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize AbstractImplementationDataTypeElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractImplementationDataTypeElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTIMPLEMENTATIONDATATYPEELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractImplementationDataTypeElement":
-        """Create AbstractImplementationDataTypeElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractImplementationDataTypeElement instance
-        """
-        obj: AbstractImplementationDataTypeElement = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class AbstractImplementationDataTypeElementBuilder:

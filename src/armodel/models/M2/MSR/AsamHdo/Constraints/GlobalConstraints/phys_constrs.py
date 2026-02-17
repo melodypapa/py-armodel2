@@ -1,41 +1,51 @@
-"""PhysConstrs AUTOSAR element."""
+"""PhysConstrs AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 406)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2043)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Constraints_GlobalConstraints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    MonotonyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Limit,
+    Numerical,
+)
+from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.scale_constr import (
+    ScaleConstr,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.unit import (
+    Unit,
+)
 
 
 class PhysConstrs(ARObject):
     """AUTOSAR PhysConstrs."""
 
+    lower_limit: Optional[Limit]
+    max_diff: Optional[Numerical]
+    max_gradient: Optional[Numerical]
+    monotony: Optional[MonotonyEnum]
+    scale_constrs: list[ScaleConstr]
+    unit: Optional[Unit]
+    upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize PhysConstrs."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PhysConstrs to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PHYSCONSTRS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PhysConstrs":
-        """Create PhysConstrs from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PhysConstrs instance
-        """
-        obj: PhysConstrs = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.lower_limit: Optional[Limit] = None
+        self.max_diff: Optional[Numerical] = None
+        self.max_gradient: Optional[Numerical] = None
+        self.monotony: Optional[MonotonyEnum] = None
+        self.scale_constrs: list[ScaleConstr] = []
+        self.unit: Optional[Unit] = None
+        self.upper_limit: Optional[Limit] = None
 
 
 class PhysConstrsBuilder:

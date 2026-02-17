@@ -1,41 +1,25 @@
-"""V2xMUserNeeds AUTOSAR element."""
+"""V2xMUserNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 835)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class V2xMUserNeeds(ARObject):
+
+class V2xMUserNeeds(ServiceNeeds):
     """AUTOSAR V2xMUserNeeds."""
 
     def __init__(self) -> None:
         """Initialize V2xMUserNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert V2xMUserNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("V2XMUSERNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "V2xMUserNeeds":
-        """Create V2xMUserNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            V2xMUserNeeds instance
-        """
-        obj: V2xMUserNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class V2xMUserNeedsBuilder:

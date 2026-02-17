@@ -1,41 +1,31 @@
-"""OperationInvokedEvent AUTOSAR element."""
+"""OperationInvokedEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 543)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class OperationInvokedEvent(ARObject):
+
+class OperationInvokedEvent(RTEEvent):
     """AUTOSAR OperationInvokedEvent."""
 
+    operation_instance_ref: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert OperationInvokedEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OPERATIONINVOKEDEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "OperationInvokedEvent":
-        """Create OperationInvokedEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            OperationInvokedEvent instance
-        """
-        obj: OperationInvokedEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operation_instance_ref: Optional[ClientServerOperation] = None
 
 
 class OperationInvokedEventBuilder:

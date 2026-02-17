@@ -1,41 +1,44 @@
-"""CryptoKeySlot AUTOSAR element."""
+"""CryptoKeySlot AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 57)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_CryptoDeployment.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+    String,
+)
 
-class CryptoKeySlot(ARObject):
+
+class CryptoKeySlot(Identifiable):
     """AUTOSAR CryptoKeySlot."""
 
+    allocate_shadow: Optional[Boolean]
+    crypto_alg_id: Optional[String]
+    crypto_object_type_enum: Optional[Any]
+    key_slot_allowed: Optional[Any]
+    key_slot_contents: list[Any]
+    slot_capacity: Optional[PositiveInteger]
+    slot_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize CryptoKeySlot."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CryptoKeySlot to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CRYPTOKEYSLOT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CryptoKeySlot":
-        """Create CryptoKeySlot from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CryptoKeySlot instance
-        """
-        obj: CryptoKeySlot = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.allocate_shadow: Optional[Boolean] = None
+        self.crypto_alg_id: Optional[String] = None
+        self.crypto_object_type_enum: Optional[Any] = None
+        self.key_slot_allowed: Optional[Any] = None
+        self.key_slot_contents: list[Any] = []
+        self.slot_capacity: Optional[PositiveInteger] = None
+        self.slot_type: Optional[Any] = None
 
 
 class CryptoKeySlotBuilder:

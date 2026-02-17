@@ -1,9 +1,15 @@
-"""LVerbatim AUTOSAR element."""
+"""LVerbatim AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 347)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LVerbatim(ARObject):
@@ -12,30 +18,6 @@ class LVerbatim(ARObject):
     def __init__(self) -> None:
         """Initialize LVerbatim."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LVerbatim to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LVERBATIM")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LVerbatim":
-        """Create LVerbatim from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LVerbatim instance
-        """
-        obj: LVerbatim = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class LVerbatimBuilder:

@@ -1,41 +1,38 @@
-"""List AUTOSAR element."""
+"""List AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 295)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
+    ListEnum,
+)
 
-class List(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item import (
+        Item,
+    )
+
+
+
+class List(Paginateable):
     """AUTOSAR List."""
 
+    item: Item
+    type: Optional[ListEnum]
     def __init__(self) -> None:
         """Initialize List."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert List to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LIST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "List":
-        """Create List from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            List instance
-        """
-        obj: List = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.item: Item = None
+        self.type: Optional[ListEnum] = None
 
 
 class ListBuilder:

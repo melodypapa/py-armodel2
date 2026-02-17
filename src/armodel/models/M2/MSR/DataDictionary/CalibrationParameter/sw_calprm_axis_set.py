@@ -1,41 +1,28 @@
-"""SwCalprmAxisSet AUTOSAR element."""
+"""SwCalprmAxisSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 351)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_CalibrationParameter.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis import (
+    SwCalprmAxis,
+)
 
 
 class SwCalprmAxisSet(ARObject):
     """AUTOSAR SwCalprmAxisSet."""
 
+    sw_calprm_axises: list[SwCalprmAxis]
     def __init__(self) -> None:
         """Initialize SwCalprmAxisSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwCalprmAxisSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCALPRMAXISSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwCalprmAxisSet":
-        """Create SwCalprmAxisSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwCalprmAxisSet instance
-        """
-        obj: SwCalprmAxisSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_calprm_axises: list[SwCalprmAxis] = []
 
 
 class SwCalprmAxisSetBuilder:

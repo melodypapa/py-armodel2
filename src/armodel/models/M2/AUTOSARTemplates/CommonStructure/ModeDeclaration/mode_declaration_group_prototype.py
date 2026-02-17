@@ -1,41 +1,39 @@
-"""ModeDeclarationGroupPrototype AUTOSAR element."""
+"""ModeDeclarationGroupPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 42)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 323)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 113)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2038)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 233)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
+    SwCalibrationAccessEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class ModeDeclarationGroupPrototype(ARObject):
+
+class ModeDeclarationGroupPrototype(Identifiable):
     """AUTOSAR ModeDeclarationGroupPrototype."""
 
+    sw_calibration_access: Optional[SwCalibrationAccessEnum]
+    type: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeDeclarationGroupPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEDECLARATIONGROUPPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroupPrototype":
-        """Create ModeDeclarationGroupPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeDeclarationGroupPrototype instance
-        """
-        obj: ModeDeclarationGroupPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
+        self.type: Optional[ModeDeclarationGroup] = None
 
 
 class ModeDeclarationGroupPrototypeBuilder:

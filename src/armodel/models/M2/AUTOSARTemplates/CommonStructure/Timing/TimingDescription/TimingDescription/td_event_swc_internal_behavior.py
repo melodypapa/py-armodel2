@@ -1,41 +1,37 @@
-"""TDEventSwcInternalBehavior AUTOSAR element."""
+"""TDEventSwcInternalBehavior AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 61)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_swc import (
+    TDEventSwc,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+    RunnableEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
+    VariableAccess,
+)
 
-class TDEventSwcInternalBehavior(ARObject):
+
+class TDEventSwcInternalBehavior(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehavior."""
 
+    runnable: Optional[RunnableEntity]
+    td_event_swc_behavior_type: Optional[Any]
+    variable_access: Optional[VariableAccess]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehavior."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventSwcInternalBehavior to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTSWCINTERNALBEHAVIOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventSwcInternalBehavior":
-        """Create TDEventSwcInternalBehavior from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventSwcInternalBehavior instance
-        """
-        obj: TDEventSwcInternalBehavior = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.runnable: Optional[RunnableEntity] = None
+        self.td_event_swc_behavior_type: Optional[Any] = None
+        self.variable_access: Optional[VariableAccess] = None
 
 
 class TDEventSwcInternalBehaviorBuilder:

@@ -1,41 +1,30 @@
-"""IEEE1722TpConfig AUTOSAR element."""
+"""IEEE1722TpConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 636)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
+    IEEE1722TpConnection,
+)
 
-class IEEE1722TpConfig(ARObject):
+
+class IEEE1722TpConfig(TpConfig):
     """AUTOSAR IEEE1722TpConfig."""
 
+    tp_connections: list[IEEE1722TpConnection]
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpConfig":
-        """Create IEEE1722TpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpConfig instance
-        """
-        obj: IEEE1722TpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_connections: list[IEEE1722TpConnection] = []
 
 
 class IEEE1722TpConfigBuilder:

@@ -1,41 +1,38 @@
-"""AssemblySwConnector AUTOSAR element."""
+"""AssemblySwConnector AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 289)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 80)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2000)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 423)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
+    SwConnector,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
+    AbstractProvidedPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+    AbstractRequiredPortPrototype,
+)
 
-class AssemblySwConnector(ARObject):
+
+class AssemblySwConnector(SwConnector):
     """AUTOSAR AssemblySwConnector."""
 
+    provider_instance_ref: Optional[AbstractProvidedPortPrototype]
+    requester_instance_ref: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AssemblySwConnector to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ASSEMBLYSWCONNECTOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AssemblySwConnector":
-        """Create AssemblySwConnector from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AssemblySwConnector instance
-        """
-        obj: AssemblySwConnector = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provider_instance_ref: Optional[AbstractProvidedPortPrototype] = None
+        self.requester_instance_ref: Optional[AbstractRequiredPortPrototype] = None
 
 
 class AssemblySwConnectorBuilder:

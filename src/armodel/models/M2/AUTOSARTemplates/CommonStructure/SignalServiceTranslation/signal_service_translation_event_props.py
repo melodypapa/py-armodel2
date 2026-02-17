@@ -1,41 +1,39 @@
-"""SignalServiceTranslationEventProps AUTOSAR element."""
+"""SignalServiceTranslationEventProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 731)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_SignalServiceTranslation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class SignalServiceTranslationEventProps(ARObject):
+
+class SignalServiceTranslationEventProps(Identifiable):
     """AUTOSAR SignalServiceTranslationEventProps."""
 
+    element_propses: list[Any]
+    safe_translation: Optional[Boolean]
+    secure: Optional[Boolean]
+    translation: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationEventProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SignalServiceTranslationEventProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SIGNALSERVICETRANSLATIONEVENTPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationEventProps":
-        """Create SignalServiceTranslationEventProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SignalServiceTranslationEventProps instance
-        """
-        obj: SignalServiceTranslationEventProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.element_propses: list[Any] = []
+        self.safe_translation: Optional[Boolean] = None
+        self.secure: Optional[Boolean] = None
+        self.translation: Optional[VariableDataPrototype] = None
 
 
 class SignalServiceTranslationEventPropsBuilder:

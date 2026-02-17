@@ -1,43 +1,25 @@
-"""DiagnosticRequestOnBoardMonitoringTestResultsClass AUTOSAR element."""
+"""DiagnosticRequestOnBoardMonitoringTestResultsClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 156)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x06_RequestOnBoard.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
 
-class DiagnosticRequestOnBoardMonitoringTestResultsClass(ARObject):
+
+class DiagnosticRequestOnBoardMonitoringTestResultsClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticRequestOnBoardMonitoringTestResultsClass."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResultsClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestOnBoardMonitoringTestResultsClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTONBOARDMONITORINGTESTRESULTSCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(
-        cls, element: ET.Element
-    ) -> "DiagnosticRequestOnBoardMonitoringTestResultsClass":
-        """Create DiagnosticRequestOnBoardMonitoringTestResultsClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestOnBoardMonitoringTestResultsClass instance
-        """
-        obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticRequestOnBoardMonitoringTestResultsClassBuilder:
@@ -45,9 +27,7 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = (
-            DiagnosticRequestOnBoardMonitoringTestResultsClass()
-        )
+        self._obj: DiagnosticRequestOnBoardMonitoringTestResultsClass = DiagnosticRequestOnBoardMonitoringTestResultsClass()
 
     def build(self) -> DiagnosticRequestOnBoardMonitoringTestResultsClass:
         """Build and return DiagnosticRequestOnBoardMonitoringTestResultsClass object.

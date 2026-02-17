@@ -1,41 +1,41 @@
-"""MacSecCryptoAlgoConfig AUTOSAR element."""
+"""MacSecCryptoAlgoConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 175)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
+    MacSecCapabilityEnum,
+    MacSecConfidentialityOffsetEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_sec_cipher_suite_config import (
+    MacSecCipherSuiteConfig,
+)
 
 
 class MacSecCryptoAlgoConfig(ARObject):
     """AUTOSAR MacSecCryptoAlgoConfig."""
 
+    capability: Optional[MacSecCapabilityEnum]
+    cipher_suite: MacSecCipherSuiteConfig
+    confidentiality: Optional[MacSecConfidentialityOffsetEnum]
+    replay_protection: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize MacSecCryptoAlgoConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MacSecCryptoAlgoConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MACSECCRYPTOALGOCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MacSecCryptoAlgoConfig":
-        """Create MacSecCryptoAlgoConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MacSecCryptoAlgoConfig instance
-        """
-        obj: MacSecCryptoAlgoConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.capability: Optional[MacSecCapabilityEnum] = None
+        self.cipher_suite: MacSecCipherSuiteConfig = None
+        self.confidentiality: Optional[MacSecConfidentialityOffsetEnum] = None
+        self.replay_protection: Optional[PositiveInteger] = None
 
 
 class MacSecCryptoAlgoConfigBuilder:

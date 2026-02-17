@@ -1,41 +1,36 @@
-"""McDataAccessDetails AUTOSAR element."""
+"""McDataAccessDetails AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 195)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
+    VariableAccess,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+        RTEEvent,
+    )
+
 
 
 class McDataAccessDetails(ARObject):
     """AUTOSAR McDataAccessDetails."""
 
+    rte_event_refs: list[RTEEvent]
+    variable_accesses: list[VariableAccess]
     def __init__(self) -> None:
         """Initialize McDataAccessDetails."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert McDataAccessDetails to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MCDATAACCESSDETAILS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McDataAccessDetails":
-        """Create McDataAccessDetails from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McDataAccessDetails instance
-        """
-        obj: McDataAccessDetails = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rte_event_refs: list[RTEEvent] = []
+        self.variable_accesses: list[VariableAccess] = []
 
 
 class McDataAccessDetailsBuilder:

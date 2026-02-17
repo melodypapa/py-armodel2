@@ -1,41 +1,31 @@
-"""FramePid AUTOSAR element."""
+"""FramePid AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 437)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    PositiveInteger,
+)
 
 
 class FramePid(ARObject):
     """AUTOSAR FramePid."""
 
+    index: Optional[Integer]
+    pid: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FramePid."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FramePid to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FRAMEPID")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FramePid":
-        """Create FramePid from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FramePid instance
-        """
-        obj: FramePid = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.index: Optional[Integer] = None
+        self.pid: Optional[PositiveInteger] = None
 
 
 class FramePidBuilder:

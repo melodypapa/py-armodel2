@@ -1,41 +1,41 @@
-"""ParameterSwComponentType AUTOSAR element."""
+"""ParameterSwComponentType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 41)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2043)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
+    ConstantSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
+    DataTypeMappingSet,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.InstantiationDataDefProps.instantiation_data_def_props import (
+    InstantiationDataDefProps,
+)
 
-class ParameterSwComponentType(ARObject):
+
+class ParameterSwComponentType(SwComponentType):
     """AUTOSAR ParameterSwComponentType."""
 
+    constants: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    instantiation_data_defs: list[InstantiationDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ParameterSwComponentType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PARAMETERSWCOMPONENTTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ParameterSwComponentType":
-        """Create ParameterSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ParameterSwComponentType instance
-        """
-        obj: ParameterSwComponentType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.constants: list[ConstantSpecification] = []
+        self.data_types: list[DataTypeMappingSet] = []
+        self.instantiation_data_defs: list[InstantiationDataDefProps] = []
 
 
 class ParameterSwComponentTypeBuilder:

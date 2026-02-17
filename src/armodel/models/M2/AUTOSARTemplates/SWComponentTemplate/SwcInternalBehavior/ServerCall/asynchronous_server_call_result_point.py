@@ -1,41 +1,28 @@
-"""AsynchronousServerCallResultPoint AUTOSAR element."""
+"""AsynchronousServerCallResultPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 304)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 581)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServerCall.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
+    AbstractAccessPoint,
+)
 
-class AsynchronousServerCallResultPoint(ARObject):
+
+class AsynchronousServerCallResultPoint(AbstractAccessPoint):
     """AUTOSAR AsynchronousServerCallResultPoint."""
 
+    asynchronous_server: Optional[Any]
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AsynchronousServerCallResultPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ASYNCHRONOUSSERVERCALLRESULTPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AsynchronousServerCallResultPoint":
-        """Create AsynchronousServerCallResultPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AsynchronousServerCallResultPoint instance
-        """
-        obj: AsynchronousServerCallResultPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.asynchronous_server: Optional[Any] = None
 
 
 class AsynchronousServerCallResultPointBuilder:

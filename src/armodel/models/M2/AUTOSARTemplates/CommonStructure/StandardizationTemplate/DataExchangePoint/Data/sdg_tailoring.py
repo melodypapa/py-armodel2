@@ -1,41 +1,30 @@
-"""SdgTailoring AUTOSAR element."""
+"""SdgTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 118)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
+    RestrictionWithSeverity,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
+    SdgClass,
+)
 
-class SdgTailoring(ARObject):
+
+class SdgTailoring(RestrictionWithSeverity):
     """AUTOSAR SdgTailoring."""
 
+    sdg_class: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgTailoring":
-        """Create SdgTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgTailoring instance
-        """
-        obj: SdgTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sdg_class: Optional[SdgClass] = None
 
 
 class SdgTailoringBuilder:

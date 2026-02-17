@@ -1,41 +1,30 @@
-"""DataReceiveErrorEvent AUTOSAR element."""
+"""DataReceiveErrorEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 543)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class DataReceiveErrorEvent(ARObject):
+
+class DataReceiveErrorEvent(RTEEvent):
     """AUTOSAR DataReceiveErrorEvent."""
 
+    data: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize DataReceiveErrorEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataReceiveErrorEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATARECEIVEERROREVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataReceiveErrorEvent":
-        """Create DataReceiveErrorEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataReceiveErrorEvent instance
-        """
-        obj: DataReceiveErrorEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data: Optional[VariableDataPrototype] = None
 
 
 class DataReceiveErrorEventBuilder:

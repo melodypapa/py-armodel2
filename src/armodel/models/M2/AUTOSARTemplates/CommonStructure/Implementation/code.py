@@ -1,41 +1,36 @@
-"""Code AUTOSAR element."""
+"""Code AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 130)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 622)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class Code(ARObject):
+
+class Code(Identifiable):
     """AUTOSAR Code."""
 
+    artifacts: list[AutosarEngineeringObject]
+    callback_headers: list[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize Code."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Code to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CODE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Code":
-        """Create Code from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Code instance
-        """
-        obj: Code = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.artifacts: list[AutosarEngineeringObject] = []
+        self.callback_headers: list[ServiceNeeds] = []
 
 
 class CodeBuilder:

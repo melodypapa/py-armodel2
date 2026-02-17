@@ -1,41 +1,31 @@
-"""ValueList AUTOSAR element."""
+"""ValueList AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 350)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 314)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 459)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
 
 class ValueList(ARObject):
     """AUTOSAR ValueList."""
 
+    v: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize ValueList."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ValueList to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VALUELIST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ValueList":
-        """Create ValueList from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ValueList instance
-        """
-        obj: ValueList = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.v: Optional[Numerical] = None
 
 
 class ValueListBuilder:

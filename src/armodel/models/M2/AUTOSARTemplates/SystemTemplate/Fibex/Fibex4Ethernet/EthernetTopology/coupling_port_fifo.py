@@ -1,41 +1,34 @@
-"""CouplingPortFifo AUTOSAR element."""
+"""CouplingPortFifo AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 124)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_structural_element import (
+    CouplingPortStructuralElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class CouplingPortFifo(ARObject):
+
+class CouplingPortFifo(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortFifo."""
 
+    assigned_traffic: PositiveInteger
+    minimum_fifo: Optional[PositiveInteger]
+    shaper: Optional[Any]
     def __init__(self) -> None:
         """Initialize CouplingPortFifo."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingPortFifo to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGPORTFIFO")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortFifo":
-        """Create CouplingPortFifo from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortFifo instance
-        """
-        obj: CouplingPortFifo = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.assigned_traffic: PositiveInteger = None
+        self.minimum_fifo: Optional[PositiveInteger] = None
+        self.shaper: Optional[Any] = None
 
 
 class CouplingPortFifoBuilder:

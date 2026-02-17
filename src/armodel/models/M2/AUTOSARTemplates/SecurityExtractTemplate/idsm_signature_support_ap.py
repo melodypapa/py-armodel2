@@ -1,41 +1,33 @@
-"""IdsmSignatureSupportAp AUTOSAR element."""
+"""IdsmSignatureSupportAp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.CryptoDeployment.crypto_key_slot import (
+    CryptoKeySlot,
+)
 
 
 class IdsmSignatureSupportAp(ARObject):
     """AUTOSAR IdsmSignatureSupportAp."""
 
+    crypto_primitive: String
+    key_slot: Optional[CryptoKeySlot]
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportAp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsmSignatureSupportAp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSMSIGNATURESUPPORTAP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportAp":
-        """Create IdsmSignatureSupportAp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmSignatureSupportAp instance
-        """
-        obj: IdsmSignatureSupportAp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.crypto_primitive: String = None
+        self.key_slot: Optional[CryptoKeySlot] = None
 
 
 class IdsmSignatureSupportApBuilder:

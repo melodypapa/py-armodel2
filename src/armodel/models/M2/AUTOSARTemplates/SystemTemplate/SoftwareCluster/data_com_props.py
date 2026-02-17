@@ -1,41 +1,33 @@
-"""DataComProps AUTOSAR element."""
+"""DataComProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 903)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_communication_resource_props import (
+    CpSoftwareClusterCommunicationResourceProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster import (
+    DataConsistencyPolicyEnum,
+    SendIndicationEnum,
+)
 
-class DataComProps(ARObject):
+
+class DataComProps(CpSoftwareClusterCommunicationResourceProps):
     """AUTOSAR DataComProps."""
 
+    data: Optional[DataConsistencyPolicyEnum]
+    send_indication_enum: Optional[SendIndicationEnum]
     def __init__(self) -> None:
         """Initialize DataComProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataComProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATACOMPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataComProps":
-        """Create DataComProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataComProps instance
-        """
-        obj: DataComProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data: Optional[DataConsistencyPolicyEnum] = None
+        self.send_indication_enum: Optional[SendIndicationEnum] = None
 
 
 class DataComPropsBuilder:

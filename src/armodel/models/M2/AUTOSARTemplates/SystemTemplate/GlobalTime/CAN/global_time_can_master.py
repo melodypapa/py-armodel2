@@ -1,41 +1,35 @@
-"""GlobalTimeCanMaster AUTOSAR element."""
+"""GlobalTimeCanMaster AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 864)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_CAN.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
+    GlobalTimeMaster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
+    GlobalTimeCrcSupportEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
-class GlobalTimeCanMaster(ARObject):
+
+class GlobalTimeCanMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeCanMaster."""
 
+    crc_secured: Optional[GlobalTimeCrcSupportEnum]
+    sync: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeCanMaster."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeCanMaster to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMECANMASTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeCanMaster":
-        """Create GlobalTimeCanMaster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeCanMaster instance
-        """
-        obj: GlobalTimeCanMaster = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
+        self.sync: Optional[TimeValue] = None
 
 
 class GlobalTimeCanMasterBuilder:

@@ -1,41 +1,35 @@
-"""SomeipTpConfig AUTOSAR element."""
+"""SomeipTpConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 619)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip_tp_channel import (
+    SomeipTpChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip_tp_connection import (
+    SomeipTpConnection,
+)
 
-class SomeipTpConfig(ARObject):
+
+class SomeipTpConfig(TpConfig):
     """AUTOSAR SomeipTpConfig."""
 
+    tp_channels: list[SomeipTpChannel]
+    tp_connections: list[SomeipTpConnection]
     def __init__(self) -> None:
         """Initialize SomeipTpConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SomeipTpConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPTPCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipTpConfig":
-        """Create SomeipTpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipTpConfig instance
-        """
-        obj: SomeipTpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_channels: list[SomeipTpChannel] = []
+        self.tp_connections: list[SomeipTpConnection] = []
 
 
 class SomeipTpConfigBuilder:

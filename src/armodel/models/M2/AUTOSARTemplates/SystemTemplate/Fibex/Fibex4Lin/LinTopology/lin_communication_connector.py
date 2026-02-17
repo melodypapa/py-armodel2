@@ -1,41 +1,43 @@
-"""LinCommunicationConnector AUTOSAR element."""
+"""LinCommunicationConnector AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 98)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
+    CommunicationConnector,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_configurable_frame import (
+    LinConfigurableFrame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_ordered_configurable_frame import (
+    LinOrderedConfigurableFrame,
+)
 
-class LinCommunicationConnector(ARObject):
+
+class LinCommunicationConnector(CommunicationConnector):
     """AUTOSAR LinCommunicationConnector."""
 
+    initial_nad: Optional[Integer]
+    lin_configurable_frames: list[LinConfigurableFrame]
+    lin_ordereds: list[LinOrderedConfigurableFrame]
+    schedule: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize LinCommunicationConnector."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinCommunicationConnector to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINCOMMUNICATIONCONNECTOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinCommunicationConnector":
-        """Create LinCommunicationConnector from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinCommunicationConnector instance
-        """
-        obj: LinCommunicationConnector = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.initial_nad: Optional[Integer] = None
+        self.lin_configurable_frames: list[LinConfigurableFrame] = []
+        self.lin_ordereds: list[LinOrderedConfigurableFrame] = []
+        self.schedule: Optional[Boolean] = None
 
 
 class LinCommunicationConnectorBuilder:

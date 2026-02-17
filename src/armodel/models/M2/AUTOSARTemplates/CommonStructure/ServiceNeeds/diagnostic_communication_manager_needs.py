@@ -1,41 +1,28 @@
-"""DiagnosticCommunicationManagerNeeds AUTOSAR element."""
+"""DiagnosticCommunicationManagerNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 248)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 779)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
 
-class DiagnosticCommunicationManagerNeeds(ARObject):
+
+class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticCommunicationManagerNeeds."""
 
+    service_request: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticCommunicationManagerNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticCommunicationManagerNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCOMMUNICATIONMANAGERNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticCommunicationManagerNeeds":
-        """Create DiagnosticCommunicationManagerNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticCommunicationManagerNeeds instance
-        """
-        obj: DiagnosticCommunicationManagerNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.service_request: Optional[Any] = None
 
 
 class DiagnosticCommunicationManagerNeedsBuilder:

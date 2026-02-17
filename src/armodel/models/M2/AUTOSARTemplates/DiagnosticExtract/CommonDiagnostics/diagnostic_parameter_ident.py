@@ -1,41 +1,30 @@
-"""DiagnosticParameterIdent AUTOSAR element."""
+"""DiagnosticParameterIdent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 37)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.ident_caption import (
+    IdentCaption,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
-class DiagnosticParameterIdent(ARObject):
+
+class DiagnosticParameterIdent(IdentCaption):
     """AUTOSAR DiagnosticParameterIdent."""
 
+    sub_elements: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterIdent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticParameterIdent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICPARAMETERIDENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticParameterIdent":
-        """Create DiagnosticParameterIdent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticParameterIdent instance
-        """
-        obj: DiagnosticParameterIdent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sub_elements: list[DiagnosticParameter] = []
 
 
 class DiagnosticParameterIdentBuilder:

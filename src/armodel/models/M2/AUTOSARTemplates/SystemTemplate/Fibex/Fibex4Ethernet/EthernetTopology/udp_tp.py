@@ -1,41 +1,30 @@
-"""UdpTp AUTOSAR element."""
+"""UdpTp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 459)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_udp_config import (
+    TcpUdpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tp_port import (
+    TpPort,
+)
 
-class UdpTp(ARObject):
+
+class UdpTp(TcpUdpConfig):
     """AUTOSAR UdpTp."""
 
+    udp_tp_port: Optional[TpPort]
     def __init__(self) -> None:
         """Initialize UdpTp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UdpTp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("UDPTP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UdpTp":
-        """Create UdpTp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UdpTp instance
-        """
-        obj: UdpTp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.udp_tp_port: Optional[TpPort] = None
 
 
 class UdpTpBuilder:

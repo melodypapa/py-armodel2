@@ -1,41 +1,30 @@
-"""ModeInterfaceMapping AUTOSAR element."""
+"""ModeInterfaceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 130)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
+    PortInterfaceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class ModeInterfaceMapping(ARObject):
+
+class ModeInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR ModeInterfaceMapping."""
 
+    mode_mapping: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeInterfaceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeInterfaceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEINTERFACEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeInterfaceMapping":
-        """Create ModeInterfaceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeInterfaceMapping instance
-        """
-        obj: ModeInterfaceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mode_mapping: Optional[ModeDeclarationGroup] = None
 
 
 class ModeInterfaceMappingBuilder:

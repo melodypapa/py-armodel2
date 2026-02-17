@@ -1,41 +1,33 @@
-"""DataPrototypeGroup AUTOSAR element."""
+"""DataPrototypeGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 223)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 180)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ImplicitCommunicationBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class DataPrototypeGroup(ARObject):
+
+class DataPrototypeGroup(Identifiable):
     """AUTOSAR DataPrototypeGroup."""
 
+    data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup]
+    implicit_datas: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataPrototypeGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAPROTOTYPEGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeGroup":
-        """Create DataPrototypeGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeGroup instance
-        """
-        obj: DataPrototypeGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup] = []
+        self.implicit_datas: list[VariableDataPrototype] = []
 
 
 class DataPrototypeGroupBuilder:

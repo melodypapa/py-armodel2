@@ -1,41 +1,30 @@
-"""SwcTiming AUTOSAR element."""
+"""SwcTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 25)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
+    TimingExtension,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
+    SwcInternalBehavior,
+)
 
-class SwcTiming(ARObject):
+
+class SwcTiming(TimingExtension):
     """AUTOSAR SwcTiming."""
 
+    behavior: Optional[SwcInternalBehavior]
     def __init__(self) -> None:
         """Initialize SwcTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwcTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcTiming":
-        """Create SwcTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcTiming instance
-        """
-        obj: SwcTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.behavior: Optional[SwcInternalBehavior] = None
 
 
 class SwcTimingBuilder:

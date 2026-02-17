@@ -1,41 +1,41 @@
-"""BswModeSenderPolicy AUTOSAR element."""
+"""BswModeSenderPolicy AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_mode_switch_ack_request import (
+    BswModeSwitchAckRequest,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class BswModeSenderPolicy(ARObject):
     """AUTOSAR BswModeSenderPolicy."""
 
+    ack_request_request: Optional[BswModeSwitchAckRequest]
+    enhanced_mode: Optional[Boolean]
+    provided_mode: Optional[ModeDeclarationGroup]
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BswModeSenderPolicy."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModeSenderPolicy to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODESENDERPOLICY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModeSenderPolicy":
-        """Create BswModeSenderPolicy from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModeSenderPolicy instance
-        """
-        obj: BswModeSenderPolicy = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ack_request_request: Optional[BswModeSwitchAckRequest] = None
+        self.enhanced_mode: Optional[Boolean] = None
+        self.provided_mode: Optional[ModeDeclarationGroup] = None
+        self.queue_length: Optional[PositiveInteger] = None
 
 
 class BswModeSenderPolicyBuilder:

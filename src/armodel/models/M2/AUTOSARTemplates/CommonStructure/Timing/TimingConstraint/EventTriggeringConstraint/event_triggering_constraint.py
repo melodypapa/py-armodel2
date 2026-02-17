@@ -1,41 +1,31 @@
-"""EventTriggeringConstraint AUTOSAR element."""
+"""EventTriggeringConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 100)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
+    TimingConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class EventTriggeringConstraint(ARObject):
+
+class EventTriggeringConstraint(TimingConstraint):
     """AUTOSAR EventTriggeringConstraint."""
+    """Abstract base class - do not instantiate directly."""
 
+    event: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize EventTriggeringConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EventTriggeringConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EVENTTRIGGERINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EventTriggeringConstraint":
-        """Create EventTriggeringConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EventTriggeringConstraint instance
-        """
-        obj: EventTriggeringConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event: Optional[TimingDescriptionEvent] = None
 
 
 class EventTriggeringConstraintBuilder:

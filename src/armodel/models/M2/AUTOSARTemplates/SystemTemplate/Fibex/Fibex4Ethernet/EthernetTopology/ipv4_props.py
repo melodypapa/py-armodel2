@@ -1,41 +1,38 @@
-"""Ipv4Props AUTOSAR element."""
+"""Ipv4Props AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 146)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_arp_props import (
+    Ipv4ArpProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_auto_ip_props import (
+    Ipv4AutoIpProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_fragmentation_props import (
+    Ipv4FragmentationProps,
+)
 
 
 class Ipv4Props(ARObject):
     """AUTOSAR Ipv4Props."""
 
+    arp_props: Optional[Ipv4ArpProps]
+    auto_ip_props: Optional[Ipv4AutoIpProps]
+    fragmentation: Optional[Ipv4FragmentationProps]
     def __init__(self) -> None:
         """Initialize Ipv4Props."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Ipv4Props to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPV4PROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv4Props":
-        """Create Ipv4Props from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv4Props instance
-        """
-        obj: Ipv4Props = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.arp_props: Optional[Ipv4ArpProps] = None
+        self.auto_ip_props: Optional[Ipv4AutoIpProps] = None
+        self.fragmentation: Optional[Ipv4FragmentationProps] = None
 
 
 class Ipv4PropsBuilder:

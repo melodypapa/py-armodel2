@@ -1,41 +1,33 @@
-"""AbstractRequiredPortPrototype AUTOSAR element."""
+"""AbstractRequiredPortPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 67)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 204)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 422)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
 
-class AbstractRequiredPortPrototype(ARObject):
+
+class AbstractRequiredPortPrototype(PortPrototype):
     """AUTOSAR AbstractRequiredPortPrototype."""
+    """Abstract base class - do not instantiate directly."""
 
+    required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractRequiredPortPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTREQUIREDPORTPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractRequiredPortPrototype":
-        """Create AbstractRequiredPortPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractRequiredPortPrototype instance
-        """
-        obj: AbstractRequiredPortPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.required_coms: list[RPortComSpec] = []
 
 
 class AbstractRequiredPortPrototypeBuilder:

@@ -1,41 +1,45 @@
-"""SenderReceiverInterface AUTOSAR element."""
+"""SenderReceiverInterface AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 335)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 329)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 94)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2054)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 244)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 208)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
+    DataInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.invalidation_policy import (
+    InvalidationPolicy,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.meta_data_item_set import (
+    MetaDataItemSet,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class SenderReceiverInterface(ARObject):
+
+class SenderReceiverInterface(DataInterface):
     """AUTOSAR SenderReceiverInterface."""
 
+    data_elements: list[VariableDataPrototype]
+    invalidation_policy_policies: list[InvalidationPolicy]
+    meta_data_item_sets: list[MetaDataItemSet]
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderReceiverInterface to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECEIVERINTERFACE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverInterface":
-        """Create SenderReceiverInterface from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverInterface instance
-        """
-        obj: SenderReceiverInterface = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_elements: list[VariableDataPrototype] = []
+        self.invalidation_policy_policies: list[InvalidationPolicy] = []
+        self.meta_data_item_sets: list[MetaDataItemSet] = []
 
 
 class SenderReceiverInterfaceBuilder:

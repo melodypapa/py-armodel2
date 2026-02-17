@@ -1,41 +1,30 @@
-"""DataWriteCompletedEvent AUTOSAR element."""
+"""DataWriteCompletedEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 542)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
+    VariableAccess,
+)
 
-class DataWriteCompletedEvent(ARObject):
+
+class DataWriteCompletedEvent(RTEEvent):
     """AUTOSAR DataWriteCompletedEvent."""
 
+    event_source: Optional[VariableAccess]
     def __init__(self) -> None:
         """Initialize DataWriteCompletedEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataWriteCompletedEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAWRITECOMPLETEDEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataWriteCompletedEvent":
-        """Create DataWriteCompletedEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataWriteCompletedEvent instance
-        """
-        obj: DataWriteCompletedEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_source: Optional[VariableAccess] = None
 
 
 class DataWriteCompletedEventBuilder:

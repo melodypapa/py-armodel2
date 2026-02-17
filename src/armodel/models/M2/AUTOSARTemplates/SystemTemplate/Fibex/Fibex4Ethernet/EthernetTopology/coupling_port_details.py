@@ -1,41 +1,53 @@
-"""CouplingPortDetails AUTOSAR element."""
+"""CouplingPortDetails AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 121)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_rate_policy import (
+    CouplingPortRatePolicy,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_scheduler import (
+    CouplingPortScheduler,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_structural_element import (
+    CouplingPortStructuralElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_traffic_class_assignment import (
+    CouplingPortTrafficClassAssignment,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_priority_regeneration import (
+    EthernetPriorityRegeneration,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.global_time_coupling_port_props import (
+    GlobalTimeCouplingPortProps,
+)
 
 
 class CouplingPortDetails(ARObject):
     """AUTOSAR CouplingPortDetails."""
 
+    coupling_ports: list[CouplingPortStructuralElement]
+    ethernet_priority: EthernetPriorityRegeneration
+    ethernet_traffic: CouplingPortTrafficClassAssignment
+    global_time_coupling: Optional[GlobalTimeCouplingPortProps]
+    last_egress: Optional[CouplingPortScheduler]
+    rate_policies: list[CouplingPortRatePolicy]
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingPortDetails to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGPORTDETAILS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortDetails":
-        """Create CouplingPortDetails from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortDetails instance
-        """
-        obj: CouplingPortDetails = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.coupling_ports: list[CouplingPortStructuralElement] = []
+        self.ethernet_priority: EthernetPriorityRegeneration = None
+        self.ethernet_traffic: CouplingPortTrafficClassAssignment = None
+        self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
+        self.last_egress: Optional[CouplingPortScheduler] = None
+        self.rate_policies: list[CouplingPortRatePolicy] = []
 
 
 class CouplingPortDetailsBuilder:

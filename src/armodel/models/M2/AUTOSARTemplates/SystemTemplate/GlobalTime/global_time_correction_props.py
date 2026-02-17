@@ -1,41 +1,33 @@
-"""GlobalTimeCorrectionProps AUTOSAR element."""
+"""GlobalTimeCorrectionProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 862)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
 
 class GlobalTimeCorrectionProps(ARObject):
     """AUTOSAR GlobalTimeCorrectionProps."""
 
+    offset_correction: Optional[TimeValue]
+    rate_correction: Optional[TimeValue]
+    rate_corrections: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize GlobalTimeCorrectionProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeCorrectionProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMECORRECTIONPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeCorrectionProps":
-        """Create GlobalTimeCorrectionProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeCorrectionProps instance
-        """
-        obj: GlobalTimeCorrectionProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.offset_correction: Optional[TimeValue] = None
+        self.rate_correction: Optional[TimeValue] = None
+        self.rate_corrections: Optional[PositiveInteger] = None
 
 
 class GlobalTimeCorrectionPropsBuilder:

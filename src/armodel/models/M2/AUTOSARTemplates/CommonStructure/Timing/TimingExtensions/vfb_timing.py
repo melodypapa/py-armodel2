@@ -1,41 +1,31 @@
-"""VfbTiming AUTOSAR element."""
+"""VfbTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 24)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 223)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
+    TimingExtension,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
 
-class VfbTiming(ARObject):
+
+class VfbTiming(TimingExtension):
     """AUTOSAR VfbTiming."""
 
+    component: Optional[SwComponentType]
     def __init__(self) -> None:
         """Initialize VfbTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert VfbTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VFBTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VfbTiming":
-        """Create VfbTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VfbTiming instance
-        """
-        obj: VfbTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.component: Optional[SwComponentType] = None
 
 
 class VfbTimingBuilder:

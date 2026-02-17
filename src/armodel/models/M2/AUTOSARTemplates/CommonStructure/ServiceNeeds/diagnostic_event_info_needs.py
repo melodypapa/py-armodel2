@@ -1,41 +1,33 @@
-"""DiagnosticEventInfoNeeds AUTOSAR element."""
+"""DiagnosticEventInfoNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 312)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 760)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class DiagnosticEventInfoNeeds(ARObject):
+
+class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventInfoNeeds."""
 
+    obd_dtc_number: Optional[PositiveInteger]
+    uds_dtc_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticEventInfoNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEventInfoNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICEVENTINFONEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventInfoNeeds":
-        """Create DiagnosticEventInfoNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventInfoNeeds instance
-        """
-        obj: DiagnosticEventInfoNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.obd_dtc_number: Optional[PositiveInteger] = None
+        self.uds_dtc_number: Optional[PositiveInteger] = None
 
 
 class DiagnosticEventInfoNeedsBuilder:

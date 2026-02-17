@@ -1,41 +1,32 @@
-"""DiagnosticRequestRoutineResults AUTOSAR element."""
+"""DiagnosticRequestRoutineResults AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 125)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_routine_subfunction import (
+    DiagnosticRoutineSubfunction,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
-class DiagnosticRequestRoutineResults(ARObject):
+
+class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
     """AUTOSAR DiagnosticRequestRoutineResults."""
 
+    requests: list[DiagnosticParameter]
+    responses: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestRoutineResults."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestRoutineResults to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTROUTINERESULTS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestRoutineResults":
-        """Create DiagnosticRequestRoutineResults from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestRoutineResults instance
-        """
-        obj: DiagnosticRequestRoutineResults = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.requests: list[DiagnosticParameter] = []
+        self.responses: list[DiagnosticParameter] = []
 
 
 class DiagnosticRequestRoutineResultsBuilder:

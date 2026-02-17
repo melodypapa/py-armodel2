@@ -1,41 +1,42 @@
-"""HeapUsage AUTOSAR element."""
+"""HeapUsage AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 152)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2026)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_HeapUsage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.hardware_configuration import (
+    HardwareConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.software_context import (
+    SoftwareContext,
+)
 
-class HeapUsage(ARObject):
+
+class HeapUsage(Identifiable):
     """AUTOSAR HeapUsage."""
+    """Abstract base class - do not instantiate directly."""
 
+    hardware: Optional[HardwareConfiguration]
+    hw_element: Optional[HwElement]
+    software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize HeapUsage."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HeapUsage to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HEAPUSAGE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HeapUsage":
-        """Create HeapUsage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HeapUsage instance
-        """
-        obj: HeapUsage = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.hardware: Optional[HardwareConfiguration] = None
+        self.hw_element: Optional[HwElement] = None
+        self.software_context: Optional[SoftwareContext] = None
 
 
 class HeapUsageBuilder:

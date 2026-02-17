@@ -1,41 +1,35 @@
-"""SwSystemconst AUTOSAR element."""
+"""SwSystemconst AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 343)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 312)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 448)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2068)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 79)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 234)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_SystemConstant.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
-class SwSystemconst(ARObject):
+
+class SwSystemconst(ARElement):
     """AUTOSAR SwSystemconst."""
 
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SwSystemconst."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwSystemconst to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWSYSTEMCONST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwSystemconst":
-        """Create SwSystemconst from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwSystemconst instance
-        """
-        obj: SwSystemconst = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_data_def: Optional[SwDataDefProps] = None
 
 
 class SwSystemconstBuilder:

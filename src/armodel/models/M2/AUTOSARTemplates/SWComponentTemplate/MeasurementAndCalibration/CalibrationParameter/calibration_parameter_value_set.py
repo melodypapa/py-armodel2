@@ -1,41 +1,27 @@
-"""CalibrationParameterValueSet AUTOSAR element."""
+"""CalibrationParameterValueSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 477)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_MeasurementAndCalibration_CalibrationParameter.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
 
-class CalibrationParameterValueSet(ARObject):
+
+class CalibrationParameterValueSet(ARElement):
     """AUTOSAR CalibrationParameterValueSet."""
 
+    calibrations: list[Any]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValueSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CalibrationParameterValueSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CALIBRATIONPARAMETERVALUESET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValueSet":
-        """Create CalibrationParameterValueSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CalibrationParameterValueSet instance
-        """
-        obj: CalibrationParameterValueSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.calibrations: list[Any] = []
 
 
 class CalibrationParameterValueSetBuilder:

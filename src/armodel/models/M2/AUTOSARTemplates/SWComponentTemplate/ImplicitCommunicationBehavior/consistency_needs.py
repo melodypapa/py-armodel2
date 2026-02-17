@@ -1,41 +1,40 @@
-"""ConsistencyNeeds AUTOSAR element."""
+"""ConsistencyNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 221)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 178)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ImplicitCommunicationBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.data_prototype_group import (
+    DataPrototypeGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.runnable_entity_group import (
+    RunnableEntityGroup,
+)
 
-class ConsistencyNeeds(ARObject):
+
+class ConsistencyNeeds(Identifiable):
     """AUTOSAR ConsistencyNeeds."""
 
+    dpg_does_nots: list[DataPrototypeGroup]
+    dpg_requireses: list[DataPrototypeGroup]
+    reg_does_nots: list[RunnableEntityGroup]
+    reg_requireses: list[RunnableEntityGroup]
     def __init__(self) -> None:
         """Initialize ConsistencyNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConsistencyNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSISTENCYNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsistencyNeeds":
-        """Create ConsistencyNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsistencyNeeds instance
-        """
-        obj: ConsistencyNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dpg_does_nots: list[DataPrototypeGroup] = []
+        self.dpg_requireses: list[DataPrototypeGroup] = []
+        self.reg_does_nots: list[RunnableEntityGroup] = []
+        self.reg_requireses: list[RunnableEntityGroup] = []
 
 
 class ConsistencyNeedsBuilder:

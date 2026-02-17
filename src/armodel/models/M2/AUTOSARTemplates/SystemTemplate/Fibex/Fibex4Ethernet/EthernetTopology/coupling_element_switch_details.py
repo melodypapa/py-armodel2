@@ -1,41 +1,47 @@
-"""CouplingElementSwitchDetails AUTOSAR element."""
+"""CouplingElementSwitchDetails AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 133)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_element_abstract_details import (
+    CouplingElementAbstractDetails,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_asynchronous_traffic_shaper_group_entry import (
+    SwitchAsynchronousTrafficShaperGroupEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_flow_metering_entry import (
+    SwitchFlowMeteringEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_filter_entry import (
+    SwitchStreamFilterEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_gate_entry import (
+    SwitchStreamGateEntry,
+)
 
-class CouplingElementSwitchDetails(ARObject):
+
+class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
     """AUTOSAR CouplingElementSwitchDetails."""
 
+    flow_meterings: list[SwitchFlowMeteringEntry]
+    stream_filters: list[SwitchStreamFilterEntry]
+    stream_gates: list[SwitchStreamGateEntry]
+    switch_streams: list[Any]
+    traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry]
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingElementSwitchDetails to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGELEMENTSWITCHDETAILS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingElementSwitchDetails":
-        """Create CouplingElementSwitchDetails from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingElementSwitchDetails instance
-        """
-        obj: CouplingElementSwitchDetails = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.flow_meterings: list[SwitchFlowMeteringEntry] = []
+        self.stream_filters: list[SwitchStreamFilterEntry] = []
+        self.stream_gates: list[SwitchStreamGateEntry] = []
+        self.switch_streams: list[Any] = []
+        self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
 
 
 class CouplingElementSwitchDetailsBuilder:

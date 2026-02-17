@@ -1,41 +1,30 @@
-"""RteEventInSystemSeparation AUTOSAR element."""
+"""RteEventInSystemSeparation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 214)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_RteEventToOsTaskMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
 
-class RteEventInSystemSeparation(ARObject):
+
+class RteEventInSystemSeparation(Identifiable):
     """AUTOSAR RteEventInSystemSeparation."""
 
+    rte_event_instance_refs: list[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInSystemSeparation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RteEventInSystemSeparation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTEEVENTINSYSTEMSEPARATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RteEventInSystemSeparation":
-        """Create RteEventInSystemSeparation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RteEventInSystemSeparation instance
-        """
-        obj: RteEventInSystemSeparation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rte_event_instance_refs: list[RTEEvent] = []
 
 
 class RteEventInSystemSeparationBuilder:

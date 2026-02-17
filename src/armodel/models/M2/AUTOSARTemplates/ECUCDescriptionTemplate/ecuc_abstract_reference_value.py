@@ -1,41 +1,38 @@
-"""EcucAbstractReferenceValue AUTOSAR element."""
+"""EcucAbstractReferenceValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 131)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
+    EcucIndexableValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
+    Annotation,
+)
 
-class EcucAbstractReferenceValue(ARObject):
+
+class EcucAbstractReferenceValue(EcucIndexableValue):
     """AUTOSAR EcucAbstractReferenceValue."""
+    """Abstract base class - do not instantiate directly."""
 
+    annotations: list[Annotation]
+    definition: Optional[Any]
+    is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucAbstractReferenceValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCABSTRACTREFERENCEVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAbstractReferenceValue":
-        """Create EcucAbstractReferenceValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucAbstractReferenceValue instance
-        """
-        obj: EcucAbstractReferenceValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.annotations: list[Annotation] = []
+        self.definition: Optional[Any] = None
+        self.is_auto_value: Optional[Boolean] = None
 
 
 class EcucAbstractReferenceValueBuilder:

@@ -1,41 +1,29 @@
-"""RestrictionWithSeverity AUTOSAR element."""
+"""RestrictionWithSeverity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 86)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Common.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint import (
+    SeverityEnum,
+)
 
 
 class RestrictionWithSeverity(ARObject):
     """AUTOSAR RestrictionWithSeverity."""
+    """Abstract base class - do not instantiate directly."""
 
+    severity: SeverityEnum
     def __init__(self) -> None:
         """Initialize RestrictionWithSeverity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RestrictionWithSeverity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RESTRICTIONWITHSEVERITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RestrictionWithSeverity":
-        """Create RestrictionWithSeverity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RestrictionWithSeverity instance
-        """
-        obj: RestrictionWithSeverity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.severity: SeverityEnum = None
 
 
 class RestrictionWithSeverityBuilder:

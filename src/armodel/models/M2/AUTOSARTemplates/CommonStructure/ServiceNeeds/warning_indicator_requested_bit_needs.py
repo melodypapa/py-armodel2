@@ -1,41 +1,25 @@
-"""WarningIndicatorRequestedBitNeeds AUTOSAR element."""
+"""WarningIndicatorRequestedBitNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 811)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
 
-class WarningIndicatorRequestedBitNeeds(ARObject):
+
+class WarningIndicatorRequestedBitNeeds(DiagnosticCapabilityElement):
     """AUTOSAR WarningIndicatorRequestedBitNeeds."""
 
     def __init__(self) -> None:
         """Initialize WarningIndicatorRequestedBitNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert WarningIndicatorRequestedBitNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("WARNINGINDICATORREQUESTEDBITNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "WarningIndicatorRequestedBitNeeds":
-        """Create WarningIndicatorRequestedBitNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            WarningIndicatorRequestedBitNeeds instance
-        """
-        obj: WarningIndicatorRequestedBitNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class WarningIndicatorRequestedBitNeedsBuilder:

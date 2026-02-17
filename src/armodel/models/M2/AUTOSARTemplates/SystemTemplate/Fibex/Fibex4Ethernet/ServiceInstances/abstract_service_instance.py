@@ -1,41 +1,46 @@
-"""AbstractServiceInstance AUTOSAR element."""
+"""AbstractServiceInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 476)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.pdu_activation_routing_group import (
+    PduActivationRoutingGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ObsoleteModel.so_ad_routing_group import (
+    SoAdRoutingGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.TagWithOptionalValue.tag_with_optional_value import (
+    TagWithOptionalValue,
+)
 
-class AbstractServiceInstance(ARObject):
+
+class AbstractServiceInstance(Identifiable):
     """AUTOSAR AbstractServiceInstance."""
+    """Abstract base class - do not instantiate directly."""
 
+    capabilities: list[TagWithOptionalValue]
+    major_version: Optional[PositiveInteger]
+    method: Optional[PduActivationRoutingGroup]
+    routing_groups: list[SoAdRoutingGroup]
     def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractServiceInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTSERVICEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractServiceInstance":
-        """Create AbstractServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractServiceInstance instance
-        """
-        obj: AbstractServiceInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.capabilities: list[TagWithOptionalValue] = []
+        self.major_version: Optional[PositiveInteger] = None
+        self.method: Optional[PduActivationRoutingGroup] = None
+        self.routing_groups: list[SoAdRoutingGroup] = []
 
 
 class AbstractServiceInstanceBuilder:

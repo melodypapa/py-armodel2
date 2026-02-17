@@ -1,41 +1,31 @@
-"""UnitGroup AUTOSAR element."""
+"""UnitGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 314)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 402)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Units.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.unit import (
+    Unit,
+)
 
-class UnitGroup(ARObject):
+
+class UnitGroup(ARElement):
     """AUTOSAR UnitGroup."""
 
+    units: list[Unit]
     def __init__(self) -> None:
         """Initialize UnitGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UnitGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("UNITGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UnitGroup":
-        """Create UnitGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UnitGroup instance
-        """
-        obj: UnitGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.units: list[Unit] = []
 
 
 class UnitGroupBuilder:

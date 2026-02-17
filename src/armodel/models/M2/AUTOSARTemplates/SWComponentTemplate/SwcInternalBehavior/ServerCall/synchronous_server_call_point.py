@@ -1,41 +1,31 @@
-"""SynchronousServerCallPoint AUTOSAR element."""
+"""SynchronousServerCallPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 580)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2074)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServerCall.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.server_call_point import (
+    ServerCallPoint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
+    ExclusiveAreaNestingOrder,
+)
 
-class SynchronousServerCallPoint(ARObject):
+
+class SynchronousServerCallPoint(ServerCallPoint):
     """AUTOSAR SynchronousServerCallPoint."""
 
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SynchronousServerCallPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SYNCHRONOUSSERVERCALLPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SynchronousServerCallPoint":
-        """Create SynchronousServerCallPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SynchronousServerCallPoint instance
-        """
-        obj: SynchronousServerCallPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.called_from: Optional[ExclusiveAreaNestingOrder] = None
 
 
 class SynchronousServerCallPointBuilder:

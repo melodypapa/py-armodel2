@@ -1,41 +1,44 @@
-"""AliasNameAssignment AUTOSAR element."""
+"""AliasNameAssignment AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 175)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 968)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
+    MultilanguageLongName,
+)
 
 
 class AliasNameAssignment(ARObject):
     """AUTOSAR AliasNameAssignment."""
 
+    flat_instance: Optional[FlatInstanceDescriptor]
+    identifiable: Optional[Identifiable]
+    label: Optional[MultilanguageLongName]
+    short_label: Optional[String]
     def __init__(self) -> None:
         """Initialize AliasNameAssignment."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AliasNameAssignment to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ALIASNAMEASSIGNMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AliasNameAssignment":
-        """Create AliasNameAssignment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AliasNameAssignment instance
-        """
-        obj: AliasNameAssignment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.flat_instance: Optional[FlatInstanceDescriptor] = None
+        self.identifiable: Optional[Identifiable] = None
+        self.label: Optional[MultilanguageLongName] = None
+        self.short_label: Optional[String] = None
 
 
 class AliasNameAssignmentBuilder:

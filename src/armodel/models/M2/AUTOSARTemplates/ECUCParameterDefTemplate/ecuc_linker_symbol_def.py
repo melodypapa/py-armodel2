@@ -1,9 +1,15 @@
-"""EcucLinkerSymbolDef AUTOSAR element."""
+"""EcucLinkerSymbolDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 65)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucLinkerSymbolDef(ARObject):
@@ -12,30 +18,6 @@ class EcucLinkerSymbolDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucLinkerSymbolDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucLinkerSymbolDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCLINKERSYMBOLDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucLinkerSymbolDef":
-        """Create EcucLinkerSymbolDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucLinkerSymbolDef instance
-        """
-        obj: EcucLinkerSymbolDef = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class EcucLinkerSymbolDefBuilder:

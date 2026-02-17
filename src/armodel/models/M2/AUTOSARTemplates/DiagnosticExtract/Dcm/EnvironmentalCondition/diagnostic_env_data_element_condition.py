@@ -1,41 +1,40 @@
-"""DiagnosticEnvDataElementCondition AUTOSAR element."""
+"""DiagnosticEnvDataElementCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 85)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_EnvironmentalCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_compare_condition import (
+    DiagnosticEnvCompareCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
-class DiagnosticEnvDataElementCondition(ARObject):
+
+class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
     """AUTOSAR DiagnosticEnvDataElementCondition."""
 
+    compare_value: Optional[ValueSpecification]
+    data_prototype: Optional[DataPrototype]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvDataElementCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEnvDataElementCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICENVDATAELEMENTCONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvDataElementCondition":
-        """Create DiagnosticEnvDataElementCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnvDataElementCondition instance
-        """
-        obj: DiagnosticEnvDataElementCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compare_value: Optional[ValueSpecification] = None
+        self.data_prototype: Optional[DataPrototype] = None
+        self.sw_data_def: Optional[SwDataDefProps] = None
 
 
 class DiagnosticEnvDataElementConditionBuilder:

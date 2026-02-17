@@ -1,41 +1,35 @@
-"""ClientServerInterfaceMapping AUTOSAR element."""
+"""ClientServerInterfaceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 128)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
+    PortInterfaceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_application_error_mapping import (
+    ClientServerApplicationErrorMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class ClientServerInterfaceMapping(ARObject):
+
+class ClientServerInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR ClientServerInterfaceMapping."""
 
+    error_mappings: list[ClientServerApplicationErrorMapping]
+    operations: list[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClientServerInterfaceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLIENTSERVERINTERFACEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerInterfaceMapping":
-        """Create ClientServerInterfaceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerInterfaceMapping instance
-        """
-        obj: ClientServerInterfaceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.error_mappings: list[ClientServerApplicationErrorMapping] = []
+        self.operations: list[ClientServerOperation] = []
 
 
 class ClientServerInterfaceMappingBuilder:

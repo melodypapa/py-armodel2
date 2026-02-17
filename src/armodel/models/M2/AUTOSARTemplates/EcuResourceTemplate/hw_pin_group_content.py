@@ -1,41 +1,36 @@
-"""HwPinGroupContent AUTOSAR element."""
+"""HwPinGroupContent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 20)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
+    HwPin,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
+        HwPinGroup,
+    )
+
 
 
 class HwPinGroupContent(ARObject):
     """AUTOSAR HwPinGroupContent."""
 
+    hw_pin: Optional[HwPin]
+    hw_pin_group: Optional[HwPinGroup]
     def __init__(self) -> None:
         """Initialize HwPinGroupContent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwPinGroupContent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWPINGROUPCONTENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwPinGroupContent":
-        """Create HwPinGroupContent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwPinGroupContent instance
-        """
-        obj: HwPinGroupContent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.hw_pin: Optional[HwPin] = None
+        self.hw_pin_group: Optional[HwPinGroup] = None
 
 
 class HwPinGroupContentBuilder:

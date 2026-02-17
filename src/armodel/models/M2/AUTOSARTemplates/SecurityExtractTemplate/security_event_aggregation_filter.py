@@ -1,41 +1,32 @@
-"""SecurityEventAggregationFilter AUTOSAR element."""
+"""SecurityEventAggregationFilter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 24)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
+    AbstractSecurityEventFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
-class SecurityEventAggregationFilter(ARObject):
+
+class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventAggregationFilter."""
 
+    context_data: Optional[Any]
+    minimum: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize SecurityEventAggregationFilter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventAggregationFilter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTAGGREGATIONFILTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventAggregationFilter":
-        """Create SecurityEventAggregationFilter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventAggregationFilter instance
-        """
-        obj: SecurityEventAggregationFilter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_data: Optional[Any] = None
+        self.minimum: Optional[TimeValue] = None
 
 
 class SecurityEventAggregationFilterBuilder:

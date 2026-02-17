@@ -1,41 +1,37 @@
-"""TDCpSoftwareClusterMapping AUTOSAR element."""
+"""TDCpSoftwareClusterMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 157)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCpSoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
+    TimingDescription,
+)
 
-class TDCpSoftwareClusterMapping(ARObject):
+
+class TDCpSoftwareClusterMapping(Identifiable):
     """AUTOSAR TDCpSoftwareClusterMapping."""
 
+    provider: Optional[CpSoftwareCluster]
+    requestors: list[CpSoftwareCluster]
+    timing: Optional[TimingDescription]
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDCpSoftwareClusterMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDCPSOFTWARECLUSTERMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterMapping":
-        """Create TDCpSoftwareClusterMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDCpSoftwareClusterMapping instance
-        """
-        obj: TDCpSoftwareClusterMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provider: Optional[CpSoftwareCluster] = None
+        self.requestors: list[CpSoftwareCluster] = []
+        self.timing: Optional[TimingDescription] = None
 
 
 class TDCpSoftwareClusterMappingBuilder:

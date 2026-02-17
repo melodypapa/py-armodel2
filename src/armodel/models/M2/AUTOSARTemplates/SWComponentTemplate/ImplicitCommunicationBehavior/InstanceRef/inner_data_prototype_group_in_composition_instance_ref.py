@@ -1,41 +1,35 @@
-"""InnerDataPrototypeGroupInCompositionInstanceRef AUTOSAR element."""
+"""InnerDataPrototypeGroupInCompositionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 954)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ImplicitCommunicationBehavior_InstanceRef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.data_prototype_group import (
+    DataPrototypeGroup,
+)
 
 
 class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerDataPrototypeGroupInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_sws: list[Any]
+    target_data: Optional[DataPrototypeGroup]
     def __init__(self) -> None:
         """Initialize InnerDataPrototypeGroupInCompositionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InnerDataPrototypeGroupInCompositionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INNERDATAPROTOTYPEGROUPINCOMPOSITIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InnerDataPrototypeGroupInCompositionInstanceRef":
-        """Create InnerDataPrototypeGroupInCompositionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InnerDataPrototypeGroupInCompositionInstanceRef instance
-        """
-        obj: InnerDataPrototypeGroupInCompositionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[CompositionSwComponentType] = None
+        self.context_sws: list[Any] = []
+        self.target_data: Optional[DataPrototypeGroup] = None
 
 
 class InnerDataPrototypeGroupInCompositionInstanceRefBuilder:
@@ -43,9 +37,7 @@ class InnerDataPrototypeGroupInCompositionInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: InnerDataPrototypeGroupInCompositionInstanceRef = (
-            InnerDataPrototypeGroupInCompositionInstanceRef()
-        )
+        self._obj: InnerDataPrototypeGroupInCompositionInstanceRef = InnerDataPrototypeGroupInCompositionInstanceRef()
 
     def build(self) -> InnerDataPrototypeGroupInCompositionInstanceRef:
         """Build and return InnerDataPrototypeGroupInCompositionInstanceRef object.

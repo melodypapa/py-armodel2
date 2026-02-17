@@ -1,41 +1,27 @@
-"""FunctionInhibitionNeeds AUTOSAR element."""
+"""FunctionInhibitionNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 237)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 265)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 750)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class FunctionInhibitionNeeds(ARObject):
+
+class FunctionInhibitionNeeds(ServiceNeeds):
     """AUTOSAR FunctionInhibitionNeeds."""
 
     def __init__(self) -> None:
         """Initialize FunctionInhibitionNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FunctionInhibitionNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FUNCTIONINHIBITIONNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FunctionInhibitionNeeds":
-        """Create FunctionInhibitionNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FunctionInhibitionNeeds instance
-        """
-        obj: FunctionInhibitionNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class FunctionInhibitionNeedsBuilder:

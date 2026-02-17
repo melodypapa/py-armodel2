@@ -1,41 +1,32 @@
-"""TDEventVariableDataPrototype AUTOSAR element."""
+"""TDEventVariableDataPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 53)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
+    TDEventVfbPort,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class TDEventVariableDataPrototype(ARObject):
+
+class TDEventVariableDataPrototype(TDEventVfbPort):
     """AUTOSAR TDEventVariableDataPrototype."""
 
+    data_element: Optional[VariableDataPrototype]
+    td_event_variable_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventVariableDataPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTVARIABLEDATAPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventVariableDataPrototype":
-        """Create TDEventVariableDataPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventVariableDataPrototype instance
-        """
-        obj: TDEventVariableDataPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_element: Optional[VariableDataPrototype] = None
+        self.td_event_variable_type: Optional[Any] = None
 
 
 class TDEventVariableDataPrototypeBuilder:

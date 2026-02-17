@@ -1,41 +1,35 @@
-"""SecurityEventContextMapping AUTOSAR element."""
+"""SecurityEventContextMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 32)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_mapping import (
+    IdsMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_instance import (
+    IdsmInstance,
+)
 
-class SecurityEventContextMapping(ARObject):
+
+class SecurityEventContextMapping(IdsMapping):
     """AUTOSAR SecurityEventContextMapping."""
+    """Abstract base class - do not instantiate directly."""
 
+    filter_chain: Optional[Any]
+    idsm_instance: Optional[IdsmInstance]
+    mapped_securities: list[Any]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventContextMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTCONTEXTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventContextMapping":
-        """Create SecurityEventContextMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventContextMapping instance
-        """
-        obj: SecurityEventContextMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.filter_chain: Optional[Any] = None
+        self.idsm_instance: Optional[IdsmInstance] = None
+        self.mapped_securities: list[Any] = []
 
 
 class SecurityEventContextMappingBuilder:

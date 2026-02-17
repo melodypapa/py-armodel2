@@ -1,41 +1,28 @@
-"""LinCommunicationController AUTOSAR element."""
+"""LinCommunicationController AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 93)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
 
 class LinCommunicationController(ARObject):
     """AUTOSAR LinCommunicationController."""
 
+    protocol_version: Optional[String]
     def __init__(self) -> None:
         """Initialize LinCommunicationController."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinCommunicationController to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINCOMMUNICATIONCONTROLLER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinCommunicationController":
-        """Create LinCommunicationController from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinCommunicationController instance
-        """
-        obj: LinCommunicationController = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.protocol_version: Optional[String] = None
 
 
 class LinCommunicationControllerBuilder:

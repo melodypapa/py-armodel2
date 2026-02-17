@@ -1,41 +1,33 @@
-"""BlueprintFormula AUTOSAR element."""
+"""BlueprintFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 163)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintFormula.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
+    EcucDefinitionElement,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import (
+    MultiLanguageVerbatim,
+)
 
 
 class BlueprintFormula(ARObject):
     """AUTOSAR BlueprintFormula."""
 
+    ecuc: EcucDefinitionElement
+    verbatim: MultiLanguageVerbatim
     def __init__(self) -> None:
         """Initialize BlueprintFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BlueprintFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BLUEPRINTFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BlueprintFormula":
-        """Create BlueprintFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BlueprintFormula instance
-        """
-        obj: BlueprintFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecuc: EcucDefinitionElement = None
+        self.verbatim: MultiLanguageVerbatim = None
 
 
 class BlueprintFormulaBuilder:

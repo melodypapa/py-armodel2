@@ -1,41 +1,35 @@
-"""BswTriggerDirectImplementation AUTOSAR element."""
+"""BswTriggerDirectImplementation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
 
 class BswTriggerDirectImplementation(ARObject):
     """AUTOSAR BswTriggerDirectImplementation."""
 
+    cat2_isr: Optional[Identifier]
+    mastered_trigger: Optional[Trigger]
+    task: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize BswTriggerDirectImplementation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswTriggerDirectImplementation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWTRIGGERDIRECTIMPLEMENTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswTriggerDirectImplementation":
-        """Create BswTriggerDirectImplementation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswTriggerDirectImplementation instance
-        """
-        obj: BswTriggerDirectImplementation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cat2_isr: Optional[Identifier] = None
+        self.mastered_trigger: Optional[Trigger] = None
+        self.task: Optional[Identifier] = None
 
 
 class BswTriggerDirectImplementationBuilder:

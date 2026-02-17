@@ -1,41 +1,27 @@
-"""TDEventSwcInternalBehaviorReference AUTOSAR element."""
+"""TDEventSwcInternalBehaviorReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 63)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_swc import (
+    TDEventSwc,
+)
 
-class TDEventSwcInternalBehaviorReference(ARObject):
+
+class TDEventSwcInternalBehaviorReference(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehaviorReference."""
 
+    referenced_td_event_swc: Optional[TDEventSwc]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehaviorReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventSwcInternalBehaviorReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTSWCINTERNALBEHAVIORREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventSwcInternalBehaviorReference":
-        """Create TDEventSwcInternalBehaviorReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventSwcInternalBehaviorReference instance
-        """
-        obj: TDEventSwcInternalBehaviorReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.referenced_td_event_swc: Optional[TDEventSwc] = None
 
 
 class TDEventSwcInternalBehaviorReferenceBuilder:

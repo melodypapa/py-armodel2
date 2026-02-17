@@ -1,41 +1,43 @@
-"""MixedContentForVerbatim AUTOSAR element."""
+"""MixedContentForVerbatim AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 292)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextModel.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
+    Br,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.emphasis_text import (
+    EmphasisText,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import (
+    Tt,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref import (
+    Xref,
+)
 
 
 class MixedContentForVerbatim(ARObject):
     """AUTOSAR MixedContentForVerbatim."""
 
+    br: Br
+    e: EmphasisText
+    tt: Tt
+    xref: Xref
     def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MixedContentForVerbatim to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MIXEDCONTENTFORVERBATIM")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MixedContentForVerbatim":
-        """Create MixedContentForVerbatim from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MixedContentForVerbatim instance
-        """
-        obj: MixedContentForVerbatim = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.br: Br = None
+        self.e: EmphasisText = None
+        self.tt: Tt = None
+        self.xref: Xref = None
 
 
 class MixedContentForVerbatimBuilder:

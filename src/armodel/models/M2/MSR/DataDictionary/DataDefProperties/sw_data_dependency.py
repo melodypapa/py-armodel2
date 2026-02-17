@@ -1,41 +1,28 @@
-"""SwDataDependency AUTOSAR element."""
+"""SwDataDependency AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 373)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
+    CompuGenericMath,
+)
 
 
 class SwDataDependency(ARObject):
     """AUTOSAR SwDataDependency."""
 
+    sw_data: Optional[CompuGenericMath]
     def __init__(self) -> None:
         """Initialize SwDataDependency."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwDataDependency to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWDATADEPENDENCY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwDataDependency":
-        """Create SwDataDependency from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwDataDependency instance
-        """
-        obj: SwDataDependency = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_data: Optional[CompuGenericMath] = None
 
 
 class SwDataDependencyBuilder:

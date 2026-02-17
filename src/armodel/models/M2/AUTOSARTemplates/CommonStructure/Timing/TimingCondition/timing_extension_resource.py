@@ -1,41 +1,37 @@
-"""TimingExtensionResource AUTOSAR element."""
+"""TimingExtensionResource AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 35)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
+    AutosarOperationArgumentInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_mode_instance import (
+    TimingModeInstance,
+)
 
-class TimingExtensionResource(ARObject):
+
+class TimingExtensionResource(Identifiable):
     """AUTOSAR TimingExtensionResource."""
 
+    timing_arguments: list[AutosarOperationArgumentInstance]
+    timing_modes: list[TimingModeInstance]
+    timing_variables: list[Any]
     def __init__(self) -> None:
         """Initialize TimingExtensionResource."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingExtensionResource to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGEXTENSIONRESOURCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingExtensionResource":
-        """Create TimingExtensionResource from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingExtensionResource instance
-        """
-        obj: TimingExtensionResource = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.timing_arguments: list[AutosarOperationArgumentInstance] = []
+        self.timing_modes: list[TimingModeInstance] = []
+        self.timing_variables: list[Any] = []
 
 
 class TimingExtensionResourceBuilder:

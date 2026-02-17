@@ -1,41 +1,39 @@
-"""NvBlockDataMapping AUTOSAR element."""
+"""NvBlockDataMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 688)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockComponent.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
+    AutosarVariableRef,
+)
 
 
 class NvBlockDataMapping(ARObject):
     """AUTOSAR NvBlockDataMapping."""
 
+    bitfield_text_table: Optional[PositiveInteger]
+    nv_ram_block: Optional[AutosarVariableRef]
+    read_nv_data: Optional[AutosarVariableRef]
+    written_nv_data: Optional[AutosarVariableRef]
+    written_read_nv: Optional[AutosarVariableRef]
     def __init__(self) -> None:
         """Initialize NvBlockDataMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NvBlockDataMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NVBLOCKDATAMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvBlockDataMapping":
-        """Create NvBlockDataMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvBlockDataMapping instance
-        """
-        obj: NvBlockDataMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bitfield_text_table: Optional[PositiveInteger] = None
+        self.nv_ram_block: Optional[AutosarVariableRef] = None
+        self.read_nv_data: Optional[AutosarVariableRef] = None
+        self.written_nv_data: Optional[AutosarVariableRef] = None
+        self.written_read_nv: Optional[AutosarVariableRef] = None
 
 
 class NvBlockDataMappingBuilder:

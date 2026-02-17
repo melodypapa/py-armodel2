@@ -1,41 +1,31 @@
-"""ApplicationDataType AUTOSAR element."""
+"""ApplicationDataType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 299)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 232)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1996)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 34)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 160)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
+    AutosarDataType,
+)
 
-class ApplicationDataType(ARObject):
+
+class ApplicationDataType(AutosarDataType):
     """AUTOSAR ApplicationDataType."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize ApplicationDataType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationDataType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONDATATYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationDataType":
-        """Create ApplicationDataType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationDataType instance
-        """
-        obj: ApplicationDataType = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ApplicationDataTypeBuilder:

@@ -1,41 +1,42 @@
-"""TDEventFrameEthernet AUTOSAR element."""
+"""TDEventFrameEthernet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 69)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
+    TDEventCom,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.static_socket_connection import (
+    StaticSocketConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_header_id_range import (
+    TDHeaderIdRange,
+)
 
-class TDEventFrameEthernet(ARObject):
+
+class TDEventFrameEthernet(TDEventCom):
     """AUTOSAR TDEventFrameEthernet."""
 
+    static_socket: Optional[StaticSocketConnection]
+    td_event_type: Optional[TDEventFrameEthernet]
+    td_header_id_filters: list[TDHeaderIdRange]
+    td_pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize TDEventFrameEthernet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventFrameEthernet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTFRAMEETHERNET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventFrameEthernet":
-        """Create TDEventFrameEthernet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventFrameEthernet instance
-        """
-        obj: TDEventFrameEthernet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.static_socket: Optional[StaticSocketConnection] = None
+        self.td_event_type: Optional[TDEventFrameEthernet] = None
+        self.td_header_id_filters: list[TDHeaderIdRange] = []
+        self.td_pdu_triggerings: list[PduTriggering] = []
 
 
 class TDEventFrameEthernetBuilder:

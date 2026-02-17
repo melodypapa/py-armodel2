@@ -1,41 +1,48 @@
-"""LinSlave AUTOSAR element."""
+"""LinSlave AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 97)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+    PositiveInteger,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_error_response import (
+    LinErrorResponse,
+)
 
 
 class LinSlave(ARObject):
     """AUTOSAR LinSlave."""
 
+    assign_nad: Optional[Boolean]
+    configured_nad: Optional[Integer]
+    function_id: Optional[PositiveInteger]
+    initial_nad: Optional[Integer]
+    lin_error_response: Optional[LinErrorResponse]
+    nas_timeout: Optional[TimeValue]
+    supplier_id: Optional[PositiveInteger]
+    variant_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinSlave."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinSlave to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINSLAVE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinSlave":
-        """Create LinSlave from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinSlave instance
-        """
-        obj: LinSlave = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.assign_nad: Optional[Boolean] = None
+        self.configured_nad: Optional[Integer] = None
+        self.function_id: Optional[PositiveInteger] = None
+        self.initial_nad: Optional[Integer] = None
+        self.lin_error_response: Optional[LinErrorResponse] = None
+        self.nas_timeout: Optional[TimeValue] = None
+        self.supplier_id: Optional[PositiveInteger] = None
+        self.variant_id: Optional[PositiveInteger] = None
 
 
 class LinSlaveBuilder:

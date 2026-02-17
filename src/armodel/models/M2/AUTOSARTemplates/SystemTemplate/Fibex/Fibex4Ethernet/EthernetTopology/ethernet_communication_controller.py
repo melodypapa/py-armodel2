@@ -1,41 +1,49 @@
-"""EthernetCommunicationController AUTOSAR element."""
+"""EthernetCommunicationController AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 115)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
+    EthernetMacLayerTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+    MacAddressString,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port import (
+    CouplingPort,
+)
 
 
 class EthernetCommunicationController(ARObject):
     """AUTOSAR EthernetCommunicationController."""
 
+    can_xl_config: Optional[Any]
+    coupling_ports: list[CouplingPort]
+    mac_layer_type: Optional[EthernetMacLayerTypeEnum]
+    mac_unicast: Optional[MacAddressString]
+    maximum: Optional[Integer]
+    slave_act_as: Optional[Boolean]
+    slave_qualified: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize EthernetCommunicationController."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EthernetCommunicationController to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ETHERNETCOMMUNICATIONCONTROLLER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthernetCommunicationController":
-        """Create EthernetCommunicationController from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthernetCommunicationController instance
-        """
-        obj: EthernetCommunicationController = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.can_xl_config: Optional[Any] = None
+        self.coupling_ports: list[CouplingPort] = []
+        self.mac_layer_type: Optional[EthernetMacLayerTypeEnum] = None
+        self.mac_unicast: Optional[MacAddressString] = None
+        self.maximum: Optional[Integer] = None
+        self.slave_act_as: Optional[Boolean] = None
+        self.slave_qualified: Optional[TimeValue] = None
 
 
 class EthernetCommunicationControllerBuilder:

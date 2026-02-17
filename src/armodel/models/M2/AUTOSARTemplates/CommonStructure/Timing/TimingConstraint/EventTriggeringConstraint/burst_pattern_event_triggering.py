@@ -1,41 +1,43 @@
-"""BurstPatternEventTriggering AUTOSAR element."""
+"""BurstPatternEventTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 109)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
+    EventTriggeringConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class BurstPatternEventTriggering(ARObject):
+
+class BurstPatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR BurstPatternEventTriggering."""
 
+    max_number_of: Optional[PositiveInteger]
+    minimum_inter: Optional[MultidimensionalTime]
+    min_number_of: Optional[PositiveInteger]
+    pattern_jitter: Optional[MultidimensionalTime]
+    pattern_length: Optional[MultidimensionalTime]
+    pattern_period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize BurstPatternEventTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BurstPatternEventTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BURSTPATTERNEVENTTRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BurstPatternEventTriggering":
-        """Create BurstPatternEventTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BurstPatternEventTriggering instance
-        """
-        obj: BurstPatternEventTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_number_of: Optional[PositiveInteger] = None
+        self.minimum_inter: Optional[MultidimensionalTime] = None
+        self.min_number_of: Optional[PositiveInteger] = None
+        self.pattern_jitter: Optional[MultidimensionalTime] = None
+        self.pattern_length: Optional[MultidimensionalTime] = None
+        self.pattern_period: Optional[MultidimensionalTime] = None
 
 
 class BurstPatternEventTriggeringBuilder:

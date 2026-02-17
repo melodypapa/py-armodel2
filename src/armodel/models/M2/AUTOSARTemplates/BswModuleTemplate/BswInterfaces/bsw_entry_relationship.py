@@ -1,41 +1,33 @@
-"""BswEntryRelationship AUTOSAR element."""
+"""BswEntryRelationship AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 51)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 52)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
+)
 
 
 class BswEntryRelationship(ARObject):
     """AUTOSAR BswEntryRelationship."""
 
+    bsw_entry: Optional[BswEntryRelationship]
+    from_: Optional[BswModuleEntry]
+    to: Optional[BswModuleEntry]
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswEntryRelationship to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWENTRYRELATIONSHIP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswEntryRelationship":
-        """Create BswEntryRelationship from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswEntryRelationship instance
-        """
-        obj: BswEntryRelationship = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bsw_entry: Optional[BswEntryRelationship] = None
+        self.from_: Optional[BswModuleEntry] = None
+        self.to: Optional[BswModuleEntry] = None
 
 
 class BswEntryRelationshipBuilder:

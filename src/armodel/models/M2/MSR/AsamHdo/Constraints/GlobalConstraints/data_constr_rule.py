@@ -1,41 +1,39 @@
-"""DataConstrRule AUTOSAR element."""
+"""DataConstrRule AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 405)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 45)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Constraints_GlobalConstraints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.internal_constrs import (
+    InternalConstrs,
+)
+from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.phys_constrs import (
+    PhysConstrs,
+)
 
 
 class DataConstrRule(ARObject):
     """AUTOSAR DataConstrRule."""
 
+    constr_level: Optional[Integer]
+    internal_constrs: Optional[InternalConstrs]
+    phys_constrs: Optional[PhysConstrs]
     def __init__(self) -> None:
         """Initialize DataConstrRule."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataConstrRule to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATACONSTRRULE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataConstrRule":
-        """Create DataConstrRule from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataConstrRule instance
-        """
-        obj: DataConstrRule = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.constr_level: Optional[Integer] = None
+        self.internal_constrs: Optional[InternalConstrs] = None
+        self.phys_constrs: Optional[PhysConstrs] = None
 
 
 class DataConstrRuleBuilder:

@@ -1,41 +1,31 @@
-"""ApplicationError AUTOSAR element."""
+"""ApplicationError AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 108)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1996)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
-class ApplicationError(ARObject):
+
+class ApplicationError(Identifiable):
     """AUTOSAR ApplicationError."""
 
+    error_code: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ApplicationError."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationError to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONERROR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationError":
-        """Create ApplicationError from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationError instance
-        """
-        obj: ApplicationError = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.error_code: Optional[Integer] = None
 
 
 class ApplicationErrorBuilder:

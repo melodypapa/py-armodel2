@@ -1,41 +1,31 @@
-"""EndToEndProtectionSet AUTOSAR element."""
+"""EndToEndProtectionSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 214)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 383)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_EndToEndProtection.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.EndToEndProtection.end_to_end_protection import (
+    EndToEndProtection,
+)
 
-class EndToEndProtectionSet(ARObject):
+
+class EndToEndProtectionSet(ARElement):
     """AUTOSAR EndToEndProtectionSet."""
 
+    end_to_ends: list[EndToEndProtection]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EndToEndProtectionSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ENDTOENDPROTECTIONSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EndToEndProtectionSet":
-        """Create EndToEndProtectionSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EndToEndProtectionSet instance
-        """
-        obj: EndToEndProtectionSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.end_to_ends: list[EndToEndProtection] = []
 
 
 class EndToEndProtectionSetBuilder:

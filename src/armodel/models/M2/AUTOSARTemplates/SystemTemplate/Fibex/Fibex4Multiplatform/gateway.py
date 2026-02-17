@@ -1,41 +1,45 @@
-"""Gateway AUTOSAR element."""
+"""Gateway AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 837)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Multiplatform.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.frame_mapping import (
+    FrameMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.i_pdu_mapping import (
+    IPduMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.i_signal_mapping import (
+    ISignalMapping,
+)
 
-class Gateway(ARObject):
+
+class Gateway(FibexElement):
     """AUTOSAR Gateway."""
 
+    ecu: Optional[EcuInstance]
+    frame_mappings: list[FrameMapping]
+    i_pdu_mappings: list[IPduMapping]
+    signal_mappings: list[ISignalMapping]
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Gateway to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GATEWAY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Gateway":
-        """Create Gateway from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Gateway instance
-        """
-        obj: Gateway = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecu: Optional[EcuInstance] = None
+        self.frame_mappings: list[FrameMapping] = []
+        self.i_pdu_mappings: list[IPduMapping] = []
+        self.signal_mappings: list[ISignalMapping] = []
 
 
 class GatewayBuilder:

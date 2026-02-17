@@ -1,41 +1,33 @@
-"""Keyword AUTOSAR element."""
+"""Keyword AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 454)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 194)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_Keyword.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+)
 
-class Keyword(ARObject):
+
+class Keyword(Identifiable):
     """AUTOSAR Keyword."""
 
+    abbr_name: NameToken
+    classifications: list[NameToken]
     def __init__(self) -> None:
         """Initialize Keyword."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Keyword to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("KEYWORD")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Keyword":
-        """Create Keyword from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Keyword instance
-        """
-        obj: Keyword = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.abbr_name: NameToken = None
+        self.classifications: list[NameToken] = []
 
 
 class KeywordBuilder:

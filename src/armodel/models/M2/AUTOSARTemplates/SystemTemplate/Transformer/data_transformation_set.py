@@ -1,41 +1,35 @@
-"""DataTransformationSet AUTOSAR element."""
+"""DataTransformationSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 762)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
+    DataTransformation,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_technology import (
+    TransformationTechnology,
+)
 
-class DataTransformationSet(ARObject):
+
+class DataTransformationSet(ARElement):
     """AUTOSAR DataTransformationSet."""
 
+    datas: list[DataTransformation]
+    transformation_technologies: list[TransformationTechnology]
     def __init__(self) -> None:
         """Initialize DataTransformationSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataTransformationSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATATRANSFORMATIONSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataTransformationSet":
-        """Create DataTransformationSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataTransformationSet instance
-        """
-        obj: DataTransformationSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.datas: list[DataTransformation] = []
+        self.transformation_technologies: list[TransformationTechnology] = []
 
 
 class DataTransformationSetBuilder:

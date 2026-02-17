@@ -1,41 +1,38 @@
-"""SwComponentPrototype AUTOSAR element."""
+"""SwComponentPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 330)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 307)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 77)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 896)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 245)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 21)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 79)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 466)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 210)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
 
-class SwComponentPrototype(ARObject):
+
+class SwComponentPrototype(Identifiable):
     """AUTOSAR SwComponentPrototype."""
 
+    type: Optional[SwComponentType]
     def __init__(self) -> None:
         """Initialize SwComponentPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwComponentPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCOMPONENTPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwComponentPrototype":
-        """Create SwComponentPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwComponentPrototype instance
-        """
-        obj: SwComponentPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.type: Optional[SwComponentType] = None
 
 
 class SwComponentPrototypeBuilder:

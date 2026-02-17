@@ -1,41 +1,30 @@
-"""SecureOnBoardCommunicationNeeds AUTOSAR element."""
+"""SecureOnBoardCommunicationNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 824)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    VerificationStatusIndicationModeEnum,
+)
 
-class SecureOnBoardCommunicationNeeds(ARObject):
+
+class SecureOnBoardCommunicationNeeds(ServiceNeeds):
     """AUTOSAR SecureOnBoardCommunicationNeeds."""
 
+    verification: Optional[VerificationStatusIndicationModeEnum]
     def __init__(self) -> None:
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecureOnBoardCommunicationNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECUREONBOARDCOMMUNICATIONNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecureOnBoardCommunicationNeeds":
-        """Create SecureOnBoardCommunicationNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecureOnBoardCommunicationNeeds instance
-        """
-        obj: SecureOnBoardCommunicationNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.verification: Optional[VerificationStatusIndicationModeEnum] = None
 
 
 class SecureOnBoardCommunicationNeedsBuilder:

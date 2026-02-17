@@ -1,41 +1,53 @@
-"""TransformationTechnology AUTOSAR element."""
+"""TransformationTechnology AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 198)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 764)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
+    TransformerClassEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.buffer_properties import (
+    BufferProperties,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import (
+    TransformationDescription,
+)
 
-class TransformationTechnology(ARObject):
+
+class TransformationTechnology(Identifiable):
     """AUTOSAR TransformationTechnology."""
 
+    buffer_properties: Optional[BufferProperties]
+    has_internal: Optional[Boolean]
+    needs_original: Optional[Boolean]
+    protocol: Optional[String]
+    transformation_description: Optional[TransformationDescription]
+    transformer: Optional[TransformerClassEnum]
+    version: Optional[String]
     def __init__(self) -> None:
         """Initialize TransformationTechnology."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TransformationTechnology to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRANSFORMATIONTECHNOLOGY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransformationTechnology":
-        """Create TransformationTechnology from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransformationTechnology instance
-        """
-        obj: TransformationTechnology = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.buffer_properties: Optional[BufferProperties] = None
+        self.has_internal: Optional[Boolean] = None
+        self.needs_original: Optional[Boolean] = None
+        self.protocol: Optional[String] = None
+        self.transformation_description: Optional[TransformationDescription] = None
+        self.transformer: Optional[TransformerClassEnum] = None
+        self.version: Optional[String] = None
 
 
 class TransformationTechnologyBuilder:

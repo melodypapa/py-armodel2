@@ -1,41 +1,29 @@
-"""ApplicationSwComponentType AUTOSAR element."""
+"""ApplicationSwComponentType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 231)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 71)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1998)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 205)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 423)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
 
-class ApplicationSwComponentType(ARObject):
+
+class ApplicationSwComponentType(AtomicSwComponentType):
     """AUTOSAR ApplicationSwComponentType."""
 
     def __init__(self) -> None:
         """Initialize ApplicationSwComponentType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationSwComponentType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONSWCOMPONENTTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationSwComponentType":
-        """Create ApplicationSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationSwComponentType instance
-        """
-        obj: ApplicationSwComponentType = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ApplicationSwComponentTypeBuilder:

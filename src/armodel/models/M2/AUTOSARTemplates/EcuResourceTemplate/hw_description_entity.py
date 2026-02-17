@@ -1,41 +1,42 @@
-"""HwDescriptionEntity AUTOSAR element."""
+"""HwDescriptionEntity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 15)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 990)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_attribute_value import (
+    HwAttributeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_category import (
+    HwCategory,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_type import (
+    HwType,
+)
 
-class HwDescriptionEntity(ARObject):
+
+class HwDescriptionEntity(Referrable):
     """AUTOSAR HwDescriptionEntity."""
+    """Abstract base class - do not instantiate directly."""
 
+    hw_attributes: list[HwAttributeValue]
+    hw_categories: list[HwCategory]
+    hw_type: Optional[HwType]
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwDescriptionEntity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWDESCRIPTIONENTITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwDescriptionEntity":
-        """Create HwDescriptionEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwDescriptionEntity instance
-        """
-        obj: HwDescriptionEntity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.hw_attributes: list[HwAttributeValue] = []
+        self.hw_categories: list[HwCategory] = []
+        self.hw_type: Optional[HwType] = None
 
 
 class HwDescriptionEntityBuilder:

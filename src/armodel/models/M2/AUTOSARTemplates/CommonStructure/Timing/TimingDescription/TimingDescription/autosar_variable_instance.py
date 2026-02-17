@@ -1,41 +1,30 @@
-"""AutosarVariableInstance AUTOSAR element."""
+"""AutosarVariableInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 85)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
 
-class AutosarVariableInstance(ARObject):
+
+class AutosarVariableInstance(Identifiable):
     """AUTOSAR AutosarVariableInstance."""
 
+    variable_instance_instance_ref: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarVariableInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AutosarVariableInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("AUTOSARVARIABLEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AutosarVariableInstance":
-        """Create AutosarVariableInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AutosarVariableInstance instance
-        """
-        obj: AutosarVariableInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.variable_instance_instance_ref: Optional[DataPrototype] = None
 
 
 class AutosarVariableInstanceBuilder:

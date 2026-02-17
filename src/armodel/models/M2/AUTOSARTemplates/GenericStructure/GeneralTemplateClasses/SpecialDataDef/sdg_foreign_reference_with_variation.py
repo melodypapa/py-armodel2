@@ -1,41 +1,25 @@
-"""SdgForeignReferenceWithVariation AUTOSAR element."""
+"""SdgForeignReferenceWithVariation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_abstract_foreign_reference import (
+    SdgAbstractForeignReference,
+)
 
-class SdgForeignReferenceWithVariation(ARObject):
+
+class SdgForeignReferenceWithVariation(SdgAbstractForeignReference):
     """AUTOSAR SdgForeignReferenceWithVariation."""
 
     def __init__(self) -> None:
         """Initialize SdgForeignReferenceWithVariation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgForeignReferenceWithVariation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGFOREIGNREFERENCEWITHVARIATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgForeignReferenceWithVariation":
-        """Create SdgForeignReferenceWithVariation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgForeignReferenceWithVariation instance
-        """
-        obj: SdgForeignReferenceWithVariation = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class SdgForeignReferenceWithVariationBuilder:

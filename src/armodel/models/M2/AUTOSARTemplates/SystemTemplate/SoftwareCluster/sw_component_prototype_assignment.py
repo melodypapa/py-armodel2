@@ -1,41 +1,25 @@
-"""SwComponentPrototypeAssignment AUTOSAR element."""
+"""SwComponentPrototypeAssignment AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 894)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SwComponentPrototypeAssignment(ARObject):
     """AUTOSAR SwComponentPrototypeAssignment."""
 
+    sw_component: Optional[Any]
     def __init__(self) -> None:
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwComponentPrototypeAssignment to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCOMPONENTPROTOTYPEASSIGNMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwComponentPrototypeAssignment":
-        """Create SwComponentPrototypeAssignment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwComponentPrototypeAssignment instance
-        """
-        obj: SwComponentPrototypeAssignment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_component: Optional[Any] = None
 
 
 class SwComponentPrototypeAssignmentBuilder:

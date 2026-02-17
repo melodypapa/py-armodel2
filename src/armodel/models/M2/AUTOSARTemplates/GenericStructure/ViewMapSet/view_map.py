@@ -1,41 +1,38 @@
-"""ViewMap AUTOSAR element."""
+"""ViewMap AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2079)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 401)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_ViewMapSet.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
+    AtpFeature,
+)
 
-class ViewMap(ARObject):
+
+class ViewMap(Identifiable):
     """AUTOSAR ViewMap."""
 
+    first_elements: list[AtpFeature]
+    role: Optional[Identifier]
+    second_elements: list[AtpFeature]
     def __init__(self) -> None:
         """Initialize ViewMap."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ViewMap to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VIEWMAP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ViewMap":
-        """Create ViewMap from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ViewMap instance
-        """
-        obj: ViewMap = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_elements: list[AtpFeature] = []
+        self.role: Optional[Identifier] = None
+        self.second_elements: list[AtpFeature] = []
 
 
 class ViewMapBuilder:

@@ -1,41 +1,36 @@
-"""DltEcu AUTOSAR element."""
+"""DltEcu AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2018)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 8)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_application import (
+    DltApplication,
+)
 
-class DltEcu(ARObject):
+
+class DltEcu(ARElement):
     """AUTOSAR DltEcu."""
 
+    applications: list[DltApplication]
+    ecu_id: Optional[String]
     def __init__(self) -> None:
         """Initialize DltEcu."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltEcu to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTECU")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltEcu":
-        """Create DltEcu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltEcu instance
-        """
-        obj: DltEcu = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.applications: list[DltApplication] = []
+        self.ecu_id: Optional[String] = None
 
 
 class DltEcuBuilder:

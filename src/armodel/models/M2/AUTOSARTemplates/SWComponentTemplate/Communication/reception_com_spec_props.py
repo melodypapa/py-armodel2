@@ -1,41 +1,30 @@
-"""ReceptionComSpecProps AUTOSAR element."""
+"""ReceptionComSpecProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
 
 class ReceptionComSpecProps(ARObject):
     """AUTOSAR ReceptionComSpecProps."""
 
+    data_update: Optional[TimeValue]
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize ReceptionComSpecProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ReceptionComSpecProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RECEPTIONCOMSPECPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ReceptionComSpecProps":
-        """Create ReceptionComSpecProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ReceptionComSpecProps instance
-        """
-        obj: ReceptionComSpecProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_update: Optional[TimeValue] = None
+        self.timeout: Optional[TimeValue] = None
 
 
 class ReceptionComSpecPropsBuilder:

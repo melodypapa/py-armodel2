@@ -1,41 +1,52 @@
-"""DataPrototypeInSystemInstanceRef AUTOSAR element."""
+"""DataPrototypeInSystemInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 368)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
+    RootSwCompositionPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
 
 class DataPrototypeInSystemInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInSystemInstanceRef."""
 
+    base: Optional[System]
+    contexts: list[Any]
+    context_datas: list[Any]
+    context_port: Optional[PortPrototype]
+    context_root: Optional[RootSwCompositionPrototype]
+    root_data_prototype: Optional[AutosarDataPrototype]
+    target_data: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataPrototypeInSystemInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAPROTOTYPEINSYSTEMINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSystemInstanceRef":
-        """Create DataPrototypeInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeInSystemInstanceRef instance
-        """
-        obj: DataPrototypeInSystemInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[System] = None
+        self.contexts: list[Any] = []
+        self.context_datas: list[Any] = []
+        self.context_port: Optional[PortPrototype] = None
+        self.context_root: Optional[RootSwCompositionPrototype] = None
+        self.root_data_prototype: Optional[AutosarDataPrototype] = None
+        self.target_data: Optional[DataPrototype] = None
 
 
 class DataPrototypeInSystemInstanceRefBuilder:

@@ -1,41 +1,27 @@
-"""NumericalRuleBasedValueSpecification AUTOSAR element."""
+"""NumericalRuleBasedValueSpecification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 467)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
+    AbstractRuleBasedValueSpecification,
+)
 
-class NumericalRuleBasedValueSpecification(ARObject):
+
+class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     """AUTOSAR NumericalRuleBasedValueSpecification."""
 
+    rule_based: Optional[Any]
     def __init__(self) -> None:
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NumericalRuleBasedValueSpecification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NUMERICALRULEBASEDVALUESPECIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NumericalRuleBasedValueSpecification":
-        """Create NumericalRuleBasedValueSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NumericalRuleBasedValueSpecification instance
-        """
-        obj: NumericalRuleBasedValueSpecification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rule_based: Optional[Any] = None
 
 
 class NumericalRuleBasedValueSpecificationBuilder:

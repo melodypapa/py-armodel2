@@ -1,41 +1,35 @@
-"""BulkNvDataDescriptor AUTOSAR element."""
+"""BulkNvDataDescriptor AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 692)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockComponent.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.nv_block_data_mapping import (
+    NvBlockDataMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class BulkNvDataDescriptor(ARObject):
+
+class BulkNvDataDescriptor(Identifiable):
     """AUTOSAR BulkNvDataDescriptor."""
 
+    bulk_nv_block: Optional[VariableDataPrototype]
+    nv_block_datas: list[NvBlockDataMapping]
     def __init__(self) -> None:
         """Initialize BulkNvDataDescriptor."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BulkNvDataDescriptor to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BULKNVDATADESCRIPTOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BulkNvDataDescriptor":
-        """Create BulkNvDataDescriptor from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BulkNvDataDescriptor instance
-        """
-        obj: BulkNvDataDescriptor = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bulk_nv_block: Optional[VariableDataPrototype] = None
+        self.nv_block_datas: list[NvBlockDataMapping] = []
 
 
 class BulkNvDataDescriptorBuilder:

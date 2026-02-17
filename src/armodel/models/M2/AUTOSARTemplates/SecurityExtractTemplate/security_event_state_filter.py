@@ -1,41 +1,30 @@
-"""SecurityEventStateFilter AUTOSAR element."""
+"""SecurityEventStateFilter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 22)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
+    AbstractSecurityEventFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.block_state import (
+    BlockState,
+)
 
-class SecurityEventStateFilter(ARObject):
+
+class SecurityEventStateFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventStateFilter."""
 
+    block_if_states: list[BlockState]
     def __init__(self) -> None:
         """Initialize SecurityEventStateFilter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventStateFilter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTSTATEFILTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventStateFilter":
-        """Create SecurityEventStateFilter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventStateFilter instance
-        """
-        obj: SecurityEventStateFilter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.block_if_states: list[BlockState] = []
 
 
 class SecurityEventStateFilterBuilder:

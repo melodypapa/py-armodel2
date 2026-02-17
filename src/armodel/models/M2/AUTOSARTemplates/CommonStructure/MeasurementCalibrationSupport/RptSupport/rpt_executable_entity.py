@@ -1,41 +1,39 @@
-"""RptExecutableEntity AUTOSAR element."""
+"""RptExecutableEntity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 200)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CIdentifier,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
+    RoleBasedMcDataAssignment,
+)
 
-class RptExecutableEntity(ARObject):
+
+class RptExecutableEntity(Identifiable):
     """AUTOSAR RptExecutableEntity."""
 
+    rpt_executable_entities: list[RptExecutableEntity]
+    rpt_reads: list[RoleBasedMcDataAssignment]
+    rpt_writes: list[RoleBasedMcDataAssignment]
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RptExecutableEntity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RptExecutableEntity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPTEXECUTABLEENTITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RptExecutableEntity":
-        """Create RptExecutableEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RptExecutableEntity instance
-        """
-        obj: RptExecutableEntity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rpt_executable_entities: list[RptExecutableEntity] = []
+        self.rpt_reads: list[RoleBasedMcDataAssignment] = []
+        self.rpt_writes: list[RoleBasedMcDataAssignment] = []
+        self.symbol: Optional[CIdentifier] = None
 
 
 class RptExecutableEntityBuilder:

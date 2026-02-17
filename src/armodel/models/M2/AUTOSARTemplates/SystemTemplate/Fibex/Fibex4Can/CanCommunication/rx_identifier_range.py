@@ -1,41 +1,30 @@
-"""RxIdentifierRange AUTOSAR element."""
+"""RxIdentifierRange AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 444)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class RxIdentifierRange(ARObject):
     """AUTOSAR RxIdentifierRange."""
 
+    lower_can_id: Optional[PositiveInteger]
+    upper_can_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RxIdentifierRange."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RxIdentifierRange to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RXIDENTIFIERRANGE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RxIdentifierRange":
-        """Create RxIdentifierRange from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RxIdentifierRange instance
-        """
-        obj: RxIdentifierRange = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.lower_can_id: Optional[PositiveInteger] = None
+        self.upper_can_id: Optional[PositiveInteger] = None
 
 
 class RxIdentifierRangeBuilder:

@@ -1,41 +1,35 @@
-"""EvaluatedVariantSet AUTOSAR element."""
+"""EvaluatedVariantSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 257)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.predefined_variant import (
+    PredefinedVariant,
+)
 
-class EvaluatedVariantSet(ARObject):
+
+class EvaluatedVariantSet(ARElement):
     """AUTOSAR EvaluatedVariantSet."""
 
+    approval_status: NameToken
+    evaluateds: list[PredefinedVariant]
     def __init__(self) -> None:
         """Initialize EvaluatedVariantSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EvaluatedVariantSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EVALUATEDVARIANTSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EvaluatedVariantSet":
-        """Create EvaluatedVariantSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EvaluatedVariantSet instance
-        """
-        obj: EvaluatedVariantSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.approval_status: NameToken = None
+        self.evaluateds: list[PredefinedVariant] = []
 
 
 class EvaluatedVariantSetBuilder:

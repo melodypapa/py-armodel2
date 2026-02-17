@@ -1,41 +1,64 @@
-"""DiagnosticTroubleCodeProps AUTOSAR element."""
+"""DiagnosticTroubleCodeProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 185)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticTroubleCode.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode import (
+    DiagnosticSignificanceEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticAging.diagnostic_aging import (
+    DiagnosticAging,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_identifier import (
+    DiagnosticDataIdentifier,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticExtendedDataRecord.diagnostic_extended_data_record import (
+    DiagnosticExtendedDataRecord,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticFreezeFrame.diagnostic_freeze_frame import (
+    DiagnosticFreezeFrame,
+)
 
-class DiagnosticTroubleCodeProps(ARObject):
+
+class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCodeProps."""
 
+    aging: Optional[DiagnosticAging]
+    diagnostic_memory: Optional[Any]
+    extended_datas: list[DiagnosticExtendedDataRecord]
+    freeze_frames: list[DiagnosticFreezeFrame]
+    immediate_nv: Optional[Boolean]
+    legislated: Optional[DiagnosticDataIdentifier]
+    max_number: Optional[PositiveInteger]
+    priority: Optional[PositiveInteger]
+    significance: Optional[DiagnosticSignificanceEnum]
+    snapshot: Optional[DiagnosticDataIdentifier]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticTroubleCodeProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICTROUBLECODEPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeProps":
-        """Create DiagnosticTroubleCodeProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTroubleCodeProps instance
-        """
-        obj: DiagnosticTroubleCodeProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.aging: Optional[DiagnosticAging] = None
+        self.diagnostic_memory: Optional[Any] = None
+        self.extended_datas: list[DiagnosticExtendedDataRecord] = []
+        self.freeze_frames: list[DiagnosticFreezeFrame] = []
+        self.immediate_nv: Optional[Boolean] = None
+        self.legislated: Optional[DiagnosticDataIdentifier] = None
+        self.max_number: Optional[PositiveInteger] = None
+        self.priority: Optional[PositiveInteger] = None
+        self.significance: Optional[DiagnosticSignificanceEnum] = None
+        self.snapshot: Optional[DiagnosticDataIdentifier] = None
 
 
 class DiagnosticTroubleCodePropsBuilder:

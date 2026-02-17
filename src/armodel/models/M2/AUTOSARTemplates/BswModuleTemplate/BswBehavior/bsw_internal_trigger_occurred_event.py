@@ -1,41 +1,30 @@
-"""BswInternalTriggerOccurredEvent AUTOSAR element."""
+"""BswInternalTriggerOccurredEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 91)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
+    BswScheduleEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
+    BswInternalTriggeringPoint,
+)
 
-class BswInternalTriggerOccurredEvent(ARObject):
+
+class BswInternalTriggerOccurredEvent(BswScheduleEvent):
     """AUTOSAR BswInternalTriggerOccurredEvent."""
 
+    event_source_point: Optional[BswInternalTriggeringPoint]
     def __init__(self) -> None:
         """Initialize BswInternalTriggerOccurredEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswInternalTriggerOccurredEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWINTERNALTRIGGEROCCURREDEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswInternalTriggerOccurredEvent":
-        """Create BswInternalTriggerOccurredEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswInternalTriggerOccurredEvent instance
-        """
-        obj: BswInternalTriggerOccurredEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_source_point: Optional[BswInternalTriggeringPoint] = None
 
 
 class BswInternalTriggerOccurredEventBuilder:

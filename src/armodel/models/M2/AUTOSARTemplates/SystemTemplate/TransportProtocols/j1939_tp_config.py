@@ -1,41 +1,40 @@
-"""J1939TpConfig AUTOSAR element."""
+"""J1939TpConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 623)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.j1939_tp_connection import (
+    J1939TpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.j1939_tp_node import (
+    J1939TpNode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_address import (
+    TpAddress,
+)
 
-class J1939TpConfig(ARObject):
+
+class J1939TpConfig(TpConfig):
     """AUTOSAR J1939TpConfig."""
 
+    tp_addresses: list[TpAddress]
+    tp_connections: list[J1939TpConnection]
+    tp_nodes: list[J1939TpNode]
     def __init__(self) -> None:
         """Initialize J1939TpConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939TpConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939TPCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939TpConfig":
-        """Create J1939TpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939TpConfig instance
-        """
-        obj: J1939TpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_addresses: list[TpAddress] = []
+        self.tp_connections: list[J1939TpConnection] = []
+        self.tp_nodes: list[J1939TpNode] = []
 
 
 class J1939TpConfigBuilder:

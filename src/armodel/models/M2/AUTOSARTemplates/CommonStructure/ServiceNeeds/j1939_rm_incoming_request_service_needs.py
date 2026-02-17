@@ -1,41 +1,25 @@
-"""J1939RmIncomingRequestServiceNeeds AUTOSAR element."""
+"""J1939RmIncomingRequestServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 829)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class J1939RmIncomingRequestServiceNeeds(ARObject):
+
+class J1939RmIncomingRequestServiceNeeds(ServiceNeeds):
     """AUTOSAR J1939RmIncomingRequestServiceNeeds."""
 
     def __init__(self) -> None:
         """Initialize J1939RmIncomingRequestServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939RmIncomingRequestServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939RMINCOMINGREQUESTSERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939RmIncomingRequestServiceNeeds":
-        """Create J1939RmIncomingRequestServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939RmIncomingRequestServiceNeeds instance
-        """
-        obj: J1939RmIncomingRequestServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class J1939RmIncomingRequestServiceNeedsBuilder:

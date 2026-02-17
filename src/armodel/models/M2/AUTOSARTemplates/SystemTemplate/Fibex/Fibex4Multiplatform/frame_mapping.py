@@ -1,41 +1,35 @@
-"""FrameMapping AUTOSAR element."""
+"""FrameMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 838)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Multiplatform.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
 
 
 class FrameMapping(ARObject):
     """AUTOSAR FrameMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    source_frame: Optional[FrameTriggering]
+    target_frame: Optional[FrameTriggering]
     def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FrameMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FRAMEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FrameMapping":
-        """Create FrameMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FrameMapping instance
-        """
-        obj: FrameMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.introduction: Optional[DocumentationBlock] = None
+        self.source_frame: Optional[FrameTriggering] = None
+        self.target_frame: Optional[FrameTriggering] = None
 
 
 class FrameMappingBuilder:

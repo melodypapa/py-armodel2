@@ -1,41 +1,45 @@
-"""SynchronizationTimingConstraint AUTOSAR element."""
+"""SynchronizationTimingConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 92)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_SynchronizationTiming.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
+    TimingConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.SynchronizationTiming import (
+    EventOccurrenceKindEnum,
+    SynchronizationTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class SynchronizationTimingConstraint(ARObject):
+
+class SynchronizationTimingConstraint(TimingConstraint):
     """AUTOSAR SynchronizationTimingConstraint."""
 
+    event: Optional[EventOccurrenceKindEnum]
+    scopes: list[TimingDescriptionEvent]
+    scope_events: list[TimingDescriptionEvent]
+    synchronization: Optional[SynchronizationTypeEnum]
+    tolerance: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SynchronizationTimingConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SYNCHRONIZATIONTIMINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SynchronizationTimingConstraint":
-        """Create SynchronizationTimingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SynchronizationTimingConstraint instance
-        """
-        obj: SynchronizationTimingConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event: Optional[EventOccurrenceKindEnum] = None
+        self.scopes: list[TimingDescriptionEvent] = []
+        self.scope_events: list[TimingDescriptionEvent] = []
+        self.synchronization: Optional[SynchronizationTypeEnum] = None
+        self.tolerance: Optional[MultidimensionalTime] = None
 
 
 class SynchronizationTimingConstraintBuilder:

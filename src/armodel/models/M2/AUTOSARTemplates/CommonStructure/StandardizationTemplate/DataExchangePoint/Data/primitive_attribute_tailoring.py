@@ -1,41 +1,37 @@
-"""PrimitiveAttributeTailoring AUTOSAR element."""
+"""PrimitiveAttributeTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 111)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
+    AttributeTailoring,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data import (
+    DefaultValueApplicationStrategyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.value_restriction_with_severity import (
+    ValueRestrictionWithSeverity,
+)
 
-class PrimitiveAttributeTailoring(ARObject):
+
+class PrimitiveAttributeTailoring(AttributeTailoring):
     """AUTOSAR PrimitiveAttributeTailoring."""
 
+    default_value: Optional[DefaultValueApplicationStrategyEnum]
+    sub_attributes: list[Any]
+    value_restriction_with_severity: Optional[ValueRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PrimitiveAttributeTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PRIMITIVEATTRIBUTETAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeTailoring":
-        """Create PrimitiveAttributeTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PrimitiveAttributeTailoring instance
-        """
-        obj: PrimitiveAttributeTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_value: Optional[DefaultValueApplicationStrategyEnum] = None
+        self.sub_attributes: list[Any] = []
+        self.value_restriction_with_severity: Optional[ValueRestrictionWithSeverity] = None
 
 
 class PrimitiveAttributeTailoringBuilder:

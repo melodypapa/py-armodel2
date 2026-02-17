@@ -1,41 +1,30 @@
-"""RtePluginProps AUTOSAR element."""
+"""RtePluginProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 971)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
+    EcucContainerValue,
+)
 
 
 class RtePluginProps(ARObject):
     """AUTOSAR RtePluginProps."""
 
+    associated: Optional[EcucContainerValue]
+    associated_rte: Optional[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize RtePluginProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RtePluginProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTEPLUGINPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RtePluginProps":
-        """Create RtePluginProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RtePluginProps instance
-        """
-        obj: RtePluginProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.associated: Optional[EcucContainerValue] = None
+        self.associated_rte: Optional[EcucContainerValue] = None
 
 
 class RtePluginPropsBuilder:

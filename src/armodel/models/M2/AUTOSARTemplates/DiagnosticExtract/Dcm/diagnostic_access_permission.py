@@ -1,41 +1,42 @@
-"""DiagnosticAccessPermission AUTOSAR element."""
+"""DiagnosticAccessPermission AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 73)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_role import (
+    DiagnosticAuthRole,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_security_level import (
+    DiagnosticSecurityLevel,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session import (
+    DiagnosticSession,
+)
 
-class DiagnosticAccessPermission(ARObject):
+
+class DiagnosticAccessPermission(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAccessPermission."""
 
+    authentication: Optional[DiagnosticAuthRole]
+    diagnostic_sessions: list[DiagnosticSession]
+    environmental: Optional[Any]
+    security_levels: list[DiagnosticSecurityLevel]
     def __init__(self) -> None:
         """Initialize DiagnosticAccessPermission."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticAccessPermission to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICACCESSPERMISSION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticAccessPermission":
-        """Create DiagnosticAccessPermission from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticAccessPermission instance
-        """
-        obj: DiagnosticAccessPermission = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.authentication: Optional[DiagnosticAuthRole] = None
+        self.diagnostic_sessions: list[DiagnosticSession] = []
+        self.environmental: Optional[Any] = None
+        self.security_levels: list[DiagnosticSecurityLevel] = []
 
 
 class DiagnosticAccessPermissionBuilder:

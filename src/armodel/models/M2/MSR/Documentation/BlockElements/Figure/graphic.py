@@ -1,41 +1,63 @@
-"""Graphic AUTOSAR element."""
+"""Graphic AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 302)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
+    EngineeringObject,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.Figure import (
+    GraphicFitEnum,
+    GraphicNotationEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    String,
+)
 
-class Graphic(ARObject):
+
+class Graphic(EngineeringObject):
     """AUTOSAR Graphic."""
 
+    editfit: Optional[GraphicFitEnum]
+    edit_height: Optional[String]
+    editscale: Optional[String]
+    edit_width: Optional[String]
+    filename: Optional[String]
+    fit: Optional[GraphicFitEnum]
+    generator: Optional[NameToken]
+    height: Optional[String]
+    html_fit: Optional[GraphicFitEnum]
+    html_height: Optional[String]
+    html_scale: Optional[String]
+    html_width: Optional[String]
+    notation: Optional[GraphicNotationEnum]
+    scale: Optional[String]
+    width: Optional[String]
     def __init__(self) -> None:
         """Initialize Graphic."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Graphic to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GRAPHIC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Graphic":
-        """Create Graphic from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Graphic instance
-        """
-        obj: Graphic = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.editfit: Optional[GraphicFitEnum] = None
+        self.edit_height: Optional[String] = None
+        self.editscale: Optional[String] = None
+        self.edit_width: Optional[String] = None
+        self.filename: Optional[String] = None
+        self.fit: Optional[GraphicFitEnum] = None
+        self.generator: Optional[NameToken] = None
+        self.height: Optional[String] = None
+        self.html_fit: Optional[GraphicFitEnum] = None
+        self.html_height: Optional[String] = None
+        self.html_scale: Optional[String] = None
+        self.html_width: Optional[String] = None
+        self.notation: Optional[GraphicNotationEnum] = None
+        self.scale: Optional[String] = None
+        self.width: Optional[String] = None
 
 
 class GraphicBuilder:

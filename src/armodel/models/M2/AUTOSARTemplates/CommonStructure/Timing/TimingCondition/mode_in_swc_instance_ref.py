@@ -1,41 +1,45 @@
-"""ModeInSwcInstanceRef AUTOSAR element."""
+"""ModeInSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 38)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
 
 
 class ModeInSwcInstanceRef(ARObject):
     """AUTOSAR ModeInSwcInstanceRef."""
 
+    base: Optional[SwComponentType]
+    contexts: list[Any]
+    context_mode: Optional[ModeDeclarationGroup]
+    context_port: Optional[PortPrototype]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeInSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEINSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeInSwcInstanceRef":
-        """Create ModeInSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeInSwcInstanceRef instance
-        """
-        obj: ModeInSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[SwComponentType] = None
+        self.contexts: list[Any] = []
+        self.context_mode: Optional[ModeDeclarationGroup] = None
+        self.context_port: Optional[PortPrototype] = None
+        self.target_mode: Optional[ModeDeclaration] = None
 
 
 class ModeInSwcInstanceRefBuilder:

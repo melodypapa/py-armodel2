@@ -1,41 +1,34 @@
-"""AutosarParameterRef AUTOSAR element."""
+"""AutosarParameterRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 306)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 317)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+        DataPrototype,
+    )
+
 
 
 class AutosarParameterRef(ARObject):
     """AUTOSAR AutosarParameterRef."""
 
+    autosar: Optional[DataPrototype]
+    local_parameter: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AutosarParameterRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("AUTOSARPARAMETERREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AutosarParameterRef":
-        """Create AutosarParameterRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AutosarParameterRef instance
-        """
-        obj: AutosarParameterRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.autosar: Optional[DataPrototype] = None
+        self.local_parameter: Optional[DataPrototype] = None
 
 
 class AutosarParameterRefBuilder:

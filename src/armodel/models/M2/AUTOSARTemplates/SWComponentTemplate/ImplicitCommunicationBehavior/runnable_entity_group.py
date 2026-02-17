@@ -1,41 +1,33 @@
-"""RunnableEntityGroup AUTOSAR element."""
+"""RunnableEntityGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 222)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 206)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ImplicitCommunicationBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+    RunnableEntity,
+)
 
-class RunnableEntityGroup(ARObject):
+
+class RunnableEntityGroup(Identifiable):
     """AUTOSAR RunnableEntityGroup."""
 
+    runnable_entities: list[RunnableEntity]
+    runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup]
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RunnableEntityGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RUNNABLEENTITYGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RunnableEntityGroup":
-        """Create RunnableEntityGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RunnableEntityGroup instance
-        """
-        obj: RunnableEntityGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.runnable_entities: list[RunnableEntity] = []
+        self.runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup] = []
 
 
 class RunnableEntityGroupBuilder:

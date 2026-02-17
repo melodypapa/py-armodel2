@@ -1,41 +1,43 @@
-"""DiagnosticValueNeeds AUTOSAR element."""
+"""DiagnosticValueNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 245)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 114)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 782)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    DiagnosticProcessingStyleEnum,
+    DiagnosticValueAccessEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class DiagnosticValueNeeds(ARObject):
+
+class DiagnosticValueNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticValueNeeds."""
 
+    data_length: Optional[PositiveInteger]
+    diagnostic_value_access: Optional[DiagnosticValueAccessEnum]
+    fixed_length: Optional[Boolean]
+    processing_style: Optional[DiagnosticProcessingStyleEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticValueNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticValueNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICVALUENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticValueNeeds":
-        """Create DiagnosticValueNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticValueNeeds instance
-        """
-        obj: DiagnosticValueNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_length: Optional[PositiveInteger] = None
+        self.diagnostic_value_access: Optional[DiagnosticValueAccessEnum] = None
+        self.fixed_length: Optional[Boolean] = None
+        self.processing_style: Optional[DiagnosticProcessingStyleEnum] = None
 
 
 class DiagnosticValueNeedsBuilder:

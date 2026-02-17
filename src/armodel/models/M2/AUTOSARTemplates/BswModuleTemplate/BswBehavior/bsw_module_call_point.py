@@ -1,41 +1,31 @@
-"""BswModuleCallPoint AUTOSAR element."""
+"""BswModuleCallPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 77)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
+    BswDistinguishedPartition,
+)
 
-class BswModuleCallPoint(ARObject):
+
+class BswModuleCallPoint(Referrable):
     """AUTOSAR BswModuleCallPoint."""
+    """Abstract base class - do not instantiate directly."""
 
+    contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:
         """Initialize BswModuleCallPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModuleCallPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODULECALLPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleCallPoint":
-        """Create BswModuleCallPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleCallPoint instance
-        """
-        obj: BswModuleCallPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.contexts: list[BswDistinguishedPartition] = []
 
 
 class BswModuleCallPointBuilder:

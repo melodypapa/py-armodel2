@@ -1,41 +1,38 @@
-"""MsrQueryChapter AUTOSAR element."""
+"""MsrQueryChapter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 343)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
+    MsrQueryProps,
+)
 
-class MsrQueryChapter(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_chapter import (
+        MsrQueryResultChapter,
+    )
+
+
+
+class MsrQueryChapter(Paginateable):
     """AUTOSAR MsrQueryChapter."""
 
+    msr_query_props: MsrQueryProps
+    msr_query_result_chapter: Optional[MsrQueryResultChapter]
     def __init__(self) -> None:
         """Initialize MsrQueryChapter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MsrQueryChapter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MSRQUERYCHAPTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MsrQueryChapter":
-        """Create MsrQueryChapter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MsrQueryChapter instance
-        """
-        obj: MsrQueryChapter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.msr_query_props: MsrQueryProps = None
+        self.msr_query_result_chapter: Optional[MsrQueryResultChapter] = None
 
 
 class MsrQueryChapterBuilder:

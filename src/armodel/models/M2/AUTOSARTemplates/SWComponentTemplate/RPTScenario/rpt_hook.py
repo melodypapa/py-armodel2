@@ -1,41 +1,41 @@
-"""RptHook AUTOSAR element."""
+"""RptHook AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 848)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CIdentifier,
+    NameToken,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
+    AtpFeature,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+    Sdg,
+)
 
 
 class RptHook(ARObject):
     """AUTOSAR RptHook."""
 
+    code_label: Optional[CIdentifier]
+    mcd_identifier: Optional[NameToken]
+    rpt_ar_hook: Optional[AtpFeature]
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize RptHook."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RptHook to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPTHOOK")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RptHook":
-        """Create RptHook from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RptHook instance
-        """
-        obj: RptHook = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.code_label: Optional[CIdentifier] = None
+        self.mcd_identifier: Optional[NameToken] = None
+        self.rpt_ar_hook: Optional[AtpFeature] = None
+        self.sdgs: list[Sdg] = []
 
 
 class RptHookBuilder:

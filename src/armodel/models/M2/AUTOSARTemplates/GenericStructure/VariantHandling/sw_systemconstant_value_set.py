@@ -1,41 +1,35 @@
-"""SwSystemconstantValueSet AUTOSAR element."""
+"""SwSystemconstantValueSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 313)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1007)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2069)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 246)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 56)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 258)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconst_value import (
+    SwSystemconstValue,
+)
 
-class SwSystemconstantValueSet(ARObject):
+
+class SwSystemconstantValueSet(ARElement):
     """AUTOSAR SwSystemconstantValueSet."""
 
+    sws: list[SwSystemconstValue]
     def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwSystemconstantValueSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWSYSTEMCONSTANTVALUESET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwSystemconstantValueSet":
-        """Create SwSystemconstantValueSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwSystemconstantValueSet instance
-        """
-        obj: SwSystemconstantValueSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sws: list[SwSystemconstValue] = []
 
 
 class SwSystemconstantValueSetBuilder:

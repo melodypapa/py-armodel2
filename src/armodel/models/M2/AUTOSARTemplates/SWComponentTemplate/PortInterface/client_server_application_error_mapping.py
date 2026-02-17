@@ -1,41 +1,30 @@
-"""ClientServerApplicationErrorMapping AUTOSAR element."""
+"""ClientServerApplicationErrorMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 129)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.application_error import (
+    ApplicationError,
+)
 
 
 class ClientServerApplicationErrorMapping(ARObject):
     """AUTOSAR ClientServerApplicationErrorMapping."""
 
+    first_application: Optional[ApplicationError]
+    second: Optional[ApplicationError]
     def __init__(self) -> None:
         """Initialize ClientServerApplicationErrorMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClientServerApplicationErrorMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLIENTSERVERAPPLICATIONERRORMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerApplicationErrorMapping":
-        """Create ClientServerApplicationErrorMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerApplicationErrorMapping instance
-        """
-        obj: ClientServerApplicationErrorMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_application: Optional[ApplicationError] = None
+        self.second: Optional[ApplicationError] = None
 
 
 class ClientServerApplicationErrorMappingBuilder:

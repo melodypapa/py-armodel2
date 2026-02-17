@@ -1,41 +1,30 @@
-"""DiagnosticDataIdentifierSet AUTOSAR element."""
+"""DiagnosticDataIdentifierSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 187)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticTroubleCode.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_identifier import (
+    DiagnosticDataIdentifier,
+)
 
-class DiagnosticDataIdentifierSet(ARObject):
+
+class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
     """AUTOSAR DiagnosticDataIdentifierSet."""
 
+    data_identifiers: list[DiagnosticDataIdentifier]
     def __init__(self) -> None:
         """Initialize DiagnosticDataIdentifierSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticDataIdentifierSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICDATAIDENTIFIERSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticDataIdentifierSet":
-        """Create DiagnosticDataIdentifierSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticDataIdentifierSet instance
-        """
-        obj: DiagnosticDataIdentifierSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_identifiers: list[DiagnosticDataIdentifier] = []
 
 
 class DiagnosticDataIdentifierSetBuilder:

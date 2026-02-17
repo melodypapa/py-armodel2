@@ -1,41 +1,27 @@
-"""InvertCondition AUTOSAR element."""
+"""InvertCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 104)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
+    AbstractCondition,
+)
 
-class InvertCondition(ARObject):
+
+class InvertCondition(AbstractCondition):
     """AUTOSAR InvertCondition."""
 
+    condition: AbstractCondition
     def __init__(self) -> None:
         """Initialize InvertCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InvertCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INVERTCONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InvertCondition":
-        """Create InvertCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InvertCondition instance
-        """
-        obj: InvertCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.condition: AbstractCondition = None
 
 
 class InvertConditionBuilder:

@@ -1,41 +1,32 @@
-"""ImplementationDataTypeSubElementRef AUTOSAR element."""
+"""ImplementationDataTypeSubElementRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 138)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
+    SubElementRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.ar_parameter_in_implementation_data_instance_ref import (
+    ArParameterInImplementationDataInstanceRef,
+)
 
-class ImplementationDataTypeSubElementRef(ARObject):
+
+class ImplementationDataTypeSubElementRef(SubElementRef):
     """AUTOSAR ImplementationDataTypeSubElementRef."""
 
+    implementation: Optional[Any]
+    parameter: Optional[ArParameterInImplementationDataInstanceRef]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeSubElementRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ImplementationDataTypeSubElementRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATIONDATATYPESUBELEMENTREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeSubElementRef":
-        """Create ImplementationDataTypeSubElementRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationDataTypeSubElementRef instance
-        """
-        obj: ImplementationDataTypeSubElementRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.implementation: Optional[Any] = None
+        self.parameter: Optional[ArParameterInImplementationDataInstanceRef] = None
 
 
 class ImplementationDataTypeSubElementRefBuilder:

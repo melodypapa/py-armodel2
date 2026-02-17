@@ -1,41 +1,33 @@
-"""TopicContentOrMsrQuery AUTOSAR element."""
+"""TopicContentOrMsrQuery AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 342)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_p1 import (
+    MsrQueryP1,
+)
+from armodel.models.M2.MSR.Documentation.Chapters.topic_content import (
+    TopicContent,
+)
 
 
 class TopicContentOrMsrQuery(ARObject):
     """AUTOSAR TopicContentOrMsrQuery."""
 
+    msr_query_p1: MsrQueryP1
+    topic_content: TopicContent
     def __init__(self) -> None:
         """Initialize TopicContentOrMsrQuery."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TopicContentOrMsrQuery to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TOPICCONTENTORMSRQUERY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TopicContentOrMsrQuery":
-        """Create TopicContentOrMsrQuery from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TopicContentOrMsrQuery instance
-        """
-        obj: TopicContentOrMsrQuery = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.msr_query_p1: MsrQueryP1 = None
+        self.topic_content: TopicContent = None
 
 
 class TopicContentOrMsrQueryBuilder:

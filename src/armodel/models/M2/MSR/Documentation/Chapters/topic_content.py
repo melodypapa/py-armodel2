@@ -1,41 +1,35 @@
-"""TopicContent AUTOSAR element."""
+"""TopicContent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 478)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
+    Table,
+)
 
 
 class TopicContent(ARObject):
     """AUTOSAR TopicContent."""
 
+    block_level: DocumentationBlock
+    table: Optional[Table]
+    traceable_table: Any
     def __init__(self) -> None:
         """Initialize TopicContent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TopicContent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TOPICCONTENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TopicContent":
-        """Create TopicContent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TopicContent instance
-        """
-        obj: TopicContent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.block_level: DocumentationBlock = None
+        self.table: Optional[Table] = None
+        self.traceable_table: Any = None
 
 
 class TopicContentBuilder:

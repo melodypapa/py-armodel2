@@ -1,41 +1,27 @@
-"""BswAsynchronousServerCallReturnsEvent AUTOSAR element."""
+"""BswAsynchronousServerCallReturnsEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 98)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
+    BswScheduleEvent,
+)
 
-class BswAsynchronousServerCallReturnsEvent(ARObject):
+
+class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
     """AUTOSAR BswAsynchronousServerCallReturnsEvent."""
 
+    event_source: Optional[Any]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswAsynchronousServerCallReturnsEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWASYNCHRONOUSSERVERCALLRETURNSEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallReturnsEvent":
-        """Create BswAsynchronousServerCallReturnsEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswAsynchronousServerCallReturnsEvent instance
-        """
-        obj: BswAsynchronousServerCallReturnsEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_source: Optional[Any] = None
 
 
 class BswAsynchronousServerCallReturnsEventBuilder:

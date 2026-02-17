@@ -1,41 +1,41 @@
-"""BuildActionManifest AUTOSAR element."""
+"""BuildActionManifest AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 134)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 365)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action import (
+    BuildAction,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_environment import (
+    BuildActionEnvironment,
+)
 
-class BuildActionManifest(ARObject):
+
+class BuildActionManifest(ARElement):
     """AUTOSAR BuildActionManifest."""
 
+    build_actions: list[BuildActionEnvironment]
+    dynamic_actions: list[BuildAction]
+    start_actions: list[BuildAction]
+    tear_down_actions: list[BuildAction]
     def __init__(self) -> None:
         """Initialize BuildActionManifest."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildActionManifest to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDACTIONMANIFEST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildActionManifest":
-        """Create BuildActionManifest from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildActionManifest instance
-        """
-        obj: BuildActionManifest = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.build_actions: list[BuildActionEnvironment] = []
+        self.dynamic_actions: list[BuildAction] = []
+        self.start_actions: list[BuildAction] = []
+        self.tear_down_actions: list[BuildAction] = []
 
 
 class BuildActionManifestBuilder:

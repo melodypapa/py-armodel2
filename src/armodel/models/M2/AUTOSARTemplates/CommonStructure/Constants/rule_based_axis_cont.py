@@ -1,41 +1,45 @@
-"""RuleBasedAxisCont AUTOSAR element."""
+"""RuleBasedAxisCont AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 464)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
+    CalprmAxisCategoryEnum,
+)
+from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
+    AxisIndexType,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.unit import (
+    Unit,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
+    ValueList,
+)
 
 
 class RuleBasedAxisCont(ARObject):
     """AUTOSAR RuleBasedAxisCont."""
 
+    category: Optional[CalprmAxisCategoryEnum]
+    rule_based: Optional[Any]
+    sw_arraysize: Optional[ValueList]
+    sw_axis_index: Optional[AxisIndexType]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize RuleBasedAxisCont."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RuleBasedAxisCont to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RULEBASEDAXISCONT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RuleBasedAxisCont":
-        """Create RuleBasedAxisCont from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RuleBasedAxisCont instance
-        """
-        obj: RuleBasedAxisCont = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.category: Optional[CalprmAxisCategoryEnum] = None
+        self.rule_based: Optional[Any] = None
+        self.sw_arraysize: Optional[ValueList] = None
+        self.sw_axis_index: Optional[AxisIndexType] = None
+        self.unit: Optional[Unit] = None
 
 
 class RuleBasedAxisContBuilder:

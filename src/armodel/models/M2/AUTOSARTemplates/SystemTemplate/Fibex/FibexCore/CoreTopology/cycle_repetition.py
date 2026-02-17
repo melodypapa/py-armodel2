@@ -1,41 +1,35 @@
-"""CycleRepetition AUTOSAR element."""
+"""CycleRepetition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 424)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cycle import (
+    CommunicationCycle,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
+    CycleRepetitionType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
-class CycleRepetition(ARObject):
+
+class CycleRepetition(CommunicationCycle):
     """AUTOSAR CycleRepetition."""
 
+    base_cycle: Optional[Integer]
+    cycle_repetition: Optional[CycleRepetitionType]
     def __init__(self) -> None:
         """Initialize CycleRepetition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CycleRepetition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CYCLEREPETITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CycleRepetition":
-        """Create CycleRepetition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CycleRepetition instance
-        """
-        obj: CycleRepetition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base_cycle: Optional[Integer] = None
+        self.cycle_repetition: Optional[CycleRepetitionType] = None
 
 
 class CycleRepetitionBuilder:

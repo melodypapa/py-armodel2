@@ -1,41 +1,40 @@
-"""FlexrayFrameTriggering AUTOSAR element."""
+"""FlexrayFrameTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 422)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Flexray_FlexrayCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayCommunication.flexray_absolutely_scheduled_timing import (
+    FlexrayAbsolutelyScheduledTiming,
+)
 
-class FlexrayFrameTriggering(ARObject):
+
+class FlexrayFrameTriggering(FrameTriggering):
     """AUTOSAR FlexrayFrameTriggering."""
 
+    absolutelies: list[FlexrayAbsolutelyScheduledTiming]
+    allow_dynamic: Optional[Boolean]
+    message_id: Optional[PositiveInteger]
+    payload_preamble: Optional[Any]
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FlexrayFrameTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FLEXRAYFRAMETRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayFrameTriggering":
-        """Create FlexrayFrameTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayFrameTriggering instance
-        """
-        obj: FlexrayFrameTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.absolutelies: list[FlexrayAbsolutelyScheduledTiming] = []
+        self.allow_dynamic: Optional[Boolean] = None
+        self.message_id: Optional[PositiveInteger] = None
+        self.payload_preamble: Optional[Any] = None
 
 
 class FlexrayFrameTriggeringBuilder:

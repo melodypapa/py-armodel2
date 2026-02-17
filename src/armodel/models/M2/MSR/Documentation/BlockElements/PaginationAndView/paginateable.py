@@ -1,41 +1,34 @@
-"""Paginateable AUTOSAR element."""
+"""Paginateable AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 339)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_PaginationAndView.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.document_view_selectable import (
+    DocumentViewSelectable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView import (
+    ChapterEnumBreak,
+    KeepWithPreviousEnum,
+)
 
-class Paginateable(ARObject):
+
+class Paginateable(DocumentViewSelectable):
     """AUTOSAR Paginateable."""
+    """Abstract base class - do not instantiate directly."""
 
+    break_: Optional[ChapterEnumBreak]
+    keep_with: Optional[KeepWithPreviousEnum]
     def __init__(self) -> None:
         """Initialize Paginateable."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Paginateable to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PAGINATEABLE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Paginateable":
-        """Create Paginateable from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Paginateable instance
-        """
-        obj: Paginateable = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.break_: Optional[ChapterEnumBreak] = None
+        self.keep_with: Optional[KeepWithPreviousEnum] = None
 
 
 class PaginateableBuilder:

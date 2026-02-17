@@ -1,41 +1,30 @@
-"""EcucInstanceReferenceValue AUTOSAR element."""
+"""EcucInstanceReferenceValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 134)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_reference_value import (
+    EcucAbstractReferenceValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
+    AtpFeature,
+)
 
-class EcucInstanceReferenceValue(ARObject):
+
+class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
     """AUTOSAR EcucInstanceReferenceValue."""
 
+    value: Optional[AtpFeature]
     def __init__(self) -> None:
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucInstanceReferenceValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCINSTANCEREFERENCEVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucInstanceReferenceValue":
-        """Create EcucInstanceReferenceValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucInstanceReferenceValue instance
-        """
-        obj: EcucInstanceReferenceValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.value: Optional[AtpFeature] = None
 
 
 class EcucInstanceReferenceValueBuilder:

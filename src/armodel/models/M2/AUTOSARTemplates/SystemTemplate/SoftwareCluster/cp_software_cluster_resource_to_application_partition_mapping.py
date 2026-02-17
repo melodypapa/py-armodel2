@@ -1,43 +1,35 @@
-"""CpSoftwareClusterResourceToApplicationPartitionMapping AUTOSAR element."""
+"""CpSoftwareClusterResourceToApplicationPartitionMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 284)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
+    ApplicationPartition,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
-class CpSoftwareClusterResourceToApplicationPartitionMapping(ARObject):
+
+class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterResourceToApplicationPartitionMapping."""
 
+    application: Optional[ApplicationPartition]
+    resource: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourceToApplicationPartitionMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSoftwareClusterResourceToApplicationPartitionMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSOFTWARECLUSTERRESOURCETOAPPLICATIONPARTITIONMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(
-        cls, element: ET.Element
-    ) -> "CpSoftwareClusterResourceToApplicationPartitionMapping":
-        """Create CpSoftwareClusterResourceToApplicationPartitionMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterResourceToApplicationPartitionMapping instance
-        """
-        obj: CpSoftwareClusterResourceToApplicationPartitionMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application: Optional[ApplicationPartition] = None
+        self.resource: Optional[CpSoftwareCluster] = None
 
 
 class CpSoftwareClusterResourceToApplicationPartitionMappingBuilder:
@@ -45,9 +37,7 @@ class CpSoftwareClusterResourceToApplicationPartitionMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSoftwareClusterResourceToApplicationPartitionMapping = (
-            CpSoftwareClusterResourceToApplicationPartitionMapping()
-        )
+        self._obj: CpSoftwareClusterResourceToApplicationPartitionMapping = CpSoftwareClusterResourceToApplicationPartitionMapping()
 
     def build(self) -> CpSoftwareClusterResourceToApplicationPartitionMapping:
         """Build and return CpSoftwareClusterResourceToApplicationPartitionMapping object.

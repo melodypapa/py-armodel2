@@ -1,41 +1,30 @@
-"""RoughEstimateStackUsage AUTOSAR element."""
+"""RoughEstimateStackUsage AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 151)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_StackUsage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.StackUsage.stack_usage import (
+    StackUsage,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class RoughEstimateStackUsage(ARObject):
+
+class RoughEstimateStackUsage(StackUsage):
     """AUTOSAR RoughEstimateStackUsage."""
 
+    memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RoughEstimateStackUsage."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RoughEstimateStackUsage to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROUGHESTIMATESTACKUSAGE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RoughEstimateStackUsage":
-        """Create RoughEstimateStackUsage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RoughEstimateStackUsage instance
-        """
-        obj: RoughEstimateStackUsage = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.memory_consumption: Optional[PositiveInteger] = None
 
 
 class RoughEstimateStackUsageBuilder:

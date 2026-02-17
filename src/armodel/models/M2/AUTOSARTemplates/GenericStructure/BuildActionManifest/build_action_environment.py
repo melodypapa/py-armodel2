@@ -1,41 +1,31 @@
-"""BuildActionEnvironment AUTOSAR element."""
+"""BuildActionEnvironment AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 370)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+    Sdg,
+)
 
-class BuildActionEnvironment(ARObject):
+
+class BuildActionEnvironment(Identifiable):
     """AUTOSAR BuildActionEnvironment."""
 
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionEnvironment."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildActionEnvironment to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDACTIONENVIRONMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildActionEnvironment":
-        """Create BuildActionEnvironment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildActionEnvironment instance
-        """
-        obj: BuildActionEnvironment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sdgs: list[Sdg] = []
 
 
 class BuildActionEnvironmentBuilder:

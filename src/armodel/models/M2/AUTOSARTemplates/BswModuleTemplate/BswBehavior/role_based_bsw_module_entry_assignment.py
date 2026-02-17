@@ -1,41 +1,33 @@
-"""RoleBasedBswModuleEntryAssignment AUTOSAR element."""
+"""RoleBasedBswModuleEntryAssignment AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 226)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
+)
 
 
 class RoleBasedBswModuleEntryAssignment(ARObject):
     """AUTOSAR RoleBasedBswModuleEntryAssignment."""
 
+    assigned_entry: Optional[BswModuleEntry]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedBswModuleEntryAssignment."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RoleBasedBswModuleEntryAssignment to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROLEBASEDBSWMODULEENTRYASSIGNMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RoleBasedBswModuleEntryAssignment":
-        """Create RoleBasedBswModuleEntryAssignment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RoleBasedBswModuleEntryAssignment instance
-        """
-        obj: RoleBasedBswModuleEntryAssignment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.assigned_entry: Optional[BswModuleEntry] = None
+        self.role: Optional[Identifier] = None
 
 
 class RoleBasedBswModuleEntryAssignmentBuilder:

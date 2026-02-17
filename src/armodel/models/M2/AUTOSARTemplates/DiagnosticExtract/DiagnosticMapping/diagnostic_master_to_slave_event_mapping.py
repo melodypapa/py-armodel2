@@ -1,41 +1,32 @@
-"""DiagnosticMasterToSlaveEventMapping AUTOSAR element."""
+"""DiagnosticMasterToSlaveEventMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 256)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
 
-class DiagnosticMasterToSlaveEventMapping(ARObject):
+
+class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticMasterToSlaveEventMapping."""
 
+    master_event: Optional[DiagnosticEvent]
+    slave_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize DiagnosticMasterToSlaveEventMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticMasterToSlaveEventMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICMASTERTOSLAVEEVENTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticMasterToSlaveEventMapping":
-        """Create DiagnosticMasterToSlaveEventMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticMasterToSlaveEventMapping instance
-        """
-        obj: DiagnosticMasterToSlaveEventMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.master_event: Optional[DiagnosticEvent] = None
+        self.slave_event: Optional[DiagnosticEvent] = None
 
 
 class DiagnosticMasterToSlaveEventMappingBuilder:

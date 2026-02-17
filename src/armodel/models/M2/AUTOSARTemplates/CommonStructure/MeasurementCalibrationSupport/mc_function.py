@@ -1,41 +1,40 @@
-"""McFunction AUTOSAR element."""
+"""McFunction AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 186)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.mc_function_data_ref_set import (
+    McFunctionDataRefSet,
+)
 
-class McFunction(ARObject):
+
+class McFunction(ARElement):
     """AUTOSAR McFunction."""
 
+    def_calprm_set: Optional[McFunctionDataRefSet]
+    in_measurement: Optional[McFunctionDataRefSet]
+    loc: Optional[McFunctionDataRefSet]
+    out: Optional[McFunctionDataRefSet]
+    ref_calprm_set: Optional[McFunctionDataRefSet]
+    sub_functions: list[McFunction]
     def __init__(self) -> None:
         """Initialize McFunction."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert McFunction to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MCFUNCTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McFunction":
-        """Create McFunction from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McFunction instance
-        """
-        obj: McFunction = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.def_calprm_set: Optional[McFunctionDataRefSet] = None
+        self.in_measurement: Optional[McFunctionDataRefSet] = None
+        self.loc: Optional[McFunctionDataRefSet] = None
+        self.out: Optional[McFunctionDataRefSet] = None
+        self.ref_calprm_set: Optional[McFunctionDataRefSet] = None
+        self.sub_functions: list[McFunction] = []
 
 
 class McFunctionBuilder:

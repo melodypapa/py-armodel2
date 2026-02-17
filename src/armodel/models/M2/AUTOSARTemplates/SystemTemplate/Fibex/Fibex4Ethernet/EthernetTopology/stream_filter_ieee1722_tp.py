@@ -1,41 +1,28 @@
-"""StreamFilterIEEE1722Tp AUTOSAR element."""
+"""StreamFilterIEEE1722Tp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 139)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveUnlimitedInteger,
+)
 
 
 class StreamFilterIEEE1722Tp(ARObject):
     """AUTOSAR StreamFilterIEEE1722Tp."""
 
+    stream_id: Optional[PositiveUnlimitedInteger]
     def __init__(self) -> None:
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert StreamFilterIEEE1722Tp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("STREAMFILTERIEEE1722TP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StreamFilterIEEE1722Tp":
-        """Create StreamFilterIEEE1722Tp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StreamFilterIEEE1722Tp instance
-        """
-        obj: StreamFilterIEEE1722Tp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.stream_id: Optional[PositiveUnlimitedInteger] = None
 
 
 class StreamFilterIEEE1722TpBuilder:

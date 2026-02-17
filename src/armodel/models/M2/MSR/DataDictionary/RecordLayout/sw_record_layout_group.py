@@ -1,41 +1,47 @@
-"""SwRecordLayoutGroup AUTOSAR element."""
+"""SwRecordLayoutGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 422)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2066)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_RecordLayout.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
+    AsamRecordLayoutSemantics,
+    RecordLayoutIteratorPoint,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
+from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
+    SwGenericAxisParam,
+)
 
 
 class SwRecordLayoutGroup(ARObject):
     """AUTOSAR SwRecordLayoutGroup."""
 
+    category: Optional[AsamRecordLayoutSemantics]
+    desc: Optional[MultiLanguageOverviewParagraph]
+    short_label: Optional[Identifier]
+    sw_generic_axis_param: Optional[SwGenericAxisParam]
+    sw_record: Optional[RecordLayoutIteratorPoint]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwRecordLayoutGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWRECORDLAYOUTGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwRecordLayoutGroup":
-        """Create SwRecordLayoutGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwRecordLayoutGroup instance
-        """
-        obj: SwRecordLayoutGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.category: Optional[AsamRecordLayoutSemantics] = None
+        self.desc: Optional[MultiLanguageOverviewParagraph] = None
+        self.short_label: Optional[Identifier] = None
+        self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
+        self.sw_record: Optional[RecordLayoutIteratorPoint] = None
 
 
 class SwRecordLayoutGroupBuilder:

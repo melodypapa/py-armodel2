@@ -1,41 +1,39 @@
-"""EndToEndProtectionISignalIPdu AUTOSAR element."""
+"""EndToEndProtectionISignalIPdu AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 987)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 384)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_EndToEndProtection.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_group import (
+    ISignalGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_i_pdu import (
+    ISignalIPdu,
+)
 
 
 class EndToEndProtectionISignalIPdu(ARObject):
     """AUTOSAR EndToEndProtectionISignalIPdu."""
 
+    data_offset: Optional[Integer]
+    i_signal_group: Optional[ISignalGroup]
+    i_signal_i_pdu: Optional[ISignalIPdu]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EndToEndProtectionISignalIPdu to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ENDTOENDPROTECTIONISIGNALIPDU")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EndToEndProtectionISignalIPdu":
-        """Create EndToEndProtectionISignalIPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EndToEndProtectionISignalIPdu instance
-        """
-        obj: EndToEndProtectionISignalIPdu = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_offset: Optional[Integer] = None
+        self.i_signal_group: Optional[ISignalGroup] = None
+        self.i_signal_i_pdu: Optional[ISignalIPdu] = None
 
 
 class EndToEndProtectionISignalIPduBuilder:

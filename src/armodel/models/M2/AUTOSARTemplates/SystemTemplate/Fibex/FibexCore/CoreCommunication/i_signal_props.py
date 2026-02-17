@@ -1,41 +1,25 @@
-"""ISignalProps AUTOSAR element."""
+"""ISignalProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 323)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ISignalProps(ARObject):
     """AUTOSAR ISignalProps."""
 
+    handle_out_of_range: Optional[Any]
     def __init__(self) -> None:
         """Initialize ISignalProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ISignalProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ISIGNALPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalProps":
-        """Create ISignalProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalProps instance
-        """
-        obj: ISignalProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.handle_out_of_range: Optional[Any] = None
 
 
 class ISignalPropsBuilder:

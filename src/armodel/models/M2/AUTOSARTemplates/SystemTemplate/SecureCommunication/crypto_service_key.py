@@ -1,41 +1,43 @@
-"""CryptoServiceKey AUTOSAR element."""
+"""CryptoServiceKey AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 377)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 58)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
-class CryptoServiceKey(ARObject):
+
+class CryptoServiceKey(ARElement):
     """AUTOSAR CryptoServiceKey."""
 
+    algorithm_family: Optional[String]
+    development: Optional[ValueSpecification]
+    key_generation: Optional[CryptoServiceKey]
+    key_storage_type: Optional[String]
+    length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoServiceKey."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CryptoServiceKey to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CRYPTOSERVICEKEY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CryptoServiceKey":
-        """Create CryptoServiceKey from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CryptoServiceKey instance
-        """
-        obj: CryptoServiceKey = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.algorithm_family: Optional[String] = None
+        self.development: Optional[ValueSpecification] = None
+        self.key_generation: Optional[CryptoServiceKey] = None
+        self.key_storage_type: Optional[String] = None
+        self.length: Optional[PositiveInteger] = None
 
 
 class CryptoServiceKeyBuilder:

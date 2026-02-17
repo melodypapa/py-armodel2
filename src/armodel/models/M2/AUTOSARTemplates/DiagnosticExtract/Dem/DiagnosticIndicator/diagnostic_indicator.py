@@ -1,41 +1,30 @@
-"""DiagnosticIndicator AUTOSAR element."""
+"""DiagnosticIndicator AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 203)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticIndicator.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator import (
+    DiagnosticIndicatorTypeEnum,
+)
 
-class DiagnosticIndicator(ARObject):
+
+class DiagnosticIndicator(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIndicator."""
 
+    type: Optional[DiagnosticIndicatorTypeEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticIndicator."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticIndicator to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICINDICATOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIndicator":
-        """Create DiagnosticIndicator from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIndicator instance
-        """
-        obj: DiagnosticIndicator = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.type: Optional[DiagnosticIndicatorTypeEnum] = None
 
 
 class DiagnosticIndicatorBuilder:

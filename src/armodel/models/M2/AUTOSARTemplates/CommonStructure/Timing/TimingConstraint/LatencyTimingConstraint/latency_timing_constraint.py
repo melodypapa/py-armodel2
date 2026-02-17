@@ -1,41 +1,44 @@
-"""LatencyTimingConstraint AUTOSAR element."""
+"""LatencyTimingConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 95)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_LatencyTimingConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
+    TimingConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.LatencyTimingConstraint import (
+    LatencyConstraintTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class LatencyTimingConstraint(ARObject):
+
+class LatencyTimingConstraint(TimingConstraint):
     """AUTOSAR LatencyTimingConstraint."""
 
+    latency: Optional[LatencyConstraintTypeEnum]
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
+    nominal: Optional[MultidimensionalTime]
+    scope: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize LatencyTimingConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LatencyTimingConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LATENCYTIMINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LatencyTimingConstraint":
-        """Create LatencyTimingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LatencyTimingConstraint instance
-        """
-        obj: LatencyTimingConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.latency: Optional[LatencyConstraintTypeEnum] = None
+        self.maximum: Optional[MultidimensionalTime] = None
+        self.minimum: Optional[MultidimensionalTime] = None
+        self.nominal: Optional[MultidimensionalTime] = None
+        self.scope: Optional[TimingDescriptionEvent] = None
 
 
 class LatencyTimingConstraintBuilder:

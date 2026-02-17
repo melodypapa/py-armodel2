@@ -1,41 +1,35 @@
-"""ARElement AUTOSAR element."""
+"""ARElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 300)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 297)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 286)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 58)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 967)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1992)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 71)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 54)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 55)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 156)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ARPackage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
+    PackageableElement,
+)
 
-class ARElement(ARObject):
+
+class ARElement(PackageableElement):
     """AUTOSAR ARElement."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize ARElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ARElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ARELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ARElement":
-        """Create ARElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ARElement instance
-        """
-        obj: ARElement = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ARElementBuilder:

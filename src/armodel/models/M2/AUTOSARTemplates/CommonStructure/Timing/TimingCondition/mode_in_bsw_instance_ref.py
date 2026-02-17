@@ -1,41 +1,38 @@
-"""ModeInBswInstanceRef AUTOSAR element."""
+"""ModeInBswInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 38)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
+    BswImplementation,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class ModeInBswInstanceRef(ARObject):
     """AUTOSAR ModeInBswInstanceRef."""
 
+    context_bsw: Optional[BswImplementation]
+    context_mode: Optional[ModeDeclarationGroup]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInBswInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeInBswInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEINBSWINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeInBswInstanceRef":
-        """Create ModeInBswInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeInBswInstanceRef instance
-        """
-        obj: ModeInBswInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_bsw: Optional[BswImplementation] = None
+        self.context_mode: Optional[ModeDeclarationGroup] = None
+        self.target_mode: Optional[ModeDeclaration] = None
 
 
 class ModeInBswInstanceRefBuilder:

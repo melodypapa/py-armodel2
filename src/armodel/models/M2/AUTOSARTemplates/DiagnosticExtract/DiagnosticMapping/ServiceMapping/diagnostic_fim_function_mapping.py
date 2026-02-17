@@ -1,41 +1,33 @@
-"""DiagnosticFimFunctionMapping AUTOSAR element."""
+"""DiagnosticFimFunctionMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 264)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
 
-class DiagnosticFimFunctionMapping(ARObject):
+
+class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticFimFunctionMapping."""
 
+    mapped_bsw: Optional[Any]
+    mapped_flat_swc: Optional[Any]
+    mapped: Optional[Any]
+    mapped_swc: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimFunctionMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticFimFunctionMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICFIMFUNCTIONMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFimFunctionMapping":
-        """Create DiagnosticFimFunctionMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFimFunctionMapping instance
-        """
-        obj: DiagnosticFimFunctionMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mapped_bsw: Optional[Any] = None
+        self.mapped_flat_swc: Optional[Any] = None
+        self.mapped: Optional[Any] = None
+        self.mapped_swc: Optional[Any] = None
 
 
 class DiagnosticFimFunctionMappingBuilder:

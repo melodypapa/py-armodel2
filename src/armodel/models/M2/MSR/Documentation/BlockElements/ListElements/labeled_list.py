@@ -1,41 +1,38 @@
-"""LabeledList AUTOSAR element."""
+"""LabeledList AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 296)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.indent_sample import (
+    IndentSample,
+)
 
-class LabeledList(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_item import (
+        LabeledItem,
+    )
+
+
+
+class LabeledList(Paginateable):
     """AUTOSAR LabeledList."""
 
+    indent_sample: Optional[IndentSample]
+    labeled_item_label: LabeledItem
     def __init__(self) -> None:
         """Initialize LabeledList."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LabeledList to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LABELEDLIST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LabeledList":
-        """Create LabeledList from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LabeledList instance
-        """
-        obj: LabeledList = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.indent_sample: Optional[IndentSample] = None
+        self.labeled_item_label: LabeledItem = None
 
 
 class LabeledListBuilder:

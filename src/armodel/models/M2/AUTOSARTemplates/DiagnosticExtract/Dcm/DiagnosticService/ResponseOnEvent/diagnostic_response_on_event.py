@@ -1,41 +1,32 @@
-"""DiagnosticResponseOnEvent AUTOSAR element."""
+"""DiagnosticResponseOnEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 132)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_ResponseOnEvent.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.ResponseOnEvent.diagnostic_event_window import (
+    DiagnosticEventWindow,
+)
 
-class DiagnosticResponseOnEvent(ARObject):
+
+class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticResponseOnEvent."""
 
+    event_windows: list[DiagnosticEventWindow]
+    response_on: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticResponseOnEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICRESPONSEONEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticResponseOnEvent":
-        """Create DiagnosticResponseOnEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticResponseOnEvent instance
-        """
-        obj: DiagnosticResponseOnEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_windows: list[DiagnosticEventWindow] = []
+        self.response_on: Optional[Any] = None
 
 
 class DiagnosticResponseOnEventBuilder:

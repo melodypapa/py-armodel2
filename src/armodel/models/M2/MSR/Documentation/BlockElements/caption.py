@@ -1,41 +1,30 @@
-"""Caption AUTOSAR element."""
+"""Caption AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 432)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
+    MultilanguageReferrable,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
 
-class Caption(ARObject):
+
+class Caption(MultilanguageReferrable):
     """AUTOSAR Caption."""
 
+    desc: Optional[MultiLanguageOverviewParagraph]
     def __init__(self) -> None:
         """Initialize Caption."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Caption to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CAPTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Caption":
-        """Create Caption from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Caption instance
-        """
-        obj: Caption = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.desc: Optional[MultiLanguageOverviewParagraph] = None
 
 
 class CaptionBuilder:

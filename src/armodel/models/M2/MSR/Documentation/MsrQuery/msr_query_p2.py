@@ -1,41 +1,36 @@
-"""MsrQueryP2 AUTOSAR element."""
+"""MsrQueryP2 AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 456)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
+    MsrQueryProps,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
 
 
 class MsrQueryP2(ARObject):
     """AUTOSAR MsrQueryP2."""
 
+    msr_query_props: MsrQueryProps
+    msr_query_result: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize MsrQueryP2."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MsrQueryP2 to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MSRQUERYP2")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MsrQueryP2":
-        """Create MsrQueryP2 from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MsrQueryP2 instance
-        """
-        obj: MsrQueryP2 = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.msr_query_props: MsrQueryProps = None
+        self.msr_query_result: Optional[DocumentationBlock] = None
 
 
 class MsrQueryP2Builder:

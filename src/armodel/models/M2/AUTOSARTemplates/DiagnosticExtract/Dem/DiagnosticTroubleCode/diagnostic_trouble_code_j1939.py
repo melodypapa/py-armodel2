@@ -1,41 +1,44 @@
-"""DiagnosticTroubleCodeJ1939 AUTOSAR element."""
+"""DiagnosticTroubleCodeJ1939 AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 221)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticTroubleCode.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
+    DiagnosticTroubleCode,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
+    DiagnosticJ1939Spn,
+)
 
-class DiagnosticTroubleCodeJ1939(ARObject):
+
+class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeJ1939."""
 
+    dtc_props_props: Optional[DiagnosticTroubleCode]
+    fmi: Optional[PositiveInteger]
+    kind: Optional[DiagnosticTroubleCode]
+    node: Optional[DiagnosticJ1939Node]
+    spn: Optional[DiagnosticJ1939Spn]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeJ1939."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticTroubleCodeJ1939 to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICTROUBLECODEJ1939")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeJ1939":
-        """Create DiagnosticTroubleCodeJ1939 from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTroubleCodeJ1939 instance
-        """
-        obj: DiagnosticTroubleCodeJ1939 = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dtc_props_props: Optional[DiagnosticTroubleCode] = None
+        self.fmi: Optional[PositiveInteger] = None
+        self.kind: Optional[DiagnosticTroubleCode] = None
+        self.node: Optional[DiagnosticJ1939Node] = None
+        self.spn: Optional[DiagnosticJ1939Spn] = None
 
 
 class DiagnosticTroubleCodeJ1939Builder:

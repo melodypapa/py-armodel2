@@ -1,41 +1,41 @@
-"""NmPdu AUTOSAR element."""
+"""NmPdu AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 302)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 342)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
+    Pdu,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_to_i_pdu_mapping import (
+    ISignalToIPduMapping,
+)
 
-class NmPdu(ARObject):
+
+class NmPdu(Pdu):
     """AUTOSAR NmPdu."""
 
+    i_signal_to_i_pdus: list[ISignalToIPduMapping]
+    nm_data: Optional[Boolean]
+    nm_vote_information: Optional[Boolean]
+    unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize NmPdu."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NmPdu to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NMPDU")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NmPdu":
-        """Create NmPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NmPdu instance
-        """
-        obj: NmPdu = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.i_signal_to_i_pdus: list[ISignalToIPduMapping] = []
+        self.nm_data: Optional[Boolean] = None
+        self.nm_vote_information: Optional[Boolean] = None
+        self.unused_bit: Optional[Integer] = None
 
 
 class NmPduBuilder:

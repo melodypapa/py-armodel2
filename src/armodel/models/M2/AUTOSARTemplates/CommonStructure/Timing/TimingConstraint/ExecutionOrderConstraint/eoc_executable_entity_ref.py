@@ -1,41 +1,39 @@
-"""EOCExecutableEntityRef AUTOSAR element."""
+"""EOCExecutableEntityRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 120)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_ExecutionOrderConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.ExecutionOrderConstraint.eoc_executable_entity_ref_abstract import (
+    EOCExecutableEntityRefAbstract,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
+    BswImplementation,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
+    ExecutableEntity,
+)
 
-class EOCExecutableEntityRef(ARObject):
+
+class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
     """AUTOSAR EOCExecutableEntityRef."""
 
+    bsw_module: Optional[BswImplementation]
+    component: Optional[Any]
+    executable_entity: Optional[ExecutableEntity]
+    successors: list[Any]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EOCExecutableEntityRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EOCEXECUTABLEENTITYREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EOCExecutableEntityRef":
-        """Create EOCExecutableEntityRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EOCExecutableEntityRef instance
-        """
-        obj: EOCExecutableEntityRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bsw_module: Optional[BswImplementation] = None
+        self.component: Optional[Any] = None
+        self.executable_entity: Optional[ExecutableEntity] = None
+        self.successors: list[Any] = []
 
 
 class EOCExecutableEntityRefBuilder:

@@ -1,41 +1,25 @@
-"""DiagnosticFimAliasEvent AUTOSAR element."""
+"""DiagnosticFimAliasEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 214)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Fim.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_abstract_alias_event import (
+    DiagnosticAbstractAliasEvent,
+)
 
-class DiagnosticFimAliasEvent(ARObject):
+
+class DiagnosticFimAliasEvent(DiagnosticAbstractAliasEvent):
     """AUTOSAR DiagnosticFimAliasEvent."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticFimAliasEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICFIMALIASEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEvent":
-        """Create DiagnosticFimAliasEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFimAliasEvent instance
-        """
-        obj: DiagnosticFimAliasEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticFimAliasEventBuilder:

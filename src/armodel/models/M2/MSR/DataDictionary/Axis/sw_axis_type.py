@@ -1,41 +1,35 @@
-"""SwAxisType AUTOSAR element."""
+"""SwAxisType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 355)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
+    SwGenericAxisParam,
+)
 
-class SwAxisType(ARObject):
+
+class SwAxisType(ARElement):
     """AUTOSAR SwAxisType."""
 
+    sw_generic_axis: Optional[DocumentationBlock]
+    sw_generic_axis_params: list[SwGenericAxisParam]
     def __init__(self) -> None:
         """Initialize SwAxisType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwAxisType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWAXISTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwAxisType":
-        """Create SwAxisType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwAxisType instance
-        """
-        obj: SwAxisType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_generic_axis: Optional[DocumentationBlock] = None
+        self.sw_generic_axis_params: list[SwGenericAxisParam] = []
 
 
 class SwAxisTypeBuilder:

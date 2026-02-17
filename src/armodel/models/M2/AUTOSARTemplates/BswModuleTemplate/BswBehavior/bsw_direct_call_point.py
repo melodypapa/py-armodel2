@@ -1,41 +1,35 @@
-"""BswDirectCallPoint AUTOSAR element."""
+"""BswDirectCallPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 78)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
+    BswModuleCallPoint,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
+    ExclusiveAreaNestingOrder,
+)
 
-class BswDirectCallPoint(ARObject):
+
+class BswDirectCallPoint(BswModuleCallPoint):
     """AUTOSAR BswDirectCallPoint."""
 
+    called_entry: Optional[BswModuleEntry]
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize BswDirectCallPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswDirectCallPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWDIRECTCALLPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswDirectCallPoint":
-        """Create BswDirectCallPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswDirectCallPoint instance
-        """
-        obj: BswDirectCallPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.called_entry: Optional[BswModuleEntry] = None
+        self.called_from: Optional[ExclusiveAreaNestingOrder] = None
 
 
 class BswDirectCallPointBuilder:

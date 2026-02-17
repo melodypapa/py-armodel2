@@ -1,41 +1,33 @@
-"""DdsReliability AUTOSAR element."""
+"""DdsReliability AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 534)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds import (
+    DdsReliabilityKindEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+)
 
 
 class DdsReliability(ARObject):
     """AUTOSAR DdsReliability."""
 
+    reliability_kind: Optional[DdsReliabilityKindEnum]
+    reliability_max: Optional[Float]
     def __init__(self) -> None:
         """Initialize DdsReliability."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DdsReliability to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DDSRELIABILITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsReliability":
-        """Create DdsReliability from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsReliability instance
-        """
-        obj: DdsReliability = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
+        self.reliability_max: Optional[Float] = None
 
 
 class DdsReliabilityBuilder:

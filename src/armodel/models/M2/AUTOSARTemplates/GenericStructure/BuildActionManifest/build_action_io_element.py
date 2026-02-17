@@ -1,41 +1,41 @@
-"""BuildActionIoElement AUTOSAR element."""
+"""BuildActionIoElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 368)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+    NameToken,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
+    EcucDefinitionElement,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+    Sdg,
+)
 
 
 class BuildActionIoElement(ARObject):
     """AUTOSAR BuildActionIoElement."""
 
+    category: NameToken
+    ecuc_definition: Optional[EcucDefinitionElement]
+    role: Optional[Identifier]
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionIoElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildActionIoElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDACTIONIOELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildActionIoElement":
-        """Create BuildActionIoElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildActionIoElement instance
-        """
-        obj: BuildActionIoElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.category: NameToken = None
+        self.ecuc_definition: Optional[EcucDefinitionElement] = None
+        self.role: Optional[Identifier] = None
+        self.sdgs: list[Sdg] = []
 
 
 class BuildActionIoElementBuilder:

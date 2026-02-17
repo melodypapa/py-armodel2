@@ -1,41 +1,31 @@
-"""IEEE1722TpAcfBusPart AUTOSAR element."""
+"""IEEE1722TpAcfBusPart AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 657)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
+    PduCollectionTriggerEnum,
+)
 
-class IEEE1722TpAcfBusPart(ARObject):
+
+class IEEE1722TpAcfBusPart(Identifiable):
     """AUTOSAR IEEE1722TpAcfBusPart."""
+    """Abstract base class - do not instantiate directly."""
 
+    collection_trigger: Optional[PduCollectionTriggerEnum]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAcfBusPart to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPACFBUSPART")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfBusPart":
-        """Create IEEE1722TpAcfBusPart from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfBusPart instance
-        """
-        obj: IEEE1722TpAcfBusPart = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.collection_trigger: Optional[PduCollectionTriggerEnum] = None
 
 
 class IEEE1722TpAcfBusPartBuilder:

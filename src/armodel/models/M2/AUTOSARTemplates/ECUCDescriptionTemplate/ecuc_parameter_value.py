@@ -1,41 +1,43 @@
-"""EcucParameterValue AUTOSAR element."""
+"""EcucParameterValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 124)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 442)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 189)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
+    EcucIndexableValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
+    Annotation,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
+    EcucParameterDef,
+)
 
-class EcucParameterValue(ARObject):
+
+class EcucParameterValue(EcucIndexableValue):
     """AUTOSAR EcucParameterValue."""
+    """Abstract base class - do not instantiate directly."""
 
+    annotations: list[Annotation]
+    definition: Optional[EcucParameterDef]
+    is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucParameterValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucParameterValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCPARAMETERVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucParameterValue":
-        """Create EcucParameterValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucParameterValue instance
-        """
-        obj: EcucParameterValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.annotations: list[Annotation] = []
+        self.definition: Optional[EcucParameterDef] = None
+        self.is_auto_value: Optional[Boolean] = None
 
 
 class EcucParameterValueBuilder:

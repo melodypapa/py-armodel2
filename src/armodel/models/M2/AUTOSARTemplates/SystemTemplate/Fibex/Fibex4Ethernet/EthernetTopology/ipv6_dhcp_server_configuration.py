@@ -1,41 +1,39 @@
-"""Ipv6DhcpServerConfiguration AUTOSAR element."""
+"""Ipv6DhcpServerConfiguration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 132)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Ip6AddressString,
+    TimeValue,
+)
 
-class Ipv6DhcpServerConfiguration(ARObject):
+
+class Ipv6DhcpServerConfiguration(Describable):
     """AUTOSAR Ipv6DhcpServerConfiguration."""
 
+    address_range: Optional[Ip6AddressString]
+    default_gateway: Optional[Ip6AddressString]
+    default_lease: Optional[TimeValue]
+    dns_servers: list[Ip6AddressString]
+    network_mask: Optional[Ip6AddressString]
     def __init__(self) -> None:
         """Initialize Ipv6DhcpServerConfiguration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Ipv6DhcpServerConfiguration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPV6DHCPSERVERCONFIGURATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv6DhcpServerConfiguration":
-        """Create Ipv6DhcpServerConfiguration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv6DhcpServerConfiguration instance
-        """
-        obj: Ipv6DhcpServerConfiguration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.address_range: Optional[Ip6AddressString] = None
+        self.default_gateway: Optional[Ip6AddressString] = None
+        self.default_lease: Optional[TimeValue] = None
+        self.dns_servers: list[Ip6AddressString] = []
+        self.network_mask: Optional[Ip6AddressString] = None
 
 
 class Ipv6DhcpServerConfigurationBuilder:

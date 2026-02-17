@@ -1,41 +1,33 @@
-"""PRPortPrototype AUTOSAR element."""
+"""PRPortPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 68)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2042)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 199)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+    AbstractRequiredPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
 
-class PRPortPrototype(ARObject):
+
+class PRPortPrototype(AbstractRequiredPortPrototype):
     """AUTOSAR PRPortPrototype."""
 
+    provided: Optional[PortInterface]
     def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PRPortPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PRPORTPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PRPortPrototype":
-        """Create PRPortPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PRPortPrototype instance
-        """
-        obj: PRPortPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provided: Optional[PortInterface] = None
 
 
 class PRPortPrototypeBuilder:

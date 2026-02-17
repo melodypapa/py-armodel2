@@ -1,41 +1,43 @@
-"""SenderReceiverToSignalMapping AUTOSAR element."""
+"""SenderReceiverToSignalMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1005)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 229)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
+    DataMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
+    SystemSignal,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
+    TextTableMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class SenderReceiverToSignalMapping(ARObject):
+
+class SenderReceiverToSignalMapping(DataMapping):
     """AUTOSAR SenderReceiverToSignalMapping."""
 
+    data_element_system_instance_ref: Optional[VariableDataPrototype]
+    sender_to_signal: Optional[TextTableMapping]
+    signal_to: Optional[TextTableMapping]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderReceiverToSignalMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECEIVERTOSIGNALMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverToSignalMapping":
-        """Create SenderReceiverToSignalMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverToSignalMapping instance
-        """
-        obj: SenderReceiverToSignalMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_element_system_instance_ref: Optional[VariableDataPrototype] = None
+        self.sender_to_signal: Optional[TextTableMapping] = None
+        self.signal_to: Optional[TextTableMapping] = None
+        self.system_signal: Optional[SystemSignal] = None
 
 
 class SenderReceiverToSignalMappingBuilder:

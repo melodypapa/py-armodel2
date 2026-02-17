@@ -1,41 +1,33 @@
-"""InfrastructureServices AUTOSAR element."""
+"""InfrastructureServices AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 469)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.do_ip_entity import (
+    DoIpEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.time_synchronization import (
+    TimeSynchronization,
+)
 
 
 class InfrastructureServices(ARObject):
     """AUTOSAR InfrastructureServices."""
 
+    do_ip_entity: Optional[DoIpEntity]
+    time: Optional[TimeSynchronization]
     def __init__(self) -> None:
         """Initialize InfrastructureServices."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InfrastructureServices to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INFRASTRUCTURESERVICES")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InfrastructureServices":
-        """Create InfrastructureServices from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InfrastructureServices instance
-        """
-        obj: InfrastructureServices = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.do_ip_entity: Optional[DoIpEntity] = None
+        self.time: Optional[TimeSynchronization] = None
 
 
 class InfrastructureServicesBuilder:

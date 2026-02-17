@@ -1,41 +1,36 @@
-"""CanControllerConfiguration AUTOSAR element."""
+"""CanControllerConfiguration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_communication_controller_attributes import (
+    AbstractCanCommunicationControllerAttributes,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
-class CanControllerConfiguration(ARObject):
+
+class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
     """AUTOSAR CanControllerConfiguration."""
 
+    prop_seg: Optional[Integer]
+    sync_jump_width: Optional[Integer]
+    time_seg1: Optional[Integer]
+    time_seg2: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CanControllerConfiguration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanControllerConfiguration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANCONTROLLERCONFIGURATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanControllerConfiguration":
-        """Create CanControllerConfiguration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanControllerConfiguration instance
-        """
-        obj: CanControllerConfiguration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.prop_seg: Optional[Integer] = None
+        self.sync_jump_width: Optional[Integer] = None
+        self.time_seg1: Optional[Integer] = None
+        self.time_seg2: Optional[Integer] = None
 
 
 class CanControllerConfigurationBuilder:

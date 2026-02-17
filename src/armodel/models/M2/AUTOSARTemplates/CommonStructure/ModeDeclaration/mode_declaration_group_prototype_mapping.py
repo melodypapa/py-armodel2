@@ -1,41 +1,35 @@
-"""ModeDeclarationGroupPrototypeMapping AUTOSAR element."""
+"""ModeDeclarationGroupPrototypeMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 130)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class ModeDeclarationGroupPrototypeMapping(ARObject):
     """AUTOSAR ModeDeclarationGroupPrototypeMapping."""
 
+    first_mode_group_prototype: Optional[ModeDeclarationGroup]
+    mode: Optional[ModeDeclaration]
+    second_mode: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeDeclarationGroupPrototypeMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEDECLARATIONGROUPPROTOTYPEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroupPrototypeMapping":
-        """Create ModeDeclarationGroupPrototypeMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeDeclarationGroupPrototypeMapping instance
-        """
-        obj: ModeDeclarationGroupPrototypeMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_mode_group_prototype: Optional[ModeDeclarationGroup] = None
+        self.mode: Optional[ModeDeclaration] = None
+        self.second_mode: Optional[ModeDeclarationGroup] = None
 
 
 class ModeDeclarationGroupPrototypeMappingBuilder:

@@ -1,41 +1,35 @@
-"""ConfidenceInterval AUTOSAR element."""
+"""ConfidenceInterval AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 112)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
 
 class ConfidenceInterval(ARObject):
     """AUTOSAR ConfidenceInterval."""
 
+    lower_bound: Optional[MultidimensionalTime]
+    propability: Optional[Float]
+    upper_bound: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ConfidenceInterval."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConfidenceInterval to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONFIDENCEINTERVAL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConfidenceInterval":
-        """Create ConfidenceInterval from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConfidenceInterval instance
-        """
-        obj: ConfidenceInterval = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.lower_bound: Optional[MultidimensionalTime] = None
+        self.propability: Optional[Float] = None
+        self.upper_bound: Optional[MultidimensionalTime] = None
 
 
 class ConfidenceIntervalBuilder:

@@ -1,41 +1,56 @@
-"""FlexrayTpConnectionControl AUTOSAR element."""
+"""FlexrayTpConnectionControl AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 593)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols import (
+    FrArTpAckType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    TimeValue,
+)
 
-class FlexrayTpConnectionControl(ARObject):
+
+class FlexrayTpConnectionControl(Identifiable):
     """AUTOSAR FlexrayTpConnectionControl."""
 
+    ack_type: Optional[FrArTpAckType]
+    max_fc_wait: Optional[Integer]
+    max_number_of: Optional[Integer]
+    max_retries: Optional[Integer]
+    separation_cycle: Optional[Integer]
+    time_br: Optional[TimeValue]
+    time_buffer: Optional[TimeValue]
+    time_cs: Optional[TimeValue]
+    timeout_ar: Optional[TimeValue]
+    timeout_as: Optional[TimeValue]
+    timeout_bs: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize FlexrayTpConnectionControl."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FlexrayTpConnectionControl to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FLEXRAYTPCONNECTIONCONTROL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayTpConnectionControl":
-        """Create FlexrayTpConnectionControl from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayTpConnectionControl instance
-        """
-        obj: FlexrayTpConnectionControl = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ack_type: Optional[FrArTpAckType] = None
+        self.max_fc_wait: Optional[Integer] = None
+        self.max_number_of: Optional[Integer] = None
+        self.max_retries: Optional[Integer] = None
+        self.separation_cycle: Optional[Integer] = None
+        self.time_br: Optional[TimeValue] = None
+        self.time_buffer: Optional[TimeValue] = None
+        self.time_cs: Optional[TimeValue] = None
+        self.timeout_ar: Optional[TimeValue] = None
+        self.timeout_as: Optional[TimeValue] = None
+        self.timeout_bs: Optional[TimeValue] = None
+        self.timeout_cr: Optional[TimeValue] = None
 
 
 class FlexrayTpConnectionControlBuilder:

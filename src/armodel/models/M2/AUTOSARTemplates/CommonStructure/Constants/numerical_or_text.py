@@ -1,41 +1,32 @@
-"""NumericalOrText AUTOSAR element."""
+"""NumericalOrText AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 323)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+    String,
+)
 
 
 class NumericalOrText(ARObject):
     """AUTOSAR NumericalOrText."""
 
+    vf: Optional[Numerical]
+    vt: Optional[String]
     def __init__(self) -> None:
         """Initialize NumericalOrText."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NumericalOrText to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NUMERICALORTEXT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NumericalOrText":
-        """Create NumericalOrText from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NumericalOrText instance
-        """
-        obj: NumericalOrText = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.vf: Optional[Numerical] = None
+        self.vt: Optional[String] = None
 
 
 class NumericalOrTextBuilder:

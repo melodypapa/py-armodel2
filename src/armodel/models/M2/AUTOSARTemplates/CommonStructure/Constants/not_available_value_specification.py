@@ -1,41 +1,30 @@
-"""NotAvailableValueSpecification AUTOSAR element."""
+"""NotAvailableValueSpecification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 440)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class NotAvailableValueSpecification(ARObject):
+
+class NotAvailableValueSpecification(ValueSpecification):
     """AUTOSAR NotAvailableValueSpecification."""
 
+    default_pattern: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize NotAvailableValueSpecification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NotAvailableValueSpecification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NOTAVAILABLEVALUESPECIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NotAvailableValueSpecification":
-        """Create NotAvailableValueSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NotAvailableValueSpecification instance
-        """
-        obj: NotAvailableValueSpecification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_pattern: Optional[PositiveInteger] = None
 
 
 class NotAvailableValueSpecificationBuilder:

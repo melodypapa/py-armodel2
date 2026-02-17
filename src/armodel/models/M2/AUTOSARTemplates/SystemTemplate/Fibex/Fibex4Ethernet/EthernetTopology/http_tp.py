@@ -1,41 +1,42 @@
-"""HttpTp AUTOSAR element."""
+"""HttpTp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 461)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
+    TransportProtocolConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+    UriString,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_tp import (
+    TcpTp,
+)
 
-class HttpTp(ARObject):
+
+class HttpTp(TransportProtocolConfiguration):
     """AUTOSAR HttpTp."""
 
+    content_type: Optional[String]
+    protocol_version: Optional[String]
+    request_method_enum: Optional[Any]
+    tcp_tp_config: Optional[TcpTp]
+    uri: Optional[UriString]
     def __init__(self) -> None:
         """Initialize HttpTp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HttpTp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HTTPTP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HttpTp":
-        """Create HttpTp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HttpTp instance
-        """
-        obj: HttpTp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.content_type: Optional[String] = None
+        self.protocol_version: Optional[String] = None
+        self.request_method_enum: Optional[Any] = None
+        self.tcp_tp_config: Optional[TcpTp] = None
+        self.uri: Optional[UriString] = None
 
 
 class HttpTpBuilder:

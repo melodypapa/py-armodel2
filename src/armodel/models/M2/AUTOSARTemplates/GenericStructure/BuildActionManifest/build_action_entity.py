@@ -1,41 +1,36 @@
-"""BuildActionEntity AUTOSAR element."""
+"""BuildActionEntity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 370)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_invocator import (
+    BuildActionInvocator,
+)
 
-class BuildActionEntity(ARObject):
+
+class BuildActionEntity(Identifiable):
     """AUTOSAR BuildActionEntity."""
+    """Abstract base class - do not instantiate directly."""
 
+    delivery_artifacts: list[AutosarEngineeringObject]
+    invocation: Optional[BuildActionInvocator]
     def __init__(self) -> None:
         """Initialize BuildActionEntity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildActionEntity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDACTIONENTITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildActionEntity":
-        """Create BuildActionEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildActionEntity instance
-        """
-        obj: BuildActionEntity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.delivery_artifacts: list[AutosarEngineeringObject] = []
+        self.invocation: Optional[BuildActionInvocator] = None
 
 
 class BuildActionEntityBuilder:

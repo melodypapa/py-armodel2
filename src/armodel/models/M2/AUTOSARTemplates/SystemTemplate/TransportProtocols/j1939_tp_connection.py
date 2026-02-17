@@ -1,41 +1,62 @@
-"""J1939TpConnection AUTOSAR element."""
+"""J1939TpConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 624)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
+    TpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.j1939_tp_node import (
+    J1939TpNode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.j1939_tp_pg import (
+    J1939TpPg,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.n_pdu import (
+    NPdu,
+)
 
-class J1939TpConnection(ARObject):
+
+class J1939TpConnection(TpConnection):
     """AUTOSAR J1939TpConnection."""
 
+    broadcast: Optional[Boolean]
+    buffer_ratio: Optional[PositiveInteger]
+    cancellation: Optional[Boolean]
+    data_pdu: Optional[NPdu]
+    dynamic_bs: Optional[Boolean]
+    flow_control_pdu: NPdu
+    max_bs: Optional[PositiveInteger]
+    max_exp_bs: Optional[PositiveInteger]
+    receivers: list[J1939TpNode]
+    retry: Optional[Boolean]
+    tp_pgs: list[J1939TpPg]
+    transmitter: Optional[J1939TpNode]
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939TpConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939TPCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939TpConnection":
-        """Create J1939TpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939TpConnection instance
-        """
-        obj: J1939TpConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.broadcast: Optional[Boolean] = None
+        self.buffer_ratio: Optional[PositiveInteger] = None
+        self.cancellation: Optional[Boolean] = None
+        self.data_pdu: Optional[NPdu] = None
+        self.dynamic_bs: Optional[Boolean] = None
+        self.flow_control_pdu: NPdu = None
+        self.max_bs: Optional[PositiveInteger] = None
+        self.max_exp_bs: Optional[PositiveInteger] = None
+        self.receivers: list[J1939TpNode] = []
+        self.retry: Optional[Boolean] = None
+        self.tp_pgs: list[J1939TpPg] = []
+        self.transmitter: Optional[J1939TpNode] = None
 
 
 class J1939TpConnectionBuilder:

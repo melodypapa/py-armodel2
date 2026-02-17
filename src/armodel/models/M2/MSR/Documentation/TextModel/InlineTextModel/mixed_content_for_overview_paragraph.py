@@ -1,41 +1,70 @@
-"""MixedContentForOverviewParagraph AUTOSAR element."""
+"""MixedContentForOverviewParagraph AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 289)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextModel.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
+    Superscript,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
+    Br,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.emphasis_text import (
+    EmphasisText,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.index_entry import (
+    IndexEntry,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.sl_overview_paragraph import (
+    SlOverviewParagraph,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
+    Traceable,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import (
+    Tt,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref import (
+    Xref,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref_target import (
+    XrefTarget,
+)
 
 
 class MixedContentForOverviewParagraph(ARObject):
     """AUTOSAR MixedContentForOverviewParagraph."""
 
+    br: Br
+    e: EmphasisText
+    ft: SlOverviewParagraph
+    ie: IndexEntry
+    sub: Superscript
+    sup: Superscript
+    trace: Traceable
+    tt: Tt
+    xref: Xref
+    xref_target: XrefTarget
     def __init__(self) -> None:
         """Initialize MixedContentForOverviewParagraph."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MixedContentForOverviewParagraph to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MIXEDCONTENTFOROVERVIEWPARAGRAPH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MixedContentForOverviewParagraph":
-        """Create MixedContentForOverviewParagraph from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MixedContentForOverviewParagraph instance
-        """
-        obj: MixedContentForOverviewParagraph = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.br: Br = None
+        self.e: EmphasisText = None
+        self.ft: SlOverviewParagraph = None
+        self.ie: IndexEntry = None
+        self.sub: Superscript = None
+        self.sup: Superscript = None
+        self.trace: Traceable = None
+        self.tt: Tt = None
+        self.xref: Xref = None
+        self.xref_target: XrefTarget = None
 
 
 class MixedContentForOverviewParagraphBuilder:

@@ -1,41 +1,43 @@
-"""RModeInAtomicSwcInstanceRef AUTOSAR element."""
+"""RModeInAtomicSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 943)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+    AbstractRequiredPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class RModeInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR RModeInAtomicSwcInstanceRef."""
 
+    base: Optional[AtomicSwComponentType]
+    context_mode_group_prototype: Optional[ModeDeclarationGroup]
+    context_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_mode_declaration: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RModeInAtomicSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RMODEINATOMICSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RModeInAtomicSwcInstanceRef":
-        """Create RModeInAtomicSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RModeInAtomicSwcInstanceRef instance
-        """
-        obj: RModeInAtomicSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[AtomicSwComponentType] = None
+        self.context_mode_group_prototype: Optional[ModeDeclarationGroup] = None
+        self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
+        self.target_mode_declaration: Optional[ModeDeclaration] = None
 
 
 class RModeInAtomicSwcInstanceRefBuilder:

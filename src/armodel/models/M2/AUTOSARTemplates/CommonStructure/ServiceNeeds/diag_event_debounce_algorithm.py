@@ -1,41 +1,28 @@
-"""DiagEventDebounceAlgorithm AUTOSAR element."""
+"""DiagEventDebounceAlgorithm AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 259)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 196)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 756)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class DiagEventDebounceAlgorithm(ARObject):
+
+class DiagEventDebounceAlgorithm(Identifiable):
     """AUTOSAR DiagEventDebounceAlgorithm."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize DiagEventDebounceAlgorithm."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagEventDebounceAlgorithm to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGEVENTDEBOUNCEALGORITHM")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceAlgorithm":
-        """Create DiagEventDebounceAlgorithm from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagEventDebounceAlgorithm instance
-        """
-        obj: DiagEventDebounceAlgorithm = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagEventDebounceAlgorithmBuilder:

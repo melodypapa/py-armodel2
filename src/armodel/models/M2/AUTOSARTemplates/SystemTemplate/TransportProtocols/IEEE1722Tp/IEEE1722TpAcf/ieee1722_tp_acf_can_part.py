@@ -1,41 +1,48 @@
-"""IEEE1722TpAcfCanPart AUTOSAR element."""
+"""IEEE1722TpAcfCanPart AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
+    IEEE1722TpAcfBusPart,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
+    CanAddressingModeType,
+    CanFrameTxBehaviorEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication.rx_identifier_range import (
+    RxIdentifierRange,
+)
 
-class IEEE1722TpAcfCanPart(ARObject):
+
+class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
     """AUTOSAR IEEE1722TpAcfCanPart."""
 
+    can_addressing: Optional[CanAddressingModeType]
+    can_bit_rate_switch: Optional[Boolean]
+    can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
+    can_identifier: Optional[RxIdentifierRange]
+    sdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCanPart."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAcfCanPart to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPACFCANPART")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfCanPart":
-        """Create IEEE1722TpAcfCanPart from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfCanPart instance
-        """
-        obj: IEEE1722TpAcfCanPart = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.can_addressing: Optional[CanAddressingModeType] = None
+        self.can_bit_rate_switch: Optional[Boolean] = None
+        self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
+        self.can_identifier: Optional[RxIdentifierRange] = None
+        self.sdu: Optional[PduTriggering] = None
 
 
 class IEEE1722TpAcfCanPartBuilder:

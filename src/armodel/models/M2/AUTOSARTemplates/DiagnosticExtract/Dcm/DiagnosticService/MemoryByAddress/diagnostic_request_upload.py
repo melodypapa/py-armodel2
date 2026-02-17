@@ -1,41 +1,27 @@
-"""DiagnosticRequestUpload AUTOSAR element."""
+"""DiagnosticRequestUpload AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 145)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_MemoryByAddress.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_addressable_range_access import (
+    DiagnosticMemoryAddressableRangeAccess,
+)
 
-class DiagnosticRequestUpload(ARObject):
+
+class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
     """AUTOSAR DiagnosticRequestUpload."""
 
+    request_upload: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestUpload."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestUpload to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTUPLOAD")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestUpload":
-        """Create DiagnosticRequestUpload from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestUpload instance
-        """
-        obj: DiagnosticRequestUpload = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request_upload: Optional[Any] = None
 
 
 class DiagnosticRequestUploadBuilder:

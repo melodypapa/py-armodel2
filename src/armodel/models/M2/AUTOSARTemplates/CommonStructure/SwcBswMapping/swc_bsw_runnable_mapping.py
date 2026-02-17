@@ -1,41 +1,33 @@
-"""SwcBswRunnableMapping AUTOSAR element."""
+"""SwcBswRunnableMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 110)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_SwcBswMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
+    BswModuleEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+    RunnableEntity,
+)
 
 
 class SwcBswRunnableMapping(ARObject):
     """AUTOSAR SwcBswRunnableMapping."""
 
+    bsw_entity: Optional[BswModuleEntity]
+    swc_runnable: Optional[RunnableEntity]
     def __init__(self) -> None:
         """Initialize SwcBswRunnableMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwcBswRunnableMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCBSWRUNNABLEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcBswRunnableMapping":
-        """Create SwcBswRunnableMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcBswRunnableMapping instance
-        """
-        obj: SwcBswRunnableMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bsw_entity: Optional[BswModuleEntity] = None
+        self.swc_runnable: Optional[RunnableEntity] = None
 
 
 class SwcBswRunnableMappingBuilder:

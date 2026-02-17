@@ -1,41 +1,37 @@
-"""StreamFilterRuleIpTp AUTOSAR element."""
+"""StreamFilterRuleIpTp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 137)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_ipv6_address import (
+    StreamFilterIpv6Address,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_port_range import (
+    StreamFilterPortRange,
+)
 
 
 class StreamFilterRuleIpTp(ARObject):
     """AUTOSAR StreamFilterRuleIpTp."""
 
+    destination: Optional[StreamFilterIpv6Address]
+    destination_ports: list[StreamFilterPortRange]
+    source: Optional[StreamFilterIpv6Address]
+    source_ports: list[StreamFilterPortRange]
     def __init__(self) -> None:
         """Initialize StreamFilterRuleIpTp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert StreamFilterRuleIpTp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("STREAMFILTERRULEIPTP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StreamFilterRuleIpTp":
-        """Create StreamFilterRuleIpTp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StreamFilterRuleIpTp instance
-        """
-        obj: StreamFilterRuleIpTp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.destination: Optional[StreamFilterIpv6Address] = None
+        self.destination_ports: list[StreamFilterPortRange] = []
+        self.source: Optional[StreamFilterIpv6Address] = None
+        self.source_ports: list[StreamFilterPortRange] = []
 
 
 class StreamFilterRuleIpTpBuilder:

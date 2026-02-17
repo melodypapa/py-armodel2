@@ -1,41 +1,31 @@
-"""SingleLanguageReferrable AUTOSAR element."""
+"""SingleLanguageReferrable AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_Identifiable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_long_name import (
+    SingleLanguageLongName,
+)
 
-class SingleLanguageReferrable(ARObject):
+
+class SingleLanguageReferrable(Referrable):
     """AUTOSAR SingleLanguageReferrable."""
+    """Abstract base class - do not instantiate directly."""
 
+    long_name1: Optional[SingleLanguageLongName]
     def __init__(self) -> None:
         """Initialize SingleLanguageReferrable."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SingleLanguageReferrable to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SINGLELANGUAGEREFERRABLE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SingleLanguageReferrable":
-        """Create SingleLanguageReferrable from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SingleLanguageReferrable instance
-        """
-        obj: SingleLanguageReferrable = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.long_name1: Optional[SingleLanguageLongName] = None
 
 
 class SingleLanguageReferrableBuilder:

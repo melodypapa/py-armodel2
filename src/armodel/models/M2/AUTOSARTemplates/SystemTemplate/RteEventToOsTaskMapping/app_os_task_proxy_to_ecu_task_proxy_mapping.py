@@ -1,41 +1,37 @@
-"""AppOsTaskProxyToEcuTaskProxyMapping AUTOSAR element."""
+"""AppOsTaskProxyToEcuTaskProxyMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 209)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_RteEventToOsTaskMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.os_task_proxy import (
+    OsTaskProxy,
+)
 
-class AppOsTaskProxyToEcuTaskProxyMapping(ARObject):
+
+class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
     """AUTOSAR AppOsTaskProxyToEcuTaskProxyMapping."""
 
+    app_task_proxy: Optional[OsTaskProxy]
+    ecu_task_proxy: Optional[OsTaskProxy]
+    offset: Optional[Integer]
     def __init__(self) -> None:
         """Initialize AppOsTaskProxyToEcuTaskProxyMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AppOsTaskProxyToEcuTaskProxyMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPOSTASKPROXYTOECUTASKPROXYMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AppOsTaskProxyToEcuTaskProxyMapping":
-        """Create AppOsTaskProxyToEcuTaskProxyMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AppOsTaskProxyToEcuTaskProxyMapping instance
-        """
-        obj: AppOsTaskProxyToEcuTaskProxyMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.app_task_proxy: Optional[OsTaskProxy] = None
+        self.ecu_task_proxy: Optional[OsTaskProxy] = None
+        self.offset: Optional[Integer] = None
 
 
 class AppOsTaskProxyToEcuTaskProxyMappingBuilder:

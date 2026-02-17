@@ -1,41 +1,33 @@
-"""IdsmRateLimitation AUTOSAR element."""
+"""IdsmRateLimitation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+    PositiveInteger,
+)
 
-class IdsmRateLimitation(ARObject):
+
+class IdsmRateLimitation(Identifiable):
     """AUTOSAR IdsmRateLimitation."""
 
+    max_events_in: PositiveInteger
+    time_interval: Float
     def __init__(self) -> None:
         """Initialize IdsmRateLimitation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsmRateLimitation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSMRATELIMITATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmRateLimitation":
-        """Create IdsmRateLimitation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmRateLimitation instance
-        """
-        obj: IdsmRateLimitation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_events_in: PositiveInteger = None
+        self.time_interval: Float = None
 
 
 class IdsmRateLimitationBuilder:

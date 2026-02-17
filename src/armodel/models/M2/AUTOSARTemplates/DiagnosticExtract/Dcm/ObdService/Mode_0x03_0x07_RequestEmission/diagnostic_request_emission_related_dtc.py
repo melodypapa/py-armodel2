@@ -1,41 +1,27 @@
-"""DiagnosticRequestEmissionRelatedDTC AUTOSAR element."""
+"""DiagnosticRequestEmissionRelatedDTC AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 153)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x03_0x07_RequestEmission.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
 
-class DiagnosticRequestEmissionRelatedDTC(ARObject):
+
+class DiagnosticRequestEmissionRelatedDTC(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestEmissionRelatedDTC."""
 
+    request: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTC."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestEmissionRelatedDTC to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTEMISSIONRELATEDDTC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestEmissionRelatedDTC":
-        """Create DiagnosticRequestEmissionRelatedDTC from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestEmissionRelatedDTC instance
-        """
-        obj: DiagnosticRequestEmissionRelatedDTC = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request: Optional[Any] = None
 
 
 class DiagnosticRequestEmissionRelatedDTCBuilder:

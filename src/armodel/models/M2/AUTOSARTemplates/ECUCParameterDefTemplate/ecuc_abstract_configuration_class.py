@@ -1,41 +1,31 @@
-"""EcucAbstractConfigurationClass AUTOSAR element."""
+"""EcucAbstractConfigurationClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 51)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
+    EcucConfigurationClassEnum,
+)
 
 
 class EcucAbstractConfigurationClass(ARObject):
     """AUTOSAR EcucAbstractConfigurationClass."""
+    """Abstract base class - do not instantiate directly."""
 
+    config_class: Optional[EcucConfigurationClassEnum]
+    config_variant: Optional[Any]
     def __init__(self) -> None:
         """Initialize EcucAbstractConfigurationClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucAbstractConfigurationClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCABSTRACTCONFIGURATIONCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAbstractConfigurationClass":
-        """Create EcucAbstractConfigurationClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucAbstractConfigurationClass instance
-        """
-        obj: EcucAbstractConfigurationClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.config_class: Optional[EcucConfigurationClassEnum] = None
+        self.config_variant: Optional[Any] = None
 
 
 class EcucAbstractConfigurationClassBuilder:

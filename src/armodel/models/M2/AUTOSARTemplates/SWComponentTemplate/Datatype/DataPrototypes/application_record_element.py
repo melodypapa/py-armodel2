@@ -1,41 +1,32 @@
-"""ApplicationRecordElement AUTOSAR element."""
+"""ApplicationRecordElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 261)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1997)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 43)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_DataPrototypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_composite_element_data_prototype import (
+    ApplicationCompositeElementDataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class ApplicationRecordElement(ARObject):
+
+class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationRecordElement."""
 
+    is_optional: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ApplicationRecordElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationRecordElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONRECORDELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationRecordElement":
-        """Create ApplicationRecordElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationRecordElement instance
-        """
-        obj: ApplicationRecordElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.is_optional: Optional[Boolean] = None
 
 
 class ApplicationRecordElementBuilder:

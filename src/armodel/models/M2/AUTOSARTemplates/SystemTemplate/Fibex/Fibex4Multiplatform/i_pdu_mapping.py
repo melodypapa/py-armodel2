@@ -1,41 +1,45 @@
-"""IPduMapping AUTOSAR element."""
+"""IPduMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 840)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Multiplatform.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.target_i_pdu_ref import (
+    TargetIPduRef,
+)
 
 
 class IPduMapping(ARObject):
     """AUTOSAR IPduMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    pdu_max_length: Optional[PositiveInteger]
+    pdur_tp_chunk: Optional[PositiveInteger]
+    source_i_pdu: Optional[PduTriggering]
+    target_i_pdu: Optional[TargetIPduRef]
     def __init__(self) -> None:
         """Initialize IPduMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IPduMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPDUMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IPduMapping":
-        """Create IPduMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IPduMapping instance
-        """
-        obj: IPduMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.introduction: Optional[DocumentationBlock] = None
+        self.pdu_max_length: Optional[PositiveInteger] = None
+        self.pdur_tp_chunk: Optional[PositiveInteger] = None
+        self.source_i_pdu: Optional[PduTriggering] = None
+        self.target_i_pdu: Optional[TargetIPduRef] = None
 
 
 class IPduMappingBuilder:

@@ -1,41 +1,25 @@
-"""DdsDestinationOrder AUTOSAR element."""
+"""DdsDestinationOrder AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 536)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DdsDestinationOrder(ARObject):
     """AUTOSAR DdsDestinationOrder."""
 
+    destination: Optional[DdsDestinationOrder]
     def __init__(self) -> None:
         """Initialize DdsDestinationOrder."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DdsDestinationOrder to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DDSDESTINATIONORDER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsDestinationOrder":
-        """Create DdsDestinationOrder from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsDestinationOrder instance
-        """
-        obj: DdsDestinationOrder = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.destination: Optional[DdsDestinationOrder] = None
 
 
 class DdsDestinationOrderBuilder:

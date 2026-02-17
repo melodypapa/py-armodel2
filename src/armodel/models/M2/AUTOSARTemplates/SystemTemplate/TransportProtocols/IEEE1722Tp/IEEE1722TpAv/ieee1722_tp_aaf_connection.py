@@ -1,41 +1,53 @@
-"""IEEE1722TpAafConnection AUTOSAR element."""
+"""IEEE1722TpAafConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 642)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAv.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
+    IEEE1722TpAvConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
+    IEEE1722TpAafAes3DataTypeEnum,
+    IEEE1722TpAafFormatEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class IEEE1722TpAafConnection(ARObject):
+
+class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpAafConnection."""
 
+    aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum]
+    aaf_format_enum: Optional[IEEE1722TpAafFormatEnum]
+    aaf_nominal_rate: Optional[Any]
+    aes3_data_type_h: Optional[PositiveInteger]
+    aes3_data_type_l: Optional[PositiveInteger]
+    channels_per: Optional[PositiveInteger]
+    event_default: Optional[PositiveInteger]
+    pcm_bit_depth: Optional[PositiveInteger]
+    sparse: Optional[Boolean]
+    streams_per: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAafConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAafConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPAAFCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAafConnection":
-        """Create IEEE1722TpAafConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAafConnection instance
-        """
-        obj: IEEE1722TpAafConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum] = None
+        self.aaf_format_enum: Optional[IEEE1722TpAafFormatEnum] = None
+        self.aaf_nominal_rate: Optional[Any] = None
+        self.aes3_data_type_h: Optional[PositiveInteger] = None
+        self.aes3_data_type_l: Optional[PositiveInteger] = None
+        self.channels_per: Optional[PositiveInteger] = None
+        self.event_default: Optional[PositiveInteger] = None
+        self.pcm_bit_depth: Optional[PositiveInteger] = None
+        self.sparse: Optional[Boolean] = None
+        self.streams_per: Optional[PositiveInteger] = None
 
 
 class IEEE1722TpAafConnectionBuilder:

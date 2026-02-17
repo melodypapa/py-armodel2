@@ -1,41 +1,37 @@
-"""ClientComSpec AUTOSAR element."""
+"""ClientComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 187)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class ClientComSpec(ARObject):
+
+class ClientComSpec(RPortComSpec):
     """AUTOSAR ClientComSpec."""
 
+    end_to_end_call: Optional[TimeValue]
+    operation: Optional[ClientServerOperation]
+    transformation_coms: list[Any]
     def __init__(self) -> None:
         """Initialize ClientComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClientComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLIENTCOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientComSpec":
-        """Create ClientComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientComSpec instance
-        """
-        obj: ClientComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.end_to_end_call: Optional[TimeValue] = None
+        self.operation: Optional[ClientServerOperation] = None
+        self.transformation_coms: list[Any] = []
 
 
 class ClientComSpecBuilder:

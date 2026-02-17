@@ -1,41 +1,41 @@
-"""TimeSyncServerConfiguration AUTOSAR element."""
+"""TimeSyncServerConfiguration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 470)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
+    TimeSyncTechnologyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+    TimeValue,
+)
 
-class TimeSyncServerConfiguration(ARObject):
+
+class TimeSyncServerConfiguration(Referrable):
     """AUTOSAR TimeSyncServerConfiguration."""
 
+    priority: Optional[PositiveInteger]
+    sync_interval: Optional[TimeValue]
+    time_sync_server_identifier: Optional[String]
+    time_sync: Optional[TimeSyncTechnologyEnum]
     def __init__(self) -> None:
         """Initialize TimeSyncServerConfiguration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimeSyncServerConfiguration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMESYNCSERVERCONFIGURATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimeSyncServerConfiguration":
-        """Create TimeSyncServerConfiguration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimeSyncServerConfiguration instance
-        """
-        obj: TimeSyncServerConfiguration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.priority: Optional[PositiveInteger] = None
+        self.sync_interval: Optional[TimeValue] = None
+        self.time_sync_server_identifier: Optional[String] = None
+        self.time_sync: Optional[TimeSyncTechnologyEnum] = None
 
 
 class TimeSyncServerConfigurationBuilder:

@@ -1,41 +1,37 @@
-"""SomeipSdClientEventGroupTimingConfig AUTOSAR element."""
+"""SomeipSdClientEventGroupTimingConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 521)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.request_response_delay import (
+    RequestResponseDelay,
+)
 
-class SomeipSdClientEventGroupTimingConfig(ARObject):
+
+class SomeipSdClientEventGroupTimingConfig(ARElement):
     """AUTOSAR SomeipSdClientEventGroupTimingConfig."""
 
+    request: Optional[RequestResponseDelay]
+    subscribe: Optional[PositiveInteger]
+    time_to_live: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SomeipSdClientEventGroupTimingConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SomeipSdClientEventGroupTimingConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPSDCLIENTEVENTGROUPTIMINGCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipSdClientEventGroupTimingConfig":
-        """Create SomeipSdClientEventGroupTimingConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipSdClientEventGroupTimingConfig instance
-        """
-        obj: SomeipSdClientEventGroupTimingConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request: Optional[RequestResponseDelay] = None
+        self.subscribe: Optional[PositiveInteger] = None
+        self.time_to_live: Optional[PositiveInteger] = None
 
 
 class SomeipSdClientEventGroupTimingConfigBuilder:

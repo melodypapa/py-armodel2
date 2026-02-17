@@ -1,41 +1,30 @@
-"""BswCompositionTiming AUTOSAR element."""
+"""BswCompositionTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
+    TimingExtension,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
+    BswImplementation,
+)
 
-class BswCompositionTiming(ARObject):
+
+class BswCompositionTiming(TimingExtension):
     """AUTOSAR BswCompositionTiming."""
 
+    implementations: list[BswImplementation]
     def __init__(self) -> None:
         """Initialize BswCompositionTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswCompositionTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWCOMPOSITIONTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswCompositionTiming":
-        """Create BswCompositionTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswCompositionTiming instance
-        """
-        obj: BswCompositionTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.implementations: list[BswImplementation] = []
 
 
 class BswCompositionTimingBuilder:

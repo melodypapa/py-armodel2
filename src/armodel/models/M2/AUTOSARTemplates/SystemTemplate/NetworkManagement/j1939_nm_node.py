@@ -1,41 +1,36 @@
-"""J1939NmNode AUTOSAR element."""
+"""J1939NmNode AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 322)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 691)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node import (
+    NmNode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
+    J1939NmAddressConfigurationCapabilityEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_node_name import (
+    J1939NodeName,
+)
 
-class J1939NmNode(ARObject):
+
+class J1939NmNode(NmNode):
     """AUTOSAR J1939NmNode."""
 
+    address: Optional[J1939NmAddressConfigurationCapabilityEnum]
+    node_name: Optional[J1939NodeName]
     def __init__(self) -> None:
         """Initialize J1939NmNode."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939NmNode to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939NMNODE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939NmNode":
-        """Create J1939NmNode from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939NmNode instance
-        """
-        obj: J1939NmNode = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.address: Optional[J1939NmAddressConfigurationCapabilityEnum] = None
+        self.node_name: Optional[J1939NodeName] = None
 
 
 class J1939NmNodeBuilder:

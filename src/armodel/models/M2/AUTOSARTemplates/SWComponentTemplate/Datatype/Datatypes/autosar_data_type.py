@@ -1,41 +1,35 @@
-"""AutosarDataType AUTOSAR element."""
+"""AutosarDataType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 306)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 231)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2001)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 44)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
-class AutosarDataType(ARObject):
+
+class AutosarDataType(ARElement):
     """AUTOSAR AutosarDataType."""
+    """Abstract base class - do not instantiate directly."""
 
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize AutosarDataType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AutosarDataType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("AUTOSARDATATYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AutosarDataType":
-        """Create AutosarDataType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AutosarDataType instance
-        """
-        obj: AutosarDataType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_data_def: Optional[SwDataDefProps] = None
 
 
 class AutosarDataTypeBuilder:

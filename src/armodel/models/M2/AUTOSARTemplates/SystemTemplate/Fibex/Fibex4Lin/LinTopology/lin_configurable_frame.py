@@ -1,41 +1,33 @@
-"""LinConfigurableFrame AUTOSAR element."""
+"""LinConfigurableFrame AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 99)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
+    LinFrame,
+)
 
 
 class LinConfigurableFrame(ARObject):
     """AUTOSAR LinConfigurableFrame."""
 
+    frame: Optional[LinFrame]
+    message_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinConfigurableFrame."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinConfigurableFrame to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINCONFIGURABLEFRAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinConfigurableFrame":
-        """Create LinConfigurableFrame from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinConfigurableFrame instance
-        """
-        obj: LinConfigurableFrame = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.frame: Optional[LinFrame] = None
+        self.message_id: Optional[PositiveInteger] = None
 
 
 class LinConfigurableFrameBuilder:

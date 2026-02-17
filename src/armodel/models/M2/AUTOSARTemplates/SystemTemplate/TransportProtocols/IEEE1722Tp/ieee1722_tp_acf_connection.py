@@ -1,41 +1,38 @@
-"""IEEE1722TpAcfConnection AUTOSAR element."""
+"""IEEE1722TpAcfConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 656)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
+    IEEE1722TpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
+    IEEE1722TpAcfBus,
+)
 
-class IEEE1722TpAcfConnection(ARObject):
+
+class IEEE1722TpAcfConnection(IEEE1722TpConnection):
     """AUTOSAR IEEE1722TpAcfConnection."""
 
+    acf_transporteds: list[IEEE1722TpAcfBus]
+    collection: Optional[TimeValue]
+    mixed_bus_type: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAcfConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPACFCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfConnection":
-        """Create IEEE1722TpAcfConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfConnection instance
-        """
-        obj: IEEE1722TpAcfConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.acf_transporteds: list[IEEE1722TpAcfBus] = []
+        self.collection: Optional[TimeValue] = None
+        self.mixed_bus_type: Optional[Boolean] = None
 
 
 class IEEE1722TpAcfConnectionBuilder:

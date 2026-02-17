@@ -1,41 +1,30 @@
-"""CanTpAddress AUTOSAR element."""
+"""CanTpAddress AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 610)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
-class CanTpAddress(ARObject):
+
+class CanTpAddress(Identifiable):
     """AUTOSAR CanTpAddress."""
 
+    tp_address: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CanTpAddress."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanTpAddress to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANTPADDRESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanTpAddress":
-        """Create CanTpAddress from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanTpAddress instance
-        """
-        obj: CanTpAddress = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_address: Optional[Integer] = None
 
 
 class CanTpAddressBuilder:

@@ -1,41 +1,27 @@
-"""DiagnosticClearResetEmissionRelatedInfo AUTOSAR element."""
+"""DiagnosticClearResetEmissionRelatedInfo AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 154)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x04_ClearResetEmission.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
 
-class DiagnosticClearResetEmissionRelatedInfo(ARObject):
+
+class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticClearResetEmissionRelatedInfo."""
 
+    clear_reset: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticClearResetEmissionRelatedInfo."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticClearResetEmissionRelatedInfo to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCLEARRESETEMISSIONRELATEDINFO")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticClearResetEmissionRelatedInfo":
-        """Create DiagnosticClearResetEmissionRelatedInfo from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticClearResetEmissionRelatedInfo instance
-        """
-        obj: DiagnosticClearResetEmissionRelatedInfo = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.clear_reset: Optional[Any] = None
 
 
 class DiagnosticClearResetEmissionRelatedInfoBuilder:
@@ -43,9 +29,7 @@ class DiagnosticClearResetEmissionRelatedInfoBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticClearResetEmissionRelatedInfo = (
-            DiagnosticClearResetEmissionRelatedInfo()
-        )
+        self._obj: DiagnosticClearResetEmissionRelatedInfo = DiagnosticClearResetEmissionRelatedInfo()
 
     def build(self) -> DiagnosticClearResetEmissionRelatedInfo:
         """Build and return DiagnosticClearResetEmissionRelatedInfo object.

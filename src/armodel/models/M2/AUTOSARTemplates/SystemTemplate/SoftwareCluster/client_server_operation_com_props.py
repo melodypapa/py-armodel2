@@ -1,41 +1,30 @@
-"""ClientServerOperationComProps AUTOSAR element."""
+"""ClientServerOperationComProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 903)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_communication_resource_props import (
+    CpSoftwareClusterCommunicationResourceProps,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class ClientServerOperationComProps(ARObject):
+
+class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps):
     """AUTOSAR ClientServerOperationComProps."""
 
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ClientServerOperationComProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClientServerOperationComProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLIENTSERVEROPERATIONCOMPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClientServerOperationComProps":
-        """Create ClientServerOperationComProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerOperationComProps instance
-        """
-        obj: ClientServerOperationComProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.queue_length: Optional[PositiveInteger] = None
 
 
 class ClientServerOperationComPropsBuilder:

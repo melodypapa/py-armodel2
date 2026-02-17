@@ -1,41 +1,26 @@
-"""NPdu AUTOSAR element."""
+"""NPdu AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 301)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 343)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
+    IPdu,
+)
 
-class NPdu(ARObject):
+
+class NPdu(IPdu):
     """AUTOSAR NPdu."""
 
     def __init__(self) -> None:
         """Initialize NPdu."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NPdu to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NPDU")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NPdu":
-        """Create NPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NPdu instance
-        """
-        obj: NPdu = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class NPduBuilder:

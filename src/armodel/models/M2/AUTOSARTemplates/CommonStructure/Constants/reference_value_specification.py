@@ -1,41 +1,30 @@
-"""ReferenceValueSpecification AUTOSAR element."""
+"""ReferenceValueSpecification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 436)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
 
-class ReferenceValueSpecification(ARObject):
+
+class ReferenceValueSpecification(ValueSpecification):
     """AUTOSAR ReferenceValueSpecification."""
 
+    reference_value: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize ReferenceValueSpecification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ReferenceValueSpecification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("REFERENCEVALUESPECIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ReferenceValueSpecification":
-        """Create ReferenceValueSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ReferenceValueSpecification instance
-        """
-        obj: ReferenceValueSpecification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.reference_value: Optional[DataPrototype] = None
 
 
 class ReferenceValueSpecificationBuilder:

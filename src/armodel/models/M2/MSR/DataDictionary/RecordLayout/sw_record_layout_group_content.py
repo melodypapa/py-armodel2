@@ -1,41 +1,33 @@
-"""SwRecordLayoutGroupContent AUTOSAR element."""
+"""SwRecordLayoutGroupContent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 424)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_RecordLayout.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
+    SwRecordLayoutGroup,
+)
+from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_v import (
+    SwRecordLayoutV,
+)
 
 
 class SwRecordLayoutGroupContent(ARObject):
     """AUTOSAR SwRecordLayoutGroupContent."""
 
+    sw_record: Optional[SwRecordLayoutGroup]
+    sw_record_layout_v: Optional[SwRecordLayoutV]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroupContent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwRecordLayoutGroupContent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWRECORDLAYOUTGROUPCONTENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwRecordLayoutGroupContent":
-        """Create SwRecordLayoutGroupContent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwRecordLayoutGroupContent instance
-        """
-        obj: SwRecordLayoutGroupContent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sw_record: Optional[SwRecordLayoutGroup] = None
+        self.sw_record_layout_v: Optional[SwRecordLayoutV] = None
 
 
 class SwRecordLayoutGroupContentBuilder:

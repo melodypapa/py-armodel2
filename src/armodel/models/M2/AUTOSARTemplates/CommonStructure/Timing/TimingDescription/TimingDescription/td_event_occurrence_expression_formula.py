@@ -1,41 +1,40 @@
-"""TDEventOccurrenceExpressionFormula AUTOSAR element."""
+"""TDEventOccurrenceExpressionFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 84)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
+    AutosarOperationArgumentInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_mode_instance import (
+    TimingModeInstance,
+)
 
 
 class TDEventOccurrenceExpressionFormula(ARObject):
     """AUTOSAR TDEventOccurrenceExpressionFormula."""
 
+    argument: Optional[AutosarOperationArgumentInstance]
+    event: Optional[TimingDescriptionEvent]
+    mode: Optional[TimingModeInstance]
+    variable: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpressionFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventOccurrenceExpressionFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTOCCURRENCEEXPRESSIONFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpressionFormula":
-        """Create TDEventOccurrenceExpressionFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventOccurrenceExpressionFormula instance
-        """
-        obj: TDEventOccurrenceExpressionFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.argument: Optional[AutosarOperationArgumentInstance] = None
+        self.event: Optional[TimingDescriptionEvent] = None
+        self.mode: Optional[TimingModeInstance] = None
+        self.variable: Optional[Any] = None
 
 
 class TDEventOccurrenceExpressionFormulaBuilder:

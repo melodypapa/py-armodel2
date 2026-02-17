@@ -1,41 +1,42 @@
-"""ECUMapping AUTOSAR element."""
+"""ECUMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 182)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_ECUResourceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.ECUResourceMapping.hw_port_mapping import (
+    HwPortMapping,
+)
 
-class ECUMapping(ARObject):
+
+class ECUMapping(Identifiable):
     """AUTOSAR ECUMapping."""
 
+    comm_controllers: list[Any]
+    ecu: Optional[HwElement]
+    ecu_instance: Optional[EcuInstance]
+    hw_port_mapping: HwPortMapping
     def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ECUMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ECUMapping":
-        """Create ECUMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ECUMapping instance
-        """
-        obj: ECUMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.comm_controllers: list[Any] = []
+        self.ecu: Optional[HwElement] = None
+        self.ecu_instance: Optional[EcuInstance] = None
+        self.hw_port_mapping: HwPortMapping = None
 
 
 class ECUMappingBuilder:

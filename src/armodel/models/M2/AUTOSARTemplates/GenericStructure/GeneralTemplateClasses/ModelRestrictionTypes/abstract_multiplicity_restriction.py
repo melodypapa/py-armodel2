@@ -1,41 +1,33 @@
-"""AbstractMultiplicityRestriction AUTOSAR element."""
+"""AbstractMultiplicityRestriction AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 422)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 88)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ModelRestrictionTypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
 
 class AbstractMultiplicityRestriction(ARObject):
     """AUTOSAR AbstractMultiplicityRestriction."""
+    """Abstract base class - do not instantiate directly."""
 
+    lower_multiplicity: Optional[PositiveInteger]
+    upper_multiplicity: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize AbstractMultiplicityRestriction."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractMultiplicityRestriction to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTMULTIPLICITYRESTRICTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractMultiplicityRestriction":
-        """Create AbstractMultiplicityRestriction from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractMultiplicityRestriction instance
-        """
-        obj: AbstractMultiplicityRestriction = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.lower_multiplicity: Optional[PositiveInteger] = None
+        self.upper_multiplicity: Optional[Boolean] = None
 
 
 class AbstractMultiplicityRestrictionBuilder:

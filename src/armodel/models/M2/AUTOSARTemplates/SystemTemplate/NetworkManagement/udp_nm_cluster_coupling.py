@@ -1,41 +1,35 @@
-"""UdpNmClusterCoupling AUTOSAR element."""
+"""UdpNmClusterCoupling AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 688)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
+    NmClusterCoupling,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.udp_nm_cluster import (
+    UdpNmCluster,
+)
 
-class UdpNmClusterCoupling(ARObject):
+
+class UdpNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR UdpNmClusterCoupling."""
 
+    coupled_clusters: list[UdpNmCluster]
+    nm_immediate: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize UdpNmClusterCoupling."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UdpNmClusterCoupling to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("UDPNMCLUSTERCOUPLING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UdpNmClusterCoupling":
-        """Create UdpNmClusterCoupling from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UdpNmClusterCoupling instance
-        """
-        obj: UdpNmClusterCoupling = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.coupled_clusters: list[UdpNmCluster] = []
+        self.nm_immediate: Optional[Boolean] = None
 
 
 class UdpNmClusterCouplingBuilder:

@@ -1,41 +1,34 @@
-"""ApplicationArrayDataType AUTOSAR element."""
+"""ApplicationArrayDataType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 252)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1995)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 35)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_composite_data_type import (
+    ApplicationCompositeDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class ApplicationArrayDataType(ARObject):
+
+class ApplicationArrayDataType(ApplicationCompositeDataType):
     """AUTOSAR ApplicationArrayDataType."""
 
+    dynamic_array: Optional[String]
+    element: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationArrayDataType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationArrayDataType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONARRAYDATATYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationArrayDataType":
-        """Create ApplicationArrayDataType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationArrayDataType instance
-        """
-        obj: ApplicationArrayDataType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dynamic_array: Optional[String] = None
+        self.element: Optional[Any] = None
 
 
 class ApplicationArrayDataTypeBuilder:

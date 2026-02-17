@@ -1,41 +1,34 @@
-"""Xfile AUTOSAR element."""
+"""Xfile AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 319)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.single_language_referrable import (
+    SingleLanguageReferrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class Xfile(ARObject):
+
+class Xfile(SingleLanguageReferrable):
     """AUTOSAR Xfile."""
 
+    tool: Optional[String]
+    tool_version: Optional[String]
+    url: Optional[Any]
     def __init__(self) -> None:
         """Initialize Xfile."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Xfile to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("XFILE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Xfile":
-        """Create Xfile from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Xfile instance
-        """
-        obj: Xfile = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tool: Optional[String] = None
+        self.tool_version: Optional[String] = None
+        self.url: Optional[Any] = None
 
 
 class XfileBuilder:

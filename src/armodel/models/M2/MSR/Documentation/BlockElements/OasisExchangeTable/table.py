@@ -1,41 +1,57 @@
-"""Table AUTOSAR element."""
+"""Table AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 332)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    FloatEnum,
+    FrameEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    String,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    TableSeparatorString,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
+    Caption,
+)
 
-class Table(ARObject):
+
+class Table(Paginateable):
     """AUTOSAR Table."""
 
+    colsep: Optional[TableSeparatorString]
+    float: FloatEnum
+    frame: Optional[FrameEnum]
+    help_entry: Optional[String]
+    orient: Optional[Any]
+    pgwide: Optional[NameToken]
+    rowsep: Optional[TableSeparatorString]
+    table_caption: Optional[Caption]
+    tabstyle: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize Table."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Table to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TABLE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Table":
-        """Create Table from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Table instance
-        """
-        obj: Table = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.colsep: Optional[TableSeparatorString] = None
+        self.float: FloatEnum = None
+        self.frame: Optional[FrameEnum] = None
+        self.help_entry: Optional[String] = None
+        self.orient: Optional[Any] = None
+        self.pgwide: Optional[NameToken] = None
+        self.rowsep: Optional[TableSeparatorString] = None
+        self.table_caption: Optional[Caption] = None
+        self.tabstyle: Optional[NameToken] = None
 
 
 class TableBuilder:

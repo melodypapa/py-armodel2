@@ -1,41 +1,35 @@
-"""MultiLanguageParagraph AUTOSAR element."""
+"""MultiLanguageParagraph AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 290)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import (
+    LParagraph,
+)
 
-class MultiLanguageParagraph(ARObject):
+
+class MultiLanguageParagraph(Paginateable):
     """AUTOSAR MultiLanguageParagraph."""
 
+    help_entry: Optional[String]
+    l1: LParagraph
     def __init__(self) -> None:
         """Initialize MultiLanguageParagraph."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MultiLanguageParagraph to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MULTILANGUAGEPARAGRAPH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiLanguageParagraph":
-        """Create MultiLanguageParagraph from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultiLanguageParagraph instance
-        """
-        obj: MultiLanguageParagraph = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.help_entry: Optional[String] = None
+        self.l1: LParagraph = None
 
 
 class MultiLanguageParagraphBuilder:

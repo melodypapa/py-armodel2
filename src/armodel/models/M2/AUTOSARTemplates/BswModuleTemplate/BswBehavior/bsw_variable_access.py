@@ -1,41 +1,35 @@
-"""BswVariableAccess AUTOSAR element."""
+"""BswVariableAccess AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 81)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
+    BswDistinguishedPartition,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class BswVariableAccess(ARObject):
+
+class BswVariableAccess(Referrable):
     """AUTOSAR BswVariableAccess."""
 
+    accessed_variable: Optional[VariableDataPrototype]
+    contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:
         """Initialize BswVariableAccess."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswVariableAccess to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWVARIABLEACCESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswVariableAccess":
-        """Create BswVariableAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswVariableAccess instance
-        """
-        obj: BswVariableAccess = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.accessed_variable: Optional[VariableDataPrototype] = None
+        self.contexts: list[BswDistinguishedPartition] = []
 
 
 class BswVariableAccessBuilder:

@@ -1,41 +1,30 @@
-"""IndexEntry AUTOSAR element."""
+"""IndexEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 317)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
+    Superscript,
+)
 
 
 class IndexEntry(ARObject):
     """AUTOSAR IndexEntry."""
 
+    sub: Superscript
+    sup: Superscript
     def __init__(self) -> None:
         """Initialize IndexEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IndexEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INDEXENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IndexEntry":
-        """Create IndexEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IndexEntry instance
-        """
-        obj: IndexEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sub: Superscript = None
+        self.sup: Superscript = None
 
 
 class IndexEntryBuilder:

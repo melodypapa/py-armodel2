@@ -1,41 +1,33 @@
-"""TimingEvent AUTOSAR element."""
+"""TimingEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 532)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 254)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
-class TimingEvent(ARObject):
+
+class TimingEvent(RTEEvent):
     """AUTOSAR TimingEvent."""
 
+    offset: Optional[TimeValue]
+    period: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TimingEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingEvent":
-        """Create TimingEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingEvent instance
-        """
-        obj: TimingEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.offset: Optional[TimeValue] = None
+        self.period: Optional[TimeValue] = None
 
 
 class TimingEventBuilder:

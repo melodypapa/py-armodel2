@@ -1,41 +1,30 @@
-"""ApplicationEntry AUTOSAR element."""
+"""ApplicationEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 433)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
+    ScheduleTableEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
+    LinFrameTriggering,
+)
 
-class ApplicationEntry(ARObject):
+
+class ApplicationEntry(ScheduleTableEntry):
     """AUTOSAR ApplicationEntry."""
 
+    frame_triggering: Optional[LinFrameTriggering]
     def __init__(self) -> None:
         """Initialize ApplicationEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationEntry":
-        """Create ApplicationEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationEntry instance
-        """
-        obj: ApplicationEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.frame_triggering: Optional[LinFrameTriggering] = None
 
 
 class ApplicationEntryBuilder:

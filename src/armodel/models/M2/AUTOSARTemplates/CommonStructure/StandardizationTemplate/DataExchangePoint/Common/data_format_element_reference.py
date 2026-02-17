@@ -1,41 +1,26 @@
-"""DataFormatElementReference AUTOSAR element."""
+"""DataFormatElementReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 91)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Common.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.spec_element_reference import (
+    SpecElementReference,
+)
 
-class DataFormatElementReference(ARObject):
+
+class DataFormatElementReference(SpecElementReference):
     """AUTOSAR DataFormatElementReference."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize DataFormatElementReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataFormatElementReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAFORMATELEMENTREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataFormatElementReference":
-        """Create DataFormatElementReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataFormatElementReference instance
-        """
-        obj: DataFormatElementReference = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DataFormatElementReferenceBuilder:

@@ -1,41 +1,26 @@
-"""RuntimeError AUTOSAR element."""
+"""RuntimeError AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 263)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 832)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_failure import (
+    TracedFailure,
+)
 
-class RuntimeError(ARObject):
+
+class RuntimeError(TracedFailure):
     """AUTOSAR RuntimeError."""
 
     def __init__(self) -> None:
         """Initialize RuntimeError."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RuntimeError to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RUNTIMEERROR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RuntimeError":
-        """Create RuntimeError from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RuntimeError instance
-        """
-        obj: RuntimeError = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class RuntimeErrorBuilder:

@@ -1,41 +1,51 @@
-"""SOMEIPTransformationISignalProps AUTOSAR element."""
+"""SOMEIPTransformationISignalProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 778)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
+    SOMEIPMessageTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.tlv_data_id_definition_set import (
+    TlvDataIdDefinitionSet,
+)
 
 
 class SOMEIPTransformationISignalProps(ARObject):
     """AUTOSAR SOMEIPTransformationISignalProps."""
 
+    implements: Optional[Boolean]
+    interface_version: Optional[PositiveInteger]
+    is_dynamic: Optional[Boolean]
+    message_type: Optional[SOMEIPMessageTypeEnum]
+    size_of_array: Optional[PositiveInteger]
+    size_of_string: Optional[PositiveInteger]
+    size_of_struct: Optional[PositiveInteger]
+    size_of_union: Optional[PositiveInteger]
+    tlv_data_ids: list[TlvDataIdDefinitionSet]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationISignalProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SOMEIPTransformationISignalProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPTRANSFORMATIONISIGNALPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationISignalProps":
-        """Create SOMEIPTransformationISignalProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SOMEIPTransformationISignalProps instance
-        """
-        obj: SOMEIPTransformationISignalProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.implements: Optional[Boolean] = None
+        self.interface_version: Optional[PositiveInteger] = None
+        self.is_dynamic: Optional[Boolean] = None
+        self.message_type: Optional[SOMEIPMessageTypeEnum] = None
+        self.size_of_array: Optional[PositiveInteger] = None
+        self.size_of_string: Optional[PositiveInteger] = None
+        self.size_of_struct: Optional[PositiveInteger] = None
+        self.size_of_union: Optional[PositiveInteger] = None
+        self.tlv_data_ids: list[TlvDataIdDefinitionSet] = []
 
 
 class SOMEIPTransformationISignalPropsBuilder:

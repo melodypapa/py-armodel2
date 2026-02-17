@@ -1,41 +1,28 @@
-"""AbstractCanCommunicationControllerAttributes AUTOSAR element."""
+"""AbstractCanCommunicationControllerAttributes AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AbstractCanCommunicationControllerAttributes(ARObject):
     """AUTOSAR AbstractCanCommunicationControllerAttributes."""
+    """Abstract base class - do not instantiate directly."""
 
+    can_controller_fd: Optional[Any]
+    can_controller_xl: Optional[Any]
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationControllerAttributes."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractCanCommunicationControllerAttributes to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTCANCOMMUNICATIONCONTROLLERATTRIBUTES")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationControllerAttributes":
-        """Create AbstractCanCommunicationControllerAttributes from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractCanCommunicationControllerAttributes instance
-        """
-        obj: AbstractCanCommunicationControllerAttributes = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.can_controller_fd: Optional[Any] = None
+        self.can_controller_xl: Optional[Any] = None
 
 
 class AbstractCanCommunicationControllerAttributesBuilder:
@@ -43,9 +30,7 @@ class AbstractCanCommunicationControllerAttributesBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: AbstractCanCommunicationControllerAttributes = (
-            AbstractCanCommunicationControllerAttributes()
-        )
+        self._obj: AbstractCanCommunicationControllerAttributes = AbstractCanCommunicationControllerAttributes()
 
     def build(self) -> AbstractCanCommunicationControllerAttributes:
         """Build and return AbstractCanCommunicationControllerAttributes object.

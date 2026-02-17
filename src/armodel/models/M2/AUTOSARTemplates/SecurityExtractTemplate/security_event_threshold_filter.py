@@ -1,41 +1,33 @@
-"""SecurityEventThresholdFilter AUTOSAR element."""
+"""SecurityEventThresholdFilter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 26)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
+    AbstractSecurityEventFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
-class SecurityEventThresholdFilter(ARObject):
+
+class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventThresholdFilter."""
 
+    interval_length: Optional[TimeValue]
+    threshold: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventThresholdFilter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventThresholdFilter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTTHRESHOLDFILTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventThresholdFilter":
-        """Create SecurityEventThresholdFilter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventThresholdFilter instance
-        """
-        obj: SecurityEventThresholdFilter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.interval_length: Optional[TimeValue] = None
+        self.threshold: Optional[PositiveInteger] = None
 
 
 class SecurityEventThresholdFilterBuilder:

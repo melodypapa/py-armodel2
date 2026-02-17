@@ -1,41 +1,30 @@
-"""DiagnosticJ1939Spn AUTOSAR element."""
+"""DiagnosticJ1939Spn AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 219)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_J1939.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class DiagnosticJ1939Spn(ARObject):
+
+class DiagnosticJ1939Spn(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939Spn."""
 
+    spn: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Spn."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticJ1939Spn to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICJ1939SPN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939Spn":
-        """Create DiagnosticJ1939Spn from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticJ1939Spn instance
-        """
-        obj: DiagnosticJ1939Spn = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.spn: Optional[PositiveInteger] = None
 
 
 class DiagnosticJ1939SpnBuilder:

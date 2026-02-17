@@ -1,41 +1,30 @@
-"""TextTableValuePair AUTOSAR element."""
+"""TextTableValuePair AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 146)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
 
 class TextTableValuePair(ARObject):
     """AUTOSAR TextTableValuePair."""
 
+    first_value: Optional[Numerical]
+    second_value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize TextTableValuePair."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TextTableValuePair to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TEXTTABLEVALUEPAIR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TextTableValuePair":
-        """Create TextTableValuePair from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TextTableValuePair instance
-        """
-        obj: TextTableValuePair = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_value: Optional[Numerical] = None
+        self.second_value: Optional[Numerical] = None
 
 
 class TextTableValuePairBuilder:

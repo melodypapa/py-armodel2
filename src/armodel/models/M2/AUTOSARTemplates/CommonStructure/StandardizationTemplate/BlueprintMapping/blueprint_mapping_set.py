@@ -1,41 +1,31 @@
-"""BlueprintMappingSet AUTOSAR element."""
+"""BlueprintMappingSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 48)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 34)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.atp_blueprint_mapping import (
+    AtpBlueprintMapping,
+)
 
-class BlueprintMappingSet(ARObject):
+
+class BlueprintMappingSet(ARElement):
     """AUTOSAR BlueprintMappingSet."""
 
+    blueprint_maps: list[AtpBlueprintMapping]
     def __init__(self) -> None:
         """Initialize BlueprintMappingSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BlueprintMappingSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BLUEPRINTMAPPINGSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BlueprintMappingSet":
-        """Create BlueprintMappingSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BlueprintMappingSet instance
-        """
-        obj: BlueprintMappingSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.blueprint_maps: list[AtpBlueprintMapping] = []
 
 
 class BlueprintMappingSetBuilder:

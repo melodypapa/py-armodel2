@@ -10,7 +10,7 @@ This document provides comprehensive context about this Python project for AI ag
 
 ### Core Features
 
-- **Code Generation Driven**: AUTOSAR model classes are automatically generated (1,912 generated Python files)
+- **Code Generation Driven**: AUTOSAR model classes are automatically generated from JSON metadata files
 - **Multi-Version Support**: Supports three AUTOSAR schema versions: 00044, 00046, and 00052
 - **Static Type Safety**: Uses Python type hints and MyPy strict type checking
 - **Complete Test Coverage**: Unit tests and integration tests
@@ -18,6 +18,7 @@ This document provides comprehensive context about this Python project for AI ag
 - **Class-Based Architecture**: All infrastructure modules use class-based design with dependency injection and singleton patterns
 - **Full ARXML Support**: Read, parse, validate, write, and serialize ARXML files
 - **Builder Pattern**: All model classes include Builder classes for fluent API
+- **Registry-Based Serialization**: Uses declarative XMLMember metadata with SerializationRegistry for automatic hierarchy handling
 
 ### Development Environment Requirements
 
@@ -68,8 +69,18 @@ print(f'Loaded AUTOSAR with {len(autosar.ar_packages)} packages')
 - **Strict mode**: Enabled for all source code
 - **Line length**: 100 characters
 - **Target Python**: 3.9
-- **Special override**: Generated model files (`armodel.models.M2.*`) are excluded from strict type checking requirements (`disallow_untyped_defs = false`, `disallow_untyped_calls = false`)
+- **Special override**: Generated model files (`armodel.models.M2.*`) are excluded from strict type checking requirements (`disallow_untyped_defs = false`, `disallow_untyped_calls = false`, `ignore_errors = true`)
+- **MSR models**: Also excluded from strict checking due to generated type issues
 - **Project scripts**: `armodel` CLI command configured (main.py to be implemented)
+
+### Code Generation Tools
+- **JSON Metadata Files** (located in `docs/json/`):
+  - `hierarchy.json`: Class inheritance hierarchy
+  - `mapping.json`: Package and class name mappings
+  - `index.json`: Class index for quick lookup
+  - `packages/*.classes.json`: Detailed class definitions with attributes and types
+  - `packages/*.enums.json`: Enum definitions
+  - `packages/*.json`: Package metadata
 
 ## Project Structure
 
@@ -87,7 +98,7 @@ py-armodel2/
 │   │   └── version.py     # SchemaVersionManager class (singleton)
 │   ├── models/             # Generated AUTOSAR model classes
 │   │   ├── __init__.py    # Module initialization
-│   │   └── M2/            # AUTOSAR M2 model definitions (1,912 files)
+│   │   └── M2/            # AUTOSAR M2 model definitions (1,912+ files)
 │   │       ├── __init__.py # Module initialization
 │   │       ├── AUTOSARTemplates/ # AUTOSAR template classes
 │   │       │   ├── autosar.py # AUTOSAR root element (singleton)
@@ -102,12 +113,17 @@ py-armodel2/
 │   │       │   ├── EcuResourceTemplate/ # ECU resource templates
 │   │       │   ├── FeatureModelTemplate/ # Feature model templates
 │   │       │   ├── GenericStructure/ # Generic structure classes
+│   │       │   │   ├── GeneralTemplateClasses/ # Base classes
+│   │       │   │   │   ├── ArObject/ # ARObject base class
+│   │       │   │   │   ├── Identifiable/ # Identifiable hierarchy
+│   │       │   │   │   ├── PrimitiveTypes/ # AUTOSAR primitive types
+│   │       │   │   │   └── ... # Other generic classes
 │   │       │   ├── LogAndTraceExtract/ # Log and trace elements
 │   │       │   ├── SecurityExtractTemplate/ # Security extract templates
 │   │       │   ├── SWComponentTemplate/ # Software component templates
 │   │       │   └── SystemTemplate/ # System template elements
 │   │       └── MSR/       # MSR (Measurement, Systems, Requirements) classes
-│   │           ├── AsamHdo/ # ASAM HDO elements (AdminData, BaseTypes, ComputationMethod, Constraints, SpecialData, Units)
+│   │           ├── AsamHdo/ # ASAM HDO elements
 │   │           ├── CalibrationData/ # Calibration data elements
 │   │           ├── DataDictionary/ # Data dictionary elements
 │   │           └── Documentation/ # Documentation elements
@@ -115,21 +131,28 @@ py-armodel2/
 │   │   └── __init__.py    # ARXMLReader class (class-based architecture)
 │   ├── writer/             # ARXML writing module
 │   │   └── __init__.py    # ARXMLWriter class (class-based architecture)
+│   ├── serialization/      # Serialization framework (registry-based)
+│   │   ├── __init__.py    # Module initialization
+│   │   ├── _init.py       # Registry initialization
+│   │   ├── base.py        # Base serialization logic
+│   │   ├── metadata.py    # XMLMember metadata descriptor
+│   │   ├── registry.py    # SerializationRegistry singleton
+│   │   └── strategies/    # Pluggable serialization strategies
 │   ├── cli/                # Command line interface
 │   │   └── __init__.py    # Module initialization (main.py to be implemented)
-│   └── utils/              # Utility tools (to be implemented)
+│   └── utils/              # Utility tools (placeholder)
 │       └── __init__.py    # Module initialization
 ├── tests/                  # Test suite
 │   ├── unit/              # Unit tests (mirrors src structure)
-│   │   ├── test_core/     # Core module tests
-│   │   ├── test_models/   # Model class tests
-│   │   ├── test_reader/   # Reader module tests
-│   │   ├── test_writer/   # Writer module tests
-│   │   └── test_tools/    # Tools tests
+│   │   ├── core/          # Core module tests
+│   │   ├── models/        # Model class tests
+│   │   ├── reader/        # Reader module tests
+│   │   ├── writer/        # Writer module tests
+│   │   ├── test_serialization/ # Serialization framework tests
+│   │   └── tools/         # Tools tests
 │   ├── integration/       # Integration tests
-│   │   ├── test_read_arxml.py        # ARXML reading tests
-│   │   ├── test_write_arxml.py       # ARXML writing tests
-│   │   └── test_read_write_cycle.py  # Read-write cycle tests
+│   │   ├── test_reader_writer.py               # Reader/writer integration tests
+│   │   └── test_application_data_type_blueprint.py  # Application data type tests
 │   ├── fixtures/          # Test data
 │   │   └── arxml/         # ARXML test files
 │   └── test_generate_models.py # Code generator tests
@@ -144,16 +167,46 @@ py-armodel2/
 │   │   └── AUTOSAR_00052/
 │   └── arxml/             # ARXML example files
 ├── docs/                   # Documentation
-│   ├── plans/             # Implementation plans (currently empty)
+│   ├── json/              # JSON metadata for code generation
+│   │   ├── hierarchy.json # Class inheritance hierarchy
+│   │   ├── mapping.json   # Package and class mappings
+│   │   ├── index.json     # Class index
+│   │   └── packages/      # Package definitions
+│   │       ├── *.classes.json  # Class attribute definitions
+│   │       └── *.enums.json    # Enum definitions
+│   ├── plans/             # Implementation plans
+│   │   ├── class-todo.md   # Class generation TODO
+│   │   └── todo.md         # General TODO
+│   ├── reports/           # Project reports
+│   │   └── class-todo-items.md  # Class generation items
 │   ├── designs/           # Design documents
-│   │   └── design_rules.md # Design rules (12 categories, 35 rules)
-│   └── requirements/      # Requirements documents (currently empty)
+│   │   └── design_rules.md # Design rules (12 categories, 42 rules)
+│   ├── requirements/      # Requirements documents
+│   │   ├── req_cfg.md     # Configuration requirements
+│   │   ├── req_codegen.md # Code generation requirements
+│   │   ├── req_core.md    # Core module requirements
+│   │   ├── req_element_mapping.md  # Element mapping requirements
+│   │   ├── req_models.md  # Model requirements
+│   │   ├── req_reader.md  # Reader requirements
+│   │   └── req_writer.md  # Writer requirements
+│   └── tests/             # Test documentation
+│       ├── integration/   # Integration test plans
+│       └── unit/          # Unit test plans
+├── .claude/                # Claude AI configuration
+│   └── commands/          # Custom slash commands
+│       ├── gen-class.md   # Class generation command
+│       ├── gh-workflow.md # GitHub workflow command
+│       ├── merge-pr.md    # PR merge command
+│       ├── quality.md     # Quality check command
+│       ├── req.md         # Requirements command
+│       ├── test.md        # Test command
+│       └── README.md      # Commands documentation
 ├── pyproject.toml         # Project configuration
 ├── .github/workflows/     # CI/CD configuration
 │   └── ci.yml            # GitHub Actions workflows
 ├── .gitignore             # Git ignore rules
 ├── README.md              # Project description
-├── AGENTS.md              # AI agent guide (root directory copy)
+├── AGENTS.md              # AI agent guide (this document)
 └── CLAUDE.md              # Claude AI configuration
 ```
 
@@ -195,8 +248,6 @@ ruff format src/ tools/
 mypy src/
 ```
 
-
-
 ### Command Line Tools (To Be Implemented)
 
 ```bash
@@ -210,16 +261,37 @@ armodel check path/to/file.arxml
 armodel convert input.arxml output.arxml --version 00046
 ```
 
+### Custom Claude Commands
+
+The project includes custom slash commands for AI agents:
+
+- `/gen-class`: Generate or update classes from ARXML files using JSON metadata
+- `/gh-workflow`: Manage GitHub workflows and actions
+- `/merge-pr`: Merge pull requests with validation
+- `/quality`: Run quality checks (lint, format, type check)
+- `/req`: View and manage requirements
+- `/test`: Run tests with various options
+
+See `.claude/commands/README.md` for detailed usage.
+
 ## Development Conventions
 
 ### Coding Standards
 
-The project follows these coding rules (defined in `docs/designs/design_rules.md`):
+The project follows these coding rules (defined in `docs/designs/design_rules.md` and `docs/requirements/req_element_mapping.md`):
 
 #### Naming Conventions
 - **File names**: Use snake_case (e.g., `test_version.py`)
 - **Class names**: Use PascalCase (e.g., `ApplicationInterface`)
 - **Function/Variable names**: Use snake_case
+
+#### XML Tag/Attribute to Python Name Mapping
+- **XML Tags**: AUTOSAR kebab-case → Python PascalCase
+  - `SW-BASE-TYPE` → `SwBaseType`
+  - `IMPLEMENTATION-DATA-TYPE` → `ImplementationDataType`
+- **XML Attributes**: AUTOSAR kebab-case → Python snake_case
+  - `SHORT-NAME` → `short_name`
+  - `BASE-TYPE-SIZE` → `base_type_size`
 
 #### Class Structure
 - All generated classes must inherit from `ARObject` (FULLY IMPLEMENTED)
@@ -228,26 +300,59 @@ The project follows these coding rules (defined in `docs/designs/design_rules.md
 - Builder classes are named `<ClassName>Builder` (FULLY IMPLEMENTED)
 - Builder classes use fluent API pattern (FULLY IMPLEMENTED)
 
+#### _xml_members Pattern (CRITICAL - Registry-Based)
+- Each class defines `_xml_members` as a dict using XMLMember descriptors (not legacy tuple format)
+- Format: `{"member_name": XMLMember(xml_tag=..., is_attribute=..., multiplicity=..., element_class=...)}`
+- ARObject base class automatically collects metadata from entire class hierarchy via MRO
+- XML tag names are auto-converted from member names when `xml_tag` is not specified
+- Supports both dict-based XMLMember format (current) and legacy tuple format (backward compatibility)
+
+#### XMLMember Descriptor Format
+
+**Current Format (Recommended)**:
+```python
+_xml_members: dict[str, XMLMember] = {
+    "short_name": XMLMember(xml_tag="SHORT-NAME", is_attribute=False, multiplicity="1"),
+    "category": XMLMember(xml_tag="CATEGORY", is_attribute=True, multiplicity="0..1"),
+    "elements": XMLMember(multiplicity="*", element_class="ARElement"),
+}
+```
+
+**Legacy Tuple Format (Deprecated but Supported)**:
+```python
+_xml_members = [
+    ("short_name", "SHORT-NAME", False, False, None),
+    ("category", None, True, False, None),
+]
+```
+
 #### Serialization/Deserialization
+- `serialize()` accepts `namespace: str` parameter (FULLY IMPLEMENTED)
 - `serialize()` returns `xml.etree.ElementTree.Element` (FULLY IMPLEMENTED)
 - `deserialize()` is a `@classmethod` that accepts an element parameter (FULLY IMPLEMENTED)
 - All child elements must be serialized using their `serialize()` method (FULLY IMPLEMENTED)
 - All child elements must be deserialized using their `deserialize()` method (FULLY IMPLEMENTED)
 - Namespace handling in XML tags (FULLY IMPLEMENTED)
+- Automatic hierarchy handling via SerializationRegistry and MRO (FULLY IMPLEMENTED)
 
 #### Package Structure
 - Package hierarchy follows AUTOSAR namespace structure
 - Each class has its own file in the matching directory
 - `__init__.py` exports all classes in the package
 
-#### Splitable Elements
-- Splitable elements must include split metadata
-- Splitable elements must have `get_split_filename()` method
-
 #### Type Safety
 - Use type hints for all class attributes
-- Use `Optional[T]` for nullable attributes
+- Use `Optional[T]` for nullable attributes (multiplicity 0..1)
+- Use `list[T]` for multiple attributes (multiplicity *)
+- Use `str` for string representations of numeric values
+- Use `typing.Any` for AUTOSAR "any (...)" types
 - Document complex types with docstrings
+
+#### Initialization Rules
+- Single objects (multiplicity 1 or 0..1): Initialize to `None`
+- Lists (multiplicity * or 0..*): Initialize to `[]` (never `None`)
+- Required primitives: Can initialize to `0`, `""`, `False` or use `None`
+- Never use Optional for lists
 
 #### Validation
 - All attributes must be validated in the `builder.build()` method
@@ -258,11 +363,6 @@ The project follows these coding rules (defined in `docs/designs/design_rules.md
 - Each class must have a docstring
 - Each method must have a docstring
 - Document complex logic with inline comments
-
-#### Testing
-- Each class must have unit tests
-- Tests must cover serialize/deserialize
-- Tests must verify builder functionality
 
 #### Architecture (DESIGN_RULE_032-035)
 - Use class-based architecture instead of module-based (FULLY IMPLEMENTED)
@@ -275,6 +375,7 @@ The project follows these coding rules (defined in `docs/designs/design_rules.md
 - **ConfigurationManager**: Provides configuration loading with caching - FULLY IMPLEMENTED
 - **ARXMLReader**: Handles ARXML file loading and mapping to objects - FULLY IMPLEMENTED
 - **ARXMLWriter**: Handles object serialization and ARXML file saving - FULLY IMPLEMENTED
+- **SerializationRegistry**: Global registry for serialization metadata and strategies (singleton) - FULLY IMPLEMENTED
 
 #### Code Quality
 - No hardcoded values (use config where appropriate)
@@ -282,12 +383,21 @@ The project follows these coding rules (defined in `docs/designs/design_rules.md
 - Maximum line length of 100 characters
 - Full type hints on all public APIs
 - Comprehensive docstrings for all classes and methods
+- All import statements must be defined at the beginning of the file
+
+#### Circular Import Handling (DESIGN_RULE_041-042)
+- Use `from __future__ import annotations` at the top of files with potential circular dependencies
+- Use `TYPE_CHECKING` to import classes only for type hints: `if TYPE_CHECKING: from ... import SomeClass`
+- For `_xml_members` referencing classes in circular dependencies, use string class names
+- Example: `_xml_members = {"item_contents": XMLMember(element_class="DocumentationBlock")}`
+- The `ARObject.deserialize()` method automatically resolves string class names to actual class objects
+- This maintains type safety while avoiding circular imports
 
 ### Git Workflow
 
 - **Main branch**: `main`
 - **Feature branches**: `feature/**`
-- **Current branch**: `main`
+- **Current branch**: `feature/code-generation-update-17`
 - **Remote branch**: `origin/main` (default HEAD)
 
 ### CI/CD
@@ -299,10 +409,10 @@ GitHub Actions configuration (`.github/workflows/ci.yml`) includes:
 - **Coverage**: Upload coverage reports to Codecov (from Python 3.9 job)
 
 Trigger conditions:
-- **Push**: main, feature/** branches
+- **Push**: main, develop, feature/** branches
 - **Pull Request**: main, develop branches
 
-**Note**: MyPy strict mode is enabled but generated model files (`armodel.models.M2.*`) are excluded from strict type checking requirements.
+**Note**: MyPy strict mode is enabled but generated model files (`armodel.models.M2.*` and `armodel.models.M2.MSR.*`) are excluded from strict type checking requirements.
 
 ## AUTOSAR Schema Versions
 
@@ -334,20 +444,30 @@ Different versions support different validation modes and features:
 
 ### Model Generation
 
-AUTOSAR model classes are automatically generated:
-- **1,912 generated Python files** covering AUTOSAR M2 model definitions
+AUTOSAR model classes are automatically generated from JSON metadata files:
+- **1,912+ generated Python files** covering AUTOSAR M2 model definitions
 - Generated classes are placed in `src/armodel/models/`, following package paths
 - Each class includes serialize/deserialize methods
 - Includes builder classes for fluent API
 - Full type hints for all attributes and methods
 - Comprehensive docstrings for classes and methods
+- Automatic hierarchy handling via SerializationRegistry and XMLMember metadata
 
 **Code Generator**: `tools/generate_models.py`
 - Standalone tool for generating model classes
+- Reads JSON metadata from `docs/json/` directory
 - Automatically creates directory structure
 - Generates Python class files for each type
 - Includes class definitions and Builder classes
 - Follows all coding standards defined in `docs/designs/design_rules.md`
+- Uses XMLMember metadata for XML mapping (registry-based framework)
+
+**JSON Metadata Files**:
+- `docs/json/hierarchy.json`: Class inheritance hierarchy
+- `docs/json/mapping.json`: Package and class name mappings
+- `docs/json/index.json`: Class index for quick lookup
+- `docs/json/packages/*.classes.json`: Detailed class definitions with attributes and types
+- `docs/json/packages/*.enums.json`: Enum definitions
 
 ### Class-Based Architecture (DESIGN_RULE_032-039)
 
@@ -358,13 +478,78 @@ The project uses a class-based architecture for infrastructure modules:
 - **ConfigurationManager** (`src/armodel/cfg/schemas/__init__.py`): Provides configuration loading with caching (FULLY IMPLEMENTED)
 - **ARXMLReader** (`src/armodel/reader/__init__.py`): Handles ARXML file loading and mapping to objects using dependency injection (FULLY IMPLEMENTED)
 - **ARXMLWriter** (`src/armodel/writer/__init__.py`): Handles object serialization and ARXML file saving using dependency injection (FULLY IMPLEMENTED)
+- **SerializationRegistry** (`src/armodel/serialization/registry.py`): Global singleton for serialization metadata and strategies (FULLY IMPLEMENTED)
 
 **Design Principles:**
-- Singleton pattern for shared state managers (SchemaVersionManager, AUTOSAR)
+- Singleton pattern for shared state managers (SchemaVersionManager, AUTOSAR, SerializationRegistry)
 - Dependency injection for testability (ARXMLReader, ARXMLWriter)
 - Class-based design instead of module-based functions
 - Clear separation of concerns
 - Full type safety with comprehensive type hints
+
+### Registry-Based Serialization Framework
+
+**CRITICAL ARCHITECTURAL PATTERN**: The project uses a declarative, registry-based serialization framework that eliminates boilerplate code.
+
+**Key Components:**
+
+1. **XMLMember** (`src/armodel/serialization/metadata.py`): Declarative metadata descriptor for XML mapping
+   - Defines how each class attribute maps to XML
+   - Supports attributes and child elements
+   - Handles multiplicity (1, 0..1, *, 0..*)
+   - Optional element class specification
+
+2. **SerializationRegistry** (`src/armodel/serialization/registry.py`): Global singleton registry
+   - Stores XMLMember metadata for all classes
+   - Manages serialization strategies
+   - Provides metadata lookup via MRO (Method Resolution Order)
+
+3. **SerializationStrategy** (`src/armodel/serialization/strategies/`): Pluggable behaviors
+   - Attribute serialization strategies
+   - Element serialization strategies
+   - List/object collection strategies
+
+**Key Features:**
+1. Each class defines `_xml_members` as a dict of XMLMember descriptors
+2. Base class automatically collects metadata from entire class hierarchy via MRO
+3. XML tag names are auto-converted from member names when not specified
+4. Serialize/deserialize methods delegate to registry and strategies
+5. Supports both XMLMember dict format (current) and legacy tuple format (backward compatibility)
+
+**Example:**
+```python
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization.metadata import XMLMember
+
+class Referrable(ARObject):
+    # Only define members for this class, not inherited ones
+    _xml_members: dict[str, XMLMember] = {
+        "short_name": XMLMember(xml_tag="SHORT-NAME", is_attribute=False, multiplicity="1"),
+        "short_name_fragments": XMLMember(multiplicity="*", element_class="ShortNameFragment"),
+    }
+
+    def serialize(self, namespace: str, element: Optional[ET.Element] = None) -> ET.Element:
+        # Base class handles entire hierarchy automatically via registry
+        return super().serialize(namespace, element)
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Referrable":
+        # Base class handles entire hierarchy automatically via registry
+        obj = super().deserialize(element)
+        return cast("Referrable", obj)
+```
+
+**XMLMember Parameters:**
+- `xml_tag` (str | None): XML tag/attribute name (auto-converted from member name if None)
+- `is_attribute` (bool): `True` = XML attribute, `False` = child element
+- `multiplicity` (str): Multiplicity specification ("1", "0..1", "*", "0..*")
+- `element_class` (type | str | None): For child elements, the class to deserialize (or string class name)
+
+**XML Tag Inference:**
+When `xml_tag` is not specified, tags are automatically converted:
+- `short_name` → `SHORT-NAME`
+- `category` → `CATEGORY`
+- `data_type` → `DATA-TYPE`
 
 ### Reader Module
 
@@ -375,6 +560,7 @@ ARXML file reading and parsing:
   - Automatic schema version detection from namespace
   - Optional XSD schema validation
   - Support for all three schema versions (00044, 00046, 00052)
+  - Uses lxml for parsing, converts to xml.etree.ElementTree for model deserialization
   - All functionality consolidated in single class (no separate loader.py or mapper.py)
 
 ### Writer Module
@@ -387,6 +573,8 @@ ARXML file writing and serialization:
   - Configurable pretty printing
   - Custom encoding support
   - Automatic directory creation
+  - Namespace registration for proper XML output
+  - Uses xml.etree.ElementTree for serialization
   - All functionality consolidated in single class (no separate saver.py or serializer.py)
 
 ### Schema Version Support
@@ -412,7 +600,7 @@ All generated model classes follow a strict inheritance hierarchy:
 
 ```
 ARObject (base class)
-├── Referrable (short_name property)
+├── Referrable (adds short_name)
 │   ├── Identifiable (adds identifier properties)
 │   │   ├── Describable (adds description properties)
 │   │   └── ARElement (AUTOSAR-specific element)
@@ -431,11 +619,12 @@ ARObject (base class)
 - **ImplementationDataType**: Implementation data type
 
 Each generated class includes:
-- Full serialize() implementation
-- Full deserialize() implementation
+- Full serialize() implementation with namespace support
+- Full deserialize() implementation with namespace handling
 - Builder class for fluent API
 - Type hints for all attributes
 - Comprehensive docstrings
+- `_xml_members` with XMLMember descriptors for automatic hierarchy handling
 
 ## Important File Descriptions
 
@@ -445,12 +634,26 @@ Each generated class includes:
 - `src/armodel/cfg/config.yaml`: Configuration file loading entry point
 - `src/armodel/cfg/schemas/config.yaml`: Schema version configuration
 
-### Code Generation
-- `tools/generate_models.py`: Model class generator (standalone tool, mapping.json removed)
+### Code Generation Metadata
+- `docs/json/hierarchy.json`: Class inheritance hierarchy (used by code generator)
+- `docs/json/mapping.json`: Package and class name mappings (used by code generator)
+- `docs/json/index.json`: Class index for quick lookup (used by code generator)
+- `docs/json/packages/*.classes.json`: Detailed class definitions (used by code generator)
+- `docs/json/packages/*.enums.json`: Enum definitions (used by code generator)
+
+### Code Generation Tools
+- `tools/generate_models.py`: Model class generator (reads JSON metadata from `docs/json/`)
+- `.claude/commands/gen-class.md`: Custom command for class generation
 
 ### Core Modules
 - `src/armodel/core/version.py`: SchemaVersionManager class (singleton pattern) - Fully implemented
 - `src/armodel/core/__init__.py`: Module initialization, exports core classes
+
+### Serialization Framework
+- `src/armodel/serialization/registry.py`: SerializationRegistry singleton - Fully implemented
+- `src/armodel/serialization/metadata.py`: XMLMember descriptor class - Fully implemented
+- `src/armodel/serialization/base.py`: Base serialization logic - Fully implemented
+- `src/armodel/serialization/strategies/`: Pluggable serialization strategies - Fully implemented
 
 ### Reader Module
 - `src/armodel/reader/__init__.py`: ARXMLReader class (class-based architecture, dependency injection)
@@ -460,6 +663,7 @@ Each generated class includes:
 - Automatic schema version detection
 - Optional XSD schema validation
 - Support for all three schema versions
+- Uses lxml for parsing, converts to xml.etree.ElementTree
 
 ### Writer Module
 - `src/armodel/writer/__init__.py`: ARXMLWriter class (class-based architecture, dependency injection)
@@ -469,6 +673,8 @@ Each generated class includes:
 - Configurable pretty printing
 - Custom encoding support
 - XML string conversion
+- Namespace registration for proper XML output
+- Uses xml.etree.ElementTree for serialization
 
 ### CLI Module
 - `src/armodel/cli/__init__.py`: CLI module initialization (main.py to be implemented)
@@ -481,12 +687,14 @@ Each generated class includes:
 - `tests/test_generate_models.py`: Code generator tests
 
 **Current Integration Tests:**
-- `test_read_arxml.py`: ARXML reading tests
-- `test_write_arxml.py`: ARXML writing tests
-- `test_read_write_cycle.py`: Read-write cycle tests
+- `test_reader_writer.py`: Reader/writer integration tests
+- `test_application_data_type_blueprint.py`: Application data type blueprint tests
 
 ### Documentation
-- `docs/designs/design_rules.md`: Design rules (12 categories, 35 rules)
+- `docs/designs/design_rules.md`: Design rules (12 categories, 42 rules)
+- `docs/requirements/req_element_mapping.md`: Element mapping requirements (12 requirements)
+- `docs/plans/class-todo.md`: Class generation TODO list
+- `docs/reports/class-todo-items.md`: Class generation items report
 - `README.md`: Project overview and quick start
 - `AGENTS.md`: AI agent guide (this document)
 - `CLAUDE.md`: Claude AI configuration
@@ -555,7 +763,8 @@ pkg = (ARPackageBuilder()
 # Create data type using builder
 base_type = (SwBaseTypeBuilder()
              .with_short_name("MyType")
-             .with_type_definition("uint8")
+             .with_category("FIXED")
+             .with_base_type_size("32")
              .build())
 
 # Add to package
@@ -570,12 +779,24 @@ writer = ARXMLWriter()
 writer.save_arxml(autosar, 'output.arxml')
 ```
 
+### Generating Classes from ARXML
+
+Use the `/gen-class` custom command to generate or update classes:
+
+1. Analyze ARXML file structure
+2. Query JSON metadata (`docs/json/hierarchy.json`, `docs/json/packages/*.classes.json`)
+3. Generate or update classes with correct inheritance and attributes
+4. Use XMLMember metadata for XML mapping
+
+See `.claude/commands/gen-class.md` for detailed instructions.
+
 ### Adding a New AUTOSAR Type
 
 1. Define the new AUTOSAR type structure
-2. Create the model class manually in `src/armodel/models/M2/` following existing patterns
-3. Add unit tests for the new type
-4. Update ARPackage.deserialize() to handle the new element type if needed
+2. Add to JSON metadata files in `docs/json/`
+3. Generate the model class using `/gen-class` command
+4. Add unit tests for the new type
+5. Update container classes' _xml_members if needed
 
 ### Fixing Bugs
 
@@ -590,6 +811,20 @@ writer.save_arxml(autosar, 'output.arxml')
 2. Run `pip install -e ".[dev]"`
 3. Run tests to ensure compatibility
 
+### Regenerating Model Classes
+
+After modifying the generator or JSON metadata files:
+
+```bash
+# Regenerate all classes
+python tools/generate_models.py
+
+# Verify changes
+ruff check src/
+mypy src/
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+```
+
 ## Testing Strategy
 
 ### Unit Tests
@@ -601,15 +836,15 @@ writer.save_arxml(autosar, 'output.arxml')
   - `test_models/`: Model class tests
   - `test_reader/`: Reader module tests
   - `test_writer/`: Writer module tests
+  - `test_serialization/`: Serialization framework tests
   - `test_tools/`: Tools tests
 
 ### Integration Tests
 - Test complete ARXML read/write workflows
 - Use actual AUTOSAR files from `tests/fixtures/`
 - Current integration tests:
-  - `test_read_arxml.py`: ARXML reading tests
-  - `test_write_arxml.py`: ARXML writing tests
-  - `test_read_write_cycle.py`: Read-write cycle tests
+  - `test_reader_writer.py`: Reader/writer integration tests
+  - `test_application_data_type_blueprint.py`: Application data type blueprint tests
 
 ### Code Generation Tests
 - `tests/test_generate_models.py`: Tests code generator
@@ -620,12 +855,14 @@ writer.save_arxml(autosar, 'output.arxml')
 - Use compact schema for validation to reduce overhead
 - Consider caching mechanisms for large ARXML files
 - Use batch processing for frequent operations
+- Registry-based serialization reduces overhead compared to manual boilerplate
 
 ## Security Considerations
 
 - Validate all user-input ARXML files
 - Use schema validation to prevent XML injection
 - Limit file size to prevent DoS attacks
+- Proper namespace handling prevents XML parsing attacks
 
 ## AUTOSAR References
 
@@ -640,7 +877,7 @@ writer.save_arxml(autosar, 'output.arxml')
 - **Current Version**: 0.1.0
 - **Development Status**: Alpha (Core infrastructure complete, working towards beta)
 - **Target Users**: AUTOSAR tool developers, automotive software engineers
-- **Generated Model Files**: 1,912 Python files covering AUTOSAR M2 model definitions
+- **Generated Model Files**: 1,912+ Python files covering AUTOSAR M2 model definitions
 - **Code Coverage**: Comprehensive unit and integration tests
 
 ## CLI Configuration
@@ -673,7 +910,8 @@ armodel convert input.arxml output.arxml --version 00046
 - Some model classes may have incomplete deserialize() implementations for complex nested structures
 - Performance optimization for very large ARXML files (100MB+) could be improved
 - Schema validation is implemented but may have edge cases with custom XSD files
-- Full support for all AUTOSAR types is ongoing (1,912 files currently generated)
+- Full support for all AUTOSAR types is ongoing (1,912+ files currently generated)
+- Generator has known issues with import path resolution for certain types (e.g., TableSeparatorString, enums in OasisExchangeTable) requiring manual fixes
 
 ## Future Plans
 
@@ -685,15 +923,19 @@ armodel convert input.arxml output.arxml --version 00046
 5. Add utility functions for common operations
 6. Complete documentation and examples
 7. Add support for ARXML modification and transformation
+8. Improve code generation tool with better error handling
+9. Add support for validation rules beyond schema validation
 
 ## Implementation Status
 
 ### Completed Features ✅
 - Project structure and configuration
 - Schema version detection and management (SchemaVersionManager singleton)
-- Model code generation framework (1,912 files generated)
+- Model code generation framework (1,912+ files generated)
+- Registry-based serialization framework (SerializationRegistry, XMLMember, strategies)
 - Basic model class generation with serialize/deserialize
 - Builder pattern implementation for all generated classes
+- XMLMember metadata for automatic hierarchy handling
 - Test framework setup
 - CI/CD pipeline configuration
 - Type checking configuration with MyPy strict mode
@@ -706,12 +948,17 @@ armodel convert input.arxml output.arxml --version 00046
 - Integration tests for read/write cycles
 - Full type hints on all public APIs
 - Comprehensive docstrings for all classes
+- JSON metadata files for code generation
+- Custom Claude commands for AI agents
+- Element mapping requirements documentation
+- Circular import handling with TYPE_CHECKING and future annotations
 
 ### In Progress 🚧
 - Complete deserialize() implementations for complex nested structures
-- Full support for all AUTOSAR types (1,912 files currently generated)
+- Full support for all AUTOSAR types (1,912+ files currently generated)
 - Advanced model operations and transformations
 - Performance optimization for large files
+- Class generation TODO items (see `docs/plans/class-todo.md`)
 
 ### Planned 📋
 - CLI implementation (main.py)
@@ -721,3 +968,4 @@ armodel convert input.arxml output.arxml --version 00046
 - Complete documentation and examples
 - Additional integration tests
 - ARXML modification and transformation tools
+- Enhanced code generation tool with validation

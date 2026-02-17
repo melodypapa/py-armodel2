@@ -1,41 +1,47 @@
-"""DocRevision AUTOSAR element."""
+"""DocRevision AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 293)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 85)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_AdminData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    DateTime,
+    NameToken,
+    RevisionLabelString,
+    String,
+)
+from armodel.models.M2.MSR.AsamHdo.AdminData.modification import (
+    Modification,
+)
 
 
 class DocRevision(ARObject):
     """AUTOSAR DocRevision."""
 
+    date: DateTime
+    issued_by: Optional[String]
+    modifications: list[Modification]
+    revision_label_string: Optional[RevisionLabelString]
+    revision_label_p1: Optional[RevisionLabelString]
+    revision_label_p2: Optional[RevisionLabelString]
+    state: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DocRevision."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DocRevision to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOCREVISION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocRevision":
-        """Create DocRevision from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocRevision instance
-        """
-        obj: DocRevision = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.date: DateTime = None
+        self.issued_by: Optional[String] = None
+        self.modifications: list[Modification] = []
+        self.revision_label_string: Optional[RevisionLabelString] = None
+        self.revision_label_p1: Optional[RevisionLabelString] = None
+        self.revision_label_p2: Optional[RevisionLabelString] = None
+        self.state: Optional[NameToken] = None
 
 
 class DocRevisionBuilder:

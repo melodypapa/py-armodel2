@@ -1,41 +1,31 @@
-"""DiagnosticStorageConditionPortMapping AUTOSAR element."""
+"""DiagnosticStorageConditionPortMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 253)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
 
-class DiagnosticStorageConditionPortMapping(ARObject):
+
+class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticStorageConditionPortMapping."""
 
+    diagnostic_storage: Optional[Any]
+    swc_flat_service: Optional[Any]
+    swc_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionPortMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticStorageConditionPortMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSTORAGECONDITIONPORTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticStorageConditionPortMapping":
-        """Create DiagnosticStorageConditionPortMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticStorageConditionPortMapping instance
-        """
-        obj: DiagnosticStorageConditionPortMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.diagnostic_storage: Optional[Any] = None
+        self.swc_flat_service: Optional[Any] = None
+        self.swc_service: Optional[Any] = None
 
 
 class DiagnosticStorageConditionPortMappingBuilder:

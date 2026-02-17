@@ -1,41 +1,30 @@
-"""DiagnosticParameterElementAccess AUTOSAR element."""
+"""DiagnosticParameterElementAccess AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 229)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
 
 class DiagnosticParameterElementAccess(ARObject):
     """AUTOSAR DiagnosticParameterElementAccess."""
 
+    context_elements: list[DiagnosticParameter]
+    target_element: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElementAccess."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticParameterElementAccess to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICPARAMETERELEMENTACCESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticParameterElementAccess":
-        """Create DiagnosticParameterElementAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticParameterElementAccess instance
-        """
-        obj: DiagnosticParameterElementAccess = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_elements: list[DiagnosticParameter] = []
+        self.target_element: Optional[DiagnosticParameter] = None
 
 
 class DiagnosticParameterElementAccessBuilder:

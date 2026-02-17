@@ -1,41 +1,36 @@
-"""IEEE1722TpAcfBus AUTOSAR element."""
+"""IEEE1722TpAcfBus AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 657)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
+    IEEE1722TpAcfBusPart,
+)
 
-class IEEE1722TpAcfBus(ARObject):
+
+class IEEE1722TpAcfBus(Identifiable):
     """AUTOSAR IEEE1722TpAcfBus."""
+    """Abstract base class - do not instantiate directly."""
 
+    acf_parts: list[IEEE1722TpAcfBusPart]
+    bus_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBus."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAcfBus to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPACFBUS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfBus":
-        """Create IEEE1722TpAcfBus from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfBus instance
-        """
-        obj: IEEE1722TpAcfBus = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.acf_parts: list[IEEE1722TpAcfBusPart] = []
+        self.bus_id: Optional[PositiveInteger] = None
 
 
 class IEEE1722TpAcfBusBuilder:

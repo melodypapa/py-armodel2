@@ -1,41 +1,30 @@
-"""DiagnosticSessionControlClass AUTOSAR element."""
+"""DiagnosticSessionControlClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 93)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_SessionControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
-class DiagnosticSessionControlClass(ARObject):
+
+class DiagnosticSessionControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticSessionControlClass."""
 
+    s3_server: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControlClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticSessionControlClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSESSIONCONTROLCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSessionControlClass":
-        """Create DiagnosticSessionControlClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSessionControlClass instance
-        """
-        obj: DiagnosticSessionControlClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.s3_server: Optional[TimeValue] = None
 
 
 class DiagnosticSessionControlClassBuilder:

@@ -1,41 +1,35 @@
-"""HwPin AUTOSAR element."""
+"""HwPin AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 20)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    String,
+)
 
-class HwPin(ARObject):
+
+class HwPin(Identifiable):
     """AUTOSAR HwPin."""
 
+    function_names: list[String]
+    packaging_pin: Optional[String]
+    pin_number: Optional[Integer]
     def __init__(self) -> None:
         """Initialize HwPin."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwPin to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWPIN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwPin":
-        """Create HwPin from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwPin instance
-        """
-        obj: HwPin = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.function_names: list[String] = []
+        self.packaging_pin: Optional[String] = None
+        self.pin_number: Optional[Integer] = None
 
 
 class HwPinBuilder:

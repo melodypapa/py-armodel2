@@ -1,41 +1,30 @@
-"""DiagnosticJ1939FreezeFrame AUTOSAR element."""
+"""DiagnosticJ1939FreezeFrame AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 220)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_J1939.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
 
-class DiagnosticJ1939FreezeFrame(ARObject):
+
+class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939FreezeFrame."""
 
+    node: Optional[DiagnosticJ1939Node]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticJ1939FreezeFrame to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICJ1939FREEZEFRAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939FreezeFrame":
-        """Create DiagnosticJ1939FreezeFrame from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticJ1939FreezeFrame instance
-        """
-        obj: DiagnosticJ1939FreezeFrame = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.node: Optional[DiagnosticJ1939Node] = None
 
 
 class DiagnosticJ1939FreezeFrameBuilder:

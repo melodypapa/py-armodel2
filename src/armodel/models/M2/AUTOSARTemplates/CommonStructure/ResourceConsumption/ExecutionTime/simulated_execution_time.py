@@ -1,41 +1,34 @@
-"""SimulatedExecutionTime AUTOSAR element."""
+"""SimulatedExecutionTime AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 167)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_ExecutionTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
+    ExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class SimulatedExecutionTime(ARObject):
+
+class SimulatedExecutionTime(ExecutionTime):
     """AUTOSAR SimulatedExecutionTime."""
 
+    maximum_execution_time: Optional[MultidimensionalTime]
+    minimum_execution_time: Optional[MultidimensionalTime]
+    nominal_execution_time: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SimulatedExecutionTime."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SimulatedExecutionTime to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SIMULATEDEXECUTIONTIME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SimulatedExecutionTime":
-        """Create SimulatedExecutionTime from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SimulatedExecutionTime instance
-        """
-        obj: SimulatedExecutionTime = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.maximum_execution_time: Optional[MultidimensionalTime] = None
+        self.minimum_execution_time: Optional[MultidimensionalTime] = None
+        self.nominal_execution_time: Optional[MultidimensionalTime] = None
 
 
 class SimulatedExecutionTimeBuilder:

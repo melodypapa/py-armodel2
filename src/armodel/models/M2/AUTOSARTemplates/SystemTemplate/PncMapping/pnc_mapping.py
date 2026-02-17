@@ -1,41 +1,78 @@
-"""PncMapping AUTOSAR element."""
+"""PncMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 264)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_PncMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Identifier,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.consumed_provided_service_instance_group import (
+    ConsumedProvidedServiceInstanceGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_i_pdu_group import (
+    ISignalIPduGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdur_i_pdu_group import (
+    PdurIPduGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
+    PhysicalChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.PncMapping.pnc_mapping_ident import (
+    PncMappingIdent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
+    PortGroup,
+)
 
-class PncMapping(ARObject):
+
+class PncMapping(Describable):
     """AUTOSAR PncMapping."""
 
+    dynamic_pncs: list[ISignalIPduGroup]
+    ident: Optional[PncMappingIdent]
+    physical_channels: list[PhysicalChannel]
+    pnc_consumeds: list[ConsumedProvidedServiceInstanceGroup]
+    pnc_groups: list[ISignalIPduGroup]
+    pnc_identifier: Optional[PositiveInteger]
+    pnc_pdur_groups: list[PdurIPduGroup]
+    pnc_wakeup: Optional[Boolean]
+    relevant_fors: list[EcuInstance]
+    short_label: Optional[Identifier]
+    vfcs: list[PortGroup]
+    wakeup_frames: list[FrameTriggering]
     def __init__(self) -> None:
         """Initialize PncMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PncMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PNCMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PncMapping":
-        """Create PncMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PncMapping instance
-        """
-        obj: PncMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dynamic_pncs: list[ISignalIPduGroup] = []
+        self.ident: Optional[PncMappingIdent] = None
+        self.physical_channels: list[PhysicalChannel] = []
+        self.pnc_consumeds: list[ConsumedProvidedServiceInstanceGroup] = []
+        self.pnc_groups: list[ISignalIPduGroup] = []
+        self.pnc_identifier: Optional[PositiveInteger] = None
+        self.pnc_pdur_groups: list[PdurIPduGroup] = []
+        self.pnc_wakeup: Optional[Boolean] = None
+        self.relevant_fors: list[EcuInstance] = []
+        self.short_label: Optional[Identifier] = None
+        self.vfcs: list[PortGroup] = []
+        self.wakeup_frames: list[FrameTriggering] = []
 
 
 class PncMappingBuilder:

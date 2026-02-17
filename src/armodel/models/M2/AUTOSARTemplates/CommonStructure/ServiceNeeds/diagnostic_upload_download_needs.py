@@ -1,41 +1,26 @@
-"""DiagnosticUploadDownloadNeeds AUTOSAR element."""
+"""DiagnosticUploadDownloadNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 252)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 816)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
 
-class DiagnosticUploadDownloadNeeds(ARObject):
+
+class DiagnosticUploadDownloadNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticUploadDownloadNeeds."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticUploadDownloadNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticUploadDownloadNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICUPLOADDOWNLOADNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticUploadDownloadNeeds":
-        """Create DiagnosticUploadDownloadNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticUploadDownloadNeeds instance
-        """
-        obj: DiagnosticUploadDownloadNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticUploadDownloadNeedsBuilder:

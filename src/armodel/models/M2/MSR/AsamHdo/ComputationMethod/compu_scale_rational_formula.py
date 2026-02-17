@@ -1,41 +1,30 @@
-"""CompuScaleRationalFormula AUTOSAR element."""
+"""CompuScaleRationalFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 390)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import (
+    CompuScaleContents,
+)
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import (
+    CompuRationalCoeffs,
+)
 
-class CompuScaleRationalFormula(ARObject):
+
+class CompuScaleRationalFormula(CompuScaleContents):
     """AUTOSAR CompuScaleRationalFormula."""
 
+    compu_rational_coeffs: Optional[CompuRationalCoeffs]
     def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuScaleRationalFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUSCALERATIONALFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuScaleRationalFormula":
-        """Create CompuScaleRationalFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuScaleRationalFormula instance
-        """
-        obj: CompuScaleRationalFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compu_rational_coeffs: Optional[CompuRationalCoeffs] = None
 
 
 class CompuScaleRationalFormulaBuilder:

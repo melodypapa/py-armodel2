@@ -1,41 +1,31 @@
-"""UserDefinedPdu AUTOSAR element."""
+"""UserDefinedPdu AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 314)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 345)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
+    Pdu,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class UserDefinedPdu(ARObject):
+
+class UserDefinedPdu(Pdu):
     """AUTOSAR UserDefinedPdu."""
 
+    cdd_type: Optional[String]
     def __init__(self) -> None:
         """Initialize UserDefinedPdu."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UserDefinedPdu to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("USERDEFINEDPDU")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UserDefinedPdu":
-        """Create UserDefinedPdu from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UserDefinedPdu instance
-        """
-        obj: UserDefinedPdu = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cdd_type: Optional[String] = None
 
 
 class UserDefinedPduBuilder:

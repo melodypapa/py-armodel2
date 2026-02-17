@@ -1,41 +1,47 @@
-"""Referrable AUTOSAR element."""
+"""Referrable AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 305)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 63)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1002)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2049)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 238)
+  - AUTOSAR_FO_TPS_ARXMLSerializationRules.pdf (page 31)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 49)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 78)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 63)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 33)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 66)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 202)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_Identifiable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.short_name_fragment import (
+    ShortNameFragment,
+)
 
 
 class Referrable(ARObject):
     """AUTOSAR Referrable."""
+    """Abstract base class - do not instantiate directly."""
 
+    short_name: Identifier
+    short_name_fragments: list[ShortNameFragment]
     def __init__(self) -> None:
         """Initialize Referrable."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Referrable to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("REFERRABLE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Referrable":
-        """Create Referrable from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Referrable instance
-        """
-        obj: Referrable = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.short_name: Identifier = None
+        self.short_name_fragments: list[ShortNameFragment] = []
 
 
 class ReferrableBuilder:

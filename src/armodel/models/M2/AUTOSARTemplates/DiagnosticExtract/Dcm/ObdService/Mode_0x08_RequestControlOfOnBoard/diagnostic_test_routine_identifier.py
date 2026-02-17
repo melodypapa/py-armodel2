@@ -1,41 +1,34 @@
-"""DiagnosticTestRoutineIdentifier AUTOSAR element."""
+"""DiagnosticTestRoutineIdentifier AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x08_RequestControlOfOnBoard.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class DiagnosticTestRoutineIdentifier(ARObject):
+
+class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTestRoutineIdentifier."""
 
+    id: Optional[PositiveInteger]
+    request_data: Optional[PositiveInteger]
+    response_data: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTestRoutineIdentifier."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticTestRoutineIdentifier to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICTESTROUTINEIDENTIFIER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTestRoutineIdentifier":
-        """Create DiagnosticTestRoutineIdentifier from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTestRoutineIdentifier instance
-        """
-        obj: DiagnosticTestRoutineIdentifier = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.id: Optional[PositiveInteger] = None
+        self.request_data: Optional[PositiveInteger] = None
+        self.response_data: Optional[PositiveInteger] = None
 
 
 class DiagnosticTestRoutineIdentifierBuilder:

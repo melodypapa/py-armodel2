@@ -1,41 +1,34 @@
-"""PeriodicEventTriggering AUTOSAR element."""
+"""PeriodicEventTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 101)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
+    EventTriggeringConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class PeriodicEventTriggering(ARObject):
+
+class PeriodicEventTriggering(EventTriggeringConstraint):
     """AUTOSAR PeriodicEventTriggering."""
 
+    jitter: Optional[MultidimensionalTime]
+    minimum_inter: Optional[MultidimensionalTime]
+    period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize PeriodicEventTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PeriodicEventTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PERIODICEVENTTRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PeriodicEventTriggering":
-        """Create PeriodicEventTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PeriodicEventTriggering instance
-        """
-        obj: PeriodicEventTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.jitter: Optional[MultidimensionalTime] = None
+        self.minimum_inter: Optional[MultidimensionalTime] = None
+        self.period: Optional[MultidimensionalTime] = None
 
 
 class PeriodicEventTriggeringBuilder:

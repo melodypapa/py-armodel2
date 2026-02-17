@@ -1,41 +1,40 @@
-"""RptComponent AUTOSAR element."""
+"""RptComponent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 199)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
+    RoleBasedMcDataAssignment,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.rpt_executable_entity import (
+    RptExecutableEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_impl_policy import (
+    RptImplPolicy,
+)
 
-class RptComponent(ARObject):
+
+class RptComponent(Identifiable):
     """AUTOSAR RptComponent."""
 
+    mc_datas: list[RoleBasedMcDataAssignment]
+    rp_impl_policy: Optional[RptImplPolicy]
+    rpt_executable_entities: list[RptExecutableEntity]
     def __init__(self) -> None:
         """Initialize RptComponent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RptComponent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPTCOMPONENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RptComponent":
-        """Create RptComponent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RptComponent instance
-        """
-        obj: RptComponent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mc_datas: list[RoleBasedMcDataAssignment] = []
+        self.rp_impl_policy: Optional[RptImplPolicy] = None
+        self.rpt_executable_entities: list[RptExecutableEntity] = []
 
 
 class RptComponentBuilder:

@@ -1,41 +1,28 @@
-"""DdsTransportPriority AUTOSAR element."""
+"""DdsTransportPriority AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 535)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class DdsTransportPriority(ARObject):
     """AUTOSAR DdsTransportPriority."""
 
+    transport_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsTransportPriority."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DdsTransportPriority to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DDSTRANSPORTPRIORITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsTransportPriority":
-        """Create DdsTransportPriority from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsTransportPriority instance
-        """
-        obj: DdsTransportPriority = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.transport_priority: Optional[PositiveInteger] = None
 
 
 class DdsTransportPriorityBuilder:

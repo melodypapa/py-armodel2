@@ -1,41 +1,31 @@
-"""ExecutableEntityActivationReason AUTOSAR element."""
+"""ExecutableEntityActivationReason AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 315)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 538)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
+    ImplementationProps,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class ExecutableEntityActivationReason(ARObject):
+
+class ExecutableEntityActivationReason(ImplementationProps):
     """AUTOSAR ExecutableEntityActivationReason."""
 
+    bit_position: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ExecutableEntityActivationReason to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EXECUTABLEENTITYACTIVATIONREASON")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ExecutableEntityActivationReason":
-        """Create ExecutableEntityActivationReason from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ExecutableEntityActivationReason instance
-        """
-        obj: ExecutableEntityActivationReason = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bit_position: Optional[PositiveInteger] = None
 
 
 class ExecutableEntityActivationReasonBuilder:

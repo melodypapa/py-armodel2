@@ -1,41 +1,35 @@
-"""DiagnosticEcuInstanceProps AUTOSAR element."""
+"""DiagnosticEcuInstanceProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 207)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticContribution import (
+    DiagnosticObdSupportEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
 
-class DiagnosticEcuInstanceProps(ARObject):
+
+class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEcuInstanceProps."""
 
+    ecu_instances: list[EcuInstance]
+    obd_support: Optional[DiagnosticObdSupportEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuInstanceProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEcuInstanceProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICECUINSTANCEPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuInstanceProps":
-        """Create DiagnosticEcuInstanceProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEcuInstanceProps instance
-        """
-        obj: DiagnosticEcuInstanceProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecu_instances: list[EcuInstance] = []
+        self.obd_support: Optional[DiagnosticObdSupportEnum] = None
 
 
 class DiagnosticEcuInstancePropsBuilder:

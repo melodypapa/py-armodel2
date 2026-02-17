@@ -1,41 +1,30 @@
-"""EcucAddInfoParamValue AUTOSAR element."""
+"""EcucAddInfoParamValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 129)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_value import (
+    EcucParameterValue,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
-class EcucAddInfoParamValue(ARObject):
+
+class EcucAddInfoParamValue(EcucParameterValue):
     """AUTOSAR EcucAddInfoParamValue."""
 
+    value: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize EcucAddInfoParamValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucAddInfoParamValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCADDINFOPARAMVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAddInfoParamValue":
-        """Create EcucAddInfoParamValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucAddInfoParamValue instance
-        """
-        obj: EcucAddInfoParamValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.value: Optional[DocumentationBlock] = None
 
 
 class EcucAddInfoParamValueBuilder:

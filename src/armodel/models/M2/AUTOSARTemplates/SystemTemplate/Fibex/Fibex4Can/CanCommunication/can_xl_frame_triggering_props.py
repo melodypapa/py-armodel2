@@ -1,41 +1,34 @@
-"""CanXlFrameTriggeringProps AUTOSAR element."""
+"""CanXlFrameTriggeringProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2007)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class CanXlFrameTriggeringProps(ARObject):
     """AUTOSAR CanXlFrameTriggeringProps."""
 
+    acceptance_field: Optional[PositiveInteger]
+    priority_id: Optional[PositiveInteger]
+    sdu_type: Optional[PositiveInteger]
+    vcid: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanXlFrameTriggeringProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANXLFRAMETRIGGERINGPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanXlFrameTriggeringProps":
-        """Create CanXlFrameTriggeringProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanXlFrameTriggeringProps instance
-        """
-        obj: CanXlFrameTriggeringProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.acceptance_field: Optional[PositiveInteger] = None
+        self.priority_id: Optional[PositiveInteger] = None
+        self.sdu_type: Optional[PositiveInteger] = None
+        self.vcid: Optional[PositiveInteger] = None
 
 
 class CanXlFrameTriggeringPropsBuilder:

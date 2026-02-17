@@ -1,41 +1,39 @@
-"""TDEventBswModeDeclaration AUTOSAR element."""
+"""TDEventBswModeDeclaration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 76)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_bsw import (
+    TDEventBsw,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class TDEventBswModeDeclaration(ARObject):
+
+class TDEventBswModeDeclaration(TDEventBsw):
     """AUTOSAR TDEventBswModeDeclaration."""
 
+    entry_mode: Optional[ModeDeclaration]
+    exit_mode: Optional[ModeDeclaration]
+    mode: Optional[ModeDeclarationGroup]
+    td_event_bsw_declaration_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswModeDeclaration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventBswModeDeclaration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTBSWMODEDECLARATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventBswModeDeclaration":
-        """Create TDEventBswModeDeclaration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventBswModeDeclaration instance
-        """
-        obj: TDEventBswModeDeclaration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.entry_mode: Optional[ModeDeclaration] = None
+        self.exit_mode: Optional[ModeDeclaration] = None
+        self.mode: Optional[ModeDeclarationGroup] = None
+        self.td_event_bsw_declaration_type: Optional[Any] = None
 
 
 class TDEventBswModeDeclarationBuilder:

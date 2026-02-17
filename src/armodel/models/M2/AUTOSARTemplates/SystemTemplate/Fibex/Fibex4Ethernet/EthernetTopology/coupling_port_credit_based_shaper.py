@@ -1,41 +1,34 @@
-"""CouplingPortCreditBasedShaper AUTOSAR element."""
+"""CouplingPortCreditBasedShaper AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2013)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class CouplingPortCreditBasedShaper(ARObject):
+
+class CouplingPortCreditBasedShaper(Identifiable):
     """AUTOSAR CouplingPortCreditBasedShaper."""
 
+    idle_slope: Optional[PositiveInteger]
+    lower_boundary: Optional[PositiveInteger]
+    upper_boundary: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CouplingPortCreditBasedShaper."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingPortCreditBasedShaper to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGPORTCREDITBASEDSHAPER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortCreditBasedShaper":
-        """Create CouplingPortCreditBasedShaper from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortCreditBasedShaper instance
-        """
-        obj: CouplingPortCreditBasedShaper = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.idle_slope: Optional[PositiveInteger] = None
+        self.lower_boundary: Optional[PositiveInteger] = None
+        self.upper_boundary: Optional[PositiveInteger] = None
 
 
 class CouplingPortCreditBasedShaperBuilder:

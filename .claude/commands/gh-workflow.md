@@ -7,7 +7,7 @@ Automate the complete GitHub workflow for creating issues, feature branches, com
 When the user runs `/gh-workflow`, perform the following steps in order:
 
 ### 1. Quality Checks (Must Pass Before Proceeding)
-- Run linting with flake8: `flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics`
+- Run linting with ruff: `ruff check src/ tools/`
 - Run tests with pytest: `pytest`
 - Install package: `pip install -e .`
 - **All checks must pass** before proceeding to next step
@@ -19,7 +19,7 @@ When the user runs `/gh-workflow`, perform the following steps in order:
   ```
   Check        Status    Details
   ───────────────────────────────────
-  Flake8       ✅ Pass    No E9,F63,F7,F82 errors
+  Ruff         ✅ Pass    No linting errors
   Pytest       ✅ Pass    All tests passed
   ```
 

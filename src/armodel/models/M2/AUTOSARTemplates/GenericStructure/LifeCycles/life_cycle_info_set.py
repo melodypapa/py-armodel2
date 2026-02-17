@@ -1,41 +1,46 @@
-"""LifeCycleInfoSet AUTOSAR element."""
+"""LifeCycleInfoSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 391)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 195)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_info import (
+    LifeCycleInfo,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_period import (
+    LifeCyclePeriod,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state import (
+    LifeCycleState,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state_definition_group import (
+    LifeCycleStateDefinitionGroup,
+)
 
-class LifeCycleInfoSet(ARObject):
+
+class LifeCycleInfoSet(ARElement):
     """AUTOSAR LifeCycleInfoSet."""
 
+    default_lc_state: LifeCycleState
+    default_period: Optional[LifeCyclePeriod]
+    life_cycle_infos: list[LifeCycleInfo]
+    used_life_cycle: LifeCycleStateDefinitionGroup
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LifeCycleInfoSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LIFECYCLEINFOSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LifeCycleInfoSet":
-        """Create LifeCycleInfoSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LifeCycleInfoSet instance
-        """
-        obj: LifeCycleInfoSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_lc_state: LifeCycleState = None
+        self.default_period: Optional[LifeCyclePeriod] = None
+        self.life_cycle_infos: list[LifeCycleInfo] = []
+        self.used_life_cycle: LifeCycleStateDefinitionGroup = None
 
 
 class LifeCycleInfoSetBuilder:

@@ -1,41 +1,27 @@
-"""AutosarEngineeringObject AUTOSAR element."""
+"""AutosarEngineeringObject AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 132)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 622)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 161)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_EngineeringObject.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
+    EngineeringObject,
+)
 
-class AutosarEngineeringObject(ARObject):
+
+class AutosarEngineeringObject(EngineeringObject):
     """AUTOSAR AutosarEngineeringObject."""
 
     def __init__(self) -> None:
         """Initialize AutosarEngineeringObject."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AutosarEngineeringObject to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("AUTOSARENGINEERINGOBJECT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AutosarEngineeringObject":
-        """Create AutosarEngineeringObject from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AutosarEngineeringObject instance
-        """
-        obj: AutosarEngineeringObject = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class AutosarEngineeringObjectBuilder:

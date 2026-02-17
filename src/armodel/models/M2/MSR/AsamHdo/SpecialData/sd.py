@@ -1,41 +1,33 @@
-"""Sd AUTOSAR element."""
+"""Sd AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 91)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    VerbatimStringPlain,
+)
 
 
 class Sd(ARObject):
     """AUTOSAR Sd."""
 
+    gid: NameToken
+    value: VerbatimStringPlain
+    xml_space: Optional[Any]
     def __init__(self) -> None:
         """Initialize Sd."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Sd to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SD")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Sd":
-        """Create Sd from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Sd instance
-        """
-        obj: Sd = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.gid: NameToken = None
+        self.value: VerbatimStringPlain = None
+        self.xml_space: Optional[Any] = None
 
 
 class SdBuilder:

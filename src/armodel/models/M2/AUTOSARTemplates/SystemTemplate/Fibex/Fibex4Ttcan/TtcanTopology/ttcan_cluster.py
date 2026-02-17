@@ -1,41 +1,34 @@
-"""TtcanCluster AUTOSAR element."""
+"""TtcanCluster AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 76)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ttcan_TtcanTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+    TimeValue,
+)
 
 
 class TtcanCluster(ARObject):
     """AUTOSAR TtcanCluster."""
 
+    basic_cycle_length: Optional[Integer]
+    ntu: Optional[TimeValue]
+    operation_mode: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TtcanCluster."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TtcanCluster to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TTCANCLUSTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TtcanCluster":
-        """Create TtcanCluster from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TtcanCluster instance
-        """
-        obj: TtcanCluster = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.basic_cycle_length: Optional[Integer] = None
+        self.ntu: Optional[TimeValue] = None
+        self.operation_mode: Optional[Boolean] = None
 
 
 class TtcanClusterBuilder:

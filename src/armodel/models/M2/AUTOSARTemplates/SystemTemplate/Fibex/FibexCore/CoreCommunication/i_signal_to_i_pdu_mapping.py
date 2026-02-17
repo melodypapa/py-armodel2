@@ -1,41 +1,52 @@
-"""ISignalToIPduMapping AUTOSAR element."""
+"""ISignalToIPduMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 325)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    ByteOrderEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
+    TransferPropertyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    UnlimitedInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal import (
+    ISignal,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_group import (
+    ISignalGroup,
+)
 
-class ISignalToIPduMapping(ARObject):
+
+class ISignalToIPduMapping(Identifiable):
     """AUTOSAR ISignalToIPduMapping."""
 
+    i_signal: Optional[ISignal]
+    i_signal_group: Optional[ISignalGroup]
+    packing_byte: Optional[ByteOrderEnum]
+    start_position: Optional[UnlimitedInteger]
+    transfer_property_enum: Optional[TransferPropertyEnum]
+    update: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize ISignalToIPduMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ISignalToIPduMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ISIGNALTOIPDUMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalToIPduMapping":
-        """Create ISignalToIPduMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalToIPduMapping instance
-        """
-        obj: ISignalToIPduMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.i_signal: Optional[ISignal] = None
+        self.i_signal_group: Optional[ISignalGroup] = None
+        self.packing_byte: Optional[ByteOrderEnum] = None
+        self.start_position: Optional[UnlimitedInteger] = None
+        self.transfer_property_enum: Optional[TransferPropertyEnum] = None
+        self.update: Optional[UnlimitedInteger] = None
 
 
 class ISignalToIPduMappingBuilder:

@@ -1,41 +1,25 @@
-"""SdgPrimitiveAttribute AUTOSAR element."""
+"""SdgPrimitiveAttribute AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 100)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_abstract_primitive_attribute import (
+    SdgAbstractPrimitiveAttribute,
+)
 
-class SdgPrimitiveAttribute(ARObject):
+
+class SdgPrimitiveAttribute(SdgAbstractPrimitiveAttribute):
     """AUTOSAR SdgPrimitiveAttribute."""
 
     def __init__(self) -> None:
         """Initialize SdgPrimitiveAttribute."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgPrimitiveAttribute to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGPRIMITIVEATTRIBUTE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgPrimitiveAttribute":
-        """Create SdgPrimitiveAttribute from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgPrimitiveAttribute instance
-        """
-        obj: SdgPrimitiveAttribute = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class SdgPrimitiveAttributeBuilder:

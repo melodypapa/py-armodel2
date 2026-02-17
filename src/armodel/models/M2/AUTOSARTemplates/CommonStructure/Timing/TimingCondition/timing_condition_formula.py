@@ -1,41 +1,45 @@
-"""TimingConditionFormula AUTOSAR element."""
+"""TimingConditionFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 35)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
+    AutosarOperationArgumentInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
+    TimingCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_mode_instance import (
+    TimingModeInstance,
+)
 
 
 class TimingConditionFormula(ARObject):
     """AUTOSAR TimingConditionFormula."""
 
+    timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance]
+    timing_condition: Optional[TimingCondition]
+    timing_event: Optional[TimingDescriptionEvent]
+    timing_mode: Optional[TimingModeInstance]
+    timing_variable_instance: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingConditionFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGCONDITIONFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingConditionFormula":
-        """Create TimingConditionFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingConditionFormula instance
-        """
-        obj: TimingConditionFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance] = None
+        self.timing_condition: Optional[TimingCondition] = None
+        self.timing_event: Optional[TimingDescriptionEvent] = None
+        self.timing_mode: Optional[TimingModeInstance] = None
+        self.timing_variable_instance: Optional[Any] = None
 
 
 class TimingConditionFormulaBuilder:

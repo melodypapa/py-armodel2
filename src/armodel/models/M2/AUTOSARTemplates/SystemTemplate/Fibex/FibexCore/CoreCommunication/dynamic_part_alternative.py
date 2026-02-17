@@ -1,41 +1,36 @@
-"""DynamicPartAlternative AUTOSAR element."""
+"""DynamicPartAlternative AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 411)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_i_pdu import (
+    ISignalIPdu,
+)
 
 
 class DynamicPartAlternative(ARObject):
     """AUTOSAR DynamicPartAlternative."""
 
+    initial_dynamic: Optional[Boolean]
+    i_pdu: Optional[ISignalIPdu]
+    selector_field: Optional[Integer]
     def __init__(self) -> None:
         """Initialize DynamicPartAlternative."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DynamicPartAlternative to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DYNAMICPARTALTERNATIVE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DynamicPartAlternative":
-        """Create DynamicPartAlternative from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DynamicPartAlternative instance
-        """
-        obj: DynamicPartAlternative = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.initial_dynamic: Optional[Boolean] = None
+        self.i_pdu: Optional[ISignalIPdu] = None
+        self.selector_field: Optional[Integer] = None
 
 
 class DynamicPartAlternativeBuilder:

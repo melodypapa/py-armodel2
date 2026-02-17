@@ -1,41 +1,35 @@
-"""Row AUTOSAR element."""
+"""Row AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 336)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    ValignEnum,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    TableSeparatorString,
+)
 
-class Row(ARObject):
+
+class Row(Paginateable):
     """AUTOSAR Row."""
 
+    rowsep: Optional[TableSeparatorString]
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Row."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Row to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROW")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Row":
-        """Create Row from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Row instance
-        """
-        obj: Row = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rowsep: Optional[TableSeparatorString] = None
+        self.valign: Optional[ValignEnum] = None
 
 
 class RowBuilder:

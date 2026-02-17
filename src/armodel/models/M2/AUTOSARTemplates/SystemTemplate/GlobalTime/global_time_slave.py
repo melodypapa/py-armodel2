@@ -1,41 +1,45 @@
-"""GlobalTimeSlave AUTOSAR element."""
+"""GlobalTimeSlave AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 860)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
+    CommunicationConnector,
+)
 
-class GlobalTimeSlave(ARObject):
+
+class GlobalTimeSlave(Identifiable):
     """AUTOSAR GlobalTimeSlave."""
+    """Abstract base class - do not instantiate directly."""
 
+    communication_connector: Optional[CommunicationConnector]
+    follow_up_timeout_value: Optional[TimeValue]
+    icv_verification: Optional[Any]
+    time_leap_future: Optional[TimeValue]
+    time_leap: Optional[PositiveInteger]
+    time_leap_past: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeSlave."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeSlave to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMESLAVE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeSlave":
-        """Create GlobalTimeSlave from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeSlave instance
-        """
-        obj: GlobalTimeSlave = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.communication_connector: Optional[CommunicationConnector] = None
+        self.follow_up_timeout_value: Optional[TimeValue] = None
+        self.icv_verification: Optional[Any] = None
+        self.time_leap_future: Optional[TimeValue] = None
+        self.time_leap: Optional[PositiveInteger] = None
+        self.time_leap_past: Optional[TimeValue] = None
 
 
 class GlobalTimeSlaveBuilder:

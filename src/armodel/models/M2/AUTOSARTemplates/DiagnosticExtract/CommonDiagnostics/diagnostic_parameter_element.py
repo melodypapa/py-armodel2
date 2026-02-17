@@ -1,41 +1,35 @@
-"""DiagnosticParameterElement AUTOSAR element."""
+"""DiagnosticParameterElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 36)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
-class DiagnosticParameterElement(ARObject):
+
+class DiagnosticParameterElement(Identifiable):
     """AUTOSAR DiagnosticParameterElement."""
 
+    array_size: Optional[PositiveInteger]
+    sub_elements: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticParameterElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICPARAMETERELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticParameterElement":
-        """Create DiagnosticParameterElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticParameterElement instance
-        """
-        obj: DiagnosticParameterElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.array_size: Optional[PositiveInteger] = None
+        self.sub_elements: list[DiagnosticParameter] = []
 
 
 class DiagnosticParameterElementBuilder:

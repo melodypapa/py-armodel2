@@ -1,41 +1,40 @@
-"""TDEventFrame AUTOSAR element."""
+"""TDEventFrame AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 67)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
+    TDEventCom,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
+    TDEventFrameTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame import (
+    Frame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
+    PhysicalChannel,
+)
 
-class TDEventFrame(ARObject):
+
+class TDEventFrame(TDEventCom):
     """AUTOSAR TDEventFrame."""
 
+    frame: Optional[Frame]
+    physical_channel: Optional[PhysicalChannel]
+    td_event_type_enum: Optional[TDEventFrameTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventFrame."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventFrame to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTFRAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventFrame":
-        """Create TDEventFrame from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventFrame instance
-        """
-        obj: TDEventFrame = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.frame: Optional[Frame] = None
+        self.physical_channel: Optional[PhysicalChannel] = None
+        self.td_event_type_enum: Optional[TDEventFrameTypeEnum] = None
 
 
 class TDEventFrameBuilder:

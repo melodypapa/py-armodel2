@@ -1,41 +1,32 @@
-"""DiagnosticEventToDebounceAlgorithmMapping AUTOSAR element."""
+"""DiagnosticEventToDebounceAlgorithmMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 246)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
 
-class DiagnosticEventToDebounceAlgorithmMapping(ARObject):
+
+class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToDebounceAlgorithmMapping."""
 
+    debounce: Optional[Any]
+    diagnostic_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToDebounceAlgorithmMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEventToDebounceAlgorithmMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICEVENTTODEBOUNCEALGORITHMMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToDebounceAlgorithmMapping":
-        """Create DiagnosticEventToDebounceAlgorithmMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventToDebounceAlgorithmMapping instance
-        """
-        obj: DiagnosticEventToDebounceAlgorithmMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.debounce: Optional[Any] = None
+        self.diagnostic_event: Optional[DiagnosticEvent] = None
 
 
 class DiagnosticEventToDebounceAlgorithmMappingBuilder:
@@ -43,9 +34,7 @@ class DiagnosticEventToDebounceAlgorithmMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticEventToDebounceAlgorithmMapping = (
-            DiagnosticEventToDebounceAlgorithmMapping()
-        )
+        self._obj: DiagnosticEventToDebounceAlgorithmMapping = DiagnosticEventToDebounceAlgorithmMapping()
 
     def build(self) -> DiagnosticEventToDebounceAlgorithmMapping:
         """Build and return DiagnosticEventToDebounceAlgorithmMapping object.

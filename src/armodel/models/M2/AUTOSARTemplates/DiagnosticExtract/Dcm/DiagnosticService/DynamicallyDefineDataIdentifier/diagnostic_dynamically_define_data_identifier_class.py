@@ -1,41 +1,37 @@
-"""DiagnosticDynamicallyDefineDataIdentifierClass AUTOSAR element."""
+"""DiagnosticDynamicallyDefineDataIdentifierClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 128)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_DynamicallyDefineDataIdentifier.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.DynamicallyDefineData import (
+    DiagnosticHandleDDDIConfigurationEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class DiagnosticDynamicallyDefineDataIdentifierClass(ARObject):
+
+class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticDynamicallyDefineDataIdentifierClass."""
 
+    check_per: Optional[Boolean]
+    configuration: Optional[DiagnosticHandleDDDIConfigurationEnum]
+    subfunctions: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifierClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticDynamicallyDefineDataIdentifierClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICDYNAMICALLYDEFINEDATAIDENTIFIERCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticDynamicallyDefineDataIdentifierClass":
-        """Create DiagnosticDynamicallyDefineDataIdentifierClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticDynamicallyDefineDataIdentifierClass instance
-        """
-        obj: DiagnosticDynamicallyDefineDataIdentifierClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.check_per: Optional[Boolean] = None
+        self.configuration: Optional[DiagnosticHandleDDDIConfigurationEnum] = None
+        self.subfunctions: list[Any] = []
 
 
 class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
@@ -43,9 +39,7 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticDynamicallyDefineDataIdentifierClass = (
-            DiagnosticDynamicallyDefineDataIdentifierClass()
-        )
+        self._obj: DiagnosticDynamicallyDefineDataIdentifierClass = DiagnosticDynamicallyDefineDataIdentifierClass()
 
     def build(self) -> DiagnosticDynamicallyDefineDataIdentifierClass:
         """Build and return DiagnosticDynamicallyDefineDataIdentifierClass object.

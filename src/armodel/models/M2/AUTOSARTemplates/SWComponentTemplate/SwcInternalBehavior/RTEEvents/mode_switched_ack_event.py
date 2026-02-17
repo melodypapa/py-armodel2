@@ -1,41 +1,30 @@
-"""ModeSwitchedAckEvent AUTOSAR element."""
+"""ModeSwitchedAckEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 545)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_switch_point import (
+    ModeSwitchPoint,
+)
 
-class ModeSwitchedAckEvent(ARObject):
+
+class ModeSwitchedAckEvent(RTEEvent):
     """AUTOSAR ModeSwitchedAckEvent."""
 
+    event_source: Optional[ModeSwitchPoint]
     def __init__(self) -> None:
         """Initialize ModeSwitchedAckEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeSwitchedAckEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODESWITCHEDACKEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeSwitchedAckEvent":
-        """Create ModeSwitchedAckEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeSwitchedAckEvent instance
-        """
-        obj: ModeSwitchedAckEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_source: Optional[ModeSwitchPoint] = None
 
 
 class ModeSwitchedAckEventBuilder:

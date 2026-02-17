@@ -1,41 +1,44 @@
-"""CanTpNode AUTOSAR element."""
+"""CanTpNode AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 611)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_address import (
+    CanTpAddress,
+)
 
-class CanTpNode(ARObject):
+
+class CanTpNode(Identifiable):
     """AUTOSAR CanTpNode."""
 
+    connector: Optional[Any]
+    max_fc_wait: Optional[Integer]
+    st_min: Optional[TimeValue]
+    timeout_ar: Optional[TimeValue]
+    timeout_as: Optional[TimeValue]
+    tp_address: Optional[CanTpAddress]
     def __init__(self) -> None:
         """Initialize CanTpNode."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanTpNode to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANTPNODE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanTpNode":
-        """Create CanTpNode from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanTpNode instance
-        """
-        obj: CanTpNode = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.connector: Optional[Any] = None
+        self.max_fc_wait: Optional[Integer] = None
+        self.st_min: Optional[TimeValue] = None
+        self.timeout_ar: Optional[TimeValue] = None
+        self.timeout_as: Optional[TimeValue] = None
+        self.tp_address: Optional[CanTpAddress] = None
 
 
 class CanTpNodeBuilder:

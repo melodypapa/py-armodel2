@@ -1,41 +1,35 @@
-"""MacSecParticipantSet AUTOSAR element."""
+"""MacSecParticipantSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_cluster import (
+    EthernetCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_sec_kay_participant import (
+    MacSecKayParticipant,
+)
 
-class MacSecParticipantSet(ARObject):
+
+class MacSecParticipantSet(ARElement):
     """AUTOSAR MacSecParticipantSet."""
 
+    ethernet_cluster: Optional[EthernetCluster]
+    mka_participants: list[MacSecKayParticipant]
     def __init__(self) -> None:
         """Initialize MacSecParticipantSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MacSecParticipantSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MACSECPARTICIPANTSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MacSecParticipantSet":
-        """Create MacSecParticipantSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MacSecParticipantSet instance
-        """
-        obj: MacSecParticipantSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ethernet_cluster: Optional[EthernetCluster] = None
+        self.mka_participants: list[MacSecKayParticipant] = []
 
 
 class MacSecParticipantSetBuilder:

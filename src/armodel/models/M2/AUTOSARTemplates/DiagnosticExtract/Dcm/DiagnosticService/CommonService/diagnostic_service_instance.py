@@ -1,41 +1,36 @@
-"""DiagnosticServiceInstance AUTOSAR element."""
+"""DiagnosticServiceInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 69)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_CommonService.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
+    DiagnosticAccessPermission,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
 
-class DiagnosticServiceInstance(ARObject):
+
+class DiagnosticServiceInstance(DiagnosticCommonElement):
     """AUTOSAR DiagnosticServiceInstance."""
+    """Abstract base class - do not instantiate directly."""
 
+    access: Optional[DiagnosticAccessPermission]
+    service_class: Optional[DiagnosticServiceClass]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticServiceInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSERVICEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceInstance":
-        """Create DiagnosticServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticServiceInstance instance
-        """
-        obj: DiagnosticServiceInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.access: Optional[DiagnosticAccessPermission] = None
+        self.service_class: Optional[DiagnosticServiceClass] = None
 
 
 class DiagnosticServiceInstanceBuilder:

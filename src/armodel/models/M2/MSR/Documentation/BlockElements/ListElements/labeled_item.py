@@ -1,41 +1,43 @@
-"""LabeledItem AUTOSAR element."""
+"""LabeledItem AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 296)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
 
-class LabeledItem(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
+
+
+class LabeledItem(Paginateable):
     """AUTOSAR LabeledItem."""
 
+    help_entry: Optional[String]
+    item_contents: Optional[DocumentationBlock]
+    item_label: MultiLanguageOverviewParagraph
     def __init__(self) -> None:
         """Initialize LabeledItem."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LabeledItem to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LABELEDITEM")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LabeledItem":
-        """Create LabeledItem from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LabeledItem instance
-        """
-        obj: LabeledItem = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.help_entry: Optional[String] = None
+        self.item_contents: Optional[DocumentationBlock] = None
+        self.item_label: MultiLanguageOverviewParagraph = None
 
 
 class LabeledItemBuilder:

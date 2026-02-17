@@ -1,41 +1,32 @@
-"""DiagnosticSessionControl AUTOSAR element."""
+"""DiagnosticSessionControl AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 93)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_SessionControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session import (
+    DiagnosticSession,
+)
 
-class DiagnosticSessionControl(ARObject):
+
+class DiagnosticSessionControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSessionControl."""
 
+    diagnostic_session_session: Optional[DiagnosticSession]
+    session_control: Optional[DiagnosticSession]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticSessionControl to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSESSIONCONTROL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSessionControl":
-        """Create DiagnosticSessionControl from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSessionControl instance
-        """
-        obj: DiagnosticSessionControl = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.diagnostic_session_session: Optional[DiagnosticSession] = None
+        self.session_control: Optional[DiagnosticSession] = None
 
 
 class DiagnosticSessionControlBuilder:

@@ -1,41 +1,35 @@
-"""LinFrameTriggering AUTOSAR element."""
+"""LinFrameTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 428)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
+    LinChecksumType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
-class LinFrameTriggering(ARObject):
+
+class LinFrameTriggering(FrameTriggering):
     """AUTOSAR LinFrameTriggering."""
 
+    identifier: Optional[Integer]
+    lin_checksum: Optional[LinChecksumType]
     def __init__(self) -> None:
         """Initialize LinFrameTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinFrameTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINFRAMETRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinFrameTriggering":
-        """Create LinFrameTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinFrameTriggering instance
-        """
-        obj: LinFrameTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.identifier: Optional[Integer] = None
+        self.lin_checksum: Optional[LinChecksumType] = None
 
 
 class LinFrameTriggeringBuilder:

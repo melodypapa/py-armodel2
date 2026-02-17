@@ -1,41 +1,31 @@
-"""SpecElementReference AUTOSAR element."""
+"""SpecElementReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 82)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Common.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class SpecElementReference(ARObject):
+
+class SpecElementReference(Identifiable):
     """AUTOSAR SpecElementReference."""
+    """Abstract base class - do not instantiate directly."""
 
+    alternative: Optional[String]
     def __init__(self) -> None:
         """Initialize SpecElementReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SpecElementReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SPECELEMENTREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SpecElementReference":
-        """Create SpecElementReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SpecElementReference instance
-        """
-        obj: SpecElementReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.alternative: Optional[String] = None
 
 
 class SpecElementReferenceBuilder:

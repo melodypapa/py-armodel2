@@ -1,41 +1,35 @@
-"""RtpTp AUTOSAR element."""
+"""RtpTp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 460)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
+    TransportProtocolConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_udp_config import (
+    TcpUdpConfig,
+)
 
-class RtpTp(ARObject):
+
+class RtpTp(TransportProtocolConfiguration):
     """AUTOSAR RtpTp."""
 
+    ssrc: Optional[PositiveInteger]
+    tcp_udp_config: Optional[TcpUdpConfig]
     def __init__(self) -> None:
         """Initialize RtpTp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RtpTp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTPTP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RtpTp":
-        """Create RtpTp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RtpTp instance
-        """
-        obj: RtpTp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ssrc: Optional[PositiveInteger] = None
+        self.tcp_udp_config: Optional[TcpUdpConfig] = None
 
 
 class RtpTpBuilder:

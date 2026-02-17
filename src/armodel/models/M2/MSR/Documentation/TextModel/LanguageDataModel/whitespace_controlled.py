@@ -1,41 +1,26 @@
-"""WhitespaceControlled AUTOSAR element."""
+"""WhitespaceControlled AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 292)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class WhitespaceControlled(ARObject):
     """AUTOSAR WhitespaceControlled."""
+    """Abstract base class - do not instantiate directly."""
 
+    xml_space: Any
     def __init__(self) -> None:
         """Initialize WhitespaceControlled."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert WhitespaceControlled to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("WHITESPACECONTROLLED")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "WhitespaceControlled":
-        """Create WhitespaceControlled from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            WhitespaceControlled instance
-        """
-        obj: WhitespaceControlled = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.xml_space: Any = None
 
 
 class WhitespaceControlledBuilder:

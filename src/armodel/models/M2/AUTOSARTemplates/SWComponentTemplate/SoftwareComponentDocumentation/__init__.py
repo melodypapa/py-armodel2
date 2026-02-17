@@ -1,1 +1,13 @@
-"""M2::AUTOSARTemplates::SWComponentTemplate::SoftwareComponentDocumentation"""
+"""SoftwareComponentDocumentation module."""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SoftwareComponentDocumentation.sw_component_documentation import (
+        SwComponentDocumentation,
+    )
+
+__all__ = [
+    "SwComponentDocumentation",
+]

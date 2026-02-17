@@ -1,41 +1,38 @@
-"""CryptoServiceNeeds AUTOSAR element."""
+"""CryptoServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 235)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 733)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
 
-class CryptoServiceNeeds(ARObject):
+
+class CryptoServiceNeeds(ServiceNeeds):
     """AUTOSAR CryptoServiceNeeds."""
 
+    algorithm_family: Optional[String]
+    algorithm_mode: Optional[String]
+    crypto_key: Optional[String]
+    maximum_key: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CryptoServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CRYPTOSERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CryptoServiceNeeds":
-        """Create CryptoServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CryptoServiceNeeds instance
-        """
-        obj: CryptoServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.algorithm_family: Optional[String] = None
+        self.algorithm_mode: Optional[String] = None
+        self.crypto_key: Optional[String] = None
+        self.maximum_key: Optional[PositiveInteger] = None
 
 
 class CryptoServiceNeedsBuilder:

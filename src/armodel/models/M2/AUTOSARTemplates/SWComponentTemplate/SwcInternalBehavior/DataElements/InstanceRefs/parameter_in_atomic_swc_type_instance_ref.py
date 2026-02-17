@@ -1,41 +1,42 @@
-"""ParameterInAtomicSWCTypeInstanceRef AUTOSAR element."""
+"""ParameterInAtomicSWCTypeInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 319)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
 
 class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     """AUTOSAR ParameterInAtomicSWCTypeInstanceRef."""
 
+    base: Optional[AtomicSwComponentType]
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_parameter: Optional[DataPrototype]
+    target_data: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize ParameterInAtomicSWCTypeInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ParameterInAtomicSWCTypeInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PARAMETERINATOMICSWCTYPEINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ParameterInAtomicSWCTypeInstanceRef":
-        """Create ParameterInAtomicSWCTypeInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ParameterInAtomicSWCTypeInstanceRef instance
-        """
-        obj: ParameterInAtomicSWCTypeInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[AtomicSwComponentType] = None
+        self.context_datas: list[Any] = []
+        self.port_prototype: Optional[PortPrototype] = None
+        self.root_parameter: Optional[DataPrototype] = None
+        self.target_data: Optional[DataPrototype] = None
 
 
 class ParameterInAtomicSWCTypeInstanceRefBuilder:

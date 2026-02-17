@@ -1,41 +1,33 @@
-"""MemorySectionLocation AUTOSAR element."""
+"""MemorySectionLocation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 162)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_ExecutionTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.MemorySectionUsage.memory_section import (
+    MemorySection,
+)
 
 
 class MemorySectionLocation(ARObject):
     """AUTOSAR MemorySectionLocation."""
 
+    provided_memory: Optional[HwElement]
+    software: Optional[MemorySection]
     def __init__(self) -> None:
         """Initialize MemorySectionLocation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MemorySectionLocation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MEMORYSECTIONLOCATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MemorySectionLocation":
-        """Create MemorySectionLocation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MemorySectionLocation instance
-        """
-        obj: MemorySectionLocation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provided_memory: Optional[HwElement] = None
+        self.software: Optional[MemorySection] = None
 
 
 class MemorySectionLocationBuilder:

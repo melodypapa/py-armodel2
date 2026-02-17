@@ -1,41 +1,30 @@
-"""TDEventSLLETPort AUTOSAR element."""
+"""TDEventSLLETPort AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 79)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_sllet import (
+    TDEventSLLET,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
-class TDEventSLLETPort(ARObject):
+
+class TDEventSLLETPort(TDEventSLLET):
     """AUTOSAR TDEventSLLETPort."""
 
+    port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize TDEventSLLETPort."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventSLLETPort to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTSLLETPORT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventSLLETPort":
-        """Create TDEventSLLETPort from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventSLLETPort instance
-        """
-        obj: TDEventSLLETPort = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.port: Optional[PortPrototype] = None
 
 
 class TDEventSLLETPortBuilder:

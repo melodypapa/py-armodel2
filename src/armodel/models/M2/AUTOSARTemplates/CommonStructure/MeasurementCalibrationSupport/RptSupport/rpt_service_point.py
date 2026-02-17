@@ -1,41 +1,33 @@
-"""RptServicePoint AUTOSAR element."""
+"""RptServicePoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 206)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CIdentifier,
+    PositiveInteger,
+)
 
-class RptServicePoint(ARObject):
+
+class RptServicePoint(Identifiable):
     """AUTOSAR RptServicePoint."""
 
+    service_id: Optional[PositiveInteger]
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RptServicePoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RptServicePoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPTSERVICEPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RptServicePoint":
-        """Create RptServicePoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RptServicePoint instance
-        """
-        obj: RptServicePoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.service_id: Optional[PositiveInteger] = None
+        self.symbol: Optional[CIdentifier] = None
 
 
 class RptServicePointBuilder:

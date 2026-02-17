@@ -1,41 +1,47 @@
-"""ImplementationDataType AUTOSAR element."""
+"""ImplementationDataType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 320)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 230)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 299)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 268)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2031)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 47)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 451)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 193)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_props import (
+    SymbolProps,
+)
 
-class ImplementationDataType(ARObject):
+
+class ImplementationDataType(AbstractImplementationDataType):
     """AUTOSAR ImplementationDataType."""
 
+    dynamic_array: Optional[String]
+    sub_elements: list[Any]
+    symbol_props: Optional[SymbolProps]
+    type_emitter: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize ImplementationDataType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ImplementationDataType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATIONDATATYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationDataType":
-        """Create ImplementationDataType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationDataType instance
-        """
-        obj: ImplementationDataType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dynamic_array: Optional[String] = None
+        self.sub_elements: list[Any] = []
+        self.symbol_props: Optional[SymbolProps] = None
+        self.type_emitter: Optional[NameToken] = None
 
 
 class ImplementationDataTypeBuilder:

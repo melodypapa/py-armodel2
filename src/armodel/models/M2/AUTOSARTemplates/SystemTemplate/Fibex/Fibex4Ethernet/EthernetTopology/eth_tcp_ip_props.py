@@ -1,41 +1,35 @@
-"""EthTcpIpProps AUTOSAR element."""
+"""EthTcpIpProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 153)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_props import (
+    TcpProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.udp_props import (
+    UdpProps,
+)
 
-class EthTcpIpProps(ARObject):
+
+class EthTcpIpProps(ARElement):
     """AUTOSAR EthTcpIpProps."""
 
+    tcp_props: Optional[TcpProps]
+    udp_props: Optional[UdpProps]
     def __init__(self) -> None:
         """Initialize EthTcpIpProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EthTcpIpProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ETHTCPIPPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthTcpIpProps":
-        """Create EthTcpIpProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthTcpIpProps instance
-        """
-        obj: EthTcpIpProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tcp_props: Optional[TcpProps] = None
+        self.udp_props: Optional[UdpProps] = None
 
 
 class EthTcpIpPropsBuilder:

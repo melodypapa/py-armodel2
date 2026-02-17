@@ -1,41 +1,35 @@
-"""DiagnosticComControlSpecificChannel AUTOSAR element."""
+"""DiagnosticComControlSpecificChannel AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 109)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_CommunicationControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
+    CommunicationCluster,
+)
 
 
 class DiagnosticComControlSpecificChannel(ARObject):
     """AUTOSAR DiagnosticComControlSpecificChannel."""
 
+    specific_channel: Optional[CommunicationCluster]
+    specific_physical: Optional[Any]
+    subnet_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSpecificChannel."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticComControlSpecificChannel to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCOMCONTROLSPECIFICCHANNEL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSpecificChannel":
-        """Create DiagnosticComControlSpecificChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticComControlSpecificChannel instance
-        """
-        obj: DiagnosticComControlSpecificChannel = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.specific_channel: Optional[CommunicationCluster] = None
+        self.specific_physical: Optional[Any] = None
+        self.subnet_number: Optional[PositiveInteger] = None
 
 
 class DiagnosticComControlSpecificChannelBuilder:

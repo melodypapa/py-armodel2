@@ -1,41 +1,30 @@
-"""SdgAggregationWithVariation AUTOSAR element."""
+"""SdgAggregationWithVariation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 101)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
+    SdgElementWithGid,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
+    SdgClass,
+)
 
-class SdgAggregationWithVariation(ARObject):
+
+class SdgAggregationWithVariation(SdgElementWithGid):
     """AUTOSAR SdgAggregationWithVariation."""
 
+    sub_sdg: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgAggregationWithVariation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgAggregationWithVariation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGAGGREGATIONWITHVARIATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgAggregationWithVariation":
-        """Create SdgAggregationWithVariation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgAggregationWithVariation instance
-        """
-        obj: SdgAggregationWithVariation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sub_sdg: Optional[SdgClass] = None
 
 
 class SdgAggregationWithVariationBuilder:

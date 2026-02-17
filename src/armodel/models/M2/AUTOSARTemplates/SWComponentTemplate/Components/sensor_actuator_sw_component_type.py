@@ -1,41 +1,32 @@
-"""SensorActuatorSwComponentType AUTOSAR element."""
+"""SensorActuatorSwComponentType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 646)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2055)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 244)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
+    HwDescriptionEntity,
+)
 
-class SensorActuatorSwComponentType(ARObject):
+
+class SensorActuatorSwComponentType(AtomicSwComponentType):
     """AUTOSAR SensorActuatorSwComponentType."""
 
+    sensor_actuator: Optional[HwDescriptionEntity]
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SensorActuatorSwComponentType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENSORACTUATORSWCOMPONENTTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SensorActuatorSwComponentType":
-        """Create SensorActuatorSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SensorActuatorSwComponentType instance
-        """
-        obj: SensorActuatorSwComponentType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sensor_actuator: Optional[HwDescriptionEntity] = None
 
 
 class SensorActuatorSwComponentTypeBuilder:

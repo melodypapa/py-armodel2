@@ -1,41 +1,27 @@
-"""SignalServiceTranslationPropsSet AUTOSAR element."""
+"""SignalServiceTranslationPropsSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 730)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_SignalServiceTranslation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
 
-class SignalServiceTranslationPropsSet(ARObject):
+
+class SignalServiceTranslationPropsSet(ARElement):
     """AUTOSAR SignalServiceTranslationPropsSet."""
 
+    signal_service_propses: list[Any]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationPropsSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SignalServiceTranslationPropsSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SIGNALSERVICETRANSLATIONPROPSSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationPropsSet":
-        """Create SignalServiceTranslationPropsSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SignalServiceTranslationPropsSet instance
-        """
-        obj: SignalServiceTranslationPropsSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.signal_service_propses: list[Any] = []
 
 
 class SignalServiceTranslationPropsSetBuilder:

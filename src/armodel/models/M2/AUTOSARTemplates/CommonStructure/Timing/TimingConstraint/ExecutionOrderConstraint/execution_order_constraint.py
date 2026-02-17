@@ -1,41 +1,43 @@
-"""ExecutionOrderConstraint AUTOSAR element."""
+"""ExecutionOrderConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 118)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_ExecutionOrderConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
+    TimingConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
 
-class ExecutionOrderConstraint(ARObject):
+
+class ExecutionOrderConstraint(TimingConstraint):
     """AUTOSAR ExecutionOrderConstraint."""
 
+    base: Optional[CompositionSwComponentType]
+    execution_order: Optional[Any]
+    ignore_order: Optional[Boolean]
+    is_event: Optional[Boolean]
+    ordered_elements: list[Any]
+    permit_multiple: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ExecutionOrderConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EXECUTIONORDERCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ExecutionOrderConstraint":
-        """Create ExecutionOrderConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ExecutionOrderConstraint instance
-        """
-        obj: ExecutionOrderConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[CompositionSwComponentType] = None
+        self.execution_order: Optional[Any] = None
+        self.ignore_order: Optional[Boolean] = None
+        self.is_event: Optional[Boolean] = None
+        self.ordered_elements: list[Any] = []
+        self.permit_multiple: Optional[Boolean] = None
 
 
 class ExecutionOrderConstraintBuilder:

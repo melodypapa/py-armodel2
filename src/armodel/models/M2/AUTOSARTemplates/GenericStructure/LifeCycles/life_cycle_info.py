@@ -1,41 +1,48 @@
-"""LifeCycleInfo AUTOSAR element."""
+"""LifeCycleInfo AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 392)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 195)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_period import (
+    LifeCyclePeriod,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state import (
+    LifeCycleState,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
 
 
 class LifeCycleInfo(ARObject):
     """AUTOSAR LifeCycleInfo."""
 
+    lc_object: Referrable
+    lc_state: Optional[LifeCycleState]
+    period_begin: Optional[LifeCyclePeriod]
+    period_end: Optional[LifeCyclePeriod]
+    remark: Optional[DocumentationBlock]
+    use_insteads: list[Referrable]
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LifeCycleInfo to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LIFECYCLEINFO")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LifeCycleInfo":
-        """Create LifeCycleInfo from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LifeCycleInfo instance
-        """
-        obj: LifeCycleInfo = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.lc_object: Referrable = None
+        self.lc_state: Optional[LifeCycleState] = None
+        self.period_begin: Optional[LifeCyclePeriod] = None
+        self.period_end: Optional[LifeCyclePeriod] = None
+        self.remark: Optional[DocumentationBlock] = None
+        self.use_insteads: list[Referrable] = []
 
 
 class LifeCycleInfoBuilder:

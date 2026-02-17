@@ -1,41 +1,40 @@
-"""SwAxisGrouped AUTOSAR element."""
+"""SwAxisGrouped AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 357)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
+    SwCalprmAxisTypeProps,
+)
+from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
+    AxisIndexType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
+    ApplicationPrimitiveDataType,
+)
+from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_calprm_ref_proxy import (
+    SwCalprmRefProxy,
+)
 
-class SwAxisGrouped(ARObject):
+
+class SwAxisGrouped(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisGrouped."""
 
+    shared_axis_type: Optional[ApplicationPrimitiveDataType]
+    sw_axis_index: Optional[AxisIndexType]
+    sw_calprm_ref_proxy: SwCalprmRefProxy
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwAxisGrouped to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWAXISGROUPED")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwAxisGrouped":
-        """Create SwAxisGrouped from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwAxisGrouped instance
-        """
-        obj: SwAxisGrouped = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.shared_axis_type: Optional[ApplicationPrimitiveDataType] = None
+        self.sw_axis_index: Optional[AxisIndexType] = None
+        self.sw_calprm_ref_proxy: SwCalprmRefProxy = None
 
 
 class SwAxisGroupedBuilder:

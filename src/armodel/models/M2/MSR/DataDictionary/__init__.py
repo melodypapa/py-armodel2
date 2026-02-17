@@ -1,1 +1,1 @@
-"""AUTOSAR model package."""
+"""DataDictionary module."""

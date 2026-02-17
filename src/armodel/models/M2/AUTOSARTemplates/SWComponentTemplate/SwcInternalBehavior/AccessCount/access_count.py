@@ -1,41 +1,33 @@
-"""AccessCount AUTOSAR element."""
+"""AccessCount AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 57)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_AccessCount.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
+    AbstractAccessPoint,
+)
 
 
 class AccessCount(ARObject):
     """AUTOSAR AccessCount."""
 
+    access_point: Optional[AbstractAccessPoint]
+    value: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize AccessCount."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AccessCount to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ACCESSCOUNT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AccessCount":
-        """Create AccessCount from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AccessCount instance
-        """
-        obj: AccessCount = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.access_point: Optional[AbstractAccessPoint] = None
+        self.value: Optional[PositiveInteger] = None
 
 
 class AccessCountBuilder:

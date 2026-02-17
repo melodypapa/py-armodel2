@@ -1,41 +1,39 @@
-"""ConditionalChangeNad AUTOSAR element."""
+"""ConditionalChangeNad AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 438)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
+    LinConfigurationEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+    PositiveInteger,
+)
 
-class ConditionalChangeNad(ARObject):
+
+class ConditionalChangeNad(LinConfigurationEntry):
     """AUTOSAR ConditionalChangeNad."""
 
+    byte: Optional[Integer]
+    id: Optional[PositiveInteger]
+    invert: Optional[Integer]
+    mask: Optional[Integer]
+    new_nad: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConditionalChangeNad to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONDITIONALCHANGENAD")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConditionalChangeNad":
-        """Create ConditionalChangeNad from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConditionalChangeNad instance
-        """
-        obj: ConditionalChangeNad = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.byte: Optional[Integer] = None
+        self.id: Optional[PositiveInteger] = None
+        self.invert: Optional[Integer] = None
+        self.mask: Optional[Integer] = None
+        self.new_nad: Optional[Integer] = None
 
 
 class ConditionalChangeNadBuilder:

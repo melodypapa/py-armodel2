@@ -1,41 +1,35 @@
-"""PModeGroupInAtomicSwcInstanceRef AUTOSAR element."""
+"""PModeGroupInAtomicSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 949)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.mode_group_in_atomic_swc_instance_ref import (
+    ModeGroupInAtomicSwcInstanceRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
+    AbstractProvidedPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class PModeGroupInAtomicSwcInstanceRef(ARObject):
+
+class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
     """AUTOSAR PModeGroupInAtomicSwcInstanceRef."""
 
+    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
+    target_mode: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PModeGroupInAtomicSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PMODEGROUPINATOMICSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PModeGroupInAtomicSwcInstanceRef":
-        """Create PModeGroupInAtomicSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PModeGroupInAtomicSwcInstanceRef instance
-        """
-        obj: PModeGroupInAtomicSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
+        self.target_mode: Optional[ModeDeclarationGroup] = None
 
 
 class PModeGroupInAtomicSwcInstanceRefBuilder:

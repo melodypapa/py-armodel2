@@ -1,41 +1,45 @@
-"""EcuResourceEstimation AUTOSAR element."""
+"""EcuResourceEstimation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 260)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.resource_consumption import (
+    ResourceConsumption,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_ecu_mapping import (
+    SwcToEcuMapping,
+)
 
 
 class EcuResourceEstimation(ARObject):
     """AUTOSAR EcuResourceEstimation."""
 
+    bsw_resource: Optional[ResourceConsumption]
+    ecu_instance: Optional[EcuInstance]
+    introduction: Optional[DocumentationBlock]
+    rte_resource: Optional[ResourceConsumption]
+    sw_comp_to_ecus: list[SwcToEcuMapping]
     def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcuResourceEstimation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECURESOURCEESTIMATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcuResourceEstimation":
-        """Create EcuResourceEstimation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcuResourceEstimation instance
-        """
-        obj: EcuResourceEstimation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bsw_resource: Optional[ResourceConsumption] = None
+        self.ecu_instance: Optional[EcuInstance] = None
+        self.introduction: Optional[DocumentationBlock] = None
+        self.rte_resource: Optional[ResourceConsumption] = None
+        self.sw_comp_to_ecus: list[SwcToEcuMapping] = []
 
 
 class EcuResourceEstimationBuilder:

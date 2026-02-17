@@ -1,41 +1,25 @@
-"""VendorSpecificServiceNeeds AUTOSAR element."""
+"""VendorSpecificServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 603)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class VendorSpecificServiceNeeds(ARObject):
+
+class VendorSpecificServiceNeeds(ServiceNeeds):
     """AUTOSAR VendorSpecificServiceNeeds."""
 
     def __init__(self) -> None:
         """Initialize VendorSpecificServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert VendorSpecificServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VENDORSPECIFICSERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VendorSpecificServiceNeeds":
-        """Create VendorSpecificServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VendorSpecificServiceNeeds instance
-        """
-        obj: VendorSpecificServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class VendorSpecificServiceNeedsBuilder:

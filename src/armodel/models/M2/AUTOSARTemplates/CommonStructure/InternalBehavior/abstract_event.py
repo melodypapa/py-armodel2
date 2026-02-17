@@ -1,41 +1,32 @@
-"""AbstractEvent AUTOSAR element."""
+"""AbstractEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 541)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 204)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
+    ExecutableEntity,
+)
 
-class AbstractEvent(ARObject):
+
+class AbstractEvent(Identifiable):
     """AUTOSAR AbstractEvent."""
+    """Abstract base class - do not instantiate directly."""
 
+    activation: Optional[ExecutableEntity]
     def __init__(self) -> None:
         """Initialize AbstractEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractEvent":
-        """Create AbstractEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractEvent instance
-        """
-        obj: AbstractEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.activation: Optional[ExecutableEntity] = None
 
 
 class AbstractEventBuilder:

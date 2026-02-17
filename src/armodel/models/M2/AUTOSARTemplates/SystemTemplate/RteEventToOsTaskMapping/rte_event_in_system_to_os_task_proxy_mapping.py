@@ -1,41 +1,40 @@
-"""RteEventInSystemToOsTaskProxyMapping AUTOSAR element."""
+"""RteEventInSystemToOsTaskProxyMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 213)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_RteEventToOsTaskMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.os_task_proxy import (
+    OsTaskProxy,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
 
-class RteEventInSystemToOsTaskProxyMapping(ARObject):
+
+class RteEventInSystemToOsTaskProxyMapping(Identifiable):
     """AUTOSAR RteEventInSystemToOsTaskProxyMapping."""
 
+    offset: Optional[Integer]
+    os_task_proxy: Optional[OsTaskProxy]
+    rte_event_instance_ref: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInSystemToOsTaskProxyMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RteEventInSystemToOsTaskProxyMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTEEVENTINSYSTEMTOOSTASKPROXYMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RteEventInSystemToOsTaskProxyMapping":
-        """Create RteEventInSystemToOsTaskProxyMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RteEventInSystemToOsTaskProxyMapping instance
-        """
-        obj: RteEventInSystemToOsTaskProxyMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.offset: Optional[Integer] = None
+        self.os_task_proxy: Optional[OsTaskProxy] = None
+        self.rte_event_instance_ref: Optional[RTEEvent] = None
 
 
 class RteEventInSystemToOsTaskProxyMappingBuilder:

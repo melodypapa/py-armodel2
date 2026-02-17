@@ -1,41 +1,32 @@
-"""SwSystemconstDependentFormula AUTOSAR element."""
+"""SwSystemconstDependentFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1006)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 79)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 240)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
+    SwSystemconst,
+)
 
 
 class SwSystemconstDependentFormula(ARObject):
     """AUTOSAR SwSystemconstDependentFormula."""
 
+    sysc: Optional[SwSystemconst]
+    sysc_string: Optional[SwSystemconst]
     def __init__(self) -> None:
         """Initialize SwSystemconstDependentFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwSystemconstDependentFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWSYSTEMCONSTDEPENDENTFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwSystemconstDependentFormula":
-        """Create SwSystemconstDependentFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwSystemconstDependentFormula instance
-        """
-        obj: SwSystemconstDependentFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sysc: Optional[SwSystemconst] = None
+        self.sysc_string: Optional[SwSystemconst] = None
 
 
 class SwSystemconstDependentFormulaBuilder:

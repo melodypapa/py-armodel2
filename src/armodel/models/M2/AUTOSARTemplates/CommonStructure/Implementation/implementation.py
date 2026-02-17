@@ -1,41 +1,94 @@
-"""Implementation AUTOSAR element."""
+"""Implementation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 126)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 619)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2029)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 449)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
+    ProgramminglanguageEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    RevisionLabelString,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_manifest import (
+    BuildActionManifest,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.code import (
+    Code,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.compiler import (
+    Compiler,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
+    DependencyOnArtifact,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.linker import (
+    Linker,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_support_data import (
+    McSupportData,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.resource_consumption import (
+    ResourceConsumption,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_mapping import (
+    SwcBswMapping,
+)
 
-class Implementation(ARObject):
+
+class Implementation(ARElement):
     """AUTOSAR Implementation."""
+    """Abstract base class - do not instantiate directly."""
 
+    build_action_manifest: Optional[BuildActionManifest]
+    code_descriptors: list[Code]
+    compilers: list[Compiler]
+    generateds: list[DependencyOnArtifact]
+    hw_elements: list[HwElement]
+    linkers: list[Linker]
+    mc_support: Optional[McSupportData]
+    programming: Optional[ProgramminglanguageEnum]
+    required_artifacts: list[DependencyOnArtifact]
+    requireds: list[DependencyOnArtifact]
+    resource: Optional[ResourceConsumption]
+    swc_bsw: Optional[SwcBswMapping]
+    sw_version: Optional[RevisionLabelString]
+    used_code_generator: Optional[String]
+    vendor_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Implementation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Implementation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Implementation":
-        """Create Implementation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Implementation instance
-        """
-        obj: Implementation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.build_action_manifest: Optional[BuildActionManifest] = None
+        self.code_descriptors: list[Code] = []
+        self.compilers: list[Compiler] = []
+        self.generateds: list[DependencyOnArtifact] = []
+        self.hw_elements: list[HwElement] = []
+        self.linkers: list[Linker] = []
+        self.mc_support: Optional[McSupportData] = None
+        self.programming: Optional[ProgramminglanguageEnum] = None
+        self.required_artifacts: list[DependencyOnArtifact] = []
+        self.requireds: list[DependencyOnArtifact] = []
+        self.resource: Optional[ResourceConsumption] = None
+        self.swc_bsw: Optional[SwcBswMapping] = None
+        self.sw_version: Optional[RevisionLabelString] = None
+        self.used_code_generator: Optional[String] = None
+        self.vendor_id: Optional[PositiveInteger] = None
 
 
 class ImplementationBuilder:

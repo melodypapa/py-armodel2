@@ -1,41 +1,34 @@
-"""SwCalprmAxisTypeProps AUTOSAR element."""
+"""SwCalprmAxisTypeProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 353)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_CalibrationParameter.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    MonotonyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+)
 
 
 class SwCalprmAxisTypeProps(ARObject):
     """AUTOSAR SwCalprmAxisTypeProps."""
+    """Abstract base class - do not instantiate directly."""
 
+    max_gradient: Optional[Float]
+    monotony: Optional[MonotonyEnum]
     def __init__(self) -> None:
         """Initialize SwCalprmAxisTypeProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwCalprmAxisTypeProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCALPRMAXISTYPEPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwCalprmAxisTypeProps":
-        """Create SwCalprmAxisTypeProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwCalprmAxisTypeProps instance
-        """
-        obj: SwCalprmAxisTypeProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_gradient: Optional[Float] = None
+        self.monotony: Optional[MonotonyEnum] = None
 
 
 class SwCalprmAxisTypePropsBuilder:

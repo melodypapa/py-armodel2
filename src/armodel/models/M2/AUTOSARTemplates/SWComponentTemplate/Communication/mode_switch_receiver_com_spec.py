@@ -1,41 +1,37 @@
-"""ModeSwitchReceiverComSpec AUTOSAR element."""
+"""ModeSwitchReceiverComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 191)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class ModeSwitchReceiverComSpec(ARObject):
+
+class ModeSwitchReceiverComSpec(RPortComSpec):
     """AUTOSAR ModeSwitchReceiverComSpec."""
 
+    enhanced_mode: Optional[Boolean]
+    mode_group: Optional[ModeDeclarationGroup]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ModeSwitchReceiverComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeSwitchReceiverComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODESWITCHRECEIVERCOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeSwitchReceiverComSpec":
-        """Create ModeSwitchReceiverComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeSwitchReceiverComSpec instance
-        """
-        obj: ModeSwitchReceiverComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.enhanced_mode: Optional[Boolean] = None
+        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.supports: Optional[Boolean] = None
 
 
 class ModeSwitchReceiverComSpecBuilder:

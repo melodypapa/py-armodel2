@@ -1,41 +1,26 @@
-"""ExclusiveArea AUTOSAR element."""
+"""ExclusiveArea AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 82)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 552)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class ExclusiveArea(ARObject):
+
+class ExclusiveArea(Identifiable):
     """AUTOSAR ExclusiveArea."""
 
     def __init__(self) -> None:
         """Initialize ExclusiveArea."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ExclusiveArea to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("EXCLUSIVEAREA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ExclusiveArea":
-        """Create ExclusiveArea from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ExclusiveArea instance
-        """
-        obj: ExclusiveArea = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ExclusiveAreaBuilder:

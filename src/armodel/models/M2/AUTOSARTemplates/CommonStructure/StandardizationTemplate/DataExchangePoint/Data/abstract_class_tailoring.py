@@ -1,41 +1,26 @@
-"""AbstractClassTailoring AUTOSAR element."""
+"""AbstractClassTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 101)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.data_format_element_reference import (
+    DataFormatElementReference,
+)
 
-class AbstractClassTailoring(ARObject):
+
+class AbstractClassTailoring(DataFormatElementReference):
     """AUTOSAR AbstractClassTailoring."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize AbstractClassTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractClassTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTCLASSTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractClassTailoring":
-        """Create AbstractClassTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractClassTailoring instance
-        """
-        obj: AbstractClassTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class AbstractClassTailoringBuilder:

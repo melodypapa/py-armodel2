@@ -1,41 +1,42 @@
-"""SecurityEventFilterChain AUTOSAR element."""
+"""SecurityEventFilterChain AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 20)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
+    IdsCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_one_every_n_filter import (
+    SecurityEventOneEveryNFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_state_filter import (
+    SecurityEventStateFilter,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_threshold_filter import (
+    SecurityEventThresholdFilter,
+)
 
-class SecurityEventFilterChain(ARObject):
+
+class SecurityEventFilterChain(IdsCommonElement):
     """AUTOSAR SecurityEventFilterChain."""
 
+    aggregation: Optional[Any]
+    one_every_n: Optional[SecurityEventOneEveryNFilter]
+    state: Optional[SecurityEventStateFilter]
+    threshold: Optional[SecurityEventThresholdFilter]
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventFilterChain to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTFILTERCHAIN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventFilterChain":
-        """Create SecurityEventFilterChain from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventFilterChain instance
-        """
-        obj: SecurityEventFilterChain = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.aggregation: Optional[Any] = None
+        self.one_every_n: Optional[SecurityEventOneEveryNFilter] = None
+        self.state: Optional[SecurityEventStateFilter] = None
+        self.threshold: Optional[SecurityEventThresholdFilter] = None
 
 
 class SecurityEventFilterChainBuilder:

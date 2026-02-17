@@ -1,41 +1,32 @@
-"""IndexedArrayElement AUTOSAR element."""
+"""IndexedArrayElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 237)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
 
 class IndexedArrayElement(ARObject):
     """AUTOSAR IndexedArrayElement."""
 
+    application_array: Optional[Any]
+    implementation: Optional[Any]
+    index: Optional[Integer]
     def __init__(self) -> None:
         """Initialize IndexedArrayElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IndexedArrayElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INDEXEDARRAYELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IndexedArrayElement":
-        """Create IndexedArrayElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IndexedArrayElement instance
-        """
-        obj: IndexedArrayElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application_array: Optional[Any] = None
+        self.implementation: Optional[Any] = None
+        self.index: Optional[Integer] = None
 
 
 class IndexedArrayElementBuilder:

@@ -1,41 +1,45 @@
-"""DataFilter AUTOSAR element."""
+"""DataFilter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 182)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 394)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Filter.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter import (
+    DataFilterTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    UnlimitedInteger,
+)
 
 
 class DataFilter(ARObject):
     """AUTOSAR DataFilter."""
 
+    data_filter_type_enum: Optional[DataFilterTypeEnum]
+    mask: Optional[UnlimitedInteger]
+    max: Optional[UnlimitedInteger]
+    min: Optional[UnlimitedInteger]
+    offset: Optional[PositiveInteger]
+    period: Optional[PositiveInteger]
+    x: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataFilter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAFILTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataFilter":
-        """Create DataFilter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataFilter instance
-        """
-        obj: DataFilter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_filter_type_enum: Optional[DataFilterTypeEnum] = None
+        self.mask: Optional[UnlimitedInteger] = None
+        self.max: Optional[UnlimitedInteger] = None
+        self.min: Optional[UnlimitedInteger] = None
+        self.offset: Optional[PositiveInteger] = None
+        self.period: Optional[PositiveInteger] = None
+        self.x: Optional[UnlimitedInteger] = None
 
 
 class DataFilterBuilder:

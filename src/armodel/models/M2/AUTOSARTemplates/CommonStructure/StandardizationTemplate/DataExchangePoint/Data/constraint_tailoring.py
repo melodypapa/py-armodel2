@@ -1,41 +1,30 @@
-"""ConstraintTailoring AUTOSAR element."""
+"""ConstraintTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 117)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
+    RestrictionWithSeverity,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
+    TraceableText,
+)
 
-class ConstraintTailoring(ARObject):
+
+class ConstraintTailoring(RestrictionWithSeverity):
     """AUTOSAR ConstraintTailoring."""
 
+    constraint: Optional[TraceableText]
     def __init__(self) -> None:
         """Initialize ConstraintTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConstraintTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSTRAINTTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConstraintTailoring":
-        """Create ConstraintTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConstraintTailoring instance
-        """
-        obj: ConstraintTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.constraint: Optional[TraceableText] = None
 
 
 class ConstraintTailoringBuilder:

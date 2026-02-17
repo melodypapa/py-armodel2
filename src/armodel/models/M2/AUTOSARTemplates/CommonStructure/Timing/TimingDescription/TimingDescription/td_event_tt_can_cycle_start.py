@@ -1,41 +1,30 @@
-"""TDEventTTCanCycleStart AUTOSAR element."""
+"""TDEventTTCanCycleStart AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 72)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_cycle_start import (
+    TDEventCycleStart,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanTopology.ttcan_cluster import (
+    TtcanCluster,
+)
 
-class TDEventTTCanCycleStart(ARObject):
+
+class TDEventTTCanCycleStart(TDEventCycleStart):
     """AUTOSAR TDEventTTCanCycleStart."""
 
+    tt_can_cluster: Optional[TtcanCluster]
     def __init__(self) -> None:
         """Initialize TDEventTTCanCycleStart."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventTTCanCycleStart to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTTTCANCYCLESTART")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventTTCanCycleStart":
-        """Create TDEventTTCanCycleStart from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventTTCanCycleStart instance
-        """
-        obj: TDEventTTCanCycleStart = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tt_can_cluster: Optional[TtcanCluster] = None
 
 
 class TDEventTTCanCycleStartBuilder:

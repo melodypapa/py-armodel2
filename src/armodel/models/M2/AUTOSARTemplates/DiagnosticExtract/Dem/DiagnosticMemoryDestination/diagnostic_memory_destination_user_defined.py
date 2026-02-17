@@ -1,41 +1,35 @@
-"""DiagnosticMemoryDestinationUserDefined AUTOSAR element."""
+"""DiagnosticMemoryDestinationUserDefined AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 184)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticMemoryDestination.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDestination.diagnostic_memory_destination import (
+    DiagnosticMemoryDestination,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_role import (
+    DiagnosticAuthRole,
+)
 
-class DiagnosticMemoryDestinationUserDefined(ARObject):
+
+class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationUserDefined."""
 
+    auth_roles: list[DiagnosticAuthRole]
+    memory_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationUserDefined."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticMemoryDestinationUserDefined to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICMEMORYDESTINATIONUSERDEFINED")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestinationUserDefined":
-        """Create DiagnosticMemoryDestinationUserDefined from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticMemoryDestinationUserDefined instance
-        """
-        obj: DiagnosticMemoryDestinationUserDefined = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.auth_roles: list[DiagnosticAuthRole] = []
+        self.memory_id: Optional[PositiveInteger] = None
 
 
 class DiagnosticMemoryDestinationUserDefinedBuilder:

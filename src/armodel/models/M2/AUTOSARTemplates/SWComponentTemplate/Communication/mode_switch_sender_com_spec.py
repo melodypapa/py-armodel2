@@ -1,41 +1,40 @@
-"""ModeSwitchSenderComSpec AUTOSAR element."""
+"""ModeSwitchSenderComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
+    PPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class ModeSwitchSenderComSpec(ARObject):
+
+class ModeSwitchSenderComSpec(PPortComSpec):
     """AUTOSAR ModeSwitchSenderComSpec."""
 
+    enhanced_mode: Optional[Boolean]
+    mode_group: Optional[ModeDeclarationGroup]
+    mode_switched_ack: Optional[Any]
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeSwitchSenderComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODESWITCHSENDERCOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeSwitchSenderComSpec":
-        """Create ModeSwitchSenderComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeSwitchSenderComSpec instance
-        """
-        obj: ModeSwitchSenderComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.enhanced_mode: Optional[Boolean] = None
+        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.mode_switched_ack: Optional[Any] = None
+        self.queue_length: Optional[PositiveInteger] = None
 
 
 class ModeSwitchSenderComSpecBuilder:

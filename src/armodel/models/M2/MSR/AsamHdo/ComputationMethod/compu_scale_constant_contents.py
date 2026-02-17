@@ -1,41 +1,30 @@
-"""CompuScaleConstantContents AUTOSAR element."""
+"""CompuScaleConstantContents AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 390)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import (
+    CompuScaleContents,
+)
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (
+    CompuConst,
+)
 
-class CompuScaleConstantContents(ARObject):
+
+class CompuScaleConstantContents(CompuScaleContents):
     """AUTOSAR CompuScaleConstantContents."""
 
+    compu_const: Optional[CompuConst]
     def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuScaleConstantContents to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUSCALECONSTANTCONTENTS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuScaleConstantContents":
-        """Create CompuScaleConstantContents from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuScaleConstantContents instance
-        """
-        obj: CompuScaleConstantContents = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compu_const: Optional[CompuConst] = None
 
 
 class CompuScaleConstantContentsBuilder:

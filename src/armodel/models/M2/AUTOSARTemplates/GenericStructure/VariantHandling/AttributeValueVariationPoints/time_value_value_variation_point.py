@@ -1,9 +1,15 @@
-"""TimeValueValueVariationPoint AUTOSAR element."""
+"""TimeValueValueVariationPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 242)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TimeValueValueVariationPoint(ARObject):
@@ -12,30 +18,6 @@ class TimeValueValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize TimeValueValueVariationPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimeValueValueVariationPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMEVALUEVALUEVARIATIONPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimeValueValueVariationPoint":
-        """Create TimeValueValueVariationPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimeValueValueVariationPoint instance
-        """
-        obj: TimeValueValueVariationPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class TimeValueValueVariationPointBuilder:

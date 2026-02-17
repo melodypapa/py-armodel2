@@ -1,41 +1,44 @@
-"""PortPrototypeBlueprint AUTOSAR element."""
+"""PortPrototypeBlueprint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 237)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 459)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 60)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintDedicated_Port.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
+    PPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
 
-class PortPrototypeBlueprint(ARObject):
+
+class PortPrototypeBlueprint(ARElement):
     """AUTOSAR PortPrototypeBlueprint."""
 
+    init_values: list[PortPrototypeBlueprint]
+    interface: PortInterface
+    provided_coms: list[PPortComSpec]
+    required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PortPrototypeBlueprint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PORTPROTOTYPEBLUEPRINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprint":
-        """Create PortPrototypeBlueprint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortPrototypeBlueprint instance
-        """
-        obj: PortPrototypeBlueprint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.init_values: list[PortPrototypeBlueprint] = []
+        self.interface: PortInterface = None
+        self.provided_coms: list[PPortComSpec] = []
+        self.required_coms: list[RPortComSpec] = []
 
 
 class PortPrototypeBlueprintBuilder:

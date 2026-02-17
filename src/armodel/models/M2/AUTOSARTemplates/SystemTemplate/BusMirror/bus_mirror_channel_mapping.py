@@ -1,41 +1,43 @@
-"""BusMirrorChannelMapping AUTOSAR element."""
+"""BusMirrorChannelMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 697)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_BusMirror.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror import (
+    MirroringProtocolEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel import (
+    BusMirrorChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
 
-class BusMirrorChannelMapping(ARObject):
+
+class BusMirrorChannelMapping(FibexElement):
     """AUTOSAR BusMirrorChannelMapping."""
+    """Abstract base class - do not instantiate directly."""
 
+    mirroring: Optional[MirroringProtocolEnum]
+    source_channel: Optional[BusMirrorChannel]
+    target_channel: Optional[BusMirrorChannel]
+    target_pdus: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BusMirrorChannelMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUSMIRRORCHANNELMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMapping":
-        """Create BusMirrorChannelMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BusMirrorChannelMapping instance
-        """
-        obj: BusMirrorChannelMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mirroring: Optional[MirroringProtocolEnum] = None
+        self.source_channel: Optional[BusMirrorChannel] = None
+        self.target_channel: Optional[BusMirrorChannel] = None
+        self.target_pdus: list[PduTriggering] = []
 
 
 class BusMirrorChannelMappingBuilder:

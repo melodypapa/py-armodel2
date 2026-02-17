@@ -1,41 +1,33 @@
-"""TimeSynchronization AUTOSAR element."""
+"""TimeSynchronization AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 469)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.time_sync_client_configuration import (
+    TimeSyncClientConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.time_sync_server_configuration import (
+    TimeSyncServerConfiguration,
+)
 
 
 class TimeSynchronization(ARObject):
     """AUTOSAR TimeSynchronization."""
 
+    time_sync_client_configuration: Optional[TimeSyncClientConfiguration]
+    time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
     def __init__(self) -> None:
         """Initialize TimeSynchronization."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimeSynchronization to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMESYNCHRONIZATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimeSynchronization":
-        """Create TimeSynchronization from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimeSynchronization instance
-        """
-        obj: TimeSynchronization = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.time_sync_client_configuration: Optional[TimeSyncClientConfiguration] = None
+        self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
 
 
 class TimeSynchronizationBuilder:

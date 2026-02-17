@@ -1,41 +1,33 @@
-"""IndentSample AUTOSAR element."""
+"""IndentSample AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 297)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
+    ItemLabelPosEnum,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
+    LOverviewParagraph,
+)
 
 
 class IndentSample(ARObject):
     """AUTOSAR IndentSample."""
 
+    item_label_pos_enum: Optional[ItemLabelPosEnum]
+    l2: LOverviewParagraph
     def __init__(self) -> None:
         """Initialize IndentSample."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IndentSample to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INDENTSAMPLE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IndentSample":
-        """Create IndentSample from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IndentSample instance
-        """
-        obj: IndentSample = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.item_label_pos_enum: Optional[ItemLabelPosEnum] = None
+        self.l2: LOverviewParagraph = None
 
 
 class IndentSampleBuilder:

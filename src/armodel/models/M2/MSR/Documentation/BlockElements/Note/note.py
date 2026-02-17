@@ -1,41 +1,43 @@
-"""Note AUTOSAR element."""
+"""Note AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 310)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Note.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.Note import (
+    NoteTypeEnum,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
+    MultilanguageLongName,
+)
 
-class Note(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
+
+
+class Note(Paginateable):
     """AUTOSAR Note."""
 
+    label: Optional[MultilanguageLongName]
+    note_text: DocumentationBlock
+    note_type: Optional[NoteTypeEnum]
     def __init__(self) -> None:
         """Initialize Note."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Note to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NOTE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Note":
-        """Create Note from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Note instance
-        """
-        obj: Note = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.label: Optional[MultilanguageLongName] = None
+        self.note_text: DocumentationBlock = None
+        self.note_type: Optional[NoteTypeEnum] = None
 
 
 class NoteBuilder:

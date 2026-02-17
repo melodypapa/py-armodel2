@@ -1,41 +1,32 @@
-"""AnalyzedExecutionTime AUTOSAR element."""
+"""AnalyzedExecutionTime AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 164)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_ExecutionTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
+    ExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class AnalyzedExecutionTime(ARObject):
+
+class AnalyzedExecutionTime(ExecutionTime):
     """AUTOSAR AnalyzedExecutionTime."""
 
+    best_case: Optional[MultidimensionalTime]
+    worst_case: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize AnalyzedExecutionTime."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AnalyzedExecutionTime to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ANALYZEDEXECUTIONTIME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AnalyzedExecutionTime":
-        """Create AnalyzedExecutionTime from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AnalyzedExecutionTime instance
-        """
-        obj: AnalyzedExecutionTime = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.best_case: Optional[MultidimensionalTime] = None
+        self.worst_case: Optional[MultidimensionalTime] = None
 
 
 class AnalyzedExecutionTimeBuilder:

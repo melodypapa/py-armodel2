@@ -1,41 +1,33 @@
-"""SecurityEventDefinition AUTOSAR element."""
+"""SecurityEventDefinition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 259)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 17)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
+    IdsCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class SecurityEventDefinition(ARObject):
+
+class SecurityEventDefinition(IdsCommonElement):
     """AUTOSAR SecurityEventDefinition."""
 
+    event_symbol_name: Optional[Any]
+    id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventDefinition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventDefinition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTDEFINITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventDefinition":
-        """Create SecurityEventDefinition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventDefinition instance
-        """
-        obj: SecurityEventDefinition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_symbol_name: Optional[Any] = None
+        self.id: Optional[PositiveInteger] = None
 
 
 class SecurityEventDefinitionBuilder:

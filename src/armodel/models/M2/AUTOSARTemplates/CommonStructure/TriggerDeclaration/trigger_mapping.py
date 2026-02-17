@@ -1,41 +1,30 @@
-"""TriggerMapping AUTOSAR element."""
+"""TriggerMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 134)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_TriggerDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
 
 class TriggerMapping(ARObject):
     """AUTOSAR TriggerMapping."""
 
+    first_trigger: Optional[Trigger]
+    second_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TriggerMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRIGGERMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TriggerMapping":
-        """Create TriggerMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TriggerMapping instance
-        """
-        obj: TriggerMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_trigger: Optional[Trigger] = None
+        self.second_trigger: Optional[Trigger] = None
 
 
 class TriggerMappingBuilder:

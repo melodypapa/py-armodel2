@@ -1,41 +1,33 @@
-"""FlexrayAbsolutelyScheduledTiming AUTOSAR element."""
+"""FlexrayAbsolutelyScheduledTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 423)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Flexray_FlexrayCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cycle import (
+    CommunicationCycle,
+)
 
 
 class FlexrayAbsolutelyScheduledTiming(ARObject):
     """AUTOSAR FlexrayAbsolutelyScheduledTiming."""
 
+    communication_cycle_cycle: Optional[CommunicationCycle]
+    slot_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FlexrayAbsolutelyScheduledTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FlexrayAbsolutelyScheduledTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FLEXRAYABSOLUTELYSCHEDULEDTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlexrayAbsolutelyScheduledTiming":
-        """Create FlexrayAbsolutelyScheduledTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlexrayAbsolutelyScheduledTiming instance
-        """
-        obj: FlexrayAbsolutelyScheduledTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.communication_cycle_cycle: Optional[CommunicationCycle] = None
+        self.slot_id: Optional[PositiveInteger] = None
 
 
 class FlexrayAbsolutelyScheduledTimingBuilder:

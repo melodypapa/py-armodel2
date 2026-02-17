@@ -1,41 +1,35 @@
-"""BswSynchronousServerCallPoint AUTOSAR element."""
+"""BswSynchronousServerCallPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 79)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
+    BswModuleCallPoint,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
+    BswModuleClientServerEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
+    ExclusiveAreaNestingOrder,
+)
 
-class BswSynchronousServerCallPoint(ARObject):
+
+class BswSynchronousServerCallPoint(BswModuleCallPoint):
     """AUTOSAR BswSynchronousServerCallPoint."""
 
+    called_entry_entry: Optional[BswModuleClientServerEntry]
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize BswSynchronousServerCallPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswSynchronousServerCallPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWSYNCHRONOUSSERVERCALLPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswSynchronousServerCallPoint":
-        """Create BswSynchronousServerCallPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswSynchronousServerCallPoint instance
-        """
-        obj: BswSynchronousServerCallPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.called_entry_entry: Optional[BswModuleClientServerEntry] = None
+        self.called_from: Optional[ExclusiveAreaNestingOrder] = None
 
 
 class BswSynchronousServerCallPointBuilder:

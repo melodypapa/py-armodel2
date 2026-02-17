@@ -1,41 +1,39 @@
-"""DdsCpProvidedServiceInstance AUTOSAR element."""
+"""DdsCpProvidedServiceInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 472)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_service_instance import (
+    DdsCpServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.application_endpoint import (
+    ApplicationEndpoint,
+)
 
-class DdsCpProvidedServiceInstance(ARObject):
+
+class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
     """AUTOSAR DdsCpProvidedServiceInstance."""
 
+    local_unicast: Optional[ApplicationEndpoint]
+    minor_version: Optional[PositiveInteger]
+    provided_ddses: list[DdsCpServiceInstance]
+    static_remotes: list[ApplicationEndpoint]
     def __init__(self) -> None:
         """Initialize DdsCpProvidedServiceInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DdsCpProvidedServiceInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DDSCPPROVIDEDSERVICEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsCpProvidedServiceInstance":
-        """Create DdsCpProvidedServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsCpProvidedServiceInstance instance
-        """
-        obj: DdsCpProvidedServiceInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.local_unicast: Optional[ApplicationEndpoint] = None
+        self.minor_version: Optional[PositiveInteger] = None
+        self.provided_ddses: list[DdsCpServiceInstance] = []
+        self.static_remotes: list[ApplicationEndpoint] = []
 
 
 class DdsCpProvidedServiceInstanceBuilder:

@@ -1,41 +1,30 @@
-"""MultilanguageLongName AUTOSAR element."""
+"""MultilanguageLongName AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 179)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 163)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 62)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_name import (
+    LLongName,
+)
 
 
 class MultilanguageLongName(ARObject):
     """AUTOSAR MultilanguageLongName."""
 
+    l4: LLongName
     def __init__(self) -> None:
         """Initialize MultilanguageLongName."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MultilanguageLongName to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MULTILANGUAGELONGNAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultilanguageLongName":
-        """Create MultilanguageLongName from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultilanguageLongName instance
-        """
-        obj: MultilanguageLongName = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.l4: LLongName = None
 
 
 class MultilanguageLongNameBuilder:

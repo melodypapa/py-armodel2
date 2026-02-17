@@ -1,41 +1,30 @@
-"""BswExternalTriggerOccurredEvent AUTOSAR element."""
+"""BswExternalTriggerOccurredEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 91)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
+    BswScheduleEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
-class BswExternalTriggerOccurredEvent(ARObject):
+
+class BswExternalTriggerOccurredEvent(BswScheduleEvent):
     """AUTOSAR BswExternalTriggerOccurredEvent."""
 
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize BswExternalTriggerOccurredEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswExternalTriggerOccurredEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWEXTERNALTRIGGEROCCURREDEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswExternalTriggerOccurredEvent":
-        """Create BswExternalTriggerOccurredEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswExternalTriggerOccurredEvent instance
-        """
-        obj: BswExternalTriggerOccurredEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.trigger: Optional[Trigger] = None
 
 
 class BswExternalTriggerOccurredEventBuilder:

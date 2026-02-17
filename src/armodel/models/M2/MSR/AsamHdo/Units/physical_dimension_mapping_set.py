@@ -1,41 +1,30 @@
-"""PhysicalDimensionMappingSet AUTOSAR element."""
+"""PhysicalDimensionMappingSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 399)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Units.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
+    PhysicalDimension,
+)
 
-class PhysicalDimensionMappingSet(ARObject):
+
+class PhysicalDimensionMappingSet(ARElement):
     """AUTOSAR PhysicalDimensionMappingSet."""
 
+    physicals: list[PhysicalDimension]
     def __init__(self) -> None:
         """Initialize PhysicalDimensionMappingSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PhysicalDimensionMappingSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PHYSICALDIMENSIONMAPPINGSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PhysicalDimensionMappingSet":
-        """Create PhysicalDimensionMappingSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PhysicalDimensionMappingSet instance
-        """
-        obj: PhysicalDimensionMappingSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.physicals: list[PhysicalDimension] = []
 
 
 class PhysicalDimensionMappingSetBuilder:

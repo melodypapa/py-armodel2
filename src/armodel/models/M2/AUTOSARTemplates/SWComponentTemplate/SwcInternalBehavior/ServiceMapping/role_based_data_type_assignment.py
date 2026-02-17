@@ -1,41 +1,31 @@
-"""RoleBasedDataTypeAssignment AUTOSAR element."""
+"""RoleBasedDataTypeAssignment AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 227)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 610)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
 
 
 class RoleBasedDataTypeAssignment(ARObject):
     """AUTOSAR RoleBasedDataTypeAssignment."""
 
+    role: Optional[Identifier]
+    used: Optional[Any]
     def __init__(self) -> None:
         """Initialize RoleBasedDataTypeAssignment."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RoleBasedDataTypeAssignment to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROLEBASEDDATATYPEASSIGNMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RoleBasedDataTypeAssignment":
-        """Create RoleBasedDataTypeAssignment from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RoleBasedDataTypeAssignment instance
-        """
-        obj: RoleBasedDataTypeAssignment = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.role: Optional[Identifier] = None
+        self.used: Optional[Any] = None
 
 
 class RoleBasedDataTypeAssignmentBuilder:

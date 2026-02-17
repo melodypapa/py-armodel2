@@ -1,41 +1,36 @@
-"""PredefinedVariant AUTOSAR element."""
+"""PredefinedVariant AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 305)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 77)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 257)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
+    SwSystemconstantValueSet,
+)
 
-class PredefinedVariant(ARObject):
+
+class PredefinedVariant(ARElement):
     """AUTOSAR PredefinedVariant."""
 
+    included_variants: list[PredefinedVariant]
+    post_build_variants: list[Any]
+    sws: list[SwSystemconstantValueSet]
     def __init__(self) -> None:
         """Initialize PredefinedVariant."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PredefinedVariant to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PREDEFINEDVARIANT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PredefinedVariant":
-        """Create PredefinedVariant from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PredefinedVariant instance
-        """
-        obj: PredefinedVariant = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.included_variants: list[PredefinedVariant] = []
+        self.post_build_variants: list[Any] = []
+        self.sws: list[SwSystemconstantValueSet] = []
 
 
 class PredefinedVariantBuilder:

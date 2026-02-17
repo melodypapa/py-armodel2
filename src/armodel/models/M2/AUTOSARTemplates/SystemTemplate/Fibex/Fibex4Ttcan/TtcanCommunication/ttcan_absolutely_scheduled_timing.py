@@ -1,41 +1,38 @@
-"""TtcanAbsolutelyScheduledTiming AUTOSAR element."""
+"""TtcanAbsolutelyScheduledTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 450)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ttcan_TtcanCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanCommunication import (
+    TtcanTriggerType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cycle import (
+    CommunicationCycle,
+)
 
 
 class TtcanAbsolutelyScheduledTiming(ARObject):
     """AUTOSAR TtcanAbsolutelyScheduledTiming."""
 
+    communication_cycle_cycle: Optional[CommunicationCycle]
+    time_mark: Optional[Integer]
+    trigger: Optional[TtcanTriggerType]
     def __init__(self) -> None:
         """Initialize TtcanAbsolutelyScheduledTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TtcanAbsolutelyScheduledTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TTCANABSOLUTELYSCHEDULEDTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TtcanAbsolutelyScheduledTiming":
-        """Create TtcanAbsolutelyScheduledTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TtcanAbsolutelyScheduledTiming instance
-        """
-        obj: TtcanAbsolutelyScheduledTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.communication_cycle_cycle: Optional[CommunicationCycle] = None
+        self.time_mark: Optional[Integer] = None
+        self.trigger: Optional[TtcanTriggerType] = None
 
 
 class TtcanAbsolutelyScheduledTimingBuilder:

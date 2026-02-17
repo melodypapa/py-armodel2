@@ -1,41 +1,50 @@
-"""PhysicalChannel AUTOSAR element."""
+"""PhysicalChannel AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 58)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
+    CommunicationConnector,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
+    FrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_triggering import (
+    ISignalTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
 
-class PhysicalChannel(ARObject):
+
+class PhysicalChannel(Identifiable):
     """AUTOSAR PhysicalChannel."""
+    """Abstract base class - do not instantiate directly."""
 
+    comm_connectors: list[CommunicationConnector]
+    frame_triggerings: list[FrameTriggering]
+    i_signals: list[ISignalTriggering]
+    manageds: list[PhysicalChannel]
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PhysicalChannel to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PHYSICALCHANNEL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PhysicalChannel":
-        """Create PhysicalChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PhysicalChannel instance
-        """
-        obj: PhysicalChannel = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.comm_connectors: list[CommunicationConnector] = []
+        self.frame_triggerings: list[FrameTriggering] = []
+        self.i_signals: list[ISignalTriggering] = []
+        self.manageds: list[PhysicalChannel] = []
+        self.pdu_triggerings: list[PduTriggering] = []
 
 
 class PhysicalChannelBuilder:

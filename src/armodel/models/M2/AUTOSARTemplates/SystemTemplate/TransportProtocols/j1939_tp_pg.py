@@ -1,41 +1,41 @@
-"""J1939TpPg AUTOSAR element."""
+"""J1939TpPg AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 625)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
+    IPdu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.n_pdu import (
+    NPdu,
+)
 
 
 class J1939TpPg(ARObject):
     """AUTOSAR J1939TpPg."""
 
+    direct_pdu: Optional[NPdu]
+    pgn: Optional[Integer]
+    requestable: Optional[Boolean]
+    sdus: list[IPdu]
     def __init__(self) -> None:
         """Initialize J1939TpPg."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939TpPg to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939TPPG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939TpPg":
-        """Create J1939TpPg from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939TpPg instance
-        """
-        obj: J1939TpPg = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.direct_pdu: Optional[NPdu] = None
+        self.pgn: Optional[Integer] = None
+        self.requestable: Optional[Boolean] = None
+        self.sdus: list[IPdu] = []
 
 
 class J1939TpPgBuilder:

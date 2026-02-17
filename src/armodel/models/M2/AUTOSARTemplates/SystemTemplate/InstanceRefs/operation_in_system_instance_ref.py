@@ -1,41 +1,43 @@
-"""OperationInSystemInstanceRef AUTOSAR element."""
+"""OperationInSystemInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1001)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
+    RootSwCompositionPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
 
 class OperationInSystemInstanceRef(ARObject):
     """AUTOSAR OperationInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    context_port: PortPrototype
+    target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInSystemInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert OperationInSystemInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OPERATIONINSYSTEMINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "OperationInSystemInstanceRef":
-        """Create OperationInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            OperationInSystemInstanceRef instance
-        """
-        obj: OperationInSystemInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[System] = None
+        self.context: Optional[RootSwCompositionPrototype] = None
+        self.context_port: PortPrototype = None
+        self.target_operation: Optional[ClientServerOperation] = None
 
 
 class OperationInSystemInstanceRefBuilder:

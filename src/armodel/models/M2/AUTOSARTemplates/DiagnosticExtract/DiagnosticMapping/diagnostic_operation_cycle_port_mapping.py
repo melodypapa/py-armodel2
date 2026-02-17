@@ -1,41 +1,31 @@
-"""DiagnosticOperationCyclePortMapping AUTOSAR element."""
+"""DiagnosticOperationCyclePortMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 250)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
 
-class DiagnosticOperationCyclePortMapping(ARObject):
+
+class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticOperationCyclePortMapping."""
 
+    operation_cycle: Optional[Any]
+    swc_flat_service: Optional[Any]
+    swc_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticOperationCyclePortMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticOperationCyclePortMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICOPERATIONCYCLEPORTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticOperationCyclePortMapping":
-        """Create DiagnosticOperationCyclePortMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticOperationCyclePortMapping instance
-        """
-        obj: DiagnosticOperationCyclePortMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operation_cycle: Optional[Any] = None
+        self.swc_flat_service: Optional[Any] = None
+        self.swc_service: Optional[Any] = None
 
 
 class DiagnosticOperationCyclePortMappingBuilder:

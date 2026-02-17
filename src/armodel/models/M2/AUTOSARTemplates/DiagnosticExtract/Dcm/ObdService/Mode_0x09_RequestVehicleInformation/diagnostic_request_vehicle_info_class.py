@@ -1,41 +1,25 @@
-"""DiagnosticRequestVehicleInfoClass AUTOSAR element."""
+"""DiagnosticRequestVehicleInfoClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 160)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x09_RequestVehicleInformation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
 
-class DiagnosticRequestVehicleInfoClass(ARObject):
+
+class DiagnosticRequestVehicleInfoClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticRequestVehicleInfoClass."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticRequestVehicleInfoClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestVehicleInfoClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTVEHICLEINFOCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestVehicleInfoClass":
-        """Create DiagnosticRequestVehicleInfoClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestVehicleInfoClass instance
-        """
-        obj: DiagnosticRequestVehicleInfoClass = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticRequestVehicleInfoClassBuilder:

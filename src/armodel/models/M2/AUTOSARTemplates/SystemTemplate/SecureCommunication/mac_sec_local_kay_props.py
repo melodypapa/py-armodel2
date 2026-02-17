@@ -1,41 +1,48 @@
-"""MacSecLocalKayProps AUTOSAR element."""
+"""MacSecLocalKayProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
+    MacSecRoleEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    MacAddressString,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_sec_global_kay_props import (
+    MacSecGlobalKayProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_sec_kay_participant import (
+    MacSecKayParticipant,
+)
 
 
 class MacSecLocalKayProps(ARObject):
     """AUTOSAR MacSecLocalKayProps."""
 
+    destination_mac: Optional[MacAddressString]
+    global_kay_props: Optional[MacSecGlobalKayProps]
+    key_server: Optional[PositiveInteger]
+    mka_participants: list[MacSecKayParticipant]
+    role: Optional[MacSecRoleEnum]
+    source_mac: Optional[MacAddressString]
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MacSecLocalKayProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MACSECLOCALKAYPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MacSecLocalKayProps":
-        """Create MacSecLocalKayProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MacSecLocalKayProps instance
-        """
-        obj: MacSecLocalKayProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.destination_mac: Optional[MacAddressString] = None
+        self.global_kay_props: Optional[MacSecGlobalKayProps] = None
+        self.key_server: Optional[PositiveInteger] = None
+        self.mka_participants: list[MacSecKayParticipant] = []
+        self.role: Optional[MacSecRoleEnum] = None
+        self.source_mac: Optional[MacAddressString] = None
 
 
 class MacSecLocalKayPropsBuilder:

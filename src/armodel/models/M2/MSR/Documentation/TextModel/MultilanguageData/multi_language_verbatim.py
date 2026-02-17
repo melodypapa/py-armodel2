@@ -1,41 +1,46 @@
-"""MultiLanguageVerbatim AUTOSAR element."""
+"""MultiLanguageVerbatim AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 291)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    FloatEnum,
+    PgwideEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    String,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim import (
+    LVerbatim,
+)
 
-class MultiLanguageVerbatim(ARObject):
+
+class MultiLanguageVerbatim(Paginateable):
     """AUTOSAR MultiLanguageVerbatim."""
 
+    allow_break: Optional[NameToken]
+    float: Optional[FloatEnum]
+    help_entry: Optional[String]
+    l5: LVerbatim
+    pgwide: Optional[PgwideEnum]
     def __init__(self) -> None:
         """Initialize MultiLanguageVerbatim."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MultiLanguageVerbatim to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MULTILANGUAGEVERBATIM")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiLanguageVerbatim":
-        """Create MultiLanguageVerbatim from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultiLanguageVerbatim instance
-        """
-        obj: MultiLanguageVerbatim = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.allow_break: Optional[NameToken] = None
+        self.float: Optional[FloatEnum] = None
+        self.help_entry: Optional[String] = None
+        self.l5: LVerbatim = None
+        self.pgwide: Optional[PgwideEnum] = None
 
 
 class MultiLanguageVerbatimBuilder:

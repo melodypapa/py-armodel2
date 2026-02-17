@@ -1,41 +1,36 @@
-"""EcucFloatParamDef AUTOSAR element."""
+"""EcucFloatParamDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 61)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 186)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
+    EcucParameterDef,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+    Limit,
+)
 
-class EcucFloatParamDef(ARObject):
+
+class EcucFloatParamDef(EcucParameterDef):
     """AUTOSAR EcucFloatParamDef."""
 
+    default_value: Optional[Float]
+    max: Optional[Limit]
+    min: Optional[Limit]
     def __init__(self) -> None:
         """Initialize EcucFloatParamDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucFloatParamDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCFLOATPARAMDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucFloatParamDef":
-        """Create EcucFloatParamDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucFloatParamDef instance
-        """
-        obj: EcucFloatParamDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_value: Optional[Float] = None
+        self.max: Optional[Limit] = None
+        self.min: Optional[Limit] = None
 
 
 class EcucFloatParamDefBuilder:

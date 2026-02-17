@@ -1,41 +1,36 @@
-"""SporadicEventTriggering AUTOSAR element."""
+"""SporadicEventTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 105)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
+    EventTriggeringConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class SporadicEventTriggering(ARObject):
+
+class SporadicEventTriggering(EventTriggeringConstraint):
     """AUTOSAR SporadicEventTriggering."""
 
+    jitter: Optional[MultidimensionalTime]
+    maximum_inter: Optional[MultidimensionalTime]
+    minimum_inter: Optional[MultidimensionalTime]
+    period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SporadicEventTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SporadicEventTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SPORADICEVENTTRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SporadicEventTriggering":
-        """Create SporadicEventTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SporadicEventTriggering instance
-        """
-        obj: SporadicEventTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.jitter: Optional[MultidimensionalTime] = None
+        self.maximum_inter: Optional[MultidimensionalTime] = None
+        self.minimum_inter: Optional[MultidimensionalTime] = None
+        self.period: Optional[MultidimensionalTime] = None
 
 
 class SporadicEventTriggeringBuilder:

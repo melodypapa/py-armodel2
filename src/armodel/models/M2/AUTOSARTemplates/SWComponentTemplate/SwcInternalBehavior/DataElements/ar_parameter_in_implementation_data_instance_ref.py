@@ -1,41 +1,37 @@
-"""ArParameterInImplementationDataInstanceRef AUTOSAR element."""
+"""ArParameterInImplementationDataInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 324)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
+    ParameterDataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
 
 class ArParameterInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArParameterInImplementationDataInstanceRef."""
 
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_parameter: Optional[ParameterDataPrototype]
+    target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ArParameterInImplementationDataInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ArParameterInImplementationDataInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ARPARAMETERINIMPLEMENTATIONDATAINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ArParameterInImplementationDataInstanceRef":
-        """Create ArParameterInImplementationDataInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ArParameterInImplementationDataInstanceRef instance
-        """
-        obj: ArParameterInImplementationDataInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_datas: list[Any] = []
+        self.port_prototype: Optional[PortPrototype] = None
+        self.root_parameter: Optional[ParameterDataPrototype] = None
+        self.target_data: Optional[Any] = None
 
 
 class ArParameterInImplementationDataInstanceRefBuilder:
@@ -43,9 +39,7 @@ class ArParameterInImplementationDataInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ArParameterInImplementationDataInstanceRef = (
-            ArParameterInImplementationDataInstanceRef()
-        )
+        self._obj: ArParameterInImplementationDataInstanceRef = ArParameterInImplementationDataInstanceRef()
 
     def build(self) -> ArParameterInImplementationDataInstanceRef:
         """Build and return ArParameterInImplementationDataInstanceRef object.

@@ -1,41 +1,31 @@
-"""AtpClassifier AUTOSAR element."""
+"""AtpClassifier AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_AbstractStructure.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
+    AtpFeature,
+)
 
-class AtpClassifier(ARObject):
+
+class AtpClassifier(Identifiable):
     """AUTOSAR AtpClassifier."""
+    """Abstract base class - do not instantiate directly."""
 
+    atp_features: list[AtpFeature]
     def __init__(self) -> None:
         """Initialize AtpClassifier."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AtpClassifier to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ATPCLASSIFIER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AtpClassifier":
-        """Create AtpClassifier from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AtpClassifier instance
-        """
-        obj: AtpClassifier = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.atp_features: list[AtpFeature] = []
 
 
 class AtpClassifierBuilder:

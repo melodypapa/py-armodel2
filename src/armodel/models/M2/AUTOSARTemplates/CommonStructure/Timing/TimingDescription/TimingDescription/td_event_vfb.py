@@ -1,41 +1,28 @@
-"""TDEventVfb AUTOSAR element."""
+"""TDEventVfb AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 51)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class TDEventVfb(ARObject):
+
+class TDEventVfb(TimingDescriptionEvent):
     """AUTOSAR TDEventVfb."""
+    """Abstract base class - do not instantiate directly."""
 
+    component: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventVfb."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventVfb to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTVFB")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventVfb":
-        """Create TDEventVfb from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventVfb instance
-        """
-        obj: TDEventVfb = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.component: Optional[Any] = None
 
 
 class TDEventVfbBuilder:

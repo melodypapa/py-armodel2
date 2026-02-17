@@ -1,41 +1,43 @@
-"""IEEE1722TpCrfConnection AUTOSAR element."""
+"""IEEE1722TpCrfConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 640)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAv.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
+    IEEE1722TpAvConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
+    IEEE1722TpCrfPullEnum,
+    IEEE1722TpCrfTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class IEEE1722TpCrfConnection(ARObject):
+
+class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpCrfConnection."""
 
+    base_frequency: Optional[PositiveInteger]
+    crf_pull_enum: Optional[IEEE1722TpCrfPullEnum]
+    crf_type_enum: Optional[IEEE1722TpCrfTypeEnum]
+    frame_sync: Optional[Boolean]
+    timestamp: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpCrfConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpCrfConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPCRFCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpCrfConnection":
-        """Create IEEE1722TpCrfConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpCrfConnection instance
-        """
-        obj: IEEE1722TpCrfConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base_frequency: Optional[PositiveInteger] = None
+        self.crf_pull_enum: Optional[IEEE1722TpCrfPullEnum] = None
+        self.crf_type_enum: Optional[IEEE1722TpCrfTypeEnum] = None
+        self.frame_sync: Optional[Boolean] = None
+        self.timestamp: Optional[PositiveInteger] = None
 
 
 class IEEE1722TpCrfConnectionBuilder:

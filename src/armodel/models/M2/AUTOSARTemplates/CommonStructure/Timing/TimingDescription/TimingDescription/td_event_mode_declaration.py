@@ -1,41 +1,39 @@
-"""TDEventModeDeclaration AUTOSAR element."""
+"""TDEventModeDeclaration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 57)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
+    TDEventVfbPort,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class TDEventModeDeclaration(ARObject):
+
+class TDEventModeDeclaration(TDEventVfbPort):
     """AUTOSAR TDEventModeDeclaration."""
 
+    entry_mode: Optional[ModeDeclaration]
+    exit_mode: Optional[ModeDeclaration]
+    mode: Optional[ModeDeclarationGroup]
+    td_event_mode: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventModeDeclaration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventModeDeclaration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTMODEDECLARATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventModeDeclaration":
-        """Create TDEventModeDeclaration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventModeDeclaration instance
-        """
-        obj: TDEventModeDeclaration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.entry_mode: Optional[ModeDeclaration] = None
+        self.exit_mode: Optional[ModeDeclaration] = None
+        self.mode: Optional[ModeDeclarationGroup] = None
+        self.td_event_mode: Optional[Any] = None
 
 
 class TDEventModeDeclarationBuilder:

@@ -1,41 +1,30 @@
-"""DataPrototypeInPortInterfaceRef AUTOSAR element."""
+"""DataPrototypeInPortInterfaceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 787)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
+    DataPrototypeReference,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
 
-class DataPrototypeInPortInterfaceRef(ARObject):
+
+class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR DataPrototypeInPortInterfaceRef."""
 
+    data_prototype_in: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataPrototypeInPortInterfaceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAPROTOTYPEINPORTINTERFACEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataPrototypeInPortInterfaceRef":
-        """Create DataPrototypeInPortInterfaceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataPrototypeInPortInterfaceRef instance
-        """
-        obj: DataPrototypeInPortInterfaceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_prototype_in: Optional[DataPrototype] = None
 
 
 class DataPrototypeInPortInterfaceRefBuilder:

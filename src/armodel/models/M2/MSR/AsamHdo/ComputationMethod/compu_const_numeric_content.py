@@ -1,41 +1,30 @@
-"""CompuConstNumericContent AUTOSAR element."""
+"""CompuConstNumericContent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 389)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import (
+    CompuConstContent,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
-class CompuConstNumericContent(ARObject):
+
+class CompuConstNumericContent(CompuConstContent):
     """AUTOSAR CompuConstNumericContent."""
 
+    v: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize CompuConstNumericContent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuConstNumericContent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUCONSTNUMERICCONTENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuConstNumericContent":
-        """Create CompuConstNumericContent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuConstNumericContent instance
-        """
-        obj: CompuConstNumericContent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.v: Optional[Numerical] = None
 
 
 class CompuConstNumericContentBuilder:

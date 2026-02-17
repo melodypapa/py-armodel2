@@ -1,41 +1,44 @@
-"""ReferenceBase AUTOSAR element."""
+"""ReferenceBase AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 72)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ARPackage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Identifier,
+    ReferrableSubtypesEnum,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+        ARPackage,
+    )
+
 
 
 class ReferenceBase(ARObject):
     """AUTOSAR ReferenceBase."""
 
+    global_elements: list[ReferrableSubtypesEnum]
+    global_ins: list[ARPackage]
+    is_default: Boolean
+    package: Optional[ARPackage]
+    short_label: Identifier
     def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ReferenceBase to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("REFERENCEBASE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ReferenceBase":
-        """Create ReferenceBase from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ReferenceBase instance
-        """
-        obj: ReferenceBase = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.global_elements: list[ReferrableSubtypesEnum] = []
+        self.global_ins: list[ARPackage] = []
+        self.is_default: Boolean = None
+        self.package: Optional[ARPackage] = None
+        self.short_label: Identifier = None
 
 
 class ReferenceBaseBuilder:

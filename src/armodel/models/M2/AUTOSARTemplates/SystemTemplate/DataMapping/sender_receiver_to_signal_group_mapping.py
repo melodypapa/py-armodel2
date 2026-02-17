@@ -1,41 +1,40 @@
-"""SenderReceiverToSignalGroupMapping AUTOSAR element."""
+"""SenderReceiverToSignalGroupMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 234)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
+    DataMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
+    SenderRecCompositeTypeMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal_group import (
+    SystemSignalGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class SenderReceiverToSignalGroupMapping(ARObject):
+
+class SenderReceiverToSignalGroupMapping(DataMapping):
     """AUTOSAR SenderReceiverToSignalGroupMapping."""
 
+    data_element: Optional[VariableDataPrototype]
+    signal_group: Optional[SystemSignalGroup]
+    type_mapping: Optional[SenderRecCompositeTypeMapping]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalGroupMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderReceiverToSignalGroupMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECEIVERTOSIGNALGROUPMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverToSignalGroupMapping":
-        """Create SenderReceiverToSignalGroupMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverToSignalGroupMapping instance
-        """
-        obj: SenderReceiverToSignalGroupMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_element: Optional[VariableDataPrototype] = None
+        self.signal_group: Optional[SystemSignalGroup] = None
+        self.type_mapping: Optional[SenderRecCompositeTypeMapping] = None
 
 
 class SenderReceiverToSignalGroupMappingBuilder:

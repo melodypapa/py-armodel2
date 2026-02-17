@@ -1,41 +1,30 @@
-"""CompuRationalCoeffs AUTOSAR element."""
+"""CompuRationalCoeffs AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 389)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_nominator_denominator import (
+    CompuNominatorDenominator,
+)
 
 
 class CompuRationalCoeffs(ARObject):
     """AUTOSAR CompuRationalCoeffs."""
 
+    compu_denominator: Optional[CompuNominatorDenominator]
+    compu: Optional[CompuNominatorDenominator]
     def __init__(self) -> None:
         """Initialize CompuRationalCoeffs."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuRationalCoeffs to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPURATIONALCOEFFS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuRationalCoeffs":
-        """Create CompuRationalCoeffs from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuRationalCoeffs instance
-        """
-        obj: CompuRationalCoeffs = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compu_denominator: Optional[CompuNominatorDenominator] = None
+        self.compu: Optional[CompuNominatorDenominator] = None
 
 
 class CompuRationalCoeffsBuilder:

@@ -1,41 +1,25 @@
-"""DiagnosticRoutineControlClass AUTOSAR element."""
+"""DiagnosticRoutineControlClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 125)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_RoutineControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
 
-class DiagnosticRoutineControlClass(ARObject):
+
+class DiagnosticRoutineControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticRoutineControlClass."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineControlClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRoutineControlClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICROUTINECONTROLCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRoutineControlClass":
-        """Create DiagnosticRoutineControlClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRoutineControlClass instance
-        """
-        obj: DiagnosticRoutineControlClass = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticRoutineControlClassBuilder:

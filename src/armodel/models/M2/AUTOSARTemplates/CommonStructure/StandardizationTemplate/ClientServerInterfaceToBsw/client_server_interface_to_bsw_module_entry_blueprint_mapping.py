@@ -1,43 +1,40 @@
-"""ClientServerInterfaceToBswModuleEntryBlueprintMapping AUTOSAR element."""
+"""ClientServerInterfaceToBswModuleEntryBlueprintMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_ClientServerInterfaceToBsw.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_interface import (
+    ClientServerInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
+    PortDefinedArgumentValue,
+)
 
-class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARObject):
+
+class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
     """AUTOSAR ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
 
+    client_server: ClientServerInterface
+    operation: ClientServerOperation
+    port_defined_arguments: list[PortDefinedArgumentValue]
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClientServerInterfaceToBswModuleEntryBlueprintMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLIENTSERVERINTERFACETOBSWMODULEENTRYBLUEPRINTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(
-        cls, element: ET.Element
-    ) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
-        """Create ClientServerInterfaceToBswModuleEntryBlueprintMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClientServerInterfaceToBswModuleEntryBlueprintMapping instance
-        """
-        obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.client_server: ClientServerInterface = None
+        self.operation: ClientServerOperation = None
+        self.port_defined_arguments: list[PortDefinedArgumentValue] = []
 
 
 class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder:
@@ -45,9 +42,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = (
-            ClientServerInterfaceToBswModuleEntryBlueprintMapping()
-        )
+        self._obj: ClientServerInterfaceToBswModuleEntryBlueprintMapping = ClientServerInterfaceToBswModuleEntryBlueprintMapping()
 
     def build(self) -> ClientServerInterfaceToBswModuleEntryBlueprintMapping:
         """Build and return ClientServerInterfaceToBswModuleEntryBlueprintMapping object.

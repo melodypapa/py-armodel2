@@ -1,41 +1,38 @@
-"""VariationPoint AUTOSAR element."""
+"""VariationPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 315)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1010)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2078)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 80)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 226)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 39)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
+    ConditionByFormula,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
 
 class VariationPoint(ARObject):
     """AUTOSAR VariationPoint."""
 
+    blueprint: Optional[DocumentationBlock]
+    sw_syscond: Optional[ConditionByFormula]
     def __init__(self) -> None:
         """Initialize VariationPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert VariationPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VARIATIONPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VariationPoint":
-        """Create VariationPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VariationPoint instance
-        """
-        obj: VariationPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.blueprint: Optional[DocumentationBlock] = None
+        self.sw_syscond: Optional[ConditionByFormula] = None
 
 
 class VariationPointBuilder:

@@ -1,41 +1,31 @@
-"""ConstantSpecification AUTOSAR element."""
+"""ConstantSpecification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 311)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 433)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
-class ConstantSpecification(ARObject):
+
+class ConstantSpecification(ARElement):
     """AUTOSAR ConstantSpecification."""
 
+    value_spec: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConstantSpecification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSTANTSPECIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConstantSpecification":
-        """Create ConstantSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConstantSpecification instance
-        """
-        obj: ConstantSpecification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.value_spec: Optional[ValueSpecification] = None
 
 
 class ConstantSpecificationBuilder:

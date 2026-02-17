@@ -1,41 +1,49 @@
-"""SwitchStreamIdentification AUTOSAR element."""
+"""SwitchStreamIdentification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 135)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port import (
+    CouplingPort,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_filter_rule import (
+    SwitchStreamFilterRule,
+)
 
-class SwitchStreamIdentification(ARObject):
+
+class SwitchStreamIdentification(Identifiable):
     """AUTOSAR SwitchStreamIdentification."""
 
+    egress_ports: list[CouplingPort]
+    filter_action_block: Optional[Boolean]
+    filter_action_dest: Optional[Any]
+    filter_action_drop: Optional[Boolean]
+    filter_action_vlan: Optional[PositiveInteger]
+    ingress_ports: list[CouplingPort]
+    stream_filter: Optional[SwitchStreamFilterRule]
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwitchStreamIdentification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWITCHSTREAMIDENTIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchStreamIdentification":
-        """Create SwitchStreamIdentification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchStreamIdentification instance
-        """
-        obj: SwitchStreamIdentification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.egress_ports: list[CouplingPort] = []
+        self.filter_action_block: Optional[Boolean] = None
+        self.filter_action_dest: Optional[Any] = None
+        self.filter_action_drop: Optional[Boolean] = None
+        self.filter_action_vlan: Optional[PositiveInteger] = None
+        self.ingress_ports: list[CouplingPort] = []
+        self.stream_filter: Optional[SwitchStreamFilterRule] = None
 
 
 class SwitchStreamIdentificationBuilder:

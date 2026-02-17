@@ -1,41 +1,34 @@
-"""CpSoftwareClusterToResourceMapping AUTOSAR element."""
+"""CpSoftwareClusterToResourceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 907)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
-class CpSoftwareClusterToResourceMapping(ARObject):
+
+class CpSoftwareClusterToResourceMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToResourceMapping."""
 
+    provider: Optional[CpSoftwareCluster]
+    requesters: list[CpSoftwareCluster]
+    service: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToResourceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSoftwareClusterToResourceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSOFTWARECLUSTERTORESOURCEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToResourceMapping":
-        """Create CpSoftwareClusterToResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterToResourceMapping instance
-        """
-        obj: CpSoftwareClusterToResourceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.provider: Optional[CpSoftwareCluster] = None
+        self.requesters: list[CpSoftwareCluster] = []
+        self.service: Optional[CpSoftwareCluster] = None
 
 
 class CpSoftwareClusterToResourceMappingBuilder:

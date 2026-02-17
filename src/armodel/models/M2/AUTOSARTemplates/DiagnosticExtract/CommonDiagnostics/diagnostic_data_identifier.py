@@ -1,41 +1,43 @@
-"""DiagnosticDataIdentifier AUTOSAR element."""
+"""DiagnosticDataIdentifier AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 33)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
+    DiagnosticAbstractDataIdentifier,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_support_info_byte import (
+    DiagnosticSupportInfoByte,
+)
 
-class DiagnosticDataIdentifier(ARObject):
+
+class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
     """AUTOSAR DiagnosticDataIdentifier."""
 
+    data_elements: list[DiagnosticParameter]
+    did_size: Optional[PositiveInteger]
+    represents_vin: Optional[Boolean]
+    support_info_byte: Optional[DiagnosticSupportInfoByte]
     def __init__(self) -> None:
         """Initialize DiagnosticDataIdentifier."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticDataIdentifier to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICDATAIDENTIFIER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticDataIdentifier":
-        """Create DiagnosticDataIdentifier from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticDataIdentifier instance
-        """
-        obj: DiagnosticDataIdentifier = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_elements: list[DiagnosticParameter] = []
+        self.did_size: Optional[PositiveInteger] = None
+        self.represents_vin: Optional[Boolean] = None
+        self.support_info_byte: Optional[DiagnosticSupportInfoByte] = None
 
 
 class DiagnosticDataIdentifierBuilder:

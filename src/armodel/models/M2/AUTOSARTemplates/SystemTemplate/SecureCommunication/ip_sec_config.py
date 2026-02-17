@@ -1,41 +1,36 @@
-"""IPSecConfig AUTOSAR element."""
+"""IPSecConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 571)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config_props import (
+    IPSecConfigProps,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_rule import (
+        IPSecRule,
+    )
+
 
 
 class IPSecConfig(ARObject):
     """AUTOSAR IPSecConfig."""
 
+    ip_sec_config: Optional[IPSecConfigProps]
+    ip_sec_rules: list[IPSecRule]
     def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IPSecConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPSECCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IPSecConfig":
-        """Create IPSecConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IPSecConfig instance
-        """
-        obj: IPSecConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ip_sec_config: Optional[IPSecConfigProps] = None
+        self.ip_sec_rules: list[IPSecRule] = []
 
 
 class IPSecConfigBuilder:

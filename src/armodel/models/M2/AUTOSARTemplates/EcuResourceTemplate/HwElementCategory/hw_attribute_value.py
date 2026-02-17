@@ -1,41 +1,41 @@
-"""HwAttributeValue AUTOSAR element."""
+"""HwAttributeValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 16)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate_HwElementCategory.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+    VerbatimString,
+)
+from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
+    Annotation,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_attribute_def import (
+    HwAttributeDef,
+)
 
 
 class HwAttributeValue(ARObject):
     """AUTOSAR HwAttributeValue."""
 
+    annotation: Optional[Annotation]
+    hw_attribute_def: Optional[HwAttributeDef]
+    v: Optional[Numerical]
+    vt: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize HwAttributeValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwAttributeValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWATTRIBUTEVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwAttributeValue":
-        """Create HwAttributeValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwAttributeValue instance
-        """
-        obj: HwAttributeValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.annotation: Optional[Annotation] = None
+        self.hw_attribute_def: Optional[HwAttributeDef] = None
+        self.v: Optional[Numerical] = None
+        self.vt: Optional[VerbatimString] = None
 
 
 class HwAttributeValueBuilder:

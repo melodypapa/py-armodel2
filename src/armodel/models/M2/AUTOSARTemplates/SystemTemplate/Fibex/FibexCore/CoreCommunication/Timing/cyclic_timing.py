@@ -1,41 +1,32 @@
-"""CyclicTiming AUTOSAR element."""
+"""CyclicTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 396)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication_Timing.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.time_range_type import (
+    TimeRangeType,
+)
 
-class CyclicTiming(ARObject):
+
+class CyclicTiming(Describable):
     """AUTOSAR CyclicTiming."""
 
+    time_offset: Optional[TimeRangeType]
+    time_period: Optional[TimeRangeType]
     def __init__(self) -> None:
         """Initialize CyclicTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CyclicTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CYCLICTIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CyclicTiming":
-        """Create CyclicTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CyclicTiming instance
-        """
-        obj: CyclicTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.time_offset: Optional[TimeRangeType] = None
+        self.time_period: Optional[TimeRangeType] = None
 
 
 class CyclicTimingBuilder:

@@ -1,41 +1,33 @@
-"""IdsmTrafficLimitation AUTOSAR element."""
+"""IdsmTrafficLimitation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Float,
+    PositiveInteger,
+)
 
-class IdsmTrafficLimitation(ARObject):
+
+class IdsmTrafficLimitation(Identifiable):
     """AUTOSAR IdsmTrafficLimitation."""
 
+    max_bytes_in: Optional[PositiveInteger]
+    time_interval: Optional[Float]
     def __init__(self) -> None:
         """Initialize IdsmTrafficLimitation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsmTrafficLimitation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSMTRAFFICLIMITATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmTrafficLimitation":
-        """Create IdsmTrafficLimitation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmTrafficLimitation instance
-        """
-        obj: IdsmTrafficLimitation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_bytes_in: Optional[PositiveInteger] = None
+        self.time_interval: Optional[Float] = None
 
 
 class IdsmTrafficLimitationBuilder:

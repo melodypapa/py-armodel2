@@ -1,41 +1,30 @@
-"""SdgReference AUTOSAR element."""
+"""SdgReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 101)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_attribute import (
+    SdgAttribute,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
+    SdgClass,
+)
 
-class SdgReference(ARObject):
+
+class SdgReference(SdgAttribute):
     """AUTOSAR SdgReference."""
 
+    dest_sdg: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgReference":
-        """Create SdgReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgReference instance
-        """
-        obj: SdgReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dest_sdg: Optional[SdgClass] = None
 
 
 class SdgReferenceBuilder:

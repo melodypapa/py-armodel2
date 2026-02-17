@@ -1,41 +1,35 @@
-"""InnerPortGroupInCompositionInstanceRef AUTOSAR element."""
+"""InnerPortGroupInCompositionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 943)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
+    PortGroup,
+)
 
 
 class InnerPortGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerPortGroupInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    contexts: list[Any]
+    target: Optional[PortGroup]
     def __init__(self) -> None:
         """Initialize InnerPortGroupInCompositionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InnerPortGroupInCompositionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INNERPORTGROUPINCOMPOSITIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InnerPortGroupInCompositionInstanceRef":
-        """Create InnerPortGroupInCompositionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InnerPortGroupInCompositionInstanceRef instance
-        """
-        obj: InnerPortGroupInCompositionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[CompositionSwComponentType] = None
+        self.contexts: list[Any] = []
+        self.target: Optional[PortGroup] = None
 
 
 class InnerPortGroupInCompositionInstanceRefBuilder:

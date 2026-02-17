@@ -1,41 +1,27 @@
-"""ApplicationCompositeDataTypeSubElementRef AUTOSAR element."""
+"""ApplicationCompositeDataTypeSubElementRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 138)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
+    SubElementRef,
+)
 
-class ApplicationCompositeDataTypeSubElementRef(ARObject):
+
+class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
     """AUTOSAR ApplicationCompositeDataTypeSubElementRef."""
 
+    application: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeDataTypeSubElementRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationCompositeDataTypeSubElementRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONCOMPOSITEDATATYPESUBELEMENTREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeDataTypeSubElementRef":
-        """Create ApplicationCompositeDataTypeSubElementRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationCompositeDataTypeSubElementRef instance
-        """
-        obj: ApplicationCompositeDataTypeSubElementRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application: Optional[Any] = None
 
 
 class ApplicationCompositeDataTypeSubElementRefBuilder:
@@ -43,9 +29,7 @@ class ApplicationCompositeDataTypeSubElementRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ApplicationCompositeDataTypeSubElementRef = (
-            ApplicationCompositeDataTypeSubElementRef()
-        )
+        self._obj: ApplicationCompositeDataTypeSubElementRef = ApplicationCompositeDataTypeSubElementRef()
 
     def build(self) -> ApplicationCompositeDataTypeSubElementRef:
         """Build and return ApplicationCompositeDataTypeSubElementRef object.

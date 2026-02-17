@@ -1,41 +1,39 @@
-"""CouplingPortConnection AUTOSAR element."""
+"""CouplingPortConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 112)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port import (
+    CouplingPort,
+)
 
 
 class CouplingPortConnection(ARObject):
     """AUTOSAR CouplingPortConnection."""
 
+    first_port: Optional[CouplingPort]
+    node_ports: list[CouplingPort]
+    plca_local_node: Optional[PositiveInteger]
+    plca_transmit: Optional[PositiveInteger]
+    second_port: Optional[CouplingPort]
     def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CouplingPortConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COUPLINGPORTCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CouplingPortConnection":
-        """Create CouplingPortConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CouplingPortConnection instance
-        """
-        obj: CouplingPortConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_port: Optional[CouplingPort] = None
+        self.node_ports: list[CouplingPort] = []
+        self.plca_local_node: Optional[PositiveInteger] = None
+        self.plca_transmit: Optional[PositiveInteger] = None
+        self.second_port: Optional[CouplingPort] = None
 
 
 class CouplingPortConnectionBuilder:

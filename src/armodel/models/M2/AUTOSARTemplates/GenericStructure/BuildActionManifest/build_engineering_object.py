@@ -1,41 +1,36 @@
-"""BuildEngineeringObject AUTOSAR element."""
+"""BuildEngineeringObject AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 372)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
+    EngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    RegularExpression,
+    UriString,
+)
 
-class BuildEngineeringObject(ARObject):
+
+class BuildEngineeringObject(EngineeringObject):
     """AUTOSAR BuildEngineeringObject."""
 
+    file_type: NameToken
+    file_type_pattern: RegularExpression
+    intended: Optional[UriString]
     def __init__(self) -> None:
         """Initialize BuildEngineeringObject."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildEngineeringObject to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDENGINEERINGOBJECT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildEngineeringObject":
-        """Create BuildEngineeringObject from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildEngineeringObject instance
-        """
-        obj: BuildEngineeringObject = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.file_type: NameToken = None
+        self.file_type_pattern: RegularExpression = None
+        self.intended: Optional[UriString] = None
 
 
 class BuildEngineeringObjectBuilder:

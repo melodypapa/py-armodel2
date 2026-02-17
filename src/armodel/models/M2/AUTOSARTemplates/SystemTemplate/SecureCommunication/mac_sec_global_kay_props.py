@@ -1,41 +1,32 @@
-"""MacSecGlobalKayProps AUTOSAR element."""
+"""MacSecGlobalKayProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class MacSecGlobalKayProps(ARObject):
+
+class MacSecGlobalKayProps(ARElement):
     """AUTOSAR MacSecGlobalKayProps."""
 
+    bypass_ether: PositiveInteger
+    bypass_vlan: PositiveInteger
     def __init__(self) -> None:
         """Initialize MacSecGlobalKayProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MacSecGlobalKayProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MACSECGLOBALKAYPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MacSecGlobalKayProps":
-        """Create MacSecGlobalKayProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MacSecGlobalKayProps instance
-        """
-        obj: MacSecGlobalKayProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bypass_ether: PositiveInteger = None
+        self.bypass_vlan: PositiveInteger = None
 
 
 class MacSecGlobalKayPropsBuilder:

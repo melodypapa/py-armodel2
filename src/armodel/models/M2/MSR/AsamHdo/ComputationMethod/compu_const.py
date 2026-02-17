@@ -1,41 +1,28 @@
-"""CompuConst AUTOSAR element."""
+"""CompuConst AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 390)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import (
+    CompuConstContent,
+)
 
 
 class CompuConst(ARObject):
     """AUTOSAR CompuConst."""
 
+    compu_const_content: Optional[CompuConstContent]
     def __init__(self) -> None:
         """Initialize CompuConst."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuConst to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUCONST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuConst":
-        """Create CompuConst from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuConst instance
-        """
-        obj: CompuConst = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compu_const_content: Optional[CompuConstContent] = None
 
 
 class CompuConstBuilder:

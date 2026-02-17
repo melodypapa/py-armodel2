@@ -1,41 +1,30 @@
-"""ReceiverAnnotation AUTOSAR element."""
+"""ReceiverAnnotation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 153)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ApplicationAttributes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.sender_receiver_annotation import (
+    SenderReceiverAnnotation,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class ReceiverAnnotation(ARObject):
+
+class ReceiverAnnotation(SenderReceiverAnnotation):
     """AUTOSAR ReceiverAnnotation."""
 
+    signal_age: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ReceiverAnnotation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ReceiverAnnotation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RECEIVERANNOTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ReceiverAnnotation":
-        """Create ReceiverAnnotation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ReceiverAnnotation instance
-        """
-        obj: ReceiverAnnotation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.signal_age: Optional[MultidimensionalTime] = None
 
 
 class ReceiverAnnotationBuilder:

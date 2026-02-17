@@ -1,41 +1,34 @@
-"""DataTypeMap AUTOSAR element."""
+"""DataTypeMap AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 232)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2015)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
+    ApplicationDataType,
+)
 
 
 class DataTypeMap(ARObject):
     """AUTOSAR DataTypeMap."""
 
+    application_data_type: Optional[ApplicationDataType]
+    implementation: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:
         """Initialize DataTypeMap."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataTypeMap to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATATYPEMAP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataTypeMap":
-        """Create DataTypeMap from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataTypeMap instance
-        """
-        obj: DataTypeMap = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application_data_type: Optional[ApplicationDataType] = None
+        self.implementation: Optional[AbstractImplementationDataType] = None
 
 
 class DataTypeMapBuilder:

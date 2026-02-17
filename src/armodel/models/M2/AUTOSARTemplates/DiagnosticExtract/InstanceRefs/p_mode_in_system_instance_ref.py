@@ -1,41 +1,48 @@
-"""PModeInSystemInstanceRef AUTOSAR element."""
+"""PModeInSystemInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 370)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
+    AbstractProvidedPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
+    RootSwCompositionPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
 
 class PModeInSystemInstanceRef(ARObject):
     """AUTOSAR PModeInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    context_mode_group: Optional[ModeDeclarationGroup]
+    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize PModeInSystemInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PModeInSystemInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PMODEINSYSTEMINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PModeInSystemInstanceRef":
-        """Create PModeInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PModeInSystemInstanceRef instance
-        """
-        obj: PModeInSystemInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[System] = None
+        self.context: Optional[RootSwCompositionPrototype] = None
+        self.context_mode_group: Optional[ModeDeclarationGroup] = None
+        self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
+        self.target_mode: Optional[ModeDeclaration] = None
 
 
 class PModeInSystemInstanceRefBuilder:

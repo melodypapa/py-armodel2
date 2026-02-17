@@ -1,41 +1,31 @@
-"""EnumerationMappingEntry AUTOSAR element."""
+"""EnumerationMappingEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 443)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+    PositiveInteger,
+)
 
 
 class EnumerationMappingEntry(ARObject):
     """AUTOSAR EnumerationMappingEntry."""
 
+    enumerator: NameToken
+    numerical_value: PositiveInteger
     def __init__(self) -> None:
         """Initialize EnumerationMappingEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EnumerationMappingEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ENUMERATIONMAPPINGENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EnumerationMappingEntry":
-        """Create EnumerationMappingEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EnumerationMappingEntry instance
-        """
-        obj: EnumerationMappingEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.enumerator: NameToken = None
+        self.numerical_value: PositiveInteger = None
 
 
 class EnumerationMappingEntryBuilder:

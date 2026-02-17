@@ -1,41 +1,30 @@
-"""InternalTriggerOccurredEvent AUTOSAR element."""
+"""InternalTriggerOccurredEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 546)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.internal_triggering_point import (
+    InternalTriggeringPoint,
+)
 
-class InternalTriggerOccurredEvent(ARObject):
+
+class InternalTriggerOccurredEvent(RTEEvent):
     """AUTOSAR InternalTriggerOccurredEvent."""
 
+    event_source: Optional[InternalTriggeringPoint]
     def __init__(self) -> None:
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InternalTriggerOccurredEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INTERNALTRIGGEROCCURREDEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InternalTriggerOccurredEvent":
-        """Create InternalTriggerOccurredEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InternalTriggerOccurredEvent instance
-        """
-        obj: InternalTriggerOccurredEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event_source: Optional[InternalTriggeringPoint] = None
 
 
 class InternalTriggerOccurredEventBuilder:

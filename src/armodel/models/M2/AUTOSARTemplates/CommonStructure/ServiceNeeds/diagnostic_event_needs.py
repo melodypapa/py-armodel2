@@ -1,41 +1,45 @@
-"""DiagnosticEventNeeds AUTOSAR element."""
+"""DiagnosticEventNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 258)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 311)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 756)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_inhibition_needs import (
+    FunctionInhibitionNeeds,
+)
 
-class DiagnosticEventNeeds(ARObject):
+
+class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventNeeds."""
 
+    deferring_fids: list[FunctionInhibitionNeeds]
+    diag_event_debounce: Optional[Any]
+    inhibiting_fid: Optional[FunctionInhibitionNeeds]
+    inhibitings: list[FunctionInhibitionNeeds]
+    prestored: Optional[Boolean]
+    uses_monitor: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticEventNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEventNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICEVENTNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventNeeds":
-        """Create DiagnosticEventNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventNeeds instance
-        """
-        obj: DiagnosticEventNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.deferring_fids: list[FunctionInhibitionNeeds] = []
+        self.diag_event_debounce: Optional[Any] = None
+        self.inhibiting_fid: Optional[FunctionInhibitionNeeds] = None
+        self.inhibitings: list[FunctionInhibitionNeeds] = []
+        self.prestored: Optional[Boolean] = None
+        self.uses_monitor: Optional[Boolean] = None
 
 
 class DiagnosticEventNeedsBuilder:

@@ -1,41 +1,35 @@
-"""ISignalMapping AUTOSAR element."""
+"""ISignalMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 846)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Multiplatform.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_triggering import (
+    ISignalTriggering,
+)
 
 
 class ISignalMapping(ARObject):
     """AUTOSAR ISignalMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    source_signal: Optional[ISignalTriggering]
+    target_signal: Optional[ISignalTriggering]
     def __init__(self) -> None:
         """Initialize ISignalMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ISignalMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ISIGNALMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalMapping":
-        """Create ISignalMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalMapping instance
-        """
-        obj: ISignalMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.introduction: Optional[DocumentationBlock] = None
+        self.source_signal: Optional[ISignalTriggering] = None
+        self.target_signal: Optional[ISignalTriggering] = None
 
 
 class ISignalMappingBuilder:

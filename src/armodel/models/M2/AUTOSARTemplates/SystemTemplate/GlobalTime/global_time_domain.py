@@ -1,41 +1,70 @@
-"""GlobalTimeDomain AUTOSAR element."""
+"""GlobalTimeDomain AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 858)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 225)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
+    AbstractGlobalTimeDomainProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_gateway import (
+    GlobalTimeGateway,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
+    GlobalTimeMaster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_slave import (
+    GlobalTimeSlave,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.network_segment_identification import (
+    NetworkSegmentIdentification,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
 
-class GlobalTimeDomain(ARObject):
+
+class GlobalTimeDomain(FibexElement):
     """AUTOSAR GlobalTimeDomain."""
 
+    debounce_time: Optional[TimeValue]
+    domain_id: Optional[PositiveInteger]
+    gateways: list[GlobalTimeGateway]
+    global_time: Optional[AbstractGlobalTimeDomainProps]
+    global_time_master: Optional[GlobalTimeMaster]
+    global_time_subs: list[GlobalTimeDomain]
+    network: Optional[NetworkSegmentIdentification]
+    offset_time: Optional[GlobalTimeDomain]
+    pdu_triggering: Optional[PduTriggering]
+    slaves: list[GlobalTimeSlave]
+    sync_loss: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeDomain to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMEDOMAIN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeDomain":
-        """Create GlobalTimeDomain from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeDomain instance
-        """
-        obj: GlobalTimeDomain = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.debounce_time: Optional[TimeValue] = None
+        self.domain_id: Optional[PositiveInteger] = None
+        self.gateways: list[GlobalTimeGateway] = []
+        self.global_time: Optional[AbstractGlobalTimeDomainProps] = None
+        self.global_time_master: Optional[GlobalTimeMaster] = None
+        self.global_time_subs: list[GlobalTimeDomain] = []
+        self.network: Optional[NetworkSegmentIdentification] = None
+        self.offset_time: Optional[GlobalTimeDomain] = None
+        self.pdu_triggering: Optional[PduTriggering] = None
+        self.slaves: list[GlobalTimeSlave] = []
+        self.sync_loss: Optional[TimeValue] = None
 
 
 class GlobalTimeDomainBuilder:

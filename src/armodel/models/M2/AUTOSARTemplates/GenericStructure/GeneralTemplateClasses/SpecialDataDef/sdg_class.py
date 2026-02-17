@@ -1,41 +1,44 @@
-"""SdgClass AUTOSAR element."""
+"""SdgClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 99)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 207)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
+    SdgElementWithGid,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    MetaClassName,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_attribute import (
+    SdgAttribute,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
+    TraceableText,
+)
 
-class SdgClass(ARObject):
+
+class SdgClass(SdgElementWithGid):
     """AUTOSAR SdgClass."""
 
+    attributes: list[SdgAttribute]
+    caption: Optional[Boolean]
+    extends_meta: Optional[MetaClassName]
+    sdg_constraints: list[TraceableText]
     def __init__(self) -> None:
         """Initialize SdgClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgClass":
-        """Create SdgClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgClass instance
-        """
-        obj: SdgClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.attributes: list[SdgAttribute] = []
+        self.caption: Optional[Boolean] = None
+        self.extends_meta: Optional[MetaClassName] = None
+        self.sdg_constraints: list[TraceableText] = []
 
 
 class SdgClassBuilder:

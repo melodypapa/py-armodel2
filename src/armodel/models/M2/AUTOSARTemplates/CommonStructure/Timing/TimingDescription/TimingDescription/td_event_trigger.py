@@ -1,41 +1,35 @@
-"""TDEventTrigger AUTOSAR element."""
+"""TDEventTrigger AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 58)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
+    TDEventVfbPort,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
+    TDEventTriggerTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
-class TDEventTrigger(ARObject):
+
+class TDEventTrigger(TDEventVfbPort):
     """AUTOSAR TDEventTrigger."""
 
+    td_event_trigger: Optional[TDEventTriggerTypeEnum]
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventTrigger to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTTRIGGER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventTrigger":
-        """Create TDEventTrigger from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventTrigger instance
-        """
-        obj: TDEventTrigger = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.td_event_trigger: Optional[TDEventTriggerTypeEnum] = None
+        self.trigger: Optional[Trigger] = None
 
 
 class TDEventTriggerBuilder:

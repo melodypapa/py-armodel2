@@ -1,41 +1,35 @@
-"""POperationInAtomicSwcInstanceRef AUTOSAR element."""
+"""POperationInAtomicSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 948)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.operation_in_atomic_swc_instance_ref import (
+    OperationInAtomicSwcInstanceRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
+    AbstractProvidedPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class POperationInAtomicSwcInstanceRef(ARObject):
+
+class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
     """AUTOSAR POperationInAtomicSwcInstanceRef."""
 
+    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
+    target_provided_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize POperationInAtomicSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert POperationInAtomicSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("POPERATIONINATOMICSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "POperationInAtomicSwcInstanceRef":
-        """Create POperationInAtomicSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            POperationInAtomicSwcInstanceRef instance
-        """
-        obj: POperationInAtomicSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
+        self.target_provided_operation: Optional[ClientServerOperation] = None
 
 
 class POperationInAtomicSwcInstanceRefBuilder:

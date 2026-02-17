@@ -75,11 +75,6 @@
           "description": "Bihari<br>Tags: atp.EnumerationLiteralIndex=11"
         },
         {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
-        },
-        {
           "name": "AUTOSARbi",
           "index": 12,
           "description": "FO R23-11<br>Tags: atp.EnumerationLiteralIndex=12"
@@ -183,11 +178,6 @@
           "name": "fo",
           "index": 32,
           "description": "Faeroese<br>Tags: atp.EnumerationLiteralIndex=32"
-        },
-        {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
         },
         {
           "name": "AUTOSAR",
@@ -295,12 +285,7 @@
           "description": "Japanese<br>Tags: atp.EnumerationLiteralIndex=53"
         },
         {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
-        },
-        {
-          "name": "AUTOSARji",
+          "name": "ji",
           "index": 54,
           "description": "FO R23-11<br>Tags: atp.EnumerationLiteralIndex=54"
         },
@@ -405,12 +390,7 @@
           "description": "Mongolian<br>Tags: atp.EnumerationLiteralIndex=74"
         },
         {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
-        },
-        {
-          "name": "AUTOSARmo",
+          "name": "mo",
           "index": 75,
           "description": "FO R23-11<br>Tags: atp.EnumerationLiteralIndex=75"
         },
@@ -510,12 +490,7 @@
           "description": "Russian<br>Tags: atp.EnumerationLiteralIndex=95"
         },
         {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
-        },
-        {
-          "name": "AUTOSARrw",
+          "name": "rw",
           "index": 96,
           "description": "FO R23-11<br>Tags: atp.EnumerationLiteralIndex=96"
         },
@@ -620,12 +595,7 @@
           "description": "Tajik<br>Tags: atp.EnumerationLiteralIndex=116"
         },
         {
-          "name": "Generic",
-          "index": null,
-          "description": "Structure Template"
-        },
-        {
-          "name": "AUTOSARth",
+          "name": "th",
           "index": 117,
           "description": "FO R23-11<br>Tags: atp.EnumerationLiteralIndex=117"
         },

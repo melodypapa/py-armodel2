@@ -1,41 +1,37 @@
-"""EcucAbstractStringParamDef AUTOSAR element."""
+"""EcucAbstractStringParamDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 63)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 183)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    RegularExpression,
+    VerbatimString,
+)
 
 
 class EcucAbstractStringParamDef(ARObject):
     """AUTOSAR EcucAbstractStringParamDef."""
 
+    default_value: Optional[VerbatimString]
+    max_length: Optional[PositiveInteger]
+    min_length: Optional[PositiveInteger]
+    regular: Optional[RegularExpression]
     def __init__(self) -> None:
         """Initialize EcucAbstractStringParamDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucAbstractStringParamDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCABSTRACTSTRINGPARAMDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAbstractStringParamDef":
-        """Create EcucAbstractStringParamDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucAbstractStringParamDef instance
-        """
-        obj: EcucAbstractStringParamDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_value: Optional[VerbatimString] = None
+        self.max_length: Optional[PositiveInteger] = None
+        self.min_length: Optional[PositiveInteger] = None
+        self.regular: Optional[RegularExpression] = None
 
 
 class EcucAbstractStringParamDefBuilder:

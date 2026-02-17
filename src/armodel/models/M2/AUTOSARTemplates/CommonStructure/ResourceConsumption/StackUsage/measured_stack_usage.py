@@ -1,41 +1,37 @@
-"""MeasuredStackUsage AUTOSAR element."""
+"""MeasuredStackUsage AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 150)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_StackUsage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.StackUsage.stack_usage import (
+    StackUsage,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
 
-class MeasuredStackUsage(ARObject):
+
+class MeasuredStackUsage(StackUsage):
     """AUTOSAR MeasuredStackUsage."""
 
+    average_memory_consumption: Optional[PositiveInteger]
+    maximum_memory_consumption: Optional[PositiveInteger]
+    minimum_memory_consumption: Optional[PositiveInteger]
+    test_pattern: Optional[String]
     def __init__(self) -> None:
         """Initialize MeasuredStackUsage."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MeasuredStackUsage to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MEASUREDSTACKUSAGE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MeasuredStackUsage":
-        """Create MeasuredStackUsage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MeasuredStackUsage instance
-        """
-        obj: MeasuredStackUsage = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.average_memory_consumption: Optional[PositiveInteger] = None
+        self.maximum_memory_consumption: Optional[PositiveInteger] = None
+        self.minimum_memory_consumption: Optional[PositiveInteger] = None
+        self.test_pattern: Optional[String] = None
 
 
 class MeasuredStackUsageBuilder:

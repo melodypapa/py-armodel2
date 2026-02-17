@@ -1,41 +1,43 @@
-"""CryptoServiceCertificate AUTOSAR element."""
+"""CryptoServiceCertificate AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 310)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 565)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
+    CryptoCertificateFormatEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
 
-class CryptoServiceCertificate(ARObject):
+
+class CryptoServiceCertificate(ARElement):
     """AUTOSAR CryptoServiceCertificate."""
 
+    algorithm_family: Optional[Any]
+    format: Optional[CryptoCertificateFormatEnum]
+    maximum: Optional[PositiveInteger]
+    next_higher: Optional[Any]
+    server_name: Optional[String]
     def __init__(self) -> None:
         """Initialize CryptoServiceCertificate."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CryptoServiceCertificate to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CRYPTOSERVICECERTIFICATE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CryptoServiceCertificate":
-        """Create CryptoServiceCertificate from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CryptoServiceCertificate instance
-        """
-        obj: CryptoServiceCertificate = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.algorithm_family: Optional[Any] = None
+        self.format: Optional[CryptoCertificateFormatEnum] = None
+        self.maximum: Optional[PositiveInteger] = None
+        self.next_higher: Optional[Any] = None
+        self.server_name: Optional[String] = None
 
 
 class CryptoServiceCertificateBuilder:

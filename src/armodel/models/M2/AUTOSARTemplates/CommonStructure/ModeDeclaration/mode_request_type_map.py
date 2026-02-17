@@ -1,41 +1,34 @@
-"""ModeRequestTypeMap AUTOSAR element."""
+"""ModeRequestTypeMap AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 44)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 115)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class ModeRequestTypeMap(ARObject):
     """AUTOSAR ModeRequestTypeMap."""
 
+    implementation: Optional[AbstractImplementationDataType]
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeRequestTypeMap to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEREQUESTTYPEMAP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeRequestTypeMap":
-        """Create ModeRequestTypeMap from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeRequestTypeMap instance
-        """
-        obj: ModeRequestTypeMap = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.implementation: Optional[AbstractImplementationDataType] = None
+        self.mode_group: Optional[ModeDeclarationGroup] = None
 
 
 class ModeRequestTypeMapBuilder:

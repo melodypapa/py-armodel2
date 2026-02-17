@@ -1,41 +1,32 @@
-"""SwcServiceDependencyInSystemInstanceRef AUTOSAR element."""
+"""SwcServiceDependencyInSystemInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 369)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
+    RootSwCompositionPrototype,
+)
 
 
 class SwcServiceDependencyInSystemInstanceRef(ARObject):
     """AUTOSAR SwcServiceDependencyInSystemInstanceRef."""
 
+    context_root_sw: Optional[RootSwCompositionPrototype]
+    context_sw_prototypes: list[Any]
+    target_swc: Optional[Any]
     def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwcServiceDependencyInSystemInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCSERVICEDEPENDENCYINSYSTEMINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcServiceDependencyInSystemInstanceRef":
-        """Create SwcServiceDependencyInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcServiceDependencyInSystemInstanceRef instance
-        """
-        obj: SwcServiceDependencyInSystemInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_root_sw: Optional[RootSwCompositionPrototype] = None
+        self.context_sw_prototypes: list[Any] = []
+        self.target_swc: Optional[Any] = None
 
 
 class SwcServiceDependencyInSystemInstanceRefBuilder:
@@ -43,9 +34,7 @@ class SwcServiceDependencyInSystemInstanceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: SwcServiceDependencyInSystemInstanceRef = (
-            SwcServiceDependencyInSystemInstanceRef()
-        )
+        self._obj: SwcServiceDependencyInSystemInstanceRef = SwcServiceDependencyInSystemInstanceRef()
 
     def build(self) -> SwcServiceDependencyInSystemInstanceRef:
         """Build and return SwcServiceDependencyInSystemInstanceRef object.

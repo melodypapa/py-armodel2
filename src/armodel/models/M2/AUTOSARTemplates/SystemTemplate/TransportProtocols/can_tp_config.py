@@ -1,41 +1,50 @@
-"""CanTpConfig AUTOSAR element."""
+"""CanTpConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 606)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_address import (
+    CanTpAddress,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_channel import (
+    CanTpChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_connection import (
+    CanTpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_ecu import (
+    CanTpEcu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp_node import (
+    CanTpNode,
+)
 
-class CanTpConfig(ARObject):
+
+class CanTpConfig(TpConfig):
     """AUTOSAR CanTpConfig."""
 
+    tp_addresses: list[CanTpAddress]
+    tp_channels: list[CanTpChannel]
+    tp_connections: list[CanTpConnection]
+    tp_ecus: list[CanTpEcu]
+    tp_nodes: list[CanTpNode]
     def __init__(self) -> None:
         """Initialize CanTpConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanTpConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANTPCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanTpConfig":
-        """Create CanTpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanTpConfig instance
-        """
-        obj: CanTpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_addresses: list[CanTpAddress] = []
+        self.tp_channels: list[CanTpChannel] = []
+        self.tp_connections: list[CanTpConnection] = []
+        self.tp_ecus: list[CanTpEcu] = []
+        self.tp_nodes: list[CanTpNode] = []
 
 
 class CanTpConfigBuilder:

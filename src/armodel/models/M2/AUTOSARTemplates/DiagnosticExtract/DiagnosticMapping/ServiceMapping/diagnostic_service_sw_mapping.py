@@ -1,41 +1,50 @@
-"""DiagnosticServiceSwMapping AUTOSAR element."""
+"""DiagnosticServiceSwMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 238)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+    DataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
+    DiagnosticParameter,
+)
 
-class DiagnosticServiceSwMapping(ARObject):
+
+class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticServiceSwMapping."""
 
+    accessed_data: Optional[DataPrototype]
+    diagnostic_data: Optional[DiagnosticDataElement]
+    diagnostic: Optional[DiagnosticParameter]
+    mapped_bsw: Optional[Any]
+    mapped_flat_swc: Optional[Any]
+    mapped_swc: Optional[Any]
+    parameter: Optional[DiagnosticParameter]
+    service_instance: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceSwMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticServiceSwMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSERVICESWMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceSwMapping":
-        """Create DiagnosticServiceSwMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticServiceSwMapping instance
-        """
-        obj: DiagnosticServiceSwMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.accessed_data: Optional[DataPrototype] = None
+        self.diagnostic_data: Optional[DiagnosticDataElement] = None
+        self.diagnostic: Optional[DiagnosticParameter] = None
+        self.mapped_bsw: Optional[Any] = None
+        self.mapped_flat_swc: Optional[Any] = None
+        self.mapped_swc: Optional[Any] = None
+        self.parameter: Optional[DiagnosticParameter] = None
+        self.service_instance: Optional[Any] = None
 
 
 class DiagnosticServiceSwMappingBuilder:

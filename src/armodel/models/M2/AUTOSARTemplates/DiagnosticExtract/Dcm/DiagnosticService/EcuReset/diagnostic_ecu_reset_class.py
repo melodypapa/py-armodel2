@@ -1,41 +1,30 @@
-"""DiagnosticEcuResetClass AUTOSAR element."""
+"""DiagnosticEcuResetClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_EcuReset.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.EcuReset import (
+    DiagnosticResponseToEcuResetEnum,
+)
 
-class DiagnosticEcuResetClass(ARObject):
+
+class DiagnosticEcuResetClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticEcuResetClass."""
 
+    respond_to: Optional[DiagnosticResponseToEcuResetEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuResetClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEcuResetClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICECURESETCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuResetClass":
-        """Create DiagnosticEcuResetClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEcuResetClass instance
-        """
-        obj: DiagnosticEcuResetClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.respond_to: Optional[DiagnosticResponseToEcuResetEnum] = None
 
 
 class DiagnosticEcuResetClassBuilder:

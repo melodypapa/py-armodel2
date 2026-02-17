@@ -1,41 +1,25 @@
-"""DiagnosticComControlSubNodeChannel AUTOSAR element."""
+"""DiagnosticComControlSubNodeChannel AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 110)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_CommunicationControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticComControlSubNodeChannel(ARObject):
     """AUTOSAR DiagnosticComControlSubNodeChannel."""
 
+    sub_node: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticComControlSubNodeChannel to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCOMCONTROLSUBNODECHANNEL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSubNodeChannel":
-        """Create DiagnosticComControlSubNodeChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticComControlSubNodeChannel instance
-        """
-        obj: DiagnosticComControlSubNodeChannel = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sub_node: Optional[Any] = None
 
 
 class DiagnosticComControlSubNodeChannelBuilder:

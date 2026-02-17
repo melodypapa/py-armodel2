@@ -1,41 +1,32 @@
-"""BlueprintPolicyList AUTOSAR element."""
+"""BlueprintPolicyList AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 164)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_AbstractBlueprintStructure.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
+    BlueprintPolicy,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class BlueprintPolicyList(ARObject):
+
+class BlueprintPolicyList(BlueprintPolicy):
     """AUTOSAR BlueprintPolicyList."""
 
+    max_number_of: PositiveInteger
+    min_number_of: PositiveInteger
     def __init__(self) -> None:
         """Initialize BlueprintPolicyList."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BlueprintPolicyList to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BLUEPRINTPOLICYLIST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BlueprintPolicyList":
-        """Create BlueprintPolicyList from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BlueprintPolicyList instance
-        """
-        obj: BlueprintPolicyList = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_number_of: PositiveInteger = None
+        self.min_number_of: PositiveInteger = None
 
 
 class BlueprintPolicyListBuilder:

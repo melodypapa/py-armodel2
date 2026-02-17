@@ -1,41 +1,29 @@
-"""DiagnosticFunctionInhibitSource AUTOSAR element."""
+"""DiagnosticFunctionInhibitSource AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 216)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Fim.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class DiagnosticFunctionInhibitSource(ARObject):
+
+class DiagnosticFunctionInhibitSource(Identifiable):
     """AUTOSAR DiagnosticFunctionInhibitSource."""
 
+    event: Optional[Any]
+    event_group: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionInhibitSource."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticFunctionInhibitSource to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICFUNCTIONINHIBITSOURCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFunctionInhibitSource":
-        """Create DiagnosticFunctionInhibitSource from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFunctionInhibitSource instance
-        """
-        obj: DiagnosticFunctionInhibitSource = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event: Optional[Any] = None
+        self.event_group: Optional[Any] = None
 
 
 class DiagnosticFunctionInhibitSourceBuilder:

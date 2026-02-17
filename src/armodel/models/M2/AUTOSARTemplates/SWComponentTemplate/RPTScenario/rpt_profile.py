@@ -1,41 +1,40 @@
-"""RptProfile AUTOSAR element."""
+"""RptProfile AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 853)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport import (
+    RptEnablerImplTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CIdentifier,
+    PositiveInteger,
+)
 
-class RptProfile(ARObject):
+
+class RptProfile(Identifiable):
     """AUTOSAR RptProfile."""
 
+    max_service: Optional[PositiveInteger]
+    min_service_point: Optional[PositiveInteger]
+    service_point: Optional[CIdentifier]
+    stim_enabler: Optional[RptEnablerImplTypeEnum]
     def __init__(self) -> None:
         """Initialize RptProfile."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RptProfile to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPTPROFILE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RptProfile":
-        """Create RptProfile from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RptProfile instance
-        """
-        obj: RptProfile = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_service: Optional[PositiveInteger] = None
+        self.min_service_point: Optional[PositiveInteger] = None
+        self.service_point: Optional[CIdentifier] = None
+        self.stim_enabler: Optional[RptEnablerImplTypeEnum] = None
 
 
 class RptProfileBuilder:

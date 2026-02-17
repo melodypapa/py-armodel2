@@ -1,41 +1,46 @@
-"""ObdMonitorServiceNeeds AUTOSAR element."""
+"""ObdMonitorServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 324)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 797)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    DiagnosticMonitorUpdateKindEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
+    ApplicationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_event_needs import (
+    DiagnosticEventNeeds,
+)
 
-class ObdMonitorServiceNeeds(ARObject):
+
+class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdMonitorServiceNeeds."""
 
+    application_data: Optional[ApplicationDataType]
+    event_needs: Optional[DiagnosticEventNeeds]
+    unit_and_scaling_id: Optional[PositiveInteger]
+    update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ObdMonitorServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OBDMONITORSERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ObdMonitorServiceNeeds":
-        """Create ObdMonitorServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ObdMonitorServiceNeeds instance
-        """
-        obj: ObdMonitorServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application_data: Optional[ApplicationDataType] = None
+        self.event_needs: Optional[DiagnosticEventNeeds] = None
+        self.unit_and_scaling_id: Optional[PositiveInteger] = None
+        self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
 
 
 class ObdMonitorServiceNeedsBuilder:

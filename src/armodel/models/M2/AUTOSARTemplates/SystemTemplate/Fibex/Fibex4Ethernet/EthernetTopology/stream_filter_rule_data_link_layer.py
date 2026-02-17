@@ -1,41 +1,39 @@
-"""StreamFilterRuleDataLinkLayer AUTOSAR element."""
+"""StreamFilterRuleDataLinkLayer AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 137)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_mac_address import (
+    StreamFilterMACAddress,
+)
 
 
 class StreamFilterRuleDataLinkLayer(ARObject):
     """AUTOSAR StreamFilterRuleDataLinkLayer."""
 
+    destination_mac: Optional[StreamFilterMACAddress]
+    ether_type: Optional[PositiveInteger]
+    source_mac: Optional[StreamFilterMACAddress]
+    vlan_id: Optional[PositiveInteger]
+    vlan_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize StreamFilterRuleDataLinkLayer."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert StreamFilterRuleDataLinkLayer to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("STREAMFILTERRULEDATALINKLAYER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "StreamFilterRuleDataLinkLayer":
-        """Create StreamFilterRuleDataLinkLayer from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            StreamFilterRuleDataLinkLayer instance
-        """
-        obj: StreamFilterRuleDataLinkLayer = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.destination_mac: Optional[StreamFilterMACAddress] = None
+        self.ether_type: Optional[PositiveInteger] = None
+        self.source_mac: Optional[StreamFilterMACAddress] = None
+        self.vlan_id: Optional[PositiveInteger] = None
+        self.vlan_priority: Optional[PositiveInteger] = None
 
 
 class StreamFilterRuleDataLinkLayerBuilder:

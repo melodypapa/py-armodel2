@@ -1,41 +1,35 @@
-"""DiagnosticIumpr AUTOSAR element."""
+"""DiagnosticIumpr AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 210)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticEvent.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent import (
+    DiagnosticIumprKindEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
 
-class DiagnosticIumpr(ARObject):
+
+class DiagnosticIumpr(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIumpr."""
 
+    event: Optional[DiagnosticEvent]
+    ratio_kind: Optional[DiagnosticIumprKindEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticIumpr."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticIumpr to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICIUMPR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIumpr":
-        """Create DiagnosticIumpr from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIumpr instance
-        """
-        obj: DiagnosticIumpr = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.event: Optional[DiagnosticEvent] = None
+        self.ratio_kind: Optional[DiagnosticIumprKindEnum] = None
 
 
 class DiagnosticIumprBuilder:

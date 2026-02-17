@@ -1,41 +1,30 @@
-"""DiagnosticJ1939ExpandedFreezeFrame AUTOSAR element."""
+"""DiagnosticJ1939ExpandedFreezeFrame AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 221)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_J1939.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
 
-class DiagnosticJ1939ExpandedFreezeFrame(ARObject):
+
+class DiagnosticJ1939ExpandedFreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939ExpandedFreezeFrame."""
 
+    node: Optional[DiagnosticJ1939Node]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939ExpandedFreezeFrame."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticJ1939ExpandedFreezeFrame to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICJ1939EXPANDEDFREEZEFRAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939ExpandedFreezeFrame":
-        """Create DiagnosticJ1939ExpandedFreezeFrame from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticJ1939ExpandedFreezeFrame instance
-        """
-        obj: DiagnosticJ1939ExpandedFreezeFrame = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.node: Optional[DiagnosticJ1939Node] = None
 
 
 class DiagnosticJ1939ExpandedFreezeFrameBuilder:

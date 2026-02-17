@@ -1,41 +1,30 @@
-"""TcpOptionFilterSet AUTOSAR element."""
+"""TcpOptionFilterSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 457)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_TcpOptionFilterSet.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.TcpOptionFilterSet.tcp_option_filter_list import (
+    TcpOptionFilterList,
+)
 
-class TcpOptionFilterSet(ARObject):
+
+class TcpOptionFilterSet(ARElement):
     """AUTOSAR TcpOptionFilterSet."""
 
+    tcp_option_filter_lists: list[TcpOptionFilterList]
     def __init__(self) -> None:
         """Initialize TcpOptionFilterSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TcpOptionFilterSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TCPOPTIONFILTERSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TcpOptionFilterSet":
-        """Create TcpOptionFilterSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TcpOptionFilterSet instance
-        """
-        obj: TcpOptionFilterSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tcp_option_filter_lists: list[TcpOptionFilterList] = []
 
 
 class TcpOptionFilterSetBuilder:

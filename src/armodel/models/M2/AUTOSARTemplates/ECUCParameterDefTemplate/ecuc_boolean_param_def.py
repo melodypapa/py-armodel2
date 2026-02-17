@@ -1,41 +1,31 @@
-"""EcucBooleanParamDef AUTOSAR element."""
+"""EcucBooleanParamDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 58)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 183)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
+    EcucParameterDef,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class EcucBooleanParamDef(ARObject):
+
+class EcucBooleanParamDef(EcucParameterDef):
     """AUTOSAR EcucBooleanParamDef."""
 
+    default_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucBooleanParamDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucBooleanParamDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCBOOLEANPARAMDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucBooleanParamDef":
-        """Create EcucBooleanParamDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucBooleanParamDef instance
-        """
-        obj: EcucBooleanParamDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_value: Optional[Boolean] = None
 
 
 class EcucBooleanParamDefBuilder:

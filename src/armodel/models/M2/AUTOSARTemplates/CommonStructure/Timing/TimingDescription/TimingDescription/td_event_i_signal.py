@@ -1,41 +1,40 @@
-"""TDEventISignal AUTOSAR element."""
+"""TDEventISignal AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 65)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
+    TDEventCom,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
+    TDEventISignalTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal import (
+    ISignal,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
+    PhysicalChannel,
+)
 
-class TDEventISignal(ARObject):
+
+class TDEventISignal(TDEventCom):
     """AUTOSAR TDEventISignal."""
 
+    i_signal: Optional[ISignal]
+    physical_channel: Optional[PhysicalChannel]
+    td_event_type_enum: Optional[TDEventISignalTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventISignal."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventISignal to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTISIGNAL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventISignal":
-        """Create TDEventISignal from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventISignal instance
-        """
-        obj: TDEventISignal = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.i_signal: Optional[ISignal] = None
+        self.physical_channel: Optional[PhysicalChannel] = None
+        self.td_event_type_enum: Optional[TDEventISignalTypeEnum] = None
 
 
 class TDEventISignalBuilder:

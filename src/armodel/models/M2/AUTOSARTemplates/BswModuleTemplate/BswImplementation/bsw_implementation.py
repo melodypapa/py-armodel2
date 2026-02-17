@@ -1,41 +1,51 @@
-"""BswImplementation AUTOSAR element."""
+"""BswImplementation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 120)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 290)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 972)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 207)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 425)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswImplementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
+    Implementation,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+    RevisionLabelString,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_behavior import (
+    BswInternalBehavior,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def import (
+    EcucModuleDef,
+)
 
-class BswImplementation(ARObject):
+
+class BswImplementation(Implementation):
     """AUTOSAR BswImplementation."""
 
+    ar_release: Optional[RevisionLabelString]
+    behavior: Optional[BswInternalBehavior]
+    preconfigureds: list[Any]
+    recommendeds: list[Any]
+    vendor_api_infix: Optional[Identifier]
+    vendor_specifics: list[EcucModuleDef]
     def __init__(self) -> None:
         """Initialize BswImplementation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswImplementation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWIMPLEMENTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswImplementation":
-        """Create BswImplementation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswImplementation instance
-        """
-        obj: BswImplementation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ar_release: Optional[RevisionLabelString] = None
+        self.behavior: Optional[BswInternalBehavior] = None
+        self.preconfigureds: list[Any] = []
+        self.recommendeds: list[Any] = []
+        self.vendor_api_infix: Optional[Identifier] = None
+        self.vendor_specifics: list[EcucModuleDef] = []
 
 
 class BswImplementationBuilder:

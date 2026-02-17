@@ -1,41 +1,37 @@
-"""BswModuleClientServerEntry AUTOSAR element."""
+"""BswModuleClientServerEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 53)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
+)
 
-class BswModuleClientServerEntry(ARObject):
+
+class BswModuleClientServerEntry(Referrable):
     """AUTOSAR BswModuleClientServerEntry."""
 
+    encapsulated: Optional[BswModuleEntry]
+    is_reentrant: Optional[Boolean]
+    is_synchronous: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModuleClientServerEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModuleClientServerEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODULECLIENTSERVERENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleClientServerEntry":
-        """Create BswModuleClientServerEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleClientServerEntry instance
-        """
-        obj: BswModuleClientServerEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.encapsulated: Optional[BswModuleEntry] = None
+        self.is_reentrant: Optional[Boolean] = None
+        self.is_synchronous: Optional[Boolean] = None
 
 
 class BswModuleClientServerEntryBuilder:

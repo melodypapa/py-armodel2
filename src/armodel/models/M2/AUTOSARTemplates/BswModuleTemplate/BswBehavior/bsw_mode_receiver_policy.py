@@ -1,41 +1,35 @@
-"""BswModeReceiverPolicy AUTOSAR element."""
+"""BswModeReceiverPolicy AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 103)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class BswModeReceiverPolicy(ARObject):
     """AUTOSAR BswModeReceiverPolicy."""
 
+    enhanced_mode: Optional[Boolean]
+    required_mode: Optional[ModeDeclarationGroup]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModeReceiverPolicy to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODERECEIVERPOLICY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModeReceiverPolicy":
-        """Create BswModeReceiverPolicy from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModeReceiverPolicy instance
-        """
-        obj: BswModeReceiverPolicy = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.enhanced_mode: Optional[Boolean] = None
+        self.required_mode: Optional[ModeDeclarationGroup] = None
+        self.supports: Optional[Boolean] = None
 
 
 class BswModeReceiverPolicyBuilder:

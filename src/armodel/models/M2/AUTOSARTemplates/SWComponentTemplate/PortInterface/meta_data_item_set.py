@@ -1,41 +1,34 @@
-"""MetaDataItemSet AUTOSAR element."""
+"""MetaDataItemSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 99)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2037)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.meta_data_item import (
+    MetaDataItem,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
 
 class MetaDataItemSet(ARObject):
     """AUTOSAR MetaDataItemSet."""
 
+    data_elements: list[VariableDataPrototype]
+    meta_data_items: list[MetaDataItem]
     def __init__(self) -> None:
         """Initialize MetaDataItemSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MetaDataItemSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("METADATAITEMSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MetaDataItemSet":
-        """Create MetaDataItemSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MetaDataItemSet instance
-        """
-        obj: MetaDataItemSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_elements: list[VariableDataPrototype] = []
+        self.meta_data_items: list[MetaDataItem] = []
 
 
 class MetaDataItemSetBuilder:

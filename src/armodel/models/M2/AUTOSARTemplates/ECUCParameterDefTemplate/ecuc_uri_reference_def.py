@@ -1,41 +1,31 @@
-"""EcucUriReferenceDef AUTOSAR element."""
+"""EcucUriReferenceDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 81)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_internal_reference_def import (
+    EcucAbstractInternalReferenceDef,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destination_uri_def import (
+    EcucDestinationUriDef,
+)
 
-class EcucUriReferenceDef(ARObject):
+
+class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
     """AUTOSAR EcucUriReferenceDef."""
 
+    destination_uri: Optional[EcucDestinationUriDef]
     def __init__(self) -> None:
         """Initialize EcucUriReferenceDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucUriReferenceDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCURIREFERENCEDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucUriReferenceDef":
-        """Create EcucUriReferenceDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucUriReferenceDef instance
-        """
-        obj: EcucUriReferenceDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.destination_uri: Optional[EcucDestinationUriDef] = None
 
 
 class EcucUriReferenceDefBuilder:

@@ -1,41 +1,44 @@
-"""SwPointerTargetProps AUTOSAR element."""
+"""SwPointerTargetProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 39)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 311)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 286)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 471)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+        BswModuleEntry,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class SwPointerTargetProps(ARObject):
     """AUTOSAR SwPointerTargetProps."""
 
+    function_pointer: Optional[BswModuleEntry]
+    sw_data_def: Optional[SwDataDefProps]
+    target_category: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwPointerTargetProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWPOINTERTARGETPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwPointerTargetProps":
-        """Create SwPointerTargetProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwPointerTargetProps instance
-        """
-        obj: SwPointerTargetProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.function_pointer: Optional[BswModuleEntry] = None
+        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.target_category: Optional[Identifier] = None
 
 
 class SwPointerTargetPropsBuilder:

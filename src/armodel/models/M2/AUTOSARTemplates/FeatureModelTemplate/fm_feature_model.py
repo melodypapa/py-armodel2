@@ -1,41 +1,33 @@
-"""FMFeatureModel AUTOSAR element."""
+"""FMFeatureModel AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 21)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 444)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
+    FMFeature,
+)
 
-class FMFeatureModel(ARObject):
+
+class FMFeatureModel(ARElement):
     """AUTOSAR FMFeatureModel."""
 
+    features: list[FMFeature]
+    root: Optional[FMFeature]
     def __init__(self) -> None:
         """Initialize FMFeatureModel."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FMFeatureModel to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FMFEATUREMODEL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FMFeatureModel":
-        """Create FMFeatureModel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FMFeatureModel instance
-        """
-        obj: FMFeatureModel = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.features: list[FMFeature] = []
+        self.root: Optional[FMFeature] = None
 
 
 class FMFeatureModelBuilder:

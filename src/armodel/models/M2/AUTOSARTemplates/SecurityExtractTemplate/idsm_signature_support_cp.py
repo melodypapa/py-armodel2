@@ -1,41 +1,33 @@
-"""IdsmSignatureSupportCp AUTOSAR element."""
+"""IdsmSignatureSupportCp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
+    CryptoServiceKey,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_primitive import (
+    CryptoServicePrimitive,
+)
 
 
 class IdsmSignatureSupportCp(ARObject):
     """AUTOSAR IdsmSignatureSupportCp."""
 
+    authentication: Optional[CryptoServicePrimitive]
+    crypto_service_key: Optional[CryptoServiceKey]
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportCp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsmSignatureSupportCp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSMSIGNATURESUPPORTCP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportCp":
-        """Create IdsmSignatureSupportCp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmSignatureSupportCp instance
-        """
-        obj: IdsmSignatureSupportCp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.authentication: Optional[CryptoServicePrimitive] = None
+        self.crypto_service_key: Optional[CryptoServiceKey] = None
 
 
 class IdsmSignatureSupportCpBuilder:

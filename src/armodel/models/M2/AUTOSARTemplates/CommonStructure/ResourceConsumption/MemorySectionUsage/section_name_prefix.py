@@ -1,41 +1,31 @@
-"""SectionNamePrefix AUTOSAR element."""
+"""SectionNamePrefix AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 147)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 412)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_MemorySectionUsage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
+    ImplementationProps,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
+    DependencyOnArtifact,
+)
 
-class SectionNamePrefix(ARObject):
+
+class SectionNamePrefix(ImplementationProps):
     """AUTOSAR SectionNamePrefix."""
 
+    implemented_in: Optional[DependencyOnArtifact]
     def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SectionNamePrefix to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECTIONNAMEPREFIX")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SectionNamePrefix":
-        """Create SectionNamePrefix from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SectionNamePrefix instance
-        """
-        obj: SectionNamePrefix = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.implemented_in: Optional[DependencyOnArtifact] = None
 
 
 class SectionNamePrefixBuilder:

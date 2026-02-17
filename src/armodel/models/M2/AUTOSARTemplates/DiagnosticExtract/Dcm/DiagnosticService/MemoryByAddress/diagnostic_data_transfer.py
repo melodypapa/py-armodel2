@@ -1,41 +1,27 @@
-"""DiagnosticDataTransfer AUTOSAR element."""
+"""DiagnosticDataTransfer AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 143)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_MemoryByAddress.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_by_address import (
+    DiagnosticMemoryByAddress,
+)
 
-class DiagnosticDataTransfer(ARObject):
+
+class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticDataTransfer."""
 
+    data_transfer: Optional[DiagnosticDataTransfer]
     def __init__(self) -> None:
         """Initialize DiagnosticDataTransfer."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticDataTransfer to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICDATATRANSFER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticDataTransfer":
-        """Create DiagnosticDataTransfer from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticDataTransfer instance
-        """
-        obj: DiagnosticDataTransfer = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_transfer: Optional[DiagnosticDataTransfer] = None
 
 
 class DiagnosticDataTransferBuilder:

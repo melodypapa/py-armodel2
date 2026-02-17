@@ -1,41 +1,33 @@
-"""RPortInCompositionInstanceRef AUTOSAR element."""
+"""RPortInCompositionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 952)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 459)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.port_in_composition_type_instance_ref import (
+    PortInCompositionTypeInstanceRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+    AbstractRequiredPortPrototype,
+)
 
-class RPortInCompositionInstanceRef(ARObject):
+
+class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
     """AUTOSAR RPortInCompositionInstanceRef."""
 
+    context: Optional[Any]
+    target_r_port_prototype: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:
         """Initialize RPortInCompositionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RPortInCompositionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RPORTINCOMPOSITIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RPortInCompositionInstanceRef":
-        """Create RPortInCompositionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RPortInCompositionInstanceRef instance
-        """
-        obj: RPortInCompositionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context: Optional[Any] = None
+        self.target_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
 
 
 class RPortInCompositionInstanceRefBuilder:

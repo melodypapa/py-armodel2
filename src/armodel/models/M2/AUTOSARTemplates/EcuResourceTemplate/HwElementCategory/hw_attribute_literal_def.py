@@ -1,41 +1,25 @@
-"""HwAttributeLiteralDef AUTOSAR element."""
+"""HwAttributeLiteralDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 26)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate_HwElementCategory.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class HwAttributeLiteralDef(ARObject):
+
+class HwAttributeLiteralDef(Identifiable):
     """AUTOSAR HwAttributeLiteralDef."""
 
     def __init__(self) -> None:
         """Initialize HwAttributeLiteralDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwAttributeLiteralDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWATTRIBUTELITERALDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwAttributeLiteralDef":
-        """Create HwAttributeLiteralDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwAttributeLiteralDef instance
-        """
-        obj: HwAttributeLiteralDef = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class HwAttributeLiteralDefBuilder:

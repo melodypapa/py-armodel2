@@ -1,41 +1,45 @@
-"""MixedContentForLongName AUTOSAR element."""
+"""MixedContentForLongName AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 62)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextModel.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
+    Superscript,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.emphasis_text import (
+    EmphasisText,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.index_entry import (
+    IndexEntry,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import (
+    Tt,
+)
 
 
 class MixedContentForLongName(ARObject):
     """AUTOSAR MixedContentForLongName."""
 
+    e: EmphasisText
+    ie: IndexEntry
+    sub: Superscript
+    sup: Superscript
+    tt: Tt
     def __init__(self) -> None:
         """Initialize MixedContentForLongName."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MixedContentForLongName to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MIXEDCONTENTFORLONGNAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MixedContentForLongName":
-        """Create MixedContentForLongName from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MixedContentForLongName instance
-        """
-        obj: MixedContentForLongName = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.e: EmphasisText = None
+        self.ie: IndexEntry = None
+        self.sub: Superscript = None
+        self.sup: Superscript = None
+        self.tt: Tt = None
 
 
 class MixedContentForLongNameBuilder:

@@ -1,41 +1,35 @@
-"""TDCpSoftwareClusterResourceMapping AUTOSAR element."""
+"""TDCpSoftwareClusterResourceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCpSoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
+    TimingDescription,
+)
 
-class TDCpSoftwareClusterResourceMapping(ARObject):
+
+class TDCpSoftwareClusterResourceMapping(Identifiable):
     """AUTOSAR TDCpSoftwareClusterResourceMapping."""
 
+    resource: Optional[CpSoftwareCluster]
+    timing: Optional[TimingDescription]
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterResourceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDCpSoftwareClusterResourceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDCPSOFTWARECLUSTERRESOURCEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterResourceMapping":
-        """Create TDCpSoftwareClusterResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDCpSoftwareClusterResourceMapping instance
-        """
-        obj: TDCpSoftwareClusterResourceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.resource: Optional[CpSoftwareCluster] = None
+        self.timing: Optional[TimingDescription] = None
 
 
 class TDCpSoftwareClusterResourceMappingBuilder:

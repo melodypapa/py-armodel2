@@ -1,41 +1,33 @@
-"""DefList AUTOSAR element."""
+"""DefList AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 297)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
 
-class DefList(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_item import (
+        DefItem,
+    )
+
+
+
+class DefList(Paginateable):
     """AUTOSAR DefList."""
 
+    def_item: DefItem
     def __init__(self) -> None:
         """Initialize DefList."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DefList to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DEFLIST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DefList":
-        """Create DefList from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DefList instance
-        """
-        obj: DefList = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.def_item: DefItem = None
 
 
 class DefListBuilder:

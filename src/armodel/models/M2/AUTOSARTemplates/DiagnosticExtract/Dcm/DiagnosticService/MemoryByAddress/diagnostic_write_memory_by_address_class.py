@@ -1,41 +1,25 @@
-"""DiagnosticWriteMemoryByAddressClass AUTOSAR element."""
+"""DiagnosticWriteMemoryByAddressClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 141)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_MemoryByAddress.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
 
-class DiagnosticWriteMemoryByAddressClass(ARObject):
+
+class DiagnosticWriteMemoryByAddressClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticWriteMemoryByAddressClass."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticWriteMemoryByAddressClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticWriteMemoryByAddressClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICWRITEMEMORYBYADDRESSCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticWriteMemoryByAddressClass":
-        """Create DiagnosticWriteMemoryByAddressClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticWriteMemoryByAddressClass instance
-        """
-        obj: DiagnosticWriteMemoryByAddressClass = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticWriteMemoryByAddressClassBuilder:

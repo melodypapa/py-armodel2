@@ -1,41 +1,33 @@
-"""PortPrototypeBlueprintInitValue AUTOSAR element."""
+"""PortPrototypeBlueprintInitValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 60)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintDedicated_Port.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
 
 class PortPrototypeBlueprintInitValue(ARObject):
     """AUTOSAR PortPrototypeBlueprintInitValue."""
 
+    data_prototype: AutosarDataPrototype
+    value: ValueSpecification
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprintInitValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PortPrototypeBlueprintInitValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PORTPROTOTYPEBLUEPRINTINITVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprintInitValue":
-        """Create PortPrototypeBlueprintInitValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortPrototypeBlueprintInitValue instance
-        """
-        obj: PortPrototypeBlueprintInitValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_prototype: AutosarDataPrototype = None
+        self.value: ValueSpecification = None
 
 
 class PortPrototypeBlueprintInitValueBuilder:

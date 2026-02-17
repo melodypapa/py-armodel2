@@ -1,41 +1,32 @@
-"""EcucTextualParamValue AUTOSAR element."""
+"""EcucTextualParamValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 127)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 443)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_value import (
+    EcucParameterValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    VerbatimString,
+)
 
-class EcucTextualParamValue(ARObject):
+
+class EcucTextualParamValue(EcucParameterValue):
     """AUTOSAR EcucTextualParamValue."""
 
+    value: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize EcucTextualParamValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucTextualParamValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCTEXTUALPARAMVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucTextualParamValue":
-        """Create EcucTextualParamValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucTextualParamValue instance
-        """
-        obj: EcucTextualParamValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.value: Optional[VerbatimString] = None
 
 
 class EcucTextualParamValueBuilder:

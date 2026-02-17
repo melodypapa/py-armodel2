@@ -1,41 +1,39 @@
-"""Chapter AUTOSAR element."""
+"""Chapter AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 698)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 329)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class Chapter(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.Chapters.chapter_model import (
+        ChapterModel,
+    )
+
+
+
+class Chapter(Paginateable):
     """AUTOSAR Chapter."""
 
+    chapter_model: ChapterModel
+    help_entry: Optional[String]
     def __init__(self) -> None:
         """Initialize Chapter."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Chapter to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CHAPTER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Chapter":
-        """Create Chapter from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Chapter instance
-        """
-        obj: Chapter = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.chapter_model: ChapterModel = None
+        self.help_entry: Optional[String] = None
 
 
 class ChapterBuilder:

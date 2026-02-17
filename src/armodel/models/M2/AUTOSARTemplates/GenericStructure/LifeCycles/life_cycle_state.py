@@ -1,41 +1,26 @@
-"""LifeCycleState AUTOSAR element."""
+"""LifeCycleState AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 388)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 196)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class LifeCycleState(ARObject):
+
+class LifeCycleState(Identifiable):
     """AUTOSAR LifeCycleState."""
 
     def __init__(self) -> None:
         """Initialize LifeCycleState."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LifeCycleState to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LIFECYCLESTATE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LifeCycleState":
-        """Create LifeCycleState from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LifeCycleState instance
-        """
-        obj: LifeCycleState = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class LifeCycleStateBuilder:

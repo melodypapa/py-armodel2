@@ -1,41 +1,33 @@
-"""TransmissionModeTiming AUTOSAR element."""
+"""TransmissionModeTiming AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 393)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication_Timing.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.cyclic_timing import (
+    CyclicTiming,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.event_controlled_timing import (
+    EventControlledTiming,
+)
 
 
 class TransmissionModeTiming(ARObject):
     """AUTOSAR TransmissionModeTiming."""
 
+    cyclic_timing: Optional[CyclicTiming]
+    event_controlled_timing_timing: Optional[EventControlledTiming]
     def __init__(self) -> None:
         """Initialize TransmissionModeTiming."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TransmissionModeTiming to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRANSMISSIONMODETIMING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransmissionModeTiming":
-        """Create TransmissionModeTiming from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransmissionModeTiming instance
-        """
-        obj: TransmissionModeTiming = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cyclic_timing: Optional[CyclicTiming] = None
+        self.event_controlled_timing_timing: Optional[EventControlledTiming] = None
 
 
 class TransmissionModeTimingBuilder:

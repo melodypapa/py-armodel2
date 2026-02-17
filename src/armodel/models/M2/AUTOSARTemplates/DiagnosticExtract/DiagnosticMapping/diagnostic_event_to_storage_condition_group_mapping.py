@@ -1,41 +1,32 @@
-"""DiagnosticEventToStorageConditionGroupMapping AUTOSAR element."""
+"""DiagnosticEventToStorageConditionGroupMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 248)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
 
-class DiagnosticEventToStorageConditionGroupMapping(ARObject):
+
+class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToStorageConditionGroupMapping."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    storage: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToStorageConditionGroupMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEventToStorageConditionGroupMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICEVENTTOSTORAGECONDITIONGROUPMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToStorageConditionGroupMapping":
-        """Create DiagnosticEventToStorageConditionGroupMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventToStorageConditionGroupMapping instance
-        """
-        obj: DiagnosticEventToStorageConditionGroupMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.diagnostic_event: Optional[DiagnosticEvent] = None
+        self.storage: Optional[Any] = None
 
 
 class DiagnosticEventToStorageConditionGroupMappingBuilder:
@@ -43,9 +34,7 @@ class DiagnosticEventToStorageConditionGroupMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticEventToStorageConditionGroupMapping = (
-            DiagnosticEventToStorageConditionGroupMapping()
-        )
+        self._obj: DiagnosticEventToStorageConditionGroupMapping = DiagnosticEventToStorageConditionGroupMapping()
 
     def build(self) -> DiagnosticEventToStorageConditionGroupMapping:
         """Build and return DiagnosticEventToStorageConditionGroupMapping object.

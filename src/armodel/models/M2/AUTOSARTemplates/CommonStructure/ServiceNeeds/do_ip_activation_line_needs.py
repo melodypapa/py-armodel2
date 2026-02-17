@@ -1,41 +1,26 @@
-"""DoIpActivationLineNeeds AUTOSAR element."""
+"""DoIpActivationLineNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 807)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2019)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.do_ip_service_needs import (
+    DoIpServiceNeeds,
+)
 
-class DoIpActivationLineNeeds(ARObject):
+
+class DoIpActivationLineNeeds(DoIpServiceNeeds):
     """AUTOSAR DoIpActivationLineNeeds."""
 
     def __init__(self) -> None:
         """Initialize DoIpActivationLineNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DoIpActivationLineNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOIPACTIVATIONLINENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DoIpActivationLineNeeds":
-        """Create DoIpActivationLineNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DoIpActivationLineNeeds instance
-        """
-        obj: DoIpActivationLineNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DoIpActivationLineNeedsBuilder:

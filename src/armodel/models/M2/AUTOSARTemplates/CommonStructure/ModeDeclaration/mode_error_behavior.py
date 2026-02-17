@@ -1,41 +1,34 @@
-"""ModeErrorBehavior AUTOSAR element."""
+"""ModeErrorBehavior AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 44)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 637)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
+    ModeErrorReactionPolicyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
 
 
 class ModeErrorBehavior(ARObject):
     """AUTOSAR ModeErrorBehavior."""
 
+    default_mode: Optional[ModeDeclaration]
+    error_reaction: Optional[ModeErrorReactionPolicyEnum]
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeErrorBehavior to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEERRORBEHAVIOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeErrorBehavior":
-        """Create ModeErrorBehavior from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeErrorBehavior instance
-        """
-        obj: ModeErrorBehavior = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_mode: Optional[ModeDeclaration] = None
+        self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
 
 
 class ModeErrorBehaviorBuilder:

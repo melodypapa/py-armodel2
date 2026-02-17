@@ -1,41 +1,37 @@
-"""NvProvideComSpec AUTOSAR element."""
+"""NvProvideComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 195)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
+    PPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class NvProvideComSpec(ARObject):
+
+class NvProvideComSpec(PPortComSpec):
     """AUTOSAR NvProvideComSpec."""
 
+    ram_block_init: Optional[ValueSpecification]
+    rom_block_init: Optional[ValueSpecification]
+    variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvProvideComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NvProvideComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NVPROVIDECOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvProvideComSpec":
-        """Create NvProvideComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvProvideComSpec instance
-        """
-        obj: NvProvideComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ram_block_init: Optional[ValueSpecification] = None
+        self.rom_block_init: Optional[ValueSpecification] = None
+        self.variable: Optional[VariableDataPrototype] = None
 
 
 class NvProvideComSpecBuilder:

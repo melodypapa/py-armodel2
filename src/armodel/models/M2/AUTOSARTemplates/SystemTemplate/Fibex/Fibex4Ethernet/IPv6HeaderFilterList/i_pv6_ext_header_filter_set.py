@@ -1,41 +1,30 @@
-"""IPv6ExtHeaderFilterSet AUTOSAR element."""
+"""IPv6ExtHeaderFilterSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_IPv6HeaderFilterList.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6HeaderFilterList.i_pv6_ext_header_filter_list import (
+    IPv6ExtHeaderFilterList,
+)
 
-class IPv6ExtHeaderFilterSet(ARObject):
+
+class IPv6ExtHeaderFilterSet(ARElement):
     """AUTOSAR IPv6ExtHeaderFilterSet."""
 
+    ext_header_filters: list[IPv6ExtHeaderFilterList]
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IPv6ExtHeaderFilterSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPV6EXTHEADERFILTERSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IPv6ExtHeaderFilterSet":
-        """Create IPv6ExtHeaderFilterSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IPv6ExtHeaderFilterSet instance
-        """
-        obj: IPv6ExtHeaderFilterSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ext_header_filters: list[IPv6ExtHeaderFilterList] = []
 
 
 class IPv6ExtHeaderFilterSetBuilder:

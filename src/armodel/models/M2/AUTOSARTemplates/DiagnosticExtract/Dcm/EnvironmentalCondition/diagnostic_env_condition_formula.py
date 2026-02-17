@@ -1,41 +1,35 @@
-"""DiagnosticEnvConditionFormula AUTOSAR element."""
+"""DiagnosticEnvConditionFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 80)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_EnvironmentalCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_condition_formula_part import (
+    DiagnosticEnvConditionFormulaPart,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition import (
+    DiagnosticLogicalOperatorEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class DiagnosticEnvConditionFormula(ARObject):
+
+class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
     """AUTOSAR DiagnosticEnvConditionFormula."""
 
+    nrc_value: Optional[PositiveInteger]
+    op: Optional[DiagnosticLogicalOperatorEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEnvConditionFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICENVCONDITIONFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvConditionFormula":
-        """Create DiagnosticEnvConditionFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnvConditionFormula instance
-        """
-        obj: DiagnosticEnvConditionFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.nrc_value: Optional[PositiveInteger] = None
+        self.op: Optional[DiagnosticLogicalOperatorEnum] = None
 
 
 class DiagnosticEnvConditionFormulaBuilder:

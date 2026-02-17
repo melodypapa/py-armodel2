@@ -1,41 +1,30 @@
-"""TriggerInterfaceMapping AUTOSAR element."""
+"""TriggerInterfaceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 134)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
+    PortInterfaceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger_mapping import (
+    TriggerMapping,
+)
 
-class TriggerInterfaceMapping(ARObject):
+
+class TriggerInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR TriggerInterfaceMapping."""
 
+    trigger_mappings: list[TriggerMapping]
     def __init__(self) -> None:
         """Initialize TriggerInterfaceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TriggerInterfaceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRIGGERINTERFACEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TriggerInterfaceMapping":
-        """Create TriggerInterfaceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TriggerInterfaceMapping instance
-        """
-        obj: TriggerInterfaceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.trigger_mappings: list[TriggerMapping] = []
 
 
 class TriggerInterfaceMappingBuilder:

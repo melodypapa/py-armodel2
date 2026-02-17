@@ -1,9 +1,15 @@
-"""EcucMultilineStringParamDef AUTOSAR element."""
+"""EcucMultilineStringParamDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucMultilineStringParamDef(ARObject):
@@ -12,30 +18,6 @@ class EcucMultilineStringParamDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucMultilineStringParamDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucMultilineStringParamDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCMULTILINESTRINGPARAMDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucMultilineStringParamDef":
-        """Create EcucMultilineStringParamDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucMultilineStringParamDef instance
-        """
-        obj: EcucMultilineStringParamDef = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class EcucMultilineStringParamDefBuilder:

@@ -1,41 +1,38 @@
-"""DltApplication AUTOSAR element."""
+"""DltApplication AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2017)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 8)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_context import (
+    DltContext,
+)
 
-class DltApplication(ARObject):
+
+class DltApplication(Identifiable):
     """AUTOSAR DltApplication."""
 
+    application: Optional[String]
+    application_id: Optional[String]
+    contexts: list[DltContext]
     def __init__(self) -> None:
         """Initialize DltApplication."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltApplication to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTAPPLICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltApplication":
-        """Create DltApplication from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltApplication instance
-        """
-        obj: DltApplication = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.application: Optional[String] = None
+        self.application_id: Optional[String] = None
+        self.contexts: list[DltContext] = []
 
 
 class DltApplicationBuilder:

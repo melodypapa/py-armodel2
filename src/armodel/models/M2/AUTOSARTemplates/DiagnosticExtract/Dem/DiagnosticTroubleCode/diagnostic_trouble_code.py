@@ -1,41 +1,26 @@
-"""DiagnosticTroubleCode AUTOSAR element."""
+"""DiagnosticTroubleCode AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 176)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticTroubleCode.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
 
-class DiagnosticTroubleCode(ARObject):
+
+class DiagnosticTroubleCode(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCode."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCode."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticTroubleCode to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICTROUBLECODE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCode":
-        """Create DiagnosticTroubleCode from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTroubleCode instance
-        """
-        obj: DiagnosticTroubleCode = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticTroubleCodeBuilder:

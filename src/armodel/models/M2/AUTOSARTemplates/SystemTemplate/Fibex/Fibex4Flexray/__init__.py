@@ -1,1 +1,1 @@
-"""AUTOSAR model package."""
+"""Fibex4Flexray module."""

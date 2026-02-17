@@ -1,41 +1,33 @@
-"""MultidimensionalTime AUTOSAR element."""
+"""MultidimensionalTime AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 164)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 109)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 165)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_MultidimensionalTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CseCodeType,
+    Integer,
+)
 
 
 class MultidimensionalTime(ARObject):
     """AUTOSAR MultidimensionalTime."""
 
+    cse_code: Optional[CseCodeType]
+    cse_code_factor: Optional[Integer]
     def __init__(self) -> None:
         """Initialize MultidimensionalTime."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MultidimensionalTime to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MULTIDIMENSIONALTIME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultidimensionalTime":
-        """Create MultidimensionalTime from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultidimensionalTime instance
-        """
-        obj: MultidimensionalTime = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cse_code: Optional[CseCodeType] = None
+        self.cse_code_factor: Optional[Integer] = None
 
 
 class MultidimensionalTimeBuilder:

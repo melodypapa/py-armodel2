@@ -1,41 +1,28 @@
-"""Tbody AUTOSAR element."""
+"""Tbody AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 335)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    ValignEnum,
+)
 
 
 class Tbody(ARObject):
     """AUTOSAR Tbody."""
 
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Tbody."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Tbody to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TBODY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Tbody":
-        """Create Tbody from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Tbody instance
-        """
-        obj: Tbody = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.valign: Optional[ValignEnum] = None
 
 
 class TbodyBuilder:

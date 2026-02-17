@@ -1,41 +1,48 @@
-"""DdsCpServiceInstance AUTOSAR element."""
+"""DdsCpServiceInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 472)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
+    AbstractServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_qos_profile import (
+    DdsCpQosProfile,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_topic import (
+    DdsCpTopic,
+)
 
-class DdsCpServiceInstance(ARObject):
+
+class DdsCpServiceInstance(AbstractServiceInstance):
     """AUTOSAR DdsCpServiceInstance."""
+    """Abstract base class - do not instantiate directly."""
 
+    dds_field_reply: Optional[DdsCpTopic]
+    dds_field: Optional[DdsCpTopic]
+    dds_method: Optional[DdsCpTopic]
+    dds_service_qos: Optional[DdsCpQosProfile]
+    service_instance: Optional[PositiveInteger]
+    service_interface: Optional[String]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DdsCpServiceInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DDSCPSERVICEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DdsCpServiceInstance":
-        """Create DdsCpServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DdsCpServiceInstance instance
-        """
-        obj: DdsCpServiceInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dds_field_reply: Optional[DdsCpTopic] = None
+        self.dds_field: Optional[DdsCpTopic] = None
+        self.dds_method: Optional[DdsCpTopic] = None
+        self.dds_service_qos: Optional[DdsCpQosProfile] = None
+        self.service_instance: Optional[PositiveInteger] = None
+        self.service_interface: Optional[String] = None
 
 
 class DdsCpServiceInstanceBuilder:

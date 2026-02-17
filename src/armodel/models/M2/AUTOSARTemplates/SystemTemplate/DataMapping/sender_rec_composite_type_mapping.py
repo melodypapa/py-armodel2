@@ -1,41 +1,24 @@
-"""SenderRecCompositeTypeMapping AUTOSAR element."""
+"""SenderRecCompositeTypeMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SenderRecCompositeTypeMapping(ARObject):
     """AUTOSAR SenderRecCompositeTypeMapping."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize SenderRecCompositeTypeMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderRecCompositeTypeMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECCOMPOSITETYPEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderRecCompositeTypeMapping":
-        """Create SenderRecCompositeTypeMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderRecCompositeTypeMapping instance
-        """
-        obj: SenderRecCompositeTypeMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class SenderRecCompositeTypeMappingBuilder:

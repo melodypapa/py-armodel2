@@ -1,41 +1,55 @@
-"""MemorySection AUTOSAR element."""
+"""MemorySection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 143)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 411)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2036)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_MemorySectionUsage.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    AlignmentType,
+    Identifier,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
+    ExecutableEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.MemorySectionUsage.section_name_prefix import (
+    SectionNamePrefix,
+)
+from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
+    SwAddrMethod,
+)
 
-class MemorySection(ARObject):
+
+class MemorySection(Identifiable):
     """AUTOSAR MemorySection."""
 
+    alignment: Optional[AlignmentType]
+    executable_entities: list[ExecutableEntity]
+    options: list[Identifier]
+    prefix: Optional[SectionNamePrefix]
+    size: Optional[PositiveInteger]
+    sw_addrmethod: Optional[SwAddrMethod]
+    symbol: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize MemorySection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MemorySection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MEMORYSECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MemorySection":
-        """Create MemorySection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MemorySection instance
-        """
-        obj: MemorySection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.alignment: Optional[AlignmentType] = None
+        self.executable_entities: list[ExecutableEntity] = []
+        self.options: list[Identifier] = []
+        self.prefix: Optional[SectionNamePrefix] = None
+        self.size: Optional[PositiveInteger] = None
+        self.sw_addrmethod: Optional[SwAddrMethod] = None
+        self.symbol: Optional[Identifier] = None
 
 
 class MemorySectionBuilder:

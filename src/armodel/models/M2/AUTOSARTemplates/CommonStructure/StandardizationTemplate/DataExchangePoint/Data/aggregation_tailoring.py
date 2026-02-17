@@ -1,41 +1,30 @@
-"""AggregationTailoring AUTOSAR element."""
+"""AggregationTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 113)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
+    AttributeTailoring,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
+    ClassTailoring,
+)
 
-class AggregationTailoring(ARObject):
+
+class AggregationTailoring(AttributeTailoring):
     """AUTOSAR AggregationTailoring."""
 
+    type_tailorings: list[ClassTailoring]
     def __init__(self) -> None:
         """Initialize AggregationTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AggregationTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("AGGREGATIONTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AggregationTailoring":
-        """Create AggregationTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AggregationTailoring instance
-        """
-        obj: AggregationTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.type_tailorings: list[ClassTailoring] = []
 
 
 class AggregationTailoringBuilder:

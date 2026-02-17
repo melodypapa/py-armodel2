@@ -1,41 +1,35 @@
-"""RTriggerInAtomicSwcInstanceRef AUTOSAR element."""
+"""RTriggerInAtomicSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 945)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.trigger_in_atomic_swc_instance_ref import (
+    TriggerInAtomicSwcInstanceRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+    AbstractRequiredPortPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
+    Trigger,
+)
 
-class RTriggerInAtomicSwcInstanceRef(ARObject):
+
+class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
     """AUTOSAR RTriggerInAtomicSwcInstanceRef."""
 
+    context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize RTriggerInAtomicSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RTriggerInAtomicSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTRIGGERINATOMICSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RTriggerInAtomicSwcInstanceRef":
-        """Create RTriggerInAtomicSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RTriggerInAtomicSwcInstanceRef instance
-        """
-        obj: RTriggerInAtomicSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
+        self.target_trigger: Optional[Trigger] = None
 
 
 class RTriggerInAtomicSwcInstanceRefBuilder:

@@ -1,41 +1,39 @@
-"""OffsetTimingConstraint AUTOSAR element."""
+"""OffsetTimingConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 114)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_OffsetConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
+    TimingConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class OffsetTimingConstraint(ARObject):
+
+class OffsetTimingConstraint(TimingConstraint):
     """AUTOSAR OffsetTimingConstraint."""
 
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
+    source: Optional[TimingDescriptionEvent]
+    target: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize OffsetTimingConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert OffsetTimingConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OFFSETTIMINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "OffsetTimingConstraint":
-        """Create OffsetTimingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            OffsetTimingConstraint instance
-        """
-        obj: OffsetTimingConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.maximum: Optional[MultidimensionalTime] = None
+        self.minimum: Optional[MultidimensionalTime] = None
+        self.source: Optional[TimingDescriptionEvent] = None
+        self.target: Optional[TimingDescriptionEvent] = None
 
 
 class OffsetTimingConstraintBuilder:

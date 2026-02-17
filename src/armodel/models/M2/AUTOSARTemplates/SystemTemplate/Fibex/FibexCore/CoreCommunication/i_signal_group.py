@@ -1,41 +1,43 @@
-"""ISignalGroup AUTOSAR element."""
+"""ISignalGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 993)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 323)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
+    DataTransformation,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal import (
+    ISignal,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal_group import (
+    SystemSignalGroup,
+)
 
-class ISignalGroup(ARObject):
+
+class ISignalGroup(FibexElement):
     """AUTOSAR ISignalGroup."""
 
+    com_based: Optional[DataTransformation]
+    i_signals: list[ISignal]
+    system_signal_group: Optional[SystemSignalGroup]
+    transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignalGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ISignalGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ISIGNALGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ISignalGroup":
-        """Create ISignalGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ISignalGroup instance
-        """
-        obj: ISignalGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.com_based: Optional[DataTransformation] = None
+        self.i_signals: list[ISignal] = []
+        self.system_signal_group: Optional[SystemSignalGroup] = None
+        self.transformation_i_signals: list[Any] = []
 
 
 class ISignalGroupBuilder:

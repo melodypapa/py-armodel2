@@ -1,41 +1,33 @@
-"""BlueprintGenerator AUTOSAR element."""
+"""BlueprintGenerator AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 424)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintGenerator.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    VerbatimString,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
 
 class BlueprintGenerator(ARObject):
     """AUTOSAR BlueprintGenerator."""
 
+    expression: Optional[VerbatimString]
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize BlueprintGenerator."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BlueprintGenerator to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BLUEPRINTGENERATOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BlueprintGenerator":
-        """Create BlueprintGenerator from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BlueprintGenerator instance
-        """
-        obj: BlueprintGenerator = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.expression: Optional[VerbatimString] = None
+        self.introduction: Optional[DocumentationBlock] = None
 
 
 class BlueprintGeneratorBuilder:

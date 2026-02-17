@@ -1,41 +1,35 @@
-"""SystemSignalGroupToCommunicationResourceMapping AUTOSAR element."""
+"""SystemSignalGroupToCommunicationResourceMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 290)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal_group import (
+    SystemSignalGroup,
+)
 
-class SystemSignalGroupToCommunicationResourceMapping(ARObject):
+
+class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
     """AUTOSAR SystemSignalGroupToCommunicationResourceMapping."""
 
+    software_cluster: Optional[CpSoftwareCluster]
+    system_signal_group: Optional[SystemSignalGroup]
     def __init__(self) -> None:
         """Initialize SystemSignalGroupToCommunicationResourceMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SystemSignalGroupToCommunicationResourceMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SYSTEMSIGNALGROUPTOCOMMUNICATIONRESOURCEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SystemSignalGroupToCommunicationResourceMapping":
-        """Create SystemSignalGroupToCommunicationResourceMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SystemSignalGroupToCommunicationResourceMapping instance
-        """
-        obj: SystemSignalGroupToCommunicationResourceMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.software_cluster: Optional[CpSoftwareCluster] = None
+        self.system_signal_group: Optional[SystemSignalGroup] = None
 
 
 class SystemSignalGroupToCommunicationResourceMappingBuilder:
@@ -43,9 +37,7 @@ class SystemSignalGroupToCommunicationResourceMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: SystemSignalGroupToCommunicationResourceMapping = (
-            SystemSignalGroupToCommunicationResourceMapping()
-        )
+        self._obj: SystemSignalGroupToCommunicationResourceMapping = SystemSignalGroupToCommunicationResourceMapping()
 
     def build(self) -> SystemSignalGroupToCommunicationResourceMapping:
         """Build and return SystemSignalGroupToCommunicationResourceMapping object.

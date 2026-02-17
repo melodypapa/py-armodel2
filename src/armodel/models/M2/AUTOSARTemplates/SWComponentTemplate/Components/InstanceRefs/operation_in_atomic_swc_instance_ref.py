@@ -1,41 +1,39 @@
-"""OperationInAtomicSwcInstanceRef AUTOSAR element."""
+"""OperationInAtomicSwcInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 946)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+    AtomicSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
 
 class OperationInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR OperationInAtomicSwcInstanceRef."""
+    """Abstract base class - do not instantiate directly."""
 
+    base: Optional[AtomicSwComponentType]
+    context_port: Optional[PortPrototype]
+    target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInAtomicSwcInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert OperationInAtomicSwcInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OPERATIONINATOMICSWCINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "OperationInAtomicSwcInstanceRef":
-        """Create OperationInAtomicSwcInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            OperationInAtomicSwcInstanceRef instance
-        """
-        obj: OperationInAtomicSwcInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[AtomicSwComponentType] = None
+        self.context_port: Optional[PortPrototype] = None
+        self.target_operation: Optional[ClientServerOperation] = None
 
 
 class OperationInAtomicSwcInstanceRefBuilder:

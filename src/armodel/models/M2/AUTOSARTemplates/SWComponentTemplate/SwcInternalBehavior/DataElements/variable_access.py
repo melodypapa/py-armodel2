@@ -1,41 +1,38 @@
-"""VariableAccess AUTOSAR element."""
+"""VariableAccess AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 351)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 567)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2077)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 256)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
+    AbstractAccessPoint,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements import (
+    VariableAccessScopeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
+    AutosarVariableRef,
+)
 
-class VariableAccess(ARObject):
+
+class VariableAccess(AbstractAccessPoint):
     """AUTOSAR VariableAccess."""
 
+    accessed_variable: Optional[AutosarVariableRef]
+    scope: Optional[VariableAccessScopeEnum]
     def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert VariableAccess to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VARIABLEACCESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VariableAccess":
-        """Create VariableAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VariableAccess instance
-        """
-        obj: VariableAccess = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.accessed_variable: Optional[AutosarVariableRef] = None
+        self.scope: Optional[VariableAccessScopeEnum] = None
 
 
 class VariableAccessBuilder:

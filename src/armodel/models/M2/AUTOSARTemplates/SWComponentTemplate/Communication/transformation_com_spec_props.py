@@ -1,41 +1,27 @@
-"""TransformationComSpecProps AUTOSAR element."""
+"""TransformationComSpecProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 196)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2075)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
 
-class TransformationComSpecProps(ARObject):
+
+class TransformationComSpecProps(Describable):
     """AUTOSAR TransformationComSpecProps."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize TransformationComSpecProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TransformationComSpecProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRANSFORMATIONCOMSPECPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransformationComSpecProps":
-        """Create TransformationComSpecProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransformationComSpecProps instance
-        """
-        obj: TransformationComSpecProps = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class TransformationComSpecPropsBuilder:

@@ -38,13 +38,25 @@ def test_generate_class_code():
         "package_path": "M2::Test"
     }
 
-    code = generate_class_code(type_def)
+    hierarchy_info = {
+        "TestInterface": {
+            "parent": None,
+            "is_abstract": False
+        }
+    }
+
+    package_data = {
+        "M2::Test": {
+            "attributes": []
+        }
+    }
+
+    code = generate_class_code(type_def, hierarchy_info, package_data)
 
     # Check that class is generated
     assert "class TestInterface(ARObject):" in code
-    assert "def serialize(self)" in code
-    assert "@classmethod" in code
-    assert "def deserialize(cls, element" in code
+    assert "def __init__(self)" in code
+    assert "_xml_members" in code
 
 def test_generate_builder_code():
     """Test generating builder class code"""
@@ -78,13 +90,21 @@ def test_full_generation(tmp_path):
         ]
     }
 
+    # Create test hierarchy
+    hierarchy_data = """## Class Hierarchy
+* TestClass
+"""
+
     import tempfile
     mapping_file = Path(tempfile.mktemp(suffix=".json"))
     mapping_file.write_text(json.dumps(test_data))
 
+    hierarchy_file = Path(tempfile.mktemp(suffix=".json"))
+    hierarchy_file.write_text(hierarchy_data)
+
     output_dir = tmp_path / "output"
 
-    generate_all_models(mapping_file, output_dir)
+    generate_all_models(mapping_file, hierarchy_file, output_dir)
 
     # Check files were created
     assert (output_dir / "M2" / "TestPackage" / "test_class.py").exists()

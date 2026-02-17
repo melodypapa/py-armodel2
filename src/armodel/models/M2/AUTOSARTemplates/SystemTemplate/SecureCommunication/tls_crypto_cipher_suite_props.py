@@ -1,41 +1,30 @@
-"""TlsCryptoCipherSuiteProps AUTOSAR element."""
+"""TlsCryptoCipherSuiteProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 563)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class TlsCryptoCipherSuiteProps(ARObject):
+
+class TlsCryptoCipherSuiteProps(Identifiable):
     """AUTOSAR TlsCryptoCipherSuiteProps."""
 
+    tcp_ip_tls_use: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TlsCryptoCipherSuiteProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TLSCRYPTOCIPHERSUITEPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TlsCryptoCipherSuiteProps":
-        """Create TlsCryptoCipherSuiteProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TlsCryptoCipherSuiteProps instance
-        """
-        obj: TlsCryptoCipherSuiteProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tcp_ip_tls_use: Optional[Boolean] = None
 
 
 class TlsCryptoCipherSuitePropsBuilder:

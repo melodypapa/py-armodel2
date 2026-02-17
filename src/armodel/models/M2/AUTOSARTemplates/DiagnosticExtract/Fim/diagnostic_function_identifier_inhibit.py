@@ -1,41 +1,34 @@
-"""DiagnosticFunctionIdentifierInhibit AUTOSAR element."""
+"""DiagnosticFunctionIdentifierInhibit AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 215)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Fim.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim import (
+    DiagnosticInhibitionMaskEnum,
+)
 
-class DiagnosticFunctionIdentifierInhibit(ARObject):
+
+class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFunctionIdentifierInhibit."""
 
+    function: Optional[Any]
+    inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
+    inhibit_sources: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifierInhibit."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticFunctionIdentifierInhibit to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICFUNCTIONIDENTIFIERINHIBIT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFunctionIdentifierInhibit":
-        """Create DiagnosticFunctionIdentifierInhibit from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFunctionIdentifierInhibit instance
-        """
-        obj: DiagnosticFunctionIdentifierInhibit = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.function: Optional[Any] = None
+        self.inhibition_mask: Optional[DiagnosticInhibitionMaskEnum] = None
+        self.inhibit_sources: list[Any] = []
 
 
 class DiagnosticFunctionIdentifierInhibitBuilder:

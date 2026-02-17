@@ -1,41 +1,38 @@
-"""VariationPointProxy AUTOSAR element."""
+"""VariationPointProxy AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 613)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 479)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
+    ConditionByFormula,
+)
 
-class VariationPointProxy(ARObject):
+
+class VariationPointProxy(Identifiable):
     """AUTOSAR VariationPointProxy."""
 
+    condition_access: Optional[ConditionByFormula]
+    implementation: Optional[AbstractImplementationDataType]
+    post_build_value: Optional[Any]
     def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert VariationPointProxy to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("VARIATIONPOINTPROXY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "VariationPointProxy":
-        """Create VariationPointProxy from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            VariationPointProxy instance
-        """
-        obj: VariationPointProxy = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.condition_access: Optional[ConditionByFormula] = None
+        self.implementation: Optional[AbstractImplementationDataType] = None
+        self.post_build_value: Optional[Any] = None
 
 
 class VariationPointProxyBuilder:

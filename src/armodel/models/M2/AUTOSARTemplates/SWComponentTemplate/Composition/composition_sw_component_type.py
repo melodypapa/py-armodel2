@@ -1,41 +1,58 @@
-"""CompositionSwComponentType AUTOSAR element."""
+"""CompositionSwComponentType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 307)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 291)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 75)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 895)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 219)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 21)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 434)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
+    SwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
+    ConstantSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
+    DataTypeMappingSet,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.instantiation_rte_event_props import (
+    InstantiationRTEEventProps,
+)
+from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
+    PhysicalDimension,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
+    SwConnector,
+)
 
-class CompositionSwComponentType(ARObject):
+
+class CompositionSwComponentType(SwComponentType):
     """AUTOSAR CompositionSwComponentType."""
 
+    components: list[Any]
+    connectors: list[SwConnector]
+    constant_values: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    instantiation_rte_events: list[InstantiationRTEEventProps]
+    physical: Optional[PhysicalDimension]
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompositionSwComponentType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPOSITIONSWCOMPONENTTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompositionSwComponentType":
-        """Create CompositionSwComponentType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompositionSwComponentType instance
-        """
-        obj: CompositionSwComponentType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.components: list[Any] = []
+        self.connectors: list[SwConnector] = []
+        self.constant_values: list[ConstantSpecification] = []
+        self.data_types: list[DataTypeMappingSet] = []
+        self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
+        self.physical: Optional[PhysicalDimension] = None
 
 
 class CompositionSwComponentTypeBuilder:

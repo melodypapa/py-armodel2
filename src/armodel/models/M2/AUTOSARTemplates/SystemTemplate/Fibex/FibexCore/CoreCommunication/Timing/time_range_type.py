@@ -1,41 +1,30 @@
-"""TimeRangeType AUTOSAR element."""
+"""TimeRangeType AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 398)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication_Timing.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
 
 class TimeRangeType(ARObject):
     """AUTOSAR TimeRangeType."""
 
+    tolerance_tolerance: Optional[TimeRangeType]
+    value: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TimeRangeType."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimeRangeType to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMERANGETYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimeRangeType":
-        """Create TimeRangeType from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimeRangeType instance
-        """
-        obj: TimeRangeType = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tolerance_tolerance: Optional[TimeRangeType] = None
+        self.value: Optional[TimeValue] = None
 
 
 class TimeRangeTypeBuilder:

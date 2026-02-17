@@ -1,41 +1,40 @@
-"""AbstractValueRestriction AUTOSAR element."""
+"""AbstractValueRestriction AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 103)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 87)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ModelRestrictionTypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Limit,
+    PositiveInteger,
+    RegularExpression,
+)
 
 
 class AbstractValueRestriction(ARObject):
     """AUTOSAR AbstractValueRestriction."""
+    """Abstract base class - do not instantiate directly."""
 
+    max: Optional[Limit]
+    max_length: Optional[PositiveInteger]
+    min: Optional[Limit]
+    min_length: Optional[PositiveInteger]
+    pattern: Optional[RegularExpression]
     def __init__(self) -> None:
         """Initialize AbstractValueRestriction."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractValueRestriction to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTVALUERESTRICTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractValueRestriction":
-        """Create AbstractValueRestriction from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractValueRestriction instance
-        """
-        obj: AbstractValueRestriction = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max: Optional[Limit] = None
+        self.max_length: Optional[PositiveInteger] = None
+        self.min: Optional[Limit] = None
+        self.min_length: Optional[PositiveInteger] = None
+        self.pattern: Optional[RegularExpression] = None
 
 
 class AbstractValueRestrictionBuilder:

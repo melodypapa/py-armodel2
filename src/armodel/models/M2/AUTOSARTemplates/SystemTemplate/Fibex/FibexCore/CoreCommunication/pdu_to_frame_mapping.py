@@ -1,41 +1,40 @@
-"""PduToFrameMapping AUTOSAR element."""
+"""PduToFrameMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 346)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    ByteOrderEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
+    Pdu,
+)
 
 
 class PduToFrameMapping(ARObject):
     """AUTOSAR PduToFrameMapping."""
 
+    packing_byte: Optional[ByteOrderEnum]
+    pdu: Optional[Pdu]
+    start_position: Optional[Integer]
+    update: Optional[Integer]
     def __init__(self) -> None:
         """Initialize PduToFrameMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PduToFrameMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PDUTOFRAMEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PduToFrameMapping":
-        """Create PduToFrameMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PduToFrameMapping instance
-        """
-        obj: PduToFrameMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.packing_byte: Optional[ByteOrderEnum] = None
+        self.pdu: Optional[Pdu] = None
+        self.start_position: Optional[Integer] = None
+        self.update: Optional[Integer] = None
 
 
 class PduToFrameMappingBuilder:

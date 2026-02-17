@@ -1,41 +1,27 @@
-"""DiagnosticAuthTransmitCertificate AUTOSAR element."""
+"""DiagnosticAuthTransmitCertificate AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 100)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_Authentication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.Authentication.diagnostic_authentication import (
+    DiagnosticAuthentication,
+)
 
-class DiagnosticAuthTransmitCertificate(ARObject):
+
+class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
     """AUTOSAR DiagnosticAuthTransmitCertificate."""
 
+    certificates: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificate."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticAuthTransmitCertificate to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICAUTHTRANSMITCERTIFICATE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificate":
-        """Create DiagnosticAuthTransmitCertificate from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticAuthTransmitCertificate instance
-        """
-        obj: DiagnosticAuthTransmitCertificate = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.certificates: list[Any] = []
 
 
 class DiagnosticAuthTransmitCertificateBuilder:

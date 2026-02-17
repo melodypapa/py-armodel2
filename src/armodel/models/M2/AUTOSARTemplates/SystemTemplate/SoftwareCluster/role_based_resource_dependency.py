@@ -1,41 +1,34 @@
-"""RoleBasedResourceDependency AUTOSAR element."""
+"""RoleBasedResourceDependency AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 272)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 902)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
 
 class RoleBasedResourceDependency(ARObject):
     """AUTOSAR RoleBasedResourceDependency."""
 
+    resource: Optional[CpSoftwareCluster]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedResourceDependency."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RoleBasedResourceDependency to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROLEBASEDRESOURCEDEPENDENCY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RoleBasedResourceDependency":
-        """Create RoleBasedResourceDependency from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RoleBasedResourceDependency instance
-        """
-        obj: RoleBasedResourceDependency = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.resource: Optional[CpSoftwareCluster] = None
+        self.role: Optional[Identifier] = None
 
 
 class RoleBasedResourceDependencyBuilder:

@@ -1,41 +1,25 @@
-"""BswOsTaskExecutionEvent AUTOSAR element."""
+"""BswOsTaskExecutionEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 89)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
+    BswScheduleEvent,
+)
 
-class BswOsTaskExecutionEvent(ARObject):
+
+class BswOsTaskExecutionEvent(BswScheduleEvent):
     """AUTOSAR BswOsTaskExecutionEvent."""
 
     def __init__(self) -> None:
         """Initialize BswOsTaskExecutionEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswOsTaskExecutionEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWOSTASKEXECUTIONEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswOsTaskExecutionEvent":
-        """Create BswOsTaskExecutionEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswOsTaskExecutionEvent instance
-        """
-        obj: BswOsTaskExecutionEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class BswOsTaskExecutionEventBuilder:

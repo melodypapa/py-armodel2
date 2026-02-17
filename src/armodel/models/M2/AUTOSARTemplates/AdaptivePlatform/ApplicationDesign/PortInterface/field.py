@@ -1,41 +1,34 @@
-"""Field AUTOSAR element."""
+"""Field AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 45)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_ApplicationDesign_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class Field(ARObject):
+
+class Field(AutosarDataPrototype):
     """AUTOSAR Field."""
 
+    has_getter: Optional[Boolean]
+    has_notifier: Optional[Boolean]
+    has_setter: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize Field."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Field to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FIELD")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Field":
-        """Create Field from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Field instance
-        """
-        obj: Field = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.has_getter: Optional[Boolean] = None
+        self.has_notifier: Optional[Boolean] = None
+        self.has_setter: Optional[Boolean] = None
 
 
 class FieldBuilder:

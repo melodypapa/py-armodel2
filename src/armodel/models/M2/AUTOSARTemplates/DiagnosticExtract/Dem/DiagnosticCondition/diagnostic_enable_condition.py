@@ -1,41 +1,25 @@
-"""DiagnosticEnableCondition AUTOSAR element."""
+"""DiagnosticEnableCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 194)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticCondition.diagnostic_condition import (
+    DiagnosticCondition,
+)
 
-class DiagnosticEnableCondition(ARObject):
+
+class DiagnosticEnableCondition(DiagnosticCondition):
     """AUTOSAR DiagnosticEnableCondition."""
 
     def __init__(self) -> None:
         """Initialize DiagnosticEnableCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEnableCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICENABLECONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnableCondition":
-        """Create DiagnosticEnableCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnableCondition instance
-        """
-        obj: DiagnosticEnableCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class DiagnosticEnableConditionBuilder:

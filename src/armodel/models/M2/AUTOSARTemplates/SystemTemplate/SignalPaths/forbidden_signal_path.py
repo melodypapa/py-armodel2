@@ -1,41 +1,37 @@
-"""ForbiddenSignalPath AUTOSAR element."""
+"""ForbiddenSignalPath AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 255)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SignalPaths.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.signal_path_constraint import (
+    SignalPathConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
+    PhysicalChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_signal import (
+    SwcToSwcSignal,
+)
 
-class ForbiddenSignalPath(ARObject):
+
+class ForbiddenSignalPath(SignalPathConstraint):
     """AUTOSAR ForbiddenSignalPath."""
 
+    operations: list[Any]
+    physical_channels: list[PhysicalChannel]
+    signals: list[SwcToSwcSignal]
     def __init__(self) -> None:
         """Initialize ForbiddenSignalPath."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ForbiddenSignalPath to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FORBIDDENSIGNALPATH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ForbiddenSignalPath":
-        """Create ForbiddenSignalPath from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ForbiddenSignalPath instance
-        """
-        obj: ForbiddenSignalPath = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operations: list[Any] = []
+        self.physical_channels: list[PhysicalChannel] = []
+        self.signals: list[SwcToSwcSignal] = []
 
 
 class ForbiddenSignalPathBuilder:

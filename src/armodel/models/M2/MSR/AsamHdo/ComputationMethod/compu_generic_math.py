@@ -1,41 +1,28 @@
-"""CompuGenericMath AUTOSAR element."""
+"""CompuGenericMath AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 374)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PrimitiveIdentifier,
+)
 
 
 class CompuGenericMath(ARObject):
     """AUTOSAR CompuGenericMath."""
 
+    level: Optional[PrimitiveIdentifier]
     def __init__(self) -> None:
         """Initialize CompuGenericMath."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuGenericMath to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUGENERICMATH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuGenericMath":
-        """Create CompuGenericMath from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuGenericMath instance
-        """
-        obj: CompuGenericMath = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.level: Optional[PrimitiveIdentifier] = None
 
 
 class CompuGenericMathBuilder:

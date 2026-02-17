@@ -1,41 +1,71 @@
-"""BswModuleEntry AUTOSAR element."""
+"""BswModuleEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 32)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 976)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 216)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 431)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 171)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces import (
+    BswCallType,
+    BswEntryKindEnum,
+    BswExecutionContext,
+)
+from armodel.models.M2.MSR.DataDictionary.ServiceProcessTask import (
+    SwServiceImplPolicyEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Identifier,
+    NameToken,
+    PositiveInteger,
+)
 
-class BswModuleEntry(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.ServiceProcessTask.sw_service_arg import (
+        SwServiceArg,
+    )
+
+
+
+class BswModuleEntry(ARElement):
     """AUTOSAR BswModuleEntry."""
 
+    arguments: list[SwServiceArg]
+    bsw_entry_kind_enum: Optional[BswEntryKindEnum]
+    call_type: Optional[BswCallType]
+    execution: Optional[BswExecutionContext]
+    function: Optional[NameToken]
+    is_reentrant: Optional[Boolean]
+    is_synchronous: Optional[Boolean]
+    return_type: Optional[SwServiceArg]
+    role: Optional[Identifier]
+    service_id: Optional[PositiveInteger]
+    sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize BswModuleEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModuleEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODULEENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleEntry":
-        """Create BswModuleEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleEntry instance
-        """
-        obj: BswModuleEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.arguments: list[SwServiceArg] = []
+        self.bsw_entry_kind_enum: Optional[BswEntryKindEnum] = None
+        self.call_type: Optional[BswCallType] = None
+        self.execution: Optional[BswExecutionContext] = None
+        self.function: Optional[NameToken] = None
+        self.is_reentrant: Optional[Boolean] = None
+        self.is_synchronous: Optional[Boolean] = None
+        self.return_type: Optional[SwServiceArg] = None
+        self.role: Optional[Identifier] = None
+        self.service_id: Optional[PositiveInteger] = None
+        self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
 
 
 class BswModuleEntryBuilder:

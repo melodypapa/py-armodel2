@@ -1,41 +1,40 @@
-"""DiagnosticJ1939SpnMapping AUTOSAR element."""
+"""DiagnosticJ1939SpnMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 267)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
+    DiagnosticJ1939Spn,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
+    SystemSignal,
+)
 
-class DiagnosticJ1939SpnMapping(ARObject):
+
+class DiagnosticJ1939SpnMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticJ1939SpnMapping."""
 
+    sending_nodes: list[DiagnosticJ1939Node]
+    spn: Optional[DiagnosticJ1939Spn]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SpnMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticJ1939SpnMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICJ1939SPNMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939SpnMapping":
-        """Create DiagnosticJ1939SpnMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticJ1939SpnMapping instance
-        """
-        obj: DiagnosticJ1939SpnMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.sending_nodes: list[DiagnosticJ1939Node] = []
+        self.spn: Optional[DiagnosticJ1939Spn] = None
+        self.system_signal: Optional[SystemSignal] = None
 
 
 class DiagnosticJ1939SpnMappingBuilder:

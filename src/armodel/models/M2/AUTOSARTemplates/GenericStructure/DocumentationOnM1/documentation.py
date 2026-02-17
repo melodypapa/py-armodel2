@@ -1,41 +1,37 @@
-"""Documentation AUTOSAR element."""
+"""Documentation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 294)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 439)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 181)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_DocumentationOnM1.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.documentation_context import (
+    DocumentationContext,
+)
+from armodel.models.M2.MSR.Documentation.Chapters.predefined_chapter import (
+    PredefinedChapter,
+)
 
-class Documentation(ARObject):
+
+class Documentation(ARElement):
     """AUTOSAR Documentation."""
 
+    contexts: list[DocumentationContext]
+    documentation: Optional[PredefinedChapter]
     def __init__(self) -> None:
         """Initialize Documentation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Documentation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOCUMENTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Documentation":
-        """Create Documentation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Documentation instance
-        """
-        obj: Documentation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.contexts: list[DocumentationContext] = []
+        self.documentation: Optional[PredefinedChapter] = None
 
 
 class DocumentationBuilder:

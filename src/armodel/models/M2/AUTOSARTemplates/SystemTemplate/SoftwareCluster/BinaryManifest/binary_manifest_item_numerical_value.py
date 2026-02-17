@@ -1,41 +1,30 @@
-"""BinaryManifestItemNumericalValue AUTOSAR element."""
+"""BinaryManifestItemNumericalValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 922)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster_BinaryManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_item_value import (
+    BinaryManifestItemValue,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
-class BinaryManifestItemNumericalValue(ARObject):
+
+class BinaryManifestItemNumericalValue(BinaryManifestItemValue):
     """AUTOSAR BinaryManifestItemNumericalValue."""
 
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize BinaryManifestItemNumericalValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BinaryManifestItemNumericalValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BINARYMANIFESTITEMNUMERICALVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BinaryManifestItemNumericalValue":
-        """Create BinaryManifestItemNumericalValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BinaryManifestItemNumericalValue instance
-        """
-        obj: BinaryManifestItemNumericalValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.value: Optional[Numerical] = None
 
 
 class BinaryManifestItemNumericalValueBuilder:

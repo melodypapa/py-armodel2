@@ -1,41 +1,41 @@
-"""BswServiceDependency AUTOSAR element."""
+"""BswServiceDependency AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 225)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 225)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 978)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
+    ServiceDependency,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.role_based_bsw_module_entry_assignment import (
+    RoleBasedBswModuleEntryAssignment,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class BswServiceDependency(ARObject):
+
+class BswServiceDependency(ServiceDependency):
     """AUTOSAR BswServiceDependency."""
 
+    assigned_datas: list[Any]
+    assigned_entries: list[RoleBasedBswModuleEntryAssignment]
+    ident: Optional[Any]
+    service_needs: Optional[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize BswServiceDependency."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswServiceDependency to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWSERVICEDEPENDENCY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswServiceDependency":
-        """Create BswServiceDependency from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswServiceDependency instance
-        """
-        obj: BswServiceDependency = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.assigned_datas: list[Any] = []
+        self.assigned_entries: list[RoleBasedBswModuleEntryAssignment] = []
+        self.ident: Optional[Any] = None
+        self.service_needs: Optional[ServiceNeeds] = None
 
 
 class BswServiceDependencyBuilder:

@@ -1,41 +1,29 @@
-"""DocumentElementScope AUTOSAR element."""
+"""DocumentElementScope AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 97)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchange.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.spec_element_reference import (
+    SpecElementReference,
+)
 
-class DocumentElementScope(ARObject):
+
+class DocumentElementScope(SpecElementReference):
     """AUTOSAR DocumentElementScope."""
 
+    custom_document: Optional[Any]
+    tailorings: list[Any]
     def __init__(self) -> None:
         """Initialize DocumentElementScope."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DocumentElementScope to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOCUMENTELEMENTSCOPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocumentElementScope":
-        """Create DocumentElementScope from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocumentElementScope instance
-        """
-        obj: DocumentElementScope = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.custom_document: Optional[Any] = None
+        self.tailorings: list[Any] = []
 
 
 class DocumentElementScopeBuilder:

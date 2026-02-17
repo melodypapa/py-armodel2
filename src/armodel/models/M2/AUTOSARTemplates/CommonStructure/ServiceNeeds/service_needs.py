@@ -1,41 +1,30 @@
-"""ServiceNeeds AUTOSAR element."""
+"""ServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 227)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 329)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 306)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 603)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2055)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class ServiceNeeds(ARObject):
+
+class ServiceNeeds(Identifiable):
     """AUTOSAR ServiceNeeds."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize ServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ServiceNeeds":
-        """Create ServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ServiceNeeds instance
-        """
-        obj: ServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ServiceNeedsBuilder:

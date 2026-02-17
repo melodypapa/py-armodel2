@@ -1,41 +1,32 @@
-"""DiagnosticIumprToFunctionIdentifierMapping AUTOSAR element."""
+"""DiagnosticIumprToFunctionIdentifierMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 265)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
+    DiagnosticIumpr,
+)
 
-class DiagnosticIumprToFunctionIdentifierMapping(ARObject):
+
+class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticIumprToFunctionIdentifierMapping."""
 
+    function: Optional[Any]
+    iumpr: Optional[DiagnosticIumpr]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprToFunctionIdentifierMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticIumprToFunctionIdentifierMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICIUMPRTOFUNCTIONIDENTIFIERMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprToFunctionIdentifierMapping":
-        """Create DiagnosticIumprToFunctionIdentifierMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIumprToFunctionIdentifierMapping instance
-        """
-        obj: DiagnosticIumprToFunctionIdentifierMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.function: Optional[Any] = None
+        self.iumpr: Optional[DiagnosticIumpr] = None
 
 
 class DiagnosticIumprToFunctionIdentifierMappingBuilder:
@@ -43,9 +34,7 @@ class DiagnosticIumprToFunctionIdentifierMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticIumprToFunctionIdentifierMapping = (
-            DiagnosticIumprToFunctionIdentifierMapping()
-        )
+        self._obj: DiagnosticIumprToFunctionIdentifierMapping = DiagnosticIumprToFunctionIdentifierMapping()
 
     def build(self) -> DiagnosticIumprToFunctionIdentifierMapping:
         """Build and return DiagnosticIumprToFunctionIdentifierMapping object.

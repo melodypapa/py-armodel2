@@ -1,41 +1,60 @@
-"""Entry AUTOSAR element."""
+"""Entry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 336)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    AlignEnum,
+    ValignEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    TableSeparatorString,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
 
 class Entry(ARObject):
     """AUTOSAR Entry."""
 
+    align: Optional[AlignEnum]
+    bgcolor: String
+    colname: Optional[String]
+    colsep: Optional[TableSeparatorString]
+    entry_contents: DocumentationBlock
+    morerows: Optional[String]
+    nameend: Optional[String]
+    namest: Optional[String]
+    rotate: Optional[String]
+    rowsep: Optional[TableSeparatorString]
+    spanname: Optional[String]
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Entry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Entry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Entry":
-        """Create Entry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Entry instance
-        """
-        obj: Entry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.align: Optional[AlignEnum] = None
+        self.bgcolor: String = None
+        self.colname: Optional[String] = None
+        self.colsep: Optional[TableSeparatorString] = None
+        self.entry_contents: DocumentationBlock = None
+        self.morerows: Optional[String] = None
+        self.nameend: Optional[String] = None
+        self.namest: Optional[String] = None
+        self.rotate: Optional[String] = None
+        self.rowsep: Optional[TableSeparatorString] = None
+        self.spanname: Optional[String] = None
+        self.valign: Optional[ValignEnum] = None
 
 
 class EntryBuilder:

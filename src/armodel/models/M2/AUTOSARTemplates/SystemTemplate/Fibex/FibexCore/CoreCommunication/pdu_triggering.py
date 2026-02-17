@@ -1,41 +1,52 @@
-"""PduTriggering AUTOSAR element."""
+"""PduTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 303)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 348)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 234)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu_port import (
+    IPduPort,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_triggering import (
+    ISignalTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
+    Pdu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.sec_oc_crypto_service_mapping import (
+    SecOcCryptoServiceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.trigger_i_pdu_send_condition import (
+    TriggerIPduSendCondition,
+)
 
-class PduTriggering(ARObject):
+
+class PduTriggering(Identifiable):
     """AUTOSAR PduTriggering."""
 
+    i_pdu: Optional[Pdu]
+    i_pdu_ports: list[IPduPort]
+    i_signals: list[ISignalTriggering]
+    sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping]
+    trigger_i_pdu_sends: list[TriggerIPduSendCondition]
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PduTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PDUTRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PduTriggering":
-        """Create PduTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PduTriggering instance
-        """
-        obj: PduTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.i_pdu: Optional[Pdu] = None
+        self.i_pdu_ports: list[IPduPort] = []
+        self.i_signals: list[ISignalTriggering] = []
+        self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
+        self.trigger_i_pdu_sends: list[TriggerIPduSendCondition] = []
 
 
 class PduTriggeringBuilder:

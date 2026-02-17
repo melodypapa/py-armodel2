@@ -1,41 +1,33 @@
-"""ImplementationProps AUTOSAR element."""
+"""ImplementationProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 86)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 287)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2033)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    CIdentifier,
+)
 
-class ImplementationProps(ARObject):
+
+class ImplementationProps(Referrable):
     """AUTOSAR ImplementationProps."""
+    """Abstract base class - do not instantiate directly."""
 
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize ImplementationProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ImplementationProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATIONPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationProps":
-        """Create ImplementationProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationProps instance
-        """
-        obj: ImplementationProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.symbol: Optional[CIdentifier] = None
 
 
 class ImplementationPropsBuilder:

@@ -1,41 +1,38 @@
-"""BswModuleDependency AUTOSAR element."""
+"""BswModuleDependency AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 47)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class BswModuleDependency(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
+        BswModuleDescription,
+    )
+
+
+
+class BswModuleDependency(Identifiable):
     """AUTOSAR BswModuleDependency."""
 
+    target_module_id: Optional[PositiveInteger]
+    target_module: Optional[BswModuleDescription]
     def __init__(self) -> None:
         """Initialize BswModuleDependency."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModuleDependency to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODULEDEPENDENCY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModuleDependency":
-        """Create BswModuleDependency from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModuleDependency instance
-        """
-        obj: BswModuleDependency = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.target_module_id: Optional[PositiveInteger] = None
+        self.target_module: Optional[BswModuleDescription] = None
 
 
 class BswModuleDependencyBuilder:

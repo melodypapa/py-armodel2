@@ -1,41 +1,37 @@
-"""Linker AUTOSAR element."""
+"""Linker AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 134)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 622)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementation.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class Linker(ARObject):
+
+class Linker(Identifiable):
     """AUTOSAR Linker."""
 
+    name: Optional[String]
+    options: Optional[String]
+    vendor: Optional[String]
+    version: Optional[String]
     def __init__(self) -> None:
         """Initialize Linker."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Linker to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINKER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Linker":
-        """Create Linker from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Linker instance
-        """
-        obj: Linker = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.name: Optional[String] = None
+        self.options: Optional[String] = None
+        self.vendor: Optional[String] = None
+        self.version: Optional[String] = None
 
 
 class LinkerBuilder:

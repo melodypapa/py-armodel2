@@ -1,41 +1,42 @@
-"""DataExchangePoint AUTOSAR element."""
+"""DataExchangePoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 78)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.baseline import (
+    Baseline,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_tailoring import (
+    DataFormatTailoring,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchange.specification_scope import (
+    SpecificationScope,
+)
 
-class DataExchangePoint(ARObject):
+
+class DataExchangePoint(ARElement):
     """AUTOSAR DataExchangePoint."""
 
+    data_format: Optional[DataFormatTailoring]
+    kind: DataExchangePoint
+    referenced: Baseline
+    specification_scope: Optional[SpecificationScope]
     def __init__(self) -> None:
         """Initialize DataExchangePoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DataExchangePoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DATAEXCHANGEPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DataExchangePoint":
-        """Create DataExchangePoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DataExchangePoint instance
-        """
-        obj: DataExchangePoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_format: Optional[DataFormatTailoring] = None
+        self.kind: DataExchangePoint = None
+        self.referenced: Baseline = None
+        self.specification_scope: Optional[SpecificationScope] = None
 
 
 class DataExchangePointBuilder:

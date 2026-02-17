@@ -1,41 +1,30 @@
-"""CompuScales AUTOSAR element."""
+"""CompuScales AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 388)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import (
+    CompuContent,
+)
+from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale import (
+    CompuScale,
+)
 
-class CompuScales(ARObject):
+
+class CompuScales(CompuContent):
     """AUTOSAR CompuScales."""
 
+    compu_scales: list[CompuScale]
     def __init__(self) -> None:
         """Initialize CompuScales."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CompuScales to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMPUSCALES")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CompuScales":
-        """Create CompuScales from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CompuScales instance
-        """
-        obj: CompuScales = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compu_scales: list[CompuScale] = []
 
 
 class CompuScalesBuilder:

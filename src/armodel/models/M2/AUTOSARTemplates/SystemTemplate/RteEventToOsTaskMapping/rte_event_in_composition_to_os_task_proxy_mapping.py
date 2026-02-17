@@ -1,41 +1,40 @@
-"""RteEventInCompositionToOsTaskProxyMapping AUTOSAR element."""
+"""RteEventInCompositionToOsTaskProxyMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 211)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_RteEventToOsTaskMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.os_task_proxy import (
+    OsTaskProxy,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
 
-class RteEventInCompositionToOsTaskProxyMapping(ARObject):
+
+class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
     """AUTOSAR RteEventInCompositionToOsTaskProxyMapping."""
 
+    offset: Optional[PositiveInteger]
+    os_task_proxy: Optional[OsTaskProxy]
+    rte_event_instance_ref: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInCompositionToOsTaskProxyMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RteEventInCompositionToOsTaskProxyMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RTEEVENTINCOMPOSITIONTOOSTASKPROXYMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RteEventInCompositionToOsTaskProxyMapping":
-        """Create RteEventInCompositionToOsTaskProxyMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RteEventInCompositionToOsTaskProxyMapping instance
-        """
-        obj: RteEventInCompositionToOsTaskProxyMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.offset: Optional[PositiveInteger] = None
+        self.os_task_proxy: Optional[OsTaskProxy] = None
+        self.rte_event_instance_ref: Optional[RTEEvent] = None
 
 
 class RteEventInCompositionToOsTaskProxyMappingBuilder:
@@ -43,9 +42,7 @@ class RteEventInCompositionToOsTaskProxyMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: RteEventInCompositionToOsTaskProxyMapping = (
-            RteEventInCompositionToOsTaskProxyMapping()
-        )
+        self._obj: RteEventInCompositionToOsTaskProxyMapping = RteEventInCompositionToOsTaskProxyMapping()
 
     def build(self) -> RteEventInCompositionToOsTaskProxyMapping:
         """Build and return RteEventInCompositionToOsTaskProxyMapping object.

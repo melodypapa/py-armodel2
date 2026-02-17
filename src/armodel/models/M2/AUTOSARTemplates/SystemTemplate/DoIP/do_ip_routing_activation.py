@@ -1,41 +1,30 @@
-"""DoIpRoutingActivation AUTOSAR element."""
+"""DoIpRoutingActivation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 553)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DoIP.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.do_ip_logic_target_address_props import (
+    DoIpLogicTargetAddressProps,
+)
 
-class DoIpRoutingActivation(ARObject):
+
+class DoIpRoutingActivation(Identifiable):
     """AUTOSAR DoIpRoutingActivation."""
 
+    do_ip_targets: list[DoIpLogicTargetAddressProps]
     def __init__(self) -> None:
         """Initialize DoIpRoutingActivation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DoIpRoutingActivation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOIPROUTINGACTIVATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DoIpRoutingActivation":
-        """Create DoIpRoutingActivation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DoIpRoutingActivation instance
-        """
-        obj: DoIpRoutingActivation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.do_ip_targets: list[DoIpLogicTargetAddressProps] = []
 
 
 class DoIpRoutingActivationBuilder:

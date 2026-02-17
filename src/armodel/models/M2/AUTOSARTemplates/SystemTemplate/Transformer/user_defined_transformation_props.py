@@ -1,41 +1,25 @@
-"""UserDefinedTransformationProps AUTOSAR element."""
+"""UserDefinedTransformationProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 829)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_props import (
+    TransformationProps,
+)
 
-class UserDefinedTransformationProps(ARObject):
+
+class UserDefinedTransformationProps(TransformationProps):
     """AUTOSAR UserDefinedTransformationProps."""
 
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UserDefinedTransformationProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("USERDEFINEDTRANSFORMATIONPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationProps":
-        """Create UserDefinedTransformationProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UserDefinedTransformationProps instance
-        """
-        obj: UserDefinedTransformationProps = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class UserDefinedTransformationPropsBuilder:

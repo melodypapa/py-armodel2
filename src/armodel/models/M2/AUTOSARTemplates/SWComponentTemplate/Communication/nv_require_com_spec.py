@@ -1,41 +1,35 @@
-"""NvRequireComSpec AUTOSAR element."""
+"""NvRequireComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 194)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
+    RPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class NvRequireComSpec(ARObject):
+
+class NvRequireComSpec(RPortComSpec):
     """AUTOSAR NvRequireComSpec."""
 
+    init_value: Optional[ValueSpecification]
+    variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvRequireComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert NvRequireComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("NVREQUIRECOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "NvRequireComSpec":
-        """Create NvRequireComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            NvRequireComSpec instance
-        """
-        obj: NvRequireComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.init_value: Optional[ValueSpecification] = None
+        self.variable: Optional[VariableDataPrototype] = None
 
 
 class NvRequireComSpecBuilder:

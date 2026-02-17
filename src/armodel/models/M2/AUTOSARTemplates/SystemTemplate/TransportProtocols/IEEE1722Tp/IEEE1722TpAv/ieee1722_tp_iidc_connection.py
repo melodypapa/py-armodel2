@@ -1,41 +1,45 @@
-"""IEEE1722TpIidcConnection AUTOSAR element."""
+"""IEEE1722TpIidcConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 648)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAv.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
+    IEEE1722TpAvConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class IEEE1722TpIidcConnection(ARObject):
+
+class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpIidcConnection."""
 
+    iidc_channel: Optional[PositiveInteger]
+    iidc_data_block: Optional[PositiveInteger]
+    iidc_fraction: Optional[PositiveInteger]
+    iidc_source: Optional[Boolean]
+    iidc_stream: Optional[PositiveInteger]
+    iidc_sy: Optional[PositiveInteger]
+    iidc_tag: Optional[PositiveInteger]
+    iidc_t_code: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpIidcConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpIidcConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPIIDCCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpIidcConnection":
-        """Create IEEE1722TpIidcConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpIidcConnection instance
-        """
-        obj: IEEE1722TpIidcConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.iidc_channel: Optional[PositiveInteger] = None
+        self.iidc_data_block: Optional[PositiveInteger] = None
+        self.iidc_fraction: Optional[PositiveInteger] = None
+        self.iidc_source: Optional[Boolean] = None
+        self.iidc_stream: Optional[PositiveInteger] = None
+        self.iidc_sy: Optional[PositiveInteger] = None
+        self.iidc_tag: Optional[PositiveInteger] = None
+        self.iidc_t_code: Optional[PositiveInteger] = None
 
 
 class IEEE1722TpIidcConnectionBuilder:

@@ -1,41 +1,27 @@
-"""PrimitiveAttributeCondition AUTOSAR element."""
+"""PrimitiveAttributeCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 104)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_condition import (
+    AttributeCondition,
+)
 
-class PrimitiveAttributeCondition(ARObject):
+
+class PrimitiveAttributeCondition(AttributeCondition):
     """AUTOSAR PrimitiveAttributeCondition."""
 
+    attribute: Any
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PrimitiveAttributeCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PRIMITIVEATTRIBUTECONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeCondition":
-        """Create PrimitiveAttributeCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PrimitiveAttributeCondition instance
-        """
-        obj: PrimitiveAttributeCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.attribute: Any = None
 
 
 class PrimitiveAttributeConditionBuilder:

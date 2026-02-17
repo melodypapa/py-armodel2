@@ -1,41 +1,35 @@
-"""CpSwClusterToDiagRoutineSubfunctionMapping AUTOSAR element."""
+"""CpSwClusterToDiagRoutineSubfunctionMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 274)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_CpSoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_routine import (
+    DiagnosticRoutine,
+)
 
-class CpSwClusterToDiagRoutineSubfunctionMapping(ARObject):
+
+class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterToDiagRoutineSubfunctionMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    routine: Optional[DiagnosticRoutine]
     def __init__(self) -> None:
         """Initialize CpSwClusterToDiagRoutineSubfunctionMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSwClusterToDiagRoutineSubfunctionMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSWCLUSTERTODIAGROUTINESUBFUNCTIONMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSwClusterToDiagRoutineSubfunctionMapping":
-        """Create CpSwClusterToDiagRoutineSubfunctionMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSwClusterToDiagRoutineSubfunctionMapping instance
-        """
-        obj: CpSwClusterToDiagRoutineSubfunctionMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
+        self.routine: Optional[DiagnosticRoutine] = None
 
 
 class CpSwClusterToDiagRoutineSubfunctionMappingBuilder:
@@ -43,9 +37,7 @@ class CpSwClusterToDiagRoutineSubfunctionMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSwClusterToDiagRoutineSubfunctionMapping = (
-            CpSwClusterToDiagRoutineSubfunctionMapping()
-        )
+        self._obj: CpSwClusterToDiagRoutineSubfunctionMapping = CpSwClusterToDiagRoutineSubfunctionMapping()
 
     def build(self) -> CpSwClusterToDiagRoutineSubfunctionMapping:
         """Build and return CpSwClusterToDiagRoutineSubfunctionMapping object.

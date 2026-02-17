@@ -1,41 +1,30 @@
-"""EthTpConfig AUTOSAR element."""
+"""EthTpConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 617)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
+    TpConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.eth_tp_connection import (
+    EthTpConnection,
+)
 
-class EthTpConfig(ARObject):
+
+class EthTpConfig(TpConfig):
     """AUTOSAR EthTpConfig."""
 
+    tp_connections: list[EthTpConnection]
     def __init__(self) -> None:
         """Initialize EthTpConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EthTpConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ETHTPCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthTpConfig":
-        """Create EthTpConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthTpConfig instance
-        """
-        obj: EthTpConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_connections: list[EthTpConnection] = []
 
 
 class EthTpConfigBuilder:

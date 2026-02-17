@@ -1,41 +1,37 @@
-"""InterpolationRoutine AUTOSAR element."""
+"""InterpolationRoutine AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 430)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 46)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_MeasurementAndCalibration_InterpolationRoutine.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    Identifier,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
+)
 
 
 class InterpolationRoutine(ARObject):
     """AUTOSAR InterpolationRoutine."""
 
+    interpolation: Optional[BswModuleEntry]
+    is_default: Optional[Boolean]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize InterpolationRoutine."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InterpolationRoutine to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INTERPOLATIONROUTINE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InterpolationRoutine":
-        """Create InterpolationRoutine from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InterpolationRoutine instance
-        """
-        obj: InterpolationRoutine = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.interpolation: Optional[BswModuleEntry] = None
+        self.is_default: Optional[Boolean] = None
+        self.short_label: Optional[Identifier] = None
 
 
 class InterpolationRoutineBuilder:

@@ -1,41 +1,35 @@
-"""SubElementMapping AUTOSAR element."""
+"""SubElementMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 137)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
+    SubElementRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
+    TextTableMapping,
+)
 
 
 class SubElementMapping(ARObject):
     """AUTOSAR SubElementMapping."""
 
+    first_element: Optional[SubElementRef]
+    second_element: Optional[SubElementRef]
+    text_table: TextTableMapping
     def __init__(self) -> None:
         """Initialize SubElementMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SubElementMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SUBELEMENTMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SubElementMapping":
-        """Create SubElementMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SubElementMapping instance
-        """
-        obj: SubElementMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.first_element: Optional[SubElementRef] = None
+        self.second_element: Optional[SubElementRef] = None
+        self.text_table: TextTableMapping = None
 
 
 class SubElementMappingBuilder:

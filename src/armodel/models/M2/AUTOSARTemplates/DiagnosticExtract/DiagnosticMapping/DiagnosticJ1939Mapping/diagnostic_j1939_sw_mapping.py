@@ -1,41 +1,35 @@
-"""DiagnosticJ1939SwMapping AUTOSAR element."""
+"""DiagnosticJ1939SwMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 268)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
+    DiagnosticSwMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
+    DiagnosticJ1939Node,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+    SwComponentPrototype,
+)
 
-class DiagnosticJ1939SwMapping(ARObject):
+
+class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticJ1939SwMapping."""
 
+    node: Optional[DiagnosticJ1939Node]
+    sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticJ1939SwMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICJ1939SWMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939SwMapping":
-        """Create DiagnosticJ1939SwMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticJ1939SwMapping instance
-        """
-        obj: DiagnosticJ1939SwMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.node: Optional[DiagnosticJ1939Node] = None
+        self.sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype] = None
 
 
 class DiagnosticJ1939SwMappingBuilder:

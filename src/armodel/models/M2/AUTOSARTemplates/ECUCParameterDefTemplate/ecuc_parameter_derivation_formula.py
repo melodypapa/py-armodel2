@@ -1,41 +1,28 @@
-"""EcucParameterDerivationFormula AUTOSAR element."""
+"""EcucParameterDerivationFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 88)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
+    EcucQuery,
+)
 
 
 class EcucParameterDerivationFormula(ARObject):
     """AUTOSAR EcucParameterDerivationFormula."""
 
+    ecuc_query: Optional[EcucQuery]
     def __init__(self) -> None:
         """Initialize EcucParameterDerivationFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucParameterDerivationFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCPARAMETERDERIVATIONFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucParameterDerivationFormula":
-        """Create EcucParameterDerivationFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucParameterDerivationFormula instance
-        """
-        obj: EcucParameterDerivationFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecuc_query: Optional[EcucQuery] = None
 
 
 class EcucParameterDerivationFormulaBuilder:

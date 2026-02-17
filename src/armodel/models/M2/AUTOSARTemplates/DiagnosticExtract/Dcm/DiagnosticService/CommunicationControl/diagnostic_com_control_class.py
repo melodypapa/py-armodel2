@@ -1,41 +1,39 @@
-"""DiagnosticComControlClass AUTOSAR element."""
+"""DiagnosticComControlClass AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 109)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_CommunicationControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
+    DiagnosticServiceClass,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
+    CommunicationCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommunicationControl.diagnostic_com_control import (
+    DiagnosticComControl,
+)
 
-class DiagnosticComControlClass(ARObject):
+
+class DiagnosticComControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticComControlClass."""
 
+    all_channelses: list[CommunicationCluster]
+    all_physicals: list[Any]
+    specific_channels: list[DiagnosticComControl]
+    sub_nodes: list[DiagnosticComControl]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticComControlClass to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCOMCONTROLCLASS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlClass":
-        """Create DiagnosticComControlClass from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticComControlClass instance
-        """
-        obj: DiagnosticComControlClass = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.all_channelses: list[CommunicationCluster] = []
+        self.all_physicals: list[Any] = []
+        self.specific_channels: list[DiagnosticComControl] = []
+        self.sub_nodes: list[DiagnosticComControl] = []
 
 
 class DiagnosticComControlClassBuilder:

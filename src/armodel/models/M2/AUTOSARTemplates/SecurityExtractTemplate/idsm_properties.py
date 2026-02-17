@@ -1,41 +1,35 @@
-"""IdsmProperties AUTOSAR element."""
+"""IdsmProperties AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 63)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
+    IdsCommonElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_rate_limitation import (
+    IdsmRateLimitation,
+)
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_limitation import (
+    IdsmTrafficLimitation,
+)
 
-class IdsmProperties(ARObject):
+
+class IdsmProperties(IdsCommonElement):
     """AUTOSAR IdsmProperties."""
 
+    rate_limitations: list[IdsmRateLimitation]
+    traffic_limitations: list[IdsmTrafficLimitation]
     def __init__(self) -> None:
         """Initialize IdsmProperties."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsmProperties to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSMPROPERTIES")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsmProperties":
-        """Create IdsmProperties from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsmProperties instance
-        """
-        obj: IdsmProperties = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.rate_limitations: list[IdsmRateLimitation] = []
+        self.traffic_limitations: list[IdsmTrafficLimitation] = []
 
 
 class IdsmPropertiesBuilder:

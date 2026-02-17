@@ -1,41 +1,31 @@
-"""ComMgrUserNeeds AUTOSAR element."""
+"""ComMgrUserNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 235)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 711)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    MaxCommModeEnum,
+)
 
-class ComMgrUserNeeds(ARObject):
+
+class ComMgrUserNeeds(ServiceNeeds):
     """AUTOSAR ComMgrUserNeeds."""
 
+    max_comm_mode_enum: Optional[MaxCommModeEnum]
     def __init__(self) -> None:
         """Initialize ComMgrUserNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ComMgrUserNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COMMGRUSERNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ComMgrUserNeeds":
-        """Create ComMgrUserNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ComMgrUserNeeds instance
-        """
-        obj: ComMgrUserNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.max_comm_mode_enum: Optional[MaxCommModeEnum] = None
 
 
 class ComMgrUserNeedsBuilder:

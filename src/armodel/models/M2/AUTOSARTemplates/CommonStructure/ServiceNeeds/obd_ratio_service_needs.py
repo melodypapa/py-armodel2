@@ -1,41 +1,40 @@
-"""ObdRatioServiceNeeds AUTOSAR element."""
+"""ObdRatioServiceNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 795)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    ObdRatioConnectionKindEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_event_needs import (
+    DiagnosticEventNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_inhibition_needs import (
+    FunctionInhibitionNeeds,
+)
 
-class ObdRatioServiceNeeds(ARObject):
+
+class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdRatioServiceNeeds."""
 
+    connection_type: Optional[ObdRatioConnectionKindEnum]
+    rate_based_monitored_event: Optional[DiagnosticEventNeeds]
+    used_fid: Optional[FunctionInhibitionNeeds]
     def __init__(self) -> None:
         """Initialize ObdRatioServiceNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ObdRatioServiceNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("OBDRATIOSERVICENEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ObdRatioServiceNeeds":
-        """Create ObdRatioServiceNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ObdRatioServiceNeeds instance
-        """
-        obj: ObdRatioServiceNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.connection_type: Optional[ObdRatioConnectionKindEnum] = None
+        self.rate_based_monitored_event: Optional[DiagnosticEventNeeds] = None
+        self.used_fid: Optional[FunctionInhibitionNeeds] = None
 
 
 class ObdRatioServiceNeedsBuilder:

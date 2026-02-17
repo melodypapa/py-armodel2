@@ -1,41 +1,29 @@
-"""ConsumedProvidedServiceInstanceGroup AUTOSAR element."""
+"""ConsumedProvidedServiceInstanceGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 523)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
 
-class ConsumedProvidedServiceInstanceGroup(ARObject):
+
+class ConsumedProvidedServiceInstanceGroup(FibexElement):
     """AUTOSAR ConsumedProvidedServiceInstanceGroup."""
 
+    consumed_services: list[Any]
+    provided_services: list[Any]
     def __init__(self) -> None:
         """Initialize ConsumedProvidedServiceInstanceGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConsumedProvidedServiceInstanceGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSUMEDPROVIDEDSERVICEINSTANCEGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsumedProvidedServiceInstanceGroup":
-        """Create ConsumedProvidedServiceInstanceGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsumedProvidedServiceInstanceGroup instance
-        """
-        obj: ConsumedProvidedServiceInstanceGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.consumed_services: list[Any] = []
+        self.provided_services: list[Any] = []
 
 
 class ConsumedProvidedServiceInstanceGroupBuilder:

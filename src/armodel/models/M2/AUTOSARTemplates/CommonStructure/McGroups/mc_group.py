@@ -1,41 +1,40 @@
-"""McGroup AUTOSAR element."""
+"""McGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 190)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2034)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_McGroups.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_function import (
+    McFunction,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group_data_ref_set import (
+    McGroupDataRefSet,
+)
 
-class McGroup(ARObject):
+
+class McGroup(ARElement):
     """AUTOSAR McGroup."""
 
+    mc_functions: list[McFunction]
+    ref_calprm_set: Optional[McGroupDataRefSet]
+    ref: Optional[McGroupDataRefSet]
+    sub_groups: list[McGroup]
     def __init__(self) -> None:
         """Initialize McGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert McGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MCGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "McGroup":
-        """Create McGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            McGroup instance
-        """
-        obj: McGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mc_functions: list[McFunction] = []
+        self.ref_calprm_set: Optional[McGroupDataRefSet] = None
+        self.ref: Optional[McGroupDataRefSet] = None
+        self.sub_groups: list[McGroup] = []
 
 
 class McGroupBuilder:

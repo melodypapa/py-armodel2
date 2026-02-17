@@ -1,41 +1,40 @@
-"""ApplicationInterface AUTOSAR element."""
+"""ApplicationInterface AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AbstractPlatform.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
+    PortInterface,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.ApplicationDesign.PortInterface.field import (
+    Field,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class ApplicationInterface(ARObject):
+
+class ApplicationInterface(PortInterface):
     """AUTOSAR ApplicationInterface."""
 
+    attributes: list[Field]
+    commands: list[ClientServerOperation]
+    indications: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize ApplicationInterface."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationInterface to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONINTERFACE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationInterface":
-        """Create ApplicationInterface from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationInterface instance
-        """
-        obj: ApplicationInterface = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.attributes: list[Field] = []
+        self.commands: list[ClientServerOperation] = []
+        self.indications: list[VariableDataPrototype] = []
 
 
 class ApplicationInterfaceBuilder:

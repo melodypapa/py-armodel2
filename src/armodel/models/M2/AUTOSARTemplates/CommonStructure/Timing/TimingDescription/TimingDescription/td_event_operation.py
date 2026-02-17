@@ -1,41 +1,35 @@
-"""TDEventOperation AUTOSAR element."""
+"""TDEventOperation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 55)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
+    TDEventVfbPort,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
+    TDEventOperationTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class TDEventOperation(ARObject):
+
+class TDEventOperation(TDEventVfbPort):
     """AUTOSAR TDEventOperation."""
 
+    operation: Optional[ClientServerOperation]
+    td_event: Optional[TDEventOperationTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventOperation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventOperation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTOPERATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventOperation":
-        """Create TDEventOperation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventOperation instance
-        """
-        obj: TDEventOperation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operation: Optional[ClientServerOperation] = None
+        self.td_event: Optional[TDEventOperationTypeEnum] = None
 
 
 class TDEventOperationBuilder:

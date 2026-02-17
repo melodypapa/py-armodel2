@@ -1,41 +1,33 @@
-"""DiagnosticControlEnableMaskBit AUTOSAR element."""
+"""DiagnosticControlEnableMaskBit AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 119)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_IOControl.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
 
 
 class DiagnosticControlEnableMaskBit(ARObject):
     """AUTOSAR DiagnosticControlEnableMaskBit."""
 
+    bit_number: Optional[PositiveInteger]
+    controlled_datas: list[DiagnosticDataElement]
     def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticControlEnableMaskBit to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCONTROLENABLEMASKBIT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticControlEnableMaskBit":
-        """Create DiagnosticControlEnableMaskBit from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticControlEnableMaskBit instance
-        """
-        obj: DiagnosticControlEnableMaskBit = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bit_number: Optional[PositiveInteger] = None
+        self.controlled_datas: list[DiagnosticDataElement] = []
 
 
 class DiagnosticControlEnableMaskBitBuilder:

@@ -1,41 +1,33 @@
-"""BinaryManifestProvideResource AUTOSAR element."""
+"""BinaryManifestProvideResource AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 914)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster_BinaryManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_resource import (
+    BinaryManifestResource,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class BinaryManifestProvideResource(ARObject):
+
+class BinaryManifestProvideResource(BinaryManifestResource):
     """AUTOSAR BinaryManifestProvideResource."""
 
+    number_of: Optional[PositiveInteger]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BinaryManifestProvideResource."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BinaryManifestProvideResource to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BINARYMANIFESTPROVIDERESOURCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BinaryManifestProvideResource":
-        """Create BinaryManifestProvideResource from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BinaryManifestProvideResource instance
-        """
-        obj: BinaryManifestProvideResource = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.number_of: Optional[PositiveInteger] = None
+        self.supports: Optional[Boolean] = None
 
 
 class BinaryManifestProvideResourceBuilder:

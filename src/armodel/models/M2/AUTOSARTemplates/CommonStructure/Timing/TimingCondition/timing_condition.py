@@ -1,41 +1,27 @@
-"""TimingCondition AUTOSAR element."""
+"""TimingCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 35)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class TimingCondition(ARObject):
+
+class TimingCondition(Identifiable):
     """AUTOSAR TimingCondition."""
 
+    timing_condition: Optional[TimingCondition]
     def __init__(self) -> None:
         """Initialize TimingCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGCONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingCondition":
-        """Create TimingCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingCondition instance
-        """
-        obj: TimingCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.timing_condition: Optional[TimingCondition] = None
 
 
 class TimingConditionBuilder:

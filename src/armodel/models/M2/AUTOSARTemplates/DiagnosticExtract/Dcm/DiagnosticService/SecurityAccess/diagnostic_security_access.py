@@ -1,41 +1,40 @@
-"""DiagnosticSecurityAccess AUTOSAR element."""
+"""DiagnosticSecurityAccess AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 96)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_SecurityAccess.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_security_level import (
+    DiagnosticSecurityLevel,
+)
 
-class DiagnosticSecurityAccess(ARObject):
+
+class DiagnosticSecurityAccess(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSecurityAccess."""
 
+    request_seed_id: Optional[PositiveInteger]
+    security_access: Optional[Any]
+    security_delay: Optional[TimeValue]
+    security_level: Optional[DiagnosticSecurityLevel]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityAccess."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticSecurityAccess to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSECURITYACCESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSecurityAccess":
-        """Create DiagnosticSecurityAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSecurityAccess instance
-        """
-        obj: DiagnosticSecurityAccess = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request_seed_id: Optional[PositiveInteger] = None
+        self.security_access: Optional[Any] = None
+        self.security_delay: Optional[TimeValue] = None
+        self.security_level: Optional[DiagnosticSecurityLevel] = None
 
 
 class DiagnosticSecurityAccessBuilder:

@@ -1,41 +1,38 @@
-"""InstantiationDataDefProps AUTOSAR element."""
+"""InstantiationDataDefProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 588)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_InstantiationDataDefProps.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
+    AutosarParameterRef,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
+    AutosarVariableRef,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
 
 class InstantiationDataDefProps(ARObject):
     """AUTOSAR InstantiationDataDefProps."""
 
+    parameter: Optional[AutosarParameterRef]
+    sw_data_def: Optional[SwDataDefProps]
+    variable_instance: Optional[AutosarVariableRef]
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InstantiationDataDefProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INSTANTIATIONDATADEFPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InstantiationDataDefProps":
-        """Create InstantiationDataDefProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InstantiationDataDefProps instance
-        """
-        obj: InstantiationDataDefProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.parameter: Optional[AutosarParameterRef] = None
+        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.variable_instance: Optional[AutosarVariableRef] = None
 
 
 class InstantiationDataDefPropsBuilder:

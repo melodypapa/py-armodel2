@@ -1,41 +1,38 @@
-"""PortGroupInSystemInstanceRef AUTOSAR element."""
+"""PortGroupInSystemInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1007)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
+    PortGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
+    RootSwCompositionPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
 
 class PortGroupInSystemInstanceRef(ARObject):
     """AUTOSAR PortGroupInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    target: PortGroup
     def __init__(self) -> None:
         """Initialize PortGroupInSystemInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PortGroupInSystemInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PORTGROUPINSYSTEMINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortGroupInSystemInstanceRef":
-        """Create PortGroupInSystemInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortGroupInSystemInstanceRef instance
-        """
-        obj: PortGroupInSystemInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[System] = None
+        self.context: Optional[RootSwCompositionPrototype] = None
+        self.target: PortGroup = None
 
 
 class PortGroupInSystemInstanceRefBuilder:

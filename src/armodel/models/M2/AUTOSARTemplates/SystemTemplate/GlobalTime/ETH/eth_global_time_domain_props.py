@@ -1,41 +1,47 @@
-"""EthGlobalTimeDomainProps AUTOSAR element."""
+"""EthGlobalTimeDomainProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 867)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_ETH.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
+    AbstractGlobalTimeDomainProps,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH import (
+    EthGlobalTimeMessageFormatEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    MacAddressString,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH.eth_t_syn_crc_flags import (
+    EthTSynCrcFlags,
+)
 
-class EthGlobalTimeDomainProps(ARObject):
+
+class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR EthGlobalTimeDomainProps."""
 
+    crc_flags: Optional[EthTSynCrcFlags]
+    destination: Optional[MacAddressString]
+    fup_data_id_list: PositiveInteger
+    manageds: list[Any]
+    message: Optional[EthGlobalTimeMessageFormatEnum]
+    vlan_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EthGlobalTimeDomainProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EthGlobalTimeDomainProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ETHGLOBALTIMEDOMAINPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeDomainProps":
-        """Create EthGlobalTimeDomainProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthGlobalTimeDomainProps instance
-        """
-        obj: EthGlobalTimeDomainProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.crc_flags: Optional[EthTSynCrcFlags] = None
+        self.destination: Optional[MacAddressString] = None
+        self.fup_data_id_list: PositiveInteger = None
+        self.manageds: list[Any] = []
+        self.message: Optional[EthGlobalTimeMessageFormatEnum] = None
+        self.vlan_priority: Optional[PositiveInteger] = None
 
 
 class EthGlobalTimeDomainPropsBuilder:

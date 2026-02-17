@@ -1,41 +1,35 @@
-"""InstanceEventInCompositionInstanceRef AUTOSAR element."""
+"""InstanceEventInCompositionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 959)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
 
 
 class InstanceEventInCompositionInstanceRef(ARObject):
     """AUTOSAR InstanceEventInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_prototypes: list[Any]
+    target_event: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize InstanceEventInCompositionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InstanceEventInCompositionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INSTANCEEVENTINCOMPOSITIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InstanceEventInCompositionInstanceRef":
-        """Create InstanceEventInCompositionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InstanceEventInCompositionInstanceRef instance
-        """
-        obj: InstanceEventInCompositionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[CompositionSwComponentType] = None
+        self.context_prototypes: list[Any] = []
+        self.target_event: Optional[RTEEvent] = None
 
 
 class InstanceEventInCompositionInstanceRefBuilder:

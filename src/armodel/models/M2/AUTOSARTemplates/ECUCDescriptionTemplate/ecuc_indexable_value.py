@@ -1,41 +1,29 @@
-"""EcucIndexableValue AUTOSAR element."""
+"""EcucIndexableValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 110)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class EcucIndexableValue(ARObject):
     """AUTOSAR EcucIndexableValue."""
+    """Abstract base class - do not instantiate directly."""
 
+    index: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EcucIndexableValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucIndexableValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCINDEXABLEVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucIndexableValue":
-        """Create EcucIndexableValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucIndexableValue instance
-        """
-        obj: EcucIndexableValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.index: Optional[PositiveInteger] = None
 
 
 class EcucIndexableValueBuilder:

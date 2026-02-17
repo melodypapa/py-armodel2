@@ -1,41 +1,35 @@
-"""DiagnosticEventToTroubleCodeUdsMapping AUTOSAR element."""
+"""DiagnosticEventToTroubleCodeUdsMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 245)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
+    DiagnosticEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
+    DiagnosticTroubleCode,
+)
 
-class DiagnosticEventToTroubleCodeUdsMapping(ARObject):
+
+class DiagnosticEventToTroubleCodeUdsMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToTroubleCodeUdsMapping."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    trouble_code_uds: Optional[DiagnosticTroubleCode]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToTroubleCodeUdsMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEventToTroubleCodeUdsMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICEVENTTOTROUBLECODEUDSMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToTroubleCodeUdsMapping":
-        """Create DiagnosticEventToTroubleCodeUdsMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEventToTroubleCodeUdsMapping instance
-        """
-        obj: DiagnosticEventToTroubleCodeUdsMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.diagnostic_event: Optional[DiagnosticEvent] = None
+        self.trouble_code_uds: Optional[DiagnosticTroubleCode] = None
 
 
 class DiagnosticEventToTroubleCodeUdsMappingBuilder:

@@ -1,41 +1,37 @@
-"""ServerComSpec AUTOSAR element."""
+"""ServerComSpec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 188)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
+    PPortComSpec,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+    ClientServerOperation,
+)
 
-class ServerComSpec(ARObject):
+
+class ServerComSpec(PPortComSpec):
     """AUTOSAR ServerComSpec."""
 
+    operation: Optional[ClientServerOperation]
+    queue_length: Optional[PositiveInteger]
+    transformation_coms: list[Any]
     def __init__(self) -> None:
         """Initialize ServerComSpec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ServerComSpec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SERVERCOMSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ServerComSpec":
-        """Create ServerComSpec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ServerComSpec instance
-        """
-        obj: ServerComSpec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operation: Optional[ClientServerOperation] = None
+        self.queue_length: Optional[PositiveInteger] = None
+        self.transformation_coms: list[Any] = []
 
 
 class ServerComSpecBuilder:

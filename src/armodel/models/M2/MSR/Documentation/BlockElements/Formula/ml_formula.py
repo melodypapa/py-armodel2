@@ -1,41 +1,48 @@
-"""MlFormula AUTOSAR element."""
+"""MlFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 301)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 309)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Formula.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
+    Paginateable,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
+    Caption,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.Figure.l_graphic import (
+    LGraphic,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_plain_text import (
+    MultiLanguagePlainText,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import (
+    MultiLanguageVerbatim,
+)
 
-class MlFormula(ARObject):
+
+class MlFormula(Paginateable):
     """AUTOSAR MlFormula."""
 
+    formula_caption: Optional[Caption]
+    generic_math: Optional[MultiLanguagePlainText]
+    l_graphics: list[LGraphic]
+    tex_math: Optional[MultiLanguagePlainText]
+    verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
         """Initialize MlFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MlFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MLFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MlFormula":
-        """Create MlFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MlFormula instance
-        """
-        obj: MlFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.formula_caption: Optional[Caption] = None
+        self.generic_math: Optional[MultiLanguagePlainText] = None
+        self.l_graphics: list[LGraphic] = []
+        self.tex_math: Optional[MultiLanguagePlainText] = None
+        self.verbatim: Optional[MultiLanguageVerbatim] = None
 
 
 class MlFormulaBuilder:

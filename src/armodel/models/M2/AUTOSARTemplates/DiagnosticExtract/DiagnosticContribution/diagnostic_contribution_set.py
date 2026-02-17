@@ -1,41 +1,34 @@
-"""DiagnosticContributionSet AUTOSAR element."""
+"""DiagnosticContributionSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 56)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticContribution.diagnostic_service_table import (
+    DiagnosticServiceTable,
+)
 
-class DiagnosticContributionSet(ARObject):
+
+class DiagnosticContributionSet(ARElement):
     """AUTOSAR DiagnosticContributionSet."""
 
+    common: Optional[Any]
+    elements: list[Any]
+    service_tables: list[DiagnosticServiceTable]
     def __init__(self) -> None:
         """Initialize DiagnosticContributionSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticContributionSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCONTRIBUTIONSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticContributionSet":
-        """Create DiagnosticContributionSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticContributionSet instance
-        """
-        obj: DiagnosticContributionSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.common: Optional[Any] = None
+        self.elements: list[Any] = []
+        self.service_tables: list[DiagnosticServiceTable] = []
 
 
 class DiagnosticContributionSetBuilder:

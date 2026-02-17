@@ -1,41 +1,28 @@
-"""GlobalTimeCouplingPortProps AUTOSAR element."""
+"""GlobalTimeCouplingPortProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 875)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
 
 class GlobalTimeCouplingPortProps(ARObject):
     """AUTOSAR GlobalTimeCouplingPortProps."""
 
+    propagation: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeCouplingPortProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMECOUPLINGPORTPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeCouplingPortProps":
-        """Create GlobalTimeCouplingPortProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeCouplingPortProps instance
-        """
-        obj: GlobalTimeCouplingPortProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.propagation: Optional[TimeValue] = None
 
 
 class GlobalTimeCouplingPortPropsBuilder:

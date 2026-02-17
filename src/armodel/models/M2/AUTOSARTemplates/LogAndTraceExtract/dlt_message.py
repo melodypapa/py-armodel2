@@ -1,41 +1,48 @@
-"""DltMessage AUTOSAR element."""
+"""DltMessage AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2018)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 12)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_argument import (
+    DltArgument,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.privacy_level import (
+    PrivacyLevel,
+)
 
-class DltMessage(ARObject):
+
+class DltMessage(Identifiable):
     """AUTOSAR DltMessage."""
 
+    dlt_arguments: list[DltArgument]
+    message_id: Optional[PositiveInteger]
+    message_line: Optional[PositiveInteger]
+    message_source: Optional[String]
+    message_type_info: Optional[String]
+    privacy_level: Optional[PrivacyLevel]
     def __init__(self) -> None:
         """Initialize DltMessage."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltMessage to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTMESSAGE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltMessage":
-        """Create DltMessage from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltMessage instance
-        """
-        obj: DltMessage = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dlt_arguments: list[DltArgument] = []
+        self.message_id: Optional[PositiveInteger] = None
+        self.message_line: Optional[PositiveInteger] = None
+        self.message_source: Optional[String] = None
+        self.message_type_info: Optional[String] = None
+        self.privacy_level: Optional[PrivacyLevel] = None
 
 
 class DltMessageBuilder:

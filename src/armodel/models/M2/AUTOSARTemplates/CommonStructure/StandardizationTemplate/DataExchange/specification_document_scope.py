@@ -1,41 +1,35 @@
-"""SpecificationDocumentScope AUTOSAR element."""
+"""SpecificationDocumentScope AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 97)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchange.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.spec_element_reference import (
+    SpecElementReference,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchange.document_element_scope import (
+    DocumentElementScope,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.documentation import (
+    Documentation,
+)
 
-class SpecificationDocumentScope(ARObject):
+
+class SpecificationDocumentScope(SpecElementReference):
     """AUTOSAR SpecificationDocumentScope."""
 
+    custom_documentation: Optional[Documentation]
+    documents: list[DocumentElementScope]
     def __init__(self) -> None:
         """Initialize SpecificationDocumentScope."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SpecificationDocumentScope to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SPECIFICATIONDOCUMENTSCOPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SpecificationDocumentScope":
-        """Create SpecificationDocumentScope from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SpecificationDocumentScope instance
-        """
-        obj: SpecificationDocumentScope = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.custom_documentation: Optional[Documentation] = None
+        self.documents: list[DocumentElementScope] = []
 
 
 class SpecificationDocumentScopeBuilder:

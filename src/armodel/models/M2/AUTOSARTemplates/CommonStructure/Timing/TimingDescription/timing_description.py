@@ -1,41 +1,26 @@
-"""TimingDescription AUTOSAR element."""
+"""TimingDescription AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 253)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class TimingDescription(ARObject):
+
+class TimingDescription(Identifiable):
     """AUTOSAR TimingDescription."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize TimingDescription."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingDescription to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGDESCRIPTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingDescription":
-        """Create TimingDescription from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingDescription instance
-        """
-        obj: TimingDescription = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class TimingDescriptionBuilder:

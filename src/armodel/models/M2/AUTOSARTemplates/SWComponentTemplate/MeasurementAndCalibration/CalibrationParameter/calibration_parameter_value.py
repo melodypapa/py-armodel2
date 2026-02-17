@@ -1,41 +1,36 @@
-"""CalibrationParameterValue AUTOSAR element."""
+"""CalibrationParameterValue AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 478)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2007)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_MeasurementAndCalibration_CalibrationParameter.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
 
 class CalibrationParameterValue(ARObject):
     """AUTOSAR CalibrationParameterValue."""
 
+    appl_init_value: Optional[ValueSpecification]
+    impl_init_value: Optional[ValueSpecification]
+    initialized: Optional[FlatInstanceDescriptor]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValue."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CalibrationParameterValue to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CALIBRATIONPARAMETERVALUE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValue":
-        """Create CalibrationParameterValue from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CalibrationParameterValue instance
-        """
-        obj: CalibrationParameterValue = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.appl_init_value: Optional[ValueSpecification] = None
+        self.impl_init_value: Optional[ValueSpecification] = None
+        self.initialized: Optional[FlatInstanceDescriptor] = None
 
 
 class CalibrationParameterValueBuilder:

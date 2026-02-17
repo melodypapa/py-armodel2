@@ -1,41 +1,27 @@
-"""DiagnosticReadDataByPeriodicID AUTOSAR element."""
+"""DiagnosticReadDataByPeriodicID AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 129)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_ReadDataByPeriodicID.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
 
-class DiagnosticReadDataByPeriodicID(ARObject):
+
+class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticReadDataByPeriodicID."""
 
+    read_data_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicID."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticReadDataByPeriodicID to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREADDATABYPERIODICID")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticReadDataByPeriodicID":
-        """Create DiagnosticReadDataByPeriodicID from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticReadDataByPeriodicID instance
-        """
-        obj: DiagnosticReadDataByPeriodicID = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.read_data_class: Optional[Any] = None
 
 
 class DiagnosticReadDataByPeriodicIDBuilder:

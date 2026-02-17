@@ -1,41 +1,33 @@
-"""EcucQuery AUTOSAR element."""
+"""EcucQuery AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 89)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class EcucQuery(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query_expression import (
+        EcucQueryExpression,
+    )
+
+
+
+class EcucQuery(Identifiable):
     """AUTOSAR EcucQuery."""
 
+    ecuc_query: Optional[EcucQueryExpression]
     def __init__(self) -> None:
         """Initialize EcucQuery."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucQuery to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCQUERY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucQuery":
-        """Create EcucQuery from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucQuery instance
-        """
-        obj: EcucQuery = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecuc_query: Optional[EcucQueryExpression] = None
 
 
 class EcucQueryBuilder:

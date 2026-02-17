@@ -1,41 +1,33 @@
-"""DiagnosticAuthTransmitCertificateEvaluation AUTOSAR element."""
+"""DiagnosticAuthTransmitCertificateEvaluation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 101)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_Authentication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    String,
+)
 
-class DiagnosticAuthTransmitCertificateEvaluation(ARObject):
+
+class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
     """AUTOSAR DiagnosticAuthTransmitCertificateEvaluation."""
 
+    evaluation_id: Optional[PositiveInteger]
+    function: Optional[String]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateEvaluation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticAuthTransmitCertificateEvaluation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICAUTHTRANSMITCERTIFICATEEVALUATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificateEvaluation":
-        """Create DiagnosticAuthTransmitCertificateEvaluation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticAuthTransmitCertificateEvaluation instance
-        """
-        obj: DiagnosticAuthTransmitCertificateEvaluation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.evaluation_id: Optional[PositiveInteger] = None
+        self.function: Optional[String] = None
 
 
 class DiagnosticAuthTransmitCertificateEvaluationBuilder:
@@ -43,9 +35,7 @@ class DiagnosticAuthTransmitCertificateEvaluationBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticAuthTransmitCertificateEvaluation = (
-            DiagnosticAuthTransmitCertificateEvaluation()
-        )
+        self._obj: DiagnosticAuthTransmitCertificateEvaluation = DiagnosticAuthTransmitCertificateEvaluation()
 
     def build(self) -> DiagnosticAuthTransmitCertificateEvaluation:
         """Build and return DiagnosticAuthTransmitCertificateEvaluation object.

@@ -1,41 +1,31 @@
-"""TimingClock AUTOSAR element."""
+"""TimingClock AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 252)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingClock.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_domain import (
+    GlobalTimeDomain,
+)
 
-class TimingClock(ARObject):
+
+class TimingClock(Identifiable):
     """AUTOSAR TimingClock."""
+    """Abstract base class - do not instantiate directly."""
 
+    platform_time: Optional[GlobalTimeDomain]
     def __init__(self) -> None:
         """Initialize TimingClock."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingClock to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGCLOCK")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingClock":
-        """Create TimingClock from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingClock instance
-        """
-        obj: TimingClock = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.platform_time: Optional[GlobalTimeDomain] = None
 
 
 class TimingClockBuilder:

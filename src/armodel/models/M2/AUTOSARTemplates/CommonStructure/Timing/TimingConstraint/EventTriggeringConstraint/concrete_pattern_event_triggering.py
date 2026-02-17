@@ -1,41 +1,36 @@
-"""ConcretePatternEventTriggering AUTOSAR element."""
+"""ConcretePatternEventTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 106)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
+    EventTriggeringConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
+    MultidimensionalTime,
+)
 
-class ConcretePatternEventTriggering(ARObject):
+
+class ConcretePatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR ConcretePatternEventTriggering."""
 
+    offsets: list[MultidimensionalTime]
+    pattern_jitter: Optional[MultidimensionalTime]
+    pattern_length: Optional[MultidimensionalTime]
+    pattern_period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ConcretePatternEventTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConcretePatternEventTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONCRETEPATTERNEVENTTRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConcretePatternEventTriggering":
-        """Create ConcretePatternEventTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConcretePatternEventTriggering instance
-        """
-        obj: ConcretePatternEventTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.offsets: list[MultidimensionalTime] = []
+        self.pattern_jitter: Optional[MultidimensionalTime] = None
+        self.pattern_length: Optional[MultidimensionalTime] = None
+        self.pattern_period: Optional[MultidimensionalTime] = None
 
 
 class ConcretePatternEventTriggeringBuilder:

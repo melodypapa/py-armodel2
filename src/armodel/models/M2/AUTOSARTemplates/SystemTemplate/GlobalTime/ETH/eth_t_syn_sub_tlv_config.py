@@ -1,41 +1,34 @@
-"""EthTSynSubTlvConfig AUTOSAR element."""
+"""EthTSynSubTlvConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 867)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_ETH.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
 
 class EthTSynSubTlvConfig(ARObject):
     """AUTOSAR EthTSynSubTlvConfig."""
 
+    ofs_sub_tlv: Optional[Boolean]
+    status_sub_tlv: Optional[Boolean]
+    time_sub_tlv: Optional[Boolean]
+    user_data_sub_tlv: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EthTSynSubTlvConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ETHTSYNSUBTLVCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EthTSynSubTlvConfig":
-        """Create EthTSynSubTlvConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EthTSynSubTlvConfig instance
-        """
-        obj: EthTSynSubTlvConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ofs_sub_tlv: Optional[Boolean] = None
+        self.status_sub_tlv: Optional[Boolean] = None
+        self.time_sub_tlv: Optional[Boolean] = None
+        self.user_data_sub_tlv: Optional[Boolean] = None
 
 
 class EthTSynSubTlvConfigBuilder:

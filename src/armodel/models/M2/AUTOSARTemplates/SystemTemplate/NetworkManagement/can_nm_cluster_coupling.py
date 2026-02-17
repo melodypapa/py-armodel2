@@ -1,41 +1,37 @@
-"""CanNmClusterCoupling AUTOSAR element."""
+"""CanNmClusterCoupling AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 684)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
+    NmClusterCoupling,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.can_nm_cluster import (
+    CanNmCluster,
+)
 
-class CanNmClusterCoupling(ARObject):
+
+class CanNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR CanNmClusterCoupling."""
 
+    coupled_clusters: list[CanNmCluster]
+    nm_busload_reduction: Optional[Any]
+    nm_immediate: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CanNmClusterCoupling."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CanNmClusterCoupling to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CANNMCLUSTERCOUPLING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CanNmClusterCoupling":
-        """Create CanNmClusterCoupling from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CanNmClusterCoupling instance
-        """
-        obj: CanNmClusterCoupling = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.coupled_clusters: list[CanNmCluster] = []
+        self.nm_busload_reduction: Optional[Any] = None
+        self.nm_immediate: Optional[Boolean] = None
 
 
 class CanNmClusterCouplingBuilder:

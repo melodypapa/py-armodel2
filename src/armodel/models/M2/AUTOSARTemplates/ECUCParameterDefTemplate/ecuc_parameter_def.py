@@ -1,41 +1,39 @@
-"""EcucParameterDef AUTOSAR element."""
+"""EcucParameterDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 57)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 188)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_common_attributes import (
+    EcucCommonAttributes,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_derivation_specification import (
+    EcucDerivationSpecification,
+)
 
-class EcucParameterDef(ARObject):
+
+class EcucParameterDef(EcucCommonAttributes):
     """AUTOSAR EcucParameterDef."""
+    """Abstract base class - do not instantiate directly."""
 
+    derivation: Optional[EcucDerivationSpecification]
+    symbolic_name: Optional[Boolean]
+    with_auto: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucParameterDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucParameterDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCPARAMETERDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucParameterDef":
-        """Create EcucParameterDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucParameterDef instance
-        """
-        obj: EcucParameterDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.derivation: Optional[EcucDerivationSpecification] = None
+        self.symbolic_name: Optional[Boolean] = None
+        self.with_auto: Optional[Boolean] = None
 
 
 class EcucParameterDefBuilder:

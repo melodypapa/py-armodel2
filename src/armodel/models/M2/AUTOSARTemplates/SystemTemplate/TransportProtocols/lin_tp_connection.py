@@ -1,41 +1,58 @@
-"""LinTpConnection AUTOSAR element."""
+"""LinTpConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 615)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
+    TpConnection,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
+    IPdu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.lin_tp_node import (
+    LinTpNode,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.n_pdu import (
+    NPdu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_address import (
+    TpAddress,
+)
 
-class LinTpConnection(ARObject):
+
+class LinTpConnection(TpConnection):
     """AUTOSAR LinTpConnection."""
 
+    data_pdu: Optional[NPdu]
+    flow_control: Optional[NPdu]
+    lin_tp_n_sdu: Optional[IPdu]
+    multicast: Optional[TpAddress]
+    receivers: list[LinTpNode]
+    timeout_as: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
+    timeout_cs: Optional[TimeValue]
+    transmitter: Optional[LinTpNode]
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LinTpConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LINTPCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LinTpConnection":
-        """Create LinTpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LinTpConnection instance
-        """
-        obj: LinTpConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_pdu: Optional[NPdu] = None
+        self.flow_control: Optional[NPdu] = None
+        self.lin_tp_n_sdu: Optional[IPdu] = None
+        self.multicast: Optional[TpAddress] = None
+        self.receivers: list[LinTpNode] = []
+        self.timeout_as: Optional[TimeValue] = None
+        self.timeout_cr: Optional[TimeValue] = None
+        self.timeout_cs: Optional[TimeValue] = None
+        self.transmitter: Optional[LinTpNode] = None
 
 
 class LinTpConnectionBuilder:

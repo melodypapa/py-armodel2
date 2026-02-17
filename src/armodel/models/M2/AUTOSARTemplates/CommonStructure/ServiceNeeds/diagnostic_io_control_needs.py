@@ -1,41 +1,41 @@
-"""DiagnosticIoControlNeeds AUTOSAR element."""
+"""DiagnosticIoControlNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 248)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 119)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 781)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
+    DiagnosticCapabilityElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_value_needs import (
+    DiagnosticValueNeeds,
+)
 
-class DiagnosticIoControlNeeds(ARObject):
+
+class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticIoControlNeeds."""
 
+    current_value: Optional[DiagnosticValueNeeds]
+    freeze_current: Optional[Boolean]
+    reset_to_default: Optional[Boolean]
+    short_term: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticIoControlNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICIOCONTROLNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticIoControlNeeds":
-        """Create DiagnosticIoControlNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticIoControlNeeds instance
-        """
-        obj: DiagnosticIoControlNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.current_value: Optional[DiagnosticValueNeeds] = None
+        self.freeze_current: Optional[Boolean] = None
+        self.reset_to_default: Optional[Boolean] = None
+        self.short_term: Optional[Boolean] = None
 
 
 class DiagnosticIoControlNeedsBuilder:

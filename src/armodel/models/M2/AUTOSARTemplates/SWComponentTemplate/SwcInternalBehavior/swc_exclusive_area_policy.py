@@ -1,41 +1,33 @@
-"""SwcExclusiveAreaPolicy AUTOSAR element."""
+"""SwcExclusiveAreaPolicy AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 556)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior import (
+    ApiPrincipleEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area import (
+    ExclusiveArea,
+)
 
 
 class SwcExclusiveAreaPolicy(ARObject):
     """AUTOSAR SwcExclusiveAreaPolicy."""
 
+    api_principle_enum: Optional[ApiPrincipleEnum]
+    exclusive_area: Optional[ExclusiveArea]
     def __init__(self) -> None:
         """Initialize SwcExclusiveAreaPolicy."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwcExclusiveAreaPolicy to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCEXCLUSIVEAREAPOLICY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcExclusiveAreaPolicy":
-        """Create SwcExclusiveAreaPolicy from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcExclusiveAreaPolicy instance
-        """
-        obj: SwcExclusiveAreaPolicy = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.api_principle_enum: Optional[ApiPrincipleEnum] = None
+        self.exclusive_area: Optional[ExclusiveArea] = None
 
 
 class SwcExclusiveAreaPolicyBuilder:

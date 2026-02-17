@@ -1,41 +1,45 @@
-"""DltArgument AUTOSAR element."""
+"""DltArgument AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 983)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 13)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
-class DltArgument(ARObject):
+
+class DltArgument(Identifiable):
     """AUTOSAR DltArgument."""
 
+    dlt_arguments: list[DltArgument]
+    length: Optional[PositiveInteger]
+    network: Optional[SwDataDefProps]
+    optional: Optional[Boolean]
+    predefined_text: Optional[Boolean]
+    variable_length: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DltArgument."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltArgument to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTARGUMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltArgument":
-        """Create DltArgument from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltArgument instance
-        """
-        obj: DltArgument = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dlt_arguments: list[DltArgument] = []
+        self.length: Optional[PositiveInteger] = None
+        self.network: Optional[SwDataDefProps] = None
+        self.optional: Optional[Boolean] = None
+        self.predefined_text: Optional[Boolean] = None
+        self.variable_length: Optional[Boolean] = None
 
 
 class DltArgumentBuilder:

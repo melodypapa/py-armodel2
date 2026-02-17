@@ -1,41 +1,45 @@
-"""ClassContentConditional AUTOSAR element."""
+"""ClassContentConditional AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 103)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
+    AbstractCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
+    AttributeTailoring,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.constraint_tailoring import (
+    ConstraintTailoring,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.sdg_tailoring import (
+    SdgTailoring,
+)
 
-class ClassContentConditional(ARObject):
+
+class ClassContentConditional(Identifiable):
     """AUTOSAR ClassContentConditional."""
 
+    attributes: list[AttributeTailoring]
+    condition: Optional[AbstractCondition]
+    constraints: list[ConstraintTailoring]
+    sdg_tailorings: list[SdgTailoring]
     def __init__(self) -> None:
         """Initialize ClassContentConditional."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClassContentConditional to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLASSCONTENTCONDITIONAL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClassContentConditional":
-        """Create ClassContentConditional from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClassContentConditional instance
-        """
-        obj: ClassContentConditional = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.attributes: list[AttributeTailoring] = []
+        self.condition: Optional[AbstractCondition] = None
+        self.constraints: list[ConstraintTailoring] = []
+        self.sdg_tailorings: list[SdgTailoring] = []
 
 
 class ClassContentConditionalBuilder:

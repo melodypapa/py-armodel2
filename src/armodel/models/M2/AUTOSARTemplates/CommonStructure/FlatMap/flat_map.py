@@ -1,41 +1,33 @@
-"""FlatMap AUTOSAR element."""
+"""FlatMap AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 317)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 965)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 445)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+    FlatInstanceDescriptor,
+)
 
-class FlatMap(ARObject):
+
+class FlatMap(ARElement):
     """AUTOSAR FlatMap."""
 
+    instances: list[FlatInstanceDescriptor]
     def __init__(self) -> None:
         """Initialize FlatMap."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FlatMap to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FLATMAP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FlatMap":
-        """Create FlatMap from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FlatMap instance
-        """
-        obj: FlatMap = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.instances: list[FlatInstanceDescriptor] = []
 
 
 class FlatMapBuilder:

@@ -1,41 +1,30 @@
-"""TlvDataIdDefinitionSet AUTOSAR element."""
+"""TlvDataIdDefinitionSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 830)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.tlv_data_id_definition import (
+    TlvDataIdDefinition,
+)
 
-class TlvDataIdDefinitionSet(ARObject):
+
+class TlvDataIdDefinitionSet(ARElement):
     """AUTOSAR TlvDataIdDefinitionSet."""
 
+    tlv_data_ids: list[TlvDataIdDefinition]
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinitionSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TlvDataIdDefinitionSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TLVDATAIDDEFINITIONSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TlvDataIdDefinitionSet":
-        """Create TlvDataIdDefinitionSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TlvDataIdDefinitionSet instance
-        """
-        obj: TlvDataIdDefinitionSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tlv_data_ids: list[TlvDataIdDefinition] = []
 
 
 class TlvDataIdDefinitionSetBuilder:

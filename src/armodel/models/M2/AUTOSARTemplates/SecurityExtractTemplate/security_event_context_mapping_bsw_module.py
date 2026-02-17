@@ -1,41 +1,30 @@
-"""SecurityEventContextMappingBswModule AUTOSAR element."""
+"""SecurityEventContextMappingBswModule AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 38)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_context_mapping import (
+    SecurityEventContextMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class SecurityEventContextMappingBswModule(ARObject):
+
+class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingBswModule."""
 
+    affected_bsw: Optional[String]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingBswModule."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SecurityEventContextMappingBswModule to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SECURITYEVENTCONTEXTMAPPINGBSWMODULE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SecurityEventContextMappingBswModule":
-        """Create SecurityEventContextMappingBswModule from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SecurityEventContextMappingBswModule instance
-        """
-        obj: SecurityEventContextMappingBswModule = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.affected_bsw: Optional[String] = None
 
 
 class SecurityEventContextMappingBswModuleBuilder:

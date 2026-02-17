@@ -1,41 +1,30 @@
-"""TDEventFrClusterCycleStart AUTOSAR element."""
+"""TDEventFrClusterCycleStart AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 71)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_cycle_start import (
+    TDEventCycleStart,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayTopology.flexray_cluster import (
+    FlexrayCluster,
+)
 
-class TDEventFrClusterCycleStart(ARObject):
+
+class TDEventFrClusterCycleStart(TDEventCycleStart):
     """AUTOSAR TDEventFrClusterCycleStart."""
 
+    fr_cluster: Optional[FlexrayCluster]
     def __init__(self) -> None:
         """Initialize TDEventFrClusterCycleStart."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventFrClusterCycleStart to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTFRCLUSTERCYCLESTART")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventFrClusterCycleStart":
-        """Create TDEventFrClusterCycleStart from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventFrClusterCycleStart instance
-        """
-        obj: TDEventFrClusterCycleStart = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.fr_cluster: Optional[FlexrayCluster] = None
 
 
 class TDEventFrClusterCycleStartBuilder:

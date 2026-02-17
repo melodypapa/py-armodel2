@@ -1,41 +1,26 @@
-"""EcuStateMgrUserNeeds AUTOSAR element."""
+"""EcuStateMgrUserNeeds AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 235)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 714)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
 
-class EcuStateMgrUserNeeds(ARObject):
+
+class EcuStateMgrUserNeeds(ServiceNeeds):
     """AUTOSAR EcuStateMgrUserNeeds."""
 
     def __init__(self) -> None:
         """Initialize EcuStateMgrUserNeeds."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcuStateMgrUserNeeds to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUSTATEMGRUSERNEEDS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcuStateMgrUserNeeds":
-        """Create EcuStateMgrUserNeeds from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcuStateMgrUserNeeds instance
-        """
-        obj: EcuStateMgrUserNeeds = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class EcuStateMgrUserNeedsBuilder:

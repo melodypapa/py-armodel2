@@ -1,41 +1,30 @@
-"""ConsistencyNeedsBlueprintSet AUTOSAR element."""
+"""ConsistencyNeedsBlueprintSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 179)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_Blueprint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.consistency_needs import (
+    ConsistencyNeeds,
+)
 
-class ConsistencyNeedsBlueprintSet(ARObject):
+
+class ConsistencyNeedsBlueprintSet(ARElement):
     """AUTOSAR ConsistencyNeedsBlueprintSet."""
 
+    consistency_needses: list[ConsistencyNeeds]
     def __init__(self) -> None:
         """Initialize ConsistencyNeedsBlueprintSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConsistencyNeedsBlueprintSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSISTENCYNEEDSBLUEPRINTSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsistencyNeedsBlueprintSet":
-        """Create ConsistencyNeedsBlueprintSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsistencyNeedsBlueprintSet instance
-        """
-        obj: ConsistencyNeedsBlueprintSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.consistency_needses: list[ConsistencyNeeds] = []
 
 
 class ConsistencyNeedsBlueprintSetBuilder:

@@ -1,41 +1,55 @@
-"""EndToEndTransformationComSpecProps AUTOSAR element."""
+"""EndToEndTransformationComSpecProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 200)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2023)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
+    TransformationComSpecProps,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.e2_e_profile_compatibility_props import (
+    E2EProfileCompatibilityProps,
+)
 
-class EndToEndTransformationComSpecProps(ARObject):
+
+class EndToEndTransformationComSpecProps(TransformationComSpecProps):
     """AUTOSAR EndToEndTransformationComSpecProps."""
 
+    clear_from_valid: Optional[Boolean]
+    disable_end_to: Optional[Boolean]
+    e2e_profile: Optional[E2EProfileCompatibilityProps]
+    max_delta: Optional[PositiveInteger]
+    max_error_state: Optional[PositiveInteger]
+    max_no_new_or: Optional[PositiveInteger]
+    min_ok_state_init: Optional[PositiveInteger]
+    min_ok_state: Optional[PositiveInteger]
+    sync_counter_init: Optional[PositiveInteger]
+    window_size_init: Optional[PositiveInteger]
+    window_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EndToEndTransformationComSpecProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EndToEndTransformationComSpecProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ENDTOENDTRANSFORMATIONCOMSPECPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EndToEndTransformationComSpecProps":
-        """Create EndToEndTransformationComSpecProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EndToEndTransformationComSpecProps instance
-        """
-        obj: EndToEndTransformationComSpecProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.clear_from_valid: Optional[Boolean] = None
+        self.disable_end_to: Optional[Boolean] = None
+        self.e2e_profile: Optional[E2EProfileCompatibilityProps] = None
+        self.max_delta: Optional[PositiveInteger] = None
+        self.max_error_state: Optional[PositiveInteger] = None
+        self.max_no_new_or: Optional[PositiveInteger] = None
+        self.min_ok_state_init: Optional[PositiveInteger] = None
+        self.min_ok_state: Optional[PositiveInteger] = None
+        self.sync_counter_init: Optional[PositiveInteger] = None
+        self.window_size_init: Optional[PositiveInteger] = None
+        self.window_size: Optional[PositiveInteger] = None
 
 
 class EndToEndTransformationComSpecPropsBuilder:

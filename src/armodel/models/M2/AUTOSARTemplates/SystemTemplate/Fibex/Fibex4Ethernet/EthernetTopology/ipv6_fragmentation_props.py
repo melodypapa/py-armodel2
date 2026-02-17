@@ -1,41 +1,35 @@
-"""Ipv6FragmentationProps AUTOSAR element."""
+"""Ipv6FragmentationProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 148)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
 
 class Ipv6FragmentationProps(ARObject):
     """AUTOSAR Ipv6FragmentationProps."""
 
+    tcp_ip_ip: Optional[TimeValue]
+    tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger]
+    tcp_ip_ip_tx: Optional[PositiveInteger]
+    tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ipv6FragmentationProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Ipv6FragmentationProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IPV6FRAGMENTATIONPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ipv6FragmentationProps":
-        """Create Ipv6FragmentationProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ipv6FragmentationProps instance
-        """
-        obj: Ipv6FragmentationProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tcp_ip_ip: Optional[TimeValue] = None
+        self.tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger] = None
+        self.tcp_ip_ip_tx: Optional[PositiveInteger] = None
+        self.tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger] = None
 
 
 class Ipv6FragmentationPropsBuilder:

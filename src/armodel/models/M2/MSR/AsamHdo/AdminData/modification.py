@@ -1,41 +1,30 @@
-"""Modification AUTOSAR element."""
+"""Modification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 86)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_AdminData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
 
 
 class Modification(ARObject):
     """AUTOSAR Modification."""
 
+    change: MultiLanguageOverviewParagraph
+    reason: Optional[MultiLanguageOverviewParagraph]
     def __init__(self) -> None:
         """Initialize Modification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Modification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Modification":
-        """Create Modification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Modification instance
-        """
-        obj: Modification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.change: MultiLanguageOverviewParagraph = None
+        self.reason: Optional[MultiLanguageOverviewParagraph] = None
 
 
 class ModificationBuilder:

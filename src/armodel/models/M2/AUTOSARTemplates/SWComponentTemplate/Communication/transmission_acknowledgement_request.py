@@ -1,41 +1,28 @@
-"""TransmissionAcknowledgementRequest AUTOSAR element."""
+"""TransmissionAcknowledgementRequest AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 180)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    TimeValue,
+)
 
 
 class TransmissionAcknowledgementRequest(ARObject):
     """AUTOSAR TransmissionAcknowledgementRequest."""
 
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TransmissionAcknowledgementRequest."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TransmissionAcknowledgementRequest to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRANSMISSIONACKNOWLEDGEMENTREQUEST")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransmissionAcknowledgementRequest":
-        """Create TransmissionAcknowledgementRequest from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransmissionAcknowledgementRequest instance
-        """
-        obj: TransmissionAcknowledgementRequest = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.timeout: Optional[TimeValue] = None
 
 
 class TransmissionAcknowledgementRequestBuilder:

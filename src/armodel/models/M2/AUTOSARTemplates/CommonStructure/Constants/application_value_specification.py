@@ -1,41 +1,41 @@
-"""ApplicationValueSpecification AUTOSAR element."""
+"""ApplicationValueSpecification AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 299)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+)
+from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_axis_cont import (
+    SwAxisCont,
+)
+from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_value_cont import (
+    SwValueCont,
+)
 
-class ApplicationValueSpecification(ARObject):
+
+class ApplicationValueSpecification(ValueSpecification):
     """AUTOSAR ApplicationValueSpecification."""
 
+    category: Optional[Identifier]
+    sw_axis_conts: list[SwAxisCont]
+    sw_value_cont: Optional[SwValueCont]
     def __init__(self) -> None:
         """Initialize ApplicationValueSpecification."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationValueSpecification to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONVALUESPECIFICATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationValueSpecification":
-        """Create ApplicationValueSpecification from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationValueSpecification instance
-        """
-        obj: ApplicationValueSpecification = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.category: Optional[Identifier] = None
+        self.sw_axis_conts: list[SwAxisCont] = []
+        self.sw_value_cont: Optional[SwValueCont] = None
 
 
 class ApplicationValueSpecificationBuilder:

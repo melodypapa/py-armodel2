@@ -1,41 +1,37 @@
-"""PermissibleSignalPath AUTOSAR element."""
+"""PermissibleSignalPath AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 256)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SignalPaths.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.signal_path_constraint import (
+    SignalPathConstraint,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
+    PhysicalChannel,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_signal import (
+    SwcToSwcSignal,
+)
 
-class PermissibleSignalPath(ARObject):
+
+class PermissibleSignalPath(SignalPathConstraint):
     """AUTOSAR PermissibleSignalPath."""
 
+    operations: list[Any]
+    physical_channels: list[PhysicalChannel]
+    signals: list[SwcToSwcSignal]
     def __init__(self) -> None:
         """Initialize PermissibleSignalPath."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PermissibleSignalPath to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PERMISSIBLESIGNALPATH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PermissibleSignalPath":
-        """Create PermissibleSignalPath from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PermissibleSignalPath instance
-        """
-        obj: PermissibleSignalPath = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.operations: list[Any] = []
+        self.physical_channels: list[PhysicalChannel] = []
+        self.signals: list[SwcToSwcSignal] = []
 
 
 class PermissibleSignalPathBuilder:

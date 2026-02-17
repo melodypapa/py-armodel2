@@ -1,41 +1,30 @@
-"""CpSoftwareClusterServiceResource AUTOSAR element."""
+"""CpSoftwareClusterServiceResource AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 904)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_resource import (
+    CpSoftwareClusterResource,
+)
+from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
+    EcucContainerValue,
+)
 
-class CpSoftwareClusterServiceResource(ARObject):
+
+class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
     """AUTOSAR CpSoftwareClusterServiceResource."""
 
+    resource_needses: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterServiceResource."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSoftwareClusterServiceResource to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSOFTWARECLUSTERSERVICERESOURCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterServiceResource":
-        """Create CpSoftwareClusterServiceResource from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSoftwareClusterServiceResource instance
-        """
-        obj: CpSoftwareClusterServiceResource = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.resource_needses: list[EcucContainerValue] = []
 
 
 class CpSoftwareClusterServiceResourceBuilder:

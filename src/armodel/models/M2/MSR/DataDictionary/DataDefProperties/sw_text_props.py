@@ -1,41 +1,43 @@
-"""SwTextProps AUTOSAR element."""
+"""SwTextProps AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 343)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 313)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 249)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 216)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
+    ArraySizeSemanticsEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
+from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import (
+    SwBaseType,
+)
 
 
 class SwTextProps(ARObject):
     """AUTOSAR SwTextProps."""
 
+    array_size: Optional[ArraySizeSemanticsEnum]
+    base_type: Optional[SwBaseType]
+    sw_fill_character: Optional[Integer]
+    sw_max_text_size: Optional[Integer]
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwTextProps to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWTEXTPROPS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwTextProps":
-        """Create SwTextProps from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwTextProps instance
-        """
-        obj: SwTextProps = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.array_size: Optional[ArraySizeSemanticsEnum] = None
+        self.base_type: Optional[SwBaseType] = None
+        self.sw_fill_character: Optional[Integer] = None
+        self.sw_max_text_size: Optional[Integer] = None
 
 
 class SwTextPropsBuilder:

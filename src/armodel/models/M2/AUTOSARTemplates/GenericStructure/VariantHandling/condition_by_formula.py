@@ -1,41 +1,31 @@
-"""ConditionByFormula AUTOSAR element."""
+"""ConditionByFormula AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 613)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2012)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 73)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 231)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling import (
+    BindingTimeEnum,
+)
 
 
 class ConditionByFormula(ARObject):
     """AUTOSAR ConditionByFormula."""
 
+    binding_time_enum: BindingTimeEnum
     def __init__(self) -> None:
         """Initialize ConditionByFormula."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConditionByFormula to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONDITIONBYFORMULA")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConditionByFormula":
-        """Create ConditionByFormula from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConditionByFormula instance
-        """
-        obj: ConditionByFormula = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.binding_time_enum: BindingTimeEnum = None
 
 
 class ConditionByFormulaBuilder:

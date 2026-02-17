@@ -1,41 +1,27 @@
-"""TDEventVfbReference AUTOSAR element."""
+"""TDEventVfbReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 52)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb import (
+    TDEventVfb,
+)
 
-class TDEventVfbReference(ARObject):
+
+class TDEventVfbReference(TDEventVfb):
     """AUTOSAR TDEventVfbReference."""
 
+    referenced_td_event_vfb: Optional[TDEventVfb]
     def __init__(self) -> None:
         """Initialize TDEventVfbReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventVfbReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTVFBREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventVfbReference":
-        """Create TDEventVfbReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventVfbReference instance
-        """
-        obj: TDEventVfbReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.referenced_td_event_vfb: Optional[TDEventVfb] = None
 
 
 class TDEventVfbReferenceBuilder:

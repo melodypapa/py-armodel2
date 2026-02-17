@@ -1,41 +1,30 @@
-"""ServiceInstanceCollectionSet AUTOSAR element."""
+"""ServiceInstanceCollectionSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 476)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
+    FibexElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
+    AbstractServiceInstance,
+)
 
-class ServiceInstanceCollectionSet(ARObject):
+
+class ServiceInstanceCollectionSet(FibexElement):
     """AUTOSAR ServiceInstanceCollectionSet."""
 
+    service_instances: list[AbstractServiceInstance]
     def __init__(self) -> None:
         """Initialize ServiceInstanceCollectionSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ServiceInstanceCollectionSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SERVICEINSTANCECOLLECTIONSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ServiceInstanceCollectionSet":
-        """Create ServiceInstanceCollectionSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ServiceInstanceCollectionSet instance
-        """
-        obj: ServiceInstanceCollectionSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.service_instances: list[AbstractServiceInstance] = []
 
 
 class ServiceInstanceCollectionSetBuilder:

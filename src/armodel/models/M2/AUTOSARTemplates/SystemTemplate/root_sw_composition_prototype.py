@@ -1,41 +1,40 @@
-"""RootSwCompositionPrototype AUTOSAR element."""
+"""RootSwCompositionPrototype AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1003)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 186)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 240)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 18)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_map import (
+    FlatMap,
+)
 
-class RootSwCompositionPrototype(ARObject):
+
+class RootSwCompositionPrototype(Identifiable):
     """AUTOSAR RootSwCompositionPrototype."""
 
+    calibrations: list[Any]
+    flat_map: Optional[FlatMap]
+    software: Optional[CompositionSwComponentType]
     def __init__(self) -> None:
         """Initialize RootSwCompositionPrototype."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RootSwCompositionPrototype to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ROOTSWCOMPOSITIONPROTOTYPE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RootSwCompositionPrototype":
-        """Create RootSwCompositionPrototype from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RootSwCompositionPrototype instance
-        """
-        obj: RootSwCompositionPrototype = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.calibrations: list[Any] = []
+        self.flat_map: Optional[FlatMap] = None
+        self.software: Optional[CompositionSwComponentType] = None
 
 
 class RootSwCompositionPrototypeBuilder:

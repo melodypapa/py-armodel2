@@ -1,41 +1,32 @@
-"""DiagnosticSecurityEventReportingModeMapping AUTOSAR element."""
+"""DiagnosticSecurityEventReportingModeMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 243)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
 
-class DiagnosticSecurityEventReportingModeMapping(ARObject):
+
+class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticSecurityEventReportingModeMapping."""
 
+    data_element: Optional[DiagnosticDataElement]
+    security_event_context: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityEventReportingModeMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticSecurityEventReportingModeMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSECURITYEVENTREPORTINGMODEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSecurityEventReportingModeMapping":
-        """Create DiagnosticSecurityEventReportingModeMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSecurityEventReportingModeMapping instance
-        """
-        obj: DiagnosticSecurityEventReportingModeMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_element: Optional[DiagnosticDataElement] = None
+        self.security_event_context: Optional[Any] = None
 
 
 class DiagnosticSecurityEventReportingModeMappingBuilder:
@@ -43,9 +34,7 @@ class DiagnosticSecurityEventReportingModeMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticSecurityEventReportingModeMapping = (
-            DiagnosticSecurityEventReportingModeMapping()
-        )
+        self._obj: DiagnosticSecurityEventReportingModeMapping = DiagnosticSecurityEventReportingModeMapping()
 
     def build(self) -> DiagnosticSecurityEventReportingModeMapping:
         """Build and return DiagnosticSecurityEventReportingModeMapping object.

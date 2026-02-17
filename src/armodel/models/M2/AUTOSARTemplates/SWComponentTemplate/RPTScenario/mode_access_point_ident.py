@@ -1,41 +1,25 @@
-"""ModeAccessPointIdent AUTOSAR element."""
+"""ModeAccessPointIdent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 852)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.ident_caption import (
+    IdentCaption,
+)
 
-class ModeAccessPointIdent(ARObject):
+
+class ModeAccessPointIdent(IdentCaption):
     """AUTOSAR ModeAccessPointIdent."""
 
     def __init__(self) -> None:
         """Initialize ModeAccessPointIdent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeAccessPointIdent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEACCESSPOINTIDENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeAccessPointIdent":
-        """Create ModeAccessPointIdent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeAccessPointIdent instance
-        """
-        obj: ModeAccessPointIdent = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class ModeAccessPointIdentBuilder:

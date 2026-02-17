@@ -1,41 +1,28 @@
-"""BuildActionInvocator AUTOSAR element."""
+"""BuildActionInvocator AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 372)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    VerbatimString,
+)
 
 
 class BuildActionInvocator(ARObject):
     """AUTOSAR BuildActionInvocator."""
 
+    command: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize BuildActionInvocator."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BuildActionInvocator to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUILDACTIONINVOCATOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BuildActionInvocator":
-        """Create BuildActionInvocator from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BuildActionInvocator instance
-        """
-        obj: BuildActionInvocator = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.command: Optional[VerbatimString] = None
 
 
 class BuildActionInvocatorBuilder:

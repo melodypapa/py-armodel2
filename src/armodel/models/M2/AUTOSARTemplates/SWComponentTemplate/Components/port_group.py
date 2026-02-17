@@ -1,41 +1,33 @@
-"""PortGroup AUTOSAR element."""
+"""PortGroup AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 203)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2045)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
-class PortGroup(ARObject):
+
+class PortGroup(Identifiable):
     """AUTOSAR PortGroup."""
 
+    inner_groups: list[PortGroup]
+    outer_ports: list[PortPrototype]
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PortGroup to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PORTGROUP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortGroup":
-        """Create PortGroup from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortGroup instance
-        """
-        obj: PortGroup = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.inner_groups: list[PortGroup] = []
+        self.outer_ports: list[PortPrototype] = []
 
 
 class PortGroupBuilder:

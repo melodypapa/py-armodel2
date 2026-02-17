@@ -1,41 +1,27 @@
-"""DiagnosticRequestFileTransfer AUTOSAR element."""
+"""DiagnosticRequestFileTransfer AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 146)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_RequestFileTransfer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
 
-class DiagnosticRequestFileTransfer(ARObject):
+
+class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestFileTransfer."""
 
+    request_file: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransfer."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestFileTransfer to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTFILETRANSFER")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestFileTransfer":
-        """Create DiagnosticRequestFileTransfer from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestFileTransfer instance
-        """
-        obj: DiagnosticRequestFileTransfer = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request_file: Optional[Any] = None
 
 
 class DiagnosticRequestFileTransferBuilder:

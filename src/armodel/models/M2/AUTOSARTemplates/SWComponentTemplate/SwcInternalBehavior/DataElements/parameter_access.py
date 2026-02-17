@@ -1,41 +1,39 @@
-"""ParameterAccess AUTOSAR element."""
+"""ParameterAccess AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 586)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
+    AbstractAccessPoint,
+)
 
-class ParameterAccess(ARObject):
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
+        AutosarParameterRef,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
+
+
+class ParameterAccess(AbstractAccessPoint):
     """AUTOSAR ParameterAccess."""
 
+    accessed_parameter: Optional[AutosarParameterRef]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ParameterAccess to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PARAMETERACCESS")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ParameterAccess":
-        """Create ParameterAccess from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ParameterAccess instance
-        """
-        obj: ParameterAccess = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.accessed_parameter: Optional[AutosarParameterRef] = None
+        self.sw_data_def: Optional[SwDataDefProps] = None
 
 
 class ParameterAccessBuilder:

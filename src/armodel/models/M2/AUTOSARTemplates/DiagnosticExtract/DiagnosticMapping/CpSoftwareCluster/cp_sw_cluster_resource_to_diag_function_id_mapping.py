@@ -1,41 +1,32 @@
-"""CpSwClusterResourceToDiagFunctionIdMapping AUTOSAR element."""
+"""CpSwClusterResourceToDiagFunctionIdMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 275)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_CpSoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
 
-class CpSwClusterResourceToDiagFunctionIdMapping(ARObject):
+
+class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterResourceToDiagFunctionIdMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    function: Optional[Any]
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSwClusterResourceToDiagFunctionIdMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSWCLUSTERRESOURCETODIAGFUNCTIONIDMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSwClusterResourceToDiagFunctionIdMapping":
-        """Create CpSwClusterResourceToDiagFunctionIdMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSwClusterResourceToDiagFunctionIdMapping instance
-        """
-        obj: CpSwClusterResourceToDiagFunctionIdMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
+        self.function: Optional[Any] = None
 
 
 class CpSwClusterResourceToDiagFunctionIdMappingBuilder:
@@ -43,9 +34,7 @@ class CpSwClusterResourceToDiagFunctionIdMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSwClusterResourceToDiagFunctionIdMapping = (
-            CpSwClusterResourceToDiagFunctionIdMapping()
-        )
+        self._obj: CpSwClusterResourceToDiagFunctionIdMapping = CpSwClusterResourceToDiagFunctionIdMapping()
 
     def build(self) -> CpSwClusterResourceToDiagFunctionIdMapping:
         """Build and return CpSwClusterResourceToDiagFunctionIdMapping object.

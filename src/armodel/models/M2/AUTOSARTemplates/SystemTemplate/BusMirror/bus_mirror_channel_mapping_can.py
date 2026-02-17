@@ -1,41 +1,47 @@
-"""BusMirrorChannelMappingCan AUTOSAR element."""
+"""BusMirrorChannelMappingCan AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 700)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_BusMirror.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
+    BusMirrorChannelMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_can_id_range_mapping import (
+    BusMirrorCanIdRangeMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_can_id_to_can_id_mapping import (
+    BusMirrorCanIdToCanIdMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_lin_pid_to_can_id_mapping import (
+    BusMirrorLinPidToCanIdMapping,
+)
 
-class BusMirrorChannelMappingCan(ARObject):
+
+class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingCan."""
 
+    can_id_ranges: list[BusMirrorCanIdRangeMapping]
+    can_id_to_can_ids: list[BusMirrorCanIdToCanIdMapping]
+    lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping]
+    mirror_source_lin: Optional[PositiveInteger]
+    mirror_status: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingCan."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BusMirrorChannelMappingCan to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BUSMIRRORCHANNELMAPPINGCAN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingCan":
-        """Create BusMirrorChannelMappingCan from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BusMirrorChannelMappingCan instance
-        """
-        obj: BusMirrorChannelMappingCan = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.can_id_ranges: list[BusMirrorCanIdRangeMapping] = []
+        self.can_id_to_can_ids: list[BusMirrorCanIdToCanIdMapping] = []
+        self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
+        self.mirror_source_lin: Optional[PositiveInteger] = None
+        self.mirror_status: Optional[PositiveInteger] = None
 
 
 class BusMirrorChannelMappingCanBuilder:

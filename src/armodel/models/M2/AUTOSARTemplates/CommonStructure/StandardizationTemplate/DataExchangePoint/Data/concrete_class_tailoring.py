@@ -1,41 +1,30 @@
-"""ConcreteClassTailoring AUTOSAR element."""
+"""ConcreteClassTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 103)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
+    DataFormatElementScope,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 
-class ConcreteClassTailoring(ARObject):
+
+class ConcreteClassTailoring(DataFormatElementScope):
     """AUTOSAR ConcreteClassTailoring."""
 
+    validation_root: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConcreteClassTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONCRETECLASSTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConcreteClassTailoring":
-        """Create ConcreteClassTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConcreteClassTailoring instance
-        """
-        obj: ConcreteClassTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.validation_root: Optional[Boolean] = None
 
 
 class ConcreteClassTailoringBuilder:

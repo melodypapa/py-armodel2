@@ -1,41 +1,30 @@
-"""BswModeManagerErrorEvent AUTOSAR element."""
+"""BswModeManagerErrorEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 95)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
+    BswScheduleEvent,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
-class BswModeManagerErrorEvent(ARObject):
+
+class BswModeManagerErrorEvent(BswScheduleEvent):
     """AUTOSAR BswModeManagerErrorEvent."""
 
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize BswModeManagerErrorEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswModeManagerErrorEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWMODEMANAGERERROREVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswModeManagerErrorEvent":
-        """Create BswModeManagerErrorEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswModeManagerErrorEvent instance
-        """
-        obj: BswModeManagerErrorEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mode_group: Optional[ModeDeclarationGroup] = None
 
 
 class BswModeManagerErrorEventBuilder:

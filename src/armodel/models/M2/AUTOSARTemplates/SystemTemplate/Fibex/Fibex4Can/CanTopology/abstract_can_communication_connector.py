@@ -1,41 +1,26 @@
-"""AbstractCanCommunicationConnector AUTOSAR element."""
+"""AbstractCanCommunicationConnector AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 73)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
+    CommunicationConnector,
+)
 
-class AbstractCanCommunicationConnector(ARObject):
+
+class AbstractCanCommunicationConnector(CommunicationConnector):
     """AUTOSAR AbstractCanCommunicationConnector."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationConnector."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AbstractCanCommunicationConnector to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ABSTRACTCANCOMMUNICATIONCONNECTOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationConnector":
-        """Create AbstractCanCommunicationConnector from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AbstractCanCommunicationConnector instance
-        """
-        obj: AbstractCanCommunicationConnector = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class AbstractCanCommunicationConnectorBuilder:

@@ -1,41 +1,25 @@
-"""InitEvent AUTOSAR element."""
+"""InitEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 546)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+    RTEEvent,
+)
 
-class InitEvent(ARObject):
+
+class InitEvent(RTEEvent):
     """AUTOSAR InitEvent."""
 
     def __init__(self) -> None:
         """Initialize InitEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert InitEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("INITEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "InitEvent":
-        """Create InitEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            InitEvent instance
-        """
-        obj: InitEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class InitEventBuilder:

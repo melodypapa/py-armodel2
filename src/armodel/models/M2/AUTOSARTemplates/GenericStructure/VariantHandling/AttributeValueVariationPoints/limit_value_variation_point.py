@@ -1,41 +1,28 @@
-"""LimitValueVariationPoint AUTOSAR element."""
+"""LimitValueVariationPoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 241)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    IntervalTypeEnum,
+)
 
 
 class LimitValueVariationPoint(ARObject):
     """AUTOSAR LimitValueVariationPoint."""
 
+    interval_type_enum: Optional[IntervalTypeEnum]
     def __init__(self) -> None:
         """Initialize LimitValueVariationPoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LimitValueVariationPoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LIMITVALUEVARIATIONPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LimitValueVariationPoint":
-        """Create LimitValueVariationPoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LimitValueVariationPoint instance
-        """
-        obj: LimitValueVariationPoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.interval_type_enum: Optional[IntervalTypeEnum] = None
 
 
 class LimitValueVariationPointBuilder:

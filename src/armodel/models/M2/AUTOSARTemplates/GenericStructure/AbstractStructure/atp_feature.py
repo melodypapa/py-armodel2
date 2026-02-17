@@ -1,41 +1,26 @@
-"""AtpFeature AUTOSAR element."""
+"""AtpFeature AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_AbstractStructure.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class AtpFeature(ARObject):
+
+class AtpFeature(Identifiable):
     """AUTOSAR AtpFeature."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize AtpFeature."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AtpFeature to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ATPFEATURE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AtpFeature":
-        """Create AtpFeature from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AtpFeature instance
-        """
-        obj: AtpFeature = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class AtpFeatureBuilder:

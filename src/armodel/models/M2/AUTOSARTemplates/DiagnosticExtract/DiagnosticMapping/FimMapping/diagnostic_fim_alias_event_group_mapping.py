@@ -1,41 +1,32 @@
-"""DiagnosticFimAliasEventGroupMapping AUTOSAR element."""
+"""DiagnosticFimAliasEventGroupMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 263)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_FimMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim.diagnostic_fim_event_group import (
+    DiagnosticFimEventGroup,
+)
 
-class DiagnosticFimAliasEventGroupMapping(ARObject):
+
+class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticFimAliasEventGroupMapping."""
 
+    actual_event: Optional[DiagnosticFimEventGroup]
+    alias_event: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroupMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticFimAliasEventGroupMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICFIMALIASEVENTGROUPMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEventGroupMapping":
-        """Create DiagnosticFimAliasEventGroupMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticFimAliasEventGroupMapping instance
-        """
-        obj: DiagnosticFimAliasEventGroupMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.actual_event: Optional[DiagnosticFimEventGroup] = None
+        self.alias_event: Optional[Any] = None
 
 
 class DiagnosticFimAliasEventGroupMappingBuilder:

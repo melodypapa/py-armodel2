@@ -1,41 +1,39 @@
-"""SwcToEcuMapping AUTOSAR element."""
+"""SwcToEcuMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 197)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+    HwElement,
+)
 
-class SwcToEcuMapping(ARObject):
+
+class SwcToEcuMapping(Identifiable):
     """AUTOSAR SwcToEcuMapping."""
 
+    components: list[Any]
+    controlled_hw: Optional[HwElement]
+    ecu_instance: Optional[EcuInstance]
+    processing_unit: Optional[HwElement]
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwcToEcuMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWCTOECUMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwcToEcuMapping":
-        """Create SwcToEcuMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwcToEcuMapping instance
-        """
-        obj: SwcToEcuMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.components: list[Any] = []
+        self.controlled_hw: Optional[HwElement] = None
+        self.ecu_instance: Optional[EcuInstance] = None
+        self.processing_unit: Optional[HwElement] = None
 
 
 class SwcToEcuMappingBuilder:

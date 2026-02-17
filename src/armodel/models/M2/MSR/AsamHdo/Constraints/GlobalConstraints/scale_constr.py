@@ -1,41 +1,40 @@
-"""ScaleConstr AUTOSAR element."""
+"""ScaleConstr AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1003)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Constraints_GlobalConstraints.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Identifier,
+    Limit,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
+    MultiLanguageOverviewParagraph,
+)
 
 
 class ScaleConstr(ARObject):
     """AUTOSAR ScaleConstr."""
 
+    desc: Optional[MultiLanguageOverviewParagraph]
+    lower_limit: Optional[Limit]
+    short_label: Optional[Identifier]
+    upper_limit: Optional[Limit]
+    validity: Optional[Any]
     def __init__(self) -> None:
         """Initialize ScaleConstr."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ScaleConstr to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SCALECONSTR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ScaleConstr":
-        """Create ScaleConstr from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ScaleConstr instance
-        """
-        obj: ScaleConstr = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.desc: Optional[MultiLanguageOverviewParagraph] = None
+        self.lower_limit: Optional[Limit] = None
+        self.short_label: Optional[Identifier] = None
+        self.upper_limit: Optional[Limit] = None
+        self.validity: Optional[Any] = None
 
 
 class ScaleConstrBuilder:

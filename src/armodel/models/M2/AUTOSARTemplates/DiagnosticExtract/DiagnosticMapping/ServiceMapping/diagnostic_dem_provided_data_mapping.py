@@ -1,41 +1,35 @@
-"""DiagnosticDemProvidedDataMapping AUTOSAR element."""
+"""DiagnosticDemProvidedDataMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 255)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    NameToken,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
 
-class DiagnosticDemProvidedDataMapping(ARObject):
+
+class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticDemProvidedDataMapping."""
 
+    data_element: Optional[DiagnosticDataElement]
+    data_provider: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DiagnosticDemProvidedDataMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticDemProvidedDataMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICDEMPROVIDEDDATAMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticDemProvidedDataMapping":
-        """Create DiagnosticDemProvidedDataMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticDemProvidedDataMapping instance
-        """
-        obj: DiagnosticDemProvidedDataMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_element: Optional[DiagnosticDataElement] = None
+        self.data_provider: Optional[NameToken] = None
 
 
 class DiagnosticDemProvidedDataMappingBuilder:

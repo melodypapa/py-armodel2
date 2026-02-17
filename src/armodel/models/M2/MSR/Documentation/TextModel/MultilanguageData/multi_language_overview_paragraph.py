@@ -1,41 +1,31 @@
-"""MultiLanguageOverviewParagraph AUTOSAR element."""
+"""MultiLanguageOverviewParagraph AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 53)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 389)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 347)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 65)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
+    LOverviewParagraph,
+)
 
 
 class MultiLanguageOverviewParagraph(ARObject):
     """AUTOSAR MultiLanguageOverviewParagraph."""
 
+    l2: LOverviewParagraph
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MultiLanguageOverviewParagraph to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MULTILANGUAGEOVERVIEWPARAGRAPH")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiLanguageOverviewParagraph":
-        """Create MultiLanguageOverviewParagraph from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MultiLanguageOverviewParagraph instance
-        """
-        obj: MultiLanguageOverviewParagraph = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.l2: LOverviewParagraph = None
 
 
 class MultiLanguageOverviewParagraphBuilder:

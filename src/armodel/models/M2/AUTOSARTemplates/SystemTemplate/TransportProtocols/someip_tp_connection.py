@@ -1,41 +1,35 @@
-"""SomeipTpConnection AUTOSAR element."""
+"""SomeipTpConnection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 620)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip_tp_channel import (
+    SomeipTpChannel,
+)
 
 
 class SomeipTpConnection(ARObject):
     """AUTOSAR SomeipTpConnection."""
 
+    tp_channel: Optional[SomeipTpChannel]
+    tp_sdu: Optional[PduTriggering]
+    transport_pdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SomeipTpConnection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPTPCONNECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipTpConnection":
-        """Create SomeipTpConnection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipTpConnection instance
-        """
-        obj: SomeipTpConnection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.tp_channel: Optional[SomeipTpChannel] = None
+        self.tp_sdu: Optional[PduTriggering] = None
+        self.transport_pdu: Optional[PduTriggering] = None
 
 
 class SomeipTpConnectionBuilder:

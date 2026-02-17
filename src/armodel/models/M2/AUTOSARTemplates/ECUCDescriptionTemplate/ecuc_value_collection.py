@@ -1,41 +1,34 @@
-"""EcucValueCollection AUTOSAR element."""
+"""EcucValueCollection AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 108)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2022)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
-class EcucValueCollection(ARObject):
+
+class EcucValueCollection(ARElement):
     """AUTOSAR EcucValueCollection."""
 
+    ecuc_values: list[Any]
+    ecu_extract: Optional[System]
     def __init__(self) -> None:
         """Initialize EcucValueCollection."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucValueCollection to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCVALUECOLLECTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucValueCollection":
-        """Create EcucValueCollection from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucValueCollection instance
-        """
-        obj: EcucValueCollection = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecuc_values: list[Any] = []
+        self.ecu_extract: Optional[System] = None
 
 
 class EcucValueCollectionBuilder:

@@ -1,41 +1,44 @@
-"""SenderReceiverAnnotation AUTOSAR element."""
+"""SenderReceiverAnnotation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 152)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ApplicationAttributes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
+    GeneralAnnotation,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
+    DataLimitKindEnum,
+    ProcessingKindEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
+    VariableDataPrototype,
+)
 
-class SenderReceiverAnnotation(ARObject):
+
+class SenderReceiverAnnotation(GeneralAnnotation):
     """AUTOSAR SenderReceiverAnnotation."""
+    """Abstract base class - do not instantiate directly."""
 
+    computed: Optional[Boolean]
+    data_element: Optional[VariableDataPrototype]
+    limit_kind: Optional[DataLimitKindEnum]
+    processing_kind_enum: Optional[ProcessingKindEnum]
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderReceiverAnnotation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECEIVERANNOTATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderReceiverAnnotation":
-        """Create SenderReceiverAnnotation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderReceiverAnnotation instance
-        """
-        obj: SenderReceiverAnnotation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.computed: Optional[Boolean] = None
+        self.data_element: Optional[VariableDataPrototype] = None
+        self.limit_kind: Optional[DataLimitKindEnum] = None
+        self.processing_kind_enum: Optional[ProcessingKindEnum] = None
 
 
 class SenderReceiverAnnotationBuilder:

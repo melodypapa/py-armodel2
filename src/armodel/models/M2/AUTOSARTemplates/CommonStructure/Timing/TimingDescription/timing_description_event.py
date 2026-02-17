@@ -1,41 +1,33 @@
-"""TimingDescriptionEvent AUTOSAR element."""
+"""TimingDescriptionEvent AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 253)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
+    TimingDescription,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
+    TimingClock,
+)
 
-class TimingDescriptionEvent(ARObject):
+
+class TimingDescriptionEvent(TimingDescription):
     """AUTOSAR TimingDescriptionEvent."""
+    """Abstract base class - do not instantiate directly."""
 
+    clock_reference: Optional[TimingClock]
+    occurrence: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingDescriptionEvent."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingDescriptionEvent to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGDESCRIPTIONEVENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingDescriptionEvent":
-        """Create TimingDescriptionEvent from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingDescriptionEvent instance
-        """
-        obj: TimingDescriptionEvent = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.clock_reference: Optional[TimingClock] = None
+        self.occurrence: Optional[Any] = None
 
 
 class TimingDescriptionEventBuilder:

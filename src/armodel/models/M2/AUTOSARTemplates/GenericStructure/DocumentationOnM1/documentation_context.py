@@ -1,41 +1,35 @@
-"""DocumentationContext AUTOSAR element."""
+"""DocumentationContext AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 327)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_DocumentationOnM1.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
+    MultilanguageReferrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
+    AtpFeature,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class DocumentationContext(ARObject):
+
+class DocumentationContext(MultilanguageReferrable):
     """AUTOSAR DocumentationContext."""
 
+    feature: Optional[AtpFeature]
+    identifiable: Optional[Identifiable]
     def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DocumentationContext to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DOCUMENTATIONCONTEXT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DocumentationContext":
-        """Create DocumentationContext from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DocumentationContext instance
-        """
-        obj: DocumentationContext = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.feature: Optional[AtpFeature] = None
+        self.identifiable: Optional[Identifiable] = None
 
 
 class DocumentationContextBuilder:

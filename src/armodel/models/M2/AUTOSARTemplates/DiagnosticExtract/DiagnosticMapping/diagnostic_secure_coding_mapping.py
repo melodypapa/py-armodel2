@@ -1,41 +1,32 @@
-"""DiagnosticSecureCodingMapping AUTOSAR element."""
+"""DiagnosticSecureCodingMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 312)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_start_routine import (
+    DiagnosticStartRoutine,
+)
 
-class DiagnosticSecureCodingMapping(ARObject):
+
+class DiagnosticSecureCodingMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticSecureCodingMapping."""
 
+    data_identifiers: list[Any]
+    validation: Optional[DiagnosticStartRoutine]
     def __init__(self) -> None:
         """Initialize DiagnosticSecureCodingMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticSecureCodingMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICSECURECODINGMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticSecureCodingMapping":
-        """Create DiagnosticSecureCodingMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticSecureCodingMapping instance
-        """
-        obj: DiagnosticSecureCodingMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.data_identifiers: list[Any] = []
+        self.validation: Optional[DiagnosticStartRoutine] = None
 
 
 class DiagnosticSecureCodingMappingBuilder:

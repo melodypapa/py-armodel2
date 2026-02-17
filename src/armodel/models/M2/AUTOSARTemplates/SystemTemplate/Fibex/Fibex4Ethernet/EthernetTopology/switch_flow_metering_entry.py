@@ -1,41 +1,44 @@
-"""SwitchFlowMeteringEntry AUTOSAR element."""
+"""SwitchFlowMeteringEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 143)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
+    FlowMeteringColorModeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
 
-class SwitchFlowMeteringEntry(ARObject):
+
+class SwitchFlowMeteringEntry(Identifiable):
     """AUTOSAR SwitchFlowMeteringEntry."""
 
+    color_mode: Optional[FlowMeteringColorModeEnum]
+    committed_burst: Optional[PositiveInteger]
+    committed: Optional[PositiveInteger]
+    coupling_flag: Optional[Boolean]
+    excess_burst: Optional[PositiveInteger]
+    excess: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SwitchFlowMeteringEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwitchFlowMeteringEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWITCHFLOWMETERINGENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchFlowMeteringEntry":
-        """Create SwitchFlowMeteringEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchFlowMeteringEntry instance
-        """
-        obj: SwitchFlowMeteringEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.color_mode: Optional[FlowMeteringColorModeEnum] = None
+        self.committed_burst: Optional[PositiveInteger] = None
+        self.committed: Optional[PositiveInteger] = None
+        self.coupling_flag: Optional[Boolean] = None
+        self.excess_burst: Optional[PositiveInteger] = None
+        self.excess: Optional[PositiveInteger] = None
 
 
 class SwitchFlowMeteringEntryBuilder:

@@ -1,41 +1,50 @@
-"""SwitchStreamFilterEntry AUTOSAR element."""
+"""SwitchStreamFilterEntry AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 141)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port import (
+    CouplingPort,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_flow_metering_entry import (
+    SwitchFlowMeteringEntry,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_stream_gate_entry import (
+    SwitchStreamGateEntry,
+)
 
-class SwitchStreamFilterEntry(ARObject):
+
+class SwitchStreamFilterEntry(Identifiable):
     """AUTOSAR SwitchStreamFilterEntry."""
 
+    asynchronous: Optional[CouplingPort]
+    filter_priority: Optional[PositiveInteger]
+    flow_metering: Optional[SwitchFlowMeteringEntry]
+    max_sdu_size: Optional[PositiveInteger]
+    stream_gate: Optional[SwitchStreamGateEntry]
+    stream: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterEntry."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SwitchStreamFilterEntry to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SWITCHSTREAMFILTERENTRY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwitchStreamFilterEntry":
-        """Create SwitchStreamFilterEntry from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SwitchStreamFilterEntry instance
-        """
-        obj: SwitchStreamFilterEntry = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.asynchronous: Optional[CouplingPort] = None
+        self.filter_priority: Optional[PositiveInteger] = None
+        self.flow_metering: Optional[SwitchFlowMeteringEntry] = None
+        self.max_sdu_size: Optional[PositiveInteger] = None
+        self.stream_gate: Optional[SwitchStreamGateEntry] = None
+        self.stream: Optional[Boolean] = None
 
 
 class SwitchStreamFilterEntryBuilder:

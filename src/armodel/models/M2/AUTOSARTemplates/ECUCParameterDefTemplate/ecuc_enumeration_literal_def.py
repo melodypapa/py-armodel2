@@ -1,41 +1,32 @@
-"""EcucEnumerationLiteralDef AUTOSAR element."""
+"""EcucEnumerationLiteralDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 67)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class EcucEnumerationLiteralDef(ARObject):
+
+class EcucEnumerationLiteralDef(Identifiable):
     """AUTOSAR EcucEnumerationLiteralDef."""
 
+    ecuc_cond: Optional[Any]
+    origin: Optional[String]
     def __init__(self) -> None:
         """Initialize EcucEnumerationLiteralDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert EcucEnumerationLiteralDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ECUCENUMERATIONLITERALDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucEnumerationLiteralDef":
-        """Create EcucEnumerationLiteralDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            EcucEnumerationLiteralDef instance
-        """
-        obj: EcucEnumerationLiteralDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.ecuc_cond: Optional[Any] = None
+        self.origin: Optional[String] = None
 
 
 class EcucEnumerationLiteralDefBuilder:

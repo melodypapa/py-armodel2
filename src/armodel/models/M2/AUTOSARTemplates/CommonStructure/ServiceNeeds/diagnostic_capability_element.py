@@ -1,41 +1,40 @@
-"""DiagnosticCapabilityElement AUTOSAR element."""
+"""DiagnosticCapabilityElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 236)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 753)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
+    ServiceNeeds,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    DiagnosticAudienceEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    DiagRequirementIdString,
+    PositiveInteger,
+)
 
-class DiagnosticCapabilityElement(ARObject):
+
+class DiagnosticCapabilityElement(ServiceNeeds):
     """AUTOSAR DiagnosticCapabilityElement."""
+    """Abstract base class - do not instantiate directly."""
 
+    audiences: list[DiagnosticAudienceEnum]
+    diag: Optional[DiagRequirementIdString]
+    security_access: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticCapabilityElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticCapabilityElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICCAPABILITYELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticCapabilityElement":
-        """Create DiagnosticCapabilityElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticCapabilityElement instance
-        """
-        obj: DiagnosticCapabilityElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.audiences: list[DiagnosticAudienceEnum] = []
+        self.diag: Optional[DiagRequirementIdString] = None
+        self.security_access: Optional[PositiveInteger] = None
 
 
 class DiagnosticCapabilityElementBuilder:

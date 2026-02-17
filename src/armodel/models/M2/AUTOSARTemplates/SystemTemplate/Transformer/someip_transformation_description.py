@@ -1,41 +1,37 @@
-"""SOMEIPTransformationDescription AUTOSAR element."""
+"""SOMEIPTransformationDescription AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 777)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import (
+    TransformationDescription,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    ByteOrderEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
-class SOMEIPTransformationDescription(ARObject):
+
+class SOMEIPTransformationDescription(TransformationDescription):
     """AUTOSAR SOMEIPTransformationDescription."""
 
+    alignment: Optional[PositiveInteger]
+    byte_order: Optional[ByteOrderEnum]
+    interface_version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationDescription."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SOMEIPTransformationDescription to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPTRANSFORMATIONDESCRIPTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationDescription":
-        """Create SOMEIPTransformationDescription from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SOMEIPTransformationDescription instance
-        """
-        obj: SOMEIPTransformationDescription = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.alignment: Optional[PositiveInteger] = None
+        self.byte_order: Optional[ByteOrderEnum] = None
+        self.interface_version: Optional[PositiveInteger] = None
 
 
 class SOMEIPTransformationDescriptionBuilder:

@@ -1,41 +1,25 @@
-"""UnresolvedReferenceRestrictionWithSeverity AUTOSAR element."""
+"""UnresolvedReferenceRestrictionWithSeverity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
+    RestrictionWithSeverity,
+)
 
-class UnresolvedReferenceRestrictionWithSeverity(ARObject):
+
+class UnresolvedReferenceRestrictionWithSeverity(RestrictionWithSeverity):
     """AUTOSAR UnresolvedReferenceRestrictionWithSeverity."""
 
     def __init__(self) -> None:
         """Initialize UnresolvedReferenceRestrictionWithSeverity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert UnresolvedReferenceRestrictionWithSeverity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("UNRESOLVEDREFERENCERESTRICTIONWITHSEVERITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "UnresolvedReferenceRestrictionWithSeverity":
-        """Create UnresolvedReferenceRestrictionWithSeverity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            UnresolvedReferenceRestrictionWithSeverity instance
-        """
-        obj: UnresolvedReferenceRestrictionWithSeverity = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class UnresolvedReferenceRestrictionWithSeverityBuilder:
@@ -43,9 +27,7 @@ class UnresolvedReferenceRestrictionWithSeverityBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: UnresolvedReferenceRestrictionWithSeverity = (
-            UnresolvedReferenceRestrictionWithSeverity()
-        )
+        self._obj: UnresolvedReferenceRestrictionWithSeverity = UnresolvedReferenceRestrictionWithSeverity()
 
     def build(self) -> UnresolvedReferenceRestrictionWithSeverity:
         """Build and return UnresolvedReferenceRestrictionWithSeverity object.

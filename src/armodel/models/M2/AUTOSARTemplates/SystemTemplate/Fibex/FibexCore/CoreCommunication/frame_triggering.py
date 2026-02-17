@@ -1,41 +1,43 @@
-"""FrameTriggering AUTOSAR element."""
+"""FrameTriggering AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 295)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 418)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 224)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame import (
+    Frame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_port import (
+    FramePort,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
+    PduTriggering,
+)
 
-class FrameTriggering(ARObject):
+
+class FrameTriggering(Identifiable):
     """AUTOSAR FrameTriggering."""
+    """Abstract base class - do not instantiate directly."""
 
+    frame: Optional[Frame]
+    frame_ports: list[FramePort]
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FrameTriggering to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FRAMETRIGGERING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FrameTriggering":
-        """Create FrameTriggering from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FrameTriggering instance
-        """
-        obj: FrameTriggering = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.frame: Optional[Frame] = None
+        self.frame_ports: list[FramePort] = []
+        self.pdu_triggerings: list[PduTriggering] = []
 
 
 class FrameTriggeringBuilder:

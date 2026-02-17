@@ -1,41 +1,29 @@
-"""MappingConstraint AUTOSAR element."""
+"""MappingConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 202)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+    DocumentationBlock,
+)
 
 
 class MappingConstraint(ARObject):
     """AUTOSAR MappingConstraint."""
+    """Abstract base class - do not instantiate directly."""
 
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize MappingConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert MappingConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MAPPINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MappingConstraint":
-        """Create MappingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            MappingConstraint instance
-        """
-        obj: MappingConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.introduction: Optional[DocumentationBlock] = None
 
 
 class MappingConstraintBuilder:

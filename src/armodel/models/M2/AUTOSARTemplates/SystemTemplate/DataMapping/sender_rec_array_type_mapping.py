@@ -1,41 +1,34 @@
-"""SenderRecArrayTypeMapping AUTOSAR element."""
+"""SenderRecArrayTypeMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
+    SenderRecCompositeTypeMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
+    TextTableMapping,
+)
 
-class SenderRecArrayTypeMapping(ARObject):
+
+class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
     """AUTOSAR SenderRecArrayTypeMapping."""
 
+    array_elements: list[Any]
+    sender_to_signal: Optional[TextTableMapping]
+    signal_to: Optional[TextTableMapping]
     def __init__(self) -> None:
         """Initialize SenderRecArrayTypeMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SenderRecArrayTypeMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SENDERRECARRAYTYPEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SenderRecArrayTypeMapping":
-        """Create SenderRecArrayTypeMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SenderRecArrayTypeMapping instance
-        """
-        obj: SenderRecArrayTypeMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.array_elements: list[Any] = []
+        self.sender_to_signal: Optional[TextTableMapping] = None
+        self.signal_to: Optional[TextTableMapping] = None
 
 
 class SenderRecArrayTypeMappingBuilder:

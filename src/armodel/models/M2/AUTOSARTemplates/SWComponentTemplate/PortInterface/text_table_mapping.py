@@ -1,41 +1,42 @@
-"""TextTableMapping AUTOSAR element."""
+"""TextTableMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 145)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 230)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import (
+    MappingDirectionEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_value_pair import (
+    TextTableValuePair,
+)
 
 
 class TextTableMapping(ARObject):
     """AUTOSAR TextTableMapping."""
 
+    bitfield_text_table: Optional[PositiveInteger]
+    identical: Optional[Boolean]
+    mapping: Optional[MappingDirectionEnum]
+    value_pairs: list[TextTableValuePair]
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TextTableMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TEXTTABLEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TextTableMapping":
-        """Create TextTableMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TextTableMapping instance
-        """
-        obj: TextTableMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.bitfield_text_table: Optional[PositiveInteger] = None
+        self.identical: Optional[Boolean] = None
+        self.mapping: Optional[MappingDirectionEnum] = None
+        self.value_pairs: list[TextTableValuePair] = []
 
 
 class TextTableMappingBuilder:

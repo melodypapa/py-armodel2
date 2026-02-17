@@ -1,41 +1,27 @@
-"""FibexElement AUTOSAR element."""
+"""FibexElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2026)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 445)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
+    PackageableElement,
+)
 
-class FibexElement(ARObject):
+
+class FibexElement(PackageableElement):
     """AUTOSAR FibexElement."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize FibexElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FibexElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FIBEXELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FibexElement":
-        """Create FibexElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FibexElement instance
-        """
-        obj: FibexElement = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class FibexElementBuilder:

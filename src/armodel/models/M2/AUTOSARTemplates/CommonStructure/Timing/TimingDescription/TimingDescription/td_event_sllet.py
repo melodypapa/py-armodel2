@@ -1,41 +1,26 @@
-"""TDEventSLLET AUTOSAR element."""
+"""TDEventSLLET AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 251)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
+    TimingDescriptionEvent,
+)
 
-class TDEventSLLET(ARObject):
+
+class TDEventSLLET(TimingDescriptionEvent):
     """AUTOSAR TDEventSLLET."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize TDEventSLLET."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TDEventSLLET to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TDEVENTSLLET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TDEventSLLET":
-        """Create TDEventSLLET from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TDEventSLLET instance
-        """
-        obj: TDEventSLLET = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class TDEventSLLETBuilder:

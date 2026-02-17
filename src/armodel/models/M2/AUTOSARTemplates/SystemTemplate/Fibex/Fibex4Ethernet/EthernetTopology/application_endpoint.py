@@ -1,41 +1,51 @@
-"""ApplicationEndpoint AUTOSAR element."""
+"""ApplicationEndpoint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 457)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
+    NetworkEndpoint,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_crypto_service_mapping import (
+    TlsCryptoServiceMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
+    TransportProtocolConfiguration,
+)
 
-class ApplicationEndpoint(ARObject):
+
+class ApplicationEndpoint(Identifiable):
     """AUTOSAR ApplicationEndpoint."""
 
+    consumed_services: list[Any]
+    max_number_of: Optional[PositiveInteger]
+    network_endpoint_endpoint: Optional[NetworkEndpoint]
+    priority: Optional[PositiveInteger]
+    provided_services: list[Any]
+    tls_crypto_service: Optional[TlsCryptoServiceMapping]
+    tp_configuration_configuration: Optional[TransportProtocolConfiguration]
     def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ApplicationEndpoint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("APPLICATIONENDPOINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ApplicationEndpoint":
-        """Create ApplicationEndpoint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ApplicationEndpoint instance
-        """
-        obj: ApplicationEndpoint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.consumed_services: list[Any] = []
+        self.max_number_of: Optional[PositiveInteger] = None
+        self.network_endpoint_endpoint: Optional[NetworkEndpoint] = None
+        self.priority: Optional[PositiveInteger] = None
+        self.provided_services: list[Any] = []
+        self.tls_crypto_service: Optional[TlsCryptoServiceMapping] = None
+        self.tp_configuration_configuration: Optional[TransportProtocolConfiguration] = None
 
 
 class ApplicationEndpointBuilder:

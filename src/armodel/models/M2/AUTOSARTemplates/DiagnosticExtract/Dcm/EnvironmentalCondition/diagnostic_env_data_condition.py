@@ -1,41 +1,35 @@
-"""DiagnosticEnvDataCondition AUTOSAR element."""
+"""DiagnosticEnvDataCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 84)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_EnvironmentalCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_compare_condition import (
+    DiagnosticEnvCompareCondition,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+    ValueSpecification,
+)
 
-class DiagnosticEnvDataCondition(ARObject):
+
+class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):
     """AUTOSAR DiagnosticEnvDataCondition."""
 
+    compare_value: Optional[ValueSpecification]
+    data_element: Optional[DiagnosticDataElement]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvDataCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEnvDataCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICENVDATACONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvDataCondition":
-        """Create DiagnosticEnvDataCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnvDataCondition instance
-        """
-        obj: DiagnosticEnvDataCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.compare_value: Optional[ValueSpecification] = None
+        self.data_element: Optional[DiagnosticDataElement] = None
 
 
 class DiagnosticEnvDataConditionBuilder:

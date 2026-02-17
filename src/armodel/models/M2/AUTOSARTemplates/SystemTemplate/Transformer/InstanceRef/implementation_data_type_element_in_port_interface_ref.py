@@ -1,41 +1,37 @@
-"""ImplementationDataTypeElementInPortInterfaceRef AUTOSAR element."""
+"""ImplementationDataTypeElementInPortInterfaceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 789)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer_InstanceRef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
+    DataPrototypeReference,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+    AbstractImplementationDataType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
+    AutosarDataPrototype,
+)
 
-class ImplementationDataTypeElementInPortInterfaceRef(ARObject):
+
+class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR ImplementationDataTypeElementInPortInterfaceRef."""
 
+    contexts: list[Any]
+    root_data: Optional[AutosarDataPrototype]
+    target: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElementInPortInterfaceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ImplementationDataTypeElementInPortInterfaceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATIONDATATYPEELEMENTINPORTINTERFACEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElementInPortInterfaceRef":
-        """Create ImplementationDataTypeElementInPortInterfaceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationDataTypeElementInPortInterfaceRef instance
-        """
-        obj: ImplementationDataTypeElementInPortInterfaceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.contexts: list[Any] = []
+        self.root_data: Optional[AutosarDataPrototype] = None
+        self.target: Optional[AbstractImplementationDataType] = None
 
 
 class ImplementationDataTypeElementInPortInterfaceRefBuilder:
@@ -43,9 +39,7 @@ class ImplementationDataTypeElementInPortInterfaceRefBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: ImplementationDataTypeElementInPortInterfaceRef = (
-            ImplementationDataTypeElementInPortInterfaceRef()
-        )
+        self._obj: ImplementationDataTypeElementInPortInterfaceRef = ImplementationDataTypeElementInPortInterfaceRef()
 
     def build(self) -> ImplementationDataTypeElementInPortInterfaceRef:
         """Build and return ImplementationDataTypeElementInPortInterfaceRef object.

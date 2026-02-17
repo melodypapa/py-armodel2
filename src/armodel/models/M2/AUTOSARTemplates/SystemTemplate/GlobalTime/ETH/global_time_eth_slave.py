@@ -1,41 +1,27 @@
-"""GlobalTimeEthSlave AUTOSAR element."""
+"""GlobalTimeEthSlave AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 867)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_ETH.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_slave import (
+    GlobalTimeSlave,
+)
 
-class GlobalTimeEthSlave(ARObject):
+
+class GlobalTimeEthSlave(GlobalTimeSlave):
     """AUTOSAR GlobalTimeEthSlave."""
 
+    crc_validated: Optional[Any]
     def __init__(self) -> None:
         """Initialize GlobalTimeEthSlave."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeEthSlave to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMEETHSLAVE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeEthSlave":
-        """Create GlobalTimeEthSlave from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeEthSlave instance
-        """
-        obj: GlobalTimeEthSlave = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.crc_validated: Optional[Any] = None
 
 
 class GlobalTimeEthSlaveBuilder:

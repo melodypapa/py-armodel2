@@ -1,41 +1,43 @@
-"""RapidPrototypingScenario AUTOSAR element."""
+"""RapidPrototypingScenario AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 327)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 846)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_container import (
+    RptContainer,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_profile import (
+    RptProfile,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
+    System,
+)
 
-class RapidPrototypingScenario(ARObject):
+
+class RapidPrototypingScenario(ARElement):
     """AUTOSAR RapidPrototypingScenario."""
 
+    host_system: Optional[System]
+    rpt_containers: list[RptContainer]
+    rpt_profiles: list[RptProfile]
+    rpt_system: Optional[System]
     def __init__(self) -> None:
         """Initialize RapidPrototypingScenario."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert RapidPrototypingScenario to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("RAPIDPROTOTYPINGSCENARIO")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "RapidPrototypingScenario":
-        """Create RapidPrototypingScenario from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            RapidPrototypingScenario instance
-        """
-        obj: RapidPrototypingScenario = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.host_system: Optional[System] = None
+        self.rpt_containers: list[RptContainer] = []
+        self.rpt_profiles: list[RptProfile] = []
+        self.rpt_system: Optional[System] = None
 
 
 class RapidPrototypingScenarioBuilder:

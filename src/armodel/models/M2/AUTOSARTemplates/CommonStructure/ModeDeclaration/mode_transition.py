@@ -1,41 +1,33 @@
-"""ModeTransition AUTOSAR element."""
+"""ModeTransition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 43)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 630)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
 
-class ModeTransition(ARObject):
+
+class ModeTransition(Identifiable):
     """AUTOSAR ModeTransition."""
 
+    entered_mode: Optional[ModeDeclaration]
+    exited_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeTransition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeTransition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODETRANSITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeTransition":
-        """Create ModeTransition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeTransition instance
-        """
-        obj: ModeTransition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.entered_mode: Optional[ModeDeclaration] = None
+        self.exited_mode: Optional[ModeDeclaration] = None
 
 
 class ModeTransitionBuilder:

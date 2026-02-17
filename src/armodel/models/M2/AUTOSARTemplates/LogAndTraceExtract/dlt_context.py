@@ -1,41 +1,38 @@
-"""DltContext AUTOSAR element."""
+"""DltContext AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2017)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 9)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
+    DltMessage,
+)
 
-class DltContext(ARObject):
+
+class DltContext(ARElement):
     """AUTOSAR DltContext."""
 
+    context: Optional[String]
+    context_id: Optional[String]
+    dlt_messages: list[DltMessage]
     def __init__(self) -> None:
         """Initialize DltContext."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltContext to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTCONTEXT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltContext":
-        """Create DltContext from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltContext instance
-        """
-        obj: DltContext = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.context: Optional[String] = None
+        self.context_id: Optional[String] = None
+        self.dlt_messages: list[DltMessage] = []
 
 
 class DltContextBuilder:

@@ -1,41 +1,35 @@
-"""CpSwClusterResourceToDiagDataElemMapping AUTOSAR element."""
+"""CpSwClusterResourceToDiagDataElemMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 273)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_CpSoftwareCluster.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
+    CpSoftwareCluster,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
+    DiagnosticDataElement,
+)
 
-class CpSwClusterResourceToDiagDataElemMapping(ARObject):
+
+class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterResourceToDiagDataElemMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    diagnostic_data: Optional[DiagnosticDataElement]
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagDataElemMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert CpSwClusterResourceToDiagDataElemMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CPSWCLUSTERRESOURCETODIAGDATAELEMMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "CpSwClusterResourceToDiagDataElemMapping":
-        """Create CpSwClusterResourceToDiagDataElemMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            CpSwClusterResourceToDiagDataElemMapping instance
-        """
-        obj: CpSwClusterResourceToDiagDataElemMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
+        self.diagnostic_data: Optional[DiagnosticDataElement] = None
 
 
 class CpSwClusterResourceToDiagDataElemMappingBuilder:
@@ -43,9 +37,7 @@ class CpSwClusterResourceToDiagDataElemMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: CpSwClusterResourceToDiagDataElemMapping = (
-            CpSwClusterResourceToDiagDataElemMapping()
-        )
+        self._obj: CpSwClusterResourceToDiagDataElemMapping = CpSwClusterResourceToDiagDataElemMapping()
 
     def build(self) -> CpSwClusterResourceToDiagDataElemMapping:
         """Build and return CpSwClusterResourceToDiagDataElemMapping object.

@@ -1,41 +1,38 @@
-"""ModeInBswModuleDescriptionInstanceRef AUTOSAR element."""
+"""ModeInBswModuleDescriptionInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 323)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswOverview_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
+    BswModuleDescription,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
+    ModeDeclaration,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
+    ModeDeclarationGroup,
+)
 
 
 class ModeInBswModuleDescriptionInstanceRef(ARObject):
     """AUTOSAR ModeInBswModuleDescriptionInstanceRef."""
 
+    base: Optional[BswModuleDescription]
+    context_mode_group: Optional[ModeDeclarationGroup]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInBswModuleDescriptionInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ModeInBswModuleDescriptionInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("MODEINBSWMODULEDESCRIPTIONINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ModeInBswModuleDescriptionInstanceRef":
-        """Create ModeInBswModuleDescriptionInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ModeInBswModuleDescriptionInstanceRef instance
-        """
-        obj: ModeInBswModuleDescriptionInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.base: Optional[BswModuleDescription] = None
+        self.context_mode_group: Optional[ModeDeclarationGroup] = None
+        self.target_mode: Optional[ModeDeclaration] = None
 
 
 class ModeInBswModuleDescriptionInstanceRefBuilder:

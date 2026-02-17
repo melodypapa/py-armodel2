@@ -1,41 +1,44 @@
-"""J1939NodeName AUTOSAR element."""
+"""J1939NodeName AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 691)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Integer,
+)
 
 
 class J1939NodeName(ARObject):
     """AUTOSAR J1939NodeName."""
 
+    arbitrary_address: Optional[Any]
+    ecu_instance: Optional[Integer]
+    function: Optional[Integer]
+    function_instance: Optional[Integer]
+    identitiy_number: Optional[Integer]
+    industry_group: Optional[Integer]
+    manufacturer_code: Optional[Integer]
+    vehicle_system: Optional[Integer]
+    vehicle_system_instance: Optional[Integer]
     def __init__(self) -> None:
         """Initialize J1939NodeName."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert J1939NodeName to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("J1939NODENAME")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "J1939NodeName":
-        """Create J1939NodeName from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            J1939NodeName instance
-        """
-        obj: J1939NodeName = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.arbitrary_address: Optional[Any] = None
+        self.ecu_instance: Optional[Integer] = None
+        self.function: Optional[Integer] = None
+        self.function_instance: Optional[Integer] = None
+        self.identitiy_number: Optional[Integer] = None
+        self.industry_group: Optional[Integer] = None
+        self.manufacturer_code: Optional[Integer] = None
+        self.vehicle_system: Optional[Integer] = None
+        self.vehicle_system_instance: Optional[Integer] = None
 
 
 class J1939NodeNameBuilder:

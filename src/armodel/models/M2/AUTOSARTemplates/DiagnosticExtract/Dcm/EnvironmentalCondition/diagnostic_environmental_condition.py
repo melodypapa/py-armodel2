@@ -1,41 +1,29 @@
-"""DiagnosticEnvironmentalCondition AUTOSAR element."""
+"""DiagnosticEnvironmentalCondition AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 79)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_EnvironmentalCondition.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
+    DiagnosticCommonElement,
+)
 
-class DiagnosticEnvironmentalCondition(ARObject):
+
+class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEnvironmentalCondition."""
 
+    formula: Optional[Any]
+    mode_elements: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvironmentalCondition."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticEnvironmentalCondition to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICENVIRONMENTALCONDITION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvironmentalCondition":
-        """Create DiagnosticEnvironmentalCondition from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticEnvironmentalCondition instance
-        """
-        obj: DiagnosticEnvironmentalCondition = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.formula: Optional[Any] = None
+        self.mode_elements: list[Any] = []
 
 
 class DiagnosticEnvironmentalConditionBuilder:

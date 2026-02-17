@@ -1,41 +1,36 @@
-"""BswInterruptEntity AUTOSAR element."""
+"""BswInterruptEntity AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 75)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 212)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
+    BswModuleEntity,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior import (
+    BswInterruptCategory,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
 
-class BswInterruptEntity(ARObject):
+
+class BswInterruptEntity(BswModuleEntity):
     """AUTOSAR BswInterruptEntity."""
 
+    interrupt_category: Optional[BswInterruptCategory]
+    interrupt_source: Optional[String]
     def __init__(self) -> None:
         """Initialize BswInterruptEntity."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert BswInterruptEntity to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("BSWINTERRUPTENTITY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "BswInterruptEntity":
-        """Create BswInterruptEntity from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            BswInterruptEntity instance
-        """
-        obj: BswInterruptEntity = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.interrupt_category: Optional[BswInterruptCategory] = None
+        self.interrupt_source: Optional[String] = None
 
 
 class BswInterruptEntityBuilder:

@@ -1,41 +1,35 @@
-"""SomeipTpChannel AUTOSAR element."""
+"""SomeipTpChannel AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 620)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
-class SomeipTpChannel(ARObject):
+
+class SomeipTpChannel(Identifiable):
     """AUTOSAR SomeipTpChannel."""
 
+    burst_size: Optional[PositiveInteger]
+    rx_timeout_time: Optional[TimeValue]
+    separation_time: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize SomeipTpChannel."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SomeipTpChannel to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SOMEIPTPCHANNEL")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SomeipTpChannel":
-        """Create SomeipTpChannel from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SomeipTpChannel instance
-        """
-        obj: SomeipTpChannel = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.burst_size: Optional[PositiveInteger] = None
+        self.rx_timeout_time: Optional[TimeValue] = None
+        self.separation_time: Optional[TimeValue] = None
 
 
 class SomeipTpChannelBuilder:

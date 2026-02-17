@@ -1,41 +1,40 @@
-"""DltConfig AUTOSAR element."""
+"""DltConfig AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 722)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Dlt.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_ecu import (
+    DltEcu,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt.dlt_log_channel import (
+    DltLogChannel,
+)
 
 
 class DltConfig(ARObject):
     """AUTOSAR DltConfig."""
 
+    dlt_ecu: Optional[DltEcu]
+    dlt_log_channels: list[DltLogChannel]
+    session_id: Optional[Boolean]
+    timestamp: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DltConfig."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DltConfig to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DLTCONFIG")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DltConfig":
-        """Create DltConfig from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DltConfig instance
-        """
-        obj: DltConfig = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dlt_ecu: Optional[DltEcu] = None
+        self.dlt_log_channels: list[DltLogChannel] = []
+        self.session_id: Optional[Boolean] = None
+        self.timestamp: Optional[Boolean] = None
 
 
 class DltConfigBuilder:

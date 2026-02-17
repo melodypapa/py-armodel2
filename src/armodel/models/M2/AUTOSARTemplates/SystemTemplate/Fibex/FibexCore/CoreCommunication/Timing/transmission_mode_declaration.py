@@ -1,41 +1,30 @@
-"""TransmissionModeDeclaration AUTOSAR element."""
+"""TransmissionModeDeclaration AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 392)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication_Timing.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.mode_driven_transmission_mode_condition import (
+    ModeDrivenTransmissionModeCondition,
+)
 
 
 class TransmissionModeDeclaration(ARObject):
     """AUTOSAR TransmissionModeDeclaration."""
 
+    mode_drivens: list[ModeDrivenTransmissionModeCondition]
+    transmission: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransmissionModeDeclaration."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TransmissionModeDeclaration to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TRANSMISSIONMODEDECLARATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TransmissionModeDeclaration":
-        """Create TransmissionModeDeclaration from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TransmissionModeDeclaration instance
-        """
-        obj: TransmissionModeDeclaration = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.mode_drivens: list[ModeDrivenTransmissionModeCondition] = []
+        self.transmission: Optional[Any] = None
 
 
 class TransmissionModeDeclarationBuilder:

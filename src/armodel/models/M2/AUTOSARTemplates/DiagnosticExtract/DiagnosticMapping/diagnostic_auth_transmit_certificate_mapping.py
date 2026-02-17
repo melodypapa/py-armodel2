@@ -1,41 +1,29 @@
-"""DiagnosticAuthTransmitCertificateMapping AUTOSAR element."""
+"""DiagnosticAuthTransmitCertificateMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 242)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
 
-class DiagnosticAuthTransmitCertificateMapping(ARObject):
+
+class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticAuthTransmitCertificateMapping."""
 
+    crypto_services: list[Any]
+    service_instance: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticAuthTransmitCertificateMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICAUTHTRANSMITCERTIFICATEMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificateMapping":
-        """Create DiagnosticAuthTransmitCertificateMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticAuthTransmitCertificateMapping instance
-        """
-        obj: DiagnosticAuthTransmitCertificateMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.crypto_services: list[Any] = []
+        self.service_instance: Optional[Any] = None
 
 
 class DiagnosticAuthTransmitCertificateMappingBuilder:
@@ -43,9 +31,7 @@ class DiagnosticAuthTransmitCertificateMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticAuthTransmitCertificateMapping = (
-            DiagnosticAuthTransmitCertificateMapping()
-        )
+        self._obj: DiagnosticAuthTransmitCertificateMapping = DiagnosticAuthTransmitCertificateMapping()
 
     def build(self) -> DiagnosticAuthTransmitCertificateMapping:
         """Build and return DiagnosticAuthTransmitCertificateMapping object.

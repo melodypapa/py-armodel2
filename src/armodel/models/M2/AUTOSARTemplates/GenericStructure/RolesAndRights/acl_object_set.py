@@ -1,41 +1,51 @@
-"""AclObjectSet AUTOSAR element."""
+"""AclObjectSet AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 383)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_RolesAndRights.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights import (
+    AclScopeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    ReferrableSubtypesEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.atp_blueprint import (
+    AtpBlueprint,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
+    AutosarEngineeringObject,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collection import (
+    Collection,
+)
 
-class AclObjectSet(ARObject):
+
+class AclObjectSet(ARElement):
     """AUTOSAR AclObjectSet."""
 
+    acl_object_classes: list[ReferrableSubtypesEnum]
+    acl_scope: AclScopeEnum
+    collection: Optional[Collection]
+    derived_froms: list[AtpBlueprint]
+    engineerings: list[AutosarEngineeringObject]
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert AclObjectSet to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("ACLOBJECTSET")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "AclObjectSet":
-        """Create AclObjectSet from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            AclObjectSet instance
-        """
-        obj: AclObjectSet = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.acl_object_classes: list[ReferrableSubtypesEnum] = []
+        self.acl_scope: AclScopeEnum = None
+        self.collection: Optional[Collection] = None
+        self.derived_froms: list[AtpBlueprint] = []
+        self.engineerings: list[AutosarEngineeringObject] = []
 
 
 class AclObjectSetBuilder:

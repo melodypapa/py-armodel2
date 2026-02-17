@@ -1,41 +1,27 @@
-"""IEEE1722TpAcfCan AUTOSAR element."""
+"""IEEE1722TpAcfCan AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
+    IEEE1722TpAcfBus,
+)
 
-class IEEE1722TpAcfCan(ARObject):
+
+class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfCan."""
 
+    message_type_message_type_enum: Optional[IEEE1722TpAcfCan]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IEEE1722TpAcfCan to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TPACFCAN")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfCan":
-        """Create IEEE1722TpAcfCan from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IEEE1722TpAcfCan instance
-        """
-        obj: IEEE1722TpAcfCan = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.message_type_message_type_enum: Optional[IEEE1722TpAcfCan] = None
 
 
 class IEEE1722TpAcfCanBuilder:

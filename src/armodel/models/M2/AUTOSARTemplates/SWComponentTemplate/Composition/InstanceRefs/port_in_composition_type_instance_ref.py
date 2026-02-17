@@ -1,41 +1,36 @@
-"""PortInCompositionTypeInstanceRef AUTOSAR element."""
+"""PortInCompositionTypeInstanceRef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 950)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition_InstanceRefs.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
+    CompositionSwComponentType,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+    PortPrototype,
+)
 
 
 class PortInCompositionTypeInstanceRef(ARObject):
     """AUTOSAR PortInCompositionTypeInstanceRef."""
+    """Abstract base class - do not instantiate directly."""
 
+    abstract_context: Optional[Any]
+    base: Optional[CompositionSwComponentType]
+    target_port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize PortInCompositionTypeInstanceRef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert PortInCompositionTypeInstanceRef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("PORTINCOMPOSITIONTYPEINSTANCEREF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "PortInCompositionTypeInstanceRef":
-        """Create PortInCompositionTypeInstanceRef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            PortInCompositionTypeInstanceRef instance
-        """
-        obj: PortInCompositionTypeInstanceRef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.abstract_context: Optional[Any] = None
+        self.base: Optional[CompositionSwComponentType] = None
+        self.target_port: Optional[PortPrototype] = None
 
 
 class PortInCompositionTypeInstanceRefBuilder:

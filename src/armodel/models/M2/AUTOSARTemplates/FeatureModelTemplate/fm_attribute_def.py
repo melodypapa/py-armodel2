@@ -1,41 +1,35 @@
-"""FMAttributeDef AUTOSAR element."""
+"""FMAttributeDef AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 26)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Limit,
+    Numerical,
+)
 
-class FMAttributeDef(ARObject):
+
+class FMAttributeDef(Identifiable):
     """AUTOSAR FMAttributeDef."""
 
+    default_value: Optional[Numerical]
+    max: Optional[Limit]
+    min: Optional[Limit]
     def __init__(self) -> None:
         """Initialize FMAttributeDef."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert FMAttributeDef to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("FMATTRIBUTEDEF")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "FMAttributeDef":
-        """Create FMAttributeDef from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            FMAttributeDef instance
-        """
-        obj: FMAttributeDef = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.default_value: Optional[Numerical] = None
+        self.max: Optional[Limit] = None
+        self.min: Optional[Limit] = None
 
 
 class FMAttributeDefBuilder:

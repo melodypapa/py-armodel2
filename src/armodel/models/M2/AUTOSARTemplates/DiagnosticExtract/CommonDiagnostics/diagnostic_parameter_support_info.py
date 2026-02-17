@@ -1,41 +1,28 @@
-"""DiagnosticParameterSupportInfo AUTOSAR element."""
+"""DiagnosticParameterSupportInfo AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 149)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+)
 
 
 class DiagnosticParameterSupportInfo(ARObject):
     """AUTOSAR DiagnosticParameterSupportInfo."""
 
+    support_info_bit: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterSupportInfo."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticParameterSupportInfo to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICPARAMETERSUPPORTINFO")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticParameterSupportInfo":
-        """Create DiagnosticParameterSupportInfo from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticParameterSupportInfo instance
-        """
-        obj: DiagnosticParameterSupportInfo = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.support_info_bit: Optional[PositiveInteger] = None
 
 
 class DiagnosticParameterSupportInfoBuilder:

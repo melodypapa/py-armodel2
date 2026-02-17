@@ -1,41 +1,53 @@
-"""ImplementationDataTypeElement AUTOSAR element."""
+"""ImplementationDataTypeElement AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 321)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 269)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2032)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 452)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type_element import (
+    AbstractImplementationDataTypeElement,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
+    ArrayImplPolicyEnum,
+    ArraySizeSemanticsEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes import (
+    ArraySizeHandlingEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
+from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+    SwDataDefProps,
+)
 
-class ImplementationDataTypeElement(ARObject):
+
+class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
     """AUTOSAR ImplementationDataTypeElement."""
 
+    array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
+    array_size: Optional[ArraySizeSemanticsEnum]
+    array_size_handling: Optional[ArraySizeHandlingEnum]
+    is_optional: Optional[Boolean]
+    sub_elements: list[Any]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElement."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ImplementationDataTypeElement to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IMPLEMENTATIONDATATYPEELEMENT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElement":
-        """Create ImplementationDataTypeElement from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ImplementationDataTypeElement instance
-        """
-        obj: ImplementationDataTypeElement = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.array_impl_policy_enum: Optional[ArrayImplPolicyEnum] = None
+        self.array_size: Optional[ArraySizeSemanticsEnum] = None
+        self.array_size_handling: Optional[ArraySizeHandlingEnum] = None
+        self.is_optional: Optional[Boolean] = None
+        self.sub_elements: list[Any] = []
+        self.sw_data_def: Optional[SwDataDefProps] = None
 
 
 class ImplementationDataTypeElementBuilder:

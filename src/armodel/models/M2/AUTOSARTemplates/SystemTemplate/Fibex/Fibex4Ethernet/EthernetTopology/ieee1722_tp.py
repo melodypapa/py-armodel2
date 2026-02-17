@@ -1,41 +1,37 @@
-"""Ieee1722Tp AUTOSAR element."""
+"""Ieee1722Tp AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 460)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
+    TransportProtocolConfiguration,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    PositiveInteger,
+    TimeValue,
+)
 
-class Ieee1722Tp(ARObject):
+
+class Ieee1722Tp(TransportProtocolConfiguration):
     """AUTOSAR Ieee1722Tp."""
 
+    relative: Optional[TimeValue]
+    stream_identifier: Optional[PositiveInteger]
+    sub_type: Optional[PositiveInteger]
+    version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ieee1722Tp."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Ieee1722Tp to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IEEE1722TP")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Ieee1722Tp":
-        """Create Ieee1722Tp from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Ieee1722Tp instance
-        """
-        obj: Ieee1722Tp = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.relative: Optional[TimeValue] = None
+        self.stream_identifier: Optional[PositiveInteger] = None
+        self.sub_type: Optional[PositiveInteger] = None
+        self.version: Optional[PositiveInteger] = None
 
 
 class Ieee1722TpBuilder:

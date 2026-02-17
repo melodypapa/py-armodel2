@@ -1,41 +1,35 @@
-"""LGraphic AUTOSAR element."""
+"""LGraphic AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 307)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_specific import (
+    LanguageSpecific,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.Figure.graphic import (
+    Graphic,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.Figure.map import (
+    Map,
+)
 
-class LGraphic(ARObject):
+
+class LGraphic(LanguageSpecific):
     """AUTOSAR LGraphic."""
 
+    graphic: Graphic
+    map: Optional[Map]
     def __init__(self) -> None:
         """Initialize LGraphic."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert LGraphic to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("LGRAPHIC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "LGraphic":
-        """Create LGraphic from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            LGraphic instance
-        """
-        obj: LGraphic = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.graphic: Graphic = None
+        self.map: Optional[Map] = None
 
 
 class LGraphicBuilder:

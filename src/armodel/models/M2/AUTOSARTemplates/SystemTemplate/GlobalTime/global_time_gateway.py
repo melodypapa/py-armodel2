@@ -1,41 +1,40 @@
-"""GlobalTimeGateway AUTOSAR element."""
+"""GlobalTimeGateway AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 861)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
+    EcuInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
+    GlobalTimeMaster,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_slave import (
+    GlobalTimeSlave,
+)
 
-class GlobalTimeGateway(ARObject):
+
+class GlobalTimeGateway(Identifiable):
     """AUTOSAR GlobalTimeGateway."""
 
+    host: Optional[EcuInstance]
+    master: Optional[GlobalTimeMaster]
+    slave: Optional[GlobalTimeSlave]
     def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert GlobalTimeGateway to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("GLOBALTIMEGATEWAY")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "GlobalTimeGateway":
-        """Create GlobalTimeGateway from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            GlobalTimeGateway instance
-        """
-        obj: GlobalTimeGateway = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.host: Optional[EcuInstance] = None
+        self.master: Optional[GlobalTimeMaster] = None
+        self.slave: Optional[GlobalTimeSlave] = None
 
 
 class GlobalTimeGatewayBuilder:

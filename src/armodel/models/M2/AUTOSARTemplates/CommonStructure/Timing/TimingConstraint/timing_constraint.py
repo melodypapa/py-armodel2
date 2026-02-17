@@ -1,41 +1,31 @@
-"""TimingConstraint AUTOSAR element."""
+"""TimingConstraint AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 253)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
+    Traceable,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
+    TimingCondition,
+)
 
-class TimingConstraint(ARObject):
+
+class TimingConstraint(Traceable):
     """AUTOSAR TimingConstraint."""
+    """Abstract base class - do not instantiate directly."""
 
+    timing_condition: Optional[TimingCondition]
     def __init__(self) -> None:
         """Initialize TimingConstraint."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert TimingConstraint to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("TIMINGCONSTRAINT")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "TimingConstraint":
-        """Create TimingConstraint from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            TimingConstraint instance
-        """
-        obj: TimingConstraint = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.timing_condition: Optional[TimingCondition] = None
 
 
 class TimingConstraintBuilder:

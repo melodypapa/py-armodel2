@@ -1,41 +1,32 @@
-"""DiagnosticRequestControlOfOnBoardDevice AUTOSAR element."""
+"""DiagnosticRequestControlOfOnBoardDevice AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 157)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x08_RequestControlOfOnBoard.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
+    DiagnosticServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x08_RequestControlOfOnBoard.diagnostic_test_routine_identifier import (
+    DiagnosticTestRoutineIdentifier,
+)
 
-class DiagnosticRequestControlOfOnBoardDevice(ARObject):
+
+class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestControlOfOnBoardDevice."""
 
+    request_control: Optional[Any]
+    test_id_identifier: Optional[DiagnosticTestRoutineIdentifier]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestControlOfOnBoardDevice."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticRequestControlOfOnBoardDevice to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICREQUESTCONTROLOFONBOARDDEVICE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestControlOfOnBoardDevice":
-        """Create DiagnosticRequestControlOfOnBoardDevice from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticRequestControlOfOnBoardDevice instance
-        """
-        obj: DiagnosticRequestControlOfOnBoardDevice = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.request_control: Optional[Any] = None
+        self.test_id_identifier: Optional[DiagnosticTestRoutineIdentifier] = None
 
 
 class DiagnosticRequestControlOfOnBoardDeviceBuilder:
@@ -43,9 +34,7 @@ class DiagnosticRequestControlOfOnBoardDeviceBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticRequestControlOfOnBoardDevice = (
-            DiagnosticRequestControlOfOnBoardDevice()
-        )
+        self._obj: DiagnosticRequestControlOfOnBoardDevice = DiagnosticRequestControlOfOnBoardDevice()
 
     def build(self) -> DiagnosticRequestControlOfOnBoardDevice:
         """Build and return DiagnosticRequestControlOfOnBoardDevice object.

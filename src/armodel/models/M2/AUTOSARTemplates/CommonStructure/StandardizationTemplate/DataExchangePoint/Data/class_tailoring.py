@@ -1,41 +1,36 @@
-"""ClassTailoring AUTOSAR element."""
+"""ClassTailoring AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_content_conditional import (
+    ClassContentConditional,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (
+    VariationRestrictionWithSeverity,
+)
 
 
 class ClassTailoring(ARObject):
     """AUTOSAR ClassTailoring."""
+    """Abstract base class - do not instantiate directly."""
 
+    class_contents: list[ClassContentConditional]
+    multiplicity: Optional[Any]
+    variation: Optional[VariationRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize ClassTailoring."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ClassTailoring to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CLASSTAILORING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ClassTailoring":
-        """Create ClassTailoring from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ClassTailoring instance
-        """
-        obj: ClassTailoring = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.class_contents: list[ClassContentConditional] = []
+        self.multiplicity: Optional[Any] = None
+        self.variation: Optional[VariationRestrictionWithSeverity] = None
 
 
 class ClassTailoringBuilder:

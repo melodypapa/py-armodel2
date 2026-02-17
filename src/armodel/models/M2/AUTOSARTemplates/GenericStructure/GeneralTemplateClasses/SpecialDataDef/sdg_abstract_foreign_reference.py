@@ -1,41 +1,31 @@
-"""SdgAbstractForeignReference AUTOSAR element."""
+"""SdgAbstractForeignReference AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
+    SdgElementWithGid,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    MetaClassName,
+)
 
-class SdgAbstractForeignReference(ARObject):
+
+class SdgAbstractForeignReference(SdgElementWithGid):
     """AUTOSAR SdgAbstractForeignReference."""
+    """Abstract base class - do not instantiate directly."""
 
+    dest_meta_class: Optional[MetaClassName]
     def __init__(self) -> None:
         """Initialize SdgAbstractForeignReference."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert SdgAbstractForeignReference to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("SDGABSTRACTFOREIGNREFERENCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SdgAbstractForeignReference":
-        """Create SdgAbstractForeignReference from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            SdgAbstractForeignReference instance
-        """
-        obj: SdgAbstractForeignReference = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.dest_meta_class: Optional[MetaClassName] = None
 
 
 class SdgAbstractForeignReferenceBuilder:

@@ -1,41 +1,27 @@
-"""IdentCaption AUTOSAR element."""
+"""IdentCaption AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 317)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 851)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 
-class IdentCaption(ARObject):
+
+class IdentCaption(Identifiable):
     """AUTOSAR IdentCaption."""
+    """Abstract base class - do not instantiate directly."""
 
     def __init__(self) -> None:
         """Initialize IdentCaption."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdentCaption to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDENTCAPTION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdentCaption":
-        """Create IdentCaption from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdentCaption instance
-        """
-        obj: IdentCaption = cls()
-        # TODO: Add deserialization logic
-        return obj
 
 
 class IdentCaptionBuilder:

@@ -1,41 +1,35 @@
-"""HwPinGroupConnector AUTOSAR element."""
+"""HwPinGroupConnector AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 22)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_connector import (
+    HwPinConnector,
+)
+from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
+    HwPinGroup,
+)
 
-class HwPinGroupConnector(ARObject):
+
+class HwPinGroupConnector(Describable):
     """AUTOSAR HwPinGroupConnector."""
 
+    hw_pins: list[HwPinConnector]
+    hw_pin_groups: list[HwPinGroup]
     def __init__(self) -> None:
         """Initialize HwPinGroupConnector."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert HwPinGroupConnector to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("HWPINGROUPCONNECTOR")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "HwPinGroupConnector":
-        """Create HwPinGroupConnector from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            HwPinGroupConnector instance
-        """
-        obj: HwPinGroupConnector = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.hw_pins: list[HwPinConnector] = []
+        self.hw_pin_groups: list[HwPinGroup] = []
 
 
 class HwPinGroupConnectorBuilder:

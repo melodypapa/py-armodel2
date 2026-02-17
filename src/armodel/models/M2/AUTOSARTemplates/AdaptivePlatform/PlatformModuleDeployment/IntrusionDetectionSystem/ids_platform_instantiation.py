@@ -1,41 +1,33 @@
-"""IdsPlatformInstantiation AUTOSAR element."""
+"""IdsPlatformInstantiation AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 63)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_IntrusionDetectionSystem.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.AdaptiveModule.platform_module_ethernet_endpoint_configuration import (
+    PlatformModuleEthernetEndpointConfiguration,
+)
 
-class IdsPlatformInstantiation(ARObject):
+
+class IdsPlatformInstantiation(Identifiable):
     """AUTOSAR IdsPlatformInstantiation."""
+    """Abstract base class - do not instantiate directly."""
 
+    networks: list[PlatformModuleEthernetEndpointConfiguration]
+    time_base_resource: Optional[Any]
     def __init__(self) -> None:
         """Initialize IdsPlatformInstantiation."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert IdsPlatformInstantiation to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("IDSPLATFORMINSTANTIATION")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "IdsPlatformInstantiation":
-        """Create IdsPlatformInstantiation from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            IdsPlatformInstantiation instance
-        """
-        obj: IdsPlatformInstantiation = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.networks: list[PlatformModuleEthernetEndpointConfiguration] = []
+        self.time_base_resource: Optional[Any] = None
 
 
 class IdsPlatformInstantiationBuilder:

@@ -1,41 +1,44 @@
-"""Colspec AUTOSAR element."""
+"""Colspec AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 433)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    AlignEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    String,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
+    TableSeparatorString,
+)
 
 
 class Colspec(ARObject):
     """AUTOSAR Colspec."""
 
+    align: Optional[AlignEnum]
+    colname: Optional[String]
+    colnum: Optional[String]
+    colsep: Optional[TableSeparatorString]
+    colwidth: Optional[String]
+    rowsep: Optional[TableSeparatorString]
     def __init__(self) -> None:
         """Initialize Colspec."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert Colspec to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("COLSPEC")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "Colspec":
-        """Create Colspec from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Colspec instance
-        """
-        obj: Colspec = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.align: Optional[AlignEnum] = None
+        self.colname: Optional[String] = None
+        self.colnum: Optional[String] = None
+        self.colsep: Optional[TableSeparatorString] = None
+        self.colwidth: Optional[String] = None
+        self.rowsep: Optional[TableSeparatorString] = None
 
 
 class ColspecBuilder:

@@ -1,41 +1,32 @@
-"""DiagnosticTroubleCodeUdsToTroubleCodeObdMapping AUTOSAR element."""
+"""DiagnosticTroubleCodeUdsToTroubleCodeObdMapping AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 188)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
+    DiagnosticMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
+    DiagnosticTroubleCode,
+)
 
-class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(ARObject):
+
+class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
 
+    trouble_code: Optional[DiagnosticTroubleCode]
+    trouble_code_uds: Optional[DiagnosticTroubleCode]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert DiagnosticTroubleCodeUdsToTroubleCodeObdMapping to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("DIAGNOSTICTROUBLECODEUDSTOTROUBLECODEOBDMAPPING")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeUdsToTroubleCodeObdMapping":
-        """Create DiagnosticTroubleCodeUdsToTroubleCodeObdMapping from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            DiagnosticTroubleCodeUdsToTroubleCodeObdMapping instance
-        """
-        obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.trouble_code: Optional[DiagnosticTroubleCode] = None
+        self.trouble_code_uds: Optional[DiagnosticTroubleCode] = None
 
 
 class DiagnosticTroubleCodeUdsToTroubleCodeObdMappingBuilder:
@@ -43,9 +34,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMappingBuilder:
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = (
-            DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
-        )
+        self._obj: DiagnosticTroubleCodeUdsToTroubleCodeObdMapping = DiagnosticTroubleCodeUdsToTroubleCodeObdMapping()
 
     def build(self) -> DiagnosticTroubleCodeUdsToTroubleCodeObdMapping:
         """Build and return DiagnosticTroubleCodeUdsToTroubleCodeObdMapping object.

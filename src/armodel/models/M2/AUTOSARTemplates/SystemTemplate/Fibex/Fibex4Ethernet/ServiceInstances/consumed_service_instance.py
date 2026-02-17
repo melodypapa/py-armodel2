@@ -1,41 +1,75 @@
-"""ConsumedServiceInstance AUTOSAR element."""
+"""ConsumedServiceInstance AUTOSAR element.
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import (
-    ARObject,
-)
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 980)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 500)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
+    AbstractServiceInstance,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    AnyServiceInstanceId,
+    AnyVersionString,
+    Boolean,
+    PositiveInteger,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.application_endpoint import (
+    ApplicationEndpoint,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.consumed_event_group import (
+    ConsumedEventGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
+    NetworkEndpoint,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.someip_sd_client_service_instance_config import (
+    SomeipSdClientServiceInstanceConfig,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.someip_service_version import (
+    SomeipServiceVersion,
+)
 
-class ConsumedServiceInstance(ARObject):
+
+class ConsumedServiceInstance(AbstractServiceInstance):
     """AUTOSAR ConsumedServiceInstance."""
 
+    allowed_services: list[NetworkEndpoint]
+    auto_require: Optional[Boolean]
+    blocklisteds: list[SomeipServiceVersion]
+    consumed_event_groups: list[ConsumedEventGroup]
+    event_multicast: Optional[ApplicationEndpoint]
+    instance: Optional[AnyServiceInstanceId]
+    local_unicast: ApplicationEndpoint
+    minor_version: Optional[AnyVersionString]
+    provided_service: Optional[Any]
+    remote_unicast: ApplicationEndpoint
+    sd_client_config: Optional[Any]
+    sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig]
+    service_identifier: Optional[PositiveInteger]
+    version_driven: Optional[Any]
     def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
         super().__init__()
-
-    def serialize(self) -> ET.Element:
-        """Convert ConsumedServiceInstance to XML element.
-
-        Returns:
-            XML element representing this object
-        """
-        element = ET.Element("CONSUMEDSERVICEINSTANCE")
-        # TODO: Add serialization logic
-        return element
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "ConsumedServiceInstance":
-        """Create ConsumedServiceInstance from XML element.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            ConsumedServiceInstance instance
-        """
-        obj: ConsumedServiceInstance = cls()
-        # TODO: Add deserialization logic
-        return obj
+        self.allowed_services: list[NetworkEndpoint] = []
+        self.auto_require: Optional[Boolean] = None
+        self.blocklisteds: list[SomeipServiceVersion] = []
+        self.consumed_event_groups: list[ConsumedEventGroup] = []
+        self.event_multicast: Optional[ApplicationEndpoint] = None
+        self.instance: Optional[AnyServiceInstanceId] = None
+        self.local_unicast: ApplicationEndpoint = None
+        self.minor_version: Optional[AnyVersionString] = None
+        self.provided_service: Optional[Any] = None
+        self.remote_unicast: ApplicationEndpoint = None
+        self.sd_client_config: Optional[Any] = None
+        self.sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig] = None
+        self.service_identifier: Optional[PositiveInteger] = None
+        self.version_driven: Optional[Any] = None
 
 
 class ConsumedServiceInstanceBuilder:
