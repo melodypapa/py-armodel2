@@ -1,7 +1,7 @@
 """ARXML reading functionality."""
 
 from pathlib import Path
-from typing import Union, Optional
+from typing import Union, Optional, cast
 import xml.etree.ElementTree as ET
 from lxml import etree
 
@@ -83,7 +83,7 @@ class ARXMLReader:
         et_root = ET.fromstring(xml_str)
 
         # Use deserialize method to create AUTOSAR object
-        autosar = AUTOSAR.deserialize(et_root)
+        autosar = cast(AUTOSAR, AUTOSAR.deserialize(et_root))
 
         return autosar
 

@@ -1397,7 +1397,7 @@ def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> 
                 if "attributes" in cls:
                     for attr_name, attr_info in cls["attributes"].items():
                         attr_type = attr_info["type"]
-                        
+
                         # Skip primitives, enums, "any" types, and self-references
                         if (is_primitive_type(attr_type, package_data) or 
                             is_enum_type(attr_type, package_data) or 
