@@ -3,6 +3,10 @@
 This test module validates reading, verifying, and writing the AUTOSAR_Datatypes.arxml file.
 This file contains platform base types, computation methods, data constraints, and
 implementation data types.
+
+Traceability:
+- Test Documentation: docs/tests/integration/test_autosar_data_types.md
+- SWITS IDs: SWITS-INT-0001 through SWITS-INT-0006
 """
 
 import pytest
@@ -14,7 +18,11 @@ from armodel.writer import ARXMLWriter
 
 
 class TestAUTOSARDatatypes:
-    """Integration tests for AUTOSAR_Datatypes.arxml."""
+    """Integration tests for AUTOSAR_Datatypes.arxml.
+
+    Test IDs: SWITS-INT-0001 to SWITS-INT-0006
+    Documentation: docs/tests/integration/test_autosar_data_types.md
+    """
 
     @pytest.fixture
     def datatypes_file(self):
@@ -40,6 +48,10 @@ class TestAUTOSARDatatypes:
 
     def test_read_and_verify_structure(self, datatypes_file):
         """Test reading AUTOSAR_Datatypes.arxml and verifying structure.
+
+        Test ID: SWITS-INT-0001
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Read and Verify Structure
 
         Validates:
         - File can be loaded by ARXMLReader
@@ -107,6 +119,10 @@ class TestAUTOSARDatatypes:
     def test_write_and_read_back(self, datatypes_file, tmp_path):
         """Test writing AUTOSAR object to file and reading it back.
 
+        Test ID: SWITS-INT-0002
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Write and Read Back
+
         Validates:
         - AUTOSAR object can be written to file
         - Written file is valid XML
@@ -167,6 +183,10 @@ class TestAUTOSARDatatypes:
     def test_serialize_deserialize_symmetry(self, datatypes_file):
         """Test that serialize(deserialize(xml)) preserves structure.
 
+        Test ID: SWITS-INT-0003
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Serialize-Deserialize Symmetry
+
         Validates:
         - Object can be serialized to XML string
         - XML string can be deserialized back to object
@@ -226,6 +246,10 @@ class TestAUTOSARDatatypes:
     def test_package_element_counts(self, datatypes_file):
         """Test that package and element counts match expected values.
 
+        Test ID: SWITS-INT-0004
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Package and Element Counts
+
         Validates exact counts for:
         - Total packages
         - Elements in each package
@@ -268,6 +292,10 @@ class TestAUTOSARDatatypes:
     def test_base_types_elements(self, datatypes_file):
         """Test that BaseTypes package has correct elements.
 
+        Test ID: SWITS-INT-0005
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Specific Element Verification - BaseTypes
+
         Verifies specific base types:
         - float32, float64
         - sint8, sint16, sint32
@@ -306,6 +334,10 @@ class TestAUTOSARDatatypes:
 
     def test_implementation_data_types_elements(self, datatypes_file):
         """Test that ImplementationDataTypes package has correct elements.
+
+        Test ID: SWITS-INT-0006
+        Documentation Reference: docs/tests/integration/test_autosar_data_types.md
+        Test Scenario: Specific Element Verification - ImplementationDataTypes
 
         Verifies specific implementation types:
         - boolean
