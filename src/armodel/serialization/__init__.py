@@ -1,81 +1,49 @@
 """
 Serialization framework for AUTOSAR models.
 
-This module provides a declarative, registry-based framework for
-serializing and deserializing AUTOSAR model objects to/from XML.
+This module provides a reflection-based framework for serializing and
+deserializing AUTOSAR model objects to/from XML.
 
-The framework eliminates boilerplate code by using metadata descriptors
-and a strategy pattern for flexible serialization.
+The framework eliminates boilerplate code by using Python's built-in
+reflection capabilities (vars() and get_type_hints()).
 
 Example:
     ```python
-    from armodel.serialization import XMLMember, get_global_registry
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+    from armodel.serialization import NameConverter
 
-    # Define a class with XML metadata
     class MyAUTOSARClass(ARObject):
-        _xml_members: dict[str, XMLMember] = {
-            "short_name": XMLMember(
-                xml_tag="SHORT-NAME",
-                is_attribute=False,
-                multiplicity="1",
-            ),
-            "description": XMLMember(
-                xml_tag="DESC",
-                is_attribute=False,
-                multiplicity="0..1",
-            ),
-        }
-
         def __init__(self) -> None:
             self.short_name: str = ""
             self.description: str | None = None
-    ```
 
-The serialization is automatically handled by the ARObject base class:
-    ```python
+    # Use reflection-based serialization
     obj = MyAUTOSARClass()
     obj.short_name = "MyClass"
 
-    # Serialize
+    # Serialize (automatically discovers attributes via vars())
     element = obj.serialize("http://autosar.org/schema/r4.0")
 
-    # Deserialize
+    # Deserialize (automatically determines types via get_type_hints())
     obj2 = MyAUTOSARClass.deserialize(element)
     ```
+
+The serialization is automatically handled by the ARObject base class
+using Python's standard reflection capabilities:
+- vars() for automatic attribute discovery
+- get_type_hints() for type-based deserialization
+- NameConverter for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
+
+For edge cases, decorators are available:
+- @xml_attribute: Mark a property to serialize as XML attribute
+- @xml_tag(name): Specify custom XML tag name
 """
 
-# Import initialization to register default strategies
-import armodel.serialization._init  # noqa: F401 (side-effect import)
-
-from armodel.serialization.base import (
-    DeserializationContext,
-    SerializationContext,
-    SerializationStrategy,
-    StrategyRegistry,
-)
-from armodel.serialization.metadata import (
-    XMLMember,
-    create_xml_member_from_tuple,
-    get_xml_metadata,
-)
-from armodel.serialization.registry import (
-    SerializationRegistry,
-    get_global_registry,
-    reset_global_registry,
-)
+from armodel.serialization.decorators import xml_attribute, xml_tag
+from armodel.serialization.name_converter import NameConverter
 
 __all__ = [
-    # Base classes
-    "SerializationContext",
-    "DeserializationContext",
-    "SerializationStrategy",
-    "StrategyRegistry",
-    # Metadata
-    "XMLMember",
-    "get_xml_metadata",
-    "create_xml_member_from_tuple",
-    # Registry
-    "SerializationRegistry",
-    "get_global_registry",
-    "reset_global_registry",
+    "NameConverter",
+    "xml_attribute",
+    "xml_tag",
 ]
