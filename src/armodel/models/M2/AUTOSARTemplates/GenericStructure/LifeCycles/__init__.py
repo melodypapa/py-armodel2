@@ -1,7 +1,24 @@
 """LifeCycles module."""
-from .life_cycle_state_definition_group import LifeCycleStateDefinitionGroup
-from .life_cycle_state import LifeCycleState
-from .life_cycle_info_set import LifeCycleInfoSet
-from .life_cycle_period import LifeCyclePeriod
-from .life_cycle_info import LifeCycleInfo
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state_definition_group import (
+    LifeCycleStateDefinitionGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_state import (
+    LifeCycleState,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_info_set import (
+    LifeCycleInfoSet,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_period import (
+    LifeCyclePeriod,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_info import (
+    LifeCycleInfo,
+)
 
+__all__ = [
+    "LifeCycleInfo",
+    "LifeCycleInfoSet",
+    "LifeCyclePeriod",
+    "LifeCycleState",
+    "LifeCycleStateDefinitionGroup",
+]

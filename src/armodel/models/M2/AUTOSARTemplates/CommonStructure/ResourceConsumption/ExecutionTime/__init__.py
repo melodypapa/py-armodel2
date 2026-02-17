@@ -1,8 +1,28 @@
 """ExecutionTime module."""
-from .execution_time import ExecutionTime
-from .memory_section_location import MemorySectionLocation
-from .analyzed_execution_time import AnalyzedExecutionTime
-from .measured_execution_time import MeasuredExecutionTime
-from .simulated_execution_time import SimulatedExecutionTime
-from .rough_estimate_of_execution_time import RoughEstimateOfExecutionTime
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
+    ExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.memory_section_location import (
+    MemorySectionLocation,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.analyzed_execution_time import (
+    AnalyzedExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.measured_execution_time import (
+    MeasuredExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.simulated_execution_time import (
+    SimulatedExecutionTime,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.rough_estimate_of_execution_time import (
+    RoughEstimateOfExecutionTime,
+)
 
+__all__ = [
+    "AnalyzedExecutionTime",
+    "ExecutionTime",
+    "MeasuredExecutionTime",
+    "MemorySectionLocation",
+    "RoughEstimateOfExecutionTime",
+    "SimulatedExecutionTime",
+]

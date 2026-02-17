@@ -1,3 +1,8 @@
 """PerInstanceMemory module."""
-from .per_instance_memory import PerInstanceMemory
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PerInstanceMemory.per_instance_memory import (
+    PerInstanceMemory,
+)
 
+__all__ = [
+    "PerInstanceMemory",
+]

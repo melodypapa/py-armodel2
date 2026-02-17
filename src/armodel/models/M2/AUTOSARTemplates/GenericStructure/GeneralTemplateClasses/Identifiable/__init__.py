@@ -1,8 +1,28 @@
 """Identifiable module."""
-from .describable import Describable
-from .identifiable import Identifiable
-from .referrable import Referrable
-from .multilanguage_referrable import MultilanguageReferrable
-from .single_language_referrable import SingleLanguageReferrable
-from .short_name_fragment import ShortNameFragment
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
+    Describable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
+    Referrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
+    MultilanguageReferrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.single_language_referrable import (
+    SingleLanguageReferrable,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.short_name_fragment import (
+    ShortNameFragment,
+)
 
+__all__ = [
+    "Describable",
+    "Identifiable",
+    "MultilanguageReferrable",
+    "Referrable",
+    "ShortNameFragment",
+    "SingleLanguageReferrable",
+]

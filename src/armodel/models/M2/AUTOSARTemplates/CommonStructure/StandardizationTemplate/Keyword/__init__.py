@@ -1,4 +1,12 @@
 """Keyword module."""
-from .keyword import Keyword
-from .keyword_set import KeywordSet
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.Keyword.keyword import (
+    Keyword,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.Keyword.keyword_set import (
+    KeywordSet,
+)
 
+__all__ = [
+    "Keyword",
+    "KeywordSet",
+]

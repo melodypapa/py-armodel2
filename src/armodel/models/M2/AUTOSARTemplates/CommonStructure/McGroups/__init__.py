@@ -1,4 +1,12 @@
 """McGroups module."""
-from .mc_group import McGroup
-from .mc_group_data_ref_set import McGroupDataRefSet
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group import (
+    McGroup,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group_data_ref_set import (
+    McGroupDataRefSet,
+)
 
+__all__ = [
+    "McGroup",
+    "McGroupDataRefSet",
+]

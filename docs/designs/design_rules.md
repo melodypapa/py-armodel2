@@ -69,11 +69,33 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_030**: Follow PEP 8 style guide
 - **DESIGN_RULE_031**: Maximum line length 100 characters
 - **DESIGN_RULE_040**: All import statements must be defined at the beginning of the file
-- **DESIGN_RULE_041**: Use full names for import statements to avoid circular import issues
-  - When importing from the same package, use relative imports (e.g., `from .module import Class`)
-  - When importing from different packages, use full absolute imports (e.g., `from armodel.models.M2.AUTOSARTemplates.Package.module import Class`)
-  - Avoid wildcard imports (`from module import *`)
+- **DESIGN_RULE_041**: Use block import statements and define __all__ in __init__.py files
+  - Use full absolute imports with block format (multi-line with parentheses)
+  - Block import format for single class: `from armodel.models.M2.AUTOSARTemplates.Package.module import (\n    Class,\n)`
+  - Block import format for multiple classes: `from armodel.models.M2.AUTOSARTemplates.Package.module import (\n    Class1,\n    Class2,\n    Class3,\n)`
+  - Avoid wildcard imports (`from module import *`) in production code
   - Prefer explicit imports over `__init__.py` re-exports when possible to clarify dependencies
+  - Every `__init__.py` file must define `__all__` to explicitly list public exports
+  - `__all__` should contain only the public API classes and functions intended for external use
+  - Use alphabetical ordering for `__all__` entries to improve maintainability
+  - Example:
+    ```python
+    # __init__.py
+    from armodel.models.M2.AUTOSARTemplates.Package.some_class import (
+        SomeClass,
+    )
+    from armodel.models.M2.AUTOSARTemplates.Package.another_class import (
+        AnotherClass,
+    )
+
+    __all__ = [
+        "AnotherClass",
+        "SomeClass",
+    ]
+    ```
+  - Block import format improves readability and makes it easier to add/remove imports
+  - This enables safe star imports (`from package import *`) and clarifies the public API
+  - Exclude internal implementation details from `__all__` (e.g., private classes starting with underscore)
 - **DESIGN_RULE_042**: Use `from __future__ import annotations` combined with TYPE_CHECKING for circular imports
   - Add `from __future__ import annotations` at the top of files that may have circular dependencies
   - Use `TYPE_CHECKING` to import classes only for type hints: `if TYPE_CHECKING: from ... import SomeClass`

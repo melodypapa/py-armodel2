@@ -1,3 +1,8 @@
 """GeneralAnnotation module."""
-from .general_annotation import GeneralAnnotation
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
+    GeneralAnnotation,
+)
 
+__all__ = [
+    "GeneralAnnotation",
+]

@@ -1,13 +1,45 @@
 """InlineTextElements module."""
-from .superscript import Superscript
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.superscript import (
+    Superscript,
+)
 
-from .br import Br
-from .emphasis_text import EmphasisText
-from .index_entry import IndexEntry
-from .std import Std
-from .tt import Tt
-from .xdoc import Xdoc
-from .xfile import Xfile
-from .xref import Xref
-from .xref_target import XrefTarget
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
+    Br,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.emphasis_text import (
+    EmphasisText,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.index_entry import (
+    IndexEntry,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.std import (
+    Std,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import (
+    Tt,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xdoc import (
+    Xdoc,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xfile import (
+    Xfile,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref import (
+    Xref,
+)
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref_target import (
+    XrefTarget,
+)
 
+__all__ = [
+    "Br",
+    "EmphasisText",
+    "IndexEntry",
+    "Std",
+    "Superscript",
+    "Tt",
+    "Xdoc",
+    "Xfile",
+    "Xref",
+    "XrefTarget",
+]

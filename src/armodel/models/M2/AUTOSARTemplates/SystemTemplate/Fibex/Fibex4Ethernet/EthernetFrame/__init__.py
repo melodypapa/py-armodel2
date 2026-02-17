@@ -1,7 +1,24 @@
 """EthernetFrame module."""
-from .abstract_ethernet_frame import AbstractEthernetFrame
-from .ethernet_frame_triggering import EthernetFrameTriggering
-from .generic_ethernet_frame import GenericEthernetFrame
-from .user_defined_ethernet_frame import UserDefinedEthernetFrame
-from .ieee1722_tp_ethernet_frame import Ieee1722TpEthernetFrame
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.abstract_ethernet_frame import (
+    AbstractEthernetFrame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.ethernet_frame_triggering import (
+    EthernetFrameTriggering,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.generic_ethernet_frame import (
+    GenericEthernetFrame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.user_defined_ethernet_frame import (
+    UserDefinedEthernetFrame,
+)
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.ieee1722_tp_ethernet_frame import (
+    Ieee1722TpEthernetFrame,
+)
 
+__all__ = [
+    "AbstractEthernetFrame",
+    "EthernetFrameTriggering",
+    "GenericEthernetFrame",
+    "Ieee1722TpEthernetFrame",
+    "UserDefinedEthernetFrame",
+]

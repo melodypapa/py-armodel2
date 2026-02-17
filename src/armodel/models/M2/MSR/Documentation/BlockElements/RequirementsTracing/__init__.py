@@ -1,5 +1,16 @@
 """RequirementsTracing module."""
-from .structured_req import StructuredReq
-from .traceable_text import TraceableText
-from .traceable import Traceable
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.structured_req import (
+    StructuredReq,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
+    TraceableText,
+)
+from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
+    Traceable,
+)
 
+__all__ = [
+    "StructuredReq",
+    "Traceable",
+    "TraceableText",
+]

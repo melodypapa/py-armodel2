@@ -1,3 +1,8 @@
 """BswImplementation module."""
-from .bsw_implementation import BswImplementation
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
+    BswImplementation,
+)
 
+__all__ = [
+    "BswImplementation",
+]

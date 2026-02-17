@@ -1,4 +1,12 @@
 """DataExchangePoint module."""
-from .data_exchange_point import DataExchangePoint
-from .baseline import Baseline
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.data_exchange_point import (
+    DataExchangePoint,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.baseline import (
+    Baseline,
+)
 
+__all__ = [
+    "Baseline",
+    "DataExchangePoint",
+]

@@ -1,3 +1,8 @@
 """Filter module."""
-from .data_filter import DataFilter
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (
+    DataFilter,
+)
 
+__all__ = [
+    "DataFilter",
+]

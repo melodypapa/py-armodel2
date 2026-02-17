@@ -1,3 +1,8 @@
 """PortInterface module."""
-from .field import Field
+from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.ApplicationDesign.PortInterface.field import (
+    Field,
+)
 
+__all__ = [
+    "Field",
+]
