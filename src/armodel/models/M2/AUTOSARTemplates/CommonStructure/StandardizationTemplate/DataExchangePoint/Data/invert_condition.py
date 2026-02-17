@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
     AbstractCondition,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
-    AbstractCondition,
-)
 
 
 class InvertCondition(AbstractCondition):

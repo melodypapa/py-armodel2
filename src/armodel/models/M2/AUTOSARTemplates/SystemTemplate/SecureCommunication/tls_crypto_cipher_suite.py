@@ -20,9 +20,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_signature_scheme import (
     CryptoSignatureScheme,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_crypto_cipher_suite import (
-    TlsCryptoCipherSuite,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_psk_identity import (
     TlsPskIdentity,
 )

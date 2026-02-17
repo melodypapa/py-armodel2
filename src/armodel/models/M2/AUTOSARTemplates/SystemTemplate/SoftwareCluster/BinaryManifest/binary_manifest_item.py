@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_item import (
-    BinaryManifestItem,
-)
 
 
 class BinaryManifestItem(BinaryManifestAddressableObject):

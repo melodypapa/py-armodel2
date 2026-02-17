@@ -12,9 +12,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     TimeValue,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.nv_block_needs import (
-    NvBlockNeeds,
-)
 
 
 class NvBlockNeeds(ServiceNeeds):

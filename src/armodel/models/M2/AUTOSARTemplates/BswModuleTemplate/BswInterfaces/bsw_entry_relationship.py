@@ -5,9 +5,6 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_entry_relationship import (
-    BswEntryRelationship,
-)
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )

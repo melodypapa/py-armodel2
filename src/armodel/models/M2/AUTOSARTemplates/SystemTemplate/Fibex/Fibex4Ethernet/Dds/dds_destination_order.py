@@ -5,9 +5,6 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_destination_order import (
-    DdsDestinationOrder,
-)
 
 
 class DdsDestinationOrder(ARObject):

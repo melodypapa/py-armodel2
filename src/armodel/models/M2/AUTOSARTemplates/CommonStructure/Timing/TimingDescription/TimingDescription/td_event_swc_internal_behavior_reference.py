@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_swc import (
     TDEventSwc,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_swc import (
-    TDEventSwc,
-)
 
 
 class TDEventSwcInternalBehaviorReference(TDEventSwc):

@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
     IEEE1722TpAcfBus,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_can import (
-    IEEE1722TpAcfCan,
-)
 
 
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):

@@ -13,9 +13,6 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_model im
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_selection import (
     FMFeatureSelection,
 )
-from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_selection_set import (
-    FMFeatureSelectionSet,
-)
 
 
 class FMFeatureSelectionSet(ARElement):

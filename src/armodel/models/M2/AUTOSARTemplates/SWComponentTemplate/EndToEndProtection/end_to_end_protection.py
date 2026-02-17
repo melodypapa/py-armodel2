@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.EndToEndProtection.end_to_end_protection import (
-    EndToEndProtection,
-)
 
 
 class EndToEndProtection(Identifiable):

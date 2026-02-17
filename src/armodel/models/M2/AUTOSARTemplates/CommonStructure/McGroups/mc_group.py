@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_function import (
     McFunction,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group import (
-    McGroup,
-)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group_data_ref_set import (
     McGroupDataRefSet,
 )

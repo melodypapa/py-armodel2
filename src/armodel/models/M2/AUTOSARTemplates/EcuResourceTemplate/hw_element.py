@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
-    HwElement,
-)
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element_connector import (
     HwElementConnector,
 )

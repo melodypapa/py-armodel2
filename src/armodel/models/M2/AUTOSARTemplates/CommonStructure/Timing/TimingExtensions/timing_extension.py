@@ -19,9 +19,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
-    TimingExtension,
-)
 
 
 class TimingExtension(ARElement):

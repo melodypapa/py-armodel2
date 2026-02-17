@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_entity import (
     BuildActionEntity,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action import (
-    BuildAction,
-)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_environment import (
     BuildActionEnvironment,
 )

@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.EcuReset.diagnostic_ecu_reset import (
-    DiagnosticEcuReset,
-)
 
 
 class DiagnosticEcuReset(DiagnosticServiceInstance):

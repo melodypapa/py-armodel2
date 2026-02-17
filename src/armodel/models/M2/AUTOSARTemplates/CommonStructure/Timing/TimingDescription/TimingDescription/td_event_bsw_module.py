@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_bsw_module import (
-    TDEventBswModule,
-)
 
 
 class TDEventBswModule(TDEventBsw):

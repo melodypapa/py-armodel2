@@ -9,9 +9,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     TimeValue,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_rate_policy import (
-    CouplingPortRatePolicy,
-)
 
 
 class CouplingPortRatePolicy(ARObject):

@@ -13,9 +13,6 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResult.diagnostic_test_identifier import (
     DiagnosticTestIdentifier,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResult.diagnostic_test_result import (
-    DiagnosticTestResult,
-)
 
 
 class DiagnosticTestResult(DiagnosticCommonElement):

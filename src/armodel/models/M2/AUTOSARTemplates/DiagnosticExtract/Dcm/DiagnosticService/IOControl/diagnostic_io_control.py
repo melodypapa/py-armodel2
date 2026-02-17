@@ -13,9 +13,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_identifier import (
     DiagnosticDataIdentifier,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.IOControl.diagnostic_io_control import (
-    DiagnosticIOControl,
-)
 
 
 class DiagnosticIOControl(DiagnosticServiceInstance):

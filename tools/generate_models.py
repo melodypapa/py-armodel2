@@ -5,7 +5,7 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def parse_mapping_json(mapping_file: Path) -> Dict[str, Any]:
@@ -60,14 +60,14 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
         hierarchy_content = f.read()
 
     # Extract the hierarchy structure
-    lines = hierarchy_content.split('\n')
+    lines = hierarchy_content.split("\n")
 
     # Find classes and their parent/abstract status
     class_info: Dict[str, Dict[str, Any]] = {}
     indent_stack = []
 
     for line in lines:
-        if line.startswith('## Class Hierarchy'):
+        if line.startswith("## Class Hierarchy"):
             continue
         if not line.strip():
             continue
@@ -77,10 +77,10 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
         line = line.strip()
 
         # Check for abstract marker
-        is_abstract = '(abstract)' in line
+        is_abstract = "(abstract)" in line
 
         # Extract class name
-        class_name = line.replace('(abstract)', '').replace('*', '').strip()
+        class_name = line.replace("(abstract)", "").replace("*", "").strip()
 
         # Determine parent based on indentation
         while indent_stack and indent_stack[-1][0] >= indent:
@@ -93,16 +93,15 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
 
         # Store class info
         if class_name:
-            class_info[class_name] = {
-                'parent': parent,
-                'is_abstract': is_abstract
-            }
+            class_info[class_name] = {"parent": parent, "is_abstract": is_abstract}
             indent_stack.append((indent, class_name))
 
     return class_info
 
 
-def create_directory_structure(types: list, output_dir: Path, package_data: Dict[str, Dict[str, Any]]) -> None:
+def create_directory_structure(
+    types: list, output_dir: Path, package_data: Dict[str, Dict[str, Any]]
+) -> None:
     """Create directory structure from package paths.
 
     Args:
@@ -141,56 +140,56 @@ def create_directory_structure(types: list, output_dir: Path, package_data: Dict
         exports = []
 
         # Check if this package has primitive types and export them
-        if package_path in package_data and 'primitives' in package_data[package_path]:
-            primitives = package_data[package_path]['primitives']
+        if package_path in package_data and "primitives" in package_data[package_path]:
+            primitives = package_data[package_path]["primitives"]
             if primitives:
                 # Generate imports for individual primitive types using absolute paths
                 # Use block import format as required by DESIGN_RULE_041
                 for prim in primitives:
-                    prim_name = prim['name']
+                    prim_name = prim["name"]
                     # Convert package path to absolute import path
-                    python_path = package_path.replace('::', '.')
-                    module_path = f'armodel.models.{python_path}.{to_snake_case(prim_name)}'
-                    init_content += f'from {module_path} import (\n    {prim_name},\n)\n'
+                    python_path = package_path.replace("::", ".")
+                    module_path = f"armodel.models.{python_path}.{to_snake_case(prim_name)}"
+                    init_content += f"from {module_path} import (\n    {prim_name},\n)\n"
                     exports.append(prim_name)
-                init_content += '\n'
+                init_content += "\n"
 
         # Check if this package has classes and export them
-        if package_path in package_data and 'classes' in package_data[package_path]:
-            classes = package_data[package_path]['classes']
+        if package_path in package_data and "classes" in package_data[package_path]:
+            classes = package_data[package_path]["classes"]
             if classes:
                 # Generate imports for individual classes using absolute paths
                 # Use block import format as required by DESIGN_RULE_041
                 for cls in classes:
-                    class_name = cls['name']
+                    class_name = cls["name"]
                     # Convert package path to absolute import path
-                    python_path = package_path.replace('::', '.')
-                    module_path = f'armodel.models.{python_path}.{to_snake_case(class_name)}'
-                    init_content += f'from {module_path} import (\n    {class_name},\n)\n'
+                    python_path = package_path.replace("::", ".")
+                    module_path = f"armodel.models.{python_path}.{to_snake_case(class_name)}"
+                    init_content += f"from {module_path} import (\n    {class_name},\n)\n"
                     exports.append(class_name)
-                init_content += '\n'
+                init_content += "\n"
 
         # Check if this package has enums and export them
-        if package_path in package_data and 'enumerations' in package_data[package_path]:
-            enums = package_data[package_path]['enumerations']
+        if package_path in package_data and "enumerations" in package_data[package_path]:
+            enums = package_data[package_path]["enumerations"]
             if enums:
                 # Generate imports for individual enums using absolute paths
                 # Use block import format as required by DESIGN_RULE_041
                 for enum in enums:
-                    enum_name = enum['name']
+                    enum_name = enum["name"]
                     # Convert package path to absolute import path
-                    python_path = package_path.replace('::', '.')
-                    module_path = f'armodel.models.{python_path}.{to_snake_case(enum_name)}'
-                    init_content += f'from {module_path} import (\n    {enum_name},\n)\n'
+                    python_path = package_path.replace("::", ".")
+                    module_path = f"armodel.models.{python_path}.{to_snake_case(enum_name)}"
+                    init_content += f"from {module_path} import (\n    {enum_name},\n)\n"
                     exports.append(enum_name)
-                init_content += '\n'
+                init_content += "\n"
 
         # Add __all__ definition with alphabetically sorted exports
         if exports:
-            init_content += '__all__ = [\n'
+            init_content += "__all__ = [\n"
             for export in sorted(exports):
                 init_content += f'    "{export}",\n'
-            init_content += ']\n'
+            init_content += "]\n"
 
         # Write __init__.py
         init_file = dir_path / "__init__.py"
@@ -216,11 +215,11 @@ def create_directory_structure(types: list, output_dir: Path, package_data: Dict
                 # as required by DESIGN_RULE_041 (avoid wildcard imports)
                 init_content = f'"""{parent_name} module."""\n'
                 if subpackages:
-                    init_content += '\n'
-                    init_content += '__all__ = [\n'
+                    init_content += "\n"
+                    init_content += "__all__ = [\n"
                     for subpkg in sorted(subpackages):
                         init_content += f'    "{subpkg}",\n'
-                    init_content += ']\n'
+                    init_content += "]\n"
                 parent_init.write_text(init_content)
 
 
@@ -251,8 +250,8 @@ def generate_class_code(
     is_abstract = False
 
     if class_name in hierarchy_info:
-        parent_class = hierarchy_info[class_name]['parent']
-        is_abstract = hierarchy_info[class_name]['is_abstract']
+        parent_class = hierarchy_info[class_name]["parent"]
+        is_abstract = hierarchy_info[class_name]["is_abstract"]
 
     # Ensure ARObject is not the parent of itself
     # Default to ARObject only if class_name is not "ARObject" and no parent found
@@ -289,26 +288,24 @@ if TYPE_CHECKING:
         # Find parent class path from hierarchy or mapping
         parent_import = get_type_import_path(parent_class, package_data)
         if parent_import:
-            code += f'{parent_import}\n'
+            code += f"{parent_import}\n"
         else:
             # Fallback to ARObject import
-            code += 'from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n'
-    else:
-        code += 'from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n'
+            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n"
+    elif class_name != "ARObject":
+        # Add ARObject import for classes that inherit from ARObject
+        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n"
 
     # Collect attribute types for imports
     attribute_types = {}
     if include_members and package_path in package_data:
-        class_info = package_data[package_path].get('classes', [])
+        class_info = package_data[package_path].get("classes", [])
         for cls in class_info:
-            if cls['name'] == class_name and 'attributes' in cls:
-                for attr_name, attr_info in cls['attributes'].items():
-                    attr_type = attr_info['type']
-                    multiplicity = attr_info['multiplicity']
-                    attribute_types[attr_name] = {
-                        'type': attr_type,
-                        'multiplicity': multiplicity
-                    }
+            if cls["name"] == class_name and "attributes" in cls:
+                for attr_name, attr_info in cls["attributes"].items():
+                    attr_type = attr_info["type"]
+                    multiplicity = attr_info["multiplicity"]
+                    attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
                 break
 
     # Add type imports if needed
@@ -317,7 +314,7 @@ if TYPE_CHECKING:
         primitive_imports = set()
 
         for attr_name, attr_info in attribute_types.items():
-            attr_type = attr_info['type']
+            attr_type = attr_info["type"]
             # Import class types and primitive types
             if is_primitive_type(attr_type, package_data):
                 primitive_imports.add(attr_type)
@@ -327,22 +324,37 @@ if TYPE_CHECKING:
 
         # Add import statements for primitive types
         if primitive_imports:
-            code += 'from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (\n'
+            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (\n"
             for i, prim in enumerate(sorted(primitive_imports)):
                 if i == len(primitive_imports) - 1:
-                    code += f'    {prim},\n'
+                    code += f"    {prim},\n"
                 else:
-                    code += f'    {prim},\n'
-            code += ')\n'
+                    code += f"    {prim},\n"
+            code += ")\n"
 
         # Add import statements for class types
         # Track already-added imports to prevent duplicates
+        # Get parent class import path to avoid importing it again as an attribute type
         added_imports = set()
+        if parent_class and parent_class != "ARObject":
+            parent_import_path = get_type_import_path(parent_class, package_data)
+            if parent_import_path:
+                added_imports.add(parent_import_path)
+
+        # Add class_name to prevent self-import (class importing itself)
+        # This prevents ARObject from importing itself
+        class_import_path = get_type_import_path(class_name, package_data)
+        if class_import_path:
+            added_imports.add(class_import_path)
+
         if type_imports:
             for import_type in sorted(type_imports):
+                # Skip self-import (class importing itself)
+                if import_type == class_name:
+                    continue
                 import_path = get_type_import_path(import_type, package_data)
                 if import_path and import_path not in added_imports:
-                    code += f'{import_path}\n'
+                    code += f"{import_path}\n"
                     added_imports.add(import_path)
 
     # Generate class definition with parent or empty parentheses for ARObject
@@ -365,8 +377,8 @@ class {class_name}:
 
 '''
     else:
-        code += '''
-'''
+        code += """
+"""
 
     if is_splitable:
         code += f'''    is_splitable = True
@@ -377,24 +389,24 @@ class {class_name}:
     # Add _xml_members class attribute BEFORE __init__
     # This defines the member-to-XML mapping for this class only (not inherited)
     # Using new XMLMember dict format for declarative metadata
-    code += '''    # XML member definitions for this class only (not inherited from parent classes)
+    code += """    # XML member definitions for this class only (not inherited from parent classes)
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
-'''
+"""
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
-            attr_type = attr_info['type']
-            multiplicity = attr_info['multiplicity']
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
 
             # Determine if it's a list
-            is_list = multiplicity in ('*', '0..*', '1..*')
+            is_list = multiplicity in ("*", "0..*", "1..*")
 
             # Determine multiplicity string
-            if multiplicity in ('*', '0..*'):
+            if multiplicity in ("*", "0..*"):
                 multiplicity_str = "*"
-            elif multiplicity == '1..*':
+            elif multiplicity == "1..*":
                 multiplicity_str = "1..*"
-            elif multiplicity in ('0..1', '1'):
+            elif multiplicity in ("0..1", "1"):
                 multiplicity_str = multiplicity
             else:
                 multiplicity_str = "*" if is_list else "0..1"
@@ -411,24 +423,24 @@ class {class_name}:
 
             # Generate the XMLMember entry
             code += f'        "{python_name}": XMLMember(\n'
-            code += f'            xml_tag={repr(xml_tag_override)},\n'
-            code += f'            is_attribute={str(is_attribute)},\n'
+            code += f"            xml_tag={repr(xml_tag_override)},\n"
+            code += f"            is_attribute={str(is_attribute)},\n"
             code += f'            multiplicity="{multiplicity_str}",\n'
 
             if element_class:
-                code += f'            element_class={element_class},\n'
+                code += f"            element_class={element_class},\n"
 
             # Add xml_name_override if tag was modified for Python keyword
-            if xml_tag_override and xml_tag_override != python_name.replace('_', '-').upper():
+            if xml_tag_override and xml_tag_override != python_name.replace("_", "-").upper():
                 # The original tag name was preserved, it's a Python keyword escape
                 # We need to pass the original XML tag
-                code += f'            xml_name_override={repr(xml_tag_override)},\n'
+                code += f"            xml_name_override={repr(xml_tag_override)},\n"
 
-            code += f'        ),  # {attr_name}\n'
+            code += f"        ),  # {attr_name}\n"
 
-    code += '''    }
+    code += """    }
 
-'''
+"""
 
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""
@@ -436,14 +448,14 @@ class {class_name}:
 
     # Add super().__init__() call for all classes except ARObject
     if class_name != "ARObject":
-        code += '''        super().__init__()
-'''
+        code += """        super().__init__()
+"""
 
     # Add member attributes if requested
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
-            attr_type = attr_info['type']
-            multiplicity = attr_info['multiplicity']
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
 
             # Determine Python type
             python_type = get_python_type(attr_type, multiplicity, package_data)
@@ -452,16 +464,16 @@ class {class_name}:
             # Optional types initialize with None
             # list types initialize with []
             # Non-optional types initialize with None
-            if python_type.startswith('Optional['):
-                initial_value = 'None'
-            elif python_type.startswith('list['):
-                initial_value = '[]'
+            if python_type.startswith("Optional["):
+                initial_value = "None"
+            elif python_type.startswith("list["):
+                initial_value = "[]"
             else:
-                initial_value = 'None'
+                initial_value = "None"
 
             # Get Python identifier (handles Python keywords)
             python_name, _ = get_python_identifier(attr_name)
-            attr_code = f'        self.{python_name}: {python_type} = {initial_value}\n'
+            attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
             code += attr_code
 
     # Add serialize/deserialize methods
@@ -639,11 +651,41 @@ def get_python_identifier(name: str) -> tuple[str, str]:
     """
     # Python keywords that cannot be used as attribute names
     python_keywords = {
-        'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
-        'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except',
-        'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda',
-        'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while',
-        'with', 'yield'
+        "False",
+        "None",
+        "True",
+        "and",
+        "as",
+        "assert",
+        "async",
+        "await",
+        "break",
+        "class",
+        "continue",
+        "def",
+        "del",
+        "elif",
+        "else",
+        "except",
+        "finally",
+        "for",
+        "from",
+        "global",
+        "if",
+        "import",
+        "in",
+        "is",
+        "lambda",
+        "nonlocal",
+        "not",
+        "or",
+        "pass",
+        "raise",
+        "return",
+        "try",
+        "while",
+        "with",
+        "yield",
     }
 
     snake_name = to_snake_case(name)
@@ -669,14 +711,16 @@ def is_primitive_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -
     """
     # Check in all packages
     for package_path, data in package_data.items():
-        if 'primitives' in data:
-            for prim in data['primitives']:
-                if prim['name'] == type_name:
+        if "primitives" in data:
+            for prim in data["primitives"]:
+                if prim["name"] == type_name:
                     return True
     return False
 
 
-def get_python_type(type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]]) -> str:
+def get_python_type(
+    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]]
+) -> str:
     """Get Python type annotation for AUTOSAR type.
 
     Args:
@@ -692,35 +736,35 @@ def get_python_type(type_name: str, multiplicity: str, package_data: Dict[str, D
         # This is a polymorphic type that can be any type implementing the interface
         # Convert to Any in Python
         type_name = "Any"
-    
+
     # Check if it's a primitive type
     if is_primitive_type(type_name, package_data):
         # Use AUTOSAR primitive type names directly instead of Python types
         # The primitive types are imported from PrimitiveTypes module
-        
+
         # Apply multiplicity
         # For primitive types:
         # - multiplicity 0..1: Use Optional[PrimitiveType] and initialize with None
         # - multiplicity *: Use list[PrimitiveType] and initialize with []
         # - multiplicity 1: Use PrimitiveType and initialize with None (primitive types are nullable)
-        if multiplicity == '0..1':
-            return f'Optional[{type_name}]'
-        elif multiplicity == '*':
-            return f'list[{type_name}]'
-        elif multiplicity == '1':
+        if multiplicity == "0..1":
+            return f"Optional[{type_name}]"
+        elif multiplicity == "*":
+            return f"list[{type_name}]"
+        elif multiplicity == "1":
             return type_name
         else:
             return type_name
     elif type_name == "Any":
         # Handle the Any type specifically
-        if multiplicity == '0..1':
-            return 'Optional[Any]'
-        elif multiplicity == '*':
-            return 'list[Any]'
-        elif multiplicity == '1':
-            return 'Any'
+        if multiplicity == "0..1":
+            return "Optional[Any]"
+        elif multiplicity == "*":
+            return "list[Any]"
+        elif multiplicity == "1":
+            return "Any"
         else:
-            return 'Any'
+            return "Any"
     else:
         # It's a class type
         # Apply multiplicity
@@ -728,11 +772,11 @@ def get_python_type(type_name: str, multiplicity: str, package_data: Dict[str, D
         # - multiplicity 0..1: Use Optional[type_name] and initialize with None
         # - multiplicity *: Use list[type_name] and initialize with []
         # - multiplicity 1: Use type_name and initialize with None (class types can be nullable)
-        if multiplicity == '0..1':
-            return f'Optional[{type_name}]'
-        elif multiplicity == '*':
-            return f'list[{type_name}]'
-        elif multiplicity == '1':
+        if multiplicity == "0..1":
+            return f"Optional[{type_name}]"
+        elif multiplicity == "*":
+            return f"list[{type_name}]"
+        elif multiplicity == "1":
             return type_name
         else:
             return type_name
@@ -750,22 +794,22 @@ def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]
     """
     # Search for the type in all packages
     for package_path, data in package_data.items():
-        if 'classes' in data:
-            for cls in data['classes']:
-                if cls['name'] == type_name:
+        if "classes" in data:
+            for cls in data["classes"]:
+                if cls["name"] == type_name:
                     # Convert package path to Python import path
                     # Package path format: M2::AUTOSARTemplates::...
                     # Python import path: armodel.models.M2.AUTOSARTemplates...
                     # Import from the specific class file, not module
-                    python_path = package_path.replace('::', '.')
-                    
+                    python_path = package_path.replace("::", ".")
+
                     # Return import path in format: from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import (\n    AdminData,\n)
                     # Use block import format as required by DESIGN_RULE_041
                     class_filename = to_snake_case(type_name)
-                    module_path = f'armodel.models.{python_path}.{class_filename}'
-                    
-                    return f'from {module_path} import (\n    {type_name},\n)'
-    return ''
+                    module_path = f"armodel.models.{python_path}.{class_filename}"
+
+                    return f"from {module_path} import (\n    {type_name},\n)"
+    return ""
 
 
 def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
@@ -778,7 +822,7 @@ def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
         Dictionary mapping package paths to package data
     """
     package_data = {}
-    
+
     # Load all .classes.json files
     for class_file in packages_dir.rglob("*.classes.json"):
         try:
@@ -789,7 +833,7 @@ def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
                     package_data[package_path] = data
         except Exception:
             pass
-    
+
     # Load all .primitives.json files
     for primitive_file in packages_dir.rglob("*.primitives.json"):
         try:
@@ -799,12 +843,12 @@ def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
                 if package_path:
                     # Add primitives to existing package data or create new entry
                     if package_path in package_data:
-                        package_data[package_path]['primitives'] = data.get('primitives', [])
+                        package_data[package_path]["primitives"] = data.get("primitives", [])
                     else:
-                        package_data[package_path] = {'primitives': data.get('primitives', [])}
+                        package_data[package_path] = {"primitives": data.get("primitives", [])}
         except Exception:
             pass
-    
+
     return package_data
 
 
@@ -829,10 +873,10 @@ def generate_all_models(
         include_members: Whether to include member lists from package definitions
     """
     total_generated = 0
-    
+
     # Parse hierarchy.json for parent and abstract information
     hierarchy_info = parse_hierarchy_json(hierarchy_file)
-    
+
     # Load all package data for member generation
     packages_dir = mapping_file.parent / "packages"
     package_data = load_all_package_data(packages_dir) if include_members else {}
@@ -858,7 +902,9 @@ def generate_all_models(
             filename = dir_path / f"{to_snake_case(class_name)}.py"
 
             # Generate class code
-            class_code = generate_class_code(type_def, hierarchy_info, package_data, include_members)
+            class_code = generate_class_code(
+                type_def, hierarchy_info, package_data, include_members
+            )
             builder_code = generate_builder_code(type_def)
 
             # Write to file
@@ -920,78 +966,52 @@ def generate_all_models(
                 total_generated += 1
                 total_primitives += 1
 
-        print(f"Generated {len(primitive_files)} primitive files with {total_primitives} primitives")
+        print(
+            f"Generated {len(primitive_files)} primitive files with {total_primitives} primitives"
+        )
 
     print(f"Total generated files: {total_generated} in {output_dir}")
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="Generate AUTOSAR model classes, enums, and primitives from JSON definitions"
     )
+    parser.add_argument("mapping_file", type=Path, help="Path to mapping.json file")
+    parser.add_argument("hierarchy_file", type=Path, help="Path to hierarchy.json file")
+    parser.add_argument("output_dir", type=Path, help="Output directory for generated files")
     parser.add_argument(
-        "mapping_file",
-        type=Path,
-        help="Path to mapping.json file"
+        "--classes", action="store_true", default=True, help="Generate class files (default: True)"
     )
     parser.add_argument(
-        "hierarchy_file",
-        type=Path,
-        help="Path to hierarchy.json file"
+        "--no-classes", action="store_false", dest="classes", help="Skip class file generation"
     )
     parser.add_argument(
-        "output_dir",
-        type=Path,
-        help="Output directory for generated files"
+        "--enums", action="store_true", default=True, help="Generate enum files (default: True)"
     )
     parser.add_argument(
-        "--classes",
-        action="store_true",
-        default=True,
-        help="Generate class files (default: True)"
-    )
-    parser.add_argument(
-        "--no-classes",
-        action="store_false",
-        dest="classes",
-        help="Skip class file generation"
-    )
-    parser.add_argument(
-        "--enums",
-        action="store_true",
-        default=True,
-        help="Generate enum files (default: True)"
-    )
-    parser.add_argument(
-        "--no-enums",
-        action="store_false",
-        dest="enums",
-        help="Skip enum file generation"
+        "--no-enums", action="store_false", dest="enums", help="Skip enum file generation"
     )
     parser.add_argument(
         "--primitives",
         action="store_true",
         default=True,
-        help="Generate primitive files (default: True)"
+        help="Generate primitive files (default: True)",
     )
     parser.add_argument(
         "--no-primitives",
         action="store_false",
         dest="primitives",
-        help="Skip primitive file generation"
+        help="Skip primitive file generation",
     )
     parser.add_argument(
         "--members",
         action="store_true",
         default=False,
-        help="Include member lists from package definitions"
+        help="Include member lists from package definitions",
     )
     parser.add_argument(
-        "--no-members",
-        action="store_false",
-        dest="members",
-        help="Skip member list generation"
+        "--no-members", action="store_false", dest="members", help="Skip member list generation"
     )
 
     args = parser.parse_args()

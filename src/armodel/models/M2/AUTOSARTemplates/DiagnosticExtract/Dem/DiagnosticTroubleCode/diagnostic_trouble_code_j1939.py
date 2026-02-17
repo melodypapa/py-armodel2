@@ -16,9 +16,6 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_spn import (
     DiagnosticJ1939Spn,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
-    DiagnosticTroubleCode,
-)
 
 
 class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):

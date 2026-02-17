@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_parameter import (
     DiagnosticAbstractParameter,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
-    DiagnosticParameter,
-)
 
 
 class DiagnosticParameter(DiagnosticAbstractParameter):

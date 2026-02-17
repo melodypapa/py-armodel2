@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.predefined_variant import (
-    PredefinedVariant,
-)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
     SwSystemconstantValueSet,
 )

@@ -13,9 +13,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.BlueprintDedicated.Port.port_prototype_blueprint import (
-    PortPrototypeBlueprint,
-)
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )

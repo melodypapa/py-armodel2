@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_by_address import (
     DiagnosticMemoryByAddress,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_transfer_exit import (
-    DiagnosticTransferExit,
-)
 
 
 class DiagnosticTransferExit(DiagnosticMemoryByAddress):

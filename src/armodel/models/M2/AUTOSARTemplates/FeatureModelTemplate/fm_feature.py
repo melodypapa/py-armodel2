@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_def import (
     FMAttributeDef,
 )
-from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
-    FMFeature,
-)
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_relation import (
     FMFeatureRelation,
 )

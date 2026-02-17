@@ -11,9 +11,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     String,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
-    CryptoServiceKey,
-)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )

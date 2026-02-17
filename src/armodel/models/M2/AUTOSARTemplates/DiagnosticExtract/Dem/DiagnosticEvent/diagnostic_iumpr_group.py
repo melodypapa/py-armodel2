@@ -10,9 +10,6 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
     DiagnosticIumpr,
 )
-from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr_group import (
-    DiagnosticIumprGroup,
-)
 
 
 class DiagnosticIumprGroup(DiagnosticCommonElement):

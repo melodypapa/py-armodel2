@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 
 if TYPE_CHECKING:
     from armodel.serialization.metadata import XMLMember
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
     String,

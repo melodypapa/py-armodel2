@@ -14,9 +14,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def import (
-    EcucModuleDef,
-)
 
 
 class EcucModuleDef(EcucDefinitionElement):

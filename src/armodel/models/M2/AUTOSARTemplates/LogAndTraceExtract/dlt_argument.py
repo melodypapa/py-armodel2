@@ -11,9 +11,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Boolean,
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_argument import (
-    DltArgument,
-)
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
     SwDataDefProps,
 )

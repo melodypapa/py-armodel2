@@ -7,9 +7,6 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
-    Traceable,
-)
 
 
 class Traceable(MultilanguageReferrable):

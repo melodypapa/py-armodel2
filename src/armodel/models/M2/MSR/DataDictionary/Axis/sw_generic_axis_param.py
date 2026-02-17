@@ -5,9 +5,6 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject
-from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
-    SwGenericAxisParam,
-)
 
 
 class SwGenericAxisParam(ARObject):

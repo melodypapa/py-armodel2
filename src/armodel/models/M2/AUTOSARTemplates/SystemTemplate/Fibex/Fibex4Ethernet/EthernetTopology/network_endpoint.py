@@ -17,9 +17,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_se
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.infrastructure_services import (
     InfrastructureServices,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
-    NetworkEndpoint,
-)
 
 
 class NetworkEndpoint(Identifiable):

@@ -16,9 +16,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
-    ExecutableEntity,
-)
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
     SwAddrMethod,
 )
