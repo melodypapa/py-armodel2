@@ -302,16 +302,15 @@ def generate_class_code(
     docstring = "\n".join(docstring_lines)
 
     # Generate class code
-    # For ARObject, we need XMLMember at runtime (not just TYPE_CHECKING) because it's used in class body
     if class_name == "ARObject":
         future_import = "from __future__ import annotations\n"
-        type_checking_import = "from typing import TYPE_CHECKING, Optional, Union\n"
+        type_checking_import = "from typing import TYPE_CHECKING, Optional, Union, get_type_hints\n"
         base_import = "import xml.etree.ElementTree as ET\n"
-        # Import XMLMember at runtime since it's used in class body (_xml_members dict)
-        xmlmember_import = "from armodel.serialization.metadata import XMLMember\n"
+        # Import NameConverter for reflection-based serialization
+        name_converter_import = "from armodel.serialization.name_converter import NameConverter\n"
         code = f'''"""{docstring}"""
 
-{future_import}{type_checking_import}{base_import}{xmlmember_import}
+{future_import}{type_checking_import}{base_import}{name_converter_import}
 '''
     else:
         # For other classes, we need to check attribute types first to determine imports
@@ -343,10 +342,9 @@ def generate_class_code(
         else:
             basic_import = "from typing import TYPE_CHECKING, Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
-        xmlmember_import = "from armodel.serialization import XMLMember\n"
         code = f'''"""{docstring}"""
 
-{future_import}{basic_import}{base_import}{xmlmember_import}
+{future_import}{basic_import}{base_import}
 '''
 
     # Add parent class import
@@ -525,80 +523,6 @@ class {class_name}:
 
     # Track types that need TYPE_CHECKING imports due to circular dependencies
     circular_import_types = set()
-    
-    # Add _xml_members class attribute BEFORE __init__
-    # This defines the member-to-XML mapping for this class only (not inherited)
-    # Using new XMLMember dict format for declarative metadata
-    code += """    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-"""
-    
-    if attribute_types:
-        for attr_name, attr_info in attribute_types.items():
-            attr_type = attr_info["type"]
-            multiplicity = attr_info["multiplicity"]
-
-            # Determine if it's a list
-            is_list = multiplicity in ("*", "0..*", "1..*")
-
-            # Determine multiplicity string
-            if multiplicity in ("*", "0..*"):
-                multiplicity_str = "*"
-            elif multiplicity == "1..*":
-                multiplicity_str = "1..*"
-            elif multiplicity in ("0..1", "1"):
-                multiplicity_str = multiplicity
-            else:
-                multiplicity_str = "*" if is_list else "0..1"
-
-            # Determine if it should be an attribute (simple types can be attributes)
-            # For now, we'll assume single primitives can be attributes, lists are elements
-            is_attribute = not is_list and is_primitive_type(attr_type, package_data)
-
-            # Get element class for child elements (non-primitives)
-            # Convert "any (...)" types to "Any"
-            if attr_type.startswith("any ("):
-                element_class = "Any"
-            elif not is_primitive_type(attr_type, package_data):
-                element_class = attr_type
-            else:
-                element_class = None
-
-            # Get Python identifier and XML tag (handles Python keywords)
-            python_name, xml_tag_override = get_python_identifier(attr_name)
-
-            # Check for circular import - if so, use string class name
-            use_string_class = False
-            if element_class and (element_class == class_name or 
-                                 detect_circular_import(class_name, element_class, package_data, dependency_graph)):
-                use_string_class = True
-                circular_import_types.add(element_class)
-
-            # Generate the XMLMember entry
-            code += f'        "{python_name}": XMLMember(\n'
-            code += f"            xml_tag={repr(xml_tag_override)},\n"
-            code += f"            is_attribute={str(is_attribute)},\n"
-            code += f'            multiplicity="{multiplicity_str}",\n'
-
-            if element_class:
-                if use_string_class:
-                    # Use string class name to avoid circular import
-                    code += f'            element_class="{element_class}",\n'
-                else:
-                    code += f"            element_class={element_class},\n"
-
-            # Add xml_name_override if tag was modified for Python keyword
-            if xml_tag_override and xml_tag_override != python_name.replace("_", "-").upper():
-                # The original tag name was preserved, it's a Python keyword escape
-                # We need to pass the original XML tag
-                code += f"            xml_name_override={repr(xml_tag_override)},\n"
-
-            code += f"        ),  # {attr_name}\n"
-
-    code += """    }
-
-"""
 
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""
