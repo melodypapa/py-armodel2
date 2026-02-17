@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -40,73 +39,6 @@ if TYPE_CHECKING:
 
 class SocketAddress(Identifiable):
     """AUTOSAR SocketAddress."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "allowed_i_pv6_ext": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IPv6ExtHeaderFilterList,
-        ),  # allowedIPv6Ext
-        "allowed_tcp": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TcpOptionFilterList,
-        ),  # allowedTcp
-        "application_endpoint_endpoint": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ApplicationEndpoint,
-        ),  # applicationEndpointEndpoint
-        "connector": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # connector
-        "differentiated": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # differentiated
-        "flow_label": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # flowLabel
-        "multicasts": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # multicasts
-        "path_mtu": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # pathMtu
-        "pdu_collection": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # pduCollection
-        "static_sockets": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="StaticSocketConnection",
-        ),  # staticSockets
-        "udp_checksum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=UdpChecksumCalculationEnum,
-        ),  # udpChecksum
-    }
 
     def __init__(self) -> None:
         """Initialize SocketAddress."""

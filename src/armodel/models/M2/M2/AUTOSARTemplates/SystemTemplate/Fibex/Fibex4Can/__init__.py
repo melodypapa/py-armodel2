@@ -1,1 +1,0 @@
-"""Fibex4Can module."""

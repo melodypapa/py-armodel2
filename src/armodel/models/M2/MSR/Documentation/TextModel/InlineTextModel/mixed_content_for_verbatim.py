@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextModel.c
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
@@ -27,35 +26,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref impor
 
 class MixedContentForVerbatim(ARObject):
     """AUTOSAR MixedContentForVerbatim."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "br": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=Br,
-        ),  # br
-        "e": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=EmphasisText,
-        ),  # e
-        "tt": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=Tt,
-        ),  # tt
-        "xref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=Xref,
-        ),  # xref
-    }
 
     def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""

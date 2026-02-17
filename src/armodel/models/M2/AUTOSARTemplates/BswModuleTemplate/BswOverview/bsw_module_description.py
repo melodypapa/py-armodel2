@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswOvervie
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -52,94 +51,6 @@ if TYPE_CHECKING:
 
 class BswModuleDescription(ARElement):
     """AUTOSAR BswModuleDescription."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "bsw_modules": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="BswModuleDependency",
-        ),  # bswModules
-        "bsw_module_documentation": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwComponentDocumentation,
-        ),  # bswModuleDocumentation
-        "expected_entries": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BswModuleEntry,
-        ),  # expectedEntries
-        "implementeds": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BswModuleEntry,
-        ),  # implementeds
-        "internal_behaviors": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BswInternalBehavior,
-        ),  # internalBehaviors
-        "module_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # moduleId
-        "provided_clients": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BswModuleClientServerEntry,
-        ),  # providedClients
-        "provided_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # providedDatas
-        "provided_modes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ModeDeclarationGroup,
-        ),  # providedModes
-        "released_triggers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Trigger,
-        ),  # releasedTriggers
-        "required_clients": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BswModuleClientServerEntry,
-        ),  # requiredClients
-        "required_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # requiredDatas
-        "required_modes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ModeDeclarationGroup,
-        ),  # requiredModes
-        "required_triggers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Trigger,
-        ),  # requiredTriggers
-    }
 
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""

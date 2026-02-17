@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommuni
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -36,86 +35,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_p
 
 class TlsCryptoCipherSuite(Identifiable):
     """AUTOSAR TlsCryptoCipherSuite."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "authentication": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServicePrimitive,
-        ),  # authentication
-        "certificate": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # certificate
-        "cipher_suite_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # cipherSuiteId
-        "cipher_suite": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # cipherSuite
-        "elliptic_curves": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CryptoEllipticCurveProps,
-        ),  # ellipticCurves
-        "encryption": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CryptoServicePrimitive,
-        ),  # encryption
-        "key_exchanges": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CryptoServicePrimitive,
-        ),  # keyExchanges
-        "priority": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # priority
-        "props": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="TlsCryptoCipherSuite",
-        ),  # props
-        "psk_identity": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TlsPskIdentity,
-        ),  # pskIdentity
-        "remote": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # remote
-        "signatures": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CryptoSignatureScheme,
-        ),  # signatures
-        "version": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TlsVersionEnum,
-        ),  # version
-    }
 
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuite."""

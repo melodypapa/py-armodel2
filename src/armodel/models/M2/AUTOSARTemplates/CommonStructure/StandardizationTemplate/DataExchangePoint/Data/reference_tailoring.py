@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Standardizat
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
@@ -23,23 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 
 class ReferenceTailoring(AttributeTailoring):
     """AUTOSAR ReferenceTailoring."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "type_tailorings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ClassTailoring,
-        ),  # typeTailorings
-        "unresolved_restriction": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=UnresolvedReferenceRestrictionWithSeverity,
-        ),  # unresolvedRestriction
-    }
 
     def __init__(self) -> None:
         """Initialize ReferenceTailoring."""

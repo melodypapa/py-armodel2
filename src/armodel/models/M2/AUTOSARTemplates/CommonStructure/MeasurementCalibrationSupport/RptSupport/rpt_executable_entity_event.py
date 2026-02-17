@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -35,46 +34,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 
 class RptExecutableEntityEvent(Identifiable):
     """AUTOSAR RptExecutableEntityEvent."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "executions": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RptExecutionContext,
-        ),  # executions
-        "mc_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RoleBasedMcDataAssignment,
-        ),  # mcDatas
-        "rpt_event_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # rptEventId
-        "rpt_executable_entity": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RptExecutableEntity,
-        ),  # rptExecutableEntity
-        "rpt_impl_policy": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RptImplPolicy,
-        ),  # rptImplPolicy
-        "rpt_service_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RptServicePoint,
-        ),  # rptServicePoints
-    }
 
     def __init__(self) -> None:
         """Initialize RptExecutableEntityEvent."""

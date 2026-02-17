@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -23,23 +22,6 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_topic1 import
 
 class MsrQueryTopic1(Paginateable):
     """AUTOSAR MsrQueryTopic1."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "msr_query_props": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=MsrQueryProps,
-        ),  # msrQueryProps
-        "msr_query_result_topic1": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MsrQueryResultTopic1,
-        ),  # msrQueryResultTopic1
-    }
 
     def __init__(self) -> None:
         """Initialize MsrQueryTopic1."""

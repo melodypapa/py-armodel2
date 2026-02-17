@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_service_instance import (
     DdsCpServiceInstance,
@@ -23,34 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 
 class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
     """AUTOSAR DdsCpProvidedServiceInstance."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "local_unicast": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ApplicationEndpoint,
-        ),  # localUnicast
-        "minor_version": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # minorVersion
-        "provided_ddses": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DdsCpServiceInstance,
-        ),  # providedDdses
-        "static_remotes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ApplicationEndpoint,
-        ),  # staticRemotes
-    }
 
     def __init__(self) -> None:
         """Initialize DdsCpProvidedServiceInstance."""

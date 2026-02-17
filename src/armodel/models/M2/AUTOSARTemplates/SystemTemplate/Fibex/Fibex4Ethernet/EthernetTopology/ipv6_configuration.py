@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint_address import (
     NetworkEndpointAddress,
@@ -26,58 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 
 class Ipv6Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv6Configuration."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "assignment": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # assignment
-        "default_router": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # defaultRouter
-        "dns_servers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-        ),  # dnsServers
-        "enable_anycast": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # enableAnycast
-        "hop_count": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # hopCount
-        "ip_address_keep_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=IpAddressKeepEnum,
-        ),  # ipAddressKeepEnum
-        "ip_address_prefix": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ipAddressPrefix
-        "ipv6_address": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ipv6Address
-        "ipv6_address_source": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Ipv6AddressSourceEnum,
-        ),  # ipv6AddressSource
-    }
 
     def __init__(self) -> None:
         """Initialize Ipv6Configuration."""

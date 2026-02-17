@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_CalibrationData_CalibrationValue.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
@@ -33,46 +32,6 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 
 class SwAxisCont(ARObject):
     """AUTOSAR SwAxisCont."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "category": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CalprmAxisCategoryEnum,
-        ),  # category
-        "sw_arraysize": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ValueList,
-        ),  # swArraysize
-        "sw_axis_index": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # swAxisIndex
-        "sw_values_phys": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwValues,
-        ),  # swValuesPhys
-        "unit": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Unit,
-        ),  # unit
-        "unit_display": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SingleLanguageUnitNames,
-        ),  # unitDisplay
-    }
 
     def __init__(self) -> None:
         """Initialize SwAxisCont."""

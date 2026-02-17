@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.clas
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
@@ -18,23 +17,6 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_v
 
 class RtePluginProps(ARObject):
     """AUTOSAR RtePluginProps."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "associated": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EcucContainerValue,
-        ),  # associated
-        "associated_rte": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=EcucContainerValue,
-        ),  # associatedRte
-    }
 
     def __init__(self) -> None:
         """Initialize RtePluginProps."""

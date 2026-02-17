@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBeha
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -41,47 +40,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class InternalBehavior(Identifiable):
     """AUTOSAR InternalBehavior."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "constants": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ParameterDataPrototype,
-        ),  # constants
-        "constant_values": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ConstantSpecification,
-        ),  # constantValues
-        "data_types": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DataTypeMappingSet,
-        ),  # dataTypes
-        "exclusive_areas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ExclusiveArea,
-        ),  # exclusiveAreas
-        "exclusive_area_nestings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ExclusiveAreaNestingOrder,
-        ),  # exclusiveAreaNestings
-        "static_memories": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # staticMemories
-    }
 
     def __init__(self) -> None:
         """Initialize InternalBehavior."""

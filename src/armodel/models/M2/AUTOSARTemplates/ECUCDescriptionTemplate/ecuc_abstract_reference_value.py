@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.clas
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
     EcucIndexableValue,
@@ -24,28 +23,6 @@ from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
 class EcucAbstractReferenceValue(EcucIndexableValue):
     """AUTOSAR EcucAbstractReferenceValue."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "annotations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Annotation,
-        ),  # annotations
-        "definition": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # definition
-        "is_auto_value": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # isAutoValue
-    }
 
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""

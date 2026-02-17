@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.c
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
@@ -24,29 +23,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 
 class DataPrototypeTransformationProps(ARObject):
     """AUTOSAR DataPrototypeTransformationProps."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "data_prototype_in": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataPrototype,
-        ),  # dataPrototypeIn
-        "network": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwDataDefProps,
-        ),  # network
-        "transformation_props": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TransformationProps,
-        ),  # transformationProps
-    }
 
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""

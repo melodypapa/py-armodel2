@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -22,83 +21,6 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.area import (
 
 class Map(ARObject):
     """AUTOSAR Map."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "area": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=Area,
-        ),  # area
-        "class_": XMLMember(
-            xml_tag='CLASS',
-            is_attribute=True,
-            multiplicity="0..1",
-            xml_name_override='CLASS',
-        ),  # class
-        "name": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # name
-        "onclick": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onclick
-        "ondblclick": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ondblclick
-        "onkeydown": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onkeydown
-        "onkeypress": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onkeypress
-        "onkeyup": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onkeyup
-        "onmousedown": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onmousedown
-        "onmousemove": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onmousemove
-        "onmouseout": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onmouseout
-        "onmouseover": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onmouseover
-        "onmouseup": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # onmouseup
-        "title": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # title
-    }
 
     def __init__(self) -> None:
         """Initialize Map."""

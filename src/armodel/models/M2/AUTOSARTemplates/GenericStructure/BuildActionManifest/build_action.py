@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildAction
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_entity import (
     BuildActionEntity,
@@ -24,47 +23,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.bui
 
 class BuildAction(BuildActionEntity):
     """AUTOSAR BuildAction."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "created_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BuildActionIoElement,
-        ),  # createdDatas
-        "follow_up_actions": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="BuildAction",
-        ),  # followUpActions
-        "input_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BuildActionIoElement,
-        ),  # inputDatas
-        "modified_datas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=BuildActionIoElement,
-        ),  # modifiedDatas
-        "predecessors": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="BuildAction",
-        ),  # predecessors
-        "required": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=BuildActionEnvironment,
-        ),  # required
-    }
 
     def __init__(self) -> None:
         """Initialize BuildAction."""

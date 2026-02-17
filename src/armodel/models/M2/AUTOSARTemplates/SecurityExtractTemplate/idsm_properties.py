@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.clas
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
@@ -23,23 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_lim
 
 class IdsmProperties(IdsCommonElement):
     """AUTOSAR IdsmProperties."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "rate_limitations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=IdsmRateLimitation,
-        ),  # rateLimitations
-        "traffic_limitations": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=IdsmTrafficLimitation,
-        ),  # trafficLimitations
-    }
 
     def __init__(self) -> None:
         """Initialize IdsmProperties."""

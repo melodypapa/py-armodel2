@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -28,39 +27,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim 
 
 class MultiLanguageVerbatim(Paginateable):
     """AUTOSAR MultiLanguageVerbatim."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "allow_break": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # allowBreak
-        "float": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=FloatEnum,
-        ),  # float
-        "help_entry": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # helpEntry
-        "l5": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=LVerbatim,
-        ),  # l5
-        "pgwide": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PgwideEnum,
-        ),  # pgwide
-    }
 
     def __init__(self) -> None:
         """Initialize MultiLanguageVerbatim."""

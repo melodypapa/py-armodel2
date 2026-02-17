@@ -10,7 +10,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceCons
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -37,47 +36,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Stac
 
 class ResourceConsumption(Identifiable):
     """AUTOSAR ResourceConsumption."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "access_count_sets": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=AccessCountSet,
-        ),  # accessCountSets
-        "execution_times": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ExecutionTime,
-        ),  # executionTimes
-        "heap_usages": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=HeapUsage,
-        ),  # heapUsages
-        "memory_sections": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=MemorySection,
-        ),  # memorySections
-        "section_name_prefixes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SectionNamePrefix,
-        ),  # sectionNamePrefixes
-        "stack_usages": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=StackUsage,
-        ),  # stackUsages
-    }
 
     def __init__(self) -> None:
         """Initialize ResourceConsumption."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_GerneralParam
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -20,23 +19,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangua
 
 class Prms(Paginateable):
     """AUTOSAR Prms."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "label": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultilanguageLongName,
-        ),  # label
-        "prm": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=Any,
-        ),  # prm
-    }
 
     def __init__(self) -> None:
         """Initialize Prms."""

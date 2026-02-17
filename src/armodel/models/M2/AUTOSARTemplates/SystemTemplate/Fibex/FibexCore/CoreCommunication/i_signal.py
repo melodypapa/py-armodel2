@@ -11,7 +11,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
@@ -44,70 +43,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 
 class ISignal(FibexElement):
     """AUTOSAR ISignal."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "data": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataTransformation,
-        ),  # data
-        "data_type_policy_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DataTypePolicyEnum,
-        ),  # dataTypePolicyEnum
-        "init_value": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ValueSpecification,
-        ),  # initValue
-        "i_signal_props": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ISignalProps,
-        ),  # iSignalProps
-        "i_signal_type_enum": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ISignalTypeEnum,
-        ),  # iSignalTypeEnum
-        "length": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # length
-        "network": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwDataDefProps,
-        ),  # network
-        "system_signal": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SystemSignal,
-        ),  # systemSignal
-        "timeout": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ValueSpecification,
-        ),  # timeout
-        "transformation_i_signals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # transformationISignals
-    }
 
     def __init__(self) -> None:
         """Initialize ISignal."""

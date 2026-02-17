@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
@@ -21,29 +20,6 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import
 
 class EcucDerivationSpecification(ARObject):
     """AUTOSAR EcucDerivationSpecification."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "calculation": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # calculation
-        "ecuc_queries": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=EcucQuery,
-        ),  # ecucQueries
-        "informal_formula": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MlFormula,
-        ),  # informalFormula
-    }
 
     def __init__(self) -> None:
         """Initialize EcucDerivationSpecification."""

@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -35,47 +34,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 
 class PortElementToCommunicationResourceMapping(Identifiable):
     """AUTOSAR PortElementToCommunicationResourceMapping."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "client_server_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ClientServerOperation,
-        ),  # clientServerInstanceRef
-        "communication": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CpSoftwareCluster,
-        ),  # communication
-        "mode": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeDeclarationGroup,
-        ),  # mode
-        "parameter_data_in_system_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ParameterDataPrototype,
-        ),  # parameterDataInSystemInstanceRef
-        "trigger": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Trigger,
-        ),  # trigger
-        "variable_data_system_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # variableDataSystemInstanceRef
-    }
 
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""

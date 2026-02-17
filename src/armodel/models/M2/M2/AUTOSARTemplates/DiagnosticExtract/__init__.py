@@ -1,1 +1,0 @@
-"""DiagnosticExtract module."""

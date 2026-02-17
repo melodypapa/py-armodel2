@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Applicat
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
@@ -42,58 +41,6 @@ if TYPE_CHECKING:
 
 class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     """AUTOSAR IoHwAbstractionServerAnnotation."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "age": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=MultidimensionalTime,
-        ),  # age
-        "argument": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ArgumentDataPrototype,
-        ),  # argument
-        "bsw_resolution": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # bswResolution
-        "data_element": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=VariableDataPrototype,
-        ),  # dataElement
-        "failure": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="PortPrototype",
-        ),  # failure
-        "filtering": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=FilterDebouncingEnum,
-        ),  # filtering
-        "pulse_test": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=PulseTestEnum,
-        ),  # pulseTest
-        "trigger": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Trigger,
-        ),  # trigger
-    }
 
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""

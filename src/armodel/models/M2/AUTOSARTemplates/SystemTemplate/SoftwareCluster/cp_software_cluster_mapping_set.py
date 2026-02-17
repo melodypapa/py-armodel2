@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareClust
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -26,35 +25,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_applicat
 
 class CpSoftwareClusterMappingSet(ARElement):
     """AUTOSAR CpSoftwareClusterMappingSet."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "port_element_tos": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PortElementToCommunicationResourceMapping,
-        ),  # portElementTos
-        "resource_tos": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CpSoftwareCluster,
-        ),  # resourceTos
-        "software_clusters": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # softwareClusters
-        "swc_tos": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwcToApplicationPartitionMapping,
-        ),  # swcTos
-    }
 
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""

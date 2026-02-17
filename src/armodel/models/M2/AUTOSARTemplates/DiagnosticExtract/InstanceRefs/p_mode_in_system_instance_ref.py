@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
@@ -30,41 +29,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 
 class PModeInSystemInstanceRef(ARObject):
     """AUTOSAR PModeInSystemInstanceRef."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "base": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=System,
-        ),  # base
-        "context": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RootSwCompositionPrototype,
-        ),  # context
-        "context_mode_group": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeDeclarationGroup,
-        ),  # contextModeGroup
-        "context_p_port_prototype": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=AbstractProvidedPortPrototype,
-        ),  # contextPPortPrototype
-        "target_mode": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ModeDeclaration,
-        ),  # targetMode
-    }
 
     def __init__(self) -> None:
         """Initialize PModeInSystemInstanceRef."""

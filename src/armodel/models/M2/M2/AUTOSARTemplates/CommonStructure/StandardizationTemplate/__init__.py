@@ -1,1 +1,0 @@
-"""StandardizationTemplate module."""

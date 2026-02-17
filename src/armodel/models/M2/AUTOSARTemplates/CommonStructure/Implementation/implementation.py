@@ -11,7 +11,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Implementati
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -56,98 +55,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_ma
 class Implementation(ARElement):
     """AUTOSAR Implementation."""
     """Abstract base class - do not instantiate directly."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "build_action_manifest": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=BuildActionManifest,
-        ),  # buildActionManifest
-        "code_descriptors": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Code,
-        ),  # codeDescriptors
-        "compilers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Compiler,
-        ),  # compilers
-        "generateds": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DependencyOnArtifact,
-        ),  # generateds
-        "hw_elements": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=HwElement,
-        ),  # hwElements
-        "linkers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Linker,
-        ),  # linkers
-        "mc_support": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=McSupportData,
-        ),  # mcSupport
-        "programming": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ProgramminglanguageEnum,
-        ),  # programming
-        "required_artifacts": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DependencyOnArtifact,
-        ),  # requiredArtifacts
-        "requireds": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=DependencyOnArtifact,
-        ),  # requireds
-        "resource": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ResourceConsumption,
-        ),  # resource
-        "swc_bsw": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwcBswMapping,
-        ),  # swcBsw
-        "sw_version": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # swVersion
-        "used_code_generator": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # usedCodeGenerator
-        "vendor_id": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # vendorId
-    }
 
     def __init__(self) -> None:
         """Initialize Implementation."""

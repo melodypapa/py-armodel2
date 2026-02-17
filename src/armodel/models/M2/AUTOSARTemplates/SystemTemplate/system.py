@@ -14,7 +14,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -51,85 +50,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
 
 class System(ARElement):
     """AUTOSAR System."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "client_ids": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ClientIdDefinitionSet,
-        ),  # clientIds
-        "container_i_pdu_header_byte": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=Any,
-        ),  # containerIPduHeaderByte
-        "ecu_extract_version": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # ecuExtractVersion
-        "fibex_elements": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=FibexElement,
-        ),  # fibexElements
-        "interpolation_routines": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=InterpolationRoutine,
-        ),  # interpolationRoutines
-        "j1939_shared_addresses": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=J1939SharedAddressCluster,
-        ),  # j1939SharedAddresses
-        "mappings": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SystemMapping,
-        ),  # mappings
-        "pnc_vector": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # pncVector
-        "pnc_vector_offset": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # pncVectorOffset
-        "root_software": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=RootSwCompositionPrototype,
-        ),  # rootSoftware
-        "sw_clusters": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CpSoftwareCluster,
-        ),  # swClusters
-        "systems": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Chapter,
-        ),  # systems
-        "system_version": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # systemVersion
-    }
 
     def __init__(self) -> None:
         """Initialize System."""

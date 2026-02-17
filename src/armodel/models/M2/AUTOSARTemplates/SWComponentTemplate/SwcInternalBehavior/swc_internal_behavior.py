@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
@@ -58,106 +57,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 
 class SwcInternalBehavior(InternalBehavior):
     """AUTOSAR SwcInternalBehavior."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "ar_typed_pers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # arTypedPers
-        "events": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RTEEvent,
-        ),  # events
-        "exclusive_areas": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=SwcExclusiveAreaPolicy,
-        ),  # exclusiveAreas
-        "explicit_inters": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # explicitInters
-        "implicit_inters": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableDataPrototype,
-        ),  # implicitInters
-        "included_data_type_sets": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=IncludedDataTypeSet,
-        ),  # includedDataTypeSets
-        "included_modes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=IncludedModeDeclarationGroupSet,
-        ),  # includedModes
-        "instantiation_data_defs": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=InstantiationDataDefProps,
-        ),  # instantiationDataDefs
-        "per_instance_memories": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PerInstanceMemory,
-        ),  # perInstanceMemories
-        "per_instances": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ParameterDataPrototype,
-        ),  # perInstances
-        "port_api_options": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=PortAPIOption,
-        ),  # portAPIOptions
-        "runnables": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=RunnableEntity,
-        ),  # runnables
-        "services": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # services
-        "shareds": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ParameterDataPrototype,
-        ),  # shareds
-        "supports": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # supports
-        "variation_point_proxies": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariationPointProxy,
-        ),  # variationPointProxies
-    }
 
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""

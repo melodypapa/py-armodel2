@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
@@ -53,111 +52,6 @@ if TYPE_CHECKING:
 
 class RunnableEntity(ExecutableEntity):
     """AUTOSAR RunnableEntity."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "arguments": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="RunnableEntity",
-        ),  # arguments
-        "asynchronous_servers": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=Any,
-        ),  # asynchronousServers
-        "can_be_invoked": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # canBeInvoked
-        "data_reads": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # dataReads
-        "data_receives": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # dataReceives
-        "data_send_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # dataSendPoints
-        "data_writes": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # dataWrites
-        "externals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ExternalTriggeringPoint,
-        ),  # externals
-        "internals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=InternalTriggeringPoint,
-        ),  # internals
-        "mode_access_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ModeAccessPoint,
-        ),  # modeAccessPoints
-        "mode_switch_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ModeSwitchPoint,
-        ),  # modeSwitchPoints
-        "parameter_accesses": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="ParameterAccess",
-        ),  # parameterAccesses
-        "read_locals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # readLocals
-        "server_call_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=ServerCallPoint,
-        ),  # serverCallPoints
-        "symbol": XMLMember(
-            xml_tag=None,
-            is_attribute=True,
-            multiplicity="0..1",
-        ),  # symbol
-        "wait_points": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class="WaitPoint",
-        ),  # waitPoints
-        "written_locals": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=VariableAccess,
-        ),  # writtenLocals
-    }
 
     def __init__(self) -> None:
         """Initialize RunnableEntity."""

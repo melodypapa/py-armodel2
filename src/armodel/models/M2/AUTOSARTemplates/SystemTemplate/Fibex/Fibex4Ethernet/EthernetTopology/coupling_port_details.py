@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4E
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_rate_policy import (
@@ -33,47 +32,6 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 
 class CouplingPortDetails(ARObject):
     """AUTOSAR CouplingPortDetails."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "coupling_ports": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CouplingPortStructuralElement,
-        ),  # couplingPorts
-        "ethernet_priority": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=EthernetPriorityRegeneration,
-        ),  # ethernetPriority
-        "ethernet_traffic": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="1",
-            element_class=CouplingPortTrafficClassAssignment,
-        ),  # ethernetTraffic
-        "global_time_coupling": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=GlobalTimeCouplingPortProps,
-        ),  # globalTimeCoupling
-        "last_egress": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=CouplingPortScheduler,
-        ),  # lastEgress
-        "rate_policies": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="*",
-            element_class=CouplingPortRatePolicy,
-        ),  # ratePolicies
-    }
 
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""

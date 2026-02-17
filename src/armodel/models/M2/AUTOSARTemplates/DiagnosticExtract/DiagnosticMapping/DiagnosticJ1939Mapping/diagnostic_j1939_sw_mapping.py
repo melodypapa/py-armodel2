@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Diagnostic
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
@@ -23,23 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 
 class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticJ1939SwMapping."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "node": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=DiagnosticJ1939Node,
-        ),  # node
-        "sw_component_prototype_composition_instance_ref": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=SwComponentPrototype,
-        ),  # swComponentPrototypeCompositionInstanceRef
-    }
 
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""

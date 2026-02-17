@@ -9,7 +9,6 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.Chapters.chapter_content import (
@@ -28,29 +27,6 @@ if TYPE_CHECKING:
 
 class ChapterModel(ARObject):
     """AUTOSAR ChapterModel."""
-
-    # XML member definitions for this class only (not inherited from parent classes)
-    # Format: dict[str, XMLMember] for declarative metadata
-    _xml_members: dict[str, "XMLMember"] = {
-        "chapter": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class="ChapterOrMsrQuery",
-        ),  # chapter
-        "chapter_content": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=ChapterContent,
-        ),  # chapterContent
-        "topic1": XMLMember(
-            xml_tag=None,
-            is_attribute=False,
-            multiplicity="0..1",
-            element_class=TopicOrMsrQuery,
-        ),  # topic1
-    }
 
     def __init__(self) -> None:
         """Initialize ChapterModel."""
