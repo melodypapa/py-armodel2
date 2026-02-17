@@ -28,13 +28,13 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=BinaryManifestItem,
+            element_class="BinaryManifestItem",
         ),  # auxiliaryFields
         "default_value": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=BinaryManifestItem,
+            element_class="BinaryManifestItem",
         ),  # defaultValue
         "is_unused": XMLMember(
             xml_tag=None,
@@ -45,7 +45,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=BinaryManifestItem,
+            element_class="BinaryManifestItem",
         ),  # value
     }
 

@@ -8,7 +8,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -33,7 +33,7 @@ class BswServiceDependency(ServiceDependency):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (RoleBasedData),
+            element_class=Any,
         ),  # assignedDatas
         "assigned_entries": XMLMember(
             xml_tag=None,
@@ -45,7 +45,7 @@ class BswServiceDependency(ServiceDependency):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (BswService),
+            element_class=Any,
         ),  # ident
         "service_needs": XMLMember(
             xml_tag=None,

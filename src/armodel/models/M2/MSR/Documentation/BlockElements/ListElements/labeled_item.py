@@ -16,12 +16,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
-    DocumentationBlock,
-)
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
 
 
 class LabeledItem(Paginateable):
@@ -39,7 +42,7 @@ class LabeledItem(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # itemContents
         "item_label": XMLMember(
             xml_tag=None,

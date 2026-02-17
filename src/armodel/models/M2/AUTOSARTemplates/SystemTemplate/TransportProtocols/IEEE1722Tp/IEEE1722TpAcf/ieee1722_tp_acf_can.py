@@ -25,7 +25,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=IEEE1722TpAcfCan,
+            element_class="IEEE1722TpAcfCan",
         ),  # messageTypeMessageTypeEnum
     }
 

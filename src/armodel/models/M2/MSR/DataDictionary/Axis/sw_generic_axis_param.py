@@ -23,7 +23,7 @@ class SwGenericAxisParam(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwGenericAxisParam,
+            element_class="SwGenericAxisParam",
         ),  # swGenericAxisParam
     }
 

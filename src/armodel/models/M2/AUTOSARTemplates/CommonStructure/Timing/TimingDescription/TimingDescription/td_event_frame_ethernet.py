@@ -40,7 +40,7 @@ class TDEventFrameEthernet(TDEventCom):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TDEventFrameEthernet,
+            element_class="TDEventFrameEthernet",
         ),  # tdEventType
         "td_header_id_filters": XMLMember(
             xml_tag=None,

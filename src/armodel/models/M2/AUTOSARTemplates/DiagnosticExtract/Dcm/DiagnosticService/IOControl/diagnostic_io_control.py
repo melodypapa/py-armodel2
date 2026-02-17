@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_IOControl.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -31,7 +31,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (DiagnosticControl),
+            element_class=Any,
         ),  # controlEnables
         "data_identifier_identifier": XMLMember(
             xml_tag=None,
@@ -48,7 +48,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticIOControl,
+            element_class="DiagnosticIOControl",
         ),  # ioControlClass
         "reset_to_default": XMLMember(
             xml_tag=None,

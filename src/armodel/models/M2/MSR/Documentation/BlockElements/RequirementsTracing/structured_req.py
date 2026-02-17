@@ -23,12 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     DateTime,
     String,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
-    DocumentationBlock,
-)
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
     Traceable,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
 
 
 class StructuredReq(Paginateable):
@@ -47,7 +50,7 @@ class StructuredReq(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # conflicts
         "date": XMLMember(
             xml_tag=None,
@@ -58,13 +61,13 @@ class StructuredReq(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # dependencies
         "description": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # description
         "importance": XMLMember(
             xml_tag=None,
@@ -80,19 +83,19 @@ class StructuredReq(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # rationale
         "remark": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # remark
         "supporting": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # supporting
         "tested_items": XMLMember(
             xml_tag=None,
@@ -109,7 +112,7 @@ class StructuredReq(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # useCase
     }
 

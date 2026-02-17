@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -28,13 +28,13 @@ class DiagnosticContributionSet(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DiagnosticCommon),
+            element_class=Any,
         ),  # common
         "elements": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (DiagnosticCommon),
+            element_class=Any,
         ),  # elements
         "service_tables": XMLMember(
             xml_tag=None,

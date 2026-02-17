@@ -76,7 +76,7 @@ class GlobalTimeDomain(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=GlobalTimeDomain,
+            element_class="GlobalTimeDomain",
         ),  # globalTimeSubs
         "network": XMLMember(
             xml_tag=None,
@@ -88,7 +88,7 @@ class GlobalTimeDomain(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=GlobalTimeDomain,
+            element_class="GlobalTimeDomain",
         ),  # offsetTime
         "pdu_triggering": XMLMember(
             xml_tag=None,

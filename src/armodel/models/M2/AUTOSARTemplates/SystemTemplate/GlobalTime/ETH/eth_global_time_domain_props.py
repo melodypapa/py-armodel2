@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_ETH.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -51,7 +51,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EthGlobalTime),
+            element_class=Any,
         ),  # manageds
         "message": XMLMember(
             xml_tag=None,

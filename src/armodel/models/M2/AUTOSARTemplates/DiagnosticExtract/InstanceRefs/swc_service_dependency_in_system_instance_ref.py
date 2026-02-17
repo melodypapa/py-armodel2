@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_InstanceRefs.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -32,13 +32,13 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (SwComponent),
+            element_class=Any,
         ),  # contextSwPrototypes
         "target_swc": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SwcService),
+            element_class=Any,
         ),  # targetSwc
     }
 

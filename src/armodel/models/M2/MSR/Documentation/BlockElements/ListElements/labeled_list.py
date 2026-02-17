@@ -16,9 +16,12 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.indent_sample import (
     IndentSample,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_item import (
-    LabeledItem,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_item import (
+        LabeledItem,
+    )
+
 
 
 class LabeledList(Paginateable):
@@ -37,7 +40,7 @@ class LabeledList(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=LabeledItem,
+            element_class="LabeledItem",
         ),  # labeledItemLabel
     }
 

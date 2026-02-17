@@ -27,7 +27,7 @@ class BswEntryRelationship(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=BswEntryRelationship,
+            element_class="BswEntryRelationship",
         ),  # bswEntry
         "from_": XMLMember(
             xml_tag='FROM',

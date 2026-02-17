@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -21,12 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Integer,
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_ecu import (
-    NmEcu,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.nm_pdu import (
     NmPdu,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_ecu import (
+        NmEcu,
+    )
+
 
 
 class NmNode(Identifiable):
@@ -40,7 +43,7 @@ class NmNode(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (Communication),
+            element_class=Any,
         ),  # controller
         "nm_coord_cluster": XMLMember(
             xml_tag=None,
@@ -57,7 +60,7 @@ class NmNode(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=NmEcu,
+            element_class="NmEcu",
         ),  # nmIfEcu
         "nm_node_id": XMLMember(
             xml_tag=None,

@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -21,12 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Boolean,
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_validation_condition import (
-    EcucValidationCondition,
-)
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
     Traceable,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_validation_condition import (
+        EcucValidationCondition,
+    )
+
 
 
 class EcucDefinitionElement(Identifiable):
@@ -40,13 +43,13 @@ class EcucDefinitionElement(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EcucCondition),
+            element_class=Any,
         ),  # ecucCond
         "ecuc_validations": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=EcucValidationCondition,
+            element_class="EcucValidationCondition",
         ),  # ecucValidations
         "lower_multiplicity": XMLMember(
             xml_tag=None,

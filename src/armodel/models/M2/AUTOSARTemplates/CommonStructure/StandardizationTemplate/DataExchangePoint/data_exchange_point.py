@@ -40,7 +40,7 @@ class DataExchangePoint(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=DataExchangePoint,
+            element_class="DataExchangePoint",
         ),  # kind
         "referenced": XMLMember(
             xml_tag=None,

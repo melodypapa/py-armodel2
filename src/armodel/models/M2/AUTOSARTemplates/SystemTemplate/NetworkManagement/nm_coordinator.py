@@ -16,9 +16,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Integer,
     TimeValue,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node import (
-    NmNode,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node import (
+        NmNode,
+    )
+
 
 
 class NmCoordinator(ARObject):
@@ -46,7 +49,7 @@ class NmCoordinator(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=NmNode,
+            element_class="NmNode",
         ),  # nmNodes
     }
 

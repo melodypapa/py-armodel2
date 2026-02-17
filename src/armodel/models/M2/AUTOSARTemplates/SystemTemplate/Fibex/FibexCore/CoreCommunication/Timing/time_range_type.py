@@ -26,7 +26,7 @@ class TimeRangeType(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TimeRangeType,
+            element_class="TimeRangeType",
         ),  # toleranceTolerance
         "value": XMLMember(
             xml_tag=None,

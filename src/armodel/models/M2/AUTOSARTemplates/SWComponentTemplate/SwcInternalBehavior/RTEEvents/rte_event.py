@@ -19,9 +19,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstrac
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
-    RunnableEntity,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
+        RunnableEntity,
+    )
+
 
 
 class RTEEvent(AbstractEvent):
@@ -41,7 +44,7 @@ class RTEEvent(AbstractEvent):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=RunnableEntity,
+            element_class="RunnableEntity",
         ),  # startOnEvent
     }
 

@@ -236,6 +236,7 @@ def generate_class_code(
     package_data: Dict[str, Dict[str, Any]],
     include_members: bool = False,
     json_file_path: str = "",
+    dependency_graph: Dict[str, set] = None,
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -245,10 +246,13 @@ def generate_class_code(
         package_data: Dictionary with package data including class attributes
         include_members: Whether to include member lists from package definitions
         json_file_path: Path to the JSON file containing the class definition
+        dependency_graph: Complete dependency graph for circular import detection
 
     Returns:
         Generated Python code as string
     """
+    if dependency_graph is None:
+        dependency_graph = {}
     class_name = type_def["name"]
     is_splitable = type_def.get("splitable", False)
     split_file_name = type_def.get("split_file_name", "")
@@ -310,9 +314,34 @@ def generate_class_code(
 {future_import}{type_checking_import}{base_import}{xmlmember_import}
 '''
     else:
-        # For other classes, add future annotations and TYPE_CHECKING for circular import handling
+        # For other classes, we need to check attribute types first to determine imports
+        # Collect attribute types for imports
+        attribute_types = {}
+        if include_members and package_path in package_data:
+            class_info = package_data[package_path].get("classes", [])
+            for cls in class_info:
+                if cls["name"] == class_name and "attributes" in cls:
+                    for attr_name, attr_info in cls["attributes"].items():
+                        attr_type = attr_info["type"]
+                        multiplicity = attr_info["multiplicity"]
+                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
+                    break
+
+        # Check if we need Any type
+        uses_any_type = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                attr_type = attr_info["type"]
+                if attr_type.startswith("any ("):
+                    uses_any_type = True
+                    break
+
+        # Build imports based on what we need
         future_import = "from __future__ import annotations\n"
-        basic_import = "from typing import TYPE_CHECKING, Optional\n"
+        if uses_any_type:
+            basic_import = "from typing import TYPE_CHECKING, Optional, Any\n"
+        else:
+            basic_import = "from typing import TYPE_CHECKING, Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         xmlmember_import = "from armodel.serialization import XMLMember\n"
         code = f'''"""{docstring}"""
@@ -333,17 +362,18 @@ def generate_class_code(
         # Add ARObject import for classes that inherit from ARObject
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
-    # Collect attribute types for imports
-    attribute_types = {}
-    if include_members and package_path in package_data:
-        class_info = package_data[package_path].get("classes", [])
-        for cls in class_info:
-            if cls["name"] == class_name and "attributes" in cls:
-                for attr_name, attr_info in cls["attributes"].items():
-                    attr_type = attr_info["type"]
-                    multiplicity = attr_info["multiplicity"]
-                    attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
-                break
+    # Collect attribute types for imports (if not already collected for non-ARObject classes)
+    if class_name == "ARObject":
+        attribute_types = {}
+        if include_members and package_path in package_data:
+            class_info = package_data[package_path].get("classes", [])
+            for cls in class_info:
+                if cls["name"] == class_name and "attributes" in cls:
+                    for attr_name, attr_info in cls["attributes"].items():
+                        attr_type = attr_info["type"]
+                        multiplicity = attr_info["multiplicity"]
+                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
+                    break
 
     # Add type imports if needed
     if attribute_types:
@@ -428,6 +458,10 @@ def generate_class_code(
         if class_import_path:
             added_imports.add(class_import_path)
 
+        # Separate circular and non-circular imports
+        circular_imports = set()
+        non_circular_imports = set()
+        
         if type_imports:
             for import_type in sorted(type_imports):
                 # Skip self-import (class importing itself)
@@ -435,8 +469,30 @@ def generate_class_code(
                     continue
                 import_path = get_type_import_path(import_type, package_data)
                 if import_path and import_path not in added_imports:
-                    code += f"{import_path}\n"
+                    # Check for circular import
+                    if detect_circular_import(class_name, import_type, package_data, dependency_graph):
+                        circular_imports.add((import_type, import_path))
+                    else:
+                        non_circular_imports.add((import_type, import_path))
                     added_imports.add(import_path)
+
+        # Add non-circular imports directly
+        for import_type, import_path in sorted(non_circular_imports):
+            code += f"{import_path}\n"
+
+        # Add circular imports in TYPE_CHECKING block
+        if circular_imports:
+            code += "\nif TYPE_CHECKING:\n"
+            for import_type, import_path in sorted(circular_imports):
+                # Reconstruct just the type name for TYPE_CHECKING import
+                # Remove the "from ... import (\n    TYPE,\n)" wrapper
+                # and use a simpler TYPE_CHECKING format
+                type_package = get_type_package_path(import_type, package_data)
+                if type_package:
+                    python_path = type_package.replace("::", ".")
+                    module_path = f"armodel.models.{python_path}.{to_snake_case(import_type)}"
+                    code += f"    from {module_path} import (\n        {import_type},\n    )\n"
+            code += "\n"
 
     # Generate class definition with parent or empty parentheses for ARObject
     if parent_class:
@@ -467,6 +523,9 @@ class {class_name}:
 
 '''
 
+    # Track types that need TYPE_CHECKING imports due to circular dependencies
+    circular_import_types = set()
+    
     # Add _xml_members class attribute BEFORE __init__
     # This defines the member-to-XML mapping for this class only (not inherited)
     # Using new XMLMember dict format for declarative metadata
@@ -474,6 +533,7 @@ class {class_name}:
     # Format: dict[str, XMLMember] for declarative metadata
     _xml_members: dict[str, "XMLMember"] = {
 """
+    
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
@@ -497,10 +557,23 @@ class {class_name}:
             is_attribute = not is_list and is_primitive_type(attr_type, package_data)
 
             # Get element class for child elements (non-primitives)
-            element_class = attr_type if not is_primitive_type(attr_type, package_data) else None
+            # Convert "any (...)" types to "Any"
+            if attr_type.startswith("any ("):
+                element_class = "Any"
+            elif not is_primitive_type(attr_type, package_data):
+                element_class = attr_type
+            else:
+                element_class = None
 
             # Get Python identifier and XML tag (handles Python keywords)
             python_name, xml_tag_override = get_python_identifier(attr_name)
+
+            # Check for circular import - if so, use string class name
+            use_string_class = False
+            if element_class and (element_class == class_name or 
+                                 detect_circular_import(class_name, element_class, package_data, dependency_graph)):
+                use_string_class = True
+                circular_import_types.add(element_class)
 
             # Generate the XMLMember entry
             code += f'        "{python_name}": XMLMember(\n'
@@ -509,7 +582,11 @@ class {class_name}:
             code += f'            multiplicity="{multiplicity_str}",\n'
 
             if element_class:
-                code += f"            element_class={element_class},\n"
+                if use_string_class:
+                    # Use string class name to avoid circular import
+                    code += f'            element_class="{element_class}",\n'
+                else:
+                    code += f"            element_class={element_class},\n"
 
             # Add xml_name_override if tag was modified for Python keyword
             if xml_tag_override and xml_tag_override != python_name.replace("_", "-").upper():
@@ -978,6 +1055,107 @@ def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]
     return ""
 
 
+def get_type_package_path(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> str:
+    """Get the package path for a class type.
+
+    Args:
+        type_name: Name of the class type
+        package_data: Package data dictionary
+
+    Returns:
+        Package path string or empty string if not found
+    """
+    for package_path, data in package_data.items():
+        if "classes" in data:
+            for cls in data["classes"]:
+                if cls["name"] == type_name:
+                    class_package_path = cls.get("package", package_path)
+                    return class_package_path
+    return ""
+
+
+def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> Dict[str, set]:
+    """Build a complete dependency graph for all classes.
+
+    Args:
+        package_data: Package data dictionary
+
+    Returns:
+        Dictionary mapping class names to their dependencies
+    """
+    dependency_graph = {}
+    
+    # Initialize all classes with empty dependency sets
+    for package_path, data in package_data.items():
+        if "classes" in data:
+            for cls in data["classes"]:
+                class_name = cls["name"]
+                dependency_graph[class_name] = set()
+                
+                # Collect class-type dependencies from attributes
+                if "attributes" in cls:
+                    for attr_name, attr_info in cls["attributes"].items():
+                        attr_type = attr_info["type"]
+                        multiplicity = attr_info["multiplicity"]
+                        
+                        # Skip primitives, enums, "any" types, and self-references
+                        if (is_primitive_type(attr_type, package_data) or 
+                            is_enum_type(attr_type, package_data) or 
+                            attr_type.startswith("any (") or
+                            attr_type == class_name):
+                            continue
+                        
+                        # Add to dependencies
+                        dependency_graph[class_name].add(attr_type)
+    
+    return dependency_graph
+
+
+def detect_circular_import(
+    current_class: str,
+    attribute_type: str,
+    package_data: Dict[str, Dict[str, Any]],
+    dependency_graph: Dict[str, set],
+) -> bool:
+    """Detect if importing attribute_type would cause a circular import.
+
+    Args:
+        current_class: Name of the current class being generated
+        attribute_type: Name of the attribute type to import
+        package_data: Package data dictionary
+        dependency_graph: Graph of class dependencies (complete graph)
+
+    Returns:
+        True if circular import detected, False otherwise
+    """
+    # If current_class is attribute_type, it's a self-reference
+    if current_class == attribute_type:
+        return True
+    
+    # Check if attribute_type is in dependency graph
+    if attribute_type not in dependency_graph:
+        return False
+    
+    # Check if current_class is in the dependency chain of attribute_type
+    # Use depth-first search to detect cycles
+    visited = set()
+    to_visit = [attribute_type]
+    
+    while to_visit:
+        node = to_visit.pop()
+        if node == current_class:
+            return True
+        if node in visited:
+            continue
+        visited.add(node)
+        
+        # Add dependencies of this node
+        if node in dependency_graph:
+            to_visit.extend(dependency_graph[node] - visited)
+    
+    return False
+
+
 def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
     """Load all package JSON files.
 
@@ -1070,6 +1248,9 @@ def generate_all_models(
         # Create directory structure
         create_directory_structure(types, output_dir, package_data)
 
+        # Build complete dependency graph for circular import detection
+        dependency_graph = build_complete_dependency_graph(package_data) if include_members else {}
+
         # Create a mapping of class names to their JSON file paths
         class_json_file_map = {}
         for package_path, package_info in package_data.items():
@@ -1095,7 +1276,7 @@ def generate_all_models(
 
             # Generate class code
             class_code = generate_class_code(
-                type_def, hierarchy_info, package_data, include_members, json_file_path
+                type_def, hierarchy_info, package_data, include_members, json_file_path, dependency_graph
             )
             builder_code = generate_builder_code(type_def)
 

@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -25,13 +25,13 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (ConsumedService),
+            element_class=Any,
         ),  # consumedServices
         "provided_services": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (ProvidedService),
+            element_class=Any,
         ),  # providedServices
     }
 

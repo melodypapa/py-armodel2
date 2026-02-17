@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAv.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -45,7 +45,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (IEEE1722TpAaf),
+            element_class=Any,
         ),  # aafNominalRate
         "aes3_data_type_h": XMLMember(
             xml_tag=None,

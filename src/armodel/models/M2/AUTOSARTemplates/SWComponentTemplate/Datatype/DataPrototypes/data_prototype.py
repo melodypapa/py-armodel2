@@ -16,9 +16,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class DataPrototype(Identifiable):
@@ -32,7 +35,7 @@ class DataPrototype(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # swDataDef
     }
 

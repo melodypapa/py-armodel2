@@ -14,9 +14,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
-    HwPinGroup,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
+        HwPinGroup,
+    )
+
 
 
 class HwPinGroupContent(ARObject):
@@ -35,7 +38,7 @@ class HwPinGroupContent(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=HwPinGroup,
+            element_class="HwPinGroup",
         ),  # hwPinGroup
     }
 

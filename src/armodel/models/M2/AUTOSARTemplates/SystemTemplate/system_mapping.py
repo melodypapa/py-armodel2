@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -124,7 +124,7 @@ class SystemMapping(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (J1939Controller),
+            element_class=Any,
         ),  # j1939Controllers
         "mappings": XMLMember(
             xml_tag=None,
@@ -160,7 +160,7 @@ class SystemMapping(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (RteEventInSystem),
+            element_class=Any,
         ),  # rteEventInSystems
         "rte_event_to_oses": XMLMember(
             xml_tag=None,
@@ -178,13 +178,13 @@ class SystemMapping(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (CpSoftwareClusterTo),
+            element_class=Any,
         ),  # softwareClusters
         "sw_clusters": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (CpSoftwareClusterTo),
+            element_class=Any,
         ),  # swClusters
         "swc_tos": XMLMember(
             xml_tag=None,

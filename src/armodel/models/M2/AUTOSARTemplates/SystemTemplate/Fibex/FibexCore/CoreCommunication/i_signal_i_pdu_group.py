@@ -40,7 +40,7 @@ class ISignalIPduGroup(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ISignalIPduGroup,
+            element_class="ISignalIPduGroup",
         ),  # containeds
         "i_signal_i_pdus": XMLMember(
             xml_tag=None,

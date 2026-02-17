@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster_BinaryManifest.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -35,7 +35,7 @@ class BinaryManifestResource(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (BinaryManifest),
+            element_class=Any,
         ),  # resource
         "resource_guard": XMLMember(
             xml_tag=None,

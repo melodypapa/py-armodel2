@@ -18,9 +18,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
     NumericalOrText,
 )
-from armodel.models.M2.MSR.CalibrationData.CalibrationValue.value_group import (
-    ValueGroup,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.CalibrationData.CalibrationValue.value_group import (
+        ValueGroup,
+    )
+
 
 
 class SwValues(ARObject):
@@ -43,7 +46,7 @@ class SwValues(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=ValueGroup,
+            element_class="ValueGroup",
         ),  # vg
         "vt": XMLMember(
             xml_tag=None,

@@ -14,12 +14,15 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
-    AutosarParameterRef,
-)
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
+        AutosarParameterRef,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class ParameterAccess(AbstractAccessPoint):
@@ -32,13 +35,13 @@ class ParameterAccess(AbstractAccessPoint):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=AutosarParameterRef,
+            element_class="AutosarParameterRef",
         ),  # accessedParameter
         "sw_data_def": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # swDataDef
     }
 

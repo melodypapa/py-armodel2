@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer_InstanceRef.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -40,7 +40,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (ApplicationComposite),
+            element_class=Any,
         ),  # contextDatas
         "root_data_prototype_in_cs": XMLMember(
             xml_tag=None,

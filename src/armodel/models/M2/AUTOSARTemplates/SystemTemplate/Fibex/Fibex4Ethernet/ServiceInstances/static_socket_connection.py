@@ -22,9 +22,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.so_con_i_pdu_identifier import (
     SoConIPduIdentifier,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.socket_address import (
-    SocketAddress,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.socket_address import (
+        SocketAddress,
+    )
+
 
 
 class StaticSocketConnection(Identifiable):
@@ -43,7 +46,7 @@ class StaticSocketConnection(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SocketAddress,
+            element_class="SocketAddress",
         ),  # remoteAddress
         "tcp_connect": XMLMember(
             xml_tag=None,

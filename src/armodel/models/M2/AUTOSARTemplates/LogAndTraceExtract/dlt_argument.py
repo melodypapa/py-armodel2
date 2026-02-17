@@ -33,7 +33,7 @@ class DltArgument(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=DltArgument,
+            element_class="DltArgument",
         ),  # dltArguments
         "length": XMLMember(
             xml_tag=None,

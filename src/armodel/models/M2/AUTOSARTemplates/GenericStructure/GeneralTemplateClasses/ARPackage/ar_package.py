@@ -25,9 +25,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.reference_base import (
-    ReferenceBase,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.reference_base import (
+        ReferenceBase,
+    )
+
 
 
 class ARPackage(CollectableElement):
@@ -40,7 +43,7 @@ class ARPackage(CollectableElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ARPackage,
+            element_class="ARPackage",
         ),  # arPackages
         "elements": XMLMember(
             xml_tag=None,
@@ -52,7 +55,7 @@ class ARPackage(CollectableElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ReferenceBase,
+            element_class="ReferenceBase",
         ),  # referenceBases
     }
 

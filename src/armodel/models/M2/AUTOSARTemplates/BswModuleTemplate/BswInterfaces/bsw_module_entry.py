@@ -31,9 +31,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     NameToken,
     PositiveInteger,
 )
-from armodel.models.M2.MSR.DataDictionary.ServiceProcessTask.sw_service_arg import (
-    SwServiceArg,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.ServiceProcessTask.sw_service_arg import (
+        SwServiceArg,
+    )
+
 
 
 class BswModuleEntry(ARElement):
@@ -46,7 +49,7 @@ class BswModuleEntry(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=SwServiceArg,
+            element_class="SwServiceArg",
         ),  # arguments
         "bsw_entry_kind_enum": XMLMember(
             xml_tag=None,
@@ -85,7 +88,7 @@ class BswModuleEntry(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwServiceArg,
+            element_class="SwServiceArg",
         ),  # returnType
         "role": XMLMember(
             xml_tag=None,

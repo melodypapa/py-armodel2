@@ -13,12 +13,15 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_condition_formula import (
-    EcucConditionFormula,
-)
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
-    EcucQuery,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_condition_formula import (
+        EcucConditionFormula,
+    )
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
+        EcucQuery,
+    )
+
 
 
 class EcucValidationCondition(Identifiable):
@@ -31,13 +34,13 @@ class EcucValidationCondition(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=EcucQuery,
+            element_class="EcucQuery",
         ),  # ecucQueries
         "validation": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=EcucConditionFormula,
+            element_class="EcucConditionFormula",
         ),  # validation
     }
 

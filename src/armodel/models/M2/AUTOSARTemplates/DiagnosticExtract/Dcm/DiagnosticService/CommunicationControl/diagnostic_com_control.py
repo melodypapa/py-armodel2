@@ -28,7 +28,7 @@ class DiagnosticComControl(DiagnosticServiceInstance):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticComControl,
+            element_class="DiagnosticComControl",
         ),  # comControl
         "custom_sub": XMLMember(
             xml_tag=None,

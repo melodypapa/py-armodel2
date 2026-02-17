@@ -6,16 +6,19 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
-    FMFeature,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
+        FMFeature,
+    )
+
 
 
 class FMFeatureRelation(Identifiable):
@@ -28,13 +31,13 @@ class FMFeatureRelation(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=FMFeature,
+            element_class="FMFeature",
         ),  # features
         "restriction": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (FMConditionByFeatures),
+            element_class=Any,
         ),  # restriction
     }
 

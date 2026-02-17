@@ -66,17 +66,11 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_se
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_dependency import (
     SwDataDependency,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_pointer_target_props import (
-    SwPointerTargetProps,
-)
 from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout import (
     SwRecordLayout,
 )
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_text_props import (
     SwTextProps,
-)
-from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_proxy import (
-    SwVariableRefProxy,
 )
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
@@ -84,6 +78,15 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_pointer_target_props import (
+        SwPointerTargetProps,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_proxy import (
+        SwVariableRefProxy,
+    )
+
 
 
 class SwDataDefProps(ARObject):
@@ -182,7 +185,7 @@ class SwDataDefProps(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=SwVariableRefProxy,
+            element_class="SwVariableRefProxy",
         ),  # swComparisons
         "sw_data": XMLMember(
             xml_tag=None,
@@ -194,7 +197,7 @@ class SwDataDefProps(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwVariableRefProxy,
+            element_class="SwVariableRefProxy",
         ),  # swHostVariable
         "sw_impl_policy_enum": XMLMember(
             xml_tag=None,
@@ -221,7 +224,7 @@ class SwDataDefProps(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwPointerTargetProps,
+            element_class="SwPointerTargetProps",
         ),  # swPointerTargetProps
         "sw_record": XMLMember(
             xml_tag=None,

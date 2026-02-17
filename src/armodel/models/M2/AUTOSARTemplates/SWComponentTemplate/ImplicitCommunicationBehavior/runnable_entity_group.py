@@ -35,7 +35,7 @@ class RunnableEntityGroup(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RunnableEntityGroup,
+            element_class="RunnableEntityGroup",
         ),  # runnableEntityGroupGroupInCompositionInstanceRefs
     }
 

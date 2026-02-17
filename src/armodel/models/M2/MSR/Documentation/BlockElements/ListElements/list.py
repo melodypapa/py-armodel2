@@ -16,9 +16,12 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ListEnum,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item import (
-    Item,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item import (
+        Item,
+    )
+
 
 
 class List(Paginateable):
@@ -31,7 +34,7 @@ class List(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=Item,
+            element_class="Item",
         ),  # item
         "type": XMLMember(
             xml_tag=None,

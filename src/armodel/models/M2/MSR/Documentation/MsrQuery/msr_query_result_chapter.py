@@ -11,9 +11,12 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
-    Chapter,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
+        Chapter,
+    )
+
 
 
 class MsrQueryResultChapter(ARObject):
@@ -26,7 +29,7 @@ class MsrQueryResultChapter(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=Chapter,
+            element_class="Chapter",
         ),  # chapters
     }
 

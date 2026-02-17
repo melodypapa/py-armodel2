@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_FR.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -28,7 +28,7 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (GlobalTimeCrc),
+            element_class=Any,
         ),  # crcValidated
         "sequence": XMLMember(
             xml_tag=None,

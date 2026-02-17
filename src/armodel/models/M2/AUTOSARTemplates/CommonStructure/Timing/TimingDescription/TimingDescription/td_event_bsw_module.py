@@ -34,7 +34,7 @@ class TDEventBswModule(TDEventBsw):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TDEventBswModule,
+            element_class="TDEventBswModule",
         ),  # tdEventBsw
     }
 

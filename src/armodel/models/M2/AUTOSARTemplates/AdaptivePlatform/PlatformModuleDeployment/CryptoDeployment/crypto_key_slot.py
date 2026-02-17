@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_CryptoDeployment.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -40,19 +40,19 @@ class CryptoKeySlot(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (CryptoObjectTypeEnum),
+            element_class=Any,
         ),  # cryptoObjectTypeEnum
         "key_slot_allowed": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (CryptoKeySlotAllowed),
+            element_class=Any,
         ),  # keySlotAllowed
         "key_slot_contents": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (CryptoKeySlotContent),
+            element_class=Any,
         ),  # keySlotContents
         "slot_capacity": XMLMember(
             xml_tag=None,
@@ -63,7 +63,7 @@ class CryptoKeySlot(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (CryptoKeySlotType),
+            element_class=Any,
         ),  # slotType
     }
 

@@ -26,7 +26,7 @@ class AclOperation(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=AclOperation,
+            element_class="AclOperation",
         ),  # implieds
     }
 

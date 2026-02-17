@@ -26,15 +26,18 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argume
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+        PortPrototype,
+    )
+
 
 
 class IoHwAbstractionServerAnnotation(GeneralAnnotation):
@@ -70,7 +73,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=PortPrototype,
+            element_class="PortPrototype",
         ),  # failure
         "filtering": XMLMember(
             xml_tag=None,

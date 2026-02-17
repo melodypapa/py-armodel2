@@ -33,7 +33,7 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticEcuReset,
+            element_class="DiagnosticEcuReset",
         ),  # ecuResetClass
     }
 

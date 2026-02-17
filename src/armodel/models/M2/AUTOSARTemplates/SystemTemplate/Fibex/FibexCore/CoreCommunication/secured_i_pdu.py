@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -34,7 +34,7 @@ class SecuredIPdu(IPdu):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SecureCommunication),
+            element_class=Any,
         ),  # authentication
         "dynamic": XMLMember(
             xml_tag=None,
@@ -45,7 +45,7 @@ class SecuredIPdu(IPdu):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SecureCommunication),
+            element_class=Any,
         ),  # freshnessProps
         "payload": XMLMember(
             xml_tag=None,
@@ -57,7 +57,7 @@ class SecuredIPdu(IPdu):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SecureCommunication),
+            element_class=Any,
         ),  # secure
         "use_as": XMLMember(
             xml_tag=None,

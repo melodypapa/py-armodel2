@@ -55,7 +55,7 @@ class RptContainer(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RptContainer,
+            element_class="RptContainer",
         ),  # rptContainers
         "rpt_executable_entity": XMLMember(
             xml_tag=None,

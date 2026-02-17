@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -73,7 +73,7 @@ class IdsmInstance(IdsCommonElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (IdsmSignatureSupport),
+            element_class=Any,
         ),  # signature
         "timestamp": XMLMember(
             xml_tag=None,

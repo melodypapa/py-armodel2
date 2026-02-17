@@ -11,12 +11,15 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
-    RTEEvent,
-)
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
     VariableAccess,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
+        RTEEvent,
+    )
+
 
 
 class McDataAccessDetails(ARObject):
@@ -29,7 +32,7 @@ class McDataAccessDetails(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RTEEvent,
+            element_class="RTEEvent",
         ),  # rteEventRefs
         "variable_accesses": XMLMember(
             xml_tag=None,

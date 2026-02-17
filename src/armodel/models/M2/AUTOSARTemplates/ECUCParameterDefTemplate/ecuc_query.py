@@ -13,9 +13,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query_expression import (
-    EcucQueryExpression,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query_expression import (
+        EcucQueryExpression,
+    )
+
 
 
 class EcucQuery(Identifiable):
@@ -28,7 +31,7 @@ class EcucQuery(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=EcucQueryExpression,
+            element_class="EcucQueryExpression",
         ),  # ecucQuery
     }
 

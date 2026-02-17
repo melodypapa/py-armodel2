@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -35,7 +35,7 @@ class TDEventOccurrenceExpression(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (TDEventOccurrence),
+            element_class=Any,
         ),  # formula
         "modes": XMLMember(
             xml_tag=None,
@@ -47,7 +47,7 @@ class TDEventOccurrenceExpression(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (AutosarVariable),
+            element_class=Any,
         ),  # variables
     }
 

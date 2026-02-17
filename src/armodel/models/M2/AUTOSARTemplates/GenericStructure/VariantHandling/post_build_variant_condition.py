@@ -8,7 +8,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -28,7 +28,7 @@ class PostBuildVariantCondition(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=any (PostBuildVariant),
+            element_class=Any,
         ),  # matching
         "value": XMLMember(
             xml_tag=None,

@@ -37,7 +37,7 @@ class FMFeatureSelectionSet(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=FMFeatureSelectionSet,
+            element_class="FMFeatureSelectionSet",
         ),  # includes
         "selections": XMLMember(
             xml_tag=None,

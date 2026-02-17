@@ -62,7 +62,7 @@ class TimingExtension(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TimingExtension,
+            element_class="TimingExtension",
         ),  # timingResource
     }
 

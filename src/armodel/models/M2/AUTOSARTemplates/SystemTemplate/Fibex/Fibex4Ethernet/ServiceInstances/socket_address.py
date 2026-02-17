@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -27,12 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6HeaderFilterList.i_pv6_ext_header_filter_list import (
     IPv6ExtHeaderFilterList,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.static_socket_connection import (
-    StaticSocketConnection,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.TcpOptionFilterSet.tcp_option_filter_list import (
     TcpOptionFilterList,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.static_socket_connection import (
+        StaticSocketConnection,
+    )
+
 
 
 class SocketAddress(Identifiable):
@@ -63,7 +66,7 @@ class SocketAddress(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EthernetCommunication),
+            element_class=Any,
         ),  # connector
         "differentiated": XMLMember(
             xml_tag=None,
@@ -79,7 +82,7 @@ class SocketAddress(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EthernetCommunication),
+            element_class=Any,
         ),  # multicasts
         "path_mtu": XMLMember(
             xml_tag=None,
@@ -95,7 +98,7 @@ class SocketAddress(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=StaticSocketConnection,
+            element_class="StaticSocketConnection",
         ),  # staticSockets
         "udp_checksum": XMLMember(
             xml_tag=None,

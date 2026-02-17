@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -25,19 +25,19 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DiagnosticStorage),
+            element_class=Any,
         ),  # diagnosticStorage
         "swc_flat_service": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SwcService),
+            element_class=Any,
         ),  # swcFlatService
         "swc_service": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SwcService),
+            element_class=Any,
         ),  # swcService
     }
 

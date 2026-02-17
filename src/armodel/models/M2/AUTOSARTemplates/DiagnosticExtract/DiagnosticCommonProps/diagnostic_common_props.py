@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticCommonProps.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -42,7 +42,7 @@ class DiagnosticCommonProps(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (DiagnosticDebounce),
+            element_class=Any,
         ),  # debounces
         "default": XMLMember(
             xml_tag=None,

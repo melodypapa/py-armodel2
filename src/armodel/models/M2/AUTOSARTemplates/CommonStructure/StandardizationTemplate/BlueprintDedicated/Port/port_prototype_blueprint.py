@@ -36,7 +36,7 @@ class PortPrototypeBlueprint(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=PortPrototypeBlueprint,
+            element_class="PortPrototypeBlueprint",
         ),  # initValues
         "interface": XMLMember(
             xml_tag=None,

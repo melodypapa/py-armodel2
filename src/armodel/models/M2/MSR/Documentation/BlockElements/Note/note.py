@@ -16,12 +16,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.MSR.Documentation.BlockElements.Note import (
     NoteTypeEnum,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
-    DocumentationBlock,
-)
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
 
 
 class Note(Paginateable):
@@ -40,7 +43,7 @@ class Note(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # noteText
         "note_type": XMLMember(
             xml_tag=None,

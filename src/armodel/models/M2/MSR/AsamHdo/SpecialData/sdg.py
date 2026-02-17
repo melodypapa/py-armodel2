@@ -20,9 +20,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg_caption import (
     SdgCaption,
 )
-from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg_contents import (
-    SdgContents,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg_contents import (
+        SdgContents,
+    )
+
 
 
 class Sdg(ARObject):
@@ -46,7 +49,7 @@ class Sdg(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SdgContents,
+            element_class="SdgContents",
         ),  # sdgContents
     }
 

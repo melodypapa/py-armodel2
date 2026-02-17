@@ -9,41 +9,44 @@ References:
 JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_list import (
-    DefList,
-)
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_list import (
-    LabeledList,
-)
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.list import (
-    List,
-)
 from armodel.models.M2.MSR.Documentation.BlockElements.Figure.ml_figure import (
     MlFigure,
 )
 from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import (
     MlFormula,
 )
-from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_p2 import (
-    MsrQueryP2,
-)
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import (
     MultiLanguageVerbatim,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.Note.note import (
-    Note,
-)
-from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.structured_req import (
-    StructuredReq,
-)
-from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
-    TraceableText,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_list import (
+        DefList,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_list import (
+        LabeledList,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.list import (
+        List,
+    )
+    from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_p2 import (
+        MsrQueryP2,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.Note.note import (
+        Note,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.structured_req import (
+        StructuredReq,
+    )
+    from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
+        TraceableText,
+    )
+
 
 
 class DocumentationBlock(ARObject):
@@ -56,7 +59,7 @@ class DocumentationBlock(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DefList,
+            element_class="DefList",
         ),  # defList
         "figure": XMLMember(
             xml_tag=None,
@@ -74,43 +77,43 @@ class DocumentationBlock(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=LabeledList,
+            element_class="LabeledList",
         ),  # labeledListLabel
         "list": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=List,
+            element_class="List",
         ),  # list
         "msr_query_p2": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=MsrQueryP2,
+            element_class="MsrQueryP2",
         ),  # msrQueryP2
         "note": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=Note,
+            element_class="Note",
         ),  # note
         "p": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (MultiLanguage),
+            element_class=Any,
         ),  # p
         "structured_req": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=StructuredReq,
+            element_class="StructuredReq",
         ),  # structuredReq
         "trace": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TraceableText,
+            element_class="TraceableText",
         ),  # trace
         "verbatim": XMLMember(
             xml_tag=None,

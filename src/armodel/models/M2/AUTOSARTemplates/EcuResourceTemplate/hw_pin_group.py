@@ -14,9 +14,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group_content import (
-    HwPinGroupContent,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group_content import (
+        HwPinGroupContent,
+    )
+
 
 
 class HwPinGroup(Identifiable):
@@ -29,7 +32,7 @@ class HwPinGroup(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=HwPinGroupContent,
+            element_class="HwPinGroupContent",
         ),  # hwPinGroupContent
     }
 

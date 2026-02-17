@@ -27,7 +27,7 @@ class Traceable(MultilanguageReferrable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=Traceable,
+            element_class="Traceable",
         ),  # traces
     }
 

@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -51,7 +51,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (DiagnosticService),
+            element_class=Any,
         ),  # serviceInstances
     }
 

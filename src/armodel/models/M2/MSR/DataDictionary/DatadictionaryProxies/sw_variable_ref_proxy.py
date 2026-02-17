@@ -14,9 +14,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
     AutosarVariableRef,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
-    McDataInstance,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+        McDataInstance,
+    )
+
 
 
 class SwVariableRefProxy(ARObject):
@@ -35,7 +38,7 @@ class SwVariableRefProxy(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=McDataInstance,
+            element_class="McDataInstance",
         ),  # mcDataInstance
     }
 

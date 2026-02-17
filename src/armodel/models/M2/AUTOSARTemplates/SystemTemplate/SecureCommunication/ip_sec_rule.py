@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -26,9 +26,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
-    NetworkEndpoint,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
+        NetworkEndpoint,
+    )
+
 
 
 class IPSecRule(Identifiable):
@@ -41,7 +44,7 @@ class IPSecRule(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (Communication),
+            element_class=Any,
         ),  # direction
         "header_type": XMLMember(
             xml_tag=None,
@@ -59,7 +62,7 @@ class IPSecRule(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (CryptoService),
+            element_class=Any,
         ),  # localCertificates
         "local_id": XMLMember(
             xml_tag=None,
@@ -98,7 +101,7 @@ class IPSecRule(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (CryptoService),
+            element_class=Any,
         ),  # remotes
         "remote_id": XMLMember(
             xml_tag=None,
@@ -109,7 +112,7 @@ class IPSecRule(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=NetworkEndpoint,
+            element_class="NetworkEndpoint",
         ),  # remoteIps
         "remote_port": XMLMember(
             xml_tag=None,

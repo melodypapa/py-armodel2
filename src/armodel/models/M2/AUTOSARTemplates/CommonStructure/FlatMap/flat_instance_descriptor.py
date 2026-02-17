@@ -24,9 +24,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.rte_plugin_props import (
     RtePluginProps,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class FlatInstanceDescriptor(Identifiable):
@@ -56,7 +59,7 @@ class FlatInstanceDescriptor(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # swDataDef
         "upstream": XMLMember(
             xml_tag=None,

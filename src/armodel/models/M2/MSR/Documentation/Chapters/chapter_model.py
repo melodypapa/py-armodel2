@@ -15,12 +15,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.Chapters.chapter_content import (
     ChapterContent,
 )
-from armodel.models.M2.MSR.Documentation.Chapters.chapter_or_msr_query import (
-    ChapterOrMsrQuery,
-)
 from armodel.models.M2.MSR.Documentation.Chapters.topic_or_msr_query import (
     TopicOrMsrQuery,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.Chapters.chapter_or_msr_query import (
+        ChapterOrMsrQuery,
+    )
+
 
 
 class ChapterModel(ARObject):
@@ -33,7 +36,7 @@ class ChapterModel(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=ChapterOrMsrQuery,
+            element_class="ChapterOrMsrQuery",
         ),  # chapter
         "chapter_content": XMLMember(
             xml_tag=None,

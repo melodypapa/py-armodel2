@@ -25,7 +25,7 @@ class TimingCondition(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TimingCondition,
+            element_class="TimingCondition",
         ),  # timingCondition
     }
 

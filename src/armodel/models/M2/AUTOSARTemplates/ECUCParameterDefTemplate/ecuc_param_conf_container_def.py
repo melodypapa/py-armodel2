@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -34,7 +34,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EcucAbstractReference),
+            element_class=Any,
         ),  # references
         "sub_containers": XMLMember(
             xml_tag=None,

@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -23,9 +23,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.busspec
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_coordinator import (
-    NmCoordinator,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_coordinator import (
+        NmCoordinator,
+    )
+
 
 
 class NmEcu(Identifiable):
@@ -50,7 +53,7 @@ class NmEcu(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (BooleanEnabled),
+            element_class=Any,
         ),  # nmBusSynchronization
         "nm_com_control_enabled": XMLMember(
             xml_tag=None,
@@ -61,7 +64,7 @@ class NmEcu(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=NmCoordinator,
+            element_class="NmCoordinator",
         ),  # nmCoordinator
         "nm_cycletime": XMLMember(
             xml_tag=None,
@@ -72,13 +75,13 @@ class NmEcu(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (BooleanEnabled),
+            element_class=Any,
         ),  # nmPduRxIndication
         "nm_remote_sleep_ind": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (BooleanEnabled),
+            element_class=Any,
         ),  # nmRemoteSleepInd
         "nm_state_change": XMLMember(
             xml_tag=None,

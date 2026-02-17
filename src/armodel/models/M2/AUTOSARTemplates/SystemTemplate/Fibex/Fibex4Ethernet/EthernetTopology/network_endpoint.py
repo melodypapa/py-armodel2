@@ -17,12 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     String,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config import (
-    IPSecConfig,
-)
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.infrastructure_services import (
     InfrastructureServices,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config import (
+        IPSecConfig,
+    )
+
 
 
 class NetworkEndpoint(Identifiable):
@@ -46,13 +49,13 @@ class NetworkEndpoint(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=IPSecConfig,
+            element_class="IPSecConfig",
         ),  # ipSecConfig
         "network_endpoints": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=NetworkEndpoint,
+            element_class="NetworkEndpoint",
         ),  # networkEndpoints
         "priority": XMLMember(
             xml_tag=None,

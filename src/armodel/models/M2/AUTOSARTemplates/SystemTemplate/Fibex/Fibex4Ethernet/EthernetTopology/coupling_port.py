@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -67,7 +67,7 @@ class CouplingPort(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EthernetPhysical),
+            element_class=Any,
         ),  # defaultVlan
         "mac_layer_type_enum": XMLMember(
             xml_tag=None,
@@ -109,7 +109,7 @@ class CouplingPort(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EthernetSwitchVlan),
+            element_class=Any,
         ),  # receiveActivity
         "vlans": XMLMember(
             xml_tag=None,
@@ -121,13 +121,13 @@ class CouplingPort(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EthernetPhysical),
+            element_class=Any,
         ),  # vlanModifier
         "wakeup_sleep": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (EthernetWakeupSleep),
+            element_class=Any,
         ),  # wakeupSleep
     }
 

@@ -25,7 +25,7 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticTransferExit,
+            element_class="DiagnosticTransferExit",
         ),  # transferExit
     }
 

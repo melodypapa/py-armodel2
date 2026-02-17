@@ -20,12 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
     ValueList,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class SwServiceArg(Identifiable):
@@ -50,7 +53,7 @@ class SwServiceArg(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # swDataDef
     }
 

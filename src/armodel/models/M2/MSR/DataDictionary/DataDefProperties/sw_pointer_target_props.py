@@ -17,12 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
-    BswModuleEntry,
-)
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+        BswModuleEntry,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class SwPointerTargetProps(ARObject):
@@ -35,13 +38,13 @@ class SwPointerTargetProps(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=BswModuleEntry,
+            element_class="BswModuleEntry",
         ),  # functionPointer
         "sw_data_def": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # swDataDef
         "target_category": XMLMember(
             xml_tag=None,

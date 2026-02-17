@@ -20,9 +20,12 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sd import (
 from armodel.models.M2.MSR.AsamHdo.SpecialData.sdf import (
     Sdf,
 )
-from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
-    Sdg,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+        Sdg,
+    )
+
 
 
 class SdgContents(ARObject):
@@ -47,7 +50,7 @@ class SdgContents(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=Sdg,
+            element_class="Sdg",
         ),  # sdg
         "sdx": XMLMember(
             xml_tag=None,

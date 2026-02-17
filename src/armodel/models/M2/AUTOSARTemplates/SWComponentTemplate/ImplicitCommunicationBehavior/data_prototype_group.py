@@ -29,7 +29,7 @@ class DataPrototypeGroup(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=DataPrototypeGroup,
+            element_class="DataPrototypeGroup",
         ),  # dataPrototypeGroupGroupInCompositionInstanceRefs
         "implicit_datas": XMLMember(
             xml_tag=None,

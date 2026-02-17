@@ -10,7 +10,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswImplementation.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -50,13 +50,13 @@ class BswImplementation(Implementation):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EcucModule),
+            element_class=Any,
         ),  # preconfigureds
         "recommendeds": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EcucModule),
+            element_class=Any,
         ),  # recommendeds
         "vendor_api_infix": XMLMember(
             xml_tag=None,

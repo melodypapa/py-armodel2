@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -42,7 +42,7 @@ class HttpTp(TransportProtocolConfiguration):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (RequestMethodEnum),
+            element_class=Any,
         ),  # requestMethodEnum
         "tcp_tp_config": XMLMember(
             xml_tag=None,

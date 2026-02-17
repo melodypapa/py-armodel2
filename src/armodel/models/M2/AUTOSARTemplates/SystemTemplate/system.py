@@ -12,7 +12,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -65,7 +65,7 @@ class System(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (ByteOrderEnumOrder),
+            element_class=Any,
         ),  # containerIPduHeaderByte
         "ecu_extract_version": XMLMember(
             xml_tag=None,

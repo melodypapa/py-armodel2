@@ -13,9 +13,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
-from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_map_element import (
-    FMFeatureMapElement,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_map_element import (
+        FMFeatureMapElement,
+    )
+
 
 
 class FMFeatureMap(ARElement):
@@ -28,7 +31,7 @@ class FMFeatureMap(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=FMFeatureMapElement,
+            element_class="FMFeatureMapElement",
         ),  # mappings
     }
 

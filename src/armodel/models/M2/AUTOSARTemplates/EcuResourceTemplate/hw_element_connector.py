@@ -13,15 +13,18 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
-    HwElement,
-)
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_connector import (
     HwPinConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group_connector import (
     HwPinGroupConnector,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
+        HwElement,
+    )
+
 
 
 class HwElementConnector(Describable):
@@ -34,7 +37,7 @@ class HwElementConnector(Describable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=HwElement,
+            element_class="HwElement",
         ),  # hwElements
         "hw_pins": XMLMember(
             xml_tag=None,

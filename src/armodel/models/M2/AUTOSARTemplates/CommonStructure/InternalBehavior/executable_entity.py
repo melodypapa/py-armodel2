@@ -44,7 +44,7 @@ class ExecutableEntity(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ExecutableEntity,
+            element_class="ExecutableEntity",
         ),  # activations
         "can_enters": XMLMember(
             xml_tag=None,

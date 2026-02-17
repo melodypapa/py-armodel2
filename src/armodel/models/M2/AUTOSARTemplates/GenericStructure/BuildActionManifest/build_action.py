@@ -38,7 +38,7 @@ class BuildAction(BuildActionEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=BuildAction,
+            element_class="BuildAction",
         ),  # followUpActions
         "input_datas": XMLMember(
             xml_tag=None,
@@ -56,7 +56,7 @@ class BuildAction(BuildActionEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=BuildAction,
+            element_class="BuildAction",
         ),  # predecessors
         "required": XMLMember(
             xml_tag=None,

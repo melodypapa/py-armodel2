@@ -29,7 +29,7 @@ class PortGroup(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=PortGroup,
+            element_class="PortGroup",
         ),  # innerGroups
         "outer_ports": XMLMember(
             xml_tag=None,

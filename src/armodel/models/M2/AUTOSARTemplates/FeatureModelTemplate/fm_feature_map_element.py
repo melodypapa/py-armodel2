@@ -6,19 +6,22 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_map import (
-    FMFeatureMap,
-)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
     SwSystemconstantValueSet,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_map import (
+        FMFeatureMap,
+    )
+
 
 
 class FMFeatureMapElement(Identifiable):
@@ -31,19 +34,19 @@ class FMFeatureMapElement(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=FMFeatureMap,
+            element_class="FMFeatureMap",
         ),  # assertions
         "conditions": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=FMFeatureMap,
+            element_class="FMFeatureMap",
         ),  # conditions
         "post_build_variants": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (PostBuildVariant),
+            element_class=Any,
         ),  # postBuildVariants
         "sw_value_sets": XMLMember(
             xml_tag=None,

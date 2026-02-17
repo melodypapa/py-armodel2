@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_ExecutionOrderConstraint.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -37,7 +37,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SwComponent),
+            element_class=Any,
         ),  # component
         "event": XMLMember(
             xml_tag=None,
@@ -49,7 +49,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EOCExecutableEntity),
+            element_class=Any,
         ),  # successors
     }
 

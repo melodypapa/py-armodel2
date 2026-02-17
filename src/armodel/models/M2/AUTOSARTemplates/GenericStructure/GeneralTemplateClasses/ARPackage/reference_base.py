@@ -16,9 +16,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifier,
     ReferrableSubtypesEnum,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
-    ARPackage,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
+        ARPackage,
+    )
+
 
 
 class ReferenceBase(ARObject):
@@ -36,7 +39,7 @@ class ReferenceBase(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ARPackage,
+            element_class="ARPackage",
         ),  # globalIns
         "is_default": XMLMember(
             xml_tag=None,
@@ -47,7 +50,7 @@ class ReferenceBase(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=ARPackage,
+            element_class="ARPackage",
         ),  # package
         "short_label": XMLMember(
             xml_tag=None,

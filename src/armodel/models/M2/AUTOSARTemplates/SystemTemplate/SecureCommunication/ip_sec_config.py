@@ -14,9 +14,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config_props import (
     IPSecConfigProps,
 )
-from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_rule import (
-    IPSecRule,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_rule import (
+        IPSecRule,
+    )
+
 
 
 class IPSecConfig(ARObject):
@@ -35,7 +38,7 @@ class IPSecConfig(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=IPSecRule,
+            element_class="IPSecRule",
         ),  # ipSecRules
     }
 

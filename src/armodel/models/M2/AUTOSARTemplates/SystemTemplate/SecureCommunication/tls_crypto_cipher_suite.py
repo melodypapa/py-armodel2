@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -50,7 +50,7 @@ class TlsCryptoCipherSuite(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (CryptoService),
+            element_class=Any,
         ),  # certificate
         "cipher_suite_id": XMLMember(
             xml_tag=None,
@@ -89,7 +89,7 @@ class TlsCryptoCipherSuite(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=TlsCryptoCipherSuite,
+            element_class="TlsCryptoCipherSuite",
         ),  # props
         "psk_identity": XMLMember(
             xml_tag=None,
@@ -101,7 +101,7 @@ class TlsCryptoCipherSuite(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (CryptoService),
+            element_class=Any,
         ),  # remote
         "signatures": XMLMember(
             xml_tag=None,

@@ -58,7 +58,7 @@ class PhysicalChannel(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=PhysicalChannel,
+            element_class="PhysicalChannel",
         ),  # manageds
         "pdu_triggerings": XMLMember(
             xml_tag=None,

@@ -11,9 +11,12 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
-    EcucQuery,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
+        EcucQuery,
+    )
+
 
 
 class EcucConditionFormula(ARObject):
@@ -26,7 +29,7 @@ class EcucConditionFormula(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=EcucQuery,
+            element_class="EcucQuery",
         ),  # ecucQuery
     }
 

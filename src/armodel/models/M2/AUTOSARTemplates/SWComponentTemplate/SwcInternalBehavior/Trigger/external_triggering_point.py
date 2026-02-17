@@ -27,7 +27,7 @@ class ExternalTriggeringPoint(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=ExternalTriggeringPoint,
+            element_class="ExternalTriggeringPoint",
         ),  # ident
         "trigger": XMLMember(
             xml_tag=None,

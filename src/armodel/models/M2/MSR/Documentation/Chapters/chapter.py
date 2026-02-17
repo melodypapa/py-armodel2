@@ -17,9 +17,12 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
-from armodel.models.M2.MSR.Documentation.Chapters.chapter_model import (
-    ChapterModel,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.Chapters.chapter_model import (
+        ChapterModel,
+    )
+
 
 
 class Chapter(Paginateable):
@@ -32,7 +35,7 @@ class Chapter(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=ChapterModel,
+            element_class="ChapterModel",
         ),  # chapterModel
         "help_entry": XMLMember(
             xml_tag=None,

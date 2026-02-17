@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -37,7 +37,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (PrimitiveAttribute),
+            element_class=Any,
         ),  # subAttributes
         "value_restriction_with_severity": XMLMember(
             xml_tag=None,

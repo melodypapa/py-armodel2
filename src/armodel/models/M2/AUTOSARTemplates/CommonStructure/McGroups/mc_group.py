@@ -50,7 +50,7 @@ class McGroup(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=McGroup,
+            element_class="McGroup",
         ),  # subGroups
     }
 

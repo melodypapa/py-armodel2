@@ -13,9 +13,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_item import (
-    DefItem,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_item import (
+        DefItem,
+    )
+
 
 
 class DefList(Paginateable):
@@ -28,7 +31,7 @@ class DefList(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=DefItem,
+            element_class="DefItem",
         ),  # defItem
     }
 

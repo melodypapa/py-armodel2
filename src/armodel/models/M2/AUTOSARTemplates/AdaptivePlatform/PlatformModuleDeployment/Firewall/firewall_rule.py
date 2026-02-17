@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_Firewall.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -33,31 +33,31 @@ class FirewallRule(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DataLinkLayerRule),
+            element_class=Any,
         ),  # dataLinkLayerRule
         "dds_rule": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DdsRule),
+            element_class=Any,
         ),  # ddsRule
         "do_ip_rule": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DoIpRule),
+            element_class=Any,
         ),  # doIpRule
         "network_layer_rule": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (NetworkLayerRule),
+            element_class=Any,
         ),  # networkLayerRule
         "payload_byte_patterns": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (PayloadBytePattern),
+            element_class=Any,
         ),  # payloadBytePatterns
         "refill_amount": XMLMember(
             xml_tag=None,
@@ -68,19 +68,19 @@ class FirewallRule(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SomeipProtocolRule),
+            element_class=Any,
         ),  # someipRule
         "someip_sd_rule": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (SomeipSdRule),
+            element_class=Any,
         ),  # someipSdRule
         "transport_layer_rule": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (TransportLayerRule),
+            element_class=Any,
         ),  # transportLayerRule
     }
 

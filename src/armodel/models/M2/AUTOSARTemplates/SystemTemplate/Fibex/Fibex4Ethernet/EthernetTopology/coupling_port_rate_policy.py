@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -32,7 +32,7 @@ class CouplingPortRatePolicy(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=CouplingPortRatePolicy,
+            element_class="CouplingPortRatePolicy",
         ),  # policyAction
         "priority": XMLMember(
             xml_tag=None,
@@ -48,7 +48,7 @@ class CouplingPortRatePolicy(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (EthernetPhysical),
+            element_class=Any,
         ),  # vLans
     }
 

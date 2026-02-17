@@ -23,7 +23,7 @@ class DdsDestinationOrder(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DdsDestinationOrder,
+            element_class="DdsDestinationOrder",
         ),  # destination
     }
 

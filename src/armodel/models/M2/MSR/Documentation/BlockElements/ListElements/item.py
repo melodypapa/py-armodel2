@@ -13,9 +13,12 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
-from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
-    DocumentationBlock,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
+        DocumentationBlock,
+    )
+
 
 
 class Item(Paginateable):
@@ -28,7 +31,7 @@ class Item(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=DocumentationBlock,
+            element_class="DocumentationBlock",
         ),  # itemContents
     }
 

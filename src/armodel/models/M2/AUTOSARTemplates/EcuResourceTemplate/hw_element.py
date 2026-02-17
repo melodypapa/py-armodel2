@@ -16,12 +16,15 @@ from armodel.serialization import XMLMember
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element_connector import (
-    HwElementConnector,
-)
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
     HwPinGroup,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element_connector import (
+        HwElementConnector,
+    )
+
 
 
 class HwElement(HwDescriptionEntity):
@@ -34,7 +37,7 @@ class HwElement(HwDescriptionEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=HwElementConnector,
+            element_class="HwElementConnector",
         ),  # hwElements
         "hw_pin_groups": XMLMember(
             xml_tag=None,
@@ -46,7 +49,7 @@ class HwElement(HwDescriptionEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=HwElement,
+            element_class="HwElement",
         ),  # nestedElements
     }
 

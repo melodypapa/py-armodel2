@@ -73,7 +73,7 @@ class NvBlockNeeds(ServiceNeeds):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=NvBlockNeeds,
+            element_class="NvBlockNeeds",
         ),  # reliabilityReliabilityEnum
         "resistant_to": XMLMember(
             xml_tag=None,

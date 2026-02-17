@@ -31,7 +31,7 @@ class RptExecutableEntity(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RptExecutableEntity,
+            element_class="RptExecutableEntity",
         ),  # rptExecutableEntities
         "rpt_reads": XMLMember(
             xml_tag=None,

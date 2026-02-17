@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticMemoryDestination.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -41,7 +41,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DiagnosticClearDtc),
+            element_class=Any,
         ),  # clearDtc
         "dtc_status": XMLMember(
             xml_tag=None,
@@ -74,7 +74,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (DiagnosticTypeOf),
+            element_class=Any,
         ),  # typeOfFreeze
     }
 

@@ -46,7 +46,7 @@ class CouplingElement(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=CouplingElement,
+            element_class="CouplingElement",
         ),  # coupling
         "coupling_ports": XMLMember(
             xml_tag=None,

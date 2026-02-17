@@ -44,7 +44,7 @@ class CryptoServiceKey(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=CryptoServiceKey,
+            element_class="CryptoServiceKey",
         ),  # keyGeneration
         "key_storage_type": XMLMember(
             xml_tag=None,

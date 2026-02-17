@@ -58,7 +58,7 @@ class McFunction(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=McFunction,
+            element_class="McFunction",
         ),  # subFunctions
     }
 

@@ -11,7 +11,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -34,18 +34,21 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_switch_point import (
     ModeSwitchPoint,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.parameter_access import (
-    ParameterAccess,
-)
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.server_call_point import (
     ServerCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
     VariableAccess,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.wait_point import (
-    WaitPoint,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.parameter_access import (
+        ParameterAccess,
+    )
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.wait_point import (
+        WaitPoint,
+    )
+
 
 
 class RunnableEntity(ExecutableEntity):
@@ -58,13 +61,13 @@ class RunnableEntity(ExecutableEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RunnableEntity,
+            element_class="RunnableEntity",
         ),  # arguments
         "asynchronous_servers": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (AsynchronousServer),
+            element_class=Any,
         ),  # asynchronousServers
         "can_be_invoked": XMLMember(
             xml_tag=None,
@@ -123,7 +126,7 @@ class RunnableEntity(ExecutableEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=ParameterAccess,
+            element_class="ParameterAccess",
         ),  # parameterAccesses
         "read_locals": XMLMember(
             xml_tag=None,
@@ -146,7 +149,7 @@ class RunnableEntity(ExecutableEntity):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=WaitPoint,
+            element_class="WaitPoint",
         ),  # waitPoints
         "written_locals": XMLMember(
             xml_tag=None,

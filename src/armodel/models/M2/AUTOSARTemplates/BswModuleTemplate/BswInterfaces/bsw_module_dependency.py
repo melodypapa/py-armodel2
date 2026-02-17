@@ -16,9 +16,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
-    BswModuleDescription,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
+        BswModuleDescription,
+    )
+
 
 
 class BswModuleDependency(Identifiable):
@@ -36,7 +39,7 @@ class BswModuleDependency(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=BswModuleDescription,
+            element_class="BswModuleDescription",
         ),  # targetModule
     }
 

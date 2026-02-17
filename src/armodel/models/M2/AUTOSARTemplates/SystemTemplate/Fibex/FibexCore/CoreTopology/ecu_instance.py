@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -104,13 +104,13 @@ class EcuInstance(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (Communication),
+            element_class=Any,
         ),  # commControllers
         "connectors": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (Communication),
+            element_class=Any,
         ),  # connectors
         "dlt_config": XMLMember(
             xml_tag=None,
@@ -188,7 +188,7 @@ class EcuInstance(FibexElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (V2xSupportEnum),
+            element_class=Any,
         ),  # v2xSupported
         "wake_up_over_bus_supported": XMLMember(
             xml_tag=None,

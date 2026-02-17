@@ -31,7 +31,7 @@ class DiagnosticPeriodicRate(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticPeriodicRate,
+            element_class="DiagnosticPeriodicRate",
         ),  # periodicRate
     }
 

@@ -14,9 +14,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
-from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_values import (
-    SwValues,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_values import (
+        SwValues,
+    )
+
 
 
 class ValueGroup(ARObject):
@@ -35,7 +38,7 @@ class ValueGroup(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwValues,
+            element_class="SwValues",
         ),  # vgContents
     }
 

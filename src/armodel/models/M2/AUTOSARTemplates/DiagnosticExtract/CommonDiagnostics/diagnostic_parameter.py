@@ -25,13 +25,13 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticParameter,
+            element_class="DiagnosticParameter",
         ),  # ident
         "support_info": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DiagnosticParameter,
+            element_class="DiagnosticParameter",
         ),  # supportInfo
     }
 

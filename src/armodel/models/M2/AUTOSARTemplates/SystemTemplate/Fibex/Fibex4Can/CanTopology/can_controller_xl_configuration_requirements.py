@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -34,7 +34,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (IntegerBit),
+            element_class=Any,
         ),  # maxNumberOfTimeQuantaPer
         "max_pwm_l": XMLMember(
             xml_tag=None,
@@ -70,7 +70,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (IntegerBit),
+            element_class=Any,
         ),  # minNumberOfTimeQuantaPer
         "min_pwm_l": XMLMember(
             xml_tag=None,

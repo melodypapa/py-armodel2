@@ -14,12 +14,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
-    McDataInstance,
-)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.rpt_execution_context import (
     RptExecutionContext,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
+        McDataInstance,
+    )
+
 
 
 class RoleBasedMcDataAssignment(ARObject):
@@ -38,7 +41,7 @@ class RoleBasedMcDataAssignment(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=McDataInstance,
+            element_class="McDataInstance",
         ),  # mcDataInstances
         "role": XMLMember(
             xml_tag=None,

@@ -10,7 +10,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -80,13 +80,13 @@ class BswInternalBehavior(InternalBehavior):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswPerInstance),
+            element_class=Any,
         ),  # bswPerInstances
         "client_policies": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswClientPolicy),
+            element_class=Any,
         ),  # clientPolicies
         "distinguisheds": XMLMember(
             xml_tag=None,
@@ -146,7 +146,7 @@ class BswInternalBehavior(InternalBehavior):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswParameterPolicy),
+            element_class=Any,
         ),  # parameterPolicies
         "per_instances": XMLMember(
             xml_tag=None,
@@ -164,7 +164,7 @@ class BswInternalBehavior(InternalBehavior):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswReleasedTrigger),
+            element_class=Any,
         ),  # releasedTriggers
         "scheduler_names": XMLMember(
             xml_tag=None,
@@ -176,13 +176,13 @@ class BswInternalBehavior(InternalBehavior):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswDataSendPolicy),
+            element_class=Any,
         ),  # sendPolicies
         "services": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=any (BswService),
+            element_class=Any,
         ),  # services
         "trigger_directs": XMLMember(
             xml_tag=None,

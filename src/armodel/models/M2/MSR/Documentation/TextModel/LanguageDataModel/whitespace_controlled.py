@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -24,7 +24,7 @@ class WhitespaceControlled(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="1",
-            element_class=any (XmlSpaceEnum),
+            element_class=Any,
         ),  # xmlSpace
     }
 

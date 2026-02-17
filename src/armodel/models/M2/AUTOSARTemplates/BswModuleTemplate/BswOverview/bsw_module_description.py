@@ -27,9 +27,6 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_intern
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
 )
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_dependency import (
-    BswModuleDependency,
-)
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
@@ -46,6 +43,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     VariableDataPrototype,
 )
 
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_dependency import (
+        BswModuleDependency,
+    )
+
+
 
 class BswModuleDescription(ARElement):
     """AUTOSAR BswModuleDescription."""
@@ -57,7 +60,7 @@ class BswModuleDescription(ARElement):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=BswModuleDependency,
+            element_class="BswModuleDependency",
         ),  # bswModules
         "bsw_module_documentation": XMLMember(
             xml_tag=None,

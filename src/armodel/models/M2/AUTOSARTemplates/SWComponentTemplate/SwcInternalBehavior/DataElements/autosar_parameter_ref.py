@@ -12,9 +12,12 @@ import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
-    DataPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+        DataPrototype,
+    )
+
 
 
 class AutosarParameterRef(ARObject):
@@ -27,13 +30,13 @@ class AutosarParameterRef(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DataPrototype,
+            element_class="DataPrototype",
         ),  # autosar
         "local_parameter": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=DataPrototype,
+            element_class="DataPrototype",
         ),  # localParameter
     }
 

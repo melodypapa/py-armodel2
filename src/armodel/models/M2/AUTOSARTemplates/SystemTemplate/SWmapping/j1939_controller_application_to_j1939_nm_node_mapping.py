@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 from armodel.serialization import XMLMember
 
@@ -26,7 +26,7 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=any (J1939Controller),
+            element_class=Any,
         ),  # j1939Controller
         "j1939_nm_node": XMLMember(
             xml_tag=None,

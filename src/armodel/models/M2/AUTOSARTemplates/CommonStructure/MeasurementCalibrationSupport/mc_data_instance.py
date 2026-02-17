@@ -20,17 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     SymbolString,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
-    FlatInstanceDescriptor,
-)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.implementation_element_in_parameter_instance_ref import (
     ImplementationElementInParameterInstanceRef,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_access_details import (
-    McDataAccessDetails,
-)
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
-    RoleBasedMcDataAssignment,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_impl_policy import (
     RptImplPolicy,
@@ -38,9 +29,21 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_impl
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.rpt_sw_prototyping_access import (
     RptSwPrototypingAccess,
 )
-from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
-    SwDataDefProps,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
+        FlatInstanceDescriptor,
+    )
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_access_details import (
+        McDataAccessDetails,
+    )
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
+        RoleBasedMcDataAssignment,
+    )
+    from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
 
 
 class McDataInstance(Identifiable):
@@ -63,7 +66,7 @@ class McDataInstance(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=FlatInstanceDescriptor,
+            element_class="FlatInstanceDescriptor",
         ),  # flatMapEntry
         "instance_in": XMLMember(
             xml_tag=None,
@@ -75,19 +78,19 @@ class McDataInstance(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=McDataAccessDetails,
+            element_class="McDataAccessDetails",
         ),  # mcDataAccessDetails
         "mc_datas": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=RoleBasedMcDataAssignment,
+            element_class="RoleBasedMcDataAssignment",
         ),  # mcDatas
         "resulting": XMLMember(
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=SwDataDefProps,
+            element_class="SwDataDefProps",
         ),  # resulting
         "resulting_rpt_sw": XMLMember(
             xml_tag=None,
@@ -110,7 +113,7 @@ class McDataInstance(Identifiable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="*",
-            element_class=McDataInstance,
+            element_class="McDataInstance",
         ),  # subElements
         "symbol": XMLMember(
             xml_tag=None,

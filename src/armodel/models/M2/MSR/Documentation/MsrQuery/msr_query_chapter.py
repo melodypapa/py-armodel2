@@ -16,9 +16,12 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
-from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_chapter import (
-    MsrQueryResultChapter,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_chapter import (
+        MsrQueryResultChapter,
+    )
+
 
 
 class MsrQueryChapter(Paginateable):
@@ -37,7 +40,7 @@ class MsrQueryChapter(Paginateable):
             xml_tag=None,
             is_attribute=False,
             multiplicity="0..1",
-            element_class=MsrQueryResultChapter,
+            element_class="MsrQueryResultChapter",
         ),  # msrQueryResultChapter
     }
 
