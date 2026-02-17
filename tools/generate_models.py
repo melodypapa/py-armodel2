@@ -134,7 +134,12 @@ def create_directory_structure(
 
         # Generate __init__.py content with proper docstring
         package_name = package_path.split("::")[-1] if "::" in package_path else package_path
-        init_content = f'"""{package_name} module."""\n'
+        init_content = f'''"""{package_name} module."""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+'''
 
         # Collect all exports for __all__
         exports = []
@@ -155,9 +160,11 @@ def create_directory_structure(
                 init_content += "\n"
 
         # Check if this package has classes and export them
+        # Use TYPE_CHECKING to avoid circular imports
         if package_path in package_data and "classes" in package_data[package_path]:
             classes = package_data[package_path]["classes"]
             if classes:
+                init_content += "if TYPE_CHECKING:\n"
                 # Generate imports for individual classes using absolute paths
                 # Use block import format as required by DESIGN_RULE_041
                 for cls in classes:
@@ -165,7 +172,7 @@ def create_directory_structure(
                     # Convert package path to absolute import path
                     python_path = package_path.replace("::", ".")
                     module_path = f"armodel.models.{python_path}.{to_snake_case(class_name)}"
-                    init_content += f"from {module_path} import (\n    {class_name},\n)\n"
+                    init_content += f"    from {module_path} import (\n        {class_name},\n    )\n"
                     exports.append(class_name)
                 init_content += "\n"
 
@@ -293,22 +300,24 @@ def generate_class_code(
     # Generate class code
     # For ARObject, we need XMLMember at runtime (not just TYPE_CHECKING) because it's used in class body
     if class_name == "ARObject":
+        future_import = "from __future__ import annotations\n"
         type_checking_import = "from typing import TYPE_CHECKING, Optional, Union\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         # Import XMLMember at runtime since it's used in class body (_xml_members dict)
         xmlmember_import = "from armodel.serialization.metadata import XMLMember\n"
         code = f'''"""{docstring}"""
 
-{type_checking_import}{base_import}{xmlmember_import}
+{future_import}{type_checking_import}{base_import}{xmlmember_import}
 '''
     else:
-        # For other classes, add Optional import and XMLMember
-        basic_import = "from typing import Optional\n"
+        # For other classes, add future annotations and TYPE_CHECKING for circular import handling
+        future_import = "from __future__ import annotations\n"
+        basic_import = "from typing import TYPE_CHECKING, Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         xmlmember_import = "from armodel.serialization import XMLMember\n"
         code = f'''"""{docstring}"""
 
-{basic_import}{base_import}{xmlmember_import}
+{future_import}{basic_import}{base_import}{xmlmember_import}
 '''
 
     # Add parent class import
@@ -319,10 +328,10 @@ def generate_class_code(
             code += f"{parent_import}\n"
         else:
             # Fallback to ARObject import
-            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n"
+            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
     elif class_name != "ARObject":
         # Add ARObject import for classes that inherit from ARObject
-        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ar_object import ARObject\n"
+        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
     # Collect attribute types for imports
     attribute_types = {}
@@ -339,22 +348,66 @@ def generate_class_code(
     # Add type imports if needed
     if attribute_types:
         type_imports = set()
-        primitive_imports = set()
+        primitive_imports = {}  # Changed from set to dict to track package path
+        enum_imports = set()
 
         for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
             # Import class types and primitive types
             if is_primitive_type(attr_type, package_data):
-                primitive_imports.add(attr_type)
+                # Find the package path for this primitive
+                for package_path, data in package_data.items():
+                    if "primitives" in data:
+                        for prim in data["primitives"]:
+                            if prim["name"] == attr_type:
+                                primitive_imports[attr_type] = package_path
+                                break
+                    if attr_type in primitive_imports:
+                        break
+            elif is_enum_type(attr_type, package_data):
+                enum_imports.add(attr_type)
             elif not attr_type.startswith("any ("):
                 # Import class types (skip polymorphic "any (xxx)" types)
                 type_imports.add(attr_type)
 
+        # Add import statements for enum types
+        if enum_imports:
+            # Find package path for each enum
+            enums_by_package = {}
+            for enum_name in enum_imports:
+                for package_path, data in package_data.items():
+                    if "enumerations" in data:
+                        for enum in data["enumerations"]:
+                            if enum["name"] == enum_name:
+                                enums_by_package[package_path] = enums_by_package.get(package_path, [])
+                                enums_by_package[package_path].append(enum_name)
+                                break
+                    if enum_name in [e for pkg in enums_by_package.values() for e in pkg]:
+                        break
+
+            for pkg_path, enum_names in sorted(enums_by_package.items()):
+                python_path = pkg_path.replace("::", ".")
+                code += f"from armodel.models.{python_path} import (\n"
+                for i, enum in enumerate(sorted(enum_names)):
+                    if i == len(enum_names) - 1:
+                        code += f"    {enum},\n"
+                    else:
+                        code += f"    {enum},\n"
+                code += ")\n"
+
         # Add import statements for primitive types
-        if primitive_imports:
-            code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (\n"
-            for i, prim in enumerate(sorted(primitive_imports)):
-                if i == len(primitive_imports) - 1:
+        # Group primitives by package path
+        primitives_by_package = {}
+        for prim_name, pkg_path in primitive_imports.items():
+            if pkg_path not in primitives_by_package:
+                primitives_by_package[pkg_path] = []
+            primitives_by_package[pkg_path].append(prim_name)
+
+        for pkg_path, prim_names in sorted(primitives_by_package.items()):
+            python_path = pkg_path.replace("::", ".")
+            code += f"from armodel.models.{python_path} import (\n"
+            for i, prim in enumerate(sorted(prim_names)):
+                if i == len(prim_names) - 1:
                     code += f"    {prim},\n"
                 else:
                     code += f"    {prim},\n"
@@ -746,6 +799,25 @@ def is_primitive_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -
     return False
 
 
+def is_enum_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> bool:
+    """Check if a type is an enum type.
+
+    Args:
+        type_name: Name of the type to check
+        package_data: Package data dictionary
+
+    Returns:
+        True if the type is an enum, False otherwise
+    """
+    # Check in all packages
+    for package_path, data in package_data.items():
+        if "enumerations" in data:
+            for enum in data["enumerations"]:
+                if enum["name"] == type_name:
+                    return True
+    return False
+
+
 def get_python_type(
     type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]]
 ) -> str:
@@ -874,6 +946,21 @@ def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
                         package_data[package_path]["primitives"] = data.get("primitives", [])
                     else:
                         package_data[package_path] = {"primitives": data.get("primitives", [])}
+        except Exception:
+            pass
+
+    # Load all .enums.json files
+    for enum_file in packages_dir.rglob("*.enums.json"):
+        try:
+            with open(enum_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                package_path = data.get("package", "")
+                if package_path:
+                    # Add enumerations to existing package data or create new entry
+                    if package_path in package_data:
+                        package_data[package_path]["enumerations"] = data.get("enumerations", [])
+                    else:
+                        package_data[package_path] = {"enumerations": data.get("enumerations", [])}
         except Exception:
             pass
 
