@@ -174,9 +174,6 @@ class ARObject:
                 return tag.split('}')[1]
             return tag
 
-        # Strip namespace from element tag for matching
-        element_tag_stripped = strip_namespace(element.tag)
-
         # Process each attribute from type hints
         for attr_name, attr_type in type_hints.items():
             # Convert Python name to XML tag
@@ -391,19 +388,19 @@ class ARObject:
             return None
 
         # Simple type conversions for primitives
-        if attr_type == str:
+        if attr_type is str:
             return text
-        elif attr_type == int:
+        elif attr_type is int:
             try:
                 return int(text)
             except ValueError:
                 return text
-        elif attr_type == float:
+        elif attr_type is float:
             try:
                 return float(text)
             except ValueError:
                 return text
-        elif attr_type == bool:
+        elif attr_type is bool:
             return text.lower() in ('true', '1', 'yes')
         else:
             # Default to string

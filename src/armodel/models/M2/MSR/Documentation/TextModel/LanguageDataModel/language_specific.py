@@ -19,7 +19,7 @@ class LanguageSpecific(ARObject):
     """AUTOSAR LanguageSpecific."""
     """Abstract base class - do not instantiate directly."""
 
-    l: LEnum
+    l: LEnum  # noqa: E741
     def __init__(self) -> None:
         """Initialize LanguageSpecific."""
         super().__init__()
