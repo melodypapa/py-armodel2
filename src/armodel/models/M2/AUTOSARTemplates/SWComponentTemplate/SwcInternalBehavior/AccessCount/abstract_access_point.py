@@ -22,6 +22,7 @@ class AbstractAccessPoint(Identifiable):
     """AUTOSAR AbstractAccessPoint."""
     """Abstract base class - do not instantiate directly."""
 
+    return_value: Optional[RteApiReturnValueProvisionEnum]
     def __init__(self) -> None:
         """Initialize AbstractAccessPoint."""
         super().__init__()

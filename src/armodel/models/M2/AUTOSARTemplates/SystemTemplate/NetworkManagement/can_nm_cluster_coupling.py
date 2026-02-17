@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.can_nm_
 class CanNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR CanNmClusterCoupling."""
 
+    coupled_clusters: list[CanNmCluster]
+    nm_busload_reduction: Optional[Any]
+    nm_immediate: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CanNmClusterCoupling."""
         super().__init__()

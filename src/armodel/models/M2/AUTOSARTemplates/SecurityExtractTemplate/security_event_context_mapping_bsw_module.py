@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingBswModule."""
 
+    affected_bsw: Optional[String]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingBswModule."""
         super().__init__()

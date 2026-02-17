@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_ro
 class DiagnosticAuthRoleProxy(ARObject):
     """AUTOSAR DiagnosticAuthRoleProxy."""
 
+    authentications: list[DiagnosticAuthRole]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()

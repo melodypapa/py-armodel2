@@ -53,6 +53,18 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class DdsCpQosProfile(Identifiable):
     """AUTOSAR DdsCpQosProfile."""
 
+    deadline: Optional[DdsDeadline]
+    destination_order: Optional[DdsDestinationOrder]
+    durability: Optional[DdsDurabilityService]
+    history: Optional[DdsHistory]
+    latency_budget: Optional[DdsLatencyBudget]
+    lifespan: Optional[DdsLifespan]
+    liveliness: Optional[DdsLiveliness]
+    ownership: Optional[DdsOwnershipStrength]
+    reliability: Optional[DdsReliability]
+    resource_limits: Optional[DdsResourceLimits]
+    topic_data: Optional[DdsTopicData]
+    transport_priority: Optional[DdsTransportPriority]
     def __init__(self) -> None:
         """Initialize DdsCpQosProfile."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class SpecificationScope(ARObject):
     """AUTOSAR SpecificationScope."""
 
+    specification_documents: list[SpecificationDocumentScope]
     def __init__(self) -> None:
         """Initialize SpecificationScope."""
         super().__init__()

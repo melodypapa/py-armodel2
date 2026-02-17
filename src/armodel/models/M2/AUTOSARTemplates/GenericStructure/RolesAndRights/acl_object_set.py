@@ -33,6 +33,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AclObjectSet(ARElement):
     """AUTOSAR AclObjectSet."""
 
+    acl_object_classes: list[ReferrableSubtypesEnum]
+    acl_scope: AclScopeEnum
+    collection: Optional[Collection]
+    derived_froms: list[AtpBlueprint]
+    engineerings: list[AutosarEngineeringObject]
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()

@@ -25,6 +25,14 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpRvfConnection."""
 
+    rvf_active_pixels: Optional[PositiveInteger]
+    rvf_color_space: Optional[IEEE1722TpRvfColorSpaceEnum]
+    rvf_event_default: Optional[PositiveInteger]
+    rvf_frame_rate: Optional[IEEE1722TpRvfFrameRateEnum]
+    rvf_interlaced: Optional[Boolean]
+    rvf_pixel_depth: Optional[Any]
+    rvf_pixel_format: Optional[Any]
+    rvf_total_lines: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpRvfConnection."""
         super().__init__()

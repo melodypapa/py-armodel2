@@ -53,6 +53,23 @@ if TYPE_CHECKING:
 class RunnableEntity(ExecutableEntity):
     """AUTOSAR RunnableEntity."""
 
+    arguments: list[RunnableEntity]
+    asynchronous_servers: list[Any]
+    can_be_invoked: Optional[Boolean]
+    data_reads: list[VariableAccess]
+    data_receives: list[VariableAccess]
+    data_send_points: list[VariableAccess]
+    data_writes: list[VariableAccess]
+    externals: list[ExternalTriggeringPoint]
+    internals: list[InternalTriggeringPoint]
+    mode_access_points: list[ModeAccessPoint]
+    mode_switch_points: list[ModeSwitchPoint]
+    parameter_accesses: list[ParameterAccess]
+    read_locals: list[VariableAccess]
+    server_call_points: list[ServerCallPoint]
+    symbol: Optional[CIdentifier]
+    wait_points: list[WaitPoint]
+    written_locals: list[VariableAccess]
     def __init__(self) -> None:
         """Initialize RunnableEntity."""
         super().__init__()

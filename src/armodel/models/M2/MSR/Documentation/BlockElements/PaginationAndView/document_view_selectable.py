@@ -22,6 +22,8 @@ class DocumentViewSelectable(ARObject):
     """AUTOSAR DocumentViewSelectable."""
     """Abstract base class - do not instantiate directly."""
 
+    si: NameTokens
+    view: Optional[ViewTokens]
     def __init__(self) -> None:
         """Initialize DocumentViewSelectable."""
         super().__init__()

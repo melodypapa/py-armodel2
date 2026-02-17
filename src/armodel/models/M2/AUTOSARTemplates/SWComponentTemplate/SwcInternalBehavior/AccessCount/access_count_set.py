@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class AccessCountSet(ARObject):
     """AUTOSAR AccessCountSet."""
 
+    access_counts: list[AccessCount]
+    count_profile: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize AccessCountSet."""
         super().__init__()

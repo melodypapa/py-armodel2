@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class AutosarOperationArgumentInstance(Identifiable):
     """AUTOSAR AutosarOperationArgumentInstance."""
 
+    operation: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarOperationArgumentInstance."""
         super().__init__()

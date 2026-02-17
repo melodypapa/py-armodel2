@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucBooleanParamDef(EcucParameterDef):
     """AUTOSAR EcucBooleanParamDef."""
 
+    default_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucBooleanParamDef."""
         super().__init__()

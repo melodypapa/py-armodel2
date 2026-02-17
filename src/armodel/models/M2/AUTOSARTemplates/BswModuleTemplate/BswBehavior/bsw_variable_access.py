@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class BswVariableAccess(Referrable):
     """AUTOSAR BswVariableAccess."""
 
+    accessed_variable: Optional[VariableDataPrototype]
+    contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:
         """Initialize BswVariableAccess."""
         super().__init__()

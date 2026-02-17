@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling import 
 class ConditionByFormula(ARObject):
     """AUTOSAR ConditionByFormula."""
 
+    binding_time_enum: BindingTimeEnum
     def __init__(self) -> None:
         """Initialize ConditionByFormula."""
         super().__init__()

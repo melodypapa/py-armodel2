@@ -21,6 +21,7 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class BuildActionEnvironment(Identifiable):
     """AUTOSAR BuildActionEnvironment."""
 
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionEnvironment."""
         super().__init__()

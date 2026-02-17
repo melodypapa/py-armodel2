@@ -28,6 +28,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class DataPrototypeMapping(ARObject):
     """AUTOSAR DataPrototypeMapping."""
 
+    first_data: Optional[AutosarDataPrototype]
+    first_to_second: Optional[DataTransformation]
+    second_data: Optional[AutosarDataPrototype]
+    second_to_first: Optional[DataTransformation]
+    sub_elements: list[SubElementMapping]
+    text_table: TextTableMapping
     def __init__(self) -> None:
         """Initialize DataPrototypeMapping."""
         super().__init__()

@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToDebounceAlgorithmMapping."""
 
+    debounce: Optional[Any]
+    diagnostic_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToDebounceAlgorithmMapping."""
         super().__init__()

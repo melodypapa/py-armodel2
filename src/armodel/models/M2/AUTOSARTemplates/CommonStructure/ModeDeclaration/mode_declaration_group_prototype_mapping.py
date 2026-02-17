@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeDeclarationGroupPrototypeMapping(ARObject):
     """AUTOSAR ModeDeclarationGroupPrototypeMapping."""
 
+    first_mode_group_prototype: Optional[ModeDeclarationGroup]
+    mode: Optional[ModeDeclaration]
+    second_mode: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()

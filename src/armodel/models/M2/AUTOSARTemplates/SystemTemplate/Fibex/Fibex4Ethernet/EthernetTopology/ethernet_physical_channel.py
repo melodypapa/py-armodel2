@@ -27,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetPhysicalChannel(PhysicalChannel):
     """AUTOSAR EthernetPhysicalChannel."""
 
+    network_endpoints: list[NetworkEndpoint]
+    so_ad_config: Optional[SoAdConfig]
+    vlan: Optional[VlanConfig]
     def __init__(self) -> None:
         """Initialize EthernetPhysicalChannel."""
         super().__init__()

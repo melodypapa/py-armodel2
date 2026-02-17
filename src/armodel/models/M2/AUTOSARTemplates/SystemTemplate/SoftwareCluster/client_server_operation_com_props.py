@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps):
     """AUTOSAR ClientServerOperationComProps."""
 
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ClientServerOperationComProps."""
         super().__init__()

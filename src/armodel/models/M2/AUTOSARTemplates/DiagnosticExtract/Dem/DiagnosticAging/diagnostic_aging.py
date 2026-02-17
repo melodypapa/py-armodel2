@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticAging(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAging."""
 
+    aging_cycle: Optional[Any]
+    threshold: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticAging."""
         super().__init__()

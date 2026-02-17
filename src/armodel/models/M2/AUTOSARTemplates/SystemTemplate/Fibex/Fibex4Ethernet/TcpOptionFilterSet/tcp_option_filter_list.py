@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpOptionFilterList(Identifiable):
     """AUTOSAR TcpOptionFilterList."""
 
+    allowed_tcp_options: list[PositiveInteger]
     def __init__(self) -> None:
         """Initialize TcpOptionFilterList."""
         super().__init__()

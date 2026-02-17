@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SomeipServiceVersion(ARObject):
     """AUTOSAR SomeipServiceVersion."""
 
+    major_version: Optional[PositiveInteger]
+    minor_version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SomeipServiceVersion."""
         super().__init__()

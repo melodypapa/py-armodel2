@@ -25,6 +25,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpAafConnection."""
 
+    aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum]
+    aaf_format_enum: Optional[IEEE1722TpAafFormatEnum]
+    aaf_nominal_rate: Optional[Any]
+    aes3_data_type_h: Optional[PositiveInteger]
+    aes3_data_type_l: Optional[PositiveInteger]
+    channels_per: Optional[PositiveInteger]
+    event_default: Optional[PositiveInteger]
+    pcm_bit_depth: Optional[PositiveInteger]
+    sparse: Optional[Boolean]
+    streams_per: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAafConnection."""
         super().__init__()

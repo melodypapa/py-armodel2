@@ -20,6 +20,19 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6NdpProps(ARObject):
     """AUTOSAR Ipv6NdpProps."""
 
+    tcp_ip_ndp_default: Optional[TimeValue]
+    tcp_ip_ndp_default_router_list_size: Optional[PositiveInteger]
+    tcp_ip_ndp: Optional[Boolean]
+    tcp_ip_ndp_delay_first_probe_time_value: Optional[TimeValue]
+    tcp_ip_ndp_max_random_factor: Optional[PositiveInteger]
+    tcp_ip_ndp_max_rtr: Optional[PositiveInteger]
+    tcp_ip_ndp_min_random_factor: Optional[PositiveInteger]
+    tcp_ip_ndp_num: Optional[PositiveInteger]
+    tcp_ip_ndp_packet: Optional[Boolean]
+    tcp_ip_ndp_prefix: Optional[PositiveInteger]
+    tcp_ip_ndp_rnd_rtr: Optional[Boolean]
+    tcp_ip_ndp_rtr: Optional[TimeValue]
+    tcp_ip_ndp_slaac: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize Ipv6NdpProps."""
         super().__init__()

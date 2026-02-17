@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class NetworkSegmentIdentification(ARObject):
     """AUTOSAR NetworkSegmentIdentification."""
 
+    network: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize NetworkSegmentIdentification."""
         super().__init__()

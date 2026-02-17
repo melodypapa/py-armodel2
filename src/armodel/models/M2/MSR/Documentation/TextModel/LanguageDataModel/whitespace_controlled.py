@@ -16,6 +16,7 @@ class WhitespaceControlled(ARObject):
     """AUTOSAR WhitespaceControlled."""
     """Abstract base class - do not instantiate directly."""
 
+    xml_space: Any
     def __init__(self) -> None:
         """Initialize WhitespaceControlled."""
         super().__init__()

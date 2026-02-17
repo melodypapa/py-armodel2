@@ -27,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalTriggering(Identifiable):
     """AUTOSAR ISignalTriggering."""
 
+    i_signal: Optional[ISignal]
+    i_signal_group: Optional[ISignalGroup]
+    i_signal_ports: list[ISignalPort]
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()

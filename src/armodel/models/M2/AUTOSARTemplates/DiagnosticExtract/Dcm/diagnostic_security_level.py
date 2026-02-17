@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSecurityLevel(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSecurityLevel."""
 
+    access_data: Optional[PositiveInteger]
+    key_size: Optional[PositiveInteger]
+    num_failed: Optional[PositiveInteger]
+    security_delay: Optional[TimeValue]
+    seed_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityLevel."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AbsoluteTolerance(ARObject):
     """AUTOSAR AbsoluteTolerance."""
 
+    absolute: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize AbsoluteTolerance."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class AggregationCondition(AttributeCondition):
     """AUTOSAR AggregationCondition."""
 
+    aggregation: AggregationTailoring
     def __init__(self) -> None:
         """Initialize AggregationCondition."""
         super().__init__()

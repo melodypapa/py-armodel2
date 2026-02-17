@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TDEventFrame(TDEventCom):
     """AUTOSAR TDEventFrame."""
 
+    frame: Optional[Frame]
+    physical_channel: Optional[PhysicalChannel]
+    td_event_type_enum: Optional[TDEventFrameTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventFrame."""
         super().__init__()

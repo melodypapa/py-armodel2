@@ -23,6 +23,7 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr_rul
 class DataConstr(ARElement):
     """AUTOSAR DataConstr."""
 
+    data_constr_rules: list[DataConstrRule]
     def __init__(self) -> None:
         """Initialize DataConstr."""
         super().__init__()

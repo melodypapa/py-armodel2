@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeDeclarationGroupPrototype(Identifiable):
     """AUTOSAR ModeDeclarationGroupPrototype."""
 
+    sw_calibration_access: Optional[SwCalibrationAccessEnum]
+    type: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototype."""
         super().__init__()

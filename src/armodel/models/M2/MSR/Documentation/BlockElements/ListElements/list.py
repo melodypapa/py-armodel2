@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class List(Paginateable):
     """AUTOSAR List."""
 
+    item: Item
+    type: Optional[ListEnum]
     def __init__(self) -> None:
         """Initialize List."""
         super().__init__()

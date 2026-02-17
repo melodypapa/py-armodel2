@@ -22,6 +22,8 @@ class BinaryManifestAddressableObject(Identifiable):
     """AUTOSAR BinaryManifestAddressableObject."""
     """Abstract base class - do not instantiate directly."""
 
+    address: Optional[Address]
+    symbol: Optional[SymbolString]
     def __init__(self) -> None:
         """Initialize BinaryManifestAddressableObject."""
         super().__init__()

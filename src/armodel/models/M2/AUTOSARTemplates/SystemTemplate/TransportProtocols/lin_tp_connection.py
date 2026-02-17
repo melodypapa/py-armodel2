@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class LinTpConnection(TpConnection):
     """AUTOSAR LinTpConnection."""
 
+    data_pdu: Optional[NPdu]
+    flow_control: Optional[NPdu]
+    lin_tp_n_sdu: Optional[IPdu]
+    multicast: Optional[TpAddress]
+    receivers: list[LinTpNode]
+    timeout_as: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
+    timeout_cs: Optional[TimeValue]
+    transmitter: Optional[LinTpNode]
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
         super().__init__()

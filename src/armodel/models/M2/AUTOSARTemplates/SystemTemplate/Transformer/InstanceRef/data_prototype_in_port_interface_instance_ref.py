@@ -25,6 +25,10 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInPortInterfaceInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    abstract_base: Optional[PortInterface]
+    context_datas: list[Any]
+    root_data: Optional[AutosarDataPrototype]
+    target_data: DataPrototype
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceInstanceRef."""
         super().__init__()

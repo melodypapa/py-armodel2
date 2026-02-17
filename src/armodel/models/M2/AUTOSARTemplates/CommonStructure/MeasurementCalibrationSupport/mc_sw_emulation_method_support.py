@@ -24,6 +24,11 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class McSwEmulationMethodSupport(ARObject):
     """AUTOSAR McSwEmulationMethodSupport."""
 
+    base_reference: Optional[VariableDataPrototype]
+    category: Optional[Identifier]
+    element_groups: list[McParameterElementGroup]
+    reference_table: Optional[VariableDataPrototype]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize McSwEmulationMethodSupport."""
         super().__init__()

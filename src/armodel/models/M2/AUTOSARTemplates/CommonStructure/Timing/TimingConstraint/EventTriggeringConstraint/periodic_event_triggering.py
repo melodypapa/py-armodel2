@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PeriodicEventTriggering(EventTriggeringConstraint):
     """AUTOSAR PeriodicEventTriggering."""
 
+    jitter: Optional[MultidimensionalTime]
+    minimum_inter: Optional[MultidimensionalTime]
+    period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize PeriodicEventTriggering."""
         super().__init__()

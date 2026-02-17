@@ -28,6 +28,10 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
 class SdgClass(SdgElementWithGid):
     """AUTOSAR SdgClass."""
 
+    attributes: list[SdgAttribute]
+    caption: Optional[Boolean]
+    extends_meta: Optional[MetaClassName]
+    sdg_constraints: list[TraceableText]
     def __init__(self) -> None:
         """Initialize SdgClass."""
         super().__init__()

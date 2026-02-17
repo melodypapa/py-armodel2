@@ -21,6 +21,7 @@ class AtpPrototype(Identifiable):
     """AUTOSAR AtpPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    atp_type: AtpType
     def __init__(self) -> None:
         """Initialize AtpPrototype."""
         super().__init__()

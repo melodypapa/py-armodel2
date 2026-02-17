@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class ApplicationRecordDataType(ApplicationCompositeDataType):
     """AUTOSAR ApplicationRecordDataType."""
 
+    elements: list[Any]
     def __init__(self) -> None:
         """Initialize ApplicationRecordDataType."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class StreamFilterIEEE1722Tp(ARObject):
     """AUTOSAR StreamFilterIEEE1722Tp."""
 
+    stream_id: Optional[PositiveUnlimitedInteger]
     def __init__(self) -> None:
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()

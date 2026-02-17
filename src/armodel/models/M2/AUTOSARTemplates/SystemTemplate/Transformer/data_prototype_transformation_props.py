@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class DataPrototypeTransformationProps(ARObject):
     """AUTOSAR DataPrototypeTransformationProps."""
 
+    data_prototype_in: Optional[DataPrototype]
+    network: Optional[SwDataDefProps]
+    transformation_props: Optional[TransformationProps]
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()

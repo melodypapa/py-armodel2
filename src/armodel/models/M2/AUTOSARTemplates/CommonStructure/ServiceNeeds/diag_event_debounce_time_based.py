@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceTimeBased."""
 
+    time_based_fdc: Optional[TimeValue]
+    time_failed: Optional[TimeValue]
+    time_passed: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DiagEventDebounceTimeBased."""
         super().__init__()

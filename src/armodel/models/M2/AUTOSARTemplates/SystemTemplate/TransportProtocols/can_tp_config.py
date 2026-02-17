@@ -32,6 +32,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp
 class CanTpConfig(TpConfig):
     """AUTOSAR CanTpConfig."""
 
+    tp_addresses: list[CanTpAddress]
+    tp_channels: list[CanTpChannel]
+    tp_connections: list[CanTpConnection]
+    tp_ecus: list[CanTpEcu]
+    tp_nodes: list[CanTpNode]
     def __init__(self) -> None:
         """Initialize CanTpConfig."""
         super().__init__()

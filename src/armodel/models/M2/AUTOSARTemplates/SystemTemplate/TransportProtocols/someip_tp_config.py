@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip
 class SomeipTpConfig(TpConfig):
     """AUTOSAR SomeipTpConfig."""
 
+    tp_channels: list[SomeipTpChannel]
+    tp_connections: list[SomeipTpConnection]
     def __init__(self) -> None:
         """Initialize SomeipTpConfig."""
         super().__init__()

@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_speci
 class ConstantSpecificationMapping(ARObject):
     """AUTOSAR ConstantSpecificationMapping."""
 
+    appl_constant: Optional[ConstantSpecification]
+    impl_constant: Optional[ConstantSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMapping."""
         super().__init__()

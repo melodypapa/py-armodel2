@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class DiagnosticJ1939Node(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939Node."""
 
+    nm_node: Optional[J1939NmNode]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Node."""
         super().__init__()

@@ -22,6 +22,20 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.area import (
 class Map(ARObject):
     """AUTOSAR Map."""
 
+    area: Area
+    class_: Optional[String]
+    name: Optional[NameToken]
+    onclick: Optional[String]
+    ondblclick: Optional[String]
+    onkeydown: Optional[String]
+    onkeypress: Optional[String]
+    onkeyup: Optional[String]
+    onmousedown: Optional[String]
+    onmousemove: Optional[String]
+    onmouseout: Optional[String]
+    onmouseover: Optional[String]
+    onmouseup: Optional[String]
+    title: Optional[String]
     def __init__(self) -> None:
         """Initialize Map."""
         super().__init__()

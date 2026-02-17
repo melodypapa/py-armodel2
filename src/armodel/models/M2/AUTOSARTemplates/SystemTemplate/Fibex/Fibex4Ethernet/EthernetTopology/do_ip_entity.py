@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DoIpEntity(ARObject):
     """AUTOSAR DoIpEntity."""
 
+    do_ip_entity_role_enum: Optional[DoIpEntityRoleEnum]
     def __init__(self) -> None:
         """Initialize DoIpEntity."""
         super().__init__()

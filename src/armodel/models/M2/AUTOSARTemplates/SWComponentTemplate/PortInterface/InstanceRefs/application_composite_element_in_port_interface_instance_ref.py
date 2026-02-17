@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_i
 class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
     """AUTOSAR ApplicationCompositeElementInPortInterfaceInstanceRef."""
 
+    base: Optional[DataInterface]
+    context_datas: list[Any]
+    root_data: Optional[AutosarDataPrototype]
+    target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeElementInPortInterfaceInstanceRef."""
         super().__init__()

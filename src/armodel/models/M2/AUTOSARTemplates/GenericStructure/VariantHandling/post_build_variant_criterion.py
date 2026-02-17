@@ -23,6 +23,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
 class PostBuildVariantCriterion(ARElement):
     """AUTOSAR PostBuildVariantCriterion."""
 
+    compu_method: CompuMethod
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterion."""
         super().__init__()

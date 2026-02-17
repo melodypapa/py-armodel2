@@ -25,6 +25,7 @@ if TYPE_CHECKING:
 class TraceableText(Paginateable):
     """AUTOSAR TraceableText."""
 
+    text: DocumentationBlock
     def __init__(self) -> None:
         """Initialize TraceableText."""
         super().__init__()

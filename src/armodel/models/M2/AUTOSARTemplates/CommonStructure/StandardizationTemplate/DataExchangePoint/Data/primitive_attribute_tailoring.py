@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class PrimitiveAttributeTailoring(AttributeTailoring):
     """AUTOSAR PrimitiveAttributeTailoring."""
 
+    default_value: Optional[DefaultValueApplicationStrategyEnum]
+    sub_attributes: list[Any]
+    value_restriction_with_severity: Optional[ValueRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeTailoring."""
         super().__init__()

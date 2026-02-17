@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IPduPort(CommConnectorPort):
     """AUTOSAR IPduPort."""
 
+    i_pdu_signal: Optional[IPduSignalProcessingEnum]
+    rx_security: Optional[Boolean]
+    timestamp_rx: Optional[TimeValue]
+    use_auth_data: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize IPduPort."""
         super().__init__()

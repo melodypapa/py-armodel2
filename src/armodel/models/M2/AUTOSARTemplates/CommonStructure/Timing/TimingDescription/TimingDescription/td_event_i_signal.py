@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TDEventISignal(TDEventCom):
     """AUTOSAR TDEventISignal."""
 
+    i_signal: Optional[ISignal]
+    physical_channel: Optional[PhysicalChannel]
+    td_event_type_enum: Optional[TDEventISignalTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventISignal."""
         super().__init__()

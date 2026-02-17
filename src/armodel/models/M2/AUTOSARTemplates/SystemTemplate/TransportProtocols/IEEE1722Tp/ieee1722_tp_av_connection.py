@@ -24,6 +24,8 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection):
     """AUTOSAR IEEE1722TpAvConnection."""
     """Abstract base class - do not instantiate directly."""
 
+    max_transit_time: Optional[TimeValue]
+    sdus: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAvConnection."""
         super().__init__()

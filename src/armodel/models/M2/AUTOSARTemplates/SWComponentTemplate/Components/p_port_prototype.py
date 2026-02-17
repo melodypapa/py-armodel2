@@ -24,6 +24,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 class PPortPrototype(AbstractProvidedPortPrototype):
     """AUTOSAR PPortPrototype."""
 
+    provided: Optional[PortInterface]
     def __init__(self) -> None:
         """Initialize PPortPrototype."""
         super().__init__()

@@ -30,6 +30,11 @@ if TYPE_CHECKING:
 class NetworkEndpoint(Identifiable):
     """AUTOSAR NetworkEndpoint."""
 
+    fully_qualified: Optional[String]
+    infrastructure_services: Optional[InfrastructureServices]
+    ip_sec_config: Optional[IPSecConfig]
+    network_endpoints: list[NetworkEndpoint]
+    priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize NetworkEndpoint."""
         super().__init__()

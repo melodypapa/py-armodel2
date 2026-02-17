@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class FlexrayTpConnection(TpConnection):
     """AUTOSAR FlexrayTpConnection."""
 
+    bandwidth: Optional[Boolean]
+    direct_tp_sdu: Optional[IPdu]
+    multicast: Optional[TpAddress]
+    receivers: list[FlexrayTpNode]
+    reversed_tp_sdu: Optional[IPdu]
+    rx_pdu_pool: Optional[FlexrayTpPduPool]
+    tp_connection: Optional[FlexrayTpConnection]
+    transmitter: Optional[FlexrayTpNode]
+    tx_pdu_pool: Optional[FlexrayTpPduPool]
     def __init__(self) -> None:
         """Initialize FlexrayTpConnection."""
         super().__init__()

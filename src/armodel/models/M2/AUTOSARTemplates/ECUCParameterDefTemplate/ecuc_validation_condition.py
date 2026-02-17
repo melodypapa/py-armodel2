@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class EcucValidationCondition(Identifiable):
     """AUTOSAR EcucValidationCondition."""
 
+    ecuc_queries: list[EcucQuery]
+    validation: Optional[EcucConditionFormula]
     def __init__(self) -> None:
         """Initialize EcucValidationCondition."""
         super().__init__()

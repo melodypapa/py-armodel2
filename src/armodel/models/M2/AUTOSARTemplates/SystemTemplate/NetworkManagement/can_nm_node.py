@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanNmNode(NmNode):
     """AUTOSAR CanNmNode."""
 
+    all_nm_messages: Optional[Boolean]
+    nm_car_wake_up: Optional[Boolean]
+    nm_msg_cycle: Optional[TimeValue]
+    nm_msg: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize CanNmNode."""
         super().__init__()

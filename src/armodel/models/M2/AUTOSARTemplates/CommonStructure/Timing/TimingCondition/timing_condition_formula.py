@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 class TimingConditionFormula(ARObject):
     """AUTOSAR TimingConditionFormula."""
 
+    timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance]
+    timing_condition: Optional[TimingCondition]
+    timing_event: Optional[TimingDescriptionEvent]
+    timing_mode: Optional[TimingModeInstance]
+    timing_variable_instance: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()

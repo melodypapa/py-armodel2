@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToEcuInstanceMapping."""
 
+    ecu_instance: Optional[EcuInstance]
+    machine_id: Optional[PositiveInteger]
+    sw_clusters: list[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToEcuInstanceMapping."""
         super().__init__()

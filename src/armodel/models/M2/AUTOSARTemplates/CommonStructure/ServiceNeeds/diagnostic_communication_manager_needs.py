@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticCommunicationManagerNeeds."""
 
+    service_request: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticCommunicationManagerNeeds."""
         super().__init__()

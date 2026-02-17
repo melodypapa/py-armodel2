@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class InvertCondition(AbstractCondition):
     """AUTOSAR InvertCondition."""
 
+    condition: AbstractCondition
     def __init__(self) -> None:
         """Initialize InvertCondition."""
         super().__init__()

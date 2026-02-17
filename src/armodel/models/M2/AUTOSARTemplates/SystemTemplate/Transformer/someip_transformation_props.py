@@ -20,6 +20,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SOMEIPTransformationProps(TransformationProps):
     """AUTOSAR SOMEIPTransformationProps."""
 
+    alignment: Optional[PositiveInteger]
+    size_of_array: Optional[PositiveInteger]
+    size_of_string: Optional[PositiveInteger]
+    size_of_struct: Optional[PositiveInteger]
+    size_of_union: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationProps."""
         super().__init__()

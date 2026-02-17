@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
 class BinaryManifestResourceDefinition(Identifiable):
     """AUTOSAR BinaryManifestResourceDefinition."""
 
+    item_definitions: list[BinaryManifestItem]
     def __init__(self) -> None:
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()

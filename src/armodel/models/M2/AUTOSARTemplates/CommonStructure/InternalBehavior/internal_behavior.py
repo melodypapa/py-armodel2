@@ -41,6 +41,12 @@ class InternalBehavior(Identifiable):
     """AUTOSAR InternalBehavior."""
     """Abstract base class - do not instantiate directly."""
 
+    constants: list[ParameterDataPrototype]
+    constant_values: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    exclusive_areas: list[ExclusiveArea]
+    exclusive_area_nestings: list[ExclusiveAreaNestingOrder]
+    static_memories: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LimitValueVariationPoint(ARObject):
     """AUTOSAR LimitValueVariationPoint."""
 
+    interval_type_enum: Optional[IntervalTypeEnum]
     def __init__(self) -> None:
         """Initialize LimitValueVariationPoint."""
         super().__init__()

@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class InterpolationRoutine(ARObject):
     """AUTOSAR InterpolationRoutine."""
 
+    interpolation: Optional[BswModuleEntry]
+    is_default: Optional[Boolean]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize InterpolationRoutine."""
         super().__init__()

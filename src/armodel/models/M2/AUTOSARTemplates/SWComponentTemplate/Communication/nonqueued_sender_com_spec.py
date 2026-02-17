@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class NonqueuedSenderComSpec(SenderComSpec):
     """AUTOSAR NonqueuedSenderComSpec."""
 
+    data_filter: Optional[DataFilter]
+    init_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize NonqueuedSenderComSpec."""
         super().__init__()

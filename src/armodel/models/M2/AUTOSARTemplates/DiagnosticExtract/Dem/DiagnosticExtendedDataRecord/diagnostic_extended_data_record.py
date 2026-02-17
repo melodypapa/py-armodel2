@@ -28,6 +28,11 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
     """AUTOSAR DiagnosticExtendedDataRecord."""
 
+    custom_trigger: Optional[String]
+    record_elements: list[DiagnosticParameter]
+    record_number: Optional[PositiveInteger]
+    trigger: Optional[DiagnosticRecordTriggerEnum]
+    update: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticExtendedDataRecord."""
         super().__init__()

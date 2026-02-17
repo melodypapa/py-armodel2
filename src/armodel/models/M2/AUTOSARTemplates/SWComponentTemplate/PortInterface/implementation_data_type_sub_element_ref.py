@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ImplementationDataTypeSubElementRef(SubElementRef):
     """AUTOSAR ImplementationDataTypeSubElementRef."""
 
+    implementation: Optional[Any]
+    parameter: Optional[ArParameterInImplementationDataInstanceRef]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeSubElementRef."""
         super().__init__()

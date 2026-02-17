@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class ExclusiveAreaNestingOrder(Referrable):
     """AUTOSAR ExclusiveAreaNestingOrder."""
 
+    exclusive_areas: list[ExclusiveArea]
     def __init__(self) -> None:
         """Initialize ExclusiveAreaNestingOrder."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticDebounceAlgorithmProps(Identifiable):
     """AUTOSAR DiagnosticDebounceAlgorithmProps."""
 
+    debounce: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticDebounceAlgorithmProps."""
         super().__init__()

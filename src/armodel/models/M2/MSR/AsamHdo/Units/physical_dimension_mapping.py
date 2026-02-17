@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
 class PhysicalDimensionMapping(ARObject):
     """AUTOSAR PhysicalDimensionMapping."""
 
+    first_physical: Optional[PhysicalDimension]
+    second_physical: Optional[PhysicalDimension]
     def __init__(self) -> None:
         """Initialize PhysicalDimensionMapping."""
         super().__init__()

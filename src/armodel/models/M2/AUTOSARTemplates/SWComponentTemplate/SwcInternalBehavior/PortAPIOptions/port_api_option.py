@@ -31,6 +31,13 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class PortAPIOption(ARObject):
     """AUTOSAR PortAPIOption."""
 
+    enable_take: Optional[Boolean]
+    error_handling: Optional[DataTransformation]
+    indirect_api: Optional[Boolean]
+    port: Optional[PortPrototype]
+    port_arg_values: list[PortDefinedArgumentValue]
+    supporteds: list[SwcSupportedFeature]
+    transformer: Optional[DataTransformation]
     def __init__(self) -> None:
         """Initialize PortAPIOption."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class WorstCaseHeapUsage(HeapUsage):
     """AUTOSAR WorstCaseHeapUsage."""
 
+    memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize WorstCaseHeapUsage."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class TDEventSLLETPort(TDEventSLLET):
     """AUTOSAR TDEventSLLETPort."""
 
+    port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize TDEventSLLETPort."""
         super().__init__()

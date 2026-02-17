@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSession(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSession."""
 
+    id: Optional[PositiveInteger]
+    jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum]
+    p2_server_max: Optional[TimeValue]
+    p2_star_server: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DiagnosticSession."""
         super().__init__()

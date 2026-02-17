@@ -25,6 +25,12 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_d
 class SecurityEventContextProps(Identifiable):
     """AUTOSAR SecurityEventContextProps."""
 
+    context_data: Optional[Any]
+    default: Optional[Any]
+    persistent: Optional[Boolean]
+    security_event: Optional[SecurityEventDefinition]
+    sensor_instance: Optional[PositiveInteger]
+    severity: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventContextProps."""
         super().__init__()

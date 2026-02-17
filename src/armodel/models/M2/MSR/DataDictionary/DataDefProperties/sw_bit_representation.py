@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwBitRepresentation(ARObject):
     """AUTOSAR SwBitRepresentation."""
 
+    bit_position: Optional[Integer]
+    number_of_bits: Optional[Integer]
     def __init__(self) -> None:
         """Initialize SwBitRepresentation."""
         super().__init__()

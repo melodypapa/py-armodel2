@@ -24,6 +24,8 @@ class DiagnosticServiceInstance(DiagnosticCommonElement):
     """AUTOSAR DiagnosticServiceInstance."""
     """Abstract base class - do not instantiate directly."""
 
+    access: Optional[DiagnosticAccessPermission]
+    service_class: Optional[DiagnosticServiceClass]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceInstance."""
         super().__init__()

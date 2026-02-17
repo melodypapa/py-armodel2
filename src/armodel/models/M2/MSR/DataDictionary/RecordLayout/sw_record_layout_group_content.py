@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_v import
 class SwRecordLayoutGroupContent(ARObject):
     """AUTOSAR SwRecordLayoutGroupContent."""
 
+    sw_record: Optional[SwRecordLayoutGroup]
+    sw_record_layout_v: Optional[SwRecordLayoutV]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroupContent."""
         super().__init__()

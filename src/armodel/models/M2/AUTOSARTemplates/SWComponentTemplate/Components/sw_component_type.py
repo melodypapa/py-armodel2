@@ -39,6 +39,12 @@ class SwComponentType(ARElement):
     """AUTOSAR SwComponentType."""
     """Abstract base class - do not instantiate directly."""
 
+    consistency_needses: list[ConsistencyNeeds]
+    ports: list[PortPrototype]
+    port_groups: list[PortGroup]
+    swc_mappings: list[Any]
+    sw_component_documentation: Optional[SwComponentDocumentation]
+    unit_groups: list[UnitGroup]
     def __init__(self) -> None:
         """Initialize SwComponentType."""
         super().__init__()

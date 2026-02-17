@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class FlexrayTpNode(Identifiable):
     """AUTOSAR FlexrayTpNode."""
 
+    connectors: list[Any]
+    tp_address: Optional[TpAddress]
     def __init__(self) -> None:
         """Initialize FlexrayTpNode."""
         super().__init__()

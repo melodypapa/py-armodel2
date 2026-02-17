@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticDataTransfer."""
 
+    data_transfer: Optional[DiagnosticDataTransfer]
     def __init__(self) -> None:
         """Initialize DiagnosticDataTransfer."""
         super().__init__()

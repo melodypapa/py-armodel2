@@ -25,6 +25,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 class CpSoftwareCluster(ARElement):
     """AUTOSAR CpSoftwareCluster."""
 
+    software_cluster: Optional[PositiveInteger]
+    sw_components: list[Any]
+    sw_composition_component_types: list[CompositionSwComponentType]
     def __init__(self) -> None:
         """Initialize CpSoftwareCluster."""
         super().__init__()

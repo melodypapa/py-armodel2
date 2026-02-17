@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 class EcucConditionFormula(ARObject):
     """AUTOSAR EcucConditionFormula."""
 
+    ecuc_query: Optional[EcucQuery]
     def __init__(self) -> None:
         """Initialize EcucConditionFormula."""
         super().__init__()

@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptSwPrototypingAccess(ARObject):
     """AUTOSAR RptSwPrototypingAccess."""
 
+    rpt_hook_access: Optional[RptAccessEnum]
+    rpt_read_access: Optional[RptAccessEnum]
+    rpt_write_access: Optional[RptAccessEnum]
     def __init__(self) -> None:
         """Initialize RptSwPrototypingAccess."""
         super().__init__()

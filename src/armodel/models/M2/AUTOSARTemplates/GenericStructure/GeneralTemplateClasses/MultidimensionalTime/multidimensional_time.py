@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MultidimensionalTime(ARObject):
     """AUTOSAR MultidimensionalTime."""
 
+    cse_code: Optional[CseCodeType]
+    cse_code_factor: Optional[Integer]
     def __init__(self) -> None:
         """Initialize MultidimensionalTime."""
         super().__init__()

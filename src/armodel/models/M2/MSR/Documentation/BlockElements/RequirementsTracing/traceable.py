@@ -19,6 +19,7 @@ class Traceable(MultilanguageReferrable):
     """AUTOSAR Traceable."""
     """Abstract base class - do not instantiate directly."""
 
+    traces: list[Traceable]
     def __init__(self) -> None:
         """Initialize Traceable."""
         super().__init__()

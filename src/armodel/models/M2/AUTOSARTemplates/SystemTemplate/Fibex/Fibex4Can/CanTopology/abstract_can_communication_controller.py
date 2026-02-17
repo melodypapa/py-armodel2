@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AbstractCanCommunicationController(ARObject):
     """AUTOSAR AbstractCanCommunicationController."""
 
+    can_controller_controller_attributes: Optional[Any]
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationController."""
         super().__init__()

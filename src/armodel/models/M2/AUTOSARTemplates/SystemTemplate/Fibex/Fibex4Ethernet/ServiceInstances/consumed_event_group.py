@@ -34,6 +34,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class ConsumedEventGroup(Identifiable):
     """AUTOSAR ConsumedEventGroup."""
 
+    application_endpoint: Optional[ApplicationEndpoint]
+    auto_require: Optional[Boolean]
+    event_group: Optional[PositiveInteger]
+    event_multicasts: list[ApplicationEndpoint]
+    pdu_activation_routings: list[PduActivationRoutingGroup]
+    priority: Optional[PositiveInteger]
+    routing_groups: list[SoAdRoutingGroup]
+    sd_client_config: Optional[Any]
+    sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig]
     def __init__(self) -> None:
         """Initialize ConsumedEventGroup."""
         super().__init__()

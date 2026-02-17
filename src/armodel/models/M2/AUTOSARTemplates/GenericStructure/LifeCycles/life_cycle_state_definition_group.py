@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 class LifeCycleStateDefinitionGroup(ARElement):
     """AUTOSAR LifeCycleStateDefinitionGroup."""
 
+    lc_states: list[LifeCycleState]
     def __init__(self) -> None:
         """Initialize LifeCycleStateDefinitionGroup."""
         super().__init__()

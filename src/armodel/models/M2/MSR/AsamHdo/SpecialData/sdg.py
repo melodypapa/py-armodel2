@@ -30,6 +30,9 @@ if TYPE_CHECKING:
 class Sdg(ARObject):
     """AUTOSAR Sdg."""
 
+    gid: NameToken
+    sdg_caption: Optional[SdgCaption]
+    sdg_contents: Optional[SdgContents]
     def __init__(self) -> None:
         """Initialize Sdg."""
         super().__init__()

@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class J1939TpNode(Identifiable):
     """AUTOSAR J1939TpNode."""
 
+    connector: Optional[Any]
+    tp_address: Optional[TpAddress]
     def __init__(self) -> None:
         """Initialize J1939TpNode."""
         super().__init__()

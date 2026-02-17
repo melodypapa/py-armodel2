@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
 class ConstraintTailoring(RestrictionWithSeverity):
     """AUTOSAR ConstraintTailoring."""
 
+    constraint: Optional[TraceableText]
     def __init__(self) -> None:
         """Initialize ConstraintTailoring."""
         super().__init__()

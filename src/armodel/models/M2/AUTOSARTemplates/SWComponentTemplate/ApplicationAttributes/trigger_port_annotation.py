@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TriggerPortAnnotation(GeneralAnnotation):
     """AUTOSAR TriggerPortAnnotation."""
 
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerPortAnnotation."""
         super().__init__()

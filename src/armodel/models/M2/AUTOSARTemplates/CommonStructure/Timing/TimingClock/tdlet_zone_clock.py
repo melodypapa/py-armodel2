@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TDLETZoneClock(TimingClock):
     """AUTOSAR TDLETZoneClock."""
 
+    accuracy_ext: Optional[MultidimensionalTime]
+    accuracy_int: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize TDLETZoneClock."""
         super().__init__()

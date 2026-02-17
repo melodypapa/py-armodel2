@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanTpChannel(Identifiable):
     """AUTOSAR CanTpChannel."""
 
+    channel_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanTpChannel."""
         super().__init__()

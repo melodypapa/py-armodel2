@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SomeipSdClientEventGroupTimingConfig(ARElement):
     """AUTOSAR SomeipSdClientEventGroupTimingConfig."""
 
+    request: Optional[RequestResponseDelay]
+    subscribe: Optional[PositiveInteger]
+    time_to_live: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SomeipSdClientEventGroupTimingConfig."""
         super().__init__()

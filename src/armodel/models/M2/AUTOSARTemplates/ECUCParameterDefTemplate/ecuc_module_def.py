@@ -26,6 +26,11 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
 class EcucModuleDef(EcucDefinitionElement):
     """AUTOSAR EcucModuleDef."""
 
+    api_service_prefix: Optional[CIdentifier]
+    containers: list[EcucContainerDef]
+    post_build_variant: Optional[Boolean]
+    refined_module: Optional[EcucModuleDef]
+    supporteds: list[Any]
     def __init__(self) -> None:
         """Initialize EcucModuleDef."""
         super().__init__()

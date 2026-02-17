@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ConcreteClassTailoring(DataFormatElementScope):
     """AUTOSAR ConcreteClassTailoring."""
 
+    validation_root: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ConcreteClassTailoring."""
         super().__init__()

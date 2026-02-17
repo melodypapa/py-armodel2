@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class DataTypeMap(ARObject):
     """AUTOSAR DataTypeMap."""
 
+    application_data_type: Optional[ApplicationDataType]
+    implementation: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:
         """Initialize DataTypeMap."""
         super().__init__()

@@ -28,6 +28,12 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.privacy_level import 
 class DltMessage(Identifiable):
     """AUTOSAR DltMessage."""
 
+    dlt_arguments: list[DltArgument]
+    message_id: Optional[PositiveInteger]
+    message_line: Optional[PositiveInteger]
+    message_source: Optional[String]
+    message_type_info: Optional[String]
+    privacy_level: Optional[PrivacyLevel]
     def __init__(self) -> None:
         """Initialize DltMessage."""
         super().__init__()

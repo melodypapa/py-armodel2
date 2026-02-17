@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 class Note(Paginateable):
     """AUTOSAR Note."""
 
+    label: Optional[MultilanguageLongName]
+    note_text: DocumentationBlock
+    note_type: Optional[NoteTypeEnum]
     def __init__(self) -> None:
         """Initialize Note."""
         super().__init__()

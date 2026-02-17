@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ParameterPortAnnotation(GeneralAnnotation):
     """AUTOSAR ParameterPortAnnotation."""
 
+    parameter: Optional[ParameterDataPrototype]
     def __init__(self) -> None:
         """Initialize ParameterPortAnnotation."""
         super().__init__()

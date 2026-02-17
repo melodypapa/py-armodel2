@@ -24,6 +24,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ModeDeclaration(Identifiable):
     """AUTOSAR ModeDeclaration."""
 
+    value: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeDeclaration."""
         super().__init__()

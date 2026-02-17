@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
     """AUTOSAR BinaryManifestMetaDataField."""
 
+    size: Optional[PositiveInteger]
+    value: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize BinaryManifestMetaDataField."""
         super().__init__()

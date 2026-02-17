@@ -28,6 +28,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecLocalKayProps(ARObject):
     """AUTOSAR MacSecLocalKayProps."""
 
+    destination_mac: Optional[MacAddressString]
+    global_kay_props: Optional[MacSecGlobalKayProps]
+    key_server: Optional[PositiveInteger]
+    mka_participants: list[MacSecKayParticipant]
+    role: Optional[MacSecRoleEnum]
+    source_mac: Optional[MacAddressString]
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()

@@ -28,6 +28,11 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim 
 class MultiLanguageVerbatim(Paginateable):
     """AUTOSAR MultiLanguageVerbatim."""
 
+    allow_break: Optional[NameToken]
+    float: Optional[FloatEnum]
+    help_entry: Optional[String]
+    l5: LVerbatim
+    pgwide: Optional[PgwideEnum]
     def __init__(self) -> None:
         """Initialize MultiLanguageVerbatim."""
         super().__init__()

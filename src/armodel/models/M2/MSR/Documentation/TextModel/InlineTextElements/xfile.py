@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Xfile(SingleLanguageReferrable):
     """AUTOSAR Xfile."""
 
+    tool: Optional[String]
+    tool_version: Optional[String]
+    url: Optional[Any]
     def __init__(self) -> None:
         """Initialize Xfile."""
         super().__init__()

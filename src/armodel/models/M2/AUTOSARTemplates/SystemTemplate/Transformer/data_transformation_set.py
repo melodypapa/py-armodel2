@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class DataTransformationSet(ARElement):
     """AUTOSAR DataTransformationSet."""
 
+    datas: list[DataTransformation]
+    transformation_technologies: list[TransformationTechnology]
     def __init__(self) -> None:
         """Initialize DataTransformationSet."""
         super().__init__()

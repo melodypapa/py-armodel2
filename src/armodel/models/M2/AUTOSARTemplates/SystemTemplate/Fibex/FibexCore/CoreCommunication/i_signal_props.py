@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ISignalProps(ARObject):
     """AUTOSAR ISignalProps."""
 
+    handle_out_of_range: Optional[Any]
     def __init__(self) -> None:
         """Initialize ISignalProps."""
         super().__init__()

@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class TDEventSwcInternalBehavior(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehavior."""
 
+    runnable: Optional[RunnableEntity]
+    td_event_swc_behavior_type: Optional[Any]
+    variable_access: Optional[VariableAccess]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehavior."""
         super().__init__()

@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BuildEngineeringObject(EngineeringObject):
     """AUTOSAR BuildEngineeringObject."""
 
+    file_type: NameToken
+    file_type_pattern: RegularExpression
+    intended: Optional[UriString]
     def __init__(self) -> None:
         """Initialize BuildEngineeringObject."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
 class SwAxisType(ARElement):
     """AUTOSAR SwAxisType."""
 
+    sw_generic_axis: Optional[DocumentationBlock]
+    sw_generic_axis_params: list[SwGenericAxisParam]
     def __init__(self) -> None:
         """Initialize SwAxisType."""
         super().__init__()

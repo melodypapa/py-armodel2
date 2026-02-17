@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class TextTableMapping(ARObject):
     """AUTOSAR TextTableMapping."""
 
+    bitfield_text_table: Optional[PositiveInteger]
+    identical: Optional[Boolean]
+    mapping: Optional[MappingDirectionEnum]
+    value_pairs: list[TextTableValuePair]
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()

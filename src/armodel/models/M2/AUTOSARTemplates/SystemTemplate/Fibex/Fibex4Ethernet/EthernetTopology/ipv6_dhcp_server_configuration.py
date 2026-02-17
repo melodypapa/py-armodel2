@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6DhcpServerConfiguration(Describable):
     """AUTOSAR Ipv6DhcpServerConfiguration."""
 
+    address_range: Optional[Ip6AddressString]
+    default_gateway: Optional[Ip6AddressString]
+    default_lease: Optional[TimeValue]
+    dns_servers: list[Ip6AddressString]
+    network_mask: Optional[Ip6AddressString]
     def __init__(self) -> None:
         """Initialize Ipv6DhcpServerConfiguration."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class TriggerIPduSendCondition(ARObject):
     """AUTOSAR TriggerIPduSendCondition."""
 
+    modes: list[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize TriggerIPduSendCondition."""
         super().__init__()

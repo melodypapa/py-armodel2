@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwComponentPrototypeAssignment(ARObject):
     """AUTOSAR SwComponentPrototypeAssignment."""
 
+    sw_component: Optional[Any]
     def __init__(self) -> None:
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()

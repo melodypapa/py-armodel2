@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class IdsmSignatureSupportAp(ARObject):
     """AUTOSAR IdsmSignatureSupportAp."""
 
+    crypto_primitive: String
+    key_slot: Optional[CryptoKeySlot]
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportAp."""
         super().__init__()

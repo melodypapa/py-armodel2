@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_t
 class RuleArguments(ARObject):
     """AUTOSAR RuleArguments."""
 
+    v: Optional[Numerical]
+    vf: Optional[Numerical]
+    vt: Optional[VerbatimString]
+    vtf: Optional[NumericalOrText]
     def __init__(self) -> None:
         """Initialize RuleArguments."""
         super().__init__()

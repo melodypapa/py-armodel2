@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.tlv_data_id_d
 class SOMEIPTransformationISignalProps(ARObject):
     """AUTOSAR SOMEIPTransformationISignalProps."""
 
+    implements: Optional[Boolean]
+    interface_version: Optional[PositiveInteger]
+    is_dynamic: Optional[Boolean]
+    message_type: Optional[SOMEIPMessageTypeEnum]
+    size_of_array: Optional[PositiveInteger]
+    size_of_string: Optional[PositiveInteger]
+    size_of_struct: Optional[PositiveInteger]
+    size_of_union: Optional[PositiveInteger]
+    tlv_data_ids: list[TlvDataIdDefinitionSet]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationISignalProps."""
         super().__init__()

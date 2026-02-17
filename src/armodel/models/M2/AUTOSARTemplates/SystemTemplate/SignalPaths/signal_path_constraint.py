@@ -19,6 +19,7 @@ class SignalPathConstraint(ARObject):
     """AUTOSAR SignalPathConstraint."""
     """Abstract base class - do not instantiate directly."""
 
+    introduction: DocumentationBlock
     def __init__(self) -> None:
         """Initialize SignalPathConstraint."""
         super().__init__()

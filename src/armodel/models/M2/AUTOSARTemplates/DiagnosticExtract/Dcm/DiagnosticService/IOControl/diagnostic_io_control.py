@@ -23,6 +23,12 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticIOControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticIOControl."""
 
+    control_enables: list[Any]
+    data_identifier_identifier: Optional[DiagnosticDataIdentifier]
+    freeze_current: Optional[Boolean]
+    io_control_class: Optional[DiagnosticIOControl]
+    reset_to_default: Optional[Boolean]
+    short_term: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticIOControl."""
         super().__init__()

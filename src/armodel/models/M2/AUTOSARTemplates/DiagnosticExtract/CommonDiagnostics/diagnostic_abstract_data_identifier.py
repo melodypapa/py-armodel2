@@ -21,6 +21,7 @@ class DiagnosticAbstractDataIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAbstractDataIdentifier."""
     """Abstract base class - do not instantiate directly."""
 
+    id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticAbstractDataIdentifier."""
         super().__init__()

@@ -40,6 +40,17 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class GlobalTimeDomain(FibexElement):
     """AUTOSAR GlobalTimeDomain."""
 
+    debounce_time: Optional[TimeValue]
+    domain_id: Optional[PositiveInteger]
+    gateways: list[GlobalTimeGateway]
+    global_time: Optional[AbstractGlobalTimeDomainProps]
+    global_time_master: Optional[GlobalTimeMaster]
+    global_time_subs: list[GlobalTimeDomain]
+    network: Optional[NetworkSegmentIdentification]
+    offset_time: Optional[GlobalTimeDomain]
+    pdu_triggering: Optional[PduTriggering]
+    slaves: list[GlobalTimeSlave]
+    sync_loss: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeDomain."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
     """AUTOSAR CpSoftwareClusterCommunicationResource."""
 
+    communication: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterCommunicationResource."""
         super().__init__()

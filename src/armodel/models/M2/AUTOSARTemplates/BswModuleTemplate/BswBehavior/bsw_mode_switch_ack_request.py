@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BswModeSwitchAckRequest(ARObject):
     """AUTOSAR BswModeSwitchAckRequest."""
 
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize BswModeSwitchAckRequest."""
         super().__init__()

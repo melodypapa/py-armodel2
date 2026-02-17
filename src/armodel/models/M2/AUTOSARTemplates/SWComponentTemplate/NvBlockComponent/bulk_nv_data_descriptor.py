@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class BulkNvDataDescriptor(Identifiable):
     """AUTOSAR BulkNvDataDescriptor."""
 
+    bulk_nv_block: Optional[VariableDataPrototype]
+    nv_block_datas: list[NvBlockDataMapping]
     def __init__(self) -> None:
         """Initialize BulkNvDataDescriptor."""
         super().__init__()

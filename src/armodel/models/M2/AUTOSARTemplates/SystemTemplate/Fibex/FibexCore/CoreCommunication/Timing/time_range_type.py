@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimeRangeType(ARObject):
     """AUTOSAR TimeRangeType."""
 
+    tolerance_tolerance: Optional[TimeRangeType]
+    value: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TimeRangeType."""
         super().__init__()

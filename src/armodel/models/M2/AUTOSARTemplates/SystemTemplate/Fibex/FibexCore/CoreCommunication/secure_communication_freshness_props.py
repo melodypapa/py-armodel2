@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecureCommunicationFreshnessProps(Identifiable):
     """AUTOSAR SecureCommunicationFreshnessProps."""
 
+    freshness: Optional[PositiveInteger]
+    freshness_value: Optional[PositiveInteger]
+    use_freshness: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SecureCommunicationFreshnessProps."""
         super().__init__()

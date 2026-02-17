@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamFilterActionDestPortModification(Identifiable):
     """AUTOSAR SwitchStreamFilterActionDestPortModification."""
 
+    egress_ports: list[CouplingPort]
+    modification: Optional[Any]
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterActionDestPortModification."""
         super().__init__()

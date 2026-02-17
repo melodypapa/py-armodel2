@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.Documentation.Chapters.topic_content_or_msr_query imp
 class ChapterContent(ARObject):
     """AUTOSAR ChapterContent."""
 
+    prms: Prms
+    topic_content_or_msr: Optional[TopicContentOrMsrQuery]
     def __init__(self) -> None:
         """Initialize ChapterContent."""
         super().__init__()

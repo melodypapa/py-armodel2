@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsReliability(ARObject):
     """AUTOSAR DdsReliability."""
 
+    reliability_kind: Optional[DdsReliabilityKindEnum]
+    reliability_max: Optional[Float]
     def __init__(self) -> None:
         """Initialize DdsReliability."""
         super().__init__()

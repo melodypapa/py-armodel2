@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticCustomServiceInstance."""
 
+    custom_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceInstance."""
         super().__init__()

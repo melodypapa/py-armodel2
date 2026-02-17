@@ -25,6 +25,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetCommunicationConnector(CommunicationConnector):
     """AUTOSAR EthernetCommunicationConnector."""
 
+    eth_ip_props: Optional[EthIpProps]
+    maximum: Optional[PositiveInteger]
+    neighbor_cache: Optional[PositiveInteger]
+    path_mtu: Optional[Boolean]
+    path_mtu_timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize EthernetCommunicationConnector."""
         super().__init__()

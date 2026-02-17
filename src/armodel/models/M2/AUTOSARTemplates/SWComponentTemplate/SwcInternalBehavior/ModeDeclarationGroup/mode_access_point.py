@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeAccessPoint(ARObject):
     """AUTOSAR ModeAccessPoint."""
 
+    ident: Optional[ModeAccessPointIdent]
+    mode_group_instance_ref: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeAccessPoint."""
         super().__init__()

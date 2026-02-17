@@ -21,6 +21,7 @@ class TDEventCom(TimingDescriptionEvent):
     """AUTOSAR TDEventCom."""
     """Abstract base class - do not instantiate directly."""
 
+    ecu_instance: Optional[EcuInstance]
     def __init__(self) -> None:
         """Initialize TDEventCom."""
         super().__init__()

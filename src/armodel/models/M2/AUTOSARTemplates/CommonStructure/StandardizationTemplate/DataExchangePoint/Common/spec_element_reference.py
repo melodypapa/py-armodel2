@@ -21,6 +21,7 @@ class SpecElementReference(Identifiable):
     """AUTOSAR SpecElementReference."""
     """Abstract base class - do not instantiate directly."""
 
+    alternative: Optional[String]
     def __init__(self) -> None:
         """Initialize SpecElementReference."""
         super().__init__()

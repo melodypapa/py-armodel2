@@ -19,6 +19,7 @@ class EcucIndexableValue(ARObject):
     """AUTOSAR EcucIndexableValue."""
     """Abstract base class - do not instantiate directly."""
 
+    index: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EcucIndexableValue."""
         super().__init__()

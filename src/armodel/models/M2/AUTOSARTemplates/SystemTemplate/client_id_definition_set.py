@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.client_id_definition impo
 class ClientIdDefinitionSet(ARElement):
     """AUTOSAR ClientIdDefinitionSet."""
 
+    client_ids: list[ClientIdDefinition]
     def __init__(self) -> None:
         """Initialize ClientIdDefinitionSet."""
         super().__init__()

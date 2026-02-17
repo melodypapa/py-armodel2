@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanCommunicationConnector(AbstractCanCommunicationConnector):
     """AUTOSAR CanCommunicationConnector."""
 
+    pnc_wakeup_can: Optional[PositiveInteger]
+    pnc_wakeup: Optional[PositiveUnlimitedInteger]
+    pnc_wakeup_dlc: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanCommunicationConnector."""
         super().__init__()

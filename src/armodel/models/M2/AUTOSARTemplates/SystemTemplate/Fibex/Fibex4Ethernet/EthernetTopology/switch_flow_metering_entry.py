@@ -24,6 +24,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwitchFlowMeteringEntry(Identifiable):
     """AUTOSAR SwitchFlowMeteringEntry."""
 
+    color_mode: Optional[FlowMeteringColorModeEnum]
+    committed_burst: Optional[PositiveInteger]
+    committed: Optional[PositiveInteger]
+    coupling_flag: Optional[Boolean]
+    excess_burst: Optional[PositiveInteger]
+    excess: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SwitchFlowMeteringEntry."""
         super().__init__()

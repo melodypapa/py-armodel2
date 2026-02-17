@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucNumericalParamValue(EcucParameterValue):
     """AUTOSAR EcucNumericalParamValue."""
 
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize EcucNumericalParamValue."""
         super().__init__()

@@ -25,6 +25,7 @@ class AutosarDataType(ARElement):
     """AUTOSAR AutosarDataType."""
     """Abstract base class - do not instantiate directly."""
 
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize AutosarDataType."""
         super().__init__()

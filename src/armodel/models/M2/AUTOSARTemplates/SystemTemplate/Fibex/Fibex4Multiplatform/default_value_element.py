@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DefaultValueElement(ARObject):
     """AUTOSAR DefaultValueElement."""
 
+    element_byte_value: Optional[Integer]
+    element_position: Optional[Integer]
     def __init__(self) -> None:
         """Initialize DefaultValueElement."""
         super().__init__()

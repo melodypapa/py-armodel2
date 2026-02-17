@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticComControlSubNodeChannel(ARObject):
     """AUTOSAR DiagnosticComControlSubNodeChannel."""
 
+    sub_node: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()

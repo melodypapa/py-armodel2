@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Keyword(Identifiable):
     """AUTOSAR Keyword."""
 
+    abbr_name: NameToken
+    classifications: list[NameToken]
     def __init__(self) -> None:
         """Initialize Keyword."""
         super().__init__()

@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticRoutineNeeds."""
 
+    diag_routine: Optional[DiagnosticRoutineTypeEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineNeeds."""
         super().__init__()

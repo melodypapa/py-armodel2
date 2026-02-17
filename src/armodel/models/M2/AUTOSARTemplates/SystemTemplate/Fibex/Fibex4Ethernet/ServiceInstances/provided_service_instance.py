@@ -31,6 +31,19 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class ProvidedServiceInstance(AbstractServiceInstance):
     """AUTOSAR ProvidedServiceInstance."""
 
+    allowed_services: list[NetworkEndpoint]
+    auto_available: Optional[Boolean]
+    event_handlers: list[EventHandler]
+    instance: Optional[PositiveInteger]
+    load_balancing: Optional[PositiveInteger]
+    local_unicast: ApplicationEndpoint
+    minor_version: Optional[PositiveInteger]
+    priority: Optional[PositiveInteger]
+    remote_multicasts: list[ApplicationEndpoint]
+    remote_unicasts: list[ApplicationEndpoint]
+    sd_server_config: Optional[Any]
+    sd_server_timer: Optional[Any]
+    service_identifier: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ProvidedServiceInstance."""
         super().__init__()

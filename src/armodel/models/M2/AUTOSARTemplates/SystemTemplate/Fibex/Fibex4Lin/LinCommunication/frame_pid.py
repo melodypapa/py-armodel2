@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FramePid(ARObject):
     """AUTOSAR FramePid."""
 
+    index: Optional[Integer]
+    pid: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FramePid."""
         super().__init__()

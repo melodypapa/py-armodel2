@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class ArParameterInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArParameterInImplementationDataInstanceRef."""
 
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_parameter: Optional[ParameterDataPrototype]
+    target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ArParameterInImplementationDataInstanceRef."""
         super().__init__()

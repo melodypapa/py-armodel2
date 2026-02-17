@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsDurabilityService(ARObject):
     """AUTOSAR DdsDurabilityService."""
 
+    durability: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsDurabilityService."""
         super().__init__()

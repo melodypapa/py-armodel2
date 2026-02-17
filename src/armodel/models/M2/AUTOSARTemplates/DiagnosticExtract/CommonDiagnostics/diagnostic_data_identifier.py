@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
     """AUTOSAR DiagnosticDataIdentifier."""
 
+    data_elements: list[DiagnosticParameter]
+    did_size: Optional[PositiveInteger]
+    represents_vin: Optional[Boolean]
+    support_info_byte: Optional[DiagnosticSupportInfoByte]
     def __init__(self) -> None:
         """Initialize DiagnosticDataIdentifier."""
         super().__init__()

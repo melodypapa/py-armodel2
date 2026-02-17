@@ -21,6 +21,8 @@ class IdsPlatformInstantiation(Identifiable):
     """AUTOSAR IdsPlatformInstantiation."""
     """Abstract base class - do not instantiate directly."""
 
+    networks: list[PlatformModuleEthernetEndpointConfiguration]
+    time_base_resource: Optional[Any]
     def __init__(self) -> None:
         """Initialize IdsPlatformInstantiation."""
         super().__init__()

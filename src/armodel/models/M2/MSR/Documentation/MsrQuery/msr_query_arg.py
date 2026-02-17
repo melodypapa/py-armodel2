@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MsrQueryArg(ARObject):
     """AUTOSAR MsrQueryArg."""
 
+    arg: String
+    si: NameToken
     def __init__(self) -> None:
         """Initialize MsrQueryArg."""
         super().__init__()

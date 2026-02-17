@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRoutineControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRoutineControl."""
 
+    routine: Optional[DiagnosticRoutine]
+    routine_control: Optional[DiagnosticRoutine]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineControl."""
         super().__init__()

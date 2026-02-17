@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR DataPrototypeInPortInterfaceRef."""
 
+    data_prototype_in: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()

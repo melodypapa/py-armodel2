@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ApplicationInterface(PortInterface):
     """AUTOSAR ApplicationInterface."""
 
+    attributes: list[Field]
+    commands: list[ClientServerOperation]
+    indications: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize ApplicationInterface."""
         super().__init__()

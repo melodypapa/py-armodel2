@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticFimEventGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFimEventGroup."""
 
+    events: list[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize DiagnosticFimEventGroup."""
         super().__init__()

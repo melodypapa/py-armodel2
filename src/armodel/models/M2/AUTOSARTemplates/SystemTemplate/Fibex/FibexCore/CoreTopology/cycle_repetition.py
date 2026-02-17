@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CycleRepetition(CommunicationCycle):
     """AUTOSAR CycleRepetition."""
 
+    base_cycle: Optional[Integer]
+    cycle_repetition: Optional[CycleRepetitionType]
     def __init__(self) -> None:
         """Initialize CycleRepetition."""
         super().__init__()

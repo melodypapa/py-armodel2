@@ -21,6 +21,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanControllerFdConfigurationRequirements(ARObject):
     """AUTOSAR CanControllerFdConfigurationRequirements."""
 
+    max_number_of_time_quanta_per: Optional[Any]
+    max_sample: Optional[Float]
+    max_sync_jump: Optional[Float]
+    max_trcv_delay: Optional[TimeValue]
+    min_number_of_time_quanta_per: Optional[Any]
+    min_sample_point: Optional[Float]
+    min_sync_jump: Optional[Float]
+    min_trcv_delay: Optional[TimeValue]
+    padding_value: Optional[PositiveInteger]
+    tx_bit_rate_switch: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CanControllerFdConfigurationRequirements."""
         super().__init__()

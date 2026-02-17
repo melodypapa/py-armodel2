@@ -30,6 +30,14 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.tbody 
 class Tgroup(ARObject):
     """AUTOSAR Tgroup."""
 
+    align: Optional[AlignEnum]
+    cols: Integer
+    colsep: Optional[TableSeparatorString]
+    colspecs: list[Colspec]
+    rowsep: Optional[TableSeparatorString]
+    tbody: Tbody
+    tfoot: Optional[Tbody]
+    thead: Optional[Tbody]
     def __init__(self) -> None:
         """Initialize Tgroup."""
         super().__init__()

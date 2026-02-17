@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class NotAvailableValueSpecification(ValueSpecification):
     """AUTOSAR NotAvailableValueSpecification."""
 
+    default_pattern: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize NotAvailableValueSpecification."""
         super().__init__()

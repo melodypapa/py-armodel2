@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticPeriodicRate(ARObject):
     """AUTOSAR DiagnosticPeriodicRate."""
 
+    period: Optional[TimeValue]
+    periodic_rate: Optional[DiagnosticPeriodicRate]
     def __init__(self) -> None:
         """Initialize DiagnosticPeriodicRate."""
         super().__init__()

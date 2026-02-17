@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RunnableEntityArgument(ARObject):
     """AUTOSAR RunnableEntityArgument."""
 
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RunnableEntityArgument."""
         super().__init__()

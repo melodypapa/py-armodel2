@@ -25,6 +25,18 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IPSecConfigProps(ARElement):
     """AUTOSAR IPSecConfigProps."""
 
+    ah_cipher_suites: list[String]
+    dpd_action: Optional[IPsecDpdActionEnum]
+    dpd_delay: Optional[TimeValue]
+    esp_cipher_suites: list[String]
+    ike_cipher_suite: Optional[String]
+    ike_over_time: Optional[TimeValue]
+    ike_rand_time: Optional[PositiveInteger]
+    ike_reauth_time: Optional[TimeValue]
+    ike_rekey_time: Optional[TimeValue]
+    sa_over_time: Optional[PositiveInteger]
+    sa_rand_time: Optional[TimeValue]
+    sa_rekey_time: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize IPSecConfigProps."""
         super().__init__()

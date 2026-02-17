@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DynamicPart(MultiplexedPart):
     """AUTOSAR DynamicPart."""
 
+    dynamic_parts: list[DynamicPartAlternative]
     def __init__(self) -> None:
         """Initialize DynamicPart."""
         super().__init__()

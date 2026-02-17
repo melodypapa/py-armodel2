@@ -27,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalIPdu(IPdu):
     """AUTOSAR ISignalIPdu."""
 
+    i_pdu_timing: Optional[IPduTiming]
+    i_signal_to_pdus: list[ISignalToIPduMapping]
+    unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()

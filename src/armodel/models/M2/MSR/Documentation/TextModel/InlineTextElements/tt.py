@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Tt(ARObject):
     """AUTOSAR Tt."""
 
+    term: String
+    tex_render: Optional[String]
+    type: NameToken
     def __init__(self) -> None:
         """Initialize Tt."""
         super().__init__()

@@ -32,6 +32,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ContainerIPdu(IPdu):
     """AUTOSAR ContainerIPdu."""
 
+    contained_i_pdu_propses: list[ContainedIPduProps]
+    contained_pdus: list[PduTriggering]
+    container: Optional[TimeValue]
+    container_trigger: Optional[ContainerIPduTriggerEnum]
+    header_type: Optional[ContainerIPduHeaderTypeEnum]
+    minimum_rx: Optional[PositiveInteger]
+    minimum_tx: Optional[PositiveInteger]
+    rx_accept: Optional[RxAcceptContainedIPduEnum]
+    threshold_size: Optional[PositiveInteger]
+    unused_bit: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ContainerIPdu."""
         super().__init__()

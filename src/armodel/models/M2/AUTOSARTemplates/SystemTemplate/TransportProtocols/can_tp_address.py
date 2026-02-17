@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanTpAddress(Identifiable):
     """AUTOSAR CanTpAddress."""
 
+    tp_address: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CanTpAddress."""
         super().__init__()

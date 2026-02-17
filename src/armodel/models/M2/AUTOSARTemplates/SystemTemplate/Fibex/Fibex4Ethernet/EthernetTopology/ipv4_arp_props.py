@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4ArpProps(ARObject):
     """AUTOSAR Ipv4ArpProps."""
 
+    tcp_ip_arp_num: Optional[PositiveInteger]
+    tcp_ip_arp_packet: Optional[Boolean]
+    tcp_ip_arp: Optional[TimeValue]
+    tcp_ip_arp_table: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize Ipv4ArpProps."""
         super().__init__()

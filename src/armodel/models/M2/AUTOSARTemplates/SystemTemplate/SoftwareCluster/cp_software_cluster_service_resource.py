@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_v
 class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
     """AUTOSAR CpSoftwareClusterServiceResource."""
 
+    resource_needses: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterServiceResource."""
         super().__init__()

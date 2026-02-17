@@ -34,6 +34,11 @@ if TYPE_CHECKING:
 class FlatInstanceDescriptor(Identifiable):
     """AUTOSAR FlatInstanceDescriptor."""
 
+    ecu_extract: Optional[AtpFeature]
+    role: Optional[Identifier]
+    rte_plugin_props: Optional[RtePluginProps]
+    sw_data_def: Optional[SwDataDefProps]
+    upstream: Optional[AtpFeature]
     def __init__(self) -> None:
         """Initialize FlatInstanceDescriptor."""
         super().__init__()

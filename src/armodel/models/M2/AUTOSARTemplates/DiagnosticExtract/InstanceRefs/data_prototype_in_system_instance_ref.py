@@ -30,6 +30,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class DataPrototypeInSystemInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInSystemInstanceRef."""
 
+    base: Optional[System]
+    contexts: list[Any]
+    context_datas: list[Any]
+    context_port: Optional[PortPrototype]
+    context_root: Optional[RootSwCompositionPrototype]
+    root_data_prototype: Optional[AutosarDataPrototype]
+    target_data: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
         super().__init__()

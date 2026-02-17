@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchReceiverComSpec(RPortComSpec):
     """AUTOSAR ModeSwitchReceiverComSpec."""
 
+    enhanced_mode: Optional[Boolean]
+    mode_group: Optional[ModeDeclarationGroup]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ModeSwitchReceiverComSpec."""
         super().__init__()

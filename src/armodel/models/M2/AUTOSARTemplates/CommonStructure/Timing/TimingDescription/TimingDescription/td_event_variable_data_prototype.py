@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class TDEventVariableDataPrototype(TDEventVfbPort):
     """AUTOSAR TDEventVariableDataPrototype."""
 
+    data_element: Optional[VariableDataPrototype]
+    td_event_variable_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()

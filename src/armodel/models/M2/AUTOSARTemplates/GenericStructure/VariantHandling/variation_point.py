@@ -26,6 +26,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class VariationPoint(ARObject):
     """AUTOSAR VariationPoint."""
 
+    blueprint: Optional[DocumentationBlock]
+    sw_syscond: Optional[ConditionByFormula]
     def __init__(self) -> None:
         """Initialize VariationPoint."""
         super().__init__()

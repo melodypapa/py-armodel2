@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CommunicationController(ARObject):
     """AUTOSAR CommunicationController."""
 
+    wake_up_by: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CommunicationController."""
         super().__init__()

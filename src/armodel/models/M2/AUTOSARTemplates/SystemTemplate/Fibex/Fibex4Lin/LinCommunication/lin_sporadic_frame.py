@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinSporadicFrame(LinFrame):
     """AUTOSAR LinSporadicFrame."""
 
+    substituteds: list[LinUnconditionalFrame]
     def __init__(self) -> None:
         """Initialize LinSporadicFrame."""
         super().__init__()

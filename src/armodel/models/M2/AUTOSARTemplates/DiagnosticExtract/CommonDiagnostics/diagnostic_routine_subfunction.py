@@ -21,6 +21,7 @@ class DiagnosticRoutineSubfunction(Identifiable):
     """AUTOSAR DiagnosticRoutineSubfunction."""
     """Abstract base class - do not instantiate directly."""
 
+    access: Optional[DiagnosticAccessPermission]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineSubfunction."""
         super().__init__()

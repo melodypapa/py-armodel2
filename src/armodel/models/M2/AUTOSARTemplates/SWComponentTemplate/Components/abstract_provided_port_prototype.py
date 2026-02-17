@@ -21,6 +21,7 @@ class AbstractProvidedPortPrototype(PortPrototype):
     """AUTOSAR AbstractProvidedPortPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    provided_coms: list[PPortComSpec]
     def __init__(self) -> None:
         """Initialize AbstractProvidedPortPrototype."""
         super().__init__()

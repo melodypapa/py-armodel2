@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SignalServiceTranslationPropsSet(ARElement):
     """AUTOSAR SignalServiceTranslationPropsSet."""
 
+    signal_service_propses: list[Any]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationPropsSet."""
         super().__init__()

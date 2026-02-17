@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
 class IdsDesign(ARElement):
     """AUTOSAR IdsDesign."""
 
+    elements: list[IdsCommonElement]
     def __init__(self) -> None:
         """Initialize IdsDesign."""
         super().__init__()

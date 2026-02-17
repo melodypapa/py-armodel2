@@ -25,6 +25,12 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class DltArgument(Identifiable):
     """AUTOSAR DltArgument."""
 
+    dlt_arguments: list[DltArgument]
+    length: Optional[PositiveInteger]
+    network: Optional[SwDataDefProps]
+    optional: Optional[Boolean]
+    predefined_text: Optional[Boolean]
+    variable_length: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DltArgument."""
         super().__init__()

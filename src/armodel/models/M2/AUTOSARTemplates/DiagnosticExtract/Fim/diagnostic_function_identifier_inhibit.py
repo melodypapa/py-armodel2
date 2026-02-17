@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim import (
 class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFunctionIdentifierInhibit."""
 
+    function: Optional[Any]
+    inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
+    inhibit_sources: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifierInhibit."""
         super().__init__()

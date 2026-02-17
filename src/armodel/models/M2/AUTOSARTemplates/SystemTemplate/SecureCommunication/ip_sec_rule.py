@@ -36,6 +36,20 @@ if TYPE_CHECKING:
 class IPSecRule(Identifiable):
     """AUTOSAR IPSecRule."""
 
+    direction: Optional[Any]
+    header_type: Optional[IPsecHeaderTypeEnum]
+    ip_protocol: Optional[IPsecIpProtocolEnum]
+    local_certificates: list[Any]
+    local_id: Optional[String]
+    local_port_range: Optional[PositiveInteger]
+    mode: Optional[IPsecModeEnum]
+    policy: Optional[IPsecPolicyEnum]
+    pre_shared_key: Optional[CryptoServiceKey]
+    priority: Optional[PositiveInteger]
+    remotes: list[Any]
+    remote_id: Optional[String]
+    remote_ips: list[NetworkEndpoint]
+    remote_port: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IPSecRule."""
         super().__init__()

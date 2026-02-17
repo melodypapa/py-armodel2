@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Sd(ARObject):
     """AUTOSAR Sd."""
 
+    gid: NameToken
+    value: VerbatimStringPlain
+    xml_space: Optional[Any]
     def __init__(self) -> None:
         """Initialize Sd."""
         super().__init__()

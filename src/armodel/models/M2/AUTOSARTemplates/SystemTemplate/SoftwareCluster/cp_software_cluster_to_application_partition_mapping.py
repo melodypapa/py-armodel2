@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToApplicationPartitionMapping."""
 
+    applications: list[ApplicationPartition]
+    software_cluster: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToApplicationPartitionMapping."""
         super().__init__()

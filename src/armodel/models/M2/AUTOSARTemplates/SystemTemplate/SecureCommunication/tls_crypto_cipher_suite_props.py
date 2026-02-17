@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TlsCryptoCipherSuiteProps(Identifiable):
     """AUTOSAR TlsCryptoCipherSuiteProps."""
 
+    tcp_ip_tls_use: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()

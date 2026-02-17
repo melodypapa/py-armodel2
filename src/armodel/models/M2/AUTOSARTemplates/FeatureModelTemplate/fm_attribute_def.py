@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FMAttributeDef(Identifiable):
     """AUTOSAR FMAttributeDef."""
 
+    default_value: Optional[Numerical]
+    max: Optional[Limit]
+    min: Optional[Limit]
     def __init__(self) -> None:
         """Initialize FMAttributeDef."""
         super().__init__()

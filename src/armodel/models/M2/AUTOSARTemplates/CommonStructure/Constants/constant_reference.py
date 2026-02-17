@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_speci
 class ConstantReference(ValueSpecification):
     """AUTOSAR ConstantReference."""
 
+    constant: Optional[ConstantSpecification]
     def __init__(self) -> None:
         """Initialize ConstantReference."""
         super().__init__()

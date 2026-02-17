@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_fail
 class ErrorTracerNeeds(ServiceNeeds):
     """AUTOSAR ErrorTracerNeeds."""
 
+    traced_failures: list[TracedFailure]
     def __init__(self) -> None:
         """Initialize ErrorTracerNeeds."""
         super().__init__()

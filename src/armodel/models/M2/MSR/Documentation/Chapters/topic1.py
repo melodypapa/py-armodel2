@@ -23,6 +23,8 @@ from armodel.models.M2.MSR.Documentation.Chapters.topic_content_or_msr_query imp
 class Topic1(Paginateable):
     """AUTOSAR Topic1."""
 
+    help_entry: Optional[String]
+    topic_content_or_msr: Optional[TopicContentOrMsrQuery]
     def __init__(self) -> None:
         """Initialize Topic1."""
         super().__init__()

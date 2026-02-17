@@ -30,6 +30,11 @@ class TimingExtension(ARElement):
     """AUTOSAR TimingExtension."""
     """Abstract base class - do not instantiate directly."""
 
+    timing_clocks: list[TimingClock]
+    timing_clock_syncs: list[TimingClockSyncAccuracy]
+    timing_conditions: list[TimingCondition]
+    timings: list[TimingConstraint]
+    timing_resource: Optional[TimingExtension]
     def __init__(self) -> None:
         """Initialize TimingExtension."""
         super().__init__()

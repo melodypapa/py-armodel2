@@ -32,6 +32,12 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def
 class EcucModuleConfigurationValues(ARElement):
     """AUTOSAR EcucModuleConfigurationValues."""
 
+    containers: list[EcucContainerValue]
+    definition: Optional[EcucModuleDef]
+    ecuc_def_edition: Optional[RevisionLabelString]
+    implementation: Optional[Any]
+    module: Optional[BswImplementation]
+    post_build_variant: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucModuleConfigurationValues."""
         super().__init__()

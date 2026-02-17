@@ -18,6 +18,7 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticMemoryAddressableRangeAccess."""
     """Abstract base class - do not instantiate directly."""
 
+    memory_ranges: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryAddressableRangeAccess."""
         super().__init__()

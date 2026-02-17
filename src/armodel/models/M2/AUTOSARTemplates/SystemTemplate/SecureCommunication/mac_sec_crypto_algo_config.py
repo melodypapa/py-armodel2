@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecCryptoAlgoConfig(ARObject):
     """AUTOSAR MacSecCryptoAlgoConfig."""
 
+    capability: Optional[MacSecCapabilityEnum]
+    cipher_suite: MacSecCipherSuiteConfig
+    confidentiality: Optional[MacSecConfidentialityOffsetEnum]
+    replay_protection: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize MacSecCryptoAlgoConfig."""
         super().__init__()

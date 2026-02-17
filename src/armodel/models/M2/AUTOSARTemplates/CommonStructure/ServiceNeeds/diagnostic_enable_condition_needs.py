@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEnableConditionNeeds."""
 
+    initial_status: Optional[EventAcceptanceStatusEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionNeeds."""
         super().__init__()

@@ -21,6 +21,7 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef):
     """AUTOSAR EcucAbstractInternalReferenceDef."""
     """Abstract base class - do not instantiate directly."""
 
+    requires: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucAbstractInternalReferenceDef."""
         super().__init__()

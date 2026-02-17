@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class BlueprintMappingSet(ARElement):
     """AUTOSAR BlueprintMappingSet."""
 
+    blueprint_maps: list[AtpBlueprintMapping]
     def __init__(self) -> None:
         """Initialize BlueprintMappingSet."""
         super().__init__()

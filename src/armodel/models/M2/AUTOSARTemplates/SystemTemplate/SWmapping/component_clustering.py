@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
 class ComponentClustering(MappingConstraint):
     """AUTOSAR ComponentClustering."""
 
+    clustereds: list[Any]
+    mapping_scope_enum: Optional[MappingScopeEnum]
     def __init__(self) -> None:
         """Initialize ComponentClustering."""
         super().__init__()

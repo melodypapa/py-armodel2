@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class DdsCpConfig(ARElement):
     """AUTOSAR DdsCpConfig."""
 
+    dds_domains: list[DdsCpDomain]
+    dds_qos_profiles: list[DdsCpQosProfile]
     def __init__(self) -> None:
         """Initialize DdsCpConfig."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopolo
 class AbstractCanCluster(ARObject):
     """AUTOSAR AbstractCanCluster."""
 
+    bus_off_recovery: Optional[CanClusterBusOffRecovery]
+    can_fd_baudrate: Optional[PositiveUnlimitedInteger]
+    can_xl_baudrate: Optional[PositiveUnlimitedInteger]
     def __init__(self) -> None:
         """Initialize AbstractCanCluster."""
         super().__init__()

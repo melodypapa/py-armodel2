@@ -25,6 +25,8 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class SystemSignal(ARElement):
     """AUTOSAR SystemSignal."""
 
+    dynamic_length: Optional[Boolean]
+    physical_props: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SystemSignal."""
         super().__init__()

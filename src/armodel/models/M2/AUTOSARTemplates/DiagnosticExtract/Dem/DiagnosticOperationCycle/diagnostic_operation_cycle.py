@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticOperationCycle(DiagnosticCommonElement):
     """AUTOSAR DiagnosticOperationCycle."""
 
+    type_cycle_type_enum: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticOperationCycle."""
         super().__init__()

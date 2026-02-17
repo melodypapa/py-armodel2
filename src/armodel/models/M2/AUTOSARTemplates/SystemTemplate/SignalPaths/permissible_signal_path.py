@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_si
 class PermissibleSignalPath(SignalPathConstraint):
     """AUTOSAR PermissibleSignalPath."""
 
+    operations: list[Any]
+    physical_channels: list[PhysicalChannel]
+    signals: list[SwcToSwcSignal]
     def __init__(self) -> None:
         """Initialize PermissibleSignalPath."""
         super().__init__()

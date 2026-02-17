@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticReadDataByPeriodicID."""
 
+    read_data_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicID."""
         super().__init__()

@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ApplicationArrayDataType(ApplicationCompositeDataType):
     """AUTOSAR ApplicationArrayDataType."""
 
+    dynamic_array: Optional[String]
+    element: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationArrayDataType."""
         super().__init__()

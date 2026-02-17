@@ -19,6 +19,7 @@ class DataPrototypeReference(ARObject):
     """AUTOSAR DataPrototypeReference."""
     """Abstract base class - do not instantiate directly."""
 
+    tag_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DataPrototypeReference."""
         super().__init__()

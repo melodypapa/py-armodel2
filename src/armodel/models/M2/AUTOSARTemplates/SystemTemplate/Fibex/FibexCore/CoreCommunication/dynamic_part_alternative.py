@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DynamicPartAlternative(ARObject):
     """AUTOSAR DynamicPartAlternative."""
 
+    initial_dynamic: Optional[Boolean]
+    i_pdu: Optional[ISignalIPdu]
+    selector_field: Optional[Integer]
     def __init__(self) -> None:
         """Initialize DynamicPartAlternative."""
         super().__init__()

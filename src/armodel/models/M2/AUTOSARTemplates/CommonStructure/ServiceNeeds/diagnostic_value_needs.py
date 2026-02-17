@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticValueNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticValueNeeds."""
 
+    data_length: Optional[PositiveInteger]
+    diagnostic_value_access: Optional[DiagnosticValueAccessEnum]
+    fixed_length: Optional[Boolean]
+    processing_style: Optional[DiagnosticProcessingStyleEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticValueNeeds."""
         super().__init__()

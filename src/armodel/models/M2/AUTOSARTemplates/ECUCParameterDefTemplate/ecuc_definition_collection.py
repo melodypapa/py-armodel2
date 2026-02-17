@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def
 class EcucDefinitionCollection(ARElement):
     """AUTOSAR EcucDefinitionCollection."""
 
+    modules: list[EcucModuleDef]
     def __init__(self) -> None:
         """Initialize EcucDefinitionCollection."""
         super().__init__()

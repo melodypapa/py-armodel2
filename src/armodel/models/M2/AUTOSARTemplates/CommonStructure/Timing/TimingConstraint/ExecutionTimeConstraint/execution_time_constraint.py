@@ -26,6 +26,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ExecutionTimeConstraint(TimingConstraint):
     """AUTOSAR ExecutionTimeConstraint."""
 
+    component: Optional[Any]
+    executable_entity: Optional[ExecutableEntity]
+    execution_time: Optional[ExecutionTimeTypeEnum]
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ExecutionTimeConstraint."""
         super().__init__()

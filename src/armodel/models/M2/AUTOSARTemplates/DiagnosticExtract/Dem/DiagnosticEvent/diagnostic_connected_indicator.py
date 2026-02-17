@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicato
 class DiagnosticConnectedIndicator(Identifiable):
     """AUTOSAR DiagnosticConnectedIndicator."""
 
+    behavior_indicator_behavior_enum: Optional[Any]
+    healing_cycle: Optional[PositiveInteger]
+    indicator: Optional[DiagnosticIndicator]
+    indicator_failure: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticConnectedIndicator."""
         super().__init__()

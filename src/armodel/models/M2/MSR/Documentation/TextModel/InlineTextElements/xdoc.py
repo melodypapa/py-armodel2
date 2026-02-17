@@ -21,6 +21,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Xdoc(SingleLanguageReferrable):
     """AUTOSAR Xdoc."""
 
+    date: Optional[DateTime]
+    number: Optional[String]
+    position: Optional[String]
+    publisher: Optional[String]
+    state: Optional[String]
+    url: Optional[Any]
     def __init__(self) -> None:
         """Initialize Xdoc."""
         super().__init__()

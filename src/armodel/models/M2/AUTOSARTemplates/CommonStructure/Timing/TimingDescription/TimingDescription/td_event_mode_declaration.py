@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class TDEventModeDeclaration(TDEventVfbPort):
     """AUTOSAR TDEventModeDeclaration."""
 
+    entry_mode: Optional[ModeDeclaration]
+    exit_mode: Optional[ModeDeclaration]
+    mode: Optional[ModeDeclarationGroup]
+    td_event_mode: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventModeDeclaration."""
         super().__init__()

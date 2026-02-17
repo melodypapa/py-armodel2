@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SenderReceiverToSignalGroupMapping(DataMapping):
     """AUTOSAR SenderReceiverToSignalGroupMapping."""
 
+    data_element: Optional[VariableDataPrototype]
+    signal_group: Optional[SystemSignalGroup]
+    type_mapping: Optional[SenderRecCompositeTypeMapping]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalGroupMapping."""
         super().__init__()

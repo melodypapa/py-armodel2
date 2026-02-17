@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class RapidPrototypingScenario(ARElement):
     """AUTOSAR RapidPrototypingScenario."""
 
+    host_system: Optional[System]
+    rpt_containers: list[RptContainer]
+    rpt_profiles: list[RptProfile]
+    rpt_system: Optional[System]
     def __init__(self) -> None:
         """Initialize RapidPrototypingScenario."""
         super().__init__()

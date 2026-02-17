@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 class AssemblySwConnector(SwConnector):
     """AUTOSAR AssemblySwConnector."""
 
+    provider_instance_ref: Optional[AbstractProvidedPortPrototype]
+    requester_instance_ref: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()

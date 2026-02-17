@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939DcmIPdu(IPdu):
     """AUTOSAR J1939DcmIPdu."""
 
+    diagnostic: Optional[PositiveInteger]
+    message_type: Any
     def __init__(self) -> None:
         """Initialize J1939DcmIPdu."""
         super().__init__()

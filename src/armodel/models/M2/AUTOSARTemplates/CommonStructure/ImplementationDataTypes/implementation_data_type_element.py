@@ -33,6 +33,12 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
     """AUTOSAR ImplementationDataTypeElement."""
 
+    array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
+    array_size: Optional[ArraySizeSemanticsEnum]
+    array_size_handling: Optional[ArraySizeHandlingEnum]
+    is_optional: Optional[Boolean]
+    sub_elements: list[Any]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElement."""
         super().__init__()

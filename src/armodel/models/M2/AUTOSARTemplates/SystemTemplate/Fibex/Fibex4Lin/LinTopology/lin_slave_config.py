@@ -32,6 +32,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopolo
 class LinSlaveConfig(ARObject):
     """AUTOSAR LinSlaveConfig."""
 
+    configured_nad: Optional[Integer]
+    function_id: Optional[PositiveInteger]
+    ident: Optional[LinSlaveConfigIdent]
+    initial_nad: Optional[Integer]
+    lin_configurable_frames: list[LinConfigurableFrame]
+    lin_error_response: Optional[LinErrorResponse]
+    lin_ordereds: list[LinOrderedConfigurableFrame]
+    protocol_version: Optional[String]
+    supplier_id: Optional[PositiveInteger]
+    variant_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinSlaveConfig."""
         super().__init__()

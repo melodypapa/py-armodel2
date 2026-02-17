@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SdgReference(SdgAttribute):
     """AUTOSAR SdgReference."""
 
+    dest_sdg: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgReference."""
         super().__init__()

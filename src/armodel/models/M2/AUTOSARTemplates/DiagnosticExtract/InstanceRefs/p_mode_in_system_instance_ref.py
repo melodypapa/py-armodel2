@@ -30,6 +30,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class PModeInSystemInstanceRef(ARObject):
     """AUTOSAR PModeInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    context_mode_group: Optional[ModeDeclarationGroup]
+    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize PModeInSystemInstanceRef."""
         super().__init__()

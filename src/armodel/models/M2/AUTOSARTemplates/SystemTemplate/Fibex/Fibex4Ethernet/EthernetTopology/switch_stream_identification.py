@@ -27,6 +27,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamIdentification(Identifiable):
     """AUTOSAR SwitchStreamIdentification."""
 
+    egress_ports: list[CouplingPort]
+    filter_action_block: Optional[Boolean]
+    filter_action_dest: Optional[Any]
+    filter_action_drop: Optional[Boolean]
+    filter_action_vlan: Optional[PositiveInteger]
+    ingress_ports: list[CouplingPort]
+    stream_filter: Optional[SwitchStreamFilterRule]
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()

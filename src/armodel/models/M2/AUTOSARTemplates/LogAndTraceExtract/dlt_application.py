@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_context import (
 class DltApplication(Identifiable):
     """AUTOSAR DltApplication."""
 
+    application: Optional[String]
+    application_id: Optional[String]
+    contexts: list[DltContext]
     def __init__(self) -> None:
         """Initialize DltApplication."""
         super().__init__()

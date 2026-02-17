@@ -32,6 +32,10 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class CompuMethod(ARElement):
     """AUTOSAR CompuMethod."""
 
+    compu_internal: Optional[Compu]
+    compu_phys_to: Optional[Compu]
+    display_format_string: Optional[DisplayFormatString]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize CompuMethod."""
         super().__init__()

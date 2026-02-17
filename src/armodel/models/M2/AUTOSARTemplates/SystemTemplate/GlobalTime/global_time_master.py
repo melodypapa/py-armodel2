@@ -28,6 +28,11 @@ class GlobalTimeMaster(Identifiable):
     """AUTOSAR GlobalTimeMaster."""
     """Abstract base class - do not instantiate directly."""
 
+    communication_connector: Optional[CommunicationConnector]
+    icv_secured: Optional[GlobalTimeIcvSupportEnum]
+    immediate: Optional[TimeValue]
+    is_system_wide: Optional[Boolean]
+    sync_period: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeMaster."""
         super().__init__()

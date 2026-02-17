@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class EndToEndProtectionVariablePrototype(ARObject):
     """AUTOSAR EndToEndProtectionVariablePrototype."""
 
+    receivers: list[VariableDataPrototype]
+    sender: Optional[VariableDataPrototype]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionVariablePrototype."""
         super().__init__()

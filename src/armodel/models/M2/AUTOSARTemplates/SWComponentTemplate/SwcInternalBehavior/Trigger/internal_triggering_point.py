@@ -21,6 +21,7 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
 class InternalTriggeringPoint(AbstractAccessPoint):
     """AUTOSAR InternalTriggeringPoint."""
 
+    sw_impl_policy_enum: Optional[SwImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize InternalTriggeringPoint."""
         super().__init__()

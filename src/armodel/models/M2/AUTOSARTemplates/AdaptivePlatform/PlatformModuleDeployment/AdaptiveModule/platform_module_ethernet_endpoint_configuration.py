@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PlatformModuleEthernetEndpointConfiguration(ARElement):
     """AUTOSAR PlatformModuleEthernetEndpointConfiguration."""
 
+    communication: Optional[Any]
+    ipv4_multicast_ip: Optional[Ip4AddressString]
+    ipv6_multicast_ip: Optional[Ip6AddressString]
     def __init__(self) -> None:
         """Initialize PlatformModuleEthernetEndpointConfiguration."""
         super().__init__()

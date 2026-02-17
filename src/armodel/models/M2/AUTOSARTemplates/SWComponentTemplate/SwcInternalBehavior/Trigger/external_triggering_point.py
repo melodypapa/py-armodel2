@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class ExternalTriggeringPoint(ARObject):
     """AUTOSAR ExternalTriggeringPoint."""
 
+    ident: Optional[ExternalTriggeringPoint]
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize ExternalTriggeringPoint."""
         super().__init__()

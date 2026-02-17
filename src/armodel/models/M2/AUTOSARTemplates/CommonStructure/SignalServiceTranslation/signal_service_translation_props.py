@@ -28,6 +28,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.PncMapping.pnc_mapping_id
 class SignalServiceTranslationProps(Identifiable):
     """AUTOSAR SignalServiceTranslationProps."""
 
+    controls: list[ConsumedEventGroup]
+    control_pncs: list[PncMappingIdent]
+    control_provideds: list[EventHandler]
+    service_control: Optional[Any]
+    signal_service_event_propses: list[Any]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationProps."""
         super().__init__()

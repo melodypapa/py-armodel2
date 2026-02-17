@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
 class GlobalTimeGateway(Identifiable):
     """AUTOSAR GlobalTimeGateway."""
 
+    host: Optional[EcuInstance]
+    master: Optional[GlobalTimeMaster]
+    slave: Optional[GlobalTimeSlave]
     def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()

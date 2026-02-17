@@ -22,6 +22,8 @@ from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout import (
 class InterpolationRoutineMapping(ARObject):
     """AUTOSAR InterpolationRoutineMapping."""
 
+    interpolation_routines: list[InterpolationRoutine]
+    sw_record: Optional[SwRecordLayout]
     def __init__(self) -> None:
         """Initialize InterpolationRoutineMapping."""
         super().__init__()

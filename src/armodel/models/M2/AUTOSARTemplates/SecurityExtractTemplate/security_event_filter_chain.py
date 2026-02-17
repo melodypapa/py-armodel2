@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_t
 class SecurityEventFilterChain(IdsCommonElement):
     """AUTOSAR SecurityEventFilterChain."""
 
+    aggregation: Optional[Any]
+    one_every_n: Optional[SecurityEventOneEveryNFilter]
+    state: Optional[SecurityEventStateFilter]
+    threshold: Optional[SecurityEventThresholdFilter]
     def __init__(self) -> None:
         """Initialize SecurityEventFilterChain."""
         super().__init__()

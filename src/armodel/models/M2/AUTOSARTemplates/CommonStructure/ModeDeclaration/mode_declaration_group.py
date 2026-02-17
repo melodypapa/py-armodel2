@@ -33,6 +33,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_tra
 class ModeDeclarationGroup(ARElement):
     """AUTOSAR ModeDeclarationGroup."""
 
+    initial_mode: Optional[ModeDeclaration]
+    modes: list[ModeDeclaration]
+    mode_manager: Optional[ModeErrorBehavior]
+    mode_transition_mode_declaration_groups: list[ModeTransition]
+    mode_user_error: Optional[ModeErrorBehavior]
+    on_transition: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
         super().__init__()

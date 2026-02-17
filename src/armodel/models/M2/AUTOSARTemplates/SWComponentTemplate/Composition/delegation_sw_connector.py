@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class DelegationSwConnector(SwConnector):
     """AUTOSAR DelegationSwConnector."""
 
+    inner_port_instance_ref: Optional[PortPrototype]
+    outer_port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize DelegationSwConnector."""
         super().__init__()

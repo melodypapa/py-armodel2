@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale import (
 class CompuScales(CompuContent):
     """AUTOSAR CompuScales."""
 
+    compu_scales: list[CompuScale]
     def __init__(self) -> None:
         """Initialize CompuScales."""
         super().__init__()

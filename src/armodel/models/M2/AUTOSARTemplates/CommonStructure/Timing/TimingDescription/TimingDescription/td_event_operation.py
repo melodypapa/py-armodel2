@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class TDEventOperation(TDEventVfbPort):
     """AUTOSAR TDEventOperation."""
 
+    operation: Optional[ClientServerOperation]
+    td_event: Optional[TDEventOperationTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventOperation."""
         super().__init__()

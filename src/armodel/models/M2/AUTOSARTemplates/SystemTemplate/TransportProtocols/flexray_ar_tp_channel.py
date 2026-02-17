@@ -31,6 +31,25 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FlexrayArTpChannel(ARObject):
     """AUTOSAR FlexrayArTpChannel."""
 
+    ack_type: Optional[FrArTpAckType]
+    cancellation: Optional[Boolean]
+    extended: Optional[Boolean]
+    max_ar: Optional[Integer]
+    max_as: Optional[Integer]
+    max_bs: Optional[Integer]
+    max_fc_wait: Optional[PositiveInteger]
+    maximum_message: Optional[MaximumMessageLengthType]
+    max_retries: Optional[Integer]
+    minimum: Optional[TimeValue]
+    multicast: Optional[Boolean]
+    n_pdus: list[NPdu]
+    time_br: Optional[TimeValue]
+    time_cs: Optional[TimeValue]
+    timeout_ar: Optional[TimeValue]
+    timeout_as: Optional[TimeValue]
+    timeout_bs: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
+    tp_connections: list[FlexrayArTpConnection]
     def __init__(self) -> None:
         """Initialize FlexrayArTpChannel."""
         super().__init__()

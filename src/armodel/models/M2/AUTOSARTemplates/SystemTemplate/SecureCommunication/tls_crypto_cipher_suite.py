@@ -36,6 +36,19 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_p
 class TlsCryptoCipherSuite(Identifiable):
     """AUTOSAR TlsCryptoCipherSuite."""
 
+    authentication: Optional[CryptoServicePrimitive]
+    certificate: Optional[Any]
+    cipher_suite_id: Optional[PositiveInteger]
+    cipher_suite: Optional[String]
+    elliptic_curves: list[CryptoEllipticCurveProps]
+    encryption: Optional[CryptoServicePrimitive]
+    key_exchanges: list[CryptoServicePrimitive]
+    priority: Optional[PositiveInteger]
+    props: Optional[TlsCryptoCipherSuite]
+    psk_identity: Optional[TlsPskIdentity]
+    remote: Optional[Any]
+    signatures: list[CryptoSignatureScheme]
+    version: Optional[TlsVersionEnum]
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuite."""
         super().__init__()

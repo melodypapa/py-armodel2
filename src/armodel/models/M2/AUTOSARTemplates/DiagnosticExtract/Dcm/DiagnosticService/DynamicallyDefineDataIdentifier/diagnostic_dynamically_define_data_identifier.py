@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticDynamicallyDefineDataIdentifier."""
 
+    data_identifier: Optional[DiagnosticDynamicDataIdentifier]
+    dynamically: Optional[Any]
+    max_source: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifier."""
         super().__init__()

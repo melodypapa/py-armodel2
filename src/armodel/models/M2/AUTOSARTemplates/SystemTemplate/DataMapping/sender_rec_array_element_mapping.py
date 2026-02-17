@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SenderRecArrayElementMapping(ARObject):
     """AUTOSAR SenderRecArrayElementMapping."""
 
+    complex_type: Optional[SenderRecCompositeTypeMapping]
+    indexed_array: Optional[IndexedArrayElement]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SenderRecArrayElementMapping."""
         super().__init__()

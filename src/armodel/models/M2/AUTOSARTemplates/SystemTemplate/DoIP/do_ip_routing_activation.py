@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.do_ip_logic_target_a
 class DoIpRoutingActivation(Identifiable):
     """AUTOSAR DoIpRoutingActivation."""
 
+    do_ip_targets: list[DoIpLogicTargetAddressProps]
     def __init__(self) -> None:
         """Initialize DoIpRoutingActivation."""
         super().__init__()

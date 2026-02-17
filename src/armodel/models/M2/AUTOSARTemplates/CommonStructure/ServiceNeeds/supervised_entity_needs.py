@@ -23,6 +23,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SupervisedEntityNeeds(ServiceNeeds):
     """AUTOSAR SupervisedEntityNeeds."""
 
+    activate_at_start: Optional[Boolean]
+    checkpointses: list[Any]
+    enable: Optional[Boolean]
+    expected_alive: Optional[TimeValue]
+    max_alive_cycle: Optional[TimeValue]
+    min_alive_cycle: Optional[TimeValue]
+    tolerated_failed: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SupervisedEntityNeeds."""
         super().__init__()

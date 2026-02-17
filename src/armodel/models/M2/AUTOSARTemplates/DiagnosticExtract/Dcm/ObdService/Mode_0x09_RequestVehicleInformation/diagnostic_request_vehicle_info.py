@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestVehicleInfo."""
 
+    info_type: Optional[DiagnosticInfoType]
+    request_vehicle: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestVehicleInfo."""
         super().__init__()

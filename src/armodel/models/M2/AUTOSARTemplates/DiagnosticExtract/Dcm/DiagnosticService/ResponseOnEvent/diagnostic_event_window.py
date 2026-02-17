@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEventWindow(ARObject):
     """AUTOSAR DiagnosticEventWindow."""
 
+    event_window: Optional[DiagnosticEventWindow]
     def __init__(self) -> None:
         """Initialize DiagnosticEventWindow."""
         super().__init__()

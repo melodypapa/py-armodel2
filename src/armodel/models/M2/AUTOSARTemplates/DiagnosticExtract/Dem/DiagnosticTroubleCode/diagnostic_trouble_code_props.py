@@ -36,6 +36,16 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticFreezeFr
 class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCodeProps."""
 
+    aging: Optional[DiagnosticAging]
+    diagnostic_memory: Optional[Any]
+    extended_datas: list[DiagnosticExtendedDataRecord]
+    freeze_frames: list[DiagnosticFreezeFrame]
+    immediate_nv: Optional[Boolean]
+    legislated: Optional[DiagnosticDataIdentifier]
+    max_number: Optional[PositiveInteger]
+    priority: Optional[PositiveInteger]
+    significance: Optional[DiagnosticSignificanceEnum]
+    snapshot: Optional[DiagnosticDataIdentifier]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeProps."""
         super().__init__()

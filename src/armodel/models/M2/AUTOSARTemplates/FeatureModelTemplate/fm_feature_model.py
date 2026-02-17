@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
 class FMFeatureModel(ARElement):
     """AUTOSAR FMFeatureModel."""
 
+    features: list[FMFeature]
+    root: Optional[FMFeature]
     def __init__(self) -> None:
         """Initialize FMFeatureModel."""
         super().__init__()

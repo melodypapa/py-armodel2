@@ -30,6 +30,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdMonitorServiceNeeds."""
 
+    application_data: Optional[ApplicationDataType]
+    event_needs: Optional[DiagnosticEventNeeds]
+    unit_and_scaling_id: Optional[PositiveInteger]
+    update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""
         super().__init__()

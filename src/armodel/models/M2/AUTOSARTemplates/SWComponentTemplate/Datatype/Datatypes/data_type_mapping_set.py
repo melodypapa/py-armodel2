@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_req
 class DataTypeMappingSet(ARElement):
     """AUTOSAR DataTypeMappingSet."""
 
+    data_type_maps: list[DataTypeMap]
+    mode_request_type_maps: list[ModeRequestTypeMap]
     def __init__(self) -> None:
         """Initialize DataTypeMappingSet."""
         super().__init__()

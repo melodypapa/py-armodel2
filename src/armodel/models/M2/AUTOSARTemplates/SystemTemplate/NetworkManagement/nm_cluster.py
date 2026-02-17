@@ -25,6 +25,14 @@ class NmCluster(Identifiable):
     """AUTOSAR NmCluster."""
     """Abstract base class - do not instantiate directly."""
 
+    communication_cluster: Optional[CommunicationCluster]
+    nm_channel: Optional[Boolean]
+    nm_node: Optional[Boolean]
+    nm_node_id_enabled: Optional[Boolean]
+    nm_pnc: Optional[Boolean]
+    nm_repeat_msg_ind_enabled: Optional[Boolean]
+    nm: Optional[Boolean]
+    pnc_cluster: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize NmCluster."""
         super().__init__()

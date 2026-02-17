@@ -21,6 +21,14 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpIidcConnection."""
 
+    iidc_channel: Optional[PositiveInteger]
+    iidc_data_block: Optional[PositiveInteger]
+    iidc_fraction: Optional[PositiveInteger]
+    iidc_source: Optional[Boolean]
+    iidc_stream: Optional[PositiveInteger]
+    iidc_sy: Optional[PositiveInteger]
+    iidc_tag: Optional[PositiveInteger]
+    iidc_t_code: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpIidcConnection."""
         super().__init__()

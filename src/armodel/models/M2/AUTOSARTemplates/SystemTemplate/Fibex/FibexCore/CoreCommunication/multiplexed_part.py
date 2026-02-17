@@ -19,6 +19,7 @@ class MultiplexedPart(ARObject):
     """AUTOSAR MultiplexedPart."""
     """Abstract base class - do not instantiate directly."""
 
+    segment_positions: list[SegmentPosition]
     def __init__(self) -> None:
         """Initialize MultiplexedPart."""
         super().__init__()

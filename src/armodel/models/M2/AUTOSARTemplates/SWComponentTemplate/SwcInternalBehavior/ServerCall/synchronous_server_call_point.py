@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class SynchronousServerCallPoint(ServerCallPoint):
     """AUTOSAR SynchronousServerCallPoint."""
 
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""
         super().__init__()

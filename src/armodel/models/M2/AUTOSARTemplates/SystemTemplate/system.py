@@ -51,6 +51,19 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
 class System(ARElement):
     """AUTOSAR System."""
 
+    client_ids: list[ClientIdDefinitionSet]
+    container_i_pdu_header_byte: Optional[Any]
+    ecu_extract_version: Optional[RevisionLabelString]
+    fibex_elements: list[FibexElement]
+    interpolation_routines: list[InterpolationRoutine]
+    j1939_shared_addresses: list[J1939SharedAddressCluster]
+    mappings: list[SystemMapping]
+    pnc_vector: Optional[PositiveInteger]
+    pnc_vector_offset: Optional[PositiveInteger]
+    root_software: Optional[RootSwCompositionPrototype]
+    sw_clusters: list[CpSoftwareCluster]
+    systems: list[Chapter]
+    system_version: Optional[RevisionLabelString]
     def __init__(self) -> None:
         """Initialize System."""
         super().__init__()

@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ArbitraryEventTriggering(EventTriggeringConstraint):
     """AUTOSAR ArbitraryEventTriggering."""
 
+    confidence_intervals: list[ConfidenceInterval]
+    maximums: list[MultidimensionalTime]
+    minimums: list[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ArbitraryEventTriggering."""
         super().__init__()

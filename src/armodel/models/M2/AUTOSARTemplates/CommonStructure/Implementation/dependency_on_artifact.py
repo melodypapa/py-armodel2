@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DependencyOnArtifact(Identifiable):
     """AUTOSAR DependencyOnArtifact."""
 
+    artifact: Optional[AutosarEngineeringObject]
+    usages: list[DependencyUsageEnum]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()

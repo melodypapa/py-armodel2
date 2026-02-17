@@ -29,6 +29,13 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class PhysConstrs(ARObject):
     """AUTOSAR PhysConstrs."""
 
+    lower_limit: Optional[Limit]
+    max_diff: Optional[Numerical]
+    max_gradient: Optional[Numerical]
+    monotony: Optional[MonotonyEnum]
+    scale_constrs: list[ScaleConstr]
+    unit: Optional[Unit]
+    upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize PhysConstrs."""
         super().__init__()

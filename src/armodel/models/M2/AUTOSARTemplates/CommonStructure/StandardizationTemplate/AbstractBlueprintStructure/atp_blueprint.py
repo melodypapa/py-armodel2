@@ -23,6 +23,7 @@ class AtpBlueprint(Identifiable):
     """AUTOSAR AtpBlueprint."""
     """Abstract base class - do not instantiate directly."""
 
+    blueprint_policies: list[BlueprintPolicy]
     def __init__(self) -> None:
         """Initialize AtpBlueprint."""
         super().__init__()

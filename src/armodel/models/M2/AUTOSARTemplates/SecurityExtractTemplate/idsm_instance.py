@@ -36,6 +36,14 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_lim
 class IdsmInstance(IdsCommonElement):
     """AUTOSAR IdsmInstance."""
 
+    block_states: list[BlockState]
+    ecu_instance: Optional[EcuInstance]
+    idsm_instance_id: Optional[PositiveInteger]
+    idsm_module: Optional[IdsmModuleInstantiation]
+    rate_limitation: Optional[IdsmRateLimitation]
+    signature: Optional[Any]
+    timestamp: Optional[String]
+    traffic_limitation: Optional[IdsmTrafficLimitation]
     def __init__(self) -> None:
         """Initialize IdsmInstance."""
         super().__init__()

@@ -24,6 +24,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class HttpTp(TransportProtocolConfiguration):
     """AUTOSAR HttpTp."""
 
+    content_type: Optional[String]
+    protocol_version: Optional[String]
+    request_method_enum: Optional[Any]
+    tcp_tp_config: Optional[TcpTp]
+    uri: Optional[UriString]
     def __init__(self) -> None:
         """Initialize HttpTp."""
         super().__init__()

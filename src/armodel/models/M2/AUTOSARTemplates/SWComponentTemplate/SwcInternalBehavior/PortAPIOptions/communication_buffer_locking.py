@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class CommunicationBufferLocking(SwcSupportedFeature):
     """AUTOSAR CommunicationBufferLocking."""
 
+    support_buffer_locking: Optional[SupportBufferLockingEnum]
     def __init__(self) -> None:
         """Initialize CommunicationBufferLocking."""
         super().__init__()

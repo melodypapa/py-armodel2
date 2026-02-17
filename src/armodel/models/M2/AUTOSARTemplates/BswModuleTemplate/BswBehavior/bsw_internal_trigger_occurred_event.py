@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_intern
 class BswInternalTriggerOccurredEvent(BswScheduleEvent):
     """AUTOSAR BswInternalTriggerOccurredEvent."""
 
+    event_source_point: Optional[BswInternalTriggeringPoint]
     def __init__(self) -> None:
         """Initialize BswInternalTriggerOccurredEvent."""
         super().__init__()

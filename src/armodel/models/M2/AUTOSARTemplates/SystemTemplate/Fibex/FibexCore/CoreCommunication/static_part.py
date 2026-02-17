@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class StaticPart(MultiplexedPart):
     """AUTOSAR StaticPart."""
 
+    i_pdu: Optional[ISignalIPdu]
     def __init__(self) -> None:
         """Initialize StaticPart."""
         super().__init__()

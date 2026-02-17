@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 class ConsistencyNeeds(Identifiable):
     """AUTOSAR ConsistencyNeeds."""
 
+    dpg_does_nots: list[DataPrototypeGroup]
+    dpg_requireses: list[DataPrototypeGroup]
+    reg_does_nots: list[RunnableEntityGroup]
+    reg_requireses: list[RunnableEntityGroup]
     def __init__(self) -> None:
         """Initialize ConsistencyNeeds."""
         super().__init__()

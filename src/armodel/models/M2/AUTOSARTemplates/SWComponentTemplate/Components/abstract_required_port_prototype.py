@@ -23,6 +23,7 @@ class AbstractRequiredPortPrototype(PortPrototype):
     """AUTOSAR AbstractRequiredPortPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()

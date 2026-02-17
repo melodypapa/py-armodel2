@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SwcToSwcSignal(ARObject):
     """AUTOSAR SwcToSwcSignal."""
 
+    data_elements: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize SwcToSwcSignal."""
         super().__init__()

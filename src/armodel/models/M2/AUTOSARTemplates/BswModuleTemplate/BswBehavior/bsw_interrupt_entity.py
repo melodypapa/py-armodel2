@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BswInterruptEntity(BswModuleEntity):
     """AUTOSAR BswInterruptEntity."""
 
+    interrupt_category: Optional[BswInterruptCategory]
+    interrupt_source: Optional[String]
     def __init__(self) -> None:
         """Initialize BswInterruptEntity."""
         super().__init__()

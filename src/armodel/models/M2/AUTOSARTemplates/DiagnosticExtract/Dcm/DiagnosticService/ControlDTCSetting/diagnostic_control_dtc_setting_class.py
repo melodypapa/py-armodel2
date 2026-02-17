@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticControlDTCSettingClass."""
 
+    control_option: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()

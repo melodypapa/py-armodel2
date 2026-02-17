@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticControlEnableMaskBit(ARObject):
     """AUTOSAR DiagnosticControlEnableMaskBit."""
 
+    bit_number: Optional[PositiveInteger]
+    controlled_datas: list[DiagnosticDataElement]
     def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()

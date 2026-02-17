@@ -35,6 +35,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class PortElementToCommunicationResourceMapping(Identifiable):
     """AUTOSAR PortElementToCommunicationResourceMapping."""
 
+    client_server_instance_ref: Optional[ClientServerOperation]
+    communication: Optional[CpSoftwareCluster]
+    mode: Optional[ModeDeclarationGroup]
+    parameter_data_in_system_instance_ref: Optional[ParameterDataPrototype]
+    trigger: Optional[Trigger]
+    variable_data_system_instance_ref: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()

@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Linker(Identifiable):
     """AUTOSAR Linker."""
 
+    name: Optional[String]
+    options: Optional[String]
+    vendor: Optional[String]
+    version: Optional[String]
     def __init__(self) -> None:
         """Initialize Linker."""
         super().__init__()

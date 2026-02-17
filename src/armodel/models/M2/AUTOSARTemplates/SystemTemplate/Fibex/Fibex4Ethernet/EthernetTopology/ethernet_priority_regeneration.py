@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EthernetPriorityRegeneration(Referrable):
     """AUTOSAR EthernetPriorityRegeneration."""
 
+    ingress_priority: Optional[PositiveInteger]
+    regenerated: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EthernetPriorityRegeneration."""
         super().__init__()

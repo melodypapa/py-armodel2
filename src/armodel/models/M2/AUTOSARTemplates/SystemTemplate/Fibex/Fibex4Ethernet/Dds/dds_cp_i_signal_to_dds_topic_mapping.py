@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DdsCpISignalToDdsTopicMapping(ARObject):
     """AUTOSAR DdsCpISignalToDdsTopicMapping."""
 
+    dds_topic: Optional[DdsCpTopic]
+    i_signal: Optional[ISignal]
     def __init__(self) -> None:
         """Initialize DdsCpISignalToDdsTopicMapping."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterToDiagRoutineSubfunctionMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    routine: Optional[DiagnosticRoutine]
     def __init__(self) -> None:
         """Initialize CpSwClusterToDiagRoutineSubfunctionMapping."""
         super().__init__()

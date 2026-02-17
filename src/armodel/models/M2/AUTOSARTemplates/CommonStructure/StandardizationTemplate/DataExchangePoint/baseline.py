@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Baseline(ARObject):
     """AUTOSAR Baseline."""
 
+    custom_sdg_defs: list[SdgDef]
+    customs: list[Documentation]
+    standards: list[String]
     def __init__(self) -> None:
         """Initialize Baseline."""
         super().__init__()

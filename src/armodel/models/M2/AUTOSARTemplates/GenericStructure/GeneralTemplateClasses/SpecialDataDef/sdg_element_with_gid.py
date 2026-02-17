@@ -19,6 +19,7 @@ class SdgElementWithGid(ARObject):
     """AUTOSAR SdgElementWithGid."""
     """Abstract base class - do not instantiate directly."""
 
+    gid: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize SdgElementWithGid."""
         super().__init__()

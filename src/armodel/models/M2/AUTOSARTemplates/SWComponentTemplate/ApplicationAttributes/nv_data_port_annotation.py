@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvDataPortAnnotation(GeneralAnnotation):
     """AUTOSAR NvDataPortAnnotation."""
 
+    variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvDataPortAnnotation."""
         super().__init__()

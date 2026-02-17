@@ -28,6 +28,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcImplementation(Implementation):
     """AUTOSAR SwcImplementation."""
 
+    behavior: Optional[SwcInternalBehavior]
+    per_instance_memories: list[PerInstanceMemory]
+    required: Optional[String]
     def __init__(self) -> None:
         """Initialize SwcImplementation."""
         super().__init__()

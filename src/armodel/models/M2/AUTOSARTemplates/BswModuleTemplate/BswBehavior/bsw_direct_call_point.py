@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class BswDirectCallPoint(BswModuleCallPoint):
     """AUTOSAR BswDirectCallPoint."""
 
+    called_entry: Optional[BswModuleEntry]
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize BswDirectCallPoint."""
         super().__init__()

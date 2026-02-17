@@ -28,6 +28,9 @@ class HwDescriptionEntity(Referrable):
     """AUTOSAR HwDescriptionEntity."""
     """Abstract base class - do not instantiate directly."""
 
+    hw_attributes: list[HwAttributeValue]
+    hw_categories: list[HwCategory]
+    hw_type: Optional[HwType]
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()

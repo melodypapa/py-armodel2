@@ -21,6 +21,9 @@ class SecurityEventContextMapping(IdsMapping):
     """AUTOSAR SecurityEventContextMapping."""
     """Abstract base class - do not instantiate directly."""
 
+    filter_chain: Optional[Any]
+    idsm_instance: Optional[IdsmInstance]
+    mapped_securities: list[Any]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()

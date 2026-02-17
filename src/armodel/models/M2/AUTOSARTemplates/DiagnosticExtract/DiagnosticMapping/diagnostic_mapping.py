@@ -21,6 +21,8 @@ class DiagnosticMapping(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMapping."""
     """Abstract base class - do not instantiate directly."""
 
+    provider: Optional[CpSoftwareCluster]
+    requester: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize DiagnosticMapping."""
         super().__init__()

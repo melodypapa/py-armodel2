@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RequestResponseDelay(ARObject):
     """AUTOSAR RequestResponseDelay."""
 
+    max_value: Optional[TimeValue]
+    min_value: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize RequestResponseDelay."""
         super().__init__()

@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
 class BinaryManifestItemDefinition(Identifiable):
     """AUTOSAR BinaryManifestItemDefinition."""
 
+    auxiliary_fields: list[BinaryManifestItem]
+    is_optional: Optional[Boolean]
+    size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BinaryManifestItemDefinition."""
         super().__init__()

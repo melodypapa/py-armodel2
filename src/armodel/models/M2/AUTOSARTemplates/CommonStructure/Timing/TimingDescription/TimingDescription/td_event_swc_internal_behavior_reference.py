@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDEventSwcInternalBehaviorReference(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehaviorReference."""
 
+    referenced_td_event_swc: Optional[TDEventSwc]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehaviorReference."""
         super().__init__()

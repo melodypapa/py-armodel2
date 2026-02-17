@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CompuConstFormulaContent(CompuConstContent):
     """AUTOSAR CompuConstFormulaContent."""
 
+    vf: Numerical
     def __init__(self) -> None:
         """Initialize CompuConstFormulaContent."""
         super().__init__()

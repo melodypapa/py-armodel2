@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSessionControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticSessionControlClass."""
 
+    s3_server: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControlClass."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_ro
 class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationUserDefined."""
 
+    auth_roles: list[DiagnosticAuthRole]
+    memory_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationUserDefined."""
         super().__init__()

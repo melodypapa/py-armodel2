@@ -26,6 +26,9 @@ class CpSoftwareClusterResource(Identifiable):
     """AUTOSAR CpSoftwareClusterResource."""
     """Abstract base class - do not instantiate directly."""
 
+    dependents: list[RoleBasedResourceDependency]
+    global_resource: Optional[PositiveInteger]
+    is_mandatory: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResource."""
         super().__init__()

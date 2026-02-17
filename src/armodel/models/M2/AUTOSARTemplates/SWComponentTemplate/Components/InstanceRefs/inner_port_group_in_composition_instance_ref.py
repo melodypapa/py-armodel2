@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_grou
 class InnerPortGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerPortGroupInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    contexts: list[Any]
+    target: Optional[PortGroup]
     def __init__(self) -> None:
         """Initialize InnerPortGroupInCompositionInstanceRef."""
         super().__init__()

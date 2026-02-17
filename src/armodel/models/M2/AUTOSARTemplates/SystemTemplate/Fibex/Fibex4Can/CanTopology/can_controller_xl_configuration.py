@@ -19,6 +19,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanControllerXlConfiguration(ARObject):
     """AUTOSAR CanControllerXlConfiguration."""
 
+    error_signaling: Optional[Boolean]
+    prop_seg: Optional[PositiveInteger]
+    pwm_l: Optional[PositiveInteger]
+    pwm_o: Optional[PositiveInteger]
+    pwm_s: Optional[PositiveInteger]
+    ssp_offset: Optional[PositiveInteger]
+    sync_jump_width: Optional[PositiveInteger]
+    time_seg1: Optional[PositiveInteger]
+    time_seg2: Optional[PositiveInteger]
+    trcv_pwm_mode: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CanControllerXlConfiguration."""
         super().__init__()

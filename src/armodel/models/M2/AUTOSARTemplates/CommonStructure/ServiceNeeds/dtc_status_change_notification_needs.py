@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DtcStatusChangeNotificationNeeds."""
 
+    notification_time: Optional[Any]
     def __init__(self) -> None:
         """Initialize DtcStatusChangeNotificationNeeds."""
         super().__init__()

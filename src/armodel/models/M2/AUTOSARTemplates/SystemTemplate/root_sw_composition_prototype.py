@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_map import 
 class RootSwCompositionPrototype(Identifiable):
     """AUTOSAR RootSwCompositionPrototype."""
 
+    calibrations: list[Any]
+    flat_map: Optional[FlatMap]
+    software: Optional[CompositionSwComponentType]
     def __init__(self) -> None:
         """Initialize RootSwCompositionPrototype."""
         super().__init__()

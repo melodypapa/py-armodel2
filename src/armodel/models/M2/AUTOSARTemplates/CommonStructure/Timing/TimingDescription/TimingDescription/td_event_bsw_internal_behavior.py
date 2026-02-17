@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 class TDEventBswInternalBehavior(TimingDescriptionEvent):
     """AUTOSAR TDEventBswInternalBehavior."""
 
+    bsw_module_entity_entity: Optional[BswModuleEntity]
+    td_event_bsw_behavior_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswInternalBehavior."""
         super().__init__()

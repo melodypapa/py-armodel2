@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.conditi
 class VariationPointProxy(Identifiable):
     """AUTOSAR VariationPointProxy."""
 
+    condition_access: Optional[ConditionByFormula]
+    implementation: Optional[AbstractImplementationDataType]
+    post_build_value: Optional[Any]
     def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()

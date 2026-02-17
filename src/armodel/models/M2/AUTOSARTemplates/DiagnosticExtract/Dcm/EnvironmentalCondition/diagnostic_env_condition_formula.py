@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
     """AUTOSAR DiagnosticEnvConditionFormula."""
 
+    nrc_value: Optional[PositiveInteger]
+    op: Optional[DiagnosticLogicalOperatorEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormula."""
         super().__init__()

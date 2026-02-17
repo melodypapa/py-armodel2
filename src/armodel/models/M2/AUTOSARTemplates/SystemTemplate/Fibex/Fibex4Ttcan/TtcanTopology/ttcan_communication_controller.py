@@ -19,6 +19,14 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TtcanCommunicationController(ARObject):
     """AUTOSAR TtcanCommunicationController."""
 
+    appl_watchdog: Optional[Integer]
+    expected_tx: Optional[Integer]
+    external_clock: Optional[Boolean]
+    initial_ref_offset: Optional[Integer]
+    master: Optional[Boolean]
+    time_master: Optional[Integer]
+    time_triggered: Optional[Integer]
+    tx_enable: Optional[Integer]
     def __init__(self) -> None:
         """Initialize TtcanCommunicationController."""
         super().__init__()

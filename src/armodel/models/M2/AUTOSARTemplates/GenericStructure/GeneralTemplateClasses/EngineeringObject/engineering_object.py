@@ -21,6 +21,10 @@ class EngineeringObject(ARObject):
     """AUTOSAR EngineeringObject."""
     """Abstract base class - do not instantiate directly."""
 
+    category: NameToken
+    domain: Optional[NameToken]
+    revision_label_strings: list[RevisionLabelString]
+    short_label: NameToken
     def __init__(self) -> None:
         """Initialize EngineeringObject."""
         super().__init__()

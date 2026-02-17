@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class SwcExclusiveAreaPolicy(ARObject):
     """AUTOSAR SwcExclusiveAreaPolicy."""
 
+    api_principle_enum: Optional[ApiPrincipleEnum]
+    exclusive_area: Optional[ExclusiveArea]
     def __init__(self) -> None:
         """Initialize SwcExclusiveAreaPolicy."""
         super().__init__()

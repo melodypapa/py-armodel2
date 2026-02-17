@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class AgeConstraint(TimingConstraint):
     """AUTOSAR AgeConstraint."""
 
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
+    scope: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize AgeConstraint."""
         super().__init__()

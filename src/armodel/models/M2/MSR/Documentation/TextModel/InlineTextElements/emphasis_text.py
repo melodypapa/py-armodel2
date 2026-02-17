@@ -28,6 +28,12 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import 
 class EmphasisText(ARObject):
     """AUTOSAR EmphasisText."""
 
+    color: Optional[String]
+    font: Optional[EEnumFont]
+    sub: Superscript
+    sup: Superscript
+    tt: Optional[Tt]
+    type: Optional[EEnum]
     def __init__(self) -> None:
         """Initialize EmphasisText."""
         super().__init__()

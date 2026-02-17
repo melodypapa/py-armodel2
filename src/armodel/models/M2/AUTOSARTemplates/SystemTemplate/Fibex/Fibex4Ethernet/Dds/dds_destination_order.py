@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsDestinationOrder(ARObject):
     """AUTOSAR DdsDestinationOrder."""
 
+    destination: Optional[DdsDestinationOrder]
     def __init__(self) -> None:
         """Initialize DdsDestinationOrder."""
         super().__init__()

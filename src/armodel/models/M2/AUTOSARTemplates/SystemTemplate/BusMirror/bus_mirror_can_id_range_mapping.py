@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BusMirrorCanIdRangeMapping(ARObject):
     """AUTOSAR BusMirrorCanIdRangeMapping."""
 
+    destination_base: Optional[PositiveInteger]
+    source_can_id_code: Optional[PositiveInteger]
+    source_can_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BusMirrorCanIdRangeMapping."""
         super().__init__()

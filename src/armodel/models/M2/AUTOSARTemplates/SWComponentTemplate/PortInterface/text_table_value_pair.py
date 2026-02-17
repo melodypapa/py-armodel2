@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TextTableValuePair(ARObject):
     """AUTOSAR TextTableValuePair."""
 
+    first_value: Optional[Numerical]
+    second_value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize TextTableValuePair."""
         super().__init__()

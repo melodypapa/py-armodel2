@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TextValueSpecification(ValueSpecification):
     """AUTOSAR TextValueSpecification."""
 
+    value: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize TextValueSpecification."""
         super().__init__()

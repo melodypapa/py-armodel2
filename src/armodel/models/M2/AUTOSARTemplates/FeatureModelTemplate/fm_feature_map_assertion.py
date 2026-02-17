@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FMFeatureMapAssertion(Identifiable):
     """AUTOSAR FMFeatureMapAssertion."""
 
+    fm_syscond_and_sw_systemconsts: Optional[Any]
     def __init__(self) -> None:
         """Initialize FMFeatureMapAssertion."""
         super().__init__()

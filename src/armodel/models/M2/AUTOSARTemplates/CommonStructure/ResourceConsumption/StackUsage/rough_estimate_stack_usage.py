@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RoughEstimateStackUsage(StackUsage):
     """AUTOSAR RoughEstimateStackUsage."""
 
+    memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RoughEstimateStackUsage."""
         super().__init__()

@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class VariableInAtomicSWCTypeInstanceRef(ARObject):
     """AUTOSAR VariableInAtomicSWCTypeInstanceRef."""
 
+    base: Optional[AtomicSwComponentType]
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_variable_data_prototype: Optional[VariableDataPrototype]
+    target_data: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize VariableInAtomicSWCTypeInstanceRef."""
         super().__init__()

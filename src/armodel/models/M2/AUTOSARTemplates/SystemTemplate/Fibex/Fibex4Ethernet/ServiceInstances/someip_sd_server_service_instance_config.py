@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SomeipSdServerServiceInstanceConfig(ARElement):
     """AUTOSAR SomeipSdServerServiceInstanceConfig."""
 
+    initial_offer_behavior: Optional[InitialSdDelayConfig]
+    offer_cyclic_delay: Optional[TimeValue]
+    priority: Optional[PositiveInteger]
+    request: Optional[RequestResponseDelay]
+    service_offer: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SomeipSdServerServiceInstanceConfig."""
         super().__init__()

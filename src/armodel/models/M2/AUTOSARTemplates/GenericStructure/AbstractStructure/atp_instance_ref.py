@@ -29,6 +29,9 @@ class AtpInstanceRef(ARObject):
     """AUTOSAR AtpInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    atp_base: AtpClassifier
+    atp_contexts: list[AtpPrototype]
+    atp_target: AtpFeature
     def __init__(self) -> None:
         """Initialize AtpInstanceRef."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingCommConnector."""
 
+    comm_connectors: list[CommunicationConnector]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()

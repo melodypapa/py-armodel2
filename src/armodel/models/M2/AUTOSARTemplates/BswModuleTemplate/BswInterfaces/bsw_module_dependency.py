@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class BswModuleDependency(Identifiable):
     """AUTOSAR BswModuleDependency."""
 
+    target_module_id: Optional[PositiveInteger]
+    target_module: Optional[BswModuleDescription]
     def __init__(self) -> None:
         """Initialize BswModuleDependency."""
         super().__init__()

@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class DocumentElementScope(SpecElementReference):
     """AUTOSAR DocumentElementScope."""
 
+    custom_document: Optional[Any]
+    tailorings: list[Any]
     def __init__(self) -> None:
         """Initialize DocumentElementScope."""
         super().__init__()

@@ -36,6 +36,16 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanCo
 class CanFrameTriggering(FrameTriggering):
     """AUTOSAR CanFrameTriggering."""
 
+    absolutelies: list[TtcanAbsolutelyScheduledTiming]
+    can_addressing: Optional[CanAddressingModeType]
+    can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]
+    can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
+    can_xl_frame: Optional[CanXlFrameTriggeringProps]
+    identifier: Optional[Integer]
+    j1939requestable: Optional[Boolean]
+    rx_identifier_range_range: Optional[RxIdentifierRange]
+    rx_mask: Optional[PositiveInteger]
+    tx_mask: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanFrameTriggering."""
         super().__init__()

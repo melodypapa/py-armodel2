@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticSecureCodingMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticSecureCodingMapping."""
 
+    data_identifiers: list[Any]
+    validation: Optional[DiagnosticStartRoutine]
     def __init__(self) -> None:
         """Initialize DiagnosticSecureCodingMapping."""
         super().__init__()

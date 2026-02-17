@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_grou
 class ComManagementMapping(Identifiable):
     """AUTOSAR ComManagementMapping."""
 
+    coms: list[PortGroup]
+    physical_channels: list[PhysicalChannel]
     def __init__(self) -> None:
         """Initialize ComManagementMapping."""
         super().__init__()

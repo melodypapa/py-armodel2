@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SdgAggregationWithVariation(SdgElementWithGid):
     """AUTOSAR SdgAggregationWithVariation."""
 
+    sub_sdg: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgAggregationWithVariation."""
         super().__init__()

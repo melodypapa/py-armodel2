@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class ServiceInstanceCollectionSet(FibexElement):
     """AUTOSAR ServiceInstanceCollectionSet."""
 
+    service_instances: list[AbstractServiceInstance]
     def __init__(self) -> None:
         """Initialize ServiceInstanceCollectionSet."""
         super().__init__()

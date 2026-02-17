@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanTo
 class TDEventTTCanCycleStart(TDEventCycleStart):
     """AUTOSAR TDEventTTCanCycleStart."""
 
+    tt_can_cluster: Optional[TtcanCluster]
     def __init__(self) -> None:
         """Initialize TDEventTTCanCycleStart."""
         super().__init__()

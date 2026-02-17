@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class AsynchronousServerCallResultPoint(AbstractAccessPoint):
     """AUTOSAR AsynchronousServerCallResultPoint."""
 
+    asynchronous_server: Optional[Any]
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()

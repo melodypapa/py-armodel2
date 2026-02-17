@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SystemSignalGroup(ARElement):
     """AUTOSAR SystemSignalGroup."""
 
+    system_signals: list[SystemSignal]
+    transforming: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SystemSignalGroup."""
         super().__init__()

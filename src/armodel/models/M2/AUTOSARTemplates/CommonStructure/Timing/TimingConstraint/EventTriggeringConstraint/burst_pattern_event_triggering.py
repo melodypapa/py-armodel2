@@ -23,6 +23,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BurstPatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR BurstPatternEventTriggering."""
 
+    max_number_of: Optional[PositiveInteger]
+    minimum_inter: Optional[MultidimensionalTime]
+    min_number_of: Optional[PositiveInteger]
+    pattern_jitter: Optional[MultidimensionalTime]
+    pattern_length: Optional[MultidimensionalTime]
+    pattern_period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize BurstPatternEventTriggering."""
         super().__init__()

@@ -25,6 +25,8 @@ from armodel.models.M2.MSR.Documentation.Chapters.predefined_chapter import (
 class Documentation(ARElement):
     """AUTOSAR Documentation."""
 
+    contexts: list[DocumentationContext]
+    documentation: Optional[PredefinedChapter]
     def __init__(self) -> None:
         """Initialize Documentation."""
         super().__init__()

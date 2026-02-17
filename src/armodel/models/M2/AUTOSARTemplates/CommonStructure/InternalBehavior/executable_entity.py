@@ -36,6 +36,13 @@ class ExecutableEntity(Identifiable):
     """AUTOSAR ExecutableEntity."""
     """Abstract base class - do not instantiate directly."""
 
+    activations: list[ExecutableEntity]
+    can_enters: list[ExclusiveArea]
+    exclusive_area_nestings: list[ExclusiveAreaNestingOrder]
+    minimum_start: Optional[TimeValue]
+    reentrancy_level_enum: Optional[ReentrancyLevelEnum]
+    runs_insides: list[ExclusiveArea]
+    sw_addr_method: Optional[SwAddrMethod]
     def __init__(self) -> None:
         """Initialize ExecutableEntity."""
         super().__init__()

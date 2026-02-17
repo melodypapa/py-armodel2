@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class DefItem(Paginateable):
     """AUTOSAR DefItem."""
 
+    def_: DocumentationBlock
+    help_entry: Optional[String]
     def __init__(self) -> None:
         """Initialize DefItem."""
         super().__init__()

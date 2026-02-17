@@ -25,6 +25,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpCrfConnection."""
 
+    base_frequency: Optional[PositiveInteger]
+    crf_pull_enum: Optional[IEEE1722TpCrfPullEnum]
+    crf_type_enum: Optional[IEEE1722TpCrfTypeEnum]
+    frame_sync: Optional[Boolean]
+    timestamp: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpCrfConnection."""
         super().__init__()

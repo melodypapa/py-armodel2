@@ -27,6 +27,11 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class RuleBasedAxisCont(ARObject):
     """AUTOSAR RuleBasedAxisCont."""
 
+    category: Optional[CalprmAxisCategoryEnum]
+    rule_based: Optional[Any]
+    sw_arraysize: Optional[ValueList]
+    sw_axis_index: Optional[AxisIndexType]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize RuleBasedAxisCont."""
         super().__init__()

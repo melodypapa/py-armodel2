@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class OsTaskProxy(ARElement):
     """AUTOSAR OsTaskProxy."""
 
+    period: Optional[TimeValue]
+    preemptability: Optional[OsTaskPreemptabilityEnum]
+    priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize OsTaskProxy."""
         super().__init__()

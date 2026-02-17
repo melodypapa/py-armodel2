@@ -25,6 +25,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class AdminData(ARObject):
     """AUTOSAR AdminData."""
 
+    doc_revisions: list[DocRevision]
+    used_languages: Optional[MultiLanguagePlainText]
     def __init__(self) -> None:
         """Initialize AdminData."""
         super().__init__()

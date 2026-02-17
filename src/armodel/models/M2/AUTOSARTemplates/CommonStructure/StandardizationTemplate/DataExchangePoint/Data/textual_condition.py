@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TextualCondition(AbstractCondition):
     """AUTOSAR TextualCondition."""
 
+    text: String
     def __init__(self) -> None:
         """Initialize TextualCondition."""
         super().__init__()

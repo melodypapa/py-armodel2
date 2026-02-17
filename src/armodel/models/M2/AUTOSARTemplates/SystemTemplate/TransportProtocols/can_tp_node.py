@@ -24,6 +24,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp
 class CanTpNode(Identifiable):
     """AUTOSAR CanTpNode."""
 
+    connector: Optional[Any]
+    max_fc_wait: Optional[Integer]
+    st_min: Optional[TimeValue]
+    timeout_ar: Optional[TimeValue]
+    timeout_as: Optional[TimeValue]
+    tp_address: Optional[CanTpAddress]
     def __init__(self) -> None:
         """Initialize CanTpNode."""
         super().__init__()

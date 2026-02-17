@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
 class PrivacyLevel(ARObject):
     """AUTOSAR PrivacyLevel."""
 
+    compu_method: Optional[CompuMethod]
+    privacy_level: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize PrivacyLevel."""
         super().__init__()

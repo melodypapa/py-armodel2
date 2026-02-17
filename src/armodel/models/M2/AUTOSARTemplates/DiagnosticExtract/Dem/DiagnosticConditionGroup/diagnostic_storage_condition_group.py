@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditio
 class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
     """AUTOSAR DiagnosticStorageConditionGroup."""
 
+    storages: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionGroup."""
         super().__init__()

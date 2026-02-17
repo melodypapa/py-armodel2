@@ -30,6 +30,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationArrayElement."""
 
+    array_size_handling: Optional[ArraySizeHandlingEnum]
+    array_size: Optional[ArraySizeSemanticsEnum]
+    index_data_type: Optional[ApplicationPrimitiveDataType]
+    max_number_of: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
         super().__init__()

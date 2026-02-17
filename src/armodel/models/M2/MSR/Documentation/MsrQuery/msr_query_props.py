@@ -21,6 +21,9 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_arg import (
 class MsrQueryProps(ARObject):
     """AUTOSAR MsrQueryProps."""
 
+    comment: Optional[String]
+    msr_query_args: list[MsrQueryArg]
+    msr_query_name: String
     def __init__(self) -> None:
         """Initialize MsrQueryProps."""
         super().__init__()

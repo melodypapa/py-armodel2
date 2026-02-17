@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IndexedArrayElement(ARObject):
     """AUTOSAR IndexedArrayElement."""
 
+    application_array: Optional[Any]
+    implementation: Optional[Any]
+    index: Optional[Integer]
     def __init__(self) -> None:
         """Initialize IndexedArrayElement."""
         super().__init__()

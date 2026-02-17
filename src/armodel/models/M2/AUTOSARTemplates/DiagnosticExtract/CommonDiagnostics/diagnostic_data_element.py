@@ -27,6 +27,10 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class DiagnosticDataElement(Identifiable):
     """AUTOSAR DiagnosticDataElement."""
 
+    array_size: Optional[ArraySizeSemanticsEnum]
+    max_number_of: Optional[PositiveInteger]
+    scaling_info_size: Optional[PositiveInteger]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DiagnosticDataElement."""
         super().__init__()

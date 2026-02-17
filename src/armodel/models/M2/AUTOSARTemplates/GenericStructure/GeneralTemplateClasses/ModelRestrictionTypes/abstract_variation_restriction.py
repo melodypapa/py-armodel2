@@ -23,6 +23,8 @@ class AbstractVariationRestriction(ARObject):
     """AUTOSAR AbstractVariationRestriction."""
     """Abstract base class - do not instantiate directly."""
 
+    valid_bindings: list[FullBindingTimeEnum]
+    variation: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize AbstractVariationRestriction."""
         super().__init__()

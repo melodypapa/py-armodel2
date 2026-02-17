@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DoIpTpConnection(TpConnection):
     """AUTOSAR DoIpTpConnection."""
 
+    do_ip_source: Optional[DoIpLogicAddress]
+    do_ip_target: Optional[DoIpLogicAddress]
+    tp_sdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize DoIpTpConnection."""
         super().__init__()

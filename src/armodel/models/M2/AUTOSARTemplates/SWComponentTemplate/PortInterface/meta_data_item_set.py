@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class MetaDataItemSet(ARObject):
     """AUTOSAR MetaDataItemSet."""
 
+    data_elements: list[VariableDataPrototype]
+    meta_data_items: list[MetaDataItem]
     def __init__(self) -> None:
         """Initialize MetaDataItemSet."""
         super().__init__()

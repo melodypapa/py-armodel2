@@ -21,6 +21,7 @@ class AtpClassifier(Identifiable):
     """AUTOSAR AtpClassifier."""
     """Abstract base class - do not instantiate directly."""
 
+    atp_features: list[AtpFeature]
     def __init__(self) -> None:
         """Initialize AtpClassifier."""
         super().__init__()

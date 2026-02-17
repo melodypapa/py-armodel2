@@ -21,6 +21,7 @@ class BswModuleCallPoint(Referrable):
     """AUTOSAR BswModuleCallPoint."""
     """Abstract base class - do not instantiate directly."""
 
+    contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:
         """Initialize BswModuleCallPoint."""
         super().__init__()

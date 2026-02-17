@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AclRole(ARElement):
     """AUTOSAR AclRole."""
 
+    ldap_url: Optional[UriString]
     def __init__(self) -> None:
         """Initialize AclRole."""
         super().__init__()

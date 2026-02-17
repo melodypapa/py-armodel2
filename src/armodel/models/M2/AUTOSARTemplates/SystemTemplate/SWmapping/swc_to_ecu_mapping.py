@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 class SwcToEcuMapping(Identifiable):
     """AUTOSAR SwcToEcuMapping."""
 
+    components: list[Any]
+    controlled_hw: Optional[HwElement]
+    ecu_instance: Optional[EcuInstance]
+    processing_unit: Optional[HwElement]
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()

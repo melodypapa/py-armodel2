@@ -27,6 +27,7 @@ class DataPrototype(Identifiable):
     """AUTOSAR DataPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DataPrototype."""
         super().__init__()

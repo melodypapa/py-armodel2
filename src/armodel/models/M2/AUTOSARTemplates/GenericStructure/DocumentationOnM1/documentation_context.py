@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DocumentationContext(MultilanguageReferrable):
     """AUTOSAR DocumentationContext."""
 
+    feature: Optional[AtpFeature]
+    identifiable: Optional[Identifiable]
     def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()

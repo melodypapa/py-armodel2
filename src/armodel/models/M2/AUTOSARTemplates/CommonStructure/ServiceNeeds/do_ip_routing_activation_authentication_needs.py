@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DoIpRoutingActivationAuthenticationNeeds(DoIpServiceNeeds):
     """AUTOSAR DoIpRoutingActivationAuthenticationNeeds."""
 
+    data_length: Optional[PositiveInteger]
+    routing: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DoIpRoutingActivationAuthenticationNeeds."""
         super().__init__()

@@ -22,6 +22,8 @@ class Paginateable(DocumentViewSelectable):
     """AUTOSAR Paginateable."""
     """Abstract base class - do not instantiate directly."""
 
+    break_: Optional[ChapterEnumBreak]
+    keep_with: Optional[KeepWithPreviousEnum]
     def __init__(self) -> None:
         """Initialize Paginateable."""
         super().__init__()

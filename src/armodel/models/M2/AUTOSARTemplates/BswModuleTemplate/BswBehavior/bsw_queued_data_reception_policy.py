@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BswQueuedDataReceptionPolicy(ARObject):
     """AUTOSAR BswQueuedDataReceptionPolicy."""
 
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BswQueuedDataReceptionPolicy."""
         super().__init__()

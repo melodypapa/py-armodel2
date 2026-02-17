@@ -23,6 +23,7 @@ class SwConnector(Identifiable):
     """AUTOSAR SwConnector."""
     """Abstract base class - do not instantiate directly."""
 
+    mapping: Optional[PortInterfaceMapping]
     def __init__(self) -> None:
         """Initialize SwConnector."""
         super().__init__()

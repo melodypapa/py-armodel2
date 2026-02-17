@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TransmissionComSpecProps(ARObject):
     """AUTOSAR TransmissionComSpecProps."""
 
+    data_update: Optional[TimeValue]
+    minimum_send: Optional[TimeValue]
+    transmission: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransmissionComSpecProps."""
         super().__init__()

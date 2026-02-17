@@ -25,6 +25,11 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class CryptoServiceKey(ARElement):
     """AUTOSAR CryptoServiceKey."""
 
+    algorithm_family: Optional[String]
+    development: Optional[ValueSpecification]
+    key_generation: Optional[CryptoServiceKey]
+    key_storage_type: Optional[String]
+    length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoServiceKey."""
         super().__init__()

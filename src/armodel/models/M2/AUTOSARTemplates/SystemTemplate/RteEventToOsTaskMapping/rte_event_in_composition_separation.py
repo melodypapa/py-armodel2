@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RteEventInCompositionSeparation(Identifiable):
     """AUTOSAR RteEventInCompositionSeparation."""
 
+    rte_event_instance_refs: list[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInCompositionSeparation."""
         super().__init__()

@@ -26,6 +26,9 @@ from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_calprm_ref_pr
 class SwAxisGrouped(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisGrouped."""
 
+    shared_axis_type: Optional[ApplicationPrimitiveDataType]
+    sw_axis_index: Optional[AxisIndexType]
+    sw_calprm_ref_proxy: SwCalprmRefProxy
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()

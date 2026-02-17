@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DataDumpEntry(LinConfigurationEntry):
     """AUTOSAR DataDumpEntry."""
 
+    byte_values: list[Integer]
     def __init__(self) -> None:
         """Initialize DataDumpEntry."""
         super().__init__()

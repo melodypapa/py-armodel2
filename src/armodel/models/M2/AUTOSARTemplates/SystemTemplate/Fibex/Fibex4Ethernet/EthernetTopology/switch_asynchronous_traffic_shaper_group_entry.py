@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwitchAsynchronousTrafficShaperGroupEntry(Identifiable):
     """AUTOSAR SwitchAsynchronousTrafficShaperGroupEntry."""
 
+    maximum: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SwitchAsynchronousTrafficShaperGroupEntry."""
         super().__init__()

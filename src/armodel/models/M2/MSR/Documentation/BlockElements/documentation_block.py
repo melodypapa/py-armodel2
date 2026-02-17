@@ -51,6 +51,17 @@ if TYPE_CHECKING:
 class DocumentationBlock(ARObject):
     """AUTOSAR DocumentationBlock."""
 
+    def_list: Optional[DefList]
+    figure: Optional[MlFigure]
+    formula: Optional[MlFormula]
+    labeled_list_label: Optional[LabeledList]
+    list: Optional[List]
+    msr_query_p2: Optional[MsrQueryP2]
+    note: Optional[Note]
+    p: Optional[Any]
+    structured_req: Optional[StructuredReq]
+    trace: Optional[TraceableText]
+    verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
         """Initialize DocumentationBlock."""
         super().__init__()

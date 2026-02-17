@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_value_colle
 class EcuTiming(TimingExtension):
     """AUTOSAR EcuTiming."""
 
+    ecu: Optional[EcucValueCollection]
     def __init__(self) -> None:
         """Initialize EcuTiming."""
         super().__init__()

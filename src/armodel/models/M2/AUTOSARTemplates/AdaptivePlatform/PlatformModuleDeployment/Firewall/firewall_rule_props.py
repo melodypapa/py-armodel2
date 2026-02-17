@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class FirewallRuleProps(ARObject):
     """AUTOSAR FirewallRuleProps."""
 
+    action: Optional[Any]
+    matching_egresses: list[FirewallRule]
+    matchings: list[FirewallRule]
     def __init__(self) -> None:
         """Initialize FirewallRuleProps."""
         super().__init__()

@@ -22,6 +22,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoServiceNeeds(ServiceNeeds):
     """AUTOSAR CryptoServiceNeeds."""
 
+    algorithm_family: Optional[String]
+    algorithm_mode: Optional[String]
+    crypto_key: Optional[String]
+    maximum_key: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoServiceNeeds."""
         super().__init__()

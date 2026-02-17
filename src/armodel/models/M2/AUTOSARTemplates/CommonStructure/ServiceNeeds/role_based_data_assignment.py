@@ -28,6 +28,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RoleBasedDataAssignment(ARObject):
     """AUTOSAR RoleBasedDataAssignment."""
 
+    role: Optional[Identifier]
+    used_data: Optional[AutosarVariableRef]
+    used_parameter: Optional[AutosarParameterRef]
+    used_pim: Optional[PerInstanceMemory]
     def __init__(self) -> None:
         """Initialize RoleBasedDataAssignment."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MacMulticastGroup(Identifiable):
     """AUTOSAR MacMulticastGroup."""
 
+    mac_multicast: Optional[MacAddressString]
     def __init__(self) -> None:
         """Initialize MacMulticastGroup."""
         super().__init__()

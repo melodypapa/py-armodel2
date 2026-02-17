@@ -33,6 +33,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argume
 class ClientServerOperation(Identifiable):
     """AUTOSAR ClientServerOperation."""
 
+    arguments: list[ArgumentDataPrototype]
+    diag_arg_integrity: Optional[Boolean]
+    possible_errors: list[ApplicationError]
     def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()

@@ -27,6 +27,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH.eth_t_syn_
 class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR EthGlobalTimeDomainProps."""
 
+    crc_flags: Optional[EthTSynCrcFlags]
+    destination: Optional[MacAddressString]
+    fup_data_id_list: PositiveInteger
+    manageds: list[Any]
+    message: Optional[EthGlobalTimeMessageFormatEnum]
+    vlan_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EthGlobalTimeDomainProps."""
         super().__init__()

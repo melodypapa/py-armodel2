@@ -23,6 +23,18 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanNmCluster(NmCluster):
     """AUTOSAR CanNmCluster."""
 
+    nm_busload: Optional[Boolean]
+    nm_car_wake_up: Optional[PositiveInteger]
+    nm_car_wake_up_filter_node_id: Optional[PositiveInteger]
+    nm_cbv_position: Optional[Integer]
+    nm_immediate: Optional[PositiveInteger]
+    nm_message: Optional[TimeValue]
+    nm_msg_cycle: Optional[TimeValue]
+    nm_network: Optional[TimeValue]
+    nm_nid_position: Optional[Integer]
+    nm_remote: Optional[TimeValue]
+    nm_repeat: Optional[TimeValue]
+    nm_wait_bus: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize CanNmCluster."""
         super().__init__()

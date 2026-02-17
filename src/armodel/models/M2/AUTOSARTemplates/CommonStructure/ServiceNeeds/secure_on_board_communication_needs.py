@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class SecureOnBoardCommunicationNeeds(ServiceNeeds):
     """AUTOSAR SecureOnBoardCommunicationNeeds."""
 
+    verification: Optional[VerificationStatusIndicationModeEnum]
     def __init__(self) -> None:
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()

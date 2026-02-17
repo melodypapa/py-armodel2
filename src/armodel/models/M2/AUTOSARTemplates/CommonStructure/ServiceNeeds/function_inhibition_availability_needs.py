@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_in
 class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
     """AUTOSAR FunctionInhibitionAvailabilityNeeds."""
 
+    controlled_fid: Optional[FunctionInhibitionNeeds]
     def __init__(self) -> None:
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()

@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfaceInstanceRef):
     """AUTOSAR DataPrototypeInClientServerInterfaceInstanceRef."""
 
+    base: Optional[ClientServerInterface]
+    context_datas: list[Any]
+    root_data_prototype_in_cs: Optional[AutosarDataPrototype]
+    target_data_prototype_in_cs: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInClientServerInterfaceInstanceRef."""
         super().__init__()

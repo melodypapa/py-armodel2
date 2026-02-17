@@ -33,6 +33,12 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class MlFigure(Paginateable):
     """AUTOSAR MlFigure."""
 
+    figure_caption: Optional[Caption]
+    frame: Optional[FrameEnum]
+    help_entry: Optional[String]
+    l_graphics: list[LGraphic]
+    pgwide: Optional[PgwideEnum]
+    verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
         """Initialize MlFigure."""
         super().__init__()

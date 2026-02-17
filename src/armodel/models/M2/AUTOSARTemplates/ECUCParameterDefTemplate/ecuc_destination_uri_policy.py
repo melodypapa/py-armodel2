@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 class EcucDestinationUriPolicy(ARObject):
     """AUTOSAR EcucDestinationUriPolicy."""
 
+    containers: list[EcucContainerDef]
+    destination_uri: Optional[Any]
+    parameters: list[EcucParameterDef]
+    references: list[Any]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriPolicy."""
         super().__init__()

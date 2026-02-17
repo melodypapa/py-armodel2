@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH.eth_t_syn_
 class GlobalTimeEthMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeEthMaster."""
 
+    crc_secured: Optional[GlobalTimeCrcSupportEnum]
+    hold_over_time: Optional[TimeValue]
+    sub_tlv_config: Optional[EthTSynSubTlvConfig]
     def __init__(self) -> None:
         """Initialize GlobalTimeEthMaster."""
         super().__init__()

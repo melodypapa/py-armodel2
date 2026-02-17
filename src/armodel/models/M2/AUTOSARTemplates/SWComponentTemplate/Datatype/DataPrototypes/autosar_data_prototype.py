@@ -24,6 +24,7 @@ class AutosarDataPrototype(DataPrototype):
     """AUTOSAR AutosarDataPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    type: Optional[AutosarDataType]
     def __init__(self) -> None:
         """Initialize AutosarDataPrototype."""
         super().__init__()

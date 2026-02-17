@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class PortPrototypeBlueprintInitValue(ARObject):
     """AUTOSAR PortPrototypeBlueprintInitValue."""
 
+    data_prototype: AutosarDataPrototype
+    value: ValueSpecification
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprintInitValue."""
         super().__init__()

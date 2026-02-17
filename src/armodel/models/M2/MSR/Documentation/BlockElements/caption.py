@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class Caption(MultilanguageReferrable):
     """AUTOSAR Caption."""
 
+    desc: Optional[MultiLanguageOverviewParagraph]
     def __init__(self) -> None:
         """Initialize Caption."""
         super().__init__()

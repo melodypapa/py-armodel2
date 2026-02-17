@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 class TimingExtensionResource(Identifiable):
     """AUTOSAR TimingExtensionResource."""
 
+    timing_arguments: list[AutosarOperationArgumentInstance]
+    timing_modes: list[TimingModeInstance]
+    timing_variables: list[Any]
     def __init__(self) -> None:
         """Initialize TimingExtensionResource."""
         super().__init__()

@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TDHeaderIdRange(ARObject):
     """AUTOSAR TDHeaderIdRange."""
 
+    max_header_id: Optional[Integer]
+    min_header_id: Optional[Integer]
     def __init__(self) -> None:
         """Initialize TDHeaderIdRange."""
         super().__init__()

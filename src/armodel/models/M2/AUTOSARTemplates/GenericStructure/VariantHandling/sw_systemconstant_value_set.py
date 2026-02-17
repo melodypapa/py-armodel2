@@ -25,6 +25,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_syst
 class SwSystemconstantValueSet(ARElement):
     """AUTOSAR SwSystemconstantValueSet."""
 
+    sws: list[SwSystemconstValue]
     def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""
         super().__init__()

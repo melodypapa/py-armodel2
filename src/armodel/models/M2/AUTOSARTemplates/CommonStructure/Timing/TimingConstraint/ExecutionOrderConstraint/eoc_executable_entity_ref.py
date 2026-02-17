@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executa
 class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
     """AUTOSAR EOCExecutableEntityRef."""
 
+    bsw_module: Optional[BswImplementation]
+    component: Optional[Any]
+    executable_entity: Optional[ExecutableEntity]
+    successors: list[Any]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()

@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalIPduGroup(FibexElement):
     """AUTOSAR ISignalIPduGroup."""
 
+    communication: Optional[String]
+    containeds: list[ISignalIPduGroup]
+    i_signal_i_pdus: list[ISignalIPdu]
+    nm_pdus: list[NmPdu]
     def __init__(self) -> None:
         """Initialize ISignalIPduGroup."""
         super().__init__()

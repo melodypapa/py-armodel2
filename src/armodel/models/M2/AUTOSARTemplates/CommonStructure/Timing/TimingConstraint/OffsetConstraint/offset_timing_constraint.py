@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class OffsetTimingConstraint(TimingConstraint):
     """AUTOSAR OffsetTimingConstraint."""
 
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
+    source: Optional[TimingDescriptionEvent]
+    target: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize OffsetTimingConstraint."""
         super().__init__()

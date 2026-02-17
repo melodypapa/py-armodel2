@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class SubElementMapping(ARObject):
     """AUTOSAR SubElementMapping."""
 
+    first_element: Optional[SubElementRef]
+    second_element: Optional[SubElementRef]
+    text_table: TextTableMapping
     def __init__(self) -> None:
         """Initialize SubElementMapping."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class BusMirrorLinPidToCanIdMapping(ARObject):
     """AUTOSAR BusMirrorLinPidToCanIdMapping."""
 
+    remapped_can_id: Optional[PositiveInteger]
+    source_lin_pid: Optional[LinFrameTriggering]
     def __init__(self) -> None:
         """Initialize BusMirrorLinPidToCanIdMapping."""
         super().__init__()

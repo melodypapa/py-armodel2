@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ExecutableEntityActivationReason(ImplementationProps):
     """AUTOSAR ExecutableEntityActivationReason."""
 
+    bit_position: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()

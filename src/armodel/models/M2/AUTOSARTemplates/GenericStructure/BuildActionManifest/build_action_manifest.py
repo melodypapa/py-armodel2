@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.bui
 class BuildActionManifest(ARElement):
     """AUTOSAR BuildActionManifest."""
 
+    build_actions: list[BuildActionEnvironment]
+    dynamic_actions: list[BuildAction]
+    start_actions: list[BuildAction]
+    tear_down_actions: list[BuildAction]
     def __init__(self) -> None:
         """Initialize BuildActionManifest."""
         super().__init__()

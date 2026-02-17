@@ -28,6 +28,9 @@ class TDEventVfbPort(TDEventVfb):
     """AUTOSAR TDEventVfbPort."""
     """Abstract base class - do not instantiate directly."""
 
+    is_external: Optional[Boolean]
+    port: Optional[PortPrototype]
+    port_prototype: Optional[PortPrototypeBlueprint]
     def __init__(self) -> None:
         """Initialize TDEventVfbPort."""
         super().__init__()

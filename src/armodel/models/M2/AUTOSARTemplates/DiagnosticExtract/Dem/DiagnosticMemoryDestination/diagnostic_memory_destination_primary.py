@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationPrimary."""
 
+    type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()

@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DiagnosticJ1939SpnMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticJ1939SpnMapping."""
 
+    sending_nodes: list[DiagnosticJ1939Node]
+    spn: Optional[DiagnosticJ1939Spn]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SpnMapping."""
         super().__init__()

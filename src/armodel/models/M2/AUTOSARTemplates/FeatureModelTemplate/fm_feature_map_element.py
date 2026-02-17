@@ -26,6 +26,10 @@ if TYPE_CHECKING:
 class FMFeatureMapElement(Identifiable):
     """AUTOSAR FMFeatureMapElement."""
 
+    assertions: list[FMFeatureMap]
+    conditions: list[FMFeatureMap]
+    post_build_variants: list[Any]
+    sw_value_sets: list[SwSystemconstantValueSet]
     def __init__(self) -> None:
         """Initialize FMFeatureMapElement."""
         super().__init__()

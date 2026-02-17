@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class RtpTp(TransportProtocolConfiguration):
     """AUTOSAR RtpTp."""
 
+    ssrc: Optional[PositiveInteger]
+    tcp_udp_config: Optional[TcpUdpConfig]
     def __init__(self) -> None:
         """Initialize RtpTp."""
         super().__init__()

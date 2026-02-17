@@ -18,6 +18,7 @@ class CommConnectorPort(Identifiable):
     """AUTOSAR CommConnectorPort."""
     """Abstract base class - do not instantiate directly."""
 
+    communication: Optional[Any]
     def __init__(self) -> None:
         """Initialize CommConnectorPort."""
         super().__init__()

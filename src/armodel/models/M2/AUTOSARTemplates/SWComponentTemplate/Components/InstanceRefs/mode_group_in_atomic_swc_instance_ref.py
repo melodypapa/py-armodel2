@@ -25,6 +25,9 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR ModeGroupInAtomicSwcInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    base: Optional[AtomicSwComponentType]
+    context_port: Optional[PortPrototype]
+    target: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeGroupInAtomicSwcInstanceRef."""
         super().__init__()

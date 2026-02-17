@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DdsCpServiceInstanceOperation(ARObject):
     """AUTOSAR DdsCpServiceInstanceOperation."""
 
+    dds_operation: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceOperation."""
         super().__init__()

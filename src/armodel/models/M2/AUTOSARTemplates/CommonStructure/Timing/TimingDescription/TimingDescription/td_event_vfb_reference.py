@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDEventVfbReference(TDEventVfb):
     """AUTOSAR TDEventVfbReference."""
 
+    referenced_td_event_vfb: Optional[TDEventVfb]
     def __init__(self) -> None:
         """Initialize TDEventVfbReference."""
         super().__init__()

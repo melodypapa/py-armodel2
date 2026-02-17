@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class J1939NmNode(NmNode):
     """AUTOSAR J1939NmNode."""
 
+    address: Optional[J1939NmAddressConfigurationCapabilityEnum]
+    node_name: Optional[J1939NodeName]
     def __init__(self) -> None:
         """Initialize J1939NmNode."""
         super().__init__()

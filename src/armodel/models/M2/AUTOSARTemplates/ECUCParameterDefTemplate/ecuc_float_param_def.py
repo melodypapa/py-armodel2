@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucFloatParamDef(EcucParameterDef):
     """AUTOSAR EcucFloatParamDef."""
 
+    default_value: Optional[Float]
+    max: Optional[Limit]
+    min: Optional[Limit]
     def __init__(self) -> None:
         """Initialize EcucFloatParamDef."""
         super().__init__()

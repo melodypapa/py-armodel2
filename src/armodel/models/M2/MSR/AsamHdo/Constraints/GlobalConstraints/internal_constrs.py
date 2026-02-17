@@ -25,6 +25,12 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.scale_constr im
 class InternalConstrs(ARObject):
     """AUTOSAR InternalConstrs."""
 
+    lower_limit: Optional[Limit]
+    max_diff: Optional[Numerical]
+    max_gradient: Optional[Numerical]
+    monotony: Optional[MonotonyEnum]
+    scale_constrs: list[ScaleConstr]
+    upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize InternalConstrs."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
 class HwPinConnector(Describable):
     """AUTOSAR HwPinConnector."""
 
+    hw_pins: list[HwPin]
     def __init__(self) -> None:
         """Initialize HwPinConnector."""
         super().__init__()

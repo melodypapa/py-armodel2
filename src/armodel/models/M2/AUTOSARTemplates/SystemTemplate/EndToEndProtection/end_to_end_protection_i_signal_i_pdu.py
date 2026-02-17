@@ -25,6 +25,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class EndToEndProtectionISignalIPdu(ARObject):
     """AUTOSAR EndToEndProtectionISignalIPdu."""
 
+    data_offset: Optional[Integer]
+    i_signal_group: Optional[ISignalGroup]
+    i_signal_i_pdu: Optional[ISignalIPdu]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsLiveliness(ARObject):
     """AUTOSAR DdsLiveliness."""
 
+    liveliness_lease: Optional[Float]
+    liveness_kind: Optional[DdsLivenessKindEnum]
     def __init__(self) -> None:
         """Initialize DdsLiveliness."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RptServicePoint(Identifiable):
     """AUTOSAR RptServicePoint."""
 
+    service_id: Optional[PositiveInteger]
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RptServicePoint."""
         super().__init__()

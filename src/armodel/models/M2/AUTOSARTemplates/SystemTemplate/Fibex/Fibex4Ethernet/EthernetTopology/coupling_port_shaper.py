@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortShaper(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortShaper."""
 
+    idle_slope: Optional[PositiveInteger]
+    predecessor_fifo: CouplingPortFifo
     def __init__(self) -> None:
         """Initialize CouplingPortShaper."""
         super().__init__()

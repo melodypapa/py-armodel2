@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argume
 class TlvDataIdDefinition(ARObject):
     """AUTOSAR TlvDataIdDefinition."""
 
+    id: Optional[PositiveInteger]
+    tlv_argument: Optional[ArgumentDataPrototype]
+    tlv: Optional[AbstractImplementationDataType]
+    tlv_record: Optional[Any]
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinition."""
         super().__init__()

@@ -28,6 +28,9 @@ class BswEvent(AbstractEvent):
     """AUTOSAR BswEvent."""
     """Abstract base class - do not instantiate directly."""
 
+    contexts: list[BswDistinguishedPartition]
+    disabled_in_mode_description_instance_refs: list[ModeDeclaration]
+    starts_on_event: Optional[BswModuleEntity]
     def __init__(self) -> None:
         """Initialize BswEvent."""
         super().__init__()

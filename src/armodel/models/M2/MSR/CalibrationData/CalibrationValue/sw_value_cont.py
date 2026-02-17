@@ -27,6 +27,10 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class SwValueCont(ARObject):
     """AUTOSAR SwValueCont."""
 
+    sw_arraysize: Optional[ValueList]
+    sw_values_phys: Optional[SwValues]
+    unit: Optional[Unit]
+    unit_display: Optional[SingleLanguageUnitNames]
     def __init__(self) -> None:
         """Initialize SwValueCont."""
         super().__init__()

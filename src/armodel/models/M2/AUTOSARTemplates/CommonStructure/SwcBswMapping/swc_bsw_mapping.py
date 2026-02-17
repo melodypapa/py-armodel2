@@ -28,6 +28,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcBswMapping(ARElement):
     """AUTOSAR SwcBswMapping."""
 
+    bsw_behavior: Optional[BswInternalBehavior]
+    runnable_mappings: list[SwcBswRunnableMapping]
+    swc_behavior: Optional[SwcInternalBehavior]
+    synchronizeds: list[Any]
     def __init__(self) -> None:
         """Initialize SwcBswMapping."""
         super().__init__()

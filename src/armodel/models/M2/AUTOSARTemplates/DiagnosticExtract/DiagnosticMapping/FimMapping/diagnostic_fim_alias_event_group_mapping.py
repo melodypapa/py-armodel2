@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim.diagnostic_fim_eve
 class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticFimAliasEventGroupMapping."""
 
+    actual_event: Optional[DiagnosticFimEventGroup]
+    alias_event: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroupMapping."""
         super().__init__()

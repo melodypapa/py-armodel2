@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthTcpIpIcmpProps(ARElement):
     """AUTOSAR EthTcpIpIcmpProps."""
 
+    icmp_v4_props: Optional[TcpIpIcmpv4Props]
+    icmp_v6_props: Optional[TcpIpIcmpv6Props]
     def __init__(self) -> None:
         """Initialize EthTcpIpIcmpProps."""
         super().__init__()

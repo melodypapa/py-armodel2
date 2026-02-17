@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticCustomServiceClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticCustomServiceClass."""
 
+    custom_service: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceClass."""
         super().__init__()

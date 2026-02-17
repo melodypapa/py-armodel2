@@ -28,6 +28,12 @@ class DdsCpServiceInstance(AbstractServiceInstance):
     """AUTOSAR DdsCpServiceInstance."""
     """Abstract base class - do not instantiate directly."""
 
+    dds_field_reply: Optional[DdsCpTopic]
+    dds_field: Optional[DdsCpTopic]
+    dds_method: Optional[DdsCpTopic]
+    dds_service_qos: Optional[DdsCpQosProfile]
+    service_instance: Optional[PositiveInteger]
+    service_interface: Optional[String]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstance."""
         super().__init__()

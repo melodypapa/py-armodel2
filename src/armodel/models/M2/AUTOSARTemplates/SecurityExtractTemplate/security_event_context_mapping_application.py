@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventContextMappingApplication(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingApplication."""
 
+    affected: String
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingApplication."""
         super().__init__()

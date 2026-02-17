@@ -30,6 +30,18 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class J1939TpConnection(TpConnection):
     """AUTOSAR J1939TpConnection."""
 
+    broadcast: Optional[Boolean]
+    buffer_ratio: Optional[PositiveInteger]
+    cancellation: Optional[Boolean]
+    data_pdu: Optional[NPdu]
+    dynamic_bs: Optional[Boolean]
+    flow_control_pdu: NPdu
+    max_bs: Optional[PositiveInteger]
+    max_exp_bs: Optional[PositiveInteger]
+    receivers: list[J1939TpNode]
+    retry: Optional[Boolean]
+    tp_pgs: list[J1939TpPg]
+    transmitter: Optional[J1939TpNode]
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
         super().__init__()

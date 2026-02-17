@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class AutosarVariableInstance(Identifiable):
     """AUTOSAR AutosarVariableInstance."""
 
+    variable_instance_instance_ref: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarVariableInstance."""
         super().__init__()

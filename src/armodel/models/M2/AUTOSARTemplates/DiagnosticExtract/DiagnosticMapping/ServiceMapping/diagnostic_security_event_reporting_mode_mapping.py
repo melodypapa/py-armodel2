@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticSecurityEventReportingModeMapping."""
 
+    data_element: Optional[DiagnosticDataElement]
+    security_event_context: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityEventReportingModeMapping."""
         super().__init__()

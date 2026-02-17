@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
     """AUTOSAR EcucInstanceReferenceDef."""
 
+    destination: Optional[String]
+    destination_type: Optional[String]
     def __init__(self) -> None:
         """Initialize EcucInstanceReferenceDef."""
         super().__init__()

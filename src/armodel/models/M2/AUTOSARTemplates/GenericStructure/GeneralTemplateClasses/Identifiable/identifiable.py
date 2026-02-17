@@ -46,6 +46,12 @@ class Identifiable(MultilanguageReferrable):
     """AUTOSAR Identifiable."""
     """Abstract base class - do not instantiate directly."""
 
+    admin_data: Optional[AdminData]
+    annotations: list[Annotation]
+    category: Optional[CategoryString]
+    desc: Optional[MultiLanguageOverviewParagraph]
+    introduction: Optional[DocumentationBlock]
+    uuid: Optional[String]
     def __init__(self) -> None:
         """Initialize Identifiable."""
         super().__init__()

@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalGroup(FibexElement):
     """AUTOSAR ISignalGroup."""
 
+    com_based: Optional[DataTransformation]
+    i_signals: list[ISignal]
+    system_signal_group: Optional[SystemSignalGroup]
+    transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignalGroup."""
         super().__init__()

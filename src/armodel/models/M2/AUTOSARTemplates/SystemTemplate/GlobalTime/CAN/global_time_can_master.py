@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GlobalTimeCanMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeCanMaster."""
 
+    crc_secured: Optional[GlobalTimeCrcSupportEnum]
+    sync: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeCanMaster."""
         super().__init__()

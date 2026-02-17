@@ -35,6 +35,14 @@ class NmNode(Identifiable):
     """AUTOSAR NmNode."""
     """Abstract base class - do not instantiate directly."""
 
+    controller: Optional[Any]
+    nm_coord_cluster: Optional[PositiveInteger]
+    nm_coordinator_role: Optional[NmCoordinatorRoleEnum]
+    nm_if_ecu: Optional[NmEcu]
+    nm_node_id: Optional[Integer]
+    nm_passive: Optional[Boolean]
+    rx_nm_pdus: list[NmPdu]
+    tx_nm_pdus: list[NmPdu]
     def __init__(self) -> None:
         """Initialize NmNode."""
         super().__init__()

@@ -21,6 +21,7 @@ class EventTriggeringConstraint(TimingConstraint):
     """AUTOSAR EventTriggeringConstraint."""
     """Abstract base class - do not instantiate directly."""
 
+    event: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize EventTriggeringConstraint."""
         super().__init__()

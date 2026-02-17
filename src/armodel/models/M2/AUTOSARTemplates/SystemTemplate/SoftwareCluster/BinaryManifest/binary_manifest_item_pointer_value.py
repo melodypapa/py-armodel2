@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestItemPointerValue(BinaryManifestItemValue):
     """AUTOSAR BinaryManifestItemPointerValue."""
 
+    address: Optional[Address]
+    symbol: Optional[SymbolString]
     def __init__(self) -> None:
         """Initialize BinaryManifestItemPointerValue."""
         super().__init__()

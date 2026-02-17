@@ -26,6 +26,9 @@ class ServiceDependency(ARObject):
     """AUTOSAR ServiceDependency."""
     """Abstract base class - do not instantiate directly."""
 
+    assigned_data: Optional[RoleBasedDataTypeAssignment]
+    diagnostic: Optional[ServiceDiagnosticRelevanceEnum]
+    symbolic_name_props: Optional[SymbolicNameProps]
     def __init__(self) -> None:
         """Initialize ServiceDependency."""
         super().__init__()

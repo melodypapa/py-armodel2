@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticOperationCycleNeeds."""
 
+    operation_cycle: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticOperationCycleNeeds."""
         super().__init__()

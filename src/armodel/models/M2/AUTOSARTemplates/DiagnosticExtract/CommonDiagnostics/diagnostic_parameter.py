@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticParameter(DiagnosticAbstractParameter):
     """AUTOSAR DiagnosticParameter."""
 
+    ident: Optional[DiagnosticParameter]
+    support_info: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameter."""
         super().__init__()

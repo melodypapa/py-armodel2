@@ -41,6 +41,15 @@ class BswModuleEntity(ExecutableEntity):
     """AUTOSAR BswModuleEntity."""
     """Abstract base class - do not instantiate directly."""
 
+    accessed_modes: list[ModeDeclarationGroup]
+    activation_points: list[BswInternalTriggeringPoint]
+    call_points: list[BswModuleCallPoint]
+    data_receives: list[BswVariableAccess]
+    data_send_points: list[BswVariableAccess]
+    implemented: Optional[BswModuleEntry]
+    issued_triggers: list[Trigger]
+    managed_modes: list[ModeDeclarationGroup]
+    scheduler_name: Optional[BswSchedulerNamePrefix]
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ShortNameFragment(ARObject):
     """AUTOSAR ShortNameFragment."""
 
+    fragment: Identifier
+    role: String
     def __init__(self) -> None:
         """Initialize ShortNameFragment."""
         super().__init__()

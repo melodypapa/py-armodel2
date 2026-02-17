@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ReferenceValueSpecification(ValueSpecification):
     """AUTOSAR ReferenceValueSpecification."""
 
+    reference_value: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize ReferenceValueSpecification."""
         super().__init__()

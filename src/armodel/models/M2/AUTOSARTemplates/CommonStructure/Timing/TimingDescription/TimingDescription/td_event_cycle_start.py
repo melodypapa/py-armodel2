@@ -21,6 +21,7 @@ class TDEventCycleStart(TDEventCom):
     """AUTOSAR TDEventCycleStart."""
     """Abstract base class - do not instantiate directly."""
 
+    cycle_repetition: Optional[Integer]
     def __init__(self) -> None:
         """Initialize TDEventCycleStart."""
         super().__init__()

@@ -30,6 +30,11 @@ if TYPE_CHECKING:
 class SdgContents(ARObject):
     """AUTOSAR SdgContents."""
 
+    sd: Optional[Sd]
+    sdf: Optional[Sdf]
+    sdg: Optional[Sdg]
+    sdx: Optional[Referrable]
+    sdxf: Optional[Referrable]
     def __init__(self) -> None:
         """Initialize SdgContents."""
         super().__init__()

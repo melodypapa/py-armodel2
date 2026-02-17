@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.EndToEndProtection.e
 class EndToEndProtectionSet(ARElement):
     """AUTOSAR EndToEndProtectionSet."""
 
+    end_to_ends: list[EndToEndProtection]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionSet."""
         super().__init__()

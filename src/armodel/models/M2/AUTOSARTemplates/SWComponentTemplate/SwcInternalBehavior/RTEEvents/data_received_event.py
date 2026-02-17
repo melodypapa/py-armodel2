@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataReceivedEvent(RTEEvent):
     """AUTOSAR DataReceivedEvent."""
 
+    data: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize DataReceivedEvent."""
         super().__init__()

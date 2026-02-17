@@ -33,6 +33,16 @@ if TYPE_CHECKING:
 class NmEcu(Identifiable):
     """AUTOSAR NmEcu."""
 
+    bus_dependent_nm_ecus: list[BusspecificNmEcu]
+    ecu_instance: Optional[EcuInstance]
+    nm_bus_synchronization: Optional[Any]
+    nm_com_control_enabled: Optional[Boolean]
+    nm_coordinator: Optional[NmCoordinator]
+    nm_cycletime: Optional[TimeValue]
+    nm_pdu_rx_indication: Optional[Any]
+    nm_remote_sleep_ind: Optional[Any]
+    nm_state_change: Optional[Boolean]
+    nm_user_data_enabled: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize NmEcu."""
         super().__init__()

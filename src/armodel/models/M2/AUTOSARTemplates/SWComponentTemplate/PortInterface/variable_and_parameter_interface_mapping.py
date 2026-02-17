@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_p
 class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR VariableAndParameterInterfaceMapping."""
 
+    data_mappings: list[DataPrototypeMapping]
     def __init__(self) -> None:
         """Initialize VariableAndParameterInterfaceMapping."""
         super().__init__()

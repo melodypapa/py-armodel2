@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoSignatureScheme(ARElement):
     """AUTOSAR CryptoSignatureScheme."""
 
+    signature: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoSignatureScheme."""
         super().__init__()

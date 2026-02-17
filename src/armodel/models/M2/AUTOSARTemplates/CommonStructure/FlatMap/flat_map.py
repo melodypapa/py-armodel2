@@ -23,6 +23,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_de
 class FlatMap(ARElement):
     """AUTOSAR FlatMap."""
 
+    instances: list[FlatInstanceDescriptor]
     def __init__(self) -> None:
         """Initialize FlatMap."""
         super().__init__()

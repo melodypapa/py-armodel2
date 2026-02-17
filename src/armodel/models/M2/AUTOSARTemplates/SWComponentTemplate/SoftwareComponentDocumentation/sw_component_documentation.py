@@ -20,6 +20,14 @@ from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
 class SwComponentDocumentation(ARObject):
     """AUTOSAR SwComponentDocumentation."""
 
+    chapters: list[Chapter]
+    sw_calibration: Optional[Chapter]
+    sw_carb_doc: Optional[Chapter]
+    sw_diagnostics: Optional[Chapter]
+    sw_feature_def: Optional[Chapter]
+    sw_feature_desc: Optional[Chapter]
+    sw_maintenance: Optional[Chapter]
+    sw_test_desc: Optional[Chapter]
     def __init__(self) -> None:
         """Initialize SwComponentDocumentation."""
         super().__init__()

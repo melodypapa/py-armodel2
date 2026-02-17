@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucAbstractStringParamDef(ARObject):
     """AUTOSAR EcucAbstractStringParamDef."""
 
+    default_value: Optional[VerbatimString]
+    max_length: Optional[PositiveInteger]
+    min_length: Optional[PositiveInteger]
+    regular: Optional[RegularExpression]
     def __init__(self) -> None:
         """Initialize EcucAbstractStringParamDef."""
         super().__init__()

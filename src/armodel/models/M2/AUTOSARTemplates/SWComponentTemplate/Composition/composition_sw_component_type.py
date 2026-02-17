@@ -38,6 +38,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
 class CompositionSwComponentType(SwComponentType):
     """AUTOSAR CompositionSwComponentType."""
 
+    components: list[Any]
+    connectors: list[SwConnector]
+    constant_values: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    instantiation_rte_events: list[InstantiationRTEEventProps]
+    physical: Optional[PhysicalDimension]
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()

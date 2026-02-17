@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class CpSwClusterToDiagEventMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterToDiagEventMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    diagnostic_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize CpSwClusterToDiagEventMapping."""
         super().__init__()

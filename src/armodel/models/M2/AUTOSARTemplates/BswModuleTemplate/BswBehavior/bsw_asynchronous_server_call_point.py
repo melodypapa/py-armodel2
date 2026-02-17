@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswAsynchronousServerCallPoint(BswModuleCallPoint):
     """AUTOSAR BswAsynchronousServerCallPoint."""
 
+    called_entry_entry: Optional[BswModuleClientServerEntry]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallPoint."""
         super().__init__()

@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticIumprGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIumprGroup."""
 
+    iumprs: list[DiagnosticIumpr]
+    iumpr_group: Optional[DiagnosticIumprGroup]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprGroup."""
         super().__init__()

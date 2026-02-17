@@ -28,6 +28,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
 class SwComponentPrototype(Identifiable):
     """AUTOSAR SwComponentPrototype."""
 
+    type: Optional[SwComponentType]
     def __init__(self) -> None:
         """Initialize SwComponentPrototype."""
         super().__init__()

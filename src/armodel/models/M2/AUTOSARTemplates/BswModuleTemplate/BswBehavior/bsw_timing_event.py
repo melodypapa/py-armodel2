@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BswTimingEvent(BswScheduleEvent):
     """AUTOSAR BswTimingEvent."""
 
+    period: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize BswTimingEvent."""
         super().__init__()

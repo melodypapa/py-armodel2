@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CompuConstTextContent(CompuConstContent):
     """AUTOSAR CompuConstTextContent."""
 
+    vt: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize CompuConstTextContent."""
         super().__init__()

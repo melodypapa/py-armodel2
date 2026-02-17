@@ -21,6 +21,8 @@ class AttributeTailoring(DataFormatElementScope):
     """AUTOSAR AttributeTailoring."""
     """Abstract base class - do not instantiate directly."""
 
+    multiplicity: Optional[Any]
+    variation: Optional[VariationRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize AttributeTailoring."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SystemSignalToCommunicationResourceMapping(Identifiable):
     """AUTOSAR SystemSignalToCommunicationResourceMapping."""
 
+    software_cluster: Optional[CpSoftwareCluster]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SystemSignalToCommunicationResourceMapping."""
         super().__init__()

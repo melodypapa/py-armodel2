@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BuildActionInvocator(ARObject):
     """AUTOSAR BuildActionInvocator."""
 
+    command: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize BuildActionInvocator."""
         super().__init__()

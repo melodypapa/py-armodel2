@@ -22,6 +22,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecProps(ARObject):
     """AUTOSAR MacSecProps."""
 
+    auto_start: Optional[Boolean]
+    mac_sec_kay: Optional[MacSecLocalKayProps]
+    on_fail: Optional[TimeValue]
+    sak_rekey_time: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize MacSecProps."""
         super().__init__()

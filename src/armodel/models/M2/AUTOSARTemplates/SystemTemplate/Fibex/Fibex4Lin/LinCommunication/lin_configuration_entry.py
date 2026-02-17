@@ -24,6 +24,8 @@ class LinConfigurationEntry(ScheduleTableEntry):
     """AUTOSAR LinConfigurationEntry."""
     """Abstract base class - do not instantiate directly."""
 
+    assigned: Optional[LinSlave]
+    assigned_lin: Optional[LinSlaveConfigIdent]
     def __init__(self) -> None:
         """Initialize LinConfigurationEntry."""
         super().__init__()

@@ -26,6 +26,11 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeJ1939."""
 
+    dtc_props_props: Optional[DiagnosticTroubleCode]
+    fmi: Optional[PositiveInteger]
+    kind: Optional[DiagnosticTroubleCode]
+    node: Optional[DiagnosticJ1939Node]
+    spn: Optional[DiagnosticJ1939Spn]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeJ1939."""
         super().__init__()

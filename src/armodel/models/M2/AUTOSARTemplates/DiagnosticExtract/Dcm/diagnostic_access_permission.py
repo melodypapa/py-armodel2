@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session
 class DiagnosticAccessPermission(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAccessPermission."""
 
+    authentication: Optional[DiagnosticAuthRole]
+    diagnostic_sessions: list[DiagnosticSession]
+    environmental: Optional[Any]
+    security_levels: list[DiagnosticSecurityLevel]
     def __init__(self) -> None:
         """Initialize DiagnosticAccessPermission."""
         super().__init__()

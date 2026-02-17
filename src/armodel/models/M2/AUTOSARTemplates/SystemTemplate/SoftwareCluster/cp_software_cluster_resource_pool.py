@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CpSoftwareClusterResourcePool(ARElement):
     """AUTOSAR CpSoftwareClusterResourcePool."""
 
+    ecu_scopes: list[EcuInstance]
+    resources: list[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourcePool."""
         super().__init__()

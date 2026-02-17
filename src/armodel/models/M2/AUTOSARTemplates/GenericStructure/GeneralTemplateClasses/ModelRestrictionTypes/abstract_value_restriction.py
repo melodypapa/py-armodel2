@@ -22,6 +22,11 @@ class AbstractValueRestriction(ARObject):
     """AUTOSAR AbstractValueRestriction."""
     """Abstract base class - do not instantiate directly."""
 
+    max: Optional[Limit]
+    max_length: Optional[PositiveInteger]
+    min: Optional[Limit]
+    min_length: Optional[PositiveInteger]
+    pattern: Optional[RegularExpression]
     def __init__(self) -> None:
         """Initialize AbstractValueRestriction."""
         super().__init__()

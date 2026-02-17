@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RunnableEntityInCompositionInstanceRef(ARObject):
     """AUTOSAR RunnableEntityInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_sws: list[Any]
+    target_runnable: Optional[RunnableEntity]
     def __init__(self) -> None:
         """Initialize RunnableEntityInCompositionInstanceRef."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.Documentation.Chapters.chapter_model import (
 class PredefinedChapter(ARObject):
     """AUTOSAR PredefinedChapter."""
 
+    chapter_model: ChapterModel
     def __init__(self) -> None:
         """Initialize PredefinedChapter."""
         super().__init__()

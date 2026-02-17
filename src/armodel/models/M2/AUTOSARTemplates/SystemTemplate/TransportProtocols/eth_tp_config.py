@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.eth_tp
 class EthTpConfig(TpConfig):
     """AUTOSAR EthTpConfig."""
 
+    tp_connections: list[EthTpConnection]
     def __init__(self) -> None:
         """Initialize EthTpConfig."""
         super().__init__()

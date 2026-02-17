@@ -21,6 +21,7 @@ class IEEE1722TpAcfBusPart(Identifiable):
     """AUTOSAR IEEE1722TpAcfBusPart."""
     """Abstract base class - do not instantiate directly."""
 
+    collection_trigger: Optional[PduCollectionTriggerEnum]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()

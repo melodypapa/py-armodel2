@@ -28,6 +28,14 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMemoryDestination."""
     """Abstract base class - do not instantiate directly."""
 
+    aging_requires: Optional[Boolean]
+    clear_dtc: Optional[Any]
+    dtc_status: Optional[PositiveInteger]
+    event: Optional[DiagnosticEvent]
+    max_number_of: Optional[PositiveInteger]
+    memory_entry: Optional[DiagnosticMemoryEntryStorageTriggerEnum]
+    status_bit: Optional[Boolean]
+    type_of_freeze: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestination."""
         super().__init__()

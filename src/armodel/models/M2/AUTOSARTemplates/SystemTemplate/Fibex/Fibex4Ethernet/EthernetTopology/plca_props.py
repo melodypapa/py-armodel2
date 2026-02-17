@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PlcaProps(ARObject):
     """AUTOSAR PlcaProps."""
 
+    plca_local_node: Optional[PositiveInteger]
+    plca_max_burst: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize PlcaProps."""
         super().__init__()

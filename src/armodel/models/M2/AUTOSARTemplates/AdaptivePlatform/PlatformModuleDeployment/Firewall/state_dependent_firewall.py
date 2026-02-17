@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class StateDependentFirewall(ARElement):
     """AUTOSAR StateDependentFirewall."""
 
+    default_action: Optional[Any]
+    firewall_rule_propses: list[FirewallRuleProps]
+    firewall_states: list[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize StateDependentFirewall."""
         super().__init__()

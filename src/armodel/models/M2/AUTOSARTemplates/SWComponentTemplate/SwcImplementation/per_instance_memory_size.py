@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class PerInstanceMemorySize(ARObject):
     """AUTOSAR PerInstanceMemorySize."""
 
+    alignment: Optional[PositiveInteger]
+    per_instance_memory_memory: Optional[PerInstanceMemory]
+    size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize PerInstanceMemorySize."""
         super().__init__()

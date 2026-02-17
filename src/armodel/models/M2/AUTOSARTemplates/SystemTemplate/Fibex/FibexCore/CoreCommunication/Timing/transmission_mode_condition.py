@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TransmissionModeCondition(ARObject):
     """AUTOSAR TransmissionModeCondition."""
 
+    data_filter: Optional[DataFilter]
+    i_signal_in_i_pdu: Optional[ISignalToIPduMapping]
     def __init__(self) -> None:
         """Initialize TransmissionModeCondition."""
         super().__init__()

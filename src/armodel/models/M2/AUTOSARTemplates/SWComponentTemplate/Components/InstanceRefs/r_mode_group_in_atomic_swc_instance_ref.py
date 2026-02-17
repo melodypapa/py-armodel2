@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
     """AUTOSAR RModeGroupInAtomicSWCInstanceRef."""
 
+    context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_mode: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize RModeGroupInAtomicSWCInstanceRef."""
         super().__init__()

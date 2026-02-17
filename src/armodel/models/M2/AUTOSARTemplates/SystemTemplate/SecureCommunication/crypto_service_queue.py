@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoServiceQueue(ARElement):
     """AUTOSAR CryptoServiceQueue."""
 
+    queue_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoServiceQueue."""
         super().__init__()

@@ -27,6 +27,10 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref impor
 class MixedContentForVerbatim(ARObject):
     """AUTOSAR MixedContentForVerbatim."""
 
+    br: Br
+    e: EmphasisText
+    tt: Tt
+    xref: Xref
     def __init__(self) -> None:
         """Initialize MixedContentForVerbatim."""
         super().__init__()

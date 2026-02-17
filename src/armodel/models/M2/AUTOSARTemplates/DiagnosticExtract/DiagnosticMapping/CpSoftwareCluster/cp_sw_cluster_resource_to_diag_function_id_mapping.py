@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterResourceToDiagFunctionIdMapping."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    function: Optional[Any]
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()

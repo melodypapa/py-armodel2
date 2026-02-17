@@ -25,6 +25,10 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class RptHook(ARObject):
     """AUTOSAR RptHook."""
 
+    code_label: Optional[CIdentifier]
+    mcd_identifier: Optional[NameToken]
+    rpt_ar_hook: Optional[AtpFeature]
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize RptHook."""
         super().__init__()

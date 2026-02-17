@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCodeGroup."""
 
+    dtcs: list[DiagnosticTroubleCode]
+    group_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeGroup."""
         super().__init__()

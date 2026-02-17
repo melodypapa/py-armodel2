@@ -28,6 +28,9 @@ class HeapUsage(Identifiable):
     """AUTOSAR HeapUsage."""
     """Abstract base class - do not instantiate directly."""
 
+    hardware: Optional[HardwareConfiguration]
+    hw_element: Optional[HwElement]
+    software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize HeapUsage."""
         super().__init__()

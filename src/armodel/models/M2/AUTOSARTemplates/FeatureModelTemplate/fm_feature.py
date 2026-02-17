@@ -33,6 +33,12 @@ if TYPE_CHECKING:
 class FMFeature(ARElement):
     """AUTOSAR FMFeature."""
 
+    attribute_defs: list[FMAttributeDef]
+    decomposition_decompositions: list[FMFeature]
+    maximum: Optional[BindingTimeEnum]
+    minimum: Optional[BindingTimeEnum]
+    relations: list[FMFeatureRelation]
+    restrictions: list[FMFeatureRestriction]
     def __init__(self) -> None:
         """Initialize FMFeature."""
         super().__init__()

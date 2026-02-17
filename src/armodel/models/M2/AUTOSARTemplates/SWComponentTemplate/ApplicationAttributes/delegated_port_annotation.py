@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttribute
 class DelegatedPortAnnotation(GeneralAnnotation):
     """AUTOSAR DelegatedPortAnnotation."""
 
+    signal_fan: Optional[SignalFanEnum]
     def __init__(self) -> None:
         """Initialize DelegatedPortAnnotation."""
         super().__init__()

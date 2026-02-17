@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GlobalTimeCouplingPortProps(ARObject):
     """AUTOSAR GlobalTimeCouplingPortProps."""
 
+    propagation: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AssignNad(LinConfigurationEntry):
     """AUTOSAR AssignNad."""
 
+    new_nad: Optional[Integer]
     def __init__(self) -> None:
         """Initialize AssignNad."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class ReferenceTailoring(AttributeTailoring):
     """AUTOSAR ReferenceTailoring."""
 
+    type_tailorings: list[ClassTailoring]
+    unresolved_restriction: Optional[UnresolvedReferenceRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize ReferenceTailoring."""
         super().__init__()

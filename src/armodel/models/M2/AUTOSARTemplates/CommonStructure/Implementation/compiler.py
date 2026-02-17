@@ -22,6 +22,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Compiler(Identifiable):
     """AUTOSAR Compiler."""
 
+    name: Optional[String]
+    options: Optional[String]
+    vendor: Optional[String]
+    version: Optional[String]
     def __init__(self) -> None:
         """Initialize Compiler."""
         super().__init__()

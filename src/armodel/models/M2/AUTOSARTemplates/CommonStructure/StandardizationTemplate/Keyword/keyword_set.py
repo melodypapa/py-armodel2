@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class KeywordSet(ARElement):
     """AUTOSAR KeywordSet."""
 
+    keywords: list[Keyword]
     def __init__(self) -> None:
         """Initialize KeywordSet."""
         super().__init__()

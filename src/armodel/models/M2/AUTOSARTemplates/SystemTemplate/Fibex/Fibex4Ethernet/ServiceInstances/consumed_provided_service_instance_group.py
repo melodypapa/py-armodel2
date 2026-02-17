@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 class ConsumedProvidedServiceInstanceGroup(FibexElement):
     """AUTOSAR ConsumedProvidedServiceInstanceGroup."""
 
+    consumed_services: list[Any]
+    provided_services: list[Any]
     def __init__(self) -> None:
         """Initialize ConsumedProvidedServiceInstanceGroup."""
         super().__init__()

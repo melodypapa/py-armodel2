@@ -30,6 +30,11 @@ class EcucContainerDef(EcucDefinitionElement):
     """AUTOSAR EcucContainerDef."""
     """Abstract base class - do not instantiate directly."""
 
+    destination_uris: list[EcucDestinationUriDef]
+    multiplicities: list[EcucMultiplicityConfigurationClass]
+    origin: Optional[String]
+    post_build_variant: Optional[Boolean]
+    requires_index: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucContainerDef."""
         super().__init__()

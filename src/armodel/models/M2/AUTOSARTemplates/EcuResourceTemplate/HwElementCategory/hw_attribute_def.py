@@ -26,6 +26,9 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class HwAttributeDef(Identifiable):
     """AUTOSAR HwAttributeDef."""
 
+    hw_attributes: list[HwAttributeLiteralDef]
+    is_required: Optional[Boolean]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize HwAttributeDef."""
         super().__init__()

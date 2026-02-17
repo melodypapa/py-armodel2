@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucTextualParamValue(EcucParameterValue):
     """AUTOSAR EcucTextualParamValue."""
 
+    value: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize EcucTextualParamValue."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ApplicationError(Identifiable):
     """AUTOSAR ApplicationError."""
 
+    error_code: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ApplicationError."""
         super().__init__()

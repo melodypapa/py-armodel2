@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LifeCyclePeriod(ARObject):
     """AUTOSAR LifeCyclePeriod."""
 
+    ar_release: Optional[RevisionLabelString]
+    date: Optional[DateTime]
+    product_release: Optional[RevisionLabelString]
     def __init__(self) -> None:
         """Initialize LifeCyclePeriod."""
         super().__init__()

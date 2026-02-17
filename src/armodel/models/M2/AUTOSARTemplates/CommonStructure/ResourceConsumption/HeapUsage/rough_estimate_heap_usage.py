@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RoughEstimateHeapUsage(HeapUsage):
     """AUTOSAR RoughEstimateHeapUsage."""
 
+    memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RoughEstimateHeapUsage."""
         super().__init__()

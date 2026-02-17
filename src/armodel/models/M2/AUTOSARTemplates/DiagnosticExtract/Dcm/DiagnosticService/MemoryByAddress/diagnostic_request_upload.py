@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
     """AUTOSAR DiagnosticRequestUpload."""
 
+    request_upload: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestUpload."""
         super().__init__()

@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfCan."""
 
+    message_type_message_type_enum: Optional[IEEE1722TpAcfCan]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()

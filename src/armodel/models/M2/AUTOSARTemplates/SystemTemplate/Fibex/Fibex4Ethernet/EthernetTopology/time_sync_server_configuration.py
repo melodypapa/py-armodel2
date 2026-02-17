@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimeSyncServerConfiguration(Referrable):
     """AUTOSAR TimeSyncServerConfiguration."""
 
+    priority: Optional[PositiveInteger]
+    sync_interval: Optional[TimeValue]
+    time_sync_server_identifier: Optional[String]
+    time_sync: Optional[TimeSyncTechnologyEnum]
     def __init__(self) -> None:
         """Initialize TimeSyncServerConfiguration."""
         super().__init__()

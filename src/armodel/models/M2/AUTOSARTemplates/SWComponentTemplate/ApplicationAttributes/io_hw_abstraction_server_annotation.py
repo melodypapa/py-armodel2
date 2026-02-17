@@ -42,6 +42,14 @@ if TYPE_CHECKING:
 class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     """AUTOSAR IoHwAbstractionServerAnnotation."""
 
+    age: Optional[MultidimensionalTime]
+    argument: Optional[ArgumentDataPrototype]
+    bsw_resolution: Optional[Float]
+    data_element: Optional[VariableDataPrototype]
+    failure: Optional[PortPrototype]
+    filtering: Optional[FilterDebouncingEnum]
+    pulse_test: Optional[PulseTestEnum]
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
         super().__init__()

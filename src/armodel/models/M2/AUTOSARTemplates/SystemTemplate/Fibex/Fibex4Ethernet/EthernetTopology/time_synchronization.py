@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class TimeSynchronization(ARObject):
     """AUTOSAR TimeSynchronization."""
 
+    time_sync_client_configuration: Optional[TimeSyncClientConfiguration]
+    time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
     def __init__(self) -> None:
         """Initialize TimeSynchronization."""
         super().__init__()

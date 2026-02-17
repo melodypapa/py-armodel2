@@ -24,6 +24,14 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinSlave(ARObject):
     """AUTOSAR LinSlave."""
 
+    assign_nad: Optional[Boolean]
+    configured_nad: Optional[Integer]
+    function_id: Optional[PositiveInteger]
+    initial_nad: Optional[Integer]
+    lin_error_response: Optional[LinErrorResponse]
+    nas_timeout: Optional[TimeValue]
+    supplier_id: Optional[PositiveInteger]
+    variant_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinSlave."""
         super().__init__()

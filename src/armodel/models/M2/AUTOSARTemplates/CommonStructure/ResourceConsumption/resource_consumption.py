@@ -37,6 +37,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Stac
 class ResourceConsumption(Identifiable):
     """AUTOSAR ResourceConsumption."""
 
+    access_count_sets: list[AccessCountSet]
+    execution_times: list[ExecutionTime]
+    heap_usages: list[HeapUsage]
+    memory_sections: list[MemorySection]
+    section_name_prefixes: list[SectionNamePrefix]
+    stack_usages: list[StackUsage]
     def __init__(self) -> None:
         """Initialize ResourceConsumption."""
         super().__init__()

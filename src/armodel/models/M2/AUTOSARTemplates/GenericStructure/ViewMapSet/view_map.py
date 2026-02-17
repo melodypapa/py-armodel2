@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 class ViewMap(Identifiable):
     """AUTOSAR ViewMap."""
 
+    first_elements: list[AtpFeature]
+    role: Optional[Identifier]
+    second_elements: list[AtpFeature]
     def __init__(self) -> None:
         """Initialize ViewMap."""
         super().__init__()

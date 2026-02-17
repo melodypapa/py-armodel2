@@ -22,6 +22,8 @@ class InstantiationRTEEventProps(ARObject):
     """AUTOSAR InstantiationRTEEventProps."""
     """Abstract base class - do not instantiate directly."""
 
+    refined_event: Optional[RTEEvent]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize InstantiationRTEEventProps."""
         super().__init__()

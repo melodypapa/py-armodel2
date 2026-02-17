@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class TlsPskIdentity(ARObject):
     """AUTOSAR TlsPskIdentity."""
 
+    pre_shared_key: Optional[CryptoServiceKey]
+    psk_identity: Optional[String]
+    psk_identity_hint: Optional[String]
     def __init__(self) -> None:
         """Initialize TlsPskIdentity."""
         super().__init__()

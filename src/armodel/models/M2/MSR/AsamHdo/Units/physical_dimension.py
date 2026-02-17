@@ -20,6 +20,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PhysicalDimension(ARElement):
     """AUTOSAR PhysicalDimension."""
 
+    current_exp: Optional[Numerical]
+    length_exp: Optional[Numerical]
+    luminous: Optional[Numerical]
+    mass_exp: Optional[Numerical]
+    molar_amount: Optional[Numerical]
+    temperature_exp: Optional[Numerical]
+    time_exp: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize PhysicalDimension."""
         super().__init__()

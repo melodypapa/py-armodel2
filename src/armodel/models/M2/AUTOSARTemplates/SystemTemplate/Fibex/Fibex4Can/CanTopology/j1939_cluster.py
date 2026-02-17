@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939Cluster(ARObject):
     """AUTOSAR J1939Cluster."""
 
+    network_id: Optional[PositiveInteger]
+    request2_support: Optional[Boolean]
+    uses_address: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize J1939Cluster."""
         super().__init__()

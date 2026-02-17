@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticPowertrainFreezeFrame."""
 
+    pids: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticPowertrainFreezeFrame."""
         super().__init__()

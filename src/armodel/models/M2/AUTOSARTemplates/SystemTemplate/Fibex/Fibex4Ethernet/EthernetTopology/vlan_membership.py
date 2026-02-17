@@ -18,6 +18,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class VlanMembership(ARObject):
     """AUTOSAR VlanMembership."""
 
+    default_priority: Optional[PositiveInteger]
+    dhcp_address: Optional[Any]
+    send_activity: Optional[Any]
+    vlan: Optional[Any]
     def __init__(self) -> None:
         """Initialize VlanMembership."""
         super().__init__()

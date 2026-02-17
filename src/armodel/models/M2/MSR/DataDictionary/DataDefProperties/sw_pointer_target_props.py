@@ -30,6 +30,9 @@ if TYPE_CHECKING:
 class SwPointerTargetProps(ARObject):
     """AUTOSAR SwPointerTargetProps."""
 
+    function_pointer: Optional[BswModuleEntry]
+    sw_data_def: Optional[SwDataDefProps]
+    target_category: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()

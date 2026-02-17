@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform
 class IPduMapping(ARObject):
     """AUTOSAR IPduMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    pdu_max_length: Optional[PositiveInteger]
+    pdur_tp_chunk: Optional[PositiveInteger]
+    source_i_pdu: Optional[PduTriggering]
+    target_i_pdu: Optional[TargetIPduRef]
     def __init__(self) -> None:
         """Initialize IPduMapping."""
         super().__init__()

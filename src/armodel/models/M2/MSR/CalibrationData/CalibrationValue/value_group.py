@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class ValueGroup(ARObject):
     """AUTOSAR ValueGroup."""
 
+    label: Optional[MultilanguageLongName]
+    vg_contents: Optional[SwValues]
     def __init__(self) -> None:
         """Initialize ValueGroup."""
         super().__init__()

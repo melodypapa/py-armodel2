@@ -25,6 +25,9 @@ class VariableInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR VariableInAtomicSwcInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    abstract_target: Optional[VariableDataPrototype]
+    base: Optional[AtomicSwComponentType]
+    context_port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize VariableInAtomicSwcInstanceRef."""
         super().__init__()

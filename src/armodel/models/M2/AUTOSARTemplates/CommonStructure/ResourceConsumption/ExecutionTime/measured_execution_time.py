@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MeasuredExecutionTime(ExecutionTime):
     """AUTOSAR MeasuredExecutionTime."""
 
+    maximum_execution_time: Optional[MultidimensionalTime]
+    minimum_execution_time: Optional[MultidimensionalTime]
+    nominal_execution_time: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize MeasuredExecutionTime."""
         super().__init__()

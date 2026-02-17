@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class AssignFrameIdRange(LinConfigurationEntry):
     """AUTOSAR AssignFrameIdRange."""
 
+    frame_pid: FramePid
+    start_index: Optional[Integer]
     def __init__(self) -> None:
         """Initialize AssignFrameIdRange."""
         super().__init__()

@@ -24,6 +24,12 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import
 class Colspec(ARObject):
     """AUTOSAR Colspec."""
 
+    align: Optional[AlignEnum]
+    colname: Optional[String]
+    colnum: Optional[String]
+    colsep: Optional[TableSeparatorString]
+    colwidth: Optional[String]
+    rowsep: Optional[TableSeparatorString]
     def __init__(self) -> None:
         """Initialize Colspec."""
         super().__init__()

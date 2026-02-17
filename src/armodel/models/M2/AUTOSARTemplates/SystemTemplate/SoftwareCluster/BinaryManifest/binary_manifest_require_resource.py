@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestRequireResource(BinaryManifestResource):
     """AUTOSAR BinaryManifestRequireResource."""
 
+    connection_is: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BinaryManifestRequireResource."""
         super().__init__()

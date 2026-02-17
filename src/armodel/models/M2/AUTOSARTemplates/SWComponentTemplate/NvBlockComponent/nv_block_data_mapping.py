@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class NvBlockDataMapping(ARObject):
     """AUTOSAR NvBlockDataMapping."""
 
+    bitfield_text_table: Optional[PositiveInteger]
+    nv_ram_block: Optional[AutosarVariableRef]
+    read_nv_data: Optional[AutosarVariableRef]
+    written_nv_data: Optional[AutosarVariableRef]
+    written_read_nv: Optional[AutosarVariableRef]
     def __init__(self) -> None:
         """Initialize NvBlockDataMapping."""
         super().__init__()

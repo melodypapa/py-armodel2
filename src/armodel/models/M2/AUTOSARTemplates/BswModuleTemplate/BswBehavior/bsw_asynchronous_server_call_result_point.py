@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
     """AUTOSAR BswAsynchronousServerCallResultPoint."""
 
+    asynchronous: Optional[Any]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()

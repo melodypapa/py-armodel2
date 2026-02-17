@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class EcucValueCollection(ARElement):
     """AUTOSAR EcucValueCollection."""
 
+    ecuc_values: list[Any]
+    ecu_extract: Optional[System]
     def __init__(self) -> None:
         """Initialize EcucValueCollection."""
         super().__init__()

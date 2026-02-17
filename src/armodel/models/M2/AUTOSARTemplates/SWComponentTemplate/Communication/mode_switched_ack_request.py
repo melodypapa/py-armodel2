@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ModeSwitchedAckRequest(ARObject):
     """AUTOSAR ModeSwitchedAckRequest."""
 
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize ModeSwitchedAckRequest."""
         super().__init__()

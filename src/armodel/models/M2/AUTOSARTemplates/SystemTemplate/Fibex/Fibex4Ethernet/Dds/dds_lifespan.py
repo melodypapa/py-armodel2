@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsLifespan(ARObject):
     """AUTOSAR DdsLifespan."""
 
+    lifespan_duration: Optional[Float]
     def __init__(self) -> None:
         """Initialize DdsLifespan."""
         super().__init__()

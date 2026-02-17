@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticRequestEmissionRelatedDTCPermanentStatus(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestEmissionRelatedDTCPermanentStatus."""
 
+    request: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTCPermanentStatus."""
         super().__init__()

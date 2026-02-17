@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDCpSoftwareClusterMapping(Identifiable):
     """AUTOSAR TDCpSoftwareClusterMapping."""
 
+    provider: Optional[CpSoftwareCluster]
+    requestors: list[CpSoftwareCluster]
+    timing: Optional[TimingDescription]
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMapping."""
         super().__init__()

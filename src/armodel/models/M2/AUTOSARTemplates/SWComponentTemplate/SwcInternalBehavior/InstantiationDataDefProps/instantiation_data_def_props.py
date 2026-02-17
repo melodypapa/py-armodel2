@@ -24,6 +24,9 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class InstantiationDataDefProps(ARObject):
     """AUTOSAR InstantiationDataDefProps."""
 
+    parameter: Optional[AutosarParameterRef]
+    sw_data_def: Optional[SwDataDefProps]
+    variable_instance: Optional[AutosarVariableRef]
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
         super().__init__()

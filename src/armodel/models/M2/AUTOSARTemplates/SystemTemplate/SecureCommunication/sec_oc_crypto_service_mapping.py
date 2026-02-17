@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class SecOcCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR SecOcCryptoServiceMapping."""
 
+    authentication: Optional[CryptoServicePrimitive]
+    crypto_service_key: Optional[CryptoServiceKey]
+    crypto_service_queue: Optional[CryptoServiceQueue]
     def __init__(self) -> None:
         """Initialize SecOcCryptoServiceMapping."""
         super().__init__()

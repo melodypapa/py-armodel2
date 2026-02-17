@@ -28,6 +28,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import
 class ArgumentDataPrototype(AutosarDataPrototype):
     """AUTOSAR ArgumentDataPrototype."""
 
+    direction: Optional[ArgumentDirectionEnum]
+    server_argument_impl: Optional[ServerArgumentImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize ArgumentDataPrototype."""
         super().__init__()

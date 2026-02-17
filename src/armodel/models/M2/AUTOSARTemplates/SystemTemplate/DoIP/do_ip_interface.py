@@ -34,6 +34,19 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class DoIpInterface(Identifiable):
     """AUTOSAR DoIpInterface."""
 
+    alive_check: Optional[TimeValue]
+    doip_channel: Optional[DoIpTpConfig]
+    doip_connections: list[SocketConnection]
+    do_ip_routings: list[DoIpRoutingActivation]
+    general_inactivity: Optional[TimeValue]
+    initial_inactivity: Optional[TimeValue]
+    initial_vehicle: Optional[TimeValue]
+    is_activation_line: Optional[Boolean]
+    max_tester: Optional[PositiveInteger]
+    sockets: list[StaticSocketConnection]
+    use_mac_address: Optional[Boolean]
+    use_vehicle: Optional[Boolean]
+    vehicle: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DoIpInterface."""
         super().__init__()

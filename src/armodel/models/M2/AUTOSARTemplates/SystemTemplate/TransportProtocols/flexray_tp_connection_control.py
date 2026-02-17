@@ -24,6 +24,18 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayTpConnectionControl(Identifiable):
     """AUTOSAR FlexrayTpConnectionControl."""
 
+    ack_type: Optional[FrArTpAckType]
+    max_fc_wait: Optional[Integer]
+    max_number_of: Optional[Integer]
+    max_retries: Optional[Integer]
+    separation_cycle: Optional[Integer]
+    time_br: Optional[TimeValue]
+    time_buffer: Optional[TimeValue]
+    time_cs: Optional[TimeValue]
+    timeout_ar: Optional[TimeValue]
+    timeout_as: Optional[TimeValue]
+    timeout_bs: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize FlexrayTpConnectionControl."""
         super().__init__()

@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
 class IndexEntry(ARObject):
     """AUTOSAR IndexEntry."""
 
+    sub: Superscript
+    sup: Superscript
     def __init__(self) -> None:
         """Initialize IndexEntry."""
         super().__init__()

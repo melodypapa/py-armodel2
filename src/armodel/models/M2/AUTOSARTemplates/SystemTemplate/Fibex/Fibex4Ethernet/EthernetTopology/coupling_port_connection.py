@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortConnection(ARObject):
     """AUTOSAR CouplingPortConnection."""
 
+    first_port: Optional[CouplingPort]
+    node_ports: list[CouplingPort]
+    plca_local_node: Optional[PositiveInteger]
+    plca_transmit: Optional[PositiveInteger]
+    second_port: Optional[CouplingPort]
     def __init__(self) -> None:
         """Initialize CouplingPortConnection."""
         super().__init__()

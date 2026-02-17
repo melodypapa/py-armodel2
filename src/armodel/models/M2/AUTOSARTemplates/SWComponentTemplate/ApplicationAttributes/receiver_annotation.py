@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ReceiverAnnotation(SenderReceiverAnnotation):
     """AUTOSAR ReceiverAnnotation."""
 
+    signal_age: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ReceiverAnnotation."""
         super().__init__()

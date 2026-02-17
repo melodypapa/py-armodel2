@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class BswDataReceivedEvent(BswScheduleEvent):
     """AUTOSAR BswDataReceivedEvent."""
 
+    data: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize BswDataReceivedEvent."""
         super().__init__()

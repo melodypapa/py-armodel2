@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class BswExternalTriggerOccurredEvent(BswScheduleEvent):
     """AUTOSAR BswExternalTriggerOccurredEvent."""
 
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize BswExternalTriggerOccurredEvent."""
         super().__init__()

@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class SwcServiceDependency(ServiceDependency):
     """AUTOSAR SwcServiceDependency."""
 
+    assigned_datas: list[Any]
+    assigned_ports: list[RoleBasedPortAssignment]
+    represented_port: Optional[PortGroup]
+    service_needs: Optional[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize SwcServiceDependency."""
         super().__init__()

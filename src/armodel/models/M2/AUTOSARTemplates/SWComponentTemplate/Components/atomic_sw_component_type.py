@@ -30,6 +30,8 @@ class AtomicSwComponentType(SwComponentType):
     """AUTOSAR AtomicSwComponentType."""
     """Abstract base class - do not instantiate directly."""
 
+    internal_behavior: Optional[SwcInternalBehavior]
+    symbol_props: Optional[SymbolProps]
     def __init__(self) -> None:
         """Initialize AtomicSwComponentType."""
         super().__init__()

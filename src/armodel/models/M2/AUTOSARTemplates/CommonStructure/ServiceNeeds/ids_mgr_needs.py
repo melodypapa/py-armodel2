@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IdsMgrNeeds(ServiceNeeds):
     """AUTOSAR IdsMgrNeeds."""
 
+    use_smart: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize IdsMgrNeeds."""
         super().__init__()

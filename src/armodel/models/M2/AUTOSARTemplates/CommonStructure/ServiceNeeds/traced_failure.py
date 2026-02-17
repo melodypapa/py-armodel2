@@ -22,6 +22,7 @@ class TracedFailure(Identifiable):
     """AUTOSAR TracedFailure."""
     """Abstract base class - do not instantiate directly."""
 
+    id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize TracedFailure."""
         super().__init__()

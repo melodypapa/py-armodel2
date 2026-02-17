@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 class LabeledItem(Paginateable):
     """AUTOSAR LabeledItem."""
 
+    help_entry: Optional[String]
+    item_contents: Optional[DocumentationBlock]
+    item_label: MultiLanguageOverviewParagraph
     def __init__(self) -> None:
         """Initialize LabeledItem."""
         super().__init__()

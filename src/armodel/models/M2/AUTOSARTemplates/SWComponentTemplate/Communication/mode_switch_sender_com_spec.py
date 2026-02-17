@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchSenderComSpec(PPortComSpec):
     """AUTOSAR ModeSwitchSenderComSpec."""
 
+    enhanced_mode: Optional[Boolean]
+    mode_group: Optional[ModeDeclarationGroup]
+    mode_switched_ack: Optional[Any]
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()

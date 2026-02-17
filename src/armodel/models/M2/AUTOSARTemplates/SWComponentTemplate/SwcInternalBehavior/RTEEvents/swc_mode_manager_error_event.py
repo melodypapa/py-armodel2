@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class SwcModeManagerErrorEvent(RTEEvent):
     """AUTOSAR SwcModeManagerErrorEvent."""
 
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize SwcModeManagerErrorEvent."""
         super().__init__()

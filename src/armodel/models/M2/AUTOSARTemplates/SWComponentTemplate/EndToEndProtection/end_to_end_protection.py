@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EndToEndProtection(Identifiable):
     """AUTOSAR EndToEndProtection."""
 
+    end_to_ends: list[EndToEndProtection]
     def __init__(self) -> None:
         """Initialize EndToEndProtection."""
         super().__init__()

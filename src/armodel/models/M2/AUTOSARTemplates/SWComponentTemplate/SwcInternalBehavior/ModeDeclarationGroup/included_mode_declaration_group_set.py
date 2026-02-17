@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class IncludedModeDeclarationGroupSet(ARObject):
     """AUTOSAR IncludedModeDeclarationGroupSet."""
 
+    modes: list[ModeDeclarationGroup]
+    prefix: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize IncludedModeDeclarationGroupSet."""
         super().__init__()

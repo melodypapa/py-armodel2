@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticIumprGroupIdentifier(ARObject):
     """AUTOSAR DiagnosticIumprGroupIdentifier."""
 
+    group_id: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprGroupIdentifier."""
         super().__init__()

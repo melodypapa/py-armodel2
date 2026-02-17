@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DcmIPdu(IPdu):
     """AUTOSAR DcmIPdu."""
 
+    diag_pdu_type: Optional[DiagPduType]
     def __init__(self) -> None:
         """Initialize DcmIPdu."""
         super().__init__()

@@ -35,6 +35,9 @@ if TYPE_CHECKING:
 class ARPackage(CollectableElement):
     """AUTOSAR ARPackage."""
 
+    ar_packages: list[ARPackage]
+    elements: list[PackageableElement]
+    reference_bases: list[ReferenceBase]
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()

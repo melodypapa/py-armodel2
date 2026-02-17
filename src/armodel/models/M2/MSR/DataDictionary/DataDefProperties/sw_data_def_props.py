@@ -91,6 +91,35 @@ if TYPE_CHECKING:
 class SwDataDefProps(ARObject):
     """AUTOSAR SwDataDefProps."""
 
+    additional_native: Optional[NativeDeclarationString]
+    annotations: list[Annotation]
+    base_type: Optional[SwBaseType]
+    compu_method: Optional[CompuMethod]
+    data_constr: Optional[DataConstr]
+    display_format_string: Optional[DisplayFormatString]
+    display: Optional[DisplayPresentationEnum]
+    implementation: Optional[AbstractImplementationDataType]
+    invalid_value: Optional[ValueSpecification]
+    step_size: Optional[Float]
+    sw_addr_method: Optional[SwAddrMethod]
+    sw_alignment: Optional[AlignmentType]
+    sw_bit: Optional[SwBitRepresentation]
+    sw_calibration_access: Optional[SwCalibrationAccessEnum]
+    sw_calprm_axis_set: Optional[SwCalprmAxisSet]
+    sw_comparisons: list[SwVariableRefProxy]
+    sw_data: Optional[SwDataDependency]
+    sw_host_variable: Optional[SwVariableRefProxy]
+    sw_impl_policy_enum: Optional[SwImplPolicyEnum]
+    sw_intended: Optional[Numerical]
+    sw_interpolation: Optional[Identifier]
+    sw_is_virtual: Optional[Boolean]
+    sw_pointer_target_props: Optional[SwPointerTargetProps]
+    sw_record: Optional[SwRecordLayout]
+    sw_refresh: Optional[MultidimensionalTime]
+    sw_text_props: Optional[SwTextProps]
+    sw_value_blocks: list[Numerical]
+    unit: Optional[Unit]
+    value_axis_data: Optional[ApplicationPrimitiveDataType]
     def __init__(self) -> None:
         """Initialize SwDataDefProps."""
         super().__init__()

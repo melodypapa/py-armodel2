@@ -24,6 +24,10 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class PerInstanceMemory(Identifiable):
     """AUTOSAR PerInstanceMemory."""
 
+    init_value: Optional[String]
+    sw_data_def: Optional[SwDataDefProps]
+    type: Optional[CIdentifier]
+    type_definition: Optional[String]
     def __init__(self) -> None:
         """Initialize PerInstanceMemory."""
         super().__init__()

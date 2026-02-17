@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class OperationInvokedEvent(RTEEvent):
     """AUTOSAR OperationInvokedEvent."""
 
+    operation_instance_ref: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInvokedEvent."""
         super().__init__()

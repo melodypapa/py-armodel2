@@ -29,6 +29,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_lin_
 class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingCan."""
 
+    can_id_ranges: list[BusMirrorCanIdRangeMapping]
+    can_id_to_can_ids: list[BusMirrorCanIdToCanIdMapping]
+    lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping]
+    mirror_source_lin: Optional[PositiveInteger]
+    mirror_status: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingCan."""
         super().__init__()

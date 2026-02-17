@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class McDataAccessDetails(ARObject):
     """AUTOSAR McDataAccessDetails."""
 
+    rte_event_refs: list[RTEEvent]
+    variable_accesses: list[VariableAccess]
     def __init__(self) -> None:
         """Initialize McDataAccessDetails."""
         super().__init__()

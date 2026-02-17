@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class OperationInSystemInstanceRef(ARObject):
     """AUTOSAR OperationInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    context_port: PortPrototype
+    target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInSystemInstanceRef."""
         super().__init__()

@@ -18,6 +18,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EndToEndTransformationISignalProps(ARObject):
     """AUTOSAR EndToEndTransformationISignalProps."""
 
+    data_length: Optional[PositiveInteger]
+    max_data_length: Optional[PositiveInteger]
+    min_data_length: Optional[PositiveInteger]
+    source_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EndToEndTransformationISignalProps."""
         super().__init__()

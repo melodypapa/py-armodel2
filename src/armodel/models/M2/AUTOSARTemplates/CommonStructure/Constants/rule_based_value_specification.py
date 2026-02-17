@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_arguments
 class RuleBasedValueSpecification(ARObject):
     """AUTOSAR RuleBasedValueSpecification."""
 
+    arguments: Optional[RuleArguments]
+    max_size_to_fill: Optional[Integer]
+    rule: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RuleBasedValueSpecification."""
         super().__init__()

@@ -33,6 +33,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights.acl_role
 class AclPermission(ARElement):
     """AUTOSAR AclPermission."""
 
+    acl_contexts: list[NameToken]
+    acl_object_sets: list[AclObjectSet]
+    acl_operations: list[AclOperation]
+    acl_roles: list[AclRole]
+    acl_scope: AclScopeEnum
     def __init__(self) -> None:
         """Initialize AclPermission."""
         super().__init__()

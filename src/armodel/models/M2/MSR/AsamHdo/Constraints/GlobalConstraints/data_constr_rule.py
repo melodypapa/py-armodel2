@@ -25,6 +25,9 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.phys_constrs im
 class DataConstrRule(ARObject):
     """AUTOSAR DataConstrRule."""
 
+    constr_level: Optional[Integer]
+    internal_constrs: Optional[InternalConstrs]
+    phys_constrs: Optional[PhysConstrs]
     def __init__(self) -> None:
         """Initialize DataConstrRule."""
         super().__init__()

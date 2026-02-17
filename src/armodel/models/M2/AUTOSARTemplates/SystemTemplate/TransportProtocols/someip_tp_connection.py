@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip
 class SomeipTpConnection(ARObject):
     """AUTOSAR SomeipTpConnection."""
 
+    tp_channel: Optional[SomeipTpChannel]
+    tp_sdu: Optional[PduTriggering]
+    transport_pdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()

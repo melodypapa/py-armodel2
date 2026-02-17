@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
     """AUTOSAR DiagnosticAuthTransmitCertificateEvaluation."""
 
+    evaluation_id: Optional[PositiveInteger]
+    function: Optional[String]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateEvaluation."""
         super().__init__()

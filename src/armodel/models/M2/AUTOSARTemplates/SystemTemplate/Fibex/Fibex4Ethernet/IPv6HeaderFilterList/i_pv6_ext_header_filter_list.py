@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IPv6ExtHeaderFilterList(Identifiable):
     """AUTOSAR IPv6ExtHeaderFilterList."""
 
+    allowed_i_pv6_exts: list[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()

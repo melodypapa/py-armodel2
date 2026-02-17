@@ -20,6 +20,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EndToEndDescription(ARObject):
     """AUTOSAR EndToEndDescription."""
 
+    category: Optional[NameToken]
+    counter_offset: Optional[PositiveInteger]
+    crc_offset: Optional[PositiveInteger]
+    data_id_mode: Optional[PositiveInteger]
+    data_id_nibble: Optional[PositiveInteger]
+    data_length: Optional[PositiveInteger]
+    max_delta: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EndToEndDescription."""
         super().__init__()

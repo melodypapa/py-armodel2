@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PostBuildVariantCriterionValueSet(ARElement):
     """AUTOSAR PostBuildVariantCriterionValueSet."""
 
+    post_build_variants: list[Any]
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValueSet."""
         super().__init__()

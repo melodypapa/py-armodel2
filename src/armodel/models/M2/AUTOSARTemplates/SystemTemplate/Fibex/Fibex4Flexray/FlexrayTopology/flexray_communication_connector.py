@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayCommunicationConnector(CommunicationConnector):
     """AUTOSAR FlexrayCommunicationConnector."""
 
+    nm_ready_sleep: Optional[Float]
+    wake_up: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationConnector."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BusMirrorChannelMappingUserDefined(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingUserDefined."""
 
+    transmission: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingUserDefined."""
         super().__init__()

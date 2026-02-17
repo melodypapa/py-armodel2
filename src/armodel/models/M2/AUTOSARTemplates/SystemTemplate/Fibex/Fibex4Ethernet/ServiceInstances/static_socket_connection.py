@@ -32,6 +32,10 @@ if TYPE_CHECKING:
 class StaticSocketConnection(Identifiable):
     """AUTOSAR StaticSocketConnection."""
 
+    i_pdu_identifiers: list[SoConIPduIdentifier]
+    remote_address: Optional[SocketAddress]
+    tcp_connect: Optional[TimeValue]
+    tcp_role: Optional[TcpRoleEnum]
     def __init__(self) -> None:
         """Initialize StaticSocketConnection."""
         super().__init__()

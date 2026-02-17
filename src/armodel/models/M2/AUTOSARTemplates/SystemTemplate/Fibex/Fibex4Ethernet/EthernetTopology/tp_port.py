@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TpPort(ARObject):
     """AUTOSAR TpPort."""
 
+    dynamically: Optional[Boolean]
+    port_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize TpPort."""
         super().__init__()

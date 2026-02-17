@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import 
 class CompuConst(ARObject):
     """AUTOSAR CompuConst."""
 
+    compu_const_content: Optional[CompuConstContent]
     def __init__(self) -> None:
         """Initialize CompuConst."""
         super().__init__()

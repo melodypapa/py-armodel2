@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_fail
 class TransientFault(TracedFailure):
     """AUTOSAR TransientFault."""
 
+    possible_error_reactions: list[Any]
     def __init__(self) -> None:
         """Initialize TransientFault."""
         super().__init__()

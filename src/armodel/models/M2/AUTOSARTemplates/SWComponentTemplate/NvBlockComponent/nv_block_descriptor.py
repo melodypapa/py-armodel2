@@ -47,6 +47,18 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvBlockDescriptor(Identifiable):
     """AUTOSAR NvBlockDescriptor."""
 
+    client_server_ports: list[RoleBasedPortAssignment]
+    constant_values: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    instantiation_data_defs: list[InstantiationDataDefProps]
+    mode_switch_events: list[Any]
+    nv_block_datas: list[NvBlockDataMapping]
+    nv_block_needs: Optional[NvBlockNeeds]
+    ram_block: Optional[VariableDataPrototype]
+    rom_block: Optional[ParameterDataPrototype]
+    support_dirty: Optional[Boolean]
+    timing_event: Optional[TimingEvent]
+    writing_strategies: list[Any]
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()

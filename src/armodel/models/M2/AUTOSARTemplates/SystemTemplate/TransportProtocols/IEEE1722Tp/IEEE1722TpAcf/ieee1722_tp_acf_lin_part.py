@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
     """AUTOSAR IEEE1722TpAcfLinPart."""
 
+    lin_identifier: Optional[PositiveInteger]
+    sdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLinPart."""
         super().__init__()

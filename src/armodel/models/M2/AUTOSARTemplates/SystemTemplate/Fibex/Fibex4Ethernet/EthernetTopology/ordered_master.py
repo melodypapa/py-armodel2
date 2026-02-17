@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class OrderedMaster(ARObject):
     """AUTOSAR OrderedMaster."""
 
+    index: Optional[PositiveInteger]
+    time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
     def __init__(self) -> None:
         """Initialize OrderedMaster."""
         super().__init__()

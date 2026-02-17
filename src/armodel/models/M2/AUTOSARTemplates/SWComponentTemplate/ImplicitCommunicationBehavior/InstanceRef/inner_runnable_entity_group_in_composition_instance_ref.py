@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerRunnableEntityGroupInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_sws: list[Any]
+    target_runnable: RunnableEntityGroup
     def __init__(self) -> None:
         """Initialize InnerRunnableEntityGroupInCompositionInstanceRef."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class HwPin(Identifiable):
     """AUTOSAR HwPin."""
 
+    function_names: list[String]
+    packaging_pin: Optional[String]
+    pin_number: Optional[Integer]
     def __init__(self) -> None:
         """Initialize HwPin."""
         super().__init__()

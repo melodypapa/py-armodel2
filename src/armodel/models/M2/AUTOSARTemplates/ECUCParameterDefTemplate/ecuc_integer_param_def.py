@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucIntegerParamDef(EcucParameterDef):
     """AUTOSAR EcucIntegerParamDef."""
 
+    default_value: Optional[UnlimitedInteger]
+    max: Optional[UnlimitedInteger]
+    min: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize EcucIntegerParamDef."""
         super().__init__()

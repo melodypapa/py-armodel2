@@ -22,6 +22,9 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class RuleBasedValueCont(ARObject):
     """AUTOSAR RuleBasedValueCont."""
 
+    rule_based: Optional[Any]
+    sw_arraysize: Optional[ValueList]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize RuleBasedValueCont."""
         super().__init__()

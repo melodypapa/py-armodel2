@@ -27,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_val
 class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
     """AUTOSAR ApplicationRuleBasedValueSpecification."""
 
+    category_specification: Optional[Identifier]
+    sw_axis_conts: list[RuleBasedAxisCont]
+    sw_value_cont: Optional[RuleBasedValueCont]
     def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""
         super().__init__()

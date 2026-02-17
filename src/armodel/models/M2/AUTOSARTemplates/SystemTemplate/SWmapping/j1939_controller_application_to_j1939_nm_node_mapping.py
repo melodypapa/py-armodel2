@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
     """AUTOSAR J1939ControllerApplicationToJ1939NmNodeMapping."""
 
+    j1939_controller: Optional[Any]
+    j1939_nm_node: Optional[J1939NmNode]
     def __init__(self) -> None:
         """Initialize J1939ControllerApplicationToJ1939NmNodeMapping."""
         super().__init__()

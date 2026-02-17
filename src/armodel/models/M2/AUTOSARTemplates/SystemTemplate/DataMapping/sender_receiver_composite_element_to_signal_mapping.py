@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SenderReceiverCompositeElementToSignalMapping(DataMapping):
     """AUTOSAR SenderReceiverCompositeElementToSignalMapping."""
 
+    data_element: Optional[VariableDataPrototype]
+    system_signal: Optional[SystemSignal]
+    type_mapping: Optional[SenderRecCompositeTypeMapping]
     def __init__(self) -> None:
         """Initialize SenderReceiverCompositeElementToSignalMapping."""
         super().__init__()

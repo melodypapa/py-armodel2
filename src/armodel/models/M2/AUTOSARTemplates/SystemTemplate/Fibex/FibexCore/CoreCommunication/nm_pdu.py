@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class NmPdu(Pdu):
     """AUTOSAR NmPdu."""
 
+    i_signal_to_i_pdus: list[ISignalToIPduMapping]
+    nm_data: Optional[Boolean]
+    nm_vote_information: Optional[Boolean]
+    unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize NmPdu."""
         super().__init__()

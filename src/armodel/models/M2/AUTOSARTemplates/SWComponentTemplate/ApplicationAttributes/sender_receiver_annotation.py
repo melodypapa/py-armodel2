@@ -28,6 +28,10 @@ class SenderReceiverAnnotation(GeneralAnnotation):
     """AUTOSAR SenderReceiverAnnotation."""
     """Abstract base class - do not instantiate directly."""
 
+    computed: Optional[Boolean]
+    data_element: Optional[VariableDataPrototype]
+    limit_kind: Optional[DataLimitKindEnum]
+    processing_kind_enum: Optional[ProcessingKindEnum]
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()

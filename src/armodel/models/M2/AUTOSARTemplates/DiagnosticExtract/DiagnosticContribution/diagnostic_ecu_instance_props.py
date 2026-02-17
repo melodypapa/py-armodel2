@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEcuInstanceProps."""
 
+    ecu_instances: list[EcuInstance]
+    obd_support: Optional[DiagnosticObdSupportEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuInstanceProps."""
         super().__init__()

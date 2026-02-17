@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class ParameterProvideComSpec(PPortComSpec):
     """AUTOSAR ParameterProvideComSpec."""
 
+    init_value: Optional[ValueSpecification]
+    parameter: Optional[ParameterDataPrototype]
     def __init__(self) -> None:
         """Initialize ParameterProvideComSpec."""
         super().__init__()

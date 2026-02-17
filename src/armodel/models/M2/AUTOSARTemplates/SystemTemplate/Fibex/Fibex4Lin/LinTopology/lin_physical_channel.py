@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinPhysicalChannel(PhysicalChannel):
     """AUTOSAR LinPhysicalChannel."""
 
+    bus_idle_timeout: Optional[TimeValue]
+    schedule_tables: list[LinScheduleTable]
     def __init__(self) -> None:
         """Initialize LinPhysicalChannel."""
         super().__init__()

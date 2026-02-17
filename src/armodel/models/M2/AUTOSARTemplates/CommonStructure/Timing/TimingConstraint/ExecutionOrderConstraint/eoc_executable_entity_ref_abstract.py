@@ -18,6 +18,7 @@ class EOCExecutableEntityRefAbstract(Identifiable):
     """AUTOSAR EOCExecutableEntityRefAbstract."""
     """Abstract base class - do not instantiate directly."""
 
+    direct_successors: list[Any]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefAbstract."""
         super().__init__()

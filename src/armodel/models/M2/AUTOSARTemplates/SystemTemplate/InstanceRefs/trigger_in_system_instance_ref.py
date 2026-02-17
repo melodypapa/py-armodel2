@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TriggerInSystemInstanceRef(ARObject):
     """AUTOSAR TriggerInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    context_port: PortPrototype
+    target_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerInSystemInstanceRef."""
         super().__init__()

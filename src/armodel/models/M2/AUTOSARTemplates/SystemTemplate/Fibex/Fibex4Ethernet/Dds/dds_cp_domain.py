@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class DdsCpDomain(Identifiable):
     """AUTOSAR DdsCpDomain."""
 
+    dds_partitions: list[DdsCpPartition]
+    dds_topics: list[DdsCpTopic]
+    domain_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsCpDomain."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AclOperation(ARElement):
     """AUTOSAR AclOperation."""
 
+    implieds: list[AclOperation]
     def __init__(self) -> None:
         """Initialize AclOperation."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopolo
 class LinMaster(ARObject):
     """AUTOSAR LinMaster."""
 
+    lin_slaves: list[LinSlaveConfig]
+    time_base: Optional[TimeValue]
+    time_base_jitter: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize LinMaster."""
         super().__init__()

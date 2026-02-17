@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BufferProperties(ARObject):
     """AUTOSAR BufferProperties."""
 
+    header_length: Optional[Integer]
+    in_place: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BufferProperties."""
         super().__init__()

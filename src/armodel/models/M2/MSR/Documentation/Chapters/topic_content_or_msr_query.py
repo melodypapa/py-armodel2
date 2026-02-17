@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.Documentation.Chapters.topic_content import (
 class TopicContentOrMsrQuery(ARObject):
     """AUTOSAR TopicContentOrMsrQuery."""
 
+    msr_query_p1: MsrQueryP1
+    topic_content: TopicContent
     def __init__(self) -> None:
         """Initialize TopicContentOrMsrQuery."""
         super().__init__()

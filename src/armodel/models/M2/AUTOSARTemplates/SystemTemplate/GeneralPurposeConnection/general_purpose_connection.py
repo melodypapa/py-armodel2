@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class GeneralPurposeConnection(ARElement):
     """AUTOSAR GeneralPurposeConnection."""
 
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize GeneralPurposeConnection."""
         super().__init__()

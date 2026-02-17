@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds 
 class DdsOwnership(ARObject):
     """AUTOSAR DdsOwnership."""
 
+    ownership_kind: Optional[DdsOwnershipKindEnum]
     def __init__(self) -> None:
         """Initialize DdsOwnership."""
         super().__init__()

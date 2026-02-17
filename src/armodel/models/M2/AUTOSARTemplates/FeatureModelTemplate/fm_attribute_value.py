@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_def im
 class FMAttributeValue(ARObject):
     """AUTOSAR FMAttributeValue."""
 
+    definition: Optional[FMAttributeDef]
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize FMAttributeValue."""
         super().__init__()

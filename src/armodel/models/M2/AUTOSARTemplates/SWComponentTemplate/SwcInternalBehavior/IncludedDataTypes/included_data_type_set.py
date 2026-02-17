@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class IncludedDataTypeSet(ARObject):
     """AUTOSAR IncludedDataTypeSet."""
 
+    data_types: list[AutosarDataType]
+    literal_prefix: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize IncludedDataTypeSet."""
         super().__init__()

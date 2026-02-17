@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
     """AUTOSAR ROperationInAtomicSwcInstanceRef."""
 
+    context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_required_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ROperationInAtomicSwcInstanceRef."""
         super().__init__()

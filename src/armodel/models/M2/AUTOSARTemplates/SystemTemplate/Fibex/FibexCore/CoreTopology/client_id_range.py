@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ClientIdRange(ARObject):
     """AUTOSAR ClientIdRange."""
 
+    lower_limit: Optional[Limit]
+    upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize ClientIdRange."""
         super().__init__()

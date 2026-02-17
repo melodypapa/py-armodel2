@@ -18,6 +18,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EthTSynSubTlvConfig(ARObject):
     """AUTOSAR EthTSynSubTlvConfig."""
 
+    ofs_sub_tlv: Optional[Boolean]
+    status_sub_tlv: Optional[Boolean]
+    time_sub_tlv: Optional[Boolean]
+    user_data_sub_tlv: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EthTSynSubTlvConfig."""
         super().__init__()

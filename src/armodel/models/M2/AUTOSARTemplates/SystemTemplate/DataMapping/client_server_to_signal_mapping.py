@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ClientServerToSignalMapping(DataMapping):
     """AUTOSAR ClientServerToSignalMapping."""
 
+    call_signal: Optional[SystemSignal]
+    client_server: Optional[ClientServerOperation]
+    return_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize ClientServerToSignalMapping."""
         super().__init__()

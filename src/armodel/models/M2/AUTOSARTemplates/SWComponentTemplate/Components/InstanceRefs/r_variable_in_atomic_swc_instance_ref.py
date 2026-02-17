@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
     """AUTOSAR RVariableInAtomicSwcInstanceRef."""
 
+    context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_data_element: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize RVariableInAtomicSwcInstanceRef."""
         super().__init__()

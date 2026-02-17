@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchInterface(PortInterface):
     """AUTOSAR ModeSwitchInterface."""
 
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeSwitchInterface."""
         super().__init__()

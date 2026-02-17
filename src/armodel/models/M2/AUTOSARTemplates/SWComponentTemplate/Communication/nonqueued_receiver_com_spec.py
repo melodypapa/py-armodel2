@@ -32,6 +32,14 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class NonqueuedReceiverComSpec(ReceiverComSpec):
     """AUTOSAR NonqueuedReceiverComSpec."""
 
+    alive_timeout: Optional[TimeValue]
+    enable_update: Optional[Boolean]
+    filter: Optional[DataFilter]
+    handle_data: Optional[Boolean]
+    handle_never: Optional[Boolean]
+    handle_timeout_enum: Optional[HandleTimeoutEnum]
+    init_value: Optional[ValueSpecification]
+    timeout: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize NonqueuedReceiverComSpec."""
         super().__init__()

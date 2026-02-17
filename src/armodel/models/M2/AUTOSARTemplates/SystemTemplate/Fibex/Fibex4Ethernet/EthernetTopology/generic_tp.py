@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GenericTp(TransportProtocolConfiguration):
     """AUTOSAR GenericTp."""
 
+    tp_address: Optional[String]
+    tp_technology: Optional[String]
     def __init__(self) -> None:
         """Initialize GenericTp."""
         super().__init__()

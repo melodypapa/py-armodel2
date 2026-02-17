@@ -33,6 +33,9 @@ if TYPE_CHECKING:
 class SwServiceArg(Identifiable):
     """AUTOSAR SwServiceArg."""
 
+    direction: Optional[ArgumentDirectionEnum]
+    sw_arraysize: Optional[ValueList]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SwServiceArg."""
         super().__init__()

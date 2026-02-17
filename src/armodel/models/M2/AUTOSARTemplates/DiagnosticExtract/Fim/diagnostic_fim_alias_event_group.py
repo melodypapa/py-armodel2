@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
     """AUTOSAR DiagnosticFimAliasEventGroup."""
 
+    grouped_aliases: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()

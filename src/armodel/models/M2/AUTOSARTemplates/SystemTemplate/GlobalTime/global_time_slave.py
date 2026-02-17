@@ -25,6 +25,12 @@ class GlobalTimeSlave(Identifiable):
     """AUTOSAR GlobalTimeSlave."""
     """Abstract base class - do not instantiate directly."""
 
+    communication_connector: Optional[CommunicationConnector]
+    follow_up_timeout_value: Optional[TimeValue]
+    icv_verification: Optional[Any]
+    time_leap_future: Optional[TimeValue]
+    time_leap: Optional[PositiveInteger]
+    time_leap_past: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize GlobalTimeSlave."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TransmissionAcknowledgementRequest(ARObject):
     """AUTOSAR TransmissionAcknowledgementRequest."""
 
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TransmissionAcknowledgementRequest."""
         super().__init__()

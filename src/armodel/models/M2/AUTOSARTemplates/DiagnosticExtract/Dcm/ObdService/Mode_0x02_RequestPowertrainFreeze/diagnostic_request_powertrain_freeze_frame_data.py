@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x
 class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestPowertrainFreezeFrameData."""
 
+    freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame]
+    request: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameData."""
         super().__init__()

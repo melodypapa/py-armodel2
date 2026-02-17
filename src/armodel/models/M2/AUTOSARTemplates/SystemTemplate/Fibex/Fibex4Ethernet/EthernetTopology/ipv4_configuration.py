@@ -25,6 +25,14 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv4Configuration."""
 
+    assignment: Optional[PositiveInteger]
+    default_gateway: Optional[Ip4AddressString]
+    dns_servers: list[Ip4AddressString]
+    ip_address_keep_enum: Optional[IpAddressKeepEnum]
+    ipv4_address: Optional[Ip4AddressString]
+    ipv4_address_source: Optional[Ipv4AddressSourceEnum]
+    network_mask: Optional[Ip4AddressString]
+    ttl: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ipv4Configuration."""
         super().__init__()

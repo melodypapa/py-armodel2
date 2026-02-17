@@ -21,6 +21,7 @@ class DiagnosticCondition(DiagnosticCommonElement):
     """AUTOSAR DiagnosticCondition."""
     """Abstract base class - do not instantiate directly."""
 
+    init_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticCondition."""
         super().__init__()

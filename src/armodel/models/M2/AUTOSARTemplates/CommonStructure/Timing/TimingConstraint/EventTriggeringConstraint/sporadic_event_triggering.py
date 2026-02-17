@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SporadicEventTriggering(EventTriggeringConstraint):
     """AUTOSAR SporadicEventTriggering."""
 
+    jitter: Optional[MultidimensionalTime]
+    maximum_inter: Optional[MultidimensionalTime]
+    minimum_inter: Optional[MultidimensionalTime]
+    period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SporadicEventTriggering."""
         super().__init__()

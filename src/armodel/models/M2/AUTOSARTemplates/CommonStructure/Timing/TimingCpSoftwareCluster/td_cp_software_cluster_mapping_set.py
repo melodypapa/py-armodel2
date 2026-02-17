@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TDCpSoftwareClusterMappingSet(ARElement):
     """AUTOSAR TDCpSoftwareClusterMappingSet."""
 
+    td_cp_softwares: list[Any]
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class PduActivationRoutingGroup(Identifiable):
     """AUTOSAR PduActivationRoutingGroup."""
 
+    event_group: Optional[EventGroupControlTypeEnum]
+    i_pdu_identifiers: list[SoConIPduIdentifier]
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()

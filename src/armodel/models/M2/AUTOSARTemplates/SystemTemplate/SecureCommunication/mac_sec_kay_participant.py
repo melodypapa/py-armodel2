@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecKayParticipant(Identifiable):
     """AUTOSAR MacSecKayParticipant."""
 
+    ckn: Optional[CryptoServiceKey]
+    crypto_algo: Optional[MacSecCryptoAlgoConfig]
+    sak: Optional[CryptoServiceKey]
     def __init__(self) -> None:
         """Initialize MacSecKayParticipant."""
         super().__init__()

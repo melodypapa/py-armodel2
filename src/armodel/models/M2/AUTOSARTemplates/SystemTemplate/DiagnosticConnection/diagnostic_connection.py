@@ -24,6 +24,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
 class DiagnosticConnection(ARElement):
     """AUTOSAR DiagnosticConnection."""
 
+    functional_requests: list[TpConnectionIdent]
+    periodic_response_uudts: list[PduTriggering]
+    physical_request: Optional[TpConnectionIdent]
+    response: Optional[TpConnectionIdent]
+    response_on: Optional[TpConnectionIdent]
     def __init__(self) -> None:
         """Initialize DiagnosticConnection."""
         super().__init__()

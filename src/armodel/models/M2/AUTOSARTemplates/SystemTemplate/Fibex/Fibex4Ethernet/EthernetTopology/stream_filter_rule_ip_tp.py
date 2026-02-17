@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class StreamFilterRuleIpTp(ARObject):
     """AUTOSAR StreamFilterRuleIpTp."""
 
+    destination: Optional[StreamFilterIpv6Address]
+    destination_ports: list[StreamFilterPortRange]
+    source: Optional[StreamFilterIpv6Address]
+    source_ports: list[StreamFilterPortRange]
     def __init__(self) -> None:
         """Initialize StreamFilterRuleIpTp."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import 
 class HwPinGroupConnector(Describable):
     """AUTOSAR HwPinGroupConnector."""
 
+    hw_pins: list[HwPinConnector]
+    hw_pin_groups: list[HwPinGroup]
     def __init__(self) -> None:
         """Initialize HwPinGroupConnector."""
         super().__init__()

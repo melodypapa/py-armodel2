@@ -20,6 +20,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerAttributes):
     """AUTOSAR CanControllerConfigurationRequirements."""
 
+    max_number_of_time_quanta_per: Optional[Any]
+    max_sample: Optional[Float]
+    max_sync_jump: Optional[Float]
+    min_number_of_time_quanta_per: Optional[Any]
+    min_sample_point: Optional[Float]
+    min_sync_jump: Optional[Float]
     def __init__(self) -> None:
         """Initialize CanControllerConfigurationRequirements."""
         super().__init__()

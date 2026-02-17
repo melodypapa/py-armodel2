@@ -20,6 +20,21 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpProps(ARObject):
     """AUTOSAR TcpProps."""
 
+    tcp_congestion: Optional[Boolean]
+    tcp_delayed_ack: Optional[TimeValue]
+    tcp_fast_recovery: Optional[Any]
+    tcp_fast: Optional[Boolean]
+    tcp_fin: Optional[TimeValue]
+    tcp_keep_alive: Optional[TimeValue]
+    tcp_max_rtx: Optional[PositiveInteger]
+    tcp_msl: Optional[TimeValue]
+    tcp_nagle: Optional[Boolean]
+    tcp_receive_window_max: Optional[PositiveInteger]
+    tcp: Optional[TimeValue]
+    tcp_slow_start: Optional[Boolean]
+    tcp_syn_max_rtx: Optional[PositiveInteger]
+    tcp_syn_received: Optional[TimeValue]
+    tcp_ttl: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize TcpProps."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class ComMgrUserNeeds(ServiceNeeds):
     """AUTOSAR ComMgrUserNeeds."""
 
+    max_comm_mode_enum: Optional[MaxCommModeEnum]
     def __init__(self) -> None:
         """Initialize ComMgrUserNeeds."""
         super().__init__()

@@ -27,6 +27,8 @@ if TYPE_CHECKING:
 class ParameterAccess(AbstractAccessPoint):
     """AUTOSAR ParameterAccess."""
 
+    accessed_parameter: Optional[AutosarParameterRef]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()

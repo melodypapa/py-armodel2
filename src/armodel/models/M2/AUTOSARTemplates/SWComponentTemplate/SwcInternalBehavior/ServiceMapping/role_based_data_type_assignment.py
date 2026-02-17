@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RoleBasedDataTypeAssignment(ARObject):
     """AUTOSAR RoleBasedDataTypeAssignment."""
 
+    role: Optional[Identifier]
+    used: Optional[Any]
     def __init__(self) -> None:
         """Initialize RoleBasedDataTypeAssignment."""
         super().__init__()

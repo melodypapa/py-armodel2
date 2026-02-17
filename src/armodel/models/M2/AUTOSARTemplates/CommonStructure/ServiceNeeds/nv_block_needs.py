@@ -29,6 +29,28 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class NvBlockNeeds(ServiceNeeds):
     """AUTOSAR NvBlockNeeds."""
 
+    calc_ram_block: Optional[Boolean]
+    check_static_block_id: Optional[Boolean]
+    cyclic_writing: Optional[TimeValue]
+    n_data_sets: Optional[PositiveInteger]
+    n_rom_blocks: Optional[PositiveInteger]
+    ram_block_status_control: Optional[RamBlockStatusControlEnum]
+    readonly: Optional[Boolean]
+    reliability_reliability_enum: Optional[NvBlockNeeds]
+    resistant_to: Optional[Boolean]
+    restore_at_start: Optional[Boolean]
+    select_block_for: Optional[Boolean]
+    store_at: Optional[Boolean]
+    store_cyclic: Optional[Boolean]
+    store: Optional[Boolean]
+    store_immediate: Optional[Boolean]
+    store_on_change: Optional[Boolean]
+    use_auto: Optional[Boolean]
+    use_crc_comp: Optional[Boolean]
+    write_only_once: Optional[Boolean]
+    write_verification: Optional[Boolean]
+    writing: Optional[PositiveInteger]
+    writing_priority: Optional[NvBlockNeedsWritingPriorityEnum]
     def __init__(self) -> None:
         """Initialize NvBlockNeeds."""
         super().__init__()

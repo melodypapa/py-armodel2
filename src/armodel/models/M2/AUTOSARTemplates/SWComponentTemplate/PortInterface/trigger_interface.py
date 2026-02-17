@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TriggerInterface(PortInterface):
     """AUTOSAR TriggerInterface."""
 
+    triggers: list[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerInterface."""
         super().__init__()

@@ -28,6 +28,11 @@ if TYPE_CHECKING:
 class SwValues(ARObject):
     """AUTOSAR SwValues."""
 
+    v: Optional[Numerical]
+    vf: Optional[Numerical]
+    vg: Optional[ValueGroup]
+    vt: Optional[VerbatimString]
+    vtf: Optional[NumericalOrText]
     def __init__(self) -> None:
         """Initialize SwValues."""
         super().__init__()

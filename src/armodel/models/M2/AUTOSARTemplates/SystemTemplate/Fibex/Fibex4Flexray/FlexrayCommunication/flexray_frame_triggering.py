@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.Flexr
 class FlexrayFrameTriggering(FrameTriggering):
     """AUTOSAR FlexrayFrameTriggering."""
 
+    absolutelies: list[FlexrayAbsolutelyScheduledTiming]
+    allow_dynamic: Optional[Boolean]
+    message_id: Optional[PositiveInteger]
+    payload_preamble: Optional[Any]
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()

@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticFunctionInhibitSource(Identifiable):
     """AUTOSAR DiagnosticFunctionInhibitSource."""
 
+    event: Optional[Any]
+    event_group: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionInhibitSource."""
         super().__init__()

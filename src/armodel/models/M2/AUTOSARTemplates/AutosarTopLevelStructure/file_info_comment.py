@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class FileInfoComment(ARObject):
     """AUTOSAR FileInfoComment."""
 
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize FileInfoComment."""
         super().__init__()

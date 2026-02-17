@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_nominator_denominator
 class CompuRationalCoeffs(ARObject):
     """AUTOSAR CompuRationalCoeffs."""
 
+    compu_denominator: Optional[CompuNominatorDenominator]
+    compu: Optional[CompuNominatorDenominator]
     def __init__(self) -> None:
         """Initialize CompuRationalCoeffs."""
         super().__init__()

@@ -25,6 +25,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class ArrayValueSpecification(CompositeValueSpecification):
     """AUTOSAR ArrayValueSpecification."""
 
+    elements: list[ValueSpecification]
+    intended_partial: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ArrayValueSpecification."""
         super().__init__()

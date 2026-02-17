@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class PdurIPduGroup(FibexElement):
     """AUTOSAR PdurIPduGroup."""
 
+    communication: Optional[String]
+    i_pdus: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize PdurIPduGroup."""
         super().__init__()

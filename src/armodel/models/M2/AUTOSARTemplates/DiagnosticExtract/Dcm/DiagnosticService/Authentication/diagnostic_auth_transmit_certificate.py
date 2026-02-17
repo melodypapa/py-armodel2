@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
     """AUTOSAR DiagnosticAuthTransmitCertificate."""
 
+    certificates: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificate."""
         super().__init__()

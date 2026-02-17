@@ -19,6 +19,7 @@ class MappingConstraint(ARObject):
     """AUTOSAR MappingConstraint."""
     """Abstract base class - do not instantiate directly."""
 
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize MappingConstraint."""
         super().__init__()

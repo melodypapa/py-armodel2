@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetCluster(ARObject):
     """AUTOSAR EthernetCluster."""
 
+    coupling_port: Optional[TimeValue]
+    mac_multicast_groups: list[MacMulticastGroup]
     def __init__(self) -> None:
         """Initialize EthernetCluster."""
         super().__init__()

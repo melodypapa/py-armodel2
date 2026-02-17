@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsLatencyBudget(ARObject):
     """AUTOSAR DdsLatencyBudget."""
 
+    latency_budget: Optional[Float]
     def __init__(self) -> None:
         """Initialize DdsLatencyBudget."""
         super().__init__()

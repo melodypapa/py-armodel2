@@ -35,6 +35,13 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptContainer(Identifiable):
     """AUTOSAR RptContainer."""
 
+    by_pass_points: list[AtpFeature]
+    explicit_rpts: list[RptProfile]
+    rpt_containers: list[RptContainer]
+    rpt_executable_entity: Optional[RptExecutableEntity]
+    rpt_hook: Optional[RptHook]
+    rpt_impl_policy: Optional[RptImplPolicy]
+    rpt_sw: Optional[RptSwPrototypingAccess]
     def __init__(self) -> None:
         """Initialize RptContainer."""
         super().__init__()

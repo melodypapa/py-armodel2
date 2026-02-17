@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
     """AUTOSAR RPortInCompositionInstanceRef."""
 
+    context: Optional[Any]
+    target_r_port_prototype: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:
         """Initialize RPortInCompositionInstanceRef."""
         super().__init__()

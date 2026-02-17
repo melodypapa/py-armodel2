@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class BswTriggerDirectImplementation(ARObject):
     """AUTOSAR BswTriggerDirectImplementation."""
 
+    cat2_isr: Optional[Identifier]
+    mastered_trigger: Optional[Trigger]
+    task: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize BswTriggerDirectImplementation."""
         super().__init__()

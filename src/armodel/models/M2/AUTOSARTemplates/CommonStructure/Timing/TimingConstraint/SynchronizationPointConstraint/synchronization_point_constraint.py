@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstrac
 class SynchronizationPointConstraint(TimingConstraint):
     """AUTOSAR SynchronizationPointConstraint."""
 
+    source_eecs: list[Any]
+    source_events: list[AbstractEvent]
+    target_eecs: list[Any]
+    target_events: list[AbstractEvent]
     def __init__(self) -> None:
         """Initialize SynchronizationPointConstraint."""
         super().__init__()

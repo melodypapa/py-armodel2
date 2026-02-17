@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsDeadline(ARObject):
     """AUTOSAR DdsDeadline."""
 
+    deadline_period: Optional[Float]
     def __init__(self) -> None:
         """Initialize DdsDeadline."""
         super().__init__()

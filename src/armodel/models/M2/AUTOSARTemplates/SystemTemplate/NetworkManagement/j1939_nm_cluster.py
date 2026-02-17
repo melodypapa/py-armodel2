@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939NmCluster(NmCluster):
     """AUTOSAR J1939NmCluster."""
 
+    address_claim: Optional[Boolean]
+    uses_dynamic: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize J1939NmCluster."""
         super().__init__()

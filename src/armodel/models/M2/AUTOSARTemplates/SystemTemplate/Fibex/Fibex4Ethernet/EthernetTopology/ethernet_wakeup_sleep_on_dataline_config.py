@@ -22,6 +22,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EthernetWakeupSleepOnDatalineConfig(Identifiable):
     """AUTOSAR EthernetWakeupSleepOnDatalineConfig."""
 
+    sleep_mode: Optional[TimeValue]
+    sleep_repetition: Optional[TimeValue]
+    sleep: Optional[PositiveInteger]
+    wakeup_forward: Optional[Boolean]
+    wakeup_local: Optional[Boolean]
+    wakeup_remote: Optional[Boolean]
+    wakeup: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfig."""
         super().__init__()

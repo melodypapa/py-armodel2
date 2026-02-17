@@ -25,6 +25,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoServiceCertificate(ARElement):
     """AUTOSAR CryptoServiceCertificate."""
 
+    algorithm_family: Optional[Any]
+    format: Optional[CryptoCertificateFormatEnum]
+    maximum: Optional[PositiveInteger]
+    next_higher: Optional[Any]
+    server_name: Optional[String]
     def __init__(self) -> None:
         """Initialize CryptoServiceCertificate."""
         super().__init__()

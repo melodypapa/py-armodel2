@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_syst
 class PredefinedVariant(ARElement):
     """AUTOSAR PredefinedVariant."""
 
+    included_variants: list[PredefinedVariant]
+    post_build_variants: list[Any]
+    sws: list[SwSystemconstantValueSet]
     def __init__(self) -> None:
         """Initialize PredefinedVariant."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CompuGenericMath(ARObject):
     """AUTOSAR CompuGenericMath."""
 
+    level: Optional[PrimitiveIdentifier]
     def __init__(self) -> None:
         """Initialize CompuGenericMath."""
         super().__init__()

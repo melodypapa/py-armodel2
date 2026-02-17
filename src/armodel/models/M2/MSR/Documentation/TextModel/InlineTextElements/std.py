@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Std(SingleLanguageReferrable):
     """AUTOSAR Std."""
 
+    date: Optional[DateTime]
+    position: Optional[String]
+    state: Optional[String]
+    subtitle: Optional[String]
+    url: Optional[Any]
     def __init__(self) -> None:
         """Initialize Std."""
         super().__init__()

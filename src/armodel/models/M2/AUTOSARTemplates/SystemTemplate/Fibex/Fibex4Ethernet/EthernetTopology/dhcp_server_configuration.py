@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DhcpServerConfiguration(ARObject):
     """AUTOSAR DhcpServerConfiguration."""
 
+    ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration]
+    ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration]
     def __init__(self) -> None:
         """Initialize DhcpServerConfiguration."""
         super().__init__()

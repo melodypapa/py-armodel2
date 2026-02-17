@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_enumeratio
 class EcucEnumerationParamDef(EcucParameterDef):
     """AUTOSAR EcucEnumerationParamDef."""
 
+    default_value: Optional[Identifier]
+    literals: list[EcucEnumerationLiteralDef]
     def __init__(self) -> None:
         """Initialize EcucEnumerationParamDef."""
         super().__init__()

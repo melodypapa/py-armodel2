@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EnumerationMappingEntry(ARObject):
     """AUTOSAR EnumerationMappingEntry."""
 
+    enumerator: NameToken
+    numerical_value: PositiveInteger
     def __init__(self) -> None:
         """Initialize EnumerationMappingEntry."""
         super().__init__()

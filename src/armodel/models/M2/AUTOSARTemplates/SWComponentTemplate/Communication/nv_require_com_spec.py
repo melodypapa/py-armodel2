@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvRequireComSpec(RPortComSpec):
     """AUTOSAR NvRequireComSpec."""
 
+    init_value: Optional[ValueSpecification]
+    variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvRequireComSpec."""
         super().__init__()

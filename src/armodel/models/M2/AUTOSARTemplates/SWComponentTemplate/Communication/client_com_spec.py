@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientComSpec(RPortComSpec):
     """AUTOSAR ClientComSpec."""
 
+    end_to_end_call: Optional[TimeValue]
+    operation: Optional[ClientServerOperation]
+    transformation_coms: list[Any]
     def __init__(self) -> None:
         """Initialize ClientComSpec."""
         super().__init__()

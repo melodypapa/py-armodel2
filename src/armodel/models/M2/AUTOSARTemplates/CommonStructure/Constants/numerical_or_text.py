@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class NumericalOrText(ARObject):
     """AUTOSAR NumericalOrText."""
 
+    vf: Optional[Numerical]
+    vt: Optional[String]
     def __init__(self) -> None:
         """Initialize NumericalOrText."""
         super().__init__()

@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
     """AUTOSAR DiagnosticWriteDataByIdentifier."""
 
+    write_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifier."""
         super().__init__()

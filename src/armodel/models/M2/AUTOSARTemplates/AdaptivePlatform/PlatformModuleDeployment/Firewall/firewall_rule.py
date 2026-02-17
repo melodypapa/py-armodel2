@@ -20,6 +20,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FirewallRule(ARElement):
     """AUTOSAR FirewallRule."""
 
+    bucket_size: Optional[PositiveInteger]
+    data_link_layer_rule: Optional[Any]
+    dds_rule: Optional[Any]
+    do_ip_rule: Optional[Any]
+    network_layer_rule: Optional[Any]
+    payload_byte_patterns: list[Any]
+    refill_amount: Optional[PositiveInteger]
+    someip_rule: Optional[Any]
+    someip_sd_rule: Optional[Any]
+    transport_layer_rule: Optional[Any]
     def __init__(self) -> None:
         """Initialize FirewallRule."""
         super().__init__()

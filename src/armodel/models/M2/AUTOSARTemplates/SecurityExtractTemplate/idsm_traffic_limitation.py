@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IdsmTrafficLimitation(Identifiable):
     """AUTOSAR IdsmTrafficLimitation."""
 
+    max_bytes_in: Optional[PositiveInteger]
+    time_interval: Optional[Float]
     def __init__(self) -> None:
         """Initialize IdsmTrafficLimitation."""
         super().__init__()

@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw
 class HwAttributeValue(ARObject):
     """AUTOSAR HwAttributeValue."""
 
+    annotation: Optional[Annotation]
+    hw_attribute_def: Optional[HwAttributeDef]
+    v: Optional[Numerical]
+    vt: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize HwAttributeValue."""
         super().__init__()

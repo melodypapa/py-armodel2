@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
 class LogAndTraceMessageCollectionSet(ARElement):
     """AUTOSAR LogAndTraceMessageCollectionSet."""
 
+    dlt_messages: list[DltMessage]
     def __init__(self) -> None:
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()

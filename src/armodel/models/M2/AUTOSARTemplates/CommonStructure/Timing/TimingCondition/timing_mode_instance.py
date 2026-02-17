@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimingModeInstance(Identifiable):
     """AUTOSAR TimingModeInstance."""
 
+    mode_instance: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingModeInstance."""
         super().__init__()

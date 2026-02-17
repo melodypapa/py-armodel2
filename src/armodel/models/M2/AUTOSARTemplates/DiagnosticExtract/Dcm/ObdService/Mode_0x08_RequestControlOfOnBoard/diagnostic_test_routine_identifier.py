@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTestRoutineIdentifier."""
 
+    id: Optional[PositiveInteger]
+    request_data: Optional[PositiveInteger]
+    response_data: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTestRoutineIdentifier."""
         super().__init__()

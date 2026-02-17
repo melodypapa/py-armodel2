@@ -24,6 +24,8 @@ class IEEE1722TpAcfBus(Identifiable):
     """AUTOSAR IEEE1722TpAcfBus."""
     """Abstract base class - do not instantiate directly."""
 
+    acf_parts: list[IEEE1722TpAcfBusPart]
+    bus_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBus."""
         super().__init__()

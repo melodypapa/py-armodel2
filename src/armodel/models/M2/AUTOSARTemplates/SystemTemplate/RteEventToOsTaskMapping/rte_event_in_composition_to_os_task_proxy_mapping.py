@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
     """AUTOSAR RteEventInCompositionToOsTaskProxyMapping."""
 
+    offset: Optional[PositiveInteger]
+    os_task_proxy: Optional[OsTaskProxy]
+    rte_event_instance_ref: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInCompositionToOsTaskProxyMapping."""
         super().__init__()

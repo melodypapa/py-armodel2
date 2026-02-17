@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDEventFrameEthernet(TDEventCom):
     """AUTOSAR TDEventFrameEthernet."""
 
+    static_socket: Optional[StaticSocketConnection]
+    td_event_type: Optional[TDEventFrameEthernet]
+    td_header_id_filters: list[TDHeaderIdRange]
+    td_pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize TDEventFrameEthernet."""
         super().__init__()

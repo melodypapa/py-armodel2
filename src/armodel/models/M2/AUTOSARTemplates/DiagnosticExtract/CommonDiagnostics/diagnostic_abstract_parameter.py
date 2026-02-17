@@ -22,6 +22,9 @@ class DiagnosticAbstractParameter(ARObject):
     """AUTOSAR DiagnosticAbstractParameter."""
     """Abstract base class - do not instantiate directly."""
 
+    bit_offset: Optional[PositiveInteger]
+    data_element: Optional[DiagnosticDataElement]
+    parameter_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticAbstractParameter."""
         super().__init__()

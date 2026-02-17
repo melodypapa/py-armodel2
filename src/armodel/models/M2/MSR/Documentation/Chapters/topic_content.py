@@ -21,6 +21,9 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table 
 class TopicContent(ARObject):
     """AUTOSAR TopicContent."""
 
+    block_level: DocumentationBlock
+    table: Optional[Table]
+    traceable_table: Any
     def __init__(self) -> None:
         """Initialize TopicContent."""
         super().__init__()

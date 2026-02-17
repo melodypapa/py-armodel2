@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UdpProps(ARObject):
     """AUTOSAR UdpProps."""
 
+    udp_ttl: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize UdpProps."""
         super().__init__()

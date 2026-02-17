@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class NumericalValueSpecification(ValueSpecification):
     """AUTOSAR NumericalValueSpecification."""
 
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize NumericalValueSpecification."""
         super().__init__()

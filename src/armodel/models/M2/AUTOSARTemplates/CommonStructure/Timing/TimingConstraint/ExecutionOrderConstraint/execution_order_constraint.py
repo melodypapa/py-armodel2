@@ -23,6 +23,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 class ExecutionOrderConstraint(TimingConstraint):
     """AUTOSAR ExecutionOrderConstraint."""
 
+    base: Optional[CompositionSwComponentType]
+    execution_order: Optional[Any]
+    ignore_order: Optional[Boolean]
+    is_event: Optional[Boolean]
+    ordered_elements: list[Any]
+    permit_multiple: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()

@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedu
 class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
     """AUTOSAR BswAsynchronousServerCallReturnsEvent."""
 
+    event_source: Optional[Any]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()

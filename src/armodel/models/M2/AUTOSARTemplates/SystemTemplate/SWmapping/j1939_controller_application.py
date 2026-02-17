@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class J1939ControllerApplication(ARElement):
     """AUTOSAR J1939ControllerApplication."""
 
+    function_id: Optional[PositiveInteger]
+    sw_component_prototype: Optional[SwComponentPrototype]
     def __init__(self) -> None:
         """Initialize J1939ControllerApplication."""
         super().__init__()

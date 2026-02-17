@@ -27,6 +27,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ParameterSwComponentType(SwComponentType):
     """AUTOSAR ParameterSwComponentType."""
 
+    constants: list[ConstantSpecification]
+    data_types: list[DataTypeMappingSet]
+    instantiation_data_defs: list[InstantiationDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()

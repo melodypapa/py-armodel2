@@ -24,6 +24,8 @@ class BuildActionEntity(Identifiable):
     """AUTOSAR BuildActionEntity."""
     """Abstract base class - do not instantiate directly."""
 
+    delivery_artifacts: list[AutosarEngineeringObject]
+    invocation: Optional[BuildActionInvocator]
     def __init__(self) -> None:
         """Initialize BuildActionEntity."""
         super().__init__()

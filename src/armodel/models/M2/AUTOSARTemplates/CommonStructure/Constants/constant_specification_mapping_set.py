@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_speci
 class ConstantSpecificationMappingSet(ARElement):
     """AUTOSAR ConstantSpecificationMappingSet."""
 
+    mappings: list[ConstantSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()

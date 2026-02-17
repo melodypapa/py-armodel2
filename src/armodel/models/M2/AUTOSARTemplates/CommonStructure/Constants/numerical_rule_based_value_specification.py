@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_
 class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     """AUTOSAR NumericalRuleBasedValueSpecification."""
 
+    rule_based: Optional[Any]
     def __init__(self) -> None:
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()

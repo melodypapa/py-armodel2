@@ -20,6 +20,8 @@ from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
 class SwSystemconstDependentFormula(ARObject):
     """AUTOSAR SwSystemconstDependentFormula."""
 
+    sysc: Optional[SwSystemconst]
+    sysc_string: Optional[SwSystemconst]
     def __init__(self) -> None:
         """Initialize SwSystemconstDependentFormula."""
         super().__init__()

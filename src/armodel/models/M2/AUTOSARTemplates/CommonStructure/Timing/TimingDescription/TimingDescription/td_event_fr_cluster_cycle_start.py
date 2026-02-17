@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.Flexr
 class TDEventFrClusterCycleStart(TDEventCycleStart):
     """AUTOSAR TDEventFrClusterCycleStart."""
 
+    fr_cluster: Optional[FlexrayCluster]
     def __init__(self) -> None:
         """Initialize TDEventFrClusterCycleStart."""
         super().__init__()

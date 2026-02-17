@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
 class SwDataDependency(ARObject):
     """AUTOSAR SwDataDependency."""
 
+    sw_data: Optional[CompuGenericMath]
     def __init__(self) -> None:
         """Initialize SwDataDependency."""
         super().__init__()

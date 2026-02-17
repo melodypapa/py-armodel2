@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class SwcToApplicationPartitionMapping(Identifiable):
     """AUTOSAR SwcToApplicationPartitionMapping."""
 
+    application: Optional[ApplicationPartition]
+    sw_component_prototype: Optional[SwComponentPrototype]
     def __init__(self) -> None:
         """Initialize SwcToApplicationPartitionMapping."""
         super().__init__()

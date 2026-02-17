@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class BswModeManagerErrorEvent(BswScheduleEvent):
     """AUTOSAR BswModeManagerErrorEvent."""
 
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize BswModeManagerErrorEvent."""
         super().__init__()

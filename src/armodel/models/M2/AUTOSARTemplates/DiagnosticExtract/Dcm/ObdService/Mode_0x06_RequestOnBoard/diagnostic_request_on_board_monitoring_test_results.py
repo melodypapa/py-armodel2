@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResu
 class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestOnBoardMonitoringTestResults."""
 
+    diagnostic_test_results: list[DiagnosticTestResult]
+    request_on: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResults."""
         super().__init__()

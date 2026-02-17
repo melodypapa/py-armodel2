@@ -22,6 +22,16 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UdpNmCluster(NmCluster):
     """AUTOSAR UdpNmCluster."""
 
+    nm_cbv_position: Optional[Integer]
+    nm_immediate: Optional[PositiveInteger]
+    nm_message: Optional[TimeValue]
+    nm_msg_cycle: Optional[TimeValue]
+    nm_network: Optional[TimeValue]
+    nm_nid_position: Optional[Integer]
+    nm_remote: Optional[TimeValue]
+    nm_repeat: Optional[TimeValue]
+    nm_wait_bus: Optional[TimeValue]
+    vlan: Optional[Any]
     def __init__(self) -> None:
         """Initialize UdpNmCluster."""
         super().__init__()

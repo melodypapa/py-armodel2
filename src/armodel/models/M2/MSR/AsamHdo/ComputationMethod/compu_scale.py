@@ -33,6 +33,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class CompuScale(ARObject):
     """AUTOSAR CompuScale."""
 
+    a2l_display_text: Optional[String]
+    compu_inverse: Optional[CompuConst]
+    compu_scale_contents: Optional[CompuScaleContents]
+    desc: Optional[MultiLanguageOverviewParagraph]
+    lower_limit: Optional[Limit]
+    mask: Optional[PositiveUnlimitedInteger]
+    short_label: Optional[Identifier]
+    symbol: Optional[CIdentifier]
+    upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize CompuScale."""
         super().__init__()

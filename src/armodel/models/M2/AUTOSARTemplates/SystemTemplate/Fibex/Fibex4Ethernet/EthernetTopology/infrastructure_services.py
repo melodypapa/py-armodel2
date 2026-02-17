@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class InfrastructureServices(ARObject):
     """AUTOSAR InfrastructureServices."""
 
+    do_ip_entity: Optional[DoIpEntity]
+    time: Optional[TimeSynchronization]
     def __init__(self) -> None:
         """Initialize InfrastructureServices."""
         super().__init__()

@@ -41,6 +41,22 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class CanTpConnection(TpConnection):
     """AUTOSAR CanTpConnection."""
 
+    addressing: Optional[CanTpAddressingFormatType]
+    cancellation: Optional[Boolean]
+    can_tp_channel: Optional[CanTpChannel]
+    data_pdu: Optional[NPdu]
+    flow_control_pdu: Optional[NPdu]
+    max_block_size: Optional[Integer]
+    multicast: Optional[CanTpAddress]
+    padding: Optional[Boolean]
+    receivers: list[CanTpNode]
+    ta_type_type: Optional[NetworkTargetAddressType]
+    timeout_br: Optional[TimeValue]
+    timeout_bs: Optional[TimeValue]
+    timeout_cr: Optional[TimeValue]
+    timeout_cs: Optional[TimeValue]
+    tp_sdu: Optional[IPdu]
+    transmitter: Optional[CanTpNode]
     def __init__(self) -> None:
         """Initialize CanTpConnection."""
         super().__init__()

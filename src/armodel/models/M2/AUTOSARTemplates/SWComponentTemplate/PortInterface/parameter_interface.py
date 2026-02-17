@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ParameterInterface(DataInterface):
     """AUTOSAR ParameterInterface."""
 
+    parameters: list[ParameterDataPrototype]
     def __init__(self) -> None:
         """Initialize ParameterInterface."""
         super().__init__()

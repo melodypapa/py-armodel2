@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class HardwareConfiguration(ARObject):
     """AUTOSAR HardwareConfiguration."""
 
+    additional: Optional[String]
+    processor_mode: Optional[String]
+    processor_speed: Optional[String]
     def __init__(self) -> None:
         """Initialize HardwareConfiguration."""
         super().__init__()

@@ -29,6 +29,12 @@ class CommunicationConnector(Identifiable):
     """AUTOSAR CommunicationConnector."""
     """Abstract base class - do not instantiate directly."""
 
+    comm_controller: Optional[Any]
+    create_ecu: Optional[Boolean]
+    dynamic_pnc_to: Optional[Boolean]
+    ecu_comm_ports: list[CommConnectorPort]
+    pnc_filter_arrays: list[PositiveInteger]
+    pnc_gateway_type_enum: Optional[PncGatewayTypeEnum]
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()

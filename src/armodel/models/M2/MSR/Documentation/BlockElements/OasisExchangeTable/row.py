@@ -23,6 +23,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import
 class Row(Paginateable):
     """AUTOSAR Row."""
 
+    rowsep: Optional[TableSeparatorString]
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Row."""
         super().__init__()

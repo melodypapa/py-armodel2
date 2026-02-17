@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.udp_nm_
 class UdpNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR UdpNmClusterCoupling."""
 
+    coupled_clusters: list[UdpNmCluster]
+    nm_immediate: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize UdpNmClusterCoupling."""
         super().__init__()

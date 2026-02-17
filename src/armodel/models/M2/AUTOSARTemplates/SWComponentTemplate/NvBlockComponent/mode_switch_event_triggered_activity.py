@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ModeSwitchEventTriggeredActivity(ARObject):
     """AUTOSAR ModeSwitchEventTriggeredActivity."""
 
+    role: Optional[Identifier]
+    swc_mode_switch_event: Optional[SwcModeSwitchEvent]
     def __init__(self) -> None:
         """Initialize ModeSwitchEventTriggeredActivity."""
         super().__init__()

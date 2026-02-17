@@ -29,6 +29,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform
 class Gateway(FibexElement):
     """AUTOSAR Gateway."""
 
+    ecu: Optional[EcuInstance]
+    frame_mappings: list[FrameMapping]
+    i_pdu_mappings: list[IPduMapping]
+    signal_mappings: list[ISignalMapping]
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()

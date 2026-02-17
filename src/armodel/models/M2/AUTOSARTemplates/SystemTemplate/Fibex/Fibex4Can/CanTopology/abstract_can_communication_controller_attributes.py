@@ -16,6 +16,8 @@ class AbstractCanCommunicationControllerAttributes(ARObject):
     """AUTOSAR AbstractCanCommunicationControllerAttributes."""
     """Abstract base class - do not instantiate directly."""
 
+    can_controller_fd: Optional[Any]
+    can_controller_xl: Optional[Any]
     def __init__(self) -> None:
         """Initialize AbstractCanCommunicationControllerAttributes."""
         super().__init__()

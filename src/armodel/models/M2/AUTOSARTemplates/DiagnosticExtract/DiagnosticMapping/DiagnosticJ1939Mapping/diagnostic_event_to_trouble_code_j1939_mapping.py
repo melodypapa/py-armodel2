@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToTroubleCodeJ1939Mapping."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    trouble_code: Optional[DiagnosticTroubleCode]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToTroubleCodeJ1939Mapping."""
         super().__init__()

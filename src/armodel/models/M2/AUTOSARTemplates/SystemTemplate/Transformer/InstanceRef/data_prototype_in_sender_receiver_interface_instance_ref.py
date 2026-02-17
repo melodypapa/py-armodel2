@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInterfaceInstanceRef):
     """AUTOSAR DataPrototypeInSenderReceiverInterfaceInstanceRef."""
 
+    base_interface: Optional[Any]
+    context_datas: list[Any]
+    root_data_prototype_in_sr: Optional[AutosarDataPrototype]
+    target_data_prototype_in_sr: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSenderReceiverInterfaceInstanceRef."""
         super().__init__()

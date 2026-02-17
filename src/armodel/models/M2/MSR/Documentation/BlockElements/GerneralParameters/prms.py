@@ -20,6 +20,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangua
 class Prms(Paginateable):
     """AUTOSAR Prms."""
 
+    label: Optional[MultilanguageLongName]
+    prm: Any
     def __init__(self) -> None:
         """Initialize Prms."""
         super().__init__()

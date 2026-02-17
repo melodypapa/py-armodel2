@@ -28,6 +28,11 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticContribution
 class DiagnosticProtocol(DiagnosticCommonElement):
     """AUTOSAR DiagnosticProtocol."""
 
+    diagnostics: list[DiagnosticConnection]
+    priority: Optional[PositiveInteger]
+    protocol_kind: Optional[NameToken]
+    send_resp_pend: Optional[Boolean]
+    service_table: Optional[DiagnosticServiceTable]
     def __init__(self) -> None:
         """Initialize DiagnosticProtocol."""
         super().__init__()

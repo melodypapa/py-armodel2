@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CalibrationParameterValueSet(ARElement):
     """AUTOSAR CalibrationParameterValueSet."""
 
+    calibrations: list[Any]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValueSet."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependenc
 class SectionNamePrefix(ImplementationProps):
     """AUTOSAR SectionNamePrefix."""
 
+    implemented_in: Optional[DependencyOnArtifact]
     def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()

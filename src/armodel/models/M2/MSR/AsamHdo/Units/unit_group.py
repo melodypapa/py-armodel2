@@ -21,6 +21,7 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class UnitGroup(ARElement):
     """AUTOSAR UnitGroup."""
 
+    units: list[Unit]
     def __init__(self) -> None:
         """Initialize UnitGroup."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfLin."""
 
+    base_frequency: Optional[PositiveInteger]
+    frame_sync_enabled: Optional[Boolean]
+    timestamp: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLin."""
         super().__init__()

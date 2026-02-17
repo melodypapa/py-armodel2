@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.nv_
 class NvBlockSwComponentType(AtomicSwComponentType):
     """AUTOSAR NvBlockSwComponentType."""
 
+    bulk_nv_datas: list[BulkNvDataDescriptor]
+    nv_blocks: list[NvBlockDescriptor]
     def __init__(self) -> None:
         """Initialize NvBlockSwComponentType."""
         super().__init__()

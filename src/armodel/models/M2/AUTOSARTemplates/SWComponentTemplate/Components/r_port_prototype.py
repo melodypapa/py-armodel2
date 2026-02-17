@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 class RPortPrototype(AbstractRequiredPortPrototype):
     """AUTOSAR RPortPrototype."""
 
+    may_be: Optional[Boolean]
+    required: Optional[PortInterface]
     def __init__(self) -> None:
         """Initialize RPortPrototype."""
         super().__init__()

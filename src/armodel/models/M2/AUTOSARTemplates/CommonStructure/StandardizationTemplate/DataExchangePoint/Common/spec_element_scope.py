@@ -21,6 +21,7 @@ class SpecElementScope(SpecElementReference):
     """AUTOSAR SpecElementScope."""
     """Abstract base class - do not instantiate directly."""
 
+    in_scope: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SpecElementScope."""
         super().__init__()

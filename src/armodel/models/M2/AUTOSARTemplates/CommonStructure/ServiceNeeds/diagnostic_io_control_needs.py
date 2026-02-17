@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticIoControlNeeds."""
 
+    current_value: Optional[DiagnosticValueNeeds]
+    freeze_current: Optional[Boolean]
+    reset_to_default: Optional[Boolean]
+    short_term: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlNeeds."""
         super().__init__()

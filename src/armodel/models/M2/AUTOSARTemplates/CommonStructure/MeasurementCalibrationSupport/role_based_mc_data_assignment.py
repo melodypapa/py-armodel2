@@ -27,6 +27,9 @@ if TYPE_CHECKING:
 class RoleBasedMcDataAssignment(ARObject):
     """AUTOSAR RoleBasedMcDataAssignment."""
 
+    executions: list[RptExecutionContext]
+    mc_data_instances: list[McDataInstance]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedMcDataAssignment."""
         super().__init__()

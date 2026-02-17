@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EventObdReadinessGroup(ARObject):
     """AUTOSAR EventObdReadinessGroup."""
 
+    event_obd: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize EventObdReadinessGroup."""
         super().__init__()

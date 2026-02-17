@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FrameMapping(ARObject):
     """AUTOSAR FrameMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    source_frame: Optional[FrameTriggering]
+    target_frame: Optional[FrameTriggering]
     def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()

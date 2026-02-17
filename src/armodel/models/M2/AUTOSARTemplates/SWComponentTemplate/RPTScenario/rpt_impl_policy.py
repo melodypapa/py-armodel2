@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptImplPolicy(ARObject):
     """AUTOSAR RptImplPolicy."""
 
+    rpt_enabler_impl: Optional[RptEnablerImplTypeEnum]
+    rpt_preparation_enum: Optional[RptPreparationEnum]
     def __init__(self) -> None:
         """Initialize RptImplPolicy."""
         super().__init__()

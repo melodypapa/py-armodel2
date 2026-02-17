@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToEnableConditionGroupMapping."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    enable_condition: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToEnableConditionGroupMapping."""
         super().__init__()

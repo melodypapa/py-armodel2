@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 class HwElementConnector(Describable):
     """AUTOSAR HwElementConnector."""
 
+    hw_elements: list[HwElement]
+    hw_pins: list[HwPinConnector]
+    hw_pin_groups: list[HwPinGroupConnector]
     def __init__(self) -> None:
         """Initialize HwElementConnector."""
         super().__init__()

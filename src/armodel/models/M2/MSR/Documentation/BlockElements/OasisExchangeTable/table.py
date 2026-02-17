@@ -31,6 +31,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
 class Table(Paginateable):
     """AUTOSAR Table."""
 
+    colsep: Optional[TableSeparatorString]
+    float: FloatEnum
+    frame: Optional[FrameEnum]
+    help_entry: Optional[String]
+    orient: Optional[Any]
+    pgwide: Optional[NameToken]
+    rowsep: Optional[TableSeparatorString]
+    table_caption: Optional[Caption]
+    tabstyle: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize Table."""
         super().__init__()

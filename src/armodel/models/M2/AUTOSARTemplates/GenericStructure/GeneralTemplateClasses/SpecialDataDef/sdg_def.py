@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SdgDef(ARElement):
     """AUTOSAR SdgDef."""
 
+    sdg_classes: list[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgDef."""
         super().__init__()

@@ -22,6 +22,10 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
 class FMFeatureDecomposition(ARObject):
     """AUTOSAR FMFeatureDecomposition."""
 
+    category: Optional[CategoryString]
+    features: list[FMFeature]
+    max: Optional[PositiveInteger]
+    min: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FMFeatureDecomposition."""
         super().__init__()

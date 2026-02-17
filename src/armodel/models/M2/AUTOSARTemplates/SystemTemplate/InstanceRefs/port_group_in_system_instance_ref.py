@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class PortGroupInSystemInstanceRef(ARObject):
     """AUTOSAR PortGroupInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    target: PortGroup
     def __init__(self) -> None:
         """Initialize PortGroupInSystemInstanceRef."""
         super().__init__()

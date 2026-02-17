@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class AggregationTailoring(AttributeTailoring):
     """AUTOSAR AggregationTailoring."""
 
+    type_tailorings: list[ClassTailoring]
     def __init__(self) -> None:
         """Initialize AggregationTailoring."""
         super().__init__()

@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeErrorBehavior(ARObject):
     """AUTOSAR ModeErrorBehavior."""
 
+    default_mode: Optional[ModeDeclaration]
+    error_reaction: Optional[ModeErrorReactionPolicyEnum]
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()

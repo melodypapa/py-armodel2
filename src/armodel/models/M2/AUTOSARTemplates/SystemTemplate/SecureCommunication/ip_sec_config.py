@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class IPSecConfig(ARObject):
     """AUTOSAR IPSecConfig."""
 
+    ip_sec_config: Optional[IPSecConfigProps]
+    ip_sec_rules: list[IPSecRule]
     def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()

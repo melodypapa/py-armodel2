@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import 
 class HwPortMapping(ARObject):
     """AUTOSAR HwPortMapping."""
 
+    communication_connector: Optional[CommunicationConnector]
+    hw_pin_group: Optional[HwPinGroup]
     def __init__(self) -> None:
         """Initialize HwPortMapping."""
         super().__init__()

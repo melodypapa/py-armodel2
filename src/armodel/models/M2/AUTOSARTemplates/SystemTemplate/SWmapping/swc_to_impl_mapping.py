@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcImplementation.sw
 class SwcToImplMapping(Identifiable):
     """AUTOSAR SwcToImplMapping."""
 
+    component: Optional[SwcImplementation]
     def __init__(self) -> None:
         """Initialize SwcToImplMapping."""
         super().__init__()

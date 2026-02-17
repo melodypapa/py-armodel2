@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_plain_tex
 class MultiLanguagePlainText(ARObject):
     """AUTOSAR MultiLanguagePlainText."""
 
+    l10: LPlainText
     def __init__(self) -> None:
         """Initialize MultiLanguagePlainText."""
         super().__init__()

@@ -18,6 +18,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanXlFrameTriggeringProps(ARObject):
     """AUTOSAR CanXlFrameTriggeringProps."""
 
+    acceptance_field: Optional[PositiveInteger]
+    priority_id: Optional[PositiveInteger]
+    sdu_type: Optional[PositiveInteger]
+    vcid: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CanXlFrameTriggeringProps."""
         super().__init__()

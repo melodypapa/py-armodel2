@@ -40,6 +40,17 @@ if TYPE_CHECKING:
 class SocketAddress(Identifiable):
     """AUTOSAR SocketAddress."""
 
+    allowed_i_pv6_ext: Optional[IPv6ExtHeaderFilterList]
+    allowed_tcp: Optional[TcpOptionFilterList]
+    application_endpoint_endpoint: Optional[ApplicationEndpoint]
+    connector: Optional[Any]
+    differentiated: Optional[PositiveInteger]
+    flow_label: Optional[PositiveInteger]
+    multicasts: list[Any]
+    path_mtu: Optional[Boolean]
+    pdu_collection: Optional[TimeValue]
+    static_sockets: list[StaticSocketConnection]
+    udp_checksum: Optional[UdpChecksumCalculationEnum]
     def __init__(self) -> None:
         """Initialize SocketAddress."""
         super().__init__()

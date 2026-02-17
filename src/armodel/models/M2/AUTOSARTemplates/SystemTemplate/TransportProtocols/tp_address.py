@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TpAddress(Identifiable):
     """AUTOSAR TpAddress."""
 
+    tp_address: Optional[Integer]
     def __init__(self) -> None:
         """Initialize TpAddress."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinEventTriggeredFrame(LinFrame):
     """AUTOSAR LinEventTriggeredFrame."""
 
+    collision_schedule: Optional[LinScheduleTable]
+    lin_unconditional_frames: list[LinUnconditionalFrame]
     def __init__(self) -> None:
         """Initialize LinEventTriggeredFrame."""
         super().__init__()

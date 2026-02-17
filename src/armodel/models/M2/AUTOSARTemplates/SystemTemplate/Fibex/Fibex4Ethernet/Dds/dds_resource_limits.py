@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsResourceLimits(ARObject):
     """AUTOSAR DdsResourceLimits."""
 
+    max_instances: Optional[PositiveInteger]
+    max_samples: Optional[PositiveInteger]
+    max_samples_per_instance: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsResourceLimits."""
         super().__init__()

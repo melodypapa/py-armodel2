@@ -23,6 +23,7 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entit
 class EcuAbstractionSwComponentType(AtomicSwComponentType):
     """AUTOSAR EcuAbstractionSwComponentType."""
 
+    hardwares: list[HwDescriptionEntity]
     def __init__(self) -> None:
         """Initialize EcuAbstractionSwComponentType."""
         super().__init__()

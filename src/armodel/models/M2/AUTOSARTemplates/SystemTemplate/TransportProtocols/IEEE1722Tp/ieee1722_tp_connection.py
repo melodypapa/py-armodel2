@@ -25,6 +25,12 @@ class IEEE1722TpConnection(ARElement):
     """AUTOSAR IEEE1722TpConnection."""
     """Abstract base class - do not instantiate directly."""
 
+    destination_mac: Optional[MacAddressString]
+    mac_address_string: Optional[MacAddressString]
+    pdu: Optional[PduTriggering]
+    unique_stream_id: Optional[PositiveInteger]
+    version: Optional[PositiveInteger]
+    vlan_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize IEEE1722TpConnection."""
         super().__init__()

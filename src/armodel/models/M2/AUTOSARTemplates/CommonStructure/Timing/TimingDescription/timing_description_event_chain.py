@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TimingDescriptionEventChain(TimingDescription):
     """AUTOSAR TimingDescriptionEventChain."""
 
+    is_pipelining: Optional[Boolean]
+    response: Optional[TimingDescriptionEvent]
+    segments: list[TimingDescriptionEvent]
+    stimulus: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize TimingDescriptionEventChain."""
         super().__init__()

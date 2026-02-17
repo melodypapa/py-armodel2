@@ -24,6 +24,11 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     """AUTOSAR ParameterInAtomicSWCTypeInstanceRef."""
 
+    base: Optional[AtomicSwComponentType]
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_parameter: Optional[DataPrototype]
+    target_data: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize ParameterInAtomicSWCTypeInstanceRef."""
         super().__init__()

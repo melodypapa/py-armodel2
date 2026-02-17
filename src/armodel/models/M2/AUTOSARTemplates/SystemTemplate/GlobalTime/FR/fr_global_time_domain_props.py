@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR FrGlobalTimeDomainProps."""
 
+    ofs_data_id_list: PositiveInteger
+    sync_data_id_list: PositiveInteger
     def __init__(self) -> None:
         """Initialize FrGlobalTimeDomainProps."""
         super().__init__()

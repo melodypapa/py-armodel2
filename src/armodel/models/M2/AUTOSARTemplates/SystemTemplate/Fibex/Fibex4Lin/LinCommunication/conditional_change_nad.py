@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ConditionalChangeNad(LinConfigurationEntry):
     """AUTOSAR ConditionalChangeNad."""
 
+    byte: Optional[Integer]
+    id: Optional[PositiveInteger]
+    invert: Optional[Integer]
+    mask: Optional[Integer]
+    new_nad: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ConditionalChangeNad."""
         super().__init__()

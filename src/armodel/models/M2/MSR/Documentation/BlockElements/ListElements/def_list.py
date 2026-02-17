@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 class DefList(Paginateable):
     """AUTOSAR DefList."""
 
+    def_item: DefItem
     def __init__(self) -> None:
         """Initialize DefList."""
         super().__init__()

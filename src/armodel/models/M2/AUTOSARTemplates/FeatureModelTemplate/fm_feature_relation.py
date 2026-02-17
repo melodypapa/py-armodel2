@@ -23,6 +23,8 @@ if TYPE_CHECKING:
 class FMFeatureRelation(Identifiable):
     """AUTOSAR FMFeatureRelation."""
 
+    features: list[FMFeature]
+    restriction: Optional[Any]
     def __init__(self) -> None:
         """Initialize FMFeatureRelation."""
         super().__init__()

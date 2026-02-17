@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestItem(BinaryManifestAddressableObject):
     """AUTOSAR BinaryManifestItem."""
 
+    auxiliary_fields: list[BinaryManifestItem]
+    default_value: Optional[BinaryManifestItem]
+    is_unused: Optional[Boolean]
+    value: Optional[BinaryManifestItem]
     def __init__(self) -> None:
         """Initialize BinaryManifestItem."""
         super().__init__()

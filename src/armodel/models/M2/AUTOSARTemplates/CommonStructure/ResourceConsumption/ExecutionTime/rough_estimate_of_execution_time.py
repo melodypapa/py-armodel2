@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RoughEstimateOfExecutionTime(ExecutionTime):
     """AUTOSAR RoughEstimateOfExecutionTime."""
 
+    additional: Optional[String]
+    estimated_execution_time: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize RoughEstimateOfExecutionTime."""
         super().__init__()

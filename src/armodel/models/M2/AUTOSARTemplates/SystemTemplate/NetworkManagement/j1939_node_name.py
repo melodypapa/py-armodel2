@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939NodeName(ARObject):
     """AUTOSAR J1939NodeName."""
 
+    arbitrary_address: Optional[Any]
+    ecu_instance: Optional[Integer]
+    function: Optional[Integer]
+    function_instance: Optional[Integer]
+    identitiy_number: Optional[Integer]
+    industry_group: Optional[Integer]
+    manufacturer_code: Optional[Integer]
+    vehicle_system: Optional[Integer]
+    vehicle_system_instance: Optional[Integer]
     def __init__(self) -> None:
         """Initialize J1939NodeName."""
         super().__init__()

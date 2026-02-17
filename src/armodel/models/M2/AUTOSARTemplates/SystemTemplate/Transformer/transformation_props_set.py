@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class TransformationPropsSet(ARElement):
     """AUTOSAR TransformationPropsSet."""
 
+    transformation_props_propses: list[TransformationProps]
     def __init__(self) -> None:
         """Initialize TransformationPropsSet."""
         super().__init__()

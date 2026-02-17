@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayFifoRange(ARObject):
     """AUTOSAR FlexrayFifoRange."""
 
+    range_max: Optional[Integer]
+    range_min: Optional[Integer]
     def __init__(self) -> None:
         """Initialize FlexrayFifoRange."""
         super().__init__()

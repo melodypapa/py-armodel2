@@ -24,6 +24,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.bui
 class BuildAction(BuildActionEntity):
     """AUTOSAR BuildAction."""
 
+    created_datas: list[BuildActionIoElement]
+    follow_up_actions: list[BuildAction]
+    input_datas: list[BuildActionIoElement]
+    modified_datas: list[BuildActionIoElement]
+    predecessors: list[BuildAction]
+    required: BuildActionEnvironment
     def __init__(self) -> None:
         """Initialize BuildAction."""
         super().__init__()

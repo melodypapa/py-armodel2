@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LOverviewParagraph(ARObject):
     """AUTOSAR LOverviewParagraph."""
 
+    blueprint_value: Optional[String]
     def __init__(self) -> None:
         """Initialize LOverviewParagraph."""
         super().__init__()

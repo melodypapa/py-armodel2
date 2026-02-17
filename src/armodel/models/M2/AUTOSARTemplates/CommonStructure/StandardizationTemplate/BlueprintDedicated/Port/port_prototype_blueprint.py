@@ -28,6 +28,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
 class PortPrototypeBlueprint(ARElement):
     """AUTOSAR PortPrototypeBlueprint."""
 
+    init_values: list[PortPrototypeBlueprint]
+    interface: PortInterface
+    provided_coms: list[PPortComSpec]
+    required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()

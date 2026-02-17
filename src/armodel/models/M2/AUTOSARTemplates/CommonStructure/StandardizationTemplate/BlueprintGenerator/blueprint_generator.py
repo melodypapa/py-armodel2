@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class BlueprintGenerator(ARObject):
     """AUTOSAR BlueprintGenerator."""
 
+    expression: Optional[VerbatimString]
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize BlueprintGenerator."""
         super().__init__()

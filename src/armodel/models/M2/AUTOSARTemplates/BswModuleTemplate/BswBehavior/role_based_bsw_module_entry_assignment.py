@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class RoleBasedBswModuleEntryAssignment(ARObject):
     """AUTOSAR RoleBasedBswModuleEntryAssignment."""
 
+    assigned_entry: Optional[BswModuleEntry]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedBswModuleEntryAssignment."""
         super().__init__()

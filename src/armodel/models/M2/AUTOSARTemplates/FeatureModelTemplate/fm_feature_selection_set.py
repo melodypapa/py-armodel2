@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_selectio
 class FMFeatureSelectionSet(ARElement):
     """AUTOSAR FMFeatureSelectionSet."""
 
+    feature_models: list[FMFeatureModel]
+    includes: list[FMFeatureSelectionSet]
+    selections: list[FMFeatureSelection]
     def __init__(self) -> None:
         """Initialize FMFeatureSelectionSet."""
         super().__init__()

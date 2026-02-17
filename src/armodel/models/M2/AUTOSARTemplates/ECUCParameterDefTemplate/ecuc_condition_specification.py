@@ -24,6 +24,9 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import
 class EcucConditionSpecification(ARObject):
     """AUTOSAR EcucConditionSpecification."""
 
+    condition: Optional[EcucConditionFormula]
+    ecuc_queries: list[EcucQuery]
+    informal_formula: Optional[MlFormula]
     def __init__(self) -> None:
         """Initialize EcucConditionSpecification."""
         super().__init__()

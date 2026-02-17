@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 class PortInterfaceMappingSet(ARElement):
     """AUTOSAR PortInterfaceMappingSet."""
 
+    port_interfaces: list[PortInterfaceMapping]
     def __init__(self) -> None:
         """Initialize PortInterfaceMappingSet."""
         super().__init__()

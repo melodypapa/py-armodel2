@@ -29,6 +29,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class ClassContentConditional(Identifiable):
     """AUTOSAR ClassContentConditional."""
 
+    attributes: list[AttributeTailoring]
+    condition: Optional[AbstractCondition]
+    constraints: list[ConstraintTailoring]
+    sdg_tailorings: list[SdgTailoring]
     def __init__(self) -> None:
         """Initialize ClassContentConditional."""
         super().__init__()

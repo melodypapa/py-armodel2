@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucDestinationUriDef(Identifiable):
     """AUTOSAR EcucDestinationUriDef."""
 
+    destination_uri: Optional[Any]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDef."""
         super().__init__()

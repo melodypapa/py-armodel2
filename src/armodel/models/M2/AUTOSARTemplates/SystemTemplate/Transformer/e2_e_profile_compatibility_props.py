@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class E2EProfileCompatibilityProps(ARElement):
     """AUTOSAR E2EProfileCompatibilityProps."""
 
+    transit_to_invalid: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 class CommunicationControllerMapping(ARObject):
     """AUTOSAR CommunicationControllerMapping."""
 
+    communication_controller: Optional[CommunicationController]
+    hw: Optional[HwElement]
     def __init__(self) -> None:
         """Initialize CommunicationControllerMapping."""
         super().__init__()

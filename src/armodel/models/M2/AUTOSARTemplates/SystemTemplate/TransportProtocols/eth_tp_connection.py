@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class EthTpConnection(TpConnection):
     """AUTOSAR EthTpConnection."""
 
+    tp_sdus: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize EthTpConnection."""
         super().__init__()

@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
     """AUTOSAR DdsCpConsumedServiceInstance."""
 
+    consumed_ddses: list[DdsCpServiceInstance]
+    local_unicast: Optional[ApplicationEndpoint]
+    minor_version: Optional[AnyVersionString]
+    static_remote: Optional[ApplicationEndpoint]
     def __init__(self) -> None:
         """Initialize DdsCpConsumedServiceInstance."""
         super().__init__()

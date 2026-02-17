@@ -22,6 +22,34 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayCommunicationController(ARObject):
     """AUTOSAR FlexrayCommunicationController."""
 
+    accepted: Optional[Integer]
+    allow_halt_due_to: Optional[Boolean]
+    allow_passive_to: Optional[Integer]
+    cluster_drift: Optional[Integer]
+    decoding: Optional[Integer]
+    delay: Optional[Integer]
+    external_sync: Optional[Boolean]
+    extern_offset: Optional[Integer]
+    extern_rate: Optional[Integer]
+    fall_back_internal: Optional[Boolean]
+    flexray_fifos: list[Any]
+    key_slot_id: Optional[PositiveInteger]
+    key_slot_only: Optional[Boolean]
+    key_slot_used_for: Optional[Boolean]
+    latest_tx: Optional[Integer]
+    listen_timeout: Optional[Integer]
+    macro_initial: Optional[Integer]
+    maximum: Optional[Integer]
+    micro_initial: Optional[Integer]
+    micro_per_cycle: Optional[Integer]
+    microtick: Optional[TimeValue]
+    nm_vector_early: Optional[Boolean]
+    offset_correction: Optional[Integer]
+    rate_correction: Optional[Integer]
+    samples_per_microtick: Optional[Integer]
+    second_key_slot: Optional[PositiveInteger]
+    two_key_slot: Optional[Boolean]
+    wake_up_pattern: Optional[Integer]
     def __init__(self) -> None:
         """Initialize FlexrayCommunicationController."""
         super().__init__()

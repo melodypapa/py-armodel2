@@ -30,6 +30,10 @@ class AbstractServiceInstance(Identifiable):
     """AUTOSAR AbstractServiceInstance."""
     """Abstract base class - do not instantiate directly."""
 
+    capabilities: list[TagWithOptionalValue]
+    major_version: Optional[PositiveInteger]
+    method: Optional[PduActivationRoutingGroup]
+    routing_groups: list[SoAdRoutingGroup]
     def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()

@@ -26,6 +26,11 @@ if TYPE_CHECKING:
 class ReferenceBase(ARObject):
     """AUTOSAR ReferenceBase."""
 
+    global_elements: list[ReferrableSubtypesEnum]
+    global_ins: list[ARPackage]
+    is_default: Boolean
+    package: Optional[ARPackage]
+    short_label: Identifier
     def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()

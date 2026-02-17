@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_valu
 class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     """AUTOSAR CompositeRuleBasedValueSpecification."""
 
+    arguments: list[CompositeValueSpecification]
+    compounds: list[Any]
+    max_size_to_fill: Optional[PositiveInteger]
+    rule: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueSpecification."""
         super().__init__()

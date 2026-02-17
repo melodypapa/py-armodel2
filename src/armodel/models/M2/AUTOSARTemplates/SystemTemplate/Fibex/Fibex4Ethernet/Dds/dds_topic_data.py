@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsTopicData(ARObject):
     """AUTOSAR DdsTopicData."""
 
+    topic_data: Optional[String]
     def __init__(self) -> None:
         """Initialize DdsTopicData."""
         super().__init__()

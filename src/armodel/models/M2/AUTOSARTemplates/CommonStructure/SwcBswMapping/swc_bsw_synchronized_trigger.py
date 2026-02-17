@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class SwcBswSynchronizedTrigger(ARObject):
     """AUTOSAR SwcBswSynchronizedTrigger."""
 
+    bsw_trigger: Optional[Trigger]
+    swc_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize SwcBswSynchronizedTrigger."""
         super().__init__()

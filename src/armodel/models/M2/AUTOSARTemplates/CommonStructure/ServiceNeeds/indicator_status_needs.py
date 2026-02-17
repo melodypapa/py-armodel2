@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicato
 class IndicatorStatusNeeds(ServiceNeeds):
     """AUTOSAR IndicatorStatusNeeds."""
 
+    type_enum: Optional[DiagnosticIndicatorTypeEnum]
     def __init__(self) -> None:
         """Initialize IndicatorStatusNeeds."""
         super().__init__()

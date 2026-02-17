@@ -22,6 +22,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoKeySlot(Identifiable):
     """AUTOSAR CryptoKeySlot."""
 
+    allocate_shadow: Optional[Boolean]
+    crypto_alg_id: Optional[String]
+    crypto_object_type_enum: Optional[Any]
+    key_slot_allowed: Optional[Any]
+    key_slot_contents: list[Any]
+    slot_capacity: Optional[PositiveInteger]
+    slot_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize CryptoKeySlot."""
         super().__init__()

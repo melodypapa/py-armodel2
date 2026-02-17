@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
 class MixedContentForUnitNames(ARObject):
     """AUTOSAR MixedContentForUnitNames."""
 
+    sub: Superscript
+    sup: Superscript
     def __init__(self) -> None:
         """Initialize MixedContentForUnitNames."""
         super().__init__()

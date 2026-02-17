@@ -25,6 +25,13 @@ from armodel.models.M2.MSR.AsamHdo.AdminData.modification import (
 class DocRevision(ARObject):
     """AUTOSAR DocRevision."""
 
+    date: DateTime
+    issued_by: Optional[String]
+    modifications: list[Modification]
+    revision_label_string: Optional[RevisionLabelString]
+    revision_label_p1: Optional[RevisionLabelString]
+    revision_label_p2: Optional[RevisionLabelString]
+    state: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DocRevision."""
         super().__init__()

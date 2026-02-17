@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis im
 class SwCalprmAxisSet(ARObject):
     """AUTOSAR SwCalprmAxisSet."""
 
+    sw_calprm_axises: list[SwCalprmAxis]
     def __init__(self) -> None:
         """Initialize SwCalprmAxisSet."""
         super().__init__()

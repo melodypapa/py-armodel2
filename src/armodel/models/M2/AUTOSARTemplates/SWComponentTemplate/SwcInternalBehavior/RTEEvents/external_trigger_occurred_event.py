@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class ExternalTriggerOccurredEvent(RTEEvent):
     """AUTOSAR ExternalTriggerOccurredEvent."""
 
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize ExternalTriggerOccurredEvent."""
         super().__init__()

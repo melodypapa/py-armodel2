@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RptExecutableEntityProperties(ARObject):
     """AUTOSAR RptExecutableEntityProperties."""
 
+    max_rpt_event_id: Optional[PositiveInteger]
+    min_rpt_event_id: Optional[PositiveInteger]
+    rpt_execution_control: Optional[RptExecutionControlEnum]
+    rpt_service_point_enum: Optional[RptServicePointEnum]
     def __init__(self) -> None:
         """Initialize RptExecutableEntityProperties."""
         super().__init__()

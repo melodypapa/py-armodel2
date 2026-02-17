@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortAsynchronousTrafficShaper(Identifiable):
     """AUTOSAR CouplingPortAsynchronousTrafficShaper."""
 
+    committed_burst: Optional[PositiveInteger]
+    committed: Optional[PositiveInteger]
+    traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry]
     def __init__(self) -> None:
         """Initialize CouplingPortAsynchronousTrafficShaper."""
         super().__init__()

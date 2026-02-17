@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TargetIPduRef(ARObject):
     """AUTOSAR TargetIPduRef."""
 
+    default_value: Optional[PduMappingDefaultValue]
+    target_i_pdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize TargetIPduRef."""
         super().__init__()

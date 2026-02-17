@@ -66,6 +66,27 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class BswInternalBehavior(InternalBehavior):
     """AUTOSAR BswInternalBehavior."""
 
+    ar_typed_pers: list[VariableDataPrototype]
+    bsw_per_instances: list[Any]
+    client_policies: list[Any]
+    distinguisheds: list[BswDistinguishedPartition]
+    entities: list[BswModuleEntity]
+    events: list[BswEvent]
+    exclusive_areas: list[BswExclusiveAreaPolicy]
+    included_data_type_sets: list[IncludedDataTypeSet]
+    included_modes: list[IncludedModeDeclarationGroupSet]
+    internals: list[BswInternalTriggeringPoint]
+    mode_receivers: list[BswModeReceiverPolicy]
+    mode_senders: list[BswModeSenderPolicy]
+    parameter_policies: list[Any]
+    per_instances: list[ParameterDataPrototype]
+    reception_policies: list[BswDataReceptionPolicy]
+    released_triggers: list[Any]
+    scheduler_names: list[BswSchedulerNamePrefix]
+    send_policies: list[Any]
+    services: list[Any]
+    trigger_directs: list[BswTriggerDirectImplementation]
+    variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()

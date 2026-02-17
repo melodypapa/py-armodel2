@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimingEvent(RTEEvent):
     """AUTOSAR TimingEvent."""
 
+    offset: Optional[TimeValue]
+    period: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize TimingEvent."""
         super().__init__()

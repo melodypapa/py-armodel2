@@ -23,6 +23,8 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_topic1 import
 class MsrQueryTopic1(Paginateable):
     """AUTOSAR MsrQueryTopic1."""
 
+    msr_query_props: MsrQueryProps
+    msr_query_result_topic1: Optional[MsrQueryResultTopic1]
     def __init__(self) -> None:
         """Initialize MsrQueryTopic1."""
         super().__init__()

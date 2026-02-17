@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventInfoNeeds."""
 
+    obd_dtc_number: Optional[PositiveInteger]
+    uds_dtc_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticEventInfoNeeds."""
         super().__init__()

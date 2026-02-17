@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventAggregationFilter."""
 
+    context_data: Optional[Any]
+    minimum: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize SecurityEventAggregationFilter."""
         super().__init__()

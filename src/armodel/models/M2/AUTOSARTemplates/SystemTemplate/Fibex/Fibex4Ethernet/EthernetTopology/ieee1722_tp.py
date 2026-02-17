@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ieee1722Tp(TransportProtocolConfiguration):
     """AUTOSAR Ieee1722Tp."""
 
+    relative: Optional[TimeValue]
+    stream_identifier: Optional[PositiveInteger]
+    sub_type: Optional[PositiveInteger]
+    version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ieee1722Tp."""
         super().__init__()

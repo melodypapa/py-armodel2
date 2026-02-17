@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class TDEventBswModeDeclaration(TDEventBsw):
     """AUTOSAR TDEventBswModeDeclaration."""
 
+    entry_mode: Optional[ModeDeclaration]
+    exit_mode: Optional[ModeDeclaration]
+    mode: Optional[ModeDeclarationGroup]
+    td_event_bsw_declaration_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswModeDeclaration."""
         super().__init__()

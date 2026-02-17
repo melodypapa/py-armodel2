@@ -26,6 +26,11 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class LatencyTimingConstraint(TimingConstraint):
     """AUTOSAR LatencyTimingConstraint."""
 
+    latency: Optional[LatencyConstraintTypeEnum]
+    maximum: Optional[MultidimensionalTime]
+    minimum: Optional[MultidimensionalTime]
+    nominal: Optional[MultidimensionalTime]
+    scope: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize LatencyTimingConstraint."""
         super().__init__()

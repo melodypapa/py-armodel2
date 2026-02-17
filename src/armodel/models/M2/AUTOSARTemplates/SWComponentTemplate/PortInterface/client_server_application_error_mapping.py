@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.applic
 class ClientServerApplicationErrorMapping(ARObject):
     """AUTOSAR ClientServerApplicationErrorMapping."""
 
+    first_application: Optional[ApplicationError]
+    second: Optional[ApplicationError]
     def __init__(self) -> None:
         """Initialize ClientServerApplicationErrorMapping."""
         super().__init__()

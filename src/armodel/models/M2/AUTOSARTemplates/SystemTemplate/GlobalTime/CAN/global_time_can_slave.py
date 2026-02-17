@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GlobalTimeCanSlave(GlobalTimeSlave):
     """AUTOSAR GlobalTimeCanSlave."""
 
+    crc_validated: Optional[Any]
+    sequence: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize GlobalTimeCanSlave."""
         super().__init__()

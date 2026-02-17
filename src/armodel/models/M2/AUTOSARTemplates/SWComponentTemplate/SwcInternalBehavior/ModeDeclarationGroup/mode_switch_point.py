@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchPoint(AbstractAccessPoint):
     """AUTOSAR ModeSwitchPoint."""
 
+    mode_group_swc_instance_ref: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeSwitchPoint."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoEllipticCurveProps(ARElement):
     """AUTOSAR CryptoEllipticCurveProps."""
 
+    named_curve_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CryptoEllipticCurveProps."""
         super().__init__()

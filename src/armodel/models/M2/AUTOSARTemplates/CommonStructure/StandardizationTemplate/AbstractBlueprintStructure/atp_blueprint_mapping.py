@@ -22,6 +22,8 @@ class AtpBlueprintMapping(ARObject):
     """AUTOSAR AtpBlueprintMapping."""
     """Abstract base class - do not instantiate directly."""
 
+    atp_blueprint: AtpBlueprint
+    atp_blueprinted: AtpBlueprintable
     def __init__(self) -> None:
         """Initialize AtpBlueprintMapping."""
         super().__init__()

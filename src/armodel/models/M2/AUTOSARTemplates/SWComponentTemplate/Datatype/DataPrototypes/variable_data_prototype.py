@@ -25,6 +25,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class VariableDataPrototype(AutosarDataPrototype):
     """AUTOSAR VariableDataPrototype."""
 
+    init_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize VariableDataPrototype."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TDEventTrigger(TDEventVfbPort):
     """AUTOSAR TDEventTrigger."""
 
+    td_event_trigger: Optional[TDEventTriggerTypeEnum]
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()

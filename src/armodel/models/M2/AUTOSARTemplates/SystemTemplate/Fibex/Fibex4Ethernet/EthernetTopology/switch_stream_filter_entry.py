@@ -30,6 +30,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamFilterEntry(Identifiable):
     """AUTOSAR SwitchStreamFilterEntry."""
 
+    asynchronous: Optional[CouplingPort]
+    filter_priority: Optional[PositiveInteger]
+    flow_metering: Optional[SwitchFlowMeteringEntry]
+    max_sdu_size: Optional[PositiveInteger]
+    stream_gate: Optional[SwitchStreamGateEntry]
+    stream: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterEntry."""
         super().__init__()

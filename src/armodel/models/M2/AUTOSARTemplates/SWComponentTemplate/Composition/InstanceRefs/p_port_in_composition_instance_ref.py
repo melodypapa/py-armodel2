@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
     """AUTOSAR PPortInCompositionInstanceRef."""
 
+    context: Optional[Any]
+    target_p_port_prototype: Optional[AbstractProvidedPortPrototype]
     def __init__(self) -> None:
         """Initialize PPortInCompositionInstanceRef."""
         super().__init__()

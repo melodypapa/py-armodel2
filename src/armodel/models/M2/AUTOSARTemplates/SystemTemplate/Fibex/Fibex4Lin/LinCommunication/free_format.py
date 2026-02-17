@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FreeFormat(FreeFormatEntry):
     """AUTOSAR FreeFormat."""
 
+    byte_values: list[Integer]
     def __init__(self) -> None:
         """Initialize FreeFormat."""
         super().__init__()

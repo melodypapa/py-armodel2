@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CycleCounter(CommunicationCycle):
     """AUTOSAR CycleCounter."""
 
+    cycle_counter: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CycleCounter."""
         super().__init__()

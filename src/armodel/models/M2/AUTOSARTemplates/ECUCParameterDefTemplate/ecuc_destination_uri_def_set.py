@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destinatio
 class EcucDestinationUriDefSet(ARElement):
     """AUTOSAR EcucDestinationUriDefSet."""
 
+    destination_uri_defs: list[EcucDestinationUriDef]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()

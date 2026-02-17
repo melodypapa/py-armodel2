@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class CyclicTiming(Describable):
     """AUTOSAR CyclicTiming."""
 
+    time_offset: Optional[TimeRangeType]
+    time_period: Optional[TimeRangeType]
     def __init__(self) -> None:
         """Initialize CyclicTiming."""
         super().__init__()

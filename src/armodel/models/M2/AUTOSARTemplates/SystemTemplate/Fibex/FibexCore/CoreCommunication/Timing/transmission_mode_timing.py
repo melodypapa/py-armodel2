@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TransmissionModeTiming(ARObject):
     """AUTOSAR TransmissionModeTiming."""
 
+    cyclic_timing: Optional[CyclicTiming]
+    event_controlled_timing_timing: Optional[EventControlledTiming]
     def __init__(self) -> None:
         """Initialize TransmissionModeTiming."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class QueuedReceiverComSpec(ReceiverComSpec):
     """AUTOSAR QueuedReceiverComSpec."""
 
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize QueuedReceiverComSpec."""
         super().__init__()

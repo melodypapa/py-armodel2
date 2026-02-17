@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SignalServiceTranslationEventProps(Identifiable):
     """AUTOSAR SignalServiceTranslationEventProps."""
 
+    element_propses: list[Any]
+    safe_translation: Optional[Boolean]
+    secure: Optional[Boolean]
+    translation: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationEventProps."""
         super().__init__()

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class AutosarVariableRef(ARObject):
     """AUTOSAR AutosarVariableRef."""
 
+    autosar_variable: Optional[Any]
+    local_variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""
         super().__init__()

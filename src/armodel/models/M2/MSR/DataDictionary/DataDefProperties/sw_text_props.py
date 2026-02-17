@@ -27,6 +27,10 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import (
 class SwTextProps(ARObject):
     """AUTOSAR SwTextProps."""
 
+    array_size: Optional[ArraySizeSemanticsEnum]
+    base_type: Optional[SwBaseType]
+    sw_fill_character: Optional[Integer]
+    sw_max_text_size: Optional[Integer]
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()

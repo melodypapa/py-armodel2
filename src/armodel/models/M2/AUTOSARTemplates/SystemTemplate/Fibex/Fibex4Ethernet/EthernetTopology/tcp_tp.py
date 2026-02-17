@@ -25,6 +25,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class TcpTp(TcpUdpConfig):
     """AUTOSAR TcpTp."""
 
+    keep_alive: Optional[PositiveInteger]
+    keep_alives: Optional[Boolean]
+    keep_alive_time: Optional[TimeValue]
+    nagles_algorithm: Optional[Boolean]
+    receive_window_min: Optional[PositiveInteger]
+    tcp: Optional[TimeValue]
+    tcp_tp_port: Optional[TpPort]
     def __init__(self) -> None:
         """Initialize TcpTp."""
         super().__init__()

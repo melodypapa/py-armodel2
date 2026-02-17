@@ -21,6 +21,7 @@ class EcucAbstractReferenceDef(EcucCommonAttributes):
     """AUTOSAR EcucAbstractReferenceDef."""
     """Abstract base class - do not instantiate directly."""
 
+    with_auto: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceDef."""
         super().__init__()

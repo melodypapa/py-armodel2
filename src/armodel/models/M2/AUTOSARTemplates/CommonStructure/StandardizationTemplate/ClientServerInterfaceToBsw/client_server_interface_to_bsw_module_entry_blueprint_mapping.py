@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
     """AUTOSAR ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
 
+    client_server: ClientServerInterface
+    operation: ClientServerOperation
+    port_defined_arguments: list[PortDefinedArgumentValue]
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
         super().__init__()

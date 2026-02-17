@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class LabeledList(Paginateable):
     """AUTOSAR LabeledList."""
 
+    indent_sample: Optional[IndentSample]
+    labeled_item_label: LabeledItem
     def __init__(self) -> None:
         """Initialize LabeledList."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticInfoType(DiagnosticCommonElement):
     """AUTOSAR DiagnosticInfoType."""
 
+    data_elements: list[DiagnosticParameter]
+    id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticInfoType."""
         super().__init__()

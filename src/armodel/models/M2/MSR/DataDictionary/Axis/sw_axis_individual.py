@@ -38,6 +38,14 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class SwAxisIndividual(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisIndividual."""
 
+    compu_method: Optional[CompuMethod]
+    data_constr: Optional[DataConstr]
+    input_variable: Optional[ApplicationPrimitiveDataType]
+    sw_axis_generic: Optional[SwAxisGeneric]
+    sw_max_axis: Optional[Integer]
+    sw_min_axis: Optional[Integer]
+    sw_variable_ref_proxies: list[SwVariableRefProxy]
+    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize SwAxisIndividual."""
         super().__init__()

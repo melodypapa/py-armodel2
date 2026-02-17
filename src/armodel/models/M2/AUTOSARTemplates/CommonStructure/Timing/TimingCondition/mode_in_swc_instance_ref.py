@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
 class ModeInSwcInstanceRef(ARObject):
     """AUTOSAR ModeInSwcInstanceRef."""
 
+    base: Optional[SwComponentType]
+    contexts: list[Any]
+    context_mode: Optional[ModeDeclarationGroup]
+    context_port: Optional[PortPrototype]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()

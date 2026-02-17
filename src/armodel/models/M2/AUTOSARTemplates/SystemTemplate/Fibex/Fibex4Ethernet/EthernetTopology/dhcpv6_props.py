@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Dhcpv6Props(ARObject):
     """AUTOSAR Dhcpv6Props."""
 
+    tcp_ip_dhcp: Optional[TimeValue]
+    tcp_ip_dhcp_v6_inf: Optional[TimeValue]
+    tcp_ip_dhcp_v6_sol: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize Dhcpv6Props."""
         super().__init__()

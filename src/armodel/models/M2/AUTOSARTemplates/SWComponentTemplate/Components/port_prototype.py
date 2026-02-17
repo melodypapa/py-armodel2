@@ -55,6 +55,14 @@ class PortPrototype(Identifiable):
     """AUTOSAR PortPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    client_servers: list[ClientServerAnnotation]
+    delegated_port: Optional[DelegatedPortAnnotation]
+    io_hw_abstraction_server_annotations: list[IoHwAbstractionServerAnnotation]
+    mode_port_annotations: list[ModePortAnnotation]
+    nv_data_port_annotations: list[NvDataPortAnnotation]
+    parameter_ports: list[ParameterPortAnnotation]
+    sender_receivers: list[Any]
+    trigger_port_annotations: list[TriggerPortAnnotation]
     def __init__(self) -> None:
         """Initialize PortPrototype."""
         super().__init__()

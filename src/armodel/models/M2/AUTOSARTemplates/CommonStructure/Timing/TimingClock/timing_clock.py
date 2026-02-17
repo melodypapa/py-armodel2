@@ -21,6 +21,7 @@ class TimingClock(Identifiable):
     """AUTOSAR TimingClock."""
     """Abstract base class - do not instantiate directly."""
 
+    platform_time: Optional[GlobalTimeDomain]
     def __init__(self) -> None:
         """Initialize TimingClock."""
         super().__init__()

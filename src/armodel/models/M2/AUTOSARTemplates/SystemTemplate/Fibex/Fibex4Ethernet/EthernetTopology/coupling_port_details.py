@@ -33,6 +33,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortDetails(ARObject):
     """AUTOSAR CouplingPortDetails."""
 
+    coupling_ports: list[CouplingPortStructuralElement]
+    ethernet_priority: EthernetPriorityRegeneration
+    ethernet_traffic: CouplingPortTrafficClassAssignment
+    global_time_coupling: Optional[GlobalTimeCouplingPortProps]
+    last_egress: Optional[CouplingPortScheduler]
+    rate_policies: list[CouplingPortRatePolicy]
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
         super().__init__()

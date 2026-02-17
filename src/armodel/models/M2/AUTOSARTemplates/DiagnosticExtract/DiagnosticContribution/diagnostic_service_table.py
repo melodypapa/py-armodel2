@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticServiceTable(DiagnosticCommonElement):
     """AUTOSAR DiagnosticServiceTable."""
 
+    diagnostics: list[DiagnosticConnection]
+    ecu_instance: Optional[EcuInstance]
+    protocol_kind: Optional[NameToken]
+    service_instances: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceTable."""
         super().__init__()

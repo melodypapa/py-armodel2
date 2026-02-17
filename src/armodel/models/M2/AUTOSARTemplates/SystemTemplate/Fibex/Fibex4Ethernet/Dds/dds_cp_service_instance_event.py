@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DdsCpServiceInstanceEvent(ARObject):
     """AUTOSAR DdsCpServiceInstanceEvent."""
 
+    dds_event: Optional[PduTriggering]
+    dds_event_qos: Optional[DdsCpQosProfile]
+    dds_event_topic: Optional[DdsCpTopic]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceEvent."""
         super().__init__()

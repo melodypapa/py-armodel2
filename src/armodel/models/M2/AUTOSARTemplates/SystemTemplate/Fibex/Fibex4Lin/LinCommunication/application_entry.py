@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class ApplicationEntry(ScheduleTableEntry):
     """AUTOSAR ApplicationEntry."""
 
+    frame_triggering: Optional[LinFrameTriggering]
     def __init__(self) -> None:
         """Initialize ApplicationEntry."""
         super().__init__()

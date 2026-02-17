@@ -31,6 +31,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class TransformationTechnology(Identifiable):
     """AUTOSAR TransformationTechnology."""
 
+    buffer_properties: Optional[BufferProperties]
+    has_internal: Optional[Boolean]
+    needs_original: Optional[Boolean]
+    protocol: Optional[String]
+    transformation_description: Optional[TransformationDescription]
+    transformer: Optional[TransformerClassEnum]
+    version: Optional[String]
     def __init__(self) -> None:
         """Initialize TransformationTechnology."""
         super().__init__()

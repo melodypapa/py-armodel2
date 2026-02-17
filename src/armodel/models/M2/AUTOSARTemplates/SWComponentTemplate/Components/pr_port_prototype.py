@@ -23,6 +23,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 class PRPortPrototype(AbstractRequiredPortPrototype):
     """AUTOSAR PRPortPrototype."""
 
+    provided: Optional[PortInterface]
     def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()

@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_v
 class EcucContainerValue(Identifiable):
     """AUTOSAR EcucContainerValue."""
 
+    definition: Optional[EcucContainerDef]
+    parameter_values: list[EcucParameterValue]
+    reference_values: list[Any]
+    sub_containers: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize EcucContainerValue."""
         super().__init__()

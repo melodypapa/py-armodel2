@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.text_value_spe
 class MetaDataItem(ARObject):
     """AUTOSAR MetaDataItem."""
 
+    length: Optional[PositiveInteger]
+    meta_data_item: Optional[TextValueSpecification]
     def __init__(self) -> None:
         """Initialize MetaDataItem."""
         super().__init__()

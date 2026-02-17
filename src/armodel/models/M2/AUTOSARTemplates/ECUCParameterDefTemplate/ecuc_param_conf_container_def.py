@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 class EcucParamConfContainerDef(EcucContainerDef):
     """AUTOSAR EcucParamConfContainerDef."""
 
+    parameters: list[EcucParameterDef]
+    references: list[Any]
+    sub_containers: list[EcucContainerDef]
     def __init__(self) -> None:
         """Initialize EcucParamConfContainerDef."""
         super().__init__()

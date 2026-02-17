@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ContainedIPduProps(ARObject):
     """AUTOSAR ContainedIPduProps."""
 
+    collection: Optional[Any]
+    contained_pdu: Optional[PduTriggering]
+    header_id_long: Optional[PositiveInteger]
+    header_id_short: Optional[PositiveInteger]
+    offset: Optional[PositiveInteger]
+    priority: Optional[PositiveInteger]
+    timeout: Optional[TimeValue]
+    trigger: Optional[PduCollectionTriggerEnum]
+    update: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ContainedIPduProps."""
         super().__init__()

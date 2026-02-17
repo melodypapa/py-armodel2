@@ -26,6 +26,9 @@ class DiagnosticCapabilityElement(ServiceNeeds):
     """AUTOSAR DiagnosticCapabilityElement."""
     """Abstract base class - do not instantiate directly."""
 
+    audiences: list[DiagnosticAudienceEnum]
+    diag: Optional[DiagRequirementIdString]
+    security_access: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticCapabilityElement."""
         super().__init__()

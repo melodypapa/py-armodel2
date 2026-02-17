@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds 
 class DdsDurability(ARObject):
     """AUTOSAR DdsDurability."""
 
+    durability_kind: Optional[DdsDurabilityKindEnum]
     def __init__(self) -> None:
         """Initialize DdsDurability."""
         super().__init__()

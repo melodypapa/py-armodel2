@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class BswDataReceptionPolicy(ARObject):
     """AUTOSAR BswDataReceptionPolicy."""
 
+    received_data: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize BswDataReceptionPolicy."""
         super().__init__()

@@ -19,6 +19,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortRatePolicy(ARObject):
     """AUTOSAR CouplingPortRatePolicy."""
 
+    data_length: Optional[PositiveInteger]
+    policy_action: Optional[CouplingPortRatePolicy]
+    priority: Optional[PositiveInteger]
+    time_interval: Optional[TimeValue]
+    v_lans: list[Any]
     def __init__(self) -> None:
         """Initialize CouplingPortRatePolicy."""
         super().__init__()

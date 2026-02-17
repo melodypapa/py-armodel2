@@ -39,6 +39,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class ConsumedServiceInstance(AbstractServiceInstance):
     """AUTOSAR ConsumedServiceInstance."""
 
+    allowed_services: list[NetworkEndpoint]
+    auto_require: Optional[Boolean]
+    blocklisteds: list[SomeipServiceVersion]
+    consumed_event_groups: list[ConsumedEventGroup]
+    event_multicast: Optional[ApplicationEndpoint]
+    instance: Optional[AnyServiceInstanceId]
+    local_unicast: ApplicationEndpoint
+    minor_version: Optional[AnyVersionString]
+    provided_service: Optional[Any]
+    remote_unicast: ApplicationEndpoint
+    sd_client_config: Optional[Any]
+    sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig]
+    service_identifier: Optional[PositiveInteger]
+    version_driven: Optional[Any]
     def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
         super().__init__()

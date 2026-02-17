@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.Flexr
 class FlexrayPhysicalChannel(PhysicalChannel):
     """AUTOSAR FlexrayPhysicalChannel."""
 
+    channel_name: Optional[FlexrayChannelName]
     def __init__(self) -> None:
         """Initialize FlexrayPhysicalChannel."""
         super().__init__()

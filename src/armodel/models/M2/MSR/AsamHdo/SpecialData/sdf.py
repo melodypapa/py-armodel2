@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Sdf(ARObject):
     """AUTOSAR Sdf."""
 
+    gid: NameToken
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize Sdf."""
         super().__init__()

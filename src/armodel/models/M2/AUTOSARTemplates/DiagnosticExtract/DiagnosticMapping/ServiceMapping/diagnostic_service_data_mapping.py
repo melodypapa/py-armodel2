@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticServiceDataMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticServiceDataMapping."""
 
+    diagnostic_data: Optional[DiagnosticDataElement]
+    diagnostic: Optional[DiagnosticParameter]
+    mapped_data: Optional[DataPrototype]
+    parameter: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()

@@ -23,6 +23,7 @@ class ImplementationProps(Referrable):
     """AUTOSAR ImplementationProps."""
     """Abstract base class - do not instantiate directly."""
 
+    symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize ImplementationProps."""
         super().__init__()

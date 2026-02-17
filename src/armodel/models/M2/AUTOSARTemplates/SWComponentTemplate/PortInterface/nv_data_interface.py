@@ -23,6 +23,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvDataInterface(DataInterface):
     """AUTOSAR NvDataInterface."""
 
+    nv_datas: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvDataInterface."""
         super().__init__()

@@ -19,6 +19,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AbstractEnumerationValueVariationPoint(ARObject):
     """AUTOSAR AbstractEnumerationValueVariationPoint."""
 
+    base: Optional[Identifier]
+    enum_table: Optional[Ref]
     def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()

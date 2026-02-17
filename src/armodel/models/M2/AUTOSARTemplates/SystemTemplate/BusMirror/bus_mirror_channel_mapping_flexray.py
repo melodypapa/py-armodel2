@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingFlexray."""
 
+    transmission: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMappingFlexray."""
         super().__init__()

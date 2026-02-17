@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RunnableEntityGroup(Identifiable):
     """AUTOSAR RunnableEntityGroup."""
 
+    runnable_entities: list[RunnableEntity]
+    runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup]
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()

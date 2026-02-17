@@ -32,6 +32,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
     """AUTOSAR CpSoftwareClusterBinaryManifestDescriptor."""
 
+    cp_software_cluster: Optional[CpSoftwareCluster]
+    meta_data_fields: list[BinaryManifestMetaDataField]
+    provides: list[BinaryManifestProvideResource]
+    requires: list[BinaryManifestRequireResource]
+    resources: list[Any]
+    software_cluster: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterBinaryManifestDescriptor."""
         super().__init__()

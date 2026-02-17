@@ -35,6 +35,12 @@ class EcucDefinitionElement(Identifiable):
     """AUTOSAR EcucDefinitionElement."""
     """Abstract base class - do not instantiate directly."""
 
+    ecuc_cond: Optional[Any]
+    ecuc_validations: list[EcucValidationCondition]
+    lower_multiplicity: Optional[PositiveInteger]
+    related_trace: Optional[Traceable]
+    scope: Optional[EcucScopeEnum]
+    upper_multiplicity: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucDefinitionElement."""
         super().__init__()

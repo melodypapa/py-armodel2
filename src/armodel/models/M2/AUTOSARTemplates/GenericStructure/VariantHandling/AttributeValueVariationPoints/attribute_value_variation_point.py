@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AttributeValueVariationPoint(ARObject):
     """AUTOSAR AttributeValueVariationPoint."""
 
+    binding_time_enum: Optional[BindingTimeEnum]
+    blueprint_value: Optional[String]
+    sd: Optional[String]
+    short_label: Optional[PrimitiveIdentifier]
     def __init__(self) -> None:
         """Initialize AttributeValueVariationPoint."""
         super().__init__()

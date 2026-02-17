@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticDynamicallyDefineDataIdentifierClass."""
 
+    check_per: Optional[Boolean]
+    configuration: Optional[DiagnosticHandleDDDIConfigurationEnum]
+    subfunctions: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicallyDefineDataIdentifierClass."""
         super().__init__()

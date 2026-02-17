@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FMFeatureRestriction(Identifiable):
     """AUTOSAR FMFeatureRestriction."""
 
+    restriction_and_attributes: Optional[Any]
     def __init__(self) -> None:
         """Initialize FMFeatureRestriction."""
         super().__init__()

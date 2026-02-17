@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class MultiplexedIPdu(IPdu):
     """AUTOSAR MultiplexedIPdu."""
 
+    dynamic_part: Optional[DynamicPart]
+    selector_field: Optional[Integer]
+    unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize MultiplexedIPdu."""
         super().__init__()

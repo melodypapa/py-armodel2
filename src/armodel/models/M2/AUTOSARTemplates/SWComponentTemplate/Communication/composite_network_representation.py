@@ -15,6 +15,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CompositeNetworkRepresentation(ARObject):
     """AUTOSAR CompositeNetworkRepresentation."""
 
+    leaf_element_element_in_port_interface_instance_ref: Optional[Any]
+    network_representation: Optional[Any]
     def __init__(self) -> None:
         """Initialize CompositeNetworkRepresentation."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.map import (
 class LGraphic(LanguageSpecific):
     """AUTOSAR LGraphic."""
 
+    graphic: Graphic
+    map: Optional[Map]
     def __init__(self) -> None:
         """Initialize LGraphic."""
         super().__init__()

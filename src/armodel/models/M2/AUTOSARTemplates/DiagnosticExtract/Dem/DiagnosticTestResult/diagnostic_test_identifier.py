@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticTestIdentifier(ARObject):
     """AUTOSAR DiagnosticTestIdentifier."""
 
+    id: Optional[PositiveInteger]
+    uas_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTestIdentifier."""
         super().__init__()

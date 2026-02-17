@@ -22,6 +22,9 @@ class PortInCompositionTypeInstanceRef(ARObject):
     """AUTOSAR PortInCompositionTypeInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    abstract_context: Optional[Any]
+    base: Optional[CompositionSwComponentType]
+    target_port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize PortInCompositionTypeInstanceRef."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
 class VfbTiming(TimingExtension):
     """AUTOSAR VfbTiming."""
 
+    component: Optional[SwComponentType]
     def __init__(self) -> None:
         """Initialize VfbTiming."""
         super().__init__()

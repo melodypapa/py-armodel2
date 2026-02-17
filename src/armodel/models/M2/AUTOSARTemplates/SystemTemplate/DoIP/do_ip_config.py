@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_
 class DoIpConfig(ARObject):
     """AUTOSAR DoIpConfig."""
 
+    doip_interfaces: list[DoIpInterface]
+    logic_address: Optional[DoIpLogicAddress]
     def __init__(self) -> None:
         """Initialize DoIpConfig."""
         super().__init__()

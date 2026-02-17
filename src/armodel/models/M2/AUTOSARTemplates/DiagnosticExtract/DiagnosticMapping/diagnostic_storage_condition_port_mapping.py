@@ -17,6 +17,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
 class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticStorageConditionPortMapping."""
 
+    diagnostic_storage: Optional[Any]
+    swc_flat_service: Optional[Any]
+    swc_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionPortMapping."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.do_i
 class DoIpTpConfig(TpConfig):
     """AUTOSAR DoIpTpConfig."""
 
+    do_ip_logic_address_addresses: list[DoIpLogicAddress]
+    tp_connections: list[DoIpTpConnection]
     def __init__(self) -> None:
         """Initialize DoIpTpConfig."""
         super().__init__()

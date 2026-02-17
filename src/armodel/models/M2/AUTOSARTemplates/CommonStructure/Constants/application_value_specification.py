@@ -27,6 +27,9 @@ from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_value_cont import
 class ApplicationValueSpecification(ValueSpecification):
     """AUTOSAR ApplicationValueSpecification."""
 
+    category: Optional[Identifier]
+    sw_axis_conts: list[SwAxisCont]
+    sw_value_cont: Optional[SwValueCont]
     def __init__(self) -> None:
         """Initialize ApplicationValueSpecification."""
         super().__init__()

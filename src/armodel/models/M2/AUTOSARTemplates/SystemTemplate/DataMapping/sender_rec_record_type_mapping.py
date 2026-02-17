@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_co
 class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
     """AUTOSAR SenderRecRecordTypeMapping."""
 
+    record_elements: list[Any]
     def __init__(self) -> None:
         """Initialize SenderRecRecordTypeMapping."""
         super().__init__()

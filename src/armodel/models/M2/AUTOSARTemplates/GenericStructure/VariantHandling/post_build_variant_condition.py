@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PostBuildVariantCondition(ARObject):
     """AUTOSAR PostBuildVariantCondition."""
 
+    matching: Any
+    value: Integer
     def __init__(self) -> None:
         """Initialize PostBuildVariantCondition."""
         super().__init__()

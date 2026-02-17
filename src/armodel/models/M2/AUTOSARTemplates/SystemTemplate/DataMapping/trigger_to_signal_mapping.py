@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TriggerToSignalMapping(DataMapping):
     """AUTOSAR TriggerToSignalMapping."""
 
+    system_signal: Optional[SystemSignal]
+    trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerToSignalMapping."""
         super().__init__()

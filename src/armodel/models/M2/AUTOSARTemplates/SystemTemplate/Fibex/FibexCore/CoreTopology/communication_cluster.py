@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CommunicationCluster(ARObject):
     """AUTOSAR CommunicationCluster."""
 
+    baudrate: Optional[PositiveUnlimitedInteger]
+    physical_channels: list[PhysicalChannel]
+    protocol_name: Optional[String]
+    protocol_version: Optional[String]
     def __init__(self) -> None:
         """Initialize CommunicationCluster."""
         super().__init__()

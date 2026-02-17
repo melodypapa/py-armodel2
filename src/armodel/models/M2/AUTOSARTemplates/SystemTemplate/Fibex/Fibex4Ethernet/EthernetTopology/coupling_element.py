@@ -32,6 +32,12 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class CouplingElement(FibexElement):
     """AUTOSAR CouplingElement."""
 
+    communication: Optional[EthernetCluster]
+    coupling: Optional[CouplingElement]
+    coupling_ports: list[CouplingPort]
+    coupling_type: Optional[CouplingElementEnum]
+    ecu_instance: Optional[EcuInstance]
+    firewall_rules: list[StateDependentFirewall]
     def __init__(self) -> None:
         """Initialize CouplingElement."""
         super().__init__()

@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResu
 class DiagnosticTestResult(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTestResult."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    monitored: Optional[Any]
+    test_identifier: Optional[DiagnosticTestIdentifier]
+    update_kind: Optional[DiagnosticTestResult]
     def __init__(self) -> None:
         """Initialize DiagnosticTestResult."""
         super().__init__()

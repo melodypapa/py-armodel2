@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeObd."""
 
+    consider_pto: Optional[Boolean]
+    dtc_props_props: Optional[DiagnosticTroubleCode]
+    event_readiness: Optional[EventObdReadinessGroup]
+    obd_dtc_value: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeObd."""
         super().__init__()

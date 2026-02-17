@@ -25,6 +25,9 @@ class EcucParameterDef(EcucCommonAttributes):
     """AUTOSAR EcucParameterDef."""
     """Abstract base class - do not instantiate directly."""
 
+    derivation: Optional[EcucDerivationSpecification]
+    symbolic_name: Optional[Boolean]
+    with_auto: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucParameterDef."""
         super().__init__()

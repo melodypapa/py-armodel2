@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_intern
 class BswModuleTiming(TimingExtension):
     """AUTOSAR BswModuleTiming."""
 
+    behavior: Optional[BswInternalBehavior]
     def __init__(self) -> None:
         """Initialize BswModuleTiming."""
         super().__init__()

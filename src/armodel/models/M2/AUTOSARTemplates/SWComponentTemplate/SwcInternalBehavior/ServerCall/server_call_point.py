@@ -26,6 +26,8 @@ class ServerCallPoint(AbstractAccessPoint):
     """AUTOSAR ServerCallPoint."""
     """Abstract base class - do not instantiate directly."""
 
+    operation_instance_ref: Optional[ClientServerOperation]
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize ServerCallPoint."""
         super().__init__()

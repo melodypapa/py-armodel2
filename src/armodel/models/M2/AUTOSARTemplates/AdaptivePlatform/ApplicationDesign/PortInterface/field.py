@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Field(AutosarDataPrototype):
     """AUTOSAR Field."""
 
+    has_getter: Optional[Boolean]
+    has_notifier: Optional[Boolean]
+    has_setter: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize Field."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucReferenceValue(EcucAbstractReferenceValue):
     """AUTOSAR EcucReferenceValue."""
 
+    value: Optional[Referrable]
     def __init__(self) -> None:
         """Initialize EcucReferenceValue."""
         super().__init__()

@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticContribution
 class DiagnosticContributionSet(ARElement):
     """AUTOSAR DiagnosticContributionSet."""
 
+    common: Optional[Any]
+    elements: list[Any]
+    service_tables: list[DiagnosticServiceTable]
     def __init__(self) -> None:
         """Initialize DiagnosticContributionSet."""
         super().__init__()

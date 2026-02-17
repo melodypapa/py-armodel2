@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsTransportPriority(ARObject):
     """AUTOSAR DdsTransportPriority."""
 
+    transport_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsTransportPriority."""
         super().__init__()

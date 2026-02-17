@@ -46,6 +46,18 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_grou
 class PncMapping(Describable):
     """AUTOSAR PncMapping."""
 
+    dynamic_pncs: list[ISignalIPduGroup]
+    ident: Optional[PncMappingIdent]
+    physical_channels: list[PhysicalChannel]
+    pnc_consumeds: list[ConsumedProvidedServiceInstanceGroup]
+    pnc_groups: list[ISignalIPduGroup]
+    pnc_identifier: Optional[PositiveInteger]
+    pnc_pdur_groups: list[PdurIPduGroup]
+    pnc_wakeup: Optional[Boolean]
+    relevant_fors: list[EcuInstance]
+    short_label: Optional[Identifier]
+    vfcs: list[PortGroup]
+    wakeup_frames: list[FrameTriggering]
     def __init__(self) -> None:
         """Initialize PncMapping."""
         super().__init__()

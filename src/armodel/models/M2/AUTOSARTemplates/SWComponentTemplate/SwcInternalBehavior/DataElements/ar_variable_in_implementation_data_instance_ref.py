@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ArVariableInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArVariableInImplementationDataInstanceRef."""
 
+    context_datas: list[Any]
+    port_prototype: Optional[PortPrototype]
+    root_variable: Optional[VariableDataPrototype]
+    target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ArVariableInImplementationDataInstanceRef."""
         super().__init__()

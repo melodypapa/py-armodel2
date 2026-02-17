@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_ecu 
 class NmConfig(FibexElement):
     """AUTOSAR NmConfig."""
 
+    nm_clusters: list[NmCluster]
+    nm_cluster_couplings: list[NmClusterCoupling]
+    nm_if_ecus: list[NmEcu]
     def __init__(self) -> None:
         """Initialize NmConfig."""
         super().__init__()

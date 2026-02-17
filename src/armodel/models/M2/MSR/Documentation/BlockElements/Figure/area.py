@@ -22,6 +22,28 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Area(ARObject):
     """AUTOSAR Area."""
 
+    accesskey: Optional[String]
+    alt: Optional[String]
+    class_: Optional[String]
+    coords: Optional[String]
+    href: Optional[String]
+    nohref: Optional[AreaEnumNohref]
+    onblur: Optional[String]
+    onclick: Optional[String]
+    ondblclick: Optional[String]
+    onfocus: Optional[String]
+    onkeydown: Optional[String]
+    onkeypress: Optional[String]
+    onkeyup: Optional[String]
+    onmousedown: Optional[String]
+    onmousemove: Optional[String]
+    onmouseout: Optional[String]
+    onmouseover: Optional[String]
+    onmouseup: Optional[String]
+    shape: Optional[AreaEnumShape]
+    style: Optional[String]
+    tabindex: Optional[String]
+    title: Optional[String]
     def __init__(self) -> None:
         """Initialize Area."""
         super().__init__()

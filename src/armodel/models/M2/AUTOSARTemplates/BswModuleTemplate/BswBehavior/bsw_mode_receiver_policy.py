@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class BswModeReceiverPolicy(ARObject):
     """AUTOSAR BswModeReceiverPolicy."""
 
+    enhanced_mode: Optional[Boolean]
+    required_mode: Optional[ModeDeclarationGroup]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()

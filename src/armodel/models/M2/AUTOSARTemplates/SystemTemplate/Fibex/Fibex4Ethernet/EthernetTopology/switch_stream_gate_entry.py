@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwitchStreamGateEntry(Identifiable):
     """AUTOSAR SwitchStreamGateEntry."""
 
+    internal_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SwitchStreamGateEntry."""
         super().__init__()

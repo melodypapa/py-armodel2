@@ -24,6 +24,9 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class ClientServerOperationBlueprintMapping(ARObject):
     """AUTOSAR ClientServerOperationBlueprintMapping."""
 
+    blueprint: Optional[DocumentationBlock]
+    bsw_module_entry: BswModuleEntry
+    client_server: ClientServerOperation
     def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
         super().__init__()

@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_c
 class TlsCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR TlsCryptoServiceMapping."""
 
+    key_exchanges: list[CryptoServicePrimitive]
+    tls_cipher_suites: list[TlsCryptoCipherSuite]
+    use_client: Optional[Boolean]
+    use_security: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TlsCryptoServiceMapping."""
         super().__init__()

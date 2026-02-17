@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
     """AUTOSAR SenderRecArrayTypeMapping."""
 
+    array_elements: list[Any]
+    sender_to_signal: Optional[TextTableMapping]
+    signal_to: Optional[TextTableMapping]
     def __init__(self) -> None:
         """Initialize SenderRecArrayTypeMapping."""
         super().__init__()

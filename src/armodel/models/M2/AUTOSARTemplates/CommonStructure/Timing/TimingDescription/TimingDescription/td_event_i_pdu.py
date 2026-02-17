@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TDEventIPdu(TDEventCom):
     """AUTOSAR TDEventIPdu."""
 
+    i_pdu: Optional[IPdu]
+    physical_channel: Optional[PhysicalChannel]
+    td_event_type: Optional[TDEventIPduTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventIPdu."""
         super().__init__()

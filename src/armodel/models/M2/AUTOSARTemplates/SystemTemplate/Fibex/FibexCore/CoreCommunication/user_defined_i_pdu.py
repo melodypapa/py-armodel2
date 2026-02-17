@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UserDefinedIPdu(IPdu):
     """AUTOSAR UserDefinedIPdu."""
 
+    cdd_type: Optional[String]
     def __init__(self) -> None:
         """Initialize UserDefinedIPdu."""
         super().__init__()

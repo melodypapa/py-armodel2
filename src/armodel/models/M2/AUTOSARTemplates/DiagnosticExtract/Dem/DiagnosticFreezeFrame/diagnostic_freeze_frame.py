@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticFreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFreezeFrame."""
 
+    custom_trigger: Optional[String]
+    record_number: Optional[PositiveInteger]
+    trigger: Optional[DiagnosticRecordTriggerEnum]
+    update: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticFreezeFrame."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class TransformationISignalProps(ARObject):
     """AUTOSAR TransformationISignalProps."""
 
+    cs_error_reaction: Optional[CSTransformerErrorReactionEnum]
+    data_prototypes: list[DataPrototype]
+    transformer: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransformationISignalProps."""
         super().__init__()

@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt.dlt_log_channel impor
 class DltConfig(ARObject):
     """AUTOSAR DltConfig."""
 
+    dlt_ecu: Optional[DltEcu]
+    dlt_log_channels: list[DltLogChannel]
+    session_id: Optional[Boolean]
+    timestamp: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DltConfig."""
         super().__init__()

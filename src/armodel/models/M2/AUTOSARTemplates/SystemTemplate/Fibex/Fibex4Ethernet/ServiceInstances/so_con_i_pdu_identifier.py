@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SoConIPduIdentifier(Referrable):
     """AUTOSAR SoConIPduIdentifier."""
 
+    header_id: Optional[PositiveInteger]
+    pdu_collection: Optional[Any]
+    pdu_collection_trigger: Optional[PduCollectionTriggerEnum]
+    pdu_triggering: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize SoConIPduIdentifier."""
         super().__init__()

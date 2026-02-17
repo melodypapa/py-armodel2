@@ -25,6 +25,14 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.Flexr
 class FlexrayFifoConfiguration(ARObject):
     """AUTOSAR FlexrayFifoConfiguration."""
 
+    admit_without: Optional[Boolean]
+    base_cycle: Optional[Integer]
+    channel: Optional[FlexrayPhysicalChannel]
+    cycle_repetition: Optional[Integer]
+    fifo_depth: Optional[Integer]
+    fifo_ranges: list[FlexrayFifoRange]
+    msg_id_mask: Optional[Integer]
+    msg_id_match: Optional[Integer]
     def __init__(self) -> None:
         """Initialize FlexrayFifoConfiguration."""
         super().__init__()

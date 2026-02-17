@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MacSecCipherSuiteConfig(ARObject):
     """AUTOSAR MacSecCipherSuiteConfig."""
 
+    cipher_suite: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()

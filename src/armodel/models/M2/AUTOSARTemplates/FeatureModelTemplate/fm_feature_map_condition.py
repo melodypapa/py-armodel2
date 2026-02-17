@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FMFeatureMapCondition(Identifiable):
     """AUTOSAR FMFeatureMapCondition."""
 
+    fm_cond_and_attributes: Optional[Any]
     def __init__(self) -> None:
         """Initialize FMFeatureMapCondition."""
         super().__init__()

@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 class AnyInstanceRef(ARObject):
     """AUTOSAR AnyInstanceRef."""
 
+    base: AtpClassifier
+    context_elements: list[AtpFeature]
+    target: AtpFeature
     def __init__(self) -> None:
         """Initialize AnyInstanceRef."""
         super().__init__()

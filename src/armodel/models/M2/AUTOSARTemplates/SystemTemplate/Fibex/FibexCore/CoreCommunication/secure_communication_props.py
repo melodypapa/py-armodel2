@@ -18,6 +18,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecureCommunicationProps(ARObject):
     """AUTOSAR SecureCommunicationProps."""
 
+    auth_data: Optional[PositiveInteger]
+    authentication: Optional[PositiveInteger]
+    data_id: Optional[PositiveInteger]
+    freshness_value: Optional[PositiveInteger]
+    message_link: Optional[PositiveInteger]
+    secondary: Optional[PositiveInteger]
+    secured_area: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecureCommunicationProps."""
         super().__init__()

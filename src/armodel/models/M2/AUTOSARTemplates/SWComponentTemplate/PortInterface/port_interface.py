@@ -29,6 +29,8 @@ class PortInterface(ARElement):
     """AUTOSAR PortInterface."""
     """Abstract base class - do not instantiate directly."""
 
+    is_service: Optional[Boolean]
+    service_kind: Optional[ServiceProviderEnum]
     def __init__(self) -> None:
         """Initialize PortInterface."""
         super().__init__()

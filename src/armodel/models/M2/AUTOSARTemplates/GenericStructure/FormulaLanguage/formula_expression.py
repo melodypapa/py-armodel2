@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FormulaExpression(ARObject):
     """AUTOSAR FormulaExpression."""
 
+    atp_references: list[Referrable]
+    atp_strings: list[Referrable]
     def __init__(self) -> None:
         """Initialize FormulaExpression."""
         super().__init__()

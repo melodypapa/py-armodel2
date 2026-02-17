@@ -22,6 +22,9 @@ class BinaryManifestResource(Identifiable):
     """AUTOSAR BinaryManifestResource."""
     """Abstract base class - do not instantiate directly."""
 
+    global_resource: Optional[PositiveInteger]
+    resource: Optional[Any]
+    resource_guard: Optional[String]
     def __init__(self) -> None:
         """Initialize BinaryManifestResource."""
         super().__init__()

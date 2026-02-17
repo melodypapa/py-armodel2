@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEnvironmentalCondition."""
 
+    formula: Optional[Any]
+    mode_elements: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvironmentalCondition."""
         super().__init__()

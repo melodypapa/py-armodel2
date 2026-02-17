@@ -26,6 +26,8 @@ class Frame(FibexElement):
     """AUTOSAR Frame."""
     """Abstract base class - do not instantiate directly."""
 
+    frame_length: Optional[Integer]
+    pdu_to_frames: list[PduToFrameMapping]
     def __init__(self) -> None:
         """Initialize Frame."""
         super().__init__()

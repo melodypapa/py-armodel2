@@ -29,6 +29,9 @@ class EcucParameterValue(EcucIndexableValue):
     """AUTOSAR EcucParameterValue."""
     """Abstract base class - do not instantiate directly."""
 
+    annotations: list[Annotation]
+    definition: Optional[EcucParameterDef]
+    is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucParameterValue."""
         super().__init__()

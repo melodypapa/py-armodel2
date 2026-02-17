@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SomeipTpChannel(Identifiable):
     """AUTOSAR SomeipTpChannel."""
 
+    burst_size: Optional[PositiveInteger]
+    rx_timeout_time: Optional[TimeValue]
+    separation_time: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize SomeipTpChannel."""
         super().__init__()

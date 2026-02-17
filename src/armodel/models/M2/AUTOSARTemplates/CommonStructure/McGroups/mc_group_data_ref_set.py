@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class McGroupDataRefSet(ARObject):
     """AUTOSAR McGroupDataRefSet."""
 
+    flat_map_entries: list[FlatInstanceDescriptor]
+    mc_data_instances: list[McDataInstance]
     def __init__(self) -> None:
         """Initialize McGroupDataRefSet."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.tlv_data_id_d
 class TlvDataIdDefinitionSet(ARElement):
     """AUTOSAR TlvDataIdDefinitionSet."""
 
+    tlv_data_ids: list[TlvDataIdDefinition]
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinitionSet."""
         super().__init__()

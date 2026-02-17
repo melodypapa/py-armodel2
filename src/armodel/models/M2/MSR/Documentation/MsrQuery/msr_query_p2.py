@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class MsrQueryP2(ARObject):
     """AUTOSAR MsrQueryP2."""
 
+    msr_query_props: MsrQueryProps
+    msr_query_result: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize MsrQueryP2."""
         super().__init__()

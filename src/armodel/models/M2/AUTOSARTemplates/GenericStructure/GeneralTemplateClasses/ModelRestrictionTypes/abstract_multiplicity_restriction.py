@@ -21,6 +21,8 @@ class AbstractMultiplicityRestriction(ARObject):
     """AUTOSAR AbstractMultiplicityRestriction."""
     """Abstract base class - do not instantiate directly."""
 
+    lower_multiplicity: Optional[PositiveInteger]
+    upper_multiplicity: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize AbstractMultiplicityRestriction."""
         super().__init__()

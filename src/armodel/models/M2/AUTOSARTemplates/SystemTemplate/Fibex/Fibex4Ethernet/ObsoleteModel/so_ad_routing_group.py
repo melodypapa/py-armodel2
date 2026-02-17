@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SoAdRoutingGroup(FibexElement):
     """AUTOSAR SoAdRoutingGroup."""
 
+    event_group: Optional[EventGroupControlTypeEnum]
     def __init__(self) -> None:
         """Initialize SoAdRoutingGroup."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class EcucAddInfoParamValue(EcucParameterValue):
     """AUTOSAR EcucAddInfoParamValue."""
 
+    value: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize EcucAddInfoParamValue."""
         super().__init__()

@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import
 class Tbody(ARObject):
     """AUTOSAR Tbody."""
 
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Tbody."""
         super().__init__()

@@ -25,6 +25,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class LinTpNode(Identifiable):
     """AUTOSAR LinTpNode."""
 
+    connector: Optional[Any]
+    drop_not: Optional[Boolean]
+    max_number_of: Optional[Integer]
+    p2_max: Optional[TimeValue]
+    p2_timing: Optional[TimeValue]
+    tp_address: Optional[TpAddress]
     def __init__(self) -> None:
         """Initialize LinTpNode."""
         super().__init__()

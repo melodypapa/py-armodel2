@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class ReferenceCondition(AttributeCondition):
     """AUTOSAR ReferenceCondition."""
 
+    reference: ReferenceTailoring
     def __init__(self) -> None:
         """Initialize ReferenceCondition."""
         super().__init__()

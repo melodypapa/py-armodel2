@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session
 class DiagnosticSessionControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSessionControl."""
 
+    diagnostic_session_session: Optional[DiagnosticSession]
+    session_control: Optional[DiagnosticSession]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()

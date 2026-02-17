@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EnumerationMappingTable(PackageableElement):
     """AUTOSAR EnumerationMappingTable."""
 
+    entries: list[Any]
     def __init__(self) -> None:
         """Initialize EnumerationMappingTable."""
         super().__init__()

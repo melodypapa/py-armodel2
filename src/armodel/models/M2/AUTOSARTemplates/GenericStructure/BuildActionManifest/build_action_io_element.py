@@ -25,6 +25,10 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class BuildActionIoElement(ARObject):
     """AUTOSAR BuildActionIoElement."""
 
+    category: NameToken
+    ecuc_definition: Optional[EcucDefinitionElement]
+    role: Optional[Identifier]
+    sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionIoElement."""
         super().__init__()

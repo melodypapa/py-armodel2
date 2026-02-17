@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventOneEveryNFilter."""
 
+    n: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventOneEveryNFilter."""
         super().__init__()

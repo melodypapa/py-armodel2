@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientServerAnnotation(GeneralAnnotation):
     """AUTOSAR ClientServerAnnotation."""
 
+    operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerAnnotation."""
         super().__init__()

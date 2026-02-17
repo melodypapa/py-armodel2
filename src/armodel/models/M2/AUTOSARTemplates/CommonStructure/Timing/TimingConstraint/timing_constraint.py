@@ -21,6 +21,7 @@ class TimingConstraint(Traceable):
     """AUTOSAR TimingConstraint."""
     """Abstract base class - do not instantiate directly."""
 
+    timing_condition: Optional[TimingCondition]
     def __init__(self) -> None:
         """Initialize TimingConstraint."""
         super().__init__()

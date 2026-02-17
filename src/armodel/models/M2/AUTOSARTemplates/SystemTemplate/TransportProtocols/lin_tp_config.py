@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class LinTpConfig(TpConfig):
     """AUTOSAR LinTpConfig."""
 
+    tp_addresses: list[TpAddress]
+    tp_connections: list[LinTpConnection]
+    tp_nodes: list[LinTpNode]
     def __init__(self) -> None:
         """Initialize LinTpConfig."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class SwCalprmRefProxy(ARObject):
     """AUTOSAR SwCalprmRefProxy."""
 
+    ar_parameter: Optional[AutosarParameterRef]
+    mc_data_instance: Optional[McDataInstance]
     def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()

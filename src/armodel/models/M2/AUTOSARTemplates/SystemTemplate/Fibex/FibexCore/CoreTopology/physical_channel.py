@@ -32,6 +32,11 @@ class PhysicalChannel(Identifiable):
     """AUTOSAR PhysicalChannel."""
     """Abstract base class - do not instantiate directly."""
 
+    comm_connectors: list[CommunicationConnector]
+    frame_triggerings: list[FrameTriggering]
+    i_signals: list[ISignalTriggering]
+    manageds: list[PhysicalChannel]
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()

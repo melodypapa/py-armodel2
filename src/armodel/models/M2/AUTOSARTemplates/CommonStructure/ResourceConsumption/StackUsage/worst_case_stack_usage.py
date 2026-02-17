@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class WorstCaseStackUsage(StackUsage):
     """AUTOSAR WorstCaseStackUsage."""
 
+    memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize WorstCaseStackUsage."""
         super().__init__()

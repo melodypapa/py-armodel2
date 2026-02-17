@@ -35,6 +35,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptExecutableEntityEvent(Identifiable):
     """AUTOSAR RptExecutableEntityEvent."""
 
+    executions: list[RptExecutionContext]
+    mc_datas: list[RoleBasedMcDataAssignment]
+    rpt_event_id: Optional[PositiveInteger]
+    rpt_executable_entity: Optional[RptExecutableEntity]
+    rpt_impl_policy: Optional[RptImplPolicy]
+    rpt_service_points: list[RptServicePoint]
     def __init__(self) -> None:
         """Initialize RptExecutableEntityEvent."""
         super().__init__()

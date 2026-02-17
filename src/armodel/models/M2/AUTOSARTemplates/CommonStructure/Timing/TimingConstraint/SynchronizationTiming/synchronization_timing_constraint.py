@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class SynchronizationTimingConstraint(TimingConstraint):
     """AUTOSAR SynchronizationTimingConstraint."""
 
+    event: Optional[EventOccurrenceKindEnum]
+    scopes: list[TimingDescriptionEvent]
+    scope_events: list[TimingDescriptionEvent]
+    synchronization: Optional[SynchronizationTypeEnum]
+    tolerance: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()

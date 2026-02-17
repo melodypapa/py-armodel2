@@ -29,6 +29,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class ApplicationEndpoint(Identifiable):
     """AUTOSAR ApplicationEndpoint."""
 
+    consumed_services: list[Any]
+    max_number_of: Optional[PositiveInteger]
+    network_endpoint_endpoint: Optional[NetworkEndpoint]
+    priority: Optional[PositiveInteger]
+    provided_services: list[Any]
+    tls_crypto_service: Optional[TlsCryptoServiceMapping]
+    tp_configuration_configuration: Optional[TransportProtocolConfiguration]
     def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
         super().__init__()

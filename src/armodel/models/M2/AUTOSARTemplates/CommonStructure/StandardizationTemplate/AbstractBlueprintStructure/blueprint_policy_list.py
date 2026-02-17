@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BlueprintPolicyList(BlueprintPolicy):
     """AUTOSAR BlueprintPolicyList."""
 
+    max_number_of: PositiveInteger
+    min_number_of: PositiveInteger
     def __init__(self) -> None:
         """Initialize BlueprintPolicyList."""
         super().__init__()

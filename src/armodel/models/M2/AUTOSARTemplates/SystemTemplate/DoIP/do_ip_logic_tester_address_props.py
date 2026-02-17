@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.do_ip_routing_activa
 class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
     """AUTOSAR DoIpLogicTesterAddressProps."""
 
+    do_ip_testers: list[DoIpRoutingActivation]
     def __init__(self) -> None:
         """Initialize DoIpLogicTesterAddressProps."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class UnassignFrameId(LinConfigurationEntry):
     """AUTOSAR UnassignFrameId."""
 
+    unassigned: Optional[LinFrameTriggering]
     def __init__(self) -> None:
         """Initialize UnassignFrameId."""
         super().__init__()

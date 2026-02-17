@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.ViewMapSet.view_map imp
 class ViewMapSet(ARElement):
     """AUTOSAR ViewMapSet."""
 
+    view_maps: list[ViewMap]
     def __init__(self) -> None:
         """Initialize ViewMapSet."""
         super().__init__()

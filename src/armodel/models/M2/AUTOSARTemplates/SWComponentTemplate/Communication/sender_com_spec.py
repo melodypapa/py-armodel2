@@ -34,6 +34,13 @@ class SenderComSpec(PPortComSpec):
     """AUTOSAR SenderComSpec."""
     """Abstract base class - do not instantiate directly."""
 
+    composite_networks: list[CompositeNetworkRepresentation]
+    data_element: Optional[AutosarDataPrototype]
+    handle_out_of_range: Optional[Any]
+    network: Optional[SwDataDefProps]
+    transmission: Optional[Any]
+    transmission_com_spec: Optional[TransmissionComSpecProps]
+    uses_end_to_end: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SenderComSpec."""
         super().__init__()

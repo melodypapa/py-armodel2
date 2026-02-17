@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class J1939TpPg(ARObject):
     """AUTOSAR J1939TpPg."""
 
+    direct_pdu: Optional[NPdu]
+    pgn: Optional[Integer]
+    requestable: Optional[Boolean]
+    sdus: list[IPdu]
     def __init__(self) -> None:
         """Initialize J1939TpPg."""
         super().__init__()

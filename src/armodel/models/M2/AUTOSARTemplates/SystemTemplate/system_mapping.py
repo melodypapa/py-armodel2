@@ -74,6 +74,29 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_si
 class SystemMapping(Identifiable):
     """AUTOSAR SystemMapping."""
 
+    applications: list[ApplicationPartitionToEcuPartitionMapping]
+    app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping]
+    coms: list[ComManagementMapping]
+    crypto_services: list[CryptoServiceMapping]
+    data_mappings: list[DataMapping]
+    dds_i_signal_tos: list[DdsCpISignalToDdsTopicMapping]
+    ecu_resources: list[ECUMapping]
+    j1939_controllers: list[Any]
+    mappings: list[MappingConstraint]
+    pnc_mappings: list[PncMapping]
+    port_element_tos: list[PortElementToCommunicationResourceMapping]
+    resources: list[EcuResourceEstimation]
+    resource_tos: list[CpSoftwareCluster]
+    rte_event_in_systems: list[Any]
+    rte_event_to_oses: list[RteEventInSystemToOsTaskProxyMapping]
+    signal_paths: list[SignalPathConstraint]
+    software_clusters: list[Any]
+    sw_clusters: list[Any]
+    swc_tos: list[SwcToApplicationPartitionMapping]
+    sw_impl_mappings: list[SwcToImplMapping]
+    sw_mappings: list[SwcToEcuMapping]
+    system_signal_group_tos: list[SystemSignalGroupToCommunicationResourceMapping]
+    system_signal_tos: list[SystemSignalToCommunicationResourceMapping]
     def __init__(self) -> None:
         """Initialize SystemMapping."""
         super().__init__()

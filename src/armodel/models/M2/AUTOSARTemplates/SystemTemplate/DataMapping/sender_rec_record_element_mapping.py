@@ -24,6 +24,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class SenderRecRecordElementMapping(ARObject):
     """AUTOSAR SenderRecRecordElementMapping."""
 
+    application_record: Optional[Any]
+    complex_type: Optional[SenderRecCompositeTypeMapping]
+    implementation: Optional[Any]
+    sender_to_signal: Optional[TextTableMapping]
+    signal_to: Optional[TextTableMapping]
+    system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SenderRecRecordElementMapping."""
         super().__init__()

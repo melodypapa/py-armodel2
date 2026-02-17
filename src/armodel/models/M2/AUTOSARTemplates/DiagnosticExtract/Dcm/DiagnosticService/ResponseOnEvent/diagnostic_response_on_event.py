@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticResponseOnEvent."""
 
+    event_windows: list[DiagnosticEventWindow]
+    response_on: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEvent."""
         super().__init__()

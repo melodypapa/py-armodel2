@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 class EcucQueryExpression(ARObject):
     """AUTOSAR EcucQueryExpression."""
 
+    config_element: Optional[EcucDefinitionElement]
     def __init__(self) -> None:
         """Initialize EcucQueryExpression."""
         super().__init__()

@@ -36,6 +36,19 @@ if TYPE_CHECKING:
 class StructuredReq(Paginateable):
     """AUTOSAR StructuredReq."""
 
+    applies_tos: list[StandardNameEnum]
+    conflicts: Optional[DocumentationBlock]
+    date: DateTime
+    dependencies: Optional[DocumentationBlock]
+    description: Optional[DocumentationBlock]
+    importance: String
+    issued_by: String
+    rationale: Optional[DocumentationBlock]
+    remark: Optional[DocumentationBlock]
+    supporting: Optional[DocumentationBlock]
+    tested_items: list[Traceable]
+    type: String
+    use_case: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize StructuredReq."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_param_conf
 class EcucChoiceContainerDef(EcucContainerDef):
     """AUTOSAR EcucChoiceContainerDef."""
 
+    choices: list[EcucParamConfContainerDef]
     def __init__(self) -> None:
         """Initialize EcucChoiceContainerDef."""
         super().__init__()

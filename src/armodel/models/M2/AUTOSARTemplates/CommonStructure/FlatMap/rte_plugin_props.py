@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_v
 class RtePluginProps(ARObject):
     """AUTOSAR RtePluginProps."""
 
+    associated: Optional[EcucContainerValue]
+    associated_rte: Optional[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize RtePluginProps."""
         super().__init__()

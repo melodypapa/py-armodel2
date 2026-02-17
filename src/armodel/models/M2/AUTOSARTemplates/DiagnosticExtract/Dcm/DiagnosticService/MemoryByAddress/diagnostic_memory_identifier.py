@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_
 class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMemoryIdentifier."""
 
+    access: Optional[DiagnosticAccessPermission]
+    id: Optional[PositiveInteger]
+    memory_high: Optional[String]
+    memory_low: Optional[String]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryIdentifier."""
         super().__init__()

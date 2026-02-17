@@ -22,6 +22,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class CalibrationParameterValue(ARObject):
     """AUTOSAR CalibrationParameterValue."""
 
+    appl_init_value: Optional[ValueSpecification]
+    impl_init_value: Optional[ValueSpecification]
+    initialized: Optional[FlatInstanceDescriptor]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValue."""
         super().__init__()

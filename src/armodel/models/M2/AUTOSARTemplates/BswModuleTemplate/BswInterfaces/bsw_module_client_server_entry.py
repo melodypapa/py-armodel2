@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswModuleClientServerEntry(Referrable):
     """AUTOSAR BswModuleClientServerEntry."""
 
+    encapsulated: Optional[BswModuleEntry]
+    is_reentrant: Optional[Boolean]
+    is_synchronous: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModuleClientServerEntry."""
         super().__init__()

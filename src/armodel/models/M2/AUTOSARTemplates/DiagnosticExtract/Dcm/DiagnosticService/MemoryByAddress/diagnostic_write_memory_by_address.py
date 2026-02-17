@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticWriteMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
     """AUTOSAR DiagnosticWriteMemoryByAddress."""
 
+    write_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticWriteMemoryByAddress."""
         super().__init__()

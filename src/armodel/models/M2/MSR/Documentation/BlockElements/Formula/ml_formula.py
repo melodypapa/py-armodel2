@@ -30,6 +30,11 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class MlFormula(Paginateable):
     """AUTOSAR MlFormula."""
 
+    formula_caption: Optional[Caption]
+    generic_math: Optional[MultiLanguagePlainText]
+    l_graphics: list[LGraphic]
+    tex_math: Optional[MultiLanguagePlainText]
+    verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
         """Initialize MlFormula."""
         super().__init__()

@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SOMEIPTransformationDescription(TransformationDescription):
     """AUTOSAR SOMEIPTransformationDescription."""
 
+    alignment: Optional[PositiveInteger]
+    byte_order: Optional[ByteOrderEnum]
+    interface_version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationDescription."""
         super().__init__()

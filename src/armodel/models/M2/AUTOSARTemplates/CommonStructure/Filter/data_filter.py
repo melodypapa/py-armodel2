@@ -23,6 +23,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DataFilter(ARObject):
     """AUTOSAR DataFilter."""
 
+    data_filter_type_enum: Optional[DataFilterTypeEnum]
+    mask: Optional[UnlimitedInteger]
+    max: Optional[UnlimitedInteger]
+    min: Optional[UnlimitedInteger]
+    offset: Optional[PositiveInteger]
+    period: Optional[PositiveInteger]
+    x: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize DataFilter."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class BlueprintFormula(ARObject):
     """AUTOSAR BlueprintFormula."""
 
+    ecuc: EcucDefinitionElement
+    verbatim: MultiLanguageVerbatim
     def __init__(self) -> None:
         """Initialize BlueprintFormula."""
         super().__init__()

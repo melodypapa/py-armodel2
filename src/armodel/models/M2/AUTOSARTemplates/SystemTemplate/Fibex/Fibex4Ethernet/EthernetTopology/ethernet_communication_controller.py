@@ -27,6 +27,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetCommunicationController(ARObject):
     """AUTOSAR EthernetCommunicationController."""
 
+    can_xl_config: Optional[Any]
+    coupling_ports: list[CouplingPort]
+    mac_layer_type: Optional[EthernetMacLayerTypeEnum]
+    mac_unicast: Optional[MacAddressString]
+    maximum: Optional[Integer]
+    slave_act_as: Optional[Boolean]
+    slave_qualified: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize EthernetCommunicationController."""
         super().__init__()

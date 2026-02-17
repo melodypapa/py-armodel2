@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMeasurementIdentifier."""
 
+    obd_mid: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticMeasurementIdentifier."""
         super().__init__()

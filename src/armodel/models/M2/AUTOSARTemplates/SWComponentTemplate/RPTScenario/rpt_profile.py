@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RptProfile(Identifiable):
     """AUTOSAR RptProfile."""
 
+    max_service: Optional[PositiveInteger]
+    min_service_point: Optional[PositiveInteger]
+    service_point: Optional[CIdentifier]
+    stim_enabler: Optional[RptEnablerImplTypeEnum]
     def __init__(self) -> None:
         """Initialize RptProfile."""
         super().__init__()

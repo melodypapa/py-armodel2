@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class LinErrorResponse(ARObject):
     """AUTOSAR LinErrorResponse."""
 
+    response_error: Optional[ISignalTriggering]
     def __init__(self) -> None:
         """Initialize LinErrorResponse."""
         super().__init__()

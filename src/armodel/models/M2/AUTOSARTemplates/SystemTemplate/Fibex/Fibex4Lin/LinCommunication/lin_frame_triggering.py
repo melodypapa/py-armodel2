@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LinFrameTriggering(FrameTriggering):
     """AUTOSAR LinFrameTriggering."""
 
+    identifier: Optional[Integer]
+    lin_checksum: Optional[LinChecksumType]
     def __init__(self) -> None:
         """Initialize LinFrameTriggering."""
         super().__init__()

@@ -26,6 +26,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class VariableAccess(AbstractAccessPoint):
     """AUTOSAR VariableAccess."""
 
+    accessed_variable: Optional[AutosarVariableRef]
+    scope: Optional[VariableAccessScopeEnum]
     def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()

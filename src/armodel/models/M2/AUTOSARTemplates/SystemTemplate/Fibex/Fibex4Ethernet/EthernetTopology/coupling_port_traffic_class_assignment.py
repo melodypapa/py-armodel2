@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortTrafficClassAssignment(Referrable):
     """AUTOSAR CouplingPortTrafficClassAssignment."""
 
+    priority: PositiveInteger
+    traffic_class: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CouplingPortTrafficClassAssignment."""
         super().__init__()

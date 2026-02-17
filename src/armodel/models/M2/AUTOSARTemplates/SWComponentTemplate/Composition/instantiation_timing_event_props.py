@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class InstantiationTimingEventProps(InstantiationRTEEventProps):
     """AUTOSAR InstantiationTimingEventProps."""
 
+    period: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize InstantiationTimingEventProps."""
         super().__init__()

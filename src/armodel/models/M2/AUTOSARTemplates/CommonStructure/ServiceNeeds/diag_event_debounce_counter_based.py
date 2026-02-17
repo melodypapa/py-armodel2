@@ -22,6 +22,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceCounterBased."""
 
+    counter_based: Optional[Integer]
+    counter: Optional[Integer]
+    counter_failed: Optional[Integer]
+    counter_jump: Optional[Integer]
+    counter_jump_up: Optional[Integer]
+    counter_passed: Optional[Integer]
     def __init__(self) -> None:
         """Initialize DiagEventDebounceCounterBased."""
         super().__init__()

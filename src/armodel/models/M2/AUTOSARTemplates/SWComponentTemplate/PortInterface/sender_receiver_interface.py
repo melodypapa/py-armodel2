@@ -31,6 +31,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SenderReceiverInterface(DataInterface):
     """AUTOSAR SenderReceiverInterface."""
 
+    data_elements: list[VariableDataPrototype]
+    invalidation_policy_policies: list[InvalidationPolicy]
+    meta_data_item_sets: list[MetaDataItemSet]
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()

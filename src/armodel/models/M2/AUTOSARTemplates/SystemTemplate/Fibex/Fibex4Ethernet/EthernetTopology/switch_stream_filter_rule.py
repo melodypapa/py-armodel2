@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamFilterRule(Identifiable):
     """AUTOSAR SwitchStreamFilterRule."""
 
+    data_link_layer: Optional[StreamFilterRuleDataLinkLayer]
+    ieee1722_tp: Optional[StreamFilterIEEE1722Tp]
+    ip_tp_rule: Optional[StreamFilterRuleIpTp]
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterRule."""
         super().__init__()

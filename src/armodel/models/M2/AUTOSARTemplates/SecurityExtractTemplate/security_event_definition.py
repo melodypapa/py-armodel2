@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventDefinition(IdsCommonElement):
     """AUTOSAR SecurityEventDefinition."""
 
+    event_symbol_name: Optional[Any]
+    id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventDefinition."""
         super().__init__()

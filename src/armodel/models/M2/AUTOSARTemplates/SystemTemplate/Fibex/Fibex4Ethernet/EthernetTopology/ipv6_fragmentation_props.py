@@ -19,6 +19,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6FragmentationProps(ARObject):
     """AUTOSAR Ipv6FragmentationProps."""
 
+    tcp_ip_ip: Optional[TimeValue]
+    tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger]
+    tcp_ip_ip_tx: Optional[PositiveInteger]
+    tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ipv6FragmentationProps."""
         super().__init__()

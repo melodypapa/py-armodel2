@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_si
 class CommonSignalPath(SignalPathConstraint):
     """AUTOSAR CommonSignalPath."""
 
+    operations: list[Any]
+    signals: list[SwcToSwcSignal]
     def __init__(self) -> None:
         """Initialize CommonSignalPath."""
         super().__init__()

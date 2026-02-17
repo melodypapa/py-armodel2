@@ -24,6 +24,7 @@ if TYPE_CHECKING:
 class HwPinGroup(Identifiable):
     """AUTOSAR HwPinGroup."""
 
+    hw_pin_group_content: Optional[HwPinGroupContent]
     def __init__(self) -> None:
         """Initialize HwPinGroup."""
         super().__init__()

@@ -30,6 +30,11 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes import (
 class BaseTypeDirectDefinition(BaseTypeDefinition):
     """AUTOSAR BaseTypeDirectDefinition."""
 
+    base_type_encoding: Optional[BaseTypeEncodingString]
+    base_type_size: Optional[PositiveInteger]
+    byte_order: Optional[ByteOrderEnum]
+    mem_alignment: Optional[PositiveInteger]
+    native: Optional[NativeDeclarationString]
     def __init__(self) -> None:
         """Initialize BaseTypeDirectDefinition."""
         super().__init__()

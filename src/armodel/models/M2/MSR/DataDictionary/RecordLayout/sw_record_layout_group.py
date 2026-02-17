@@ -29,6 +29,11 @@ from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
 class SwRecordLayoutGroup(ARObject):
     """AUTOSAR SwRecordLayoutGroup."""
 
+    category: Optional[AsamRecordLayoutSemantics]
+    desc: Optional[MultiLanguageOverviewParagraph]
+    short_label: Optional[Identifier]
+    sw_generic_axis_param: Optional[SwGenericAxisParam]
+    sw_record: Optional[RecordLayoutIteratorPoint]
     def __init__(self) -> None:
         """Initialize SwRecordLayoutGroup."""
         super().__init__()

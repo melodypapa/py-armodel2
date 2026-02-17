@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class AsynchronousServerCallReturnsEvent(RTEEvent):
     """AUTOSAR AsynchronousServerCallReturnsEvent."""
 
+    event_source: Optional[Any]
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallReturnsEvent."""
         super().__init__()

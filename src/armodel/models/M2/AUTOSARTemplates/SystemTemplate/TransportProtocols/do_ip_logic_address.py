@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.abstract_do_ip_logic
 class DoIpLogicAddress(Identifiable):
     """AUTOSAR DoIpLogicAddress."""
 
+    address: Optional[Integer]
+    do_ip_logic: Optional[AbstractDoIpLogicAddressProps]
     def __init__(self) -> None:
         """Initialize DoIpLogicAddress."""
         super().__init__()

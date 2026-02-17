@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RxIdentifierRange(ARObject):
     """AUTOSAR RxIdentifierRange."""
 
+    lower_can_id: Optional[PositiveInteger]
+    upper_can_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RxIdentifierRange."""
         super().__init__()

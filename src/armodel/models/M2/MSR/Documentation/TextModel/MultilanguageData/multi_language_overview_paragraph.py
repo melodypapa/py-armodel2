@@ -21,6 +21,7 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_
 class MultiLanguageOverviewParagraph(ARObject):
     """AUTOSAR MultiLanguageOverviewParagraph."""
 
+    l2: LOverviewParagraph
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class DataFormatTailoring(ARObject):
     """AUTOSAR DataFormatTailoring."""
 
+    class_tailorings: list[ClassTailoring]
+    constraints: list[ConstraintTailoring]
     def __init__(self) -> None:
         """Initialize DataFormatTailoring."""
         super().__init__()

@@ -30,6 +30,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommun
 class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
     """AUTOSAR IEEE1722TpAcfCanPart."""
 
+    can_addressing: Optional[CanAddressingModeType]
+    can_bit_rate_switch: Optional[Boolean]
+    can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
+    can_identifier: Optional[RxIdentifierRange]
+    sdu: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCanPart."""
         super().__init__()

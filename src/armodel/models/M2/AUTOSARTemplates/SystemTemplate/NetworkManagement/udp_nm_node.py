@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UdpNmNode(NmNode):
     """AUTOSAR UdpNmNode."""
 
+    all_nm_messages: Optional[Boolean]
+    nm_msg_cycle: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize UdpNmNode."""
         super().__init__()

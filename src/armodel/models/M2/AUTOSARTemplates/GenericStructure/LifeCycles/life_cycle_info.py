@@ -28,6 +28,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LifeCycleInfo(ARObject):
     """AUTOSAR LifeCycleInfo."""
 
+    lc_object: Referrable
+    lc_state: Optional[LifeCycleState]
+    period_begin: Optional[LifeCyclePeriod]
+    period_end: Optional[LifeCyclePeriod]
+    remark: Optional[DocumentationBlock]
+    use_insteads: list[Referrable]
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()

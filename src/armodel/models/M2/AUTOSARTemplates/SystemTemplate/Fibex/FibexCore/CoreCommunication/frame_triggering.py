@@ -29,6 +29,9 @@ class FrameTriggering(Identifiable):
     """AUTOSAR FrameTriggering."""
     """Abstract base class - do not instantiate directly."""
 
+    frame: Optional[Frame]
+    frame_ports: list[FramePort]
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()

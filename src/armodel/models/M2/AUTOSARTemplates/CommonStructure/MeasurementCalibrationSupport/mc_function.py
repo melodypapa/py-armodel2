@@ -20,6 +20,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class McFunction(ARElement):
     """AUTOSAR McFunction."""
 
+    def_calprm_set: Optional[McFunctionDataRefSet]
+    in_measurement: Optional[McFunctionDataRefSet]
+    loc: Optional[McFunctionDataRefSet]
+    out: Optional[McFunctionDataRefSet]
+    ref_calprm_set: Optional[McFunctionDataRefSet]
+    sub_functions: list[McFunction]
     def __init__(self) -> None:
         """Initialize McFunction."""
         super().__init__()

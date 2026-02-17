@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientIdDefinition(Identifiable):
     """AUTOSAR ClientIdDefinition."""
 
+    client_id: Optional[Numerical]
+    client_server_instance_ref: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientIdDefinition."""
         super().__init__()

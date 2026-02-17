@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalMapping(ARObject):
     """AUTOSAR ISignalMapping."""
 
+    introduction: Optional[DocumentationBlock]
+    source_signal: Optional[ISignalTriggering]
+    target_signal: Optional[ISignalTriggering]
     def __init__(self) -> None:
         """Initialize ISignalMapping."""
         super().__init__()

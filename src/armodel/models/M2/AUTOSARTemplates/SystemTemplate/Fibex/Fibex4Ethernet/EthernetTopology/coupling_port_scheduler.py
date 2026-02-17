@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortScheduler(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortScheduler."""
 
+    port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum]
+    predecessors: list[CouplingPortStructuralElement]
     def __init__(self) -> None:
         """Initialize CouplingPortScheduler."""
         super().__init__()

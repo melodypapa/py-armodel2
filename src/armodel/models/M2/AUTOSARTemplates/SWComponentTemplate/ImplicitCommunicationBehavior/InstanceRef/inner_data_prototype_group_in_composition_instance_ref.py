@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerDataPrototypeGroupInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_sws: list[Any]
+    target_data: Optional[DataPrototypeGroup]
     def __init__(self) -> None:
         """Initialize InnerDataPrototypeGroupInCompositionInstanceRef."""
         super().__init__()

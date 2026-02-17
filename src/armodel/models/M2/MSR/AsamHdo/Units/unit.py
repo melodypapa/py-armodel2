@@ -29,6 +29,10 @@ from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_lan
 class Unit(ARElement):
     """AUTOSAR Unit."""
 
+    display_name: Optional[SingleLanguageUnitNames]
+    factor_si_to_unit: Optional[Float]
+    offset_si_to_unit: Optional[Float]
+    physical: Optional[PhysicalDimension]
     def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()

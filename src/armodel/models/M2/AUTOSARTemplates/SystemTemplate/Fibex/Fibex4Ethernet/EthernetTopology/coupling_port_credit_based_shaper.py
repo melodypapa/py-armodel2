@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortCreditBasedShaper(Identifiable):
     """AUTOSAR CouplingPortCreditBasedShaper."""
 
+    idle_slope: Optional[PositiveInteger]
+    lower_boundary: Optional[PositiveInteger]
+    upper_boundary: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize CouplingPortCreditBasedShaper."""
         super().__init__()

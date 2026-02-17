@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestCurrentPowertrainData."""
 
+    pid: Optional[DiagnosticParameter]
+    request_current: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainData."""
         super().__init__()

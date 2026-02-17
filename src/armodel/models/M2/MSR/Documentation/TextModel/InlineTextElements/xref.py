@@ -32,6 +32,17 @@ from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_lan
 class Xref(ARObject):
     """AUTOSAR Xref."""
 
+    label1: Optional[SingleLanguageLongName]
+    referrable: Optional[Referrable]
+    resolution_policy_enum: Optional[ResolutionPolicyEnum]
+    show_content_enum: Optional[ShowContentEnum]
+    show_resource_alias: Optional[ShowResourceAliasNameEnum]
+    show_resource: Optional[ShowResourceTypeEnum]
+    show_resource_long: Optional[ShowResourceLongNameEnum]
+    show_resource_number: Optional[ShowResourceNumberEnum]
+    show_resource_page: Optional[ShowResourcePageEnum]
+    show_resource_short: Optional[ShowResourceShortNameEnum]
+    show_see: Optional[ShowSeeEnum]
     def __init__(self) -> None:
         """Initialize Xref."""
         super().__init__()

@@ -22,6 +22,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayNmCluster(NmCluster):
     """AUTOSAR FlexrayNmCluster."""
 
+    nm_car_wake_up: Optional[Boolean]
+    nm_data_cycle: Optional[Integer]
+    nm_main: Optional[TimeValue]
+    nm_remote: Optional[TimeValue]
+    nm_repeat: Optional[TimeValue]
+    nm_repetition: Optional[Integer]
+    nm_voting_cycle: Optional[Integer]
     def __init__(self) -> None:
         """Initialize FlexrayNmCluster."""
         super().__init__()

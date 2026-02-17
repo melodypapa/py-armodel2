@@ -29,6 +29,13 @@ class ReceiverComSpec(RPortComSpec):
     """AUTOSAR ReceiverComSpec."""
     """Abstract base class - do not instantiate directly."""
 
+    composite_networks: list[CompositeNetworkRepresentation]
+    data_element: Optional[AutosarDataPrototype]
+    handle_out_of_range: Optional[Any]
+    max_delta: Optional[PositiveInteger]
+    sync_counter_init: Optional[PositiveInteger]
+    transformation_coms: list[Any]
+    uses_end_to_end: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ReceiverComSpec."""
         super().__init__()

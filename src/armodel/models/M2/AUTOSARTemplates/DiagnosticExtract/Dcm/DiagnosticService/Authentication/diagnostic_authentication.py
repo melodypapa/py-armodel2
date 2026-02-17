@@ -18,6 +18,7 @@ class DiagnosticAuthentication(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticAuthentication."""
     """Abstract base class - do not instantiate directly."""
 
+    authentication: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthentication."""
         super().__init__()

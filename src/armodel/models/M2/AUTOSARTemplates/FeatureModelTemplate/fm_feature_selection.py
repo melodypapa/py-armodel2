@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_value 
 class FMFeatureSelection(Identifiable):
     """AUTOSAR FMFeatureSelection."""
 
+    attribute_values: list[FMAttributeValue]
     def __init__(self) -> None:
         """Initialize FMFeatureSelection."""
         super().__init__()

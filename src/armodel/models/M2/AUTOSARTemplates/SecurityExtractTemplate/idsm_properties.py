@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_lim
 class IdsmProperties(IdsCommonElement):
     """AUTOSAR IdsmProperties."""
 
+    rate_limitations: list[IdsmRateLimitation]
+    traffic_limitations: list[IdsmTrafficLimitation]
     def __init__(self) -> None:
         """Initialize IdsmProperties."""
         super().__init__()

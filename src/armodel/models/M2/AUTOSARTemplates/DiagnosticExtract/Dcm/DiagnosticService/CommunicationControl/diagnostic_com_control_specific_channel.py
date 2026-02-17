@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticComControlSpecificChannel(ARObject):
     """AUTOSAR DiagnosticComControlSpecificChannel."""
 
+    specific_channel: Optional[CommunicationCluster]
+    specific_physical: Optional[Any]
+    subnet_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSpecificChannel."""
         super().__init__()

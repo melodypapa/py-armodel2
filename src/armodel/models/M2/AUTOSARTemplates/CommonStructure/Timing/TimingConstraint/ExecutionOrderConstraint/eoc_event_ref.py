@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_
 class EOCEventRef(EOCExecutableEntityRefAbstract):
     """AUTOSAR EOCEventRef."""
 
+    bsw_module: Optional[BswImplementation]
+    component: Optional[Any]
+    event: Optional[AbstractEvent]
+    successors: list[Any]
     def __init__(self) -> None:
         """Initialize EOCEventRef."""
         super().__init__()

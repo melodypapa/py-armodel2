@@ -19,6 +19,7 @@ class TpConnection(ARObject):
     """AUTOSAR TpConnection."""
     """Abstract base class - do not instantiate directly."""
 
+    ident: Optional[TpConnectionIdent]
     def __init__(self) -> None:
         """Initialize TpConnection."""
         super().__init__()

@@ -26,6 +26,10 @@ if TYPE_CHECKING:
 class NmCoordinator(ARObject):
     """AUTOSAR NmCoordinator."""
 
+    index: Optional[Integer]
+    nm_coord_sync: Optional[Boolean]
+    nm_global: Optional[TimeValue]
+    nm_nodes: list[NmNode]
     def __init__(self) -> None:
         """Initialize NmCoordinator."""
         super().__init__()

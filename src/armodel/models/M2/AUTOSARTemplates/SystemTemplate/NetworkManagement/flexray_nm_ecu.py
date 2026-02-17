@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayNmEcu(BusspecificNmEcu):
     """AUTOSAR FlexrayNmEcu."""
 
+    nm_hw_vote: Optional[Boolean]
+    nm_main: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize FlexrayNmEcu."""
         super().__init__()

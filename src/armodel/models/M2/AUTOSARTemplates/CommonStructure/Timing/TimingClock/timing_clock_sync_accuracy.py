@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timin
 class TimingClockSyncAccuracy(Identifiable):
     """AUTOSAR TimingClockSyncAccuracy."""
 
+    accuracy: Optional[MultidimensionalTime]
+    lower: Optional[TimingClock]
+    upper: Optional[TimingClock]
     def __init__(self) -> None:
         """Initialize TimingClockSyncAccuracy."""
         super().__init__()

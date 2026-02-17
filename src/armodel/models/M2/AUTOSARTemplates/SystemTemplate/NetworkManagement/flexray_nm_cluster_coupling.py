@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.flexray
 class FlexrayNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR FlexrayNmClusterCoupling."""
 
+    coupled_clusters: list[FlexrayNmCluster]
+    nm_schedule: Optional[FlexrayNmScheduleVariant]
     def __init__(self) -> None:
         """Initialize FlexrayNmClusterCoupling."""
         super().__init__()

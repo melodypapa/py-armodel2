@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestProvideResource(BinaryManifestResource):
     """AUTOSAR BinaryManifestProvideResource."""
 
+    number_of: Optional[PositiveInteger]
+    supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BinaryManifestProvideResource."""
         super().__init__()

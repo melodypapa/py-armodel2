@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEvent(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEvent."""
 
+    associated: Optional[PositiveInteger]
+    clear_event: Optional[DiagnosticClearEventAllowedBehaviorEnum]
+    confirmation: Optional[PositiveInteger]
+    connecteds: list[Any]
+    event_clear: Optional[DiagnosticEventClearAllowedEnum]
+    event_kind: Optional[DiagnosticEventKindEnum]
+    prestorage: Optional[Boolean]
+    prestored: Optional[Boolean]
+    recoverable_in: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticEvent."""
         super().__init__()

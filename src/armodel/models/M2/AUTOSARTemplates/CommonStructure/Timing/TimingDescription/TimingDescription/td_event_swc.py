@@ -18,6 +18,7 @@ class TDEventSwc(TimingDescriptionEvent):
     """AUTOSAR TDEventSwc."""
     """Abstract base class - do not instantiate directly."""
 
+    component: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventSwc."""
         super().__init__()

@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class TDEventBswModule(TDEventBsw):
     """AUTOSAR TDEventBswModule."""
 
+    bsw_module_entry_entry: Optional[BswModuleEntry]
+    td_event_bsw: Optional[TDEventBswModule]
     def __init__(self) -> None:
         """Initialize TDEventBswModule."""
         super().__init__()

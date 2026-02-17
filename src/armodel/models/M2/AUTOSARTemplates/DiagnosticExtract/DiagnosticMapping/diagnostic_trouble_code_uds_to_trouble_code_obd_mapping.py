@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
 
+    trouble_code: Optional[DiagnosticTroubleCode]
+    trouble_code_uds: Optional[DiagnosticTroubleCode]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
         super().__init__()

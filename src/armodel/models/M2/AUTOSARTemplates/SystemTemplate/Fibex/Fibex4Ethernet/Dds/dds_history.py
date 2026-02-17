@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsHistory(ARObject):
     """AUTOSAR DdsHistory."""
 
+    history_kind: Optional[DdsHistoryKindEnum]
+    history_order: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsHistory."""
         super().__init__()

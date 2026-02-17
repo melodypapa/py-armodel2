@@ -21,6 +21,7 @@ class SdgAbstractForeignReference(SdgElementWithGid):
     """AUTOSAR SdgAbstractForeignReference."""
     """Abstract base class - do not instantiate directly."""
 
+    dest_meta_class: Optional[MetaClassName]
     def __init__(self) -> None:
         """Initialize SdgAbstractForeignReference."""
         super().__init__()

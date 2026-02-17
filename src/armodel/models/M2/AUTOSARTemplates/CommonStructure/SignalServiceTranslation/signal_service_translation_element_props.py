@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SignalServiceTranslationElementProps(Identifiable):
     """AUTOSAR SignalServiceTranslationElementProps."""
 
+    element: Optional[DataPrototype]
+    filter: Optional[DataFilter]
+    transmission: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationElementProps."""
         super().__init__()

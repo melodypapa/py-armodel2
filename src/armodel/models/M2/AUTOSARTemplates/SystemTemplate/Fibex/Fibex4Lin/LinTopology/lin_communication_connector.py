@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopolo
 class LinCommunicationConnector(CommunicationConnector):
     """AUTOSAR LinCommunicationConnector."""
 
+    initial_nad: Optional[Integer]
+    lin_configurable_frames: list[LinConfigurableFrame]
+    lin_ordereds: list[LinOrderedConfigurableFrame]
+    schedule: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize LinCommunicationConnector."""
         super().__init__()

@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class Ipv4Props(ARObject):
     """AUTOSAR Ipv4Props."""
 
+    arp_props: Optional[Ipv4ArpProps]
+    auto_ip_props: Optional[Ipv4AutoIpProps]
+    fragmentation: Optional[Ipv4FragmentationProps]
     def __init__(self) -> None:
         """Initialize Ipv4Props."""
         super().__init__()

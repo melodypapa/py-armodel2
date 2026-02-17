@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticReadDataByIdentifierClass."""
 
+    max_did_to_read: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByIdentifierClass."""
         super().__init__()

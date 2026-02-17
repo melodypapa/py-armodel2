@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
     """AUTOSAR DiagnosticEnvDataElementCondition."""
 
+    compare_value: Optional[ValueSpecification]
+    data_prototype: Optional[DataPrototype]
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvDataElementCondition."""
         super().__init__()

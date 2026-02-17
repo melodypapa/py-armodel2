@@ -23,6 +23,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class ParameterDataPrototype(AutosarDataPrototype):
     """AUTOSAR ParameterDataPrototype."""
 
+    init_value: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize ParameterDataPrototype."""
         super().__init__()

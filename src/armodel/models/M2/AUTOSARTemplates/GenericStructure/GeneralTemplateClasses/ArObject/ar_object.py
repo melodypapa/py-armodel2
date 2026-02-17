@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ArObject.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Union, get_type_hints
+from typing import TYPE_CHECKING, Optional, Union, get_type_hints, get_args, get_origin
 import xml.etree.ElementTree as ET
 from armodel.serialization.name_converter import NameConverter
 
@@ -20,6 +20,8 @@ class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
 
+    checksum: Optional[String]
+    timestamp: Optional[DateTime]
     def __init__(self) -> None:
         """Initialize ARObject."""
         self.checksum: Optional[String] = None
@@ -144,7 +146,32 @@ class ARObject:
         try:
             type_hints = get_type_hints(cls)
         except Exception:
+            # Fallback: Use __annotations__ directly if get_type_hints fails
+            # This can happen due to circular imports or missing types
             type_hints = {}
+            # Collect annotations from entire MRO
+            for base_cls in cls.__mro__:
+                if hasattr(base_cls, '__annotations__'):
+                    for attr_name, attr_type in base_cls.__annotations__.items():
+                        if attr_name not in type_hints:
+                            type_hints[attr_name] = attr_type
+
+        # Helper function to strip namespace from tag
+        def strip_namespace(tag: str) -> str:
+            """Strip namespace from XML tag.
+
+            Args:
+                tag: XML tag with optional namespace
+
+            Returns:
+                Tag without namespace
+            """
+            if '}' in tag:
+                return tag.split('}')[1]
+            return tag
+
+        # Strip namespace from element tag for matching
+        element_tag_stripped = strip_namespace(element.tag)
 
         # Process each attribute from type hints
         for attr_name, attr_type in type_hints.items():
@@ -155,8 +182,15 @@ class ARObject:
             if ARObject._is_xml_attribute_static(cls, attr_name):
                 value = element.get(xml_tag)
             else:
-                # Find child element
+                # Find child element - try both with and without namespace
                 child = element.find(xml_tag)
+                if child is None:
+                    # Try to find by matching stripped tag names
+                    for elem in element:
+                        if strip_namespace(elem.tag) == xml_tag:
+                            child = elem
+                            break
+
                 if child is not None:
                     # Get value based on type
                     value = ARObject._extract_value(child, attr_type)
@@ -203,16 +237,66 @@ class ARObject:
         if element is None:
             return None
 
-        # Get text content
-        text = element.text
+        # Check if it's a list type
+        if get_origin(attr_type) is list:
+            # Get the element type
+            type_args = get_args(attr_type)
+            if type_args:
+                item_type = type_args[0]
 
-        # Handle None
+                # Find all direct child elements (not grandchildren)
+                children = list(element)
+
+                # Deserialize each child element
+                result = []
+                for child in children:
+                    # For object types, deserialize recursively
+                    if hasattr(item_type, 'deserialize'):
+                        item = item_type.deserialize(child)
+                        result.append(item)
+                    else:
+                        # For primitives, get text content
+                        result.append(child.text if child.text else None)
+
+                return result
+
+        # Check if it's an Optional type
+        if get_origin(attr_type) is Union:
+            type_args = get_args(attr_type)
+            # Get the first non-None type
+            for arg in type_args:
+                if arg is not type(None):
+                    attr_type = arg
+                    break
+
+        # For object types with deserialize method, recursively deserialize
+        # Check if attr_type is a class (not a primitive type like str, int, etc.)
+        if isinstance(attr_type, type) and hasattr(attr_type, 'deserialize'):
+            return attr_type.deserialize(element)
+
+        # For primitive types, return text content
+        text = element.text
         if text is None:
             return None
 
-        # For now, return as string
-        # Type conversion will be added later
-        return text
+        # Simple type conversions for primitives
+        if attr_type == str:
+            return text
+        elif attr_type == int:
+            try:
+                return int(text)
+            except ValueError:
+                return text
+        elif attr_type == float:
+            try:
+                return float(text)
+            except ValueError:
+                return text
+        elif attr_type == bool:
+            return text.lower() in ('true', '1', 'yes')
+        else:
+            # Default to string
+            return text
 
 
 class ARObjectBuilder:

@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinScheduleTable(Identifiable):
     """AUTOSAR LinScheduleTable."""
 
+    resume_position: Optional[ResumePosition]
+    run_mode: Optional[RunMode]
+    table_entries: list[ScheduleTableEntry]
     def __init__(self) -> None:
         """Initialize LinScheduleTable."""
         super().__init__()

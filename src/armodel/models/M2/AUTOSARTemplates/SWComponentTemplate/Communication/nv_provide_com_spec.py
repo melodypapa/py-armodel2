@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvProvideComSpec(PPortComSpec):
     """AUTOSAR NvProvideComSpec."""
 
+    ram_block_init: Optional[ValueSpecification]
+    rom_block_init: Optional[ValueSpecification]
+    variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize NvProvideComSpec."""
         super().__init__()

@@ -34,6 +34,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class PduTriggering(Identifiable):
     """AUTOSAR PduTriggering."""
 
+    i_pdu: Optional[Pdu]
+    i_pdu_ports: list[IPduPort]
+    i_signals: list[ISignalTriggering]
+    sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping]
+    trigger_i_pdu_sends: list[TriggerIPduSendCondition]
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()

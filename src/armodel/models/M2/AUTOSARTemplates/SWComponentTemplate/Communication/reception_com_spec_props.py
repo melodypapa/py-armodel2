@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ReceptionComSpecProps(ARObject):
     """AUTOSAR ReceptionComSpecProps."""
 
+    data_update: Optional[TimeValue]
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize ReceptionComSpecProps."""
         super().__init__()

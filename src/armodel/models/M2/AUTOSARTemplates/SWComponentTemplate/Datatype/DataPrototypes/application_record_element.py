@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationRecordElement."""
 
+    is_optional: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ApplicationRecordElement."""
         super().__init__()

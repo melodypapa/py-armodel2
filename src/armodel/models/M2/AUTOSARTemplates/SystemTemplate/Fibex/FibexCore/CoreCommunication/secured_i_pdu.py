@@ -26,6 +26,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SecuredIPdu(IPdu):
     """AUTOSAR SecuredIPdu."""
 
+    authentication: Optional[Any]
+    dynamic: Optional[Boolean]
+    freshness_props: Optional[Any]
+    payload: Optional[PduTriggering]
+    secure: Optional[Any]
+    use_as: Optional[Boolean]
+    use_secured_pdu: Optional[SecuredPduHeaderEnum]
     def __init__(self) -> None:
         """Initialize SecuredIPdu."""
         super().__init__()

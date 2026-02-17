@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class InternalTriggerOccurredEvent(RTEEvent):
     """AUTOSAR InternalTriggerOccurredEvent."""
 
+    event_source: Optional[InternalTriggeringPoint]
     def __init__(self) -> None:
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()

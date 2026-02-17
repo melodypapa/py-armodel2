@@ -22,6 +22,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticResponseOnEventClass."""
 
+    max_number_of: Optional[PositiveInteger]
+    max_num: Optional[PositiveInteger]
+    max_supported: Optional[PositiveInteger]
+    response_on: Optional[TimeValue]
+    store_event: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEventClass."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticParameterElement(Identifiable):
     """AUTOSAR DiagnosticParameterElement."""
 
+    array_size: Optional[PositiveInteger]
+    sub_elements: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElement."""
         super().__init__()

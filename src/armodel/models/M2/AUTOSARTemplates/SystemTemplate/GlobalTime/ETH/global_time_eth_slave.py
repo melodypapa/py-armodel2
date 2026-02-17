@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
 class GlobalTimeEthSlave(GlobalTimeSlave):
     """AUTOSAR GlobalTimeEthSlave."""
 
+    crc_validated: Optional[Any]
     def __init__(self) -> None:
         """Initialize GlobalTimeEthSlave."""
         super().__init__()

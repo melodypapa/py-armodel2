@@ -22,6 +22,11 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class ScaleConstr(ARObject):
     """AUTOSAR ScaleConstr."""
 
+    desc: Optional[MultiLanguageOverviewParagraph]
+    lower_limit: Optional[Limit]
+    short_label: Optional[Identifier]
+    upper_limit: Optional[Limit]
+    validity: Optional[Any]
     def __init__(self) -> None:
         """Initialize ScaleConstr."""
         super().__init__()

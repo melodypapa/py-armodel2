@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group_data_r
 class McGroup(ARElement):
     """AUTOSAR McGroup."""
 
+    mc_functions: list[McFunction]
+    ref_calprm_set: Optional[McGroupDataRefSet]
+    ref: Optional[McGroupDataRefSet]
+    sub_groups: list[McGroup]
     def __init__(self) -> None:
         """Initialize McGroup."""
         super().__init__()

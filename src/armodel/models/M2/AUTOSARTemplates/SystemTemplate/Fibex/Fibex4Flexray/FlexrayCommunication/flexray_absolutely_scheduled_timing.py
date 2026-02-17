@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class FlexrayAbsolutelyScheduledTiming(ARObject):
     """AUTOSAR FlexrayAbsolutelyScheduledTiming."""
 
+    communication_cycle_cycle: Optional[CommunicationCycle]
+    slot_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FlexrayAbsolutelyScheduledTiming."""
         super().__init__()

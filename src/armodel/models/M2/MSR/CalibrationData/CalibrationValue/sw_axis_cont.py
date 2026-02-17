@@ -33,6 +33,12 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class SwAxisCont(ARObject):
     """AUTOSAR SwAxisCont."""
 
+    category: Optional[CalprmAxisCategoryEnum]
+    sw_arraysize: Optional[ValueList]
+    sw_axis_index: Optional[AxisIndexType]
+    sw_values_phys: Optional[SwValues]
+    unit: Optional[Unit]
+    unit_display: Optional[SingleLanguageUnitNames]
     def __init__(self) -> None:
         """Initialize SwAxisCont."""
         super().__init__()

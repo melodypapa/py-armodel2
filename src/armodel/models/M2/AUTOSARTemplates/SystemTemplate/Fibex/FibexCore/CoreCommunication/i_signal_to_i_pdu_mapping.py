@@ -32,6 +32,12 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalToIPduMapping(Identifiable):
     """AUTOSAR ISignalToIPduMapping."""
 
+    i_signal: Optional[ISignal]
+    i_signal_group: Optional[ISignalGroup]
+    packing_byte: Optional[ByteOrderEnum]
+    start_position: Optional[UnlimitedInteger]
+    transfer_property_enum: Optional[TransferPropertyEnum]
+    update: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize ISignalToIPduMapping."""
         super().__init__()

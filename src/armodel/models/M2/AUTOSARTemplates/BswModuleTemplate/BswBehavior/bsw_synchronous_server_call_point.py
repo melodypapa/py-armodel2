@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class BswSynchronousServerCallPoint(BswModuleCallPoint):
     """AUTOSAR BswSynchronousServerCallPoint."""
 
+    called_entry_entry: Optional[BswModuleClientServerEntry]
+    called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize BswSynchronousServerCallPoint."""
         super().__init__()

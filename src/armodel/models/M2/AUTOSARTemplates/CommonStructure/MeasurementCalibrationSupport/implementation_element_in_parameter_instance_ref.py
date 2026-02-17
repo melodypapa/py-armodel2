@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ImplementationElementInParameterInstanceRef(ARObject):
     """AUTOSAR ImplementationElementInParameterInstanceRef."""
 
+    context: Optional[ParameterDataPrototype]
+    target: Optional[Any]
     def __init__(self) -> None:
         """Initialize ImplementationElementInParameterInstanceRef."""
         super().__init__()

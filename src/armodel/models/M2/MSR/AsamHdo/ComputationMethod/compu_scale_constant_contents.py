@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (
 class CompuScaleConstantContents(CompuScaleContents):
     """AUTOSAR CompuScaleConstantContents."""
 
+    compu_const: Optional[CompuConst]
     def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""
         super().__init__()

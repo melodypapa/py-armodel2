@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class StreamFilterIpv4Address(ARObject):
     """AUTOSAR StreamFilterIpv4Address."""
 
+    ipv4_address: Optional[Ip4AddressString]
     def __init__(self) -> None:
         """Initialize StreamFilterIpv4Address."""
         super().__init__()

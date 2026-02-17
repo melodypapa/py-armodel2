@@ -21,6 +21,7 @@ class TDEventBsw(TimingDescriptionEvent):
     """AUTOSAR TDEventBsw."""
     """Abstract base class - do not instantiate directly."""
 
+    bsw_module_description: Optional[BswModuleDescription]
     def __init__(self) -> None:
         """Initialize TDEventBsw."""
         super().__init__()

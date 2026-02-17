@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939FreezeFrame."""
 
+    node: Optional[DiagnosticJ1939Node]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()

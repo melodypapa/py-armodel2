@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditio
 class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
     """AUTOSAR DiagnosticEnableConditionGroup."""
 
+    enable_conditions: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionGroup."""
         super().__init__()

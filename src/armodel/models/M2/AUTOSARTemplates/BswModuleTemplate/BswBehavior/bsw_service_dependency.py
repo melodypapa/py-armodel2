@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class BswServiceDependency(ServiceDependency):
     """AUTOSAR BswServiceDependency."""
 
+    assigned_datas: list[Any]
+    assigned_entries: list[RoleBasedBswModuleEntryAssignment]
+    ident: Optional[Any]
+    service_needs: Optional[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize BswServiceDependency."""
         super().__init__()

@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv6Configuration."""
 
+    assignment: Optional[PositiveInteger]
+    default_router: Optional[Ip6AddressString]
+    dns_servers: list[Ip6AddressString]
+    enable_anycast: Optional[Boolean]
+    hop_count: Optional[PositiveInteger]
+    ip_address_keep_enum: Optional[IpAddressKeepEnum]
+    ip_address_prefix: Optional[PositiveInteger]
+    ipv6_address: Optional[Ip6AddressString]
+    ipv6_address_source: Optional[Ipv6AddressSourceEnum]
     def __init__(self) -> None:
         """Initialize Ipv6Configuration."""
         super().__init__()

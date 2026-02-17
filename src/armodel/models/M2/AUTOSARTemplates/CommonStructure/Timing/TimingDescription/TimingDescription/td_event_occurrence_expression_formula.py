@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 class TDEventOccurrenceExpressionFormula(ARObject):
     """AUTOSAR TDEventOccurrenceExpressionFormula."""
 
+    argument: Optional[AutosarOperationArgumentInstance]
+    event: Optional[TimingDescriptionEvent]
+    mode: Optional[TimingModeInstance]
+    variable: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventOccurrenceExpressionFormula."""
         super().__init__()

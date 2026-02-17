@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ModeSwitchedAckEvent(RTEEvent):
     """AUTOSAR ModeSwitchedAckEvent."""
 
+    event_source: Optional[ModeSwitchPoint]
     def __init__(self) -> None:
         """Initialize ModeSwitchedAckEvent."""
         super().__init__()

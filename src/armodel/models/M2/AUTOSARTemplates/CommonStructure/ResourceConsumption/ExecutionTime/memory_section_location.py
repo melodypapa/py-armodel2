@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Memo
 class MemorySectionLocation(ARObject):
     """AUTOSAR MemorySectionLocation."""
 
+    provided_memory: Optional[HwElement]
+    software: Optional[MemorySection]
     def __init__(self) -> None:
         """Initialize MemorySectionLocation."""
         super().__init__()

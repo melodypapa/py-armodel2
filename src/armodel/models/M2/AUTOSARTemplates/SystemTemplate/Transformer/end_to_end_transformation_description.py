@@ -30,6 +30,24 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.e2_e_profile_
 class EndToEndTransformationDescription(TransformationDescription):
     """AUTOSAR EndToEndTransformationDescription."""
 
+    clear_from_valid: Optional[Boolean]
+    counter_offset: Optional[PositiveInteger]
+    crc_offset: Optional[PositiveInteger]
+    data_id_mode: Optional[DataIdModeEnum]
+    data_id_nibble: Optional[PositiveInteger]
+    e2e_profile: Optional[E2EProfileCompatibilityProps]
+    max_delta: Optional[PositiveInteger]
+    max_error_state: Optional[PositiveInteger]
+    max_no_new_or: Optional[PositiveInteger]
+    min_ok_state_init: Optional[PositiveInteger]
+    min_ok_state: Optional[PositiveInteger]
+    offset: Optional[PositiveInteger]
+    profile_behavior_behavior_enum: Optional[EndToEndProfileBehaviorEnum]
+    profile_name: Optional[NameToken]
+    sync_counter_init: Optional[PositiveInteger]
+    upper_header: Optional[PositiveInteger]
+    window_size_init: Optional[PositiveInteger]
+    window_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EndToEndTransformationDescription."""
         super().__init__()

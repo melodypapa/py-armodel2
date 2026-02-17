@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticJ1939SwMapping."""
 
+    node: Optional[DiagnosticJ1939Node]
+    sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()

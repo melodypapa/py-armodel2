@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR CanGlobalTimeDomainProps."""
 
+    fup_data_id_list: PositiveInteger
+    ofns_data_id_list: PositiveInteger
+    ofs_data_id_list: PositiveInteger
+    sync_data_id_list: PositiveInteger
     def __init__(self) -> None:
         """Initialize CanGlobalTimeDomainProps."""
         super().__init__()

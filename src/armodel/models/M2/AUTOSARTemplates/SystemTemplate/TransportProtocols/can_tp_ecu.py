@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CanTpEcu(ARObject):
     """AUTOSAR CanTpEcu."""
 
+    cycle_time_main: Optional[TimeValue]
+    ecu_instance: Optional[EcuInstance]
     def __init__(self) -> None:
         """Initialize CanTpEcu."""
         super().__init__()

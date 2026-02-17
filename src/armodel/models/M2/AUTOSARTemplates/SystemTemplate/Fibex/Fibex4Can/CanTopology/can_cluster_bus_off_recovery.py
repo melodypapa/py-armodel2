@@ -19,6 +19,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanClusterBusOffRecovery(ARObject):
     """AUTOSAR CanClusterBusOffRecovery."""
 
+    bor_counter_l1_to: Optional[PositiveInteger]
+    bor_time_l1: Optional[TimeValue]
+    bor_time_l2: Optional[TimeValue]
+    bor_time_tx: Optional[TimeValue]
+    main_function: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize CanClusterBusOffRecovery."""
         super().__init__()

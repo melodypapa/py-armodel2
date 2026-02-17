@@ -23,6 +23,8 @@ class Pdu(FibexElement):
     """AUTOSAR Pdu."""
     """Abstract base class - do not instantiate directly."""
 
+    has_dynamic: Optional[Boolean]
+    length: Optional[UnlimitedInteger]
     def __init__(self) -> None:
         """Initialize Pdu."""
         super().__init__()

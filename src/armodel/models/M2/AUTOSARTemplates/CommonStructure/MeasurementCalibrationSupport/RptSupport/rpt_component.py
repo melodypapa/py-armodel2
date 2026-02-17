@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_impl
 class RptComponent(Identifiable):
     """AUTOSAR RptComponent."""
 
+    mc_datas: list[RoleBasedMcDataAssignment]
+    rp_impl_policy: Optional[RptImplPolicy]
+    rpt_executable_entities: list[RptExecutableEntity]
     def __init__(self) -> None:
         """Initialize RptComponent."""
         super().__init__()

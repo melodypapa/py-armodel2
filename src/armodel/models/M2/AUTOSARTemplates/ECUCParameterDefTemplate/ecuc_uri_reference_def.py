@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destinatio
 class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
     """AUTOSAR EcucUriReferenceDef."""
 
+    destination_uri: Optional[EcucDestinationUriDef]
     def __init__(self) -> None:
         """Initialize EcucUriReferenceDef."""
         super().__init__()

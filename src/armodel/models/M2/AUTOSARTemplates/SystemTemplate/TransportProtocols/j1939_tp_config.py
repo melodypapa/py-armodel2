@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class J1939TpConfig(TpConfig):
     """AUTOSAR J1939TpConfig."""
 
+    tp_addresses: list[TpAddress]
+    tp_connections: list[J1939TpConnection]
+    tp_nodes: list[J1939TpNode]
     def __init__(self) -> None:
         """Initialize J1939TpConfig."""
         super().__init__()

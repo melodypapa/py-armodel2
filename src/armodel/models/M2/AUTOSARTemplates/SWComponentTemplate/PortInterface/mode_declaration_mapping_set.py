@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeDeclarationMappingSet(ARElement):
     """AUTOSAR ModeDeclarationMappingSet."""
 
+    modes: list[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeDeclarationMappingSet."""
         super().__init__()

@@ -22,6 +22,7 @@ class ApplicationCompositeElementDataPrototype(DataPrototype):
     """AUTOSAR ApplicationCompositeElementDataPrototype."""
     """Abstract base class - do not instantiate directly."""
 
+    type: Optional[ApplicationDataType]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeElementDataPrototype."""
         super().__init__()

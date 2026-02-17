@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TransformerHardErrorEvent(RTEEvent):
     """AUTOSAR TransformerHardErrorEvent."""
 
+    operation: Optional[ClientServerOperation]
+    required_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()

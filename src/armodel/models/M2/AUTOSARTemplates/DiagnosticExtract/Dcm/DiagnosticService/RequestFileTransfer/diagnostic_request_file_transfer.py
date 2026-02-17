@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestFileTransfer."""
 
+    request_file: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransfer."""
         super().__init__()

@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwGenericAxisParam(ARObject):
     """AUTOSAR SwGenericAxisParam."""
 
+    sw_generic_axis_param: Optional[SwGenericAxisParam]
     def __init__(self) -> None:
         """Initialize SwGenericAxisParam."""
         super().__init__()

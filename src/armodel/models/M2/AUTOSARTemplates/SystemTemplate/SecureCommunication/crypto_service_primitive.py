@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CryptoServicePrimitive(ARElement):
     """AUTOSAR CryptoServicePrimitive."""
 
+    algorithm_family: Optional[String]
+    algorithm_mode: Optional[String]
+    algorithm: Optional[String]
     def __init__(self) -> None:
         """Initialize CryptoServicePrimitive."""
         super().__init__()

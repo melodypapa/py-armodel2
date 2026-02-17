@@ -29,6 +29,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class ISignalPort(CommConnectorPort):
     """AUTOSAR ISignalPort."""
 
+    data_filter: Optional[DataFilter]
+    dds_qos_profile: Optional[DdsCpQosProfile]
+    first_timeout: Optional[TimeValue]
+    handle_invalid_enum: Optional[HandleInvalidEnum]
+    timeout: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize ISignalPort."""
         super().__init__()

@@ -21,6 +21,9 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import
 class EcucDerivationSpecification(ARObject):
     """AUTOSAR EcucDerivationSpecification."""
 
+    calculation: Optional[Any]
+    ecuc_queries: list[EcucQuery]
+    informal_formula: Optional[MlFormula]
     def __init__(self) -> None:
         """Initialize EcucDerivationSpecification."""
         super().__init__()

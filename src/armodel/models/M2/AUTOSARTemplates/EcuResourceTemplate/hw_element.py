@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 class HwElement(HwDescriptionEntity):
     """AUTOSAR HwElement."""
 
+    hw_elements: list[HwElementConnector]
+    hw_pin_groups: list[HwPinGroup]
+    nested_elements: list[HwElement]
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()

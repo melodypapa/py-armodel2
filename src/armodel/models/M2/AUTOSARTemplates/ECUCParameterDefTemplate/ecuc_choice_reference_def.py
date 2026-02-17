@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
 class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
     """AUTOSAR EcucChoiceReferenceDef."""
 
+    destinations: list[EcucContainerDef]
     def __init__(self) -> None:
         """Initialize EcucChoiceReferenceDef."""
         super().__init__()

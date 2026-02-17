@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class McParameterElementGroup(ARObject):
     """AUTOSAR McParameterElementGroup."""
 
+    ram_location: Optional[VariableDataPrototype]
+    rom_location: Optional[ParameterDataPrototype]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize McParameterElementGroup."""
         super().__init__()

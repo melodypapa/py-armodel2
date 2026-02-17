@@ -28,6 +28,14 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SocketConnection(Describable):
     """AUTOSAR SocketConnection."""
 
+    client_ip_addr: Optional[Boolean]
+    client_port: Optional[SocketAddress]
+    client_port_from: Optional[Boolean]
+    pdus: list[SocketConnectionIpduIdentifierSet]
+    pdu_collection: Optional[TimeValue]
+    runtime_ip: Optional[Any]
+    runtime_port: Optional[Any]
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize SocketConnection."""
         super().__init__()

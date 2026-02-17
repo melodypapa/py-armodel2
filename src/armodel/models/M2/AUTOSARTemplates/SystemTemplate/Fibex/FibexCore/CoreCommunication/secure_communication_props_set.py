@@ -17,6 +17,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 class SecureCommunicationPropsSet(FibexElement):
     """AUTOSAR SecureCommunicationPropsSet."""
 
+    authentications: list[Any]
+    freshness_propses: list[Any]
     def __init__(self) -> None:
         """Initialize SecureCommunicationPropsSet."""
         super().__init__()

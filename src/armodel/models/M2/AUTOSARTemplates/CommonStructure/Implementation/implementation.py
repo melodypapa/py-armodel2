@@ -56,6 +56,21 @@ class Implementation(ARElement):
     """AUTOSAR Implementation."""
     """Abstract base class - do not instantiate directly."""
 
+    build_action_manifest: Optional[BuildActionManifest]
+    code_descriptors: list[Code]
+    compilers: list[Compiler]
+    generateds: list[DependencyOnArtifact]
+    hw_elements: list[HwElement]
+    linkers: list[Linker]
+    mc_support: Optional[McSupportData]
+    programming: Optional[ProgramminglanguageEnum]
+    required_artifacts: list[DependencyOnArtifact]
+    requireds: list[DependencyOnArtifact]
+    resource: Optional[ResourceConsumption]
+    swc_bsw: Optional[SwcBswMapping]
+    sw_version: Optional[RevisionLabelString]
+    used_code_generator: Optional[String]
+    vendor_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Implementation."""
         super().__init__()

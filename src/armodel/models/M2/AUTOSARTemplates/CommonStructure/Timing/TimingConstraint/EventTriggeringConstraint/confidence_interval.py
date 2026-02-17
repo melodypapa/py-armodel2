@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ConfidenceInterval(ARObject):
     """AUTOSAR ConfidenceInterval."""
 
+    lower_bound: Optional[MultidimensionalTime]
+    propability: Optional[Float]
+    upper_bound: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ConfidenceInterval."""
         super().__init__()

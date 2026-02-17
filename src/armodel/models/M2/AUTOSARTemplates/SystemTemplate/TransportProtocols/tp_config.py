@@ -21,6 +21,7 @@ class TpConfig(FibexElement):
     """AUTOSAR TpConfig."""
     """Abstract base class - do not instantiate directly."""
 
+    communication_cluster: Optional[CommunicationCluster]
     def __init__(self) -> None:
         """Initialize TpConfig."""
         super().__init__()

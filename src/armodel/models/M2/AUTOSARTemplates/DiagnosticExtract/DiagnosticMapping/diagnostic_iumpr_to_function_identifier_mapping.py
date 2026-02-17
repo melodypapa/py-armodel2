@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticIumprToFunctionIdentifierMapping."""
 
+    function: Optional[Any]
+    iumpr: Optional[DiagnosticIumpr]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprToFunctionIdentifierMapping."""
         super().__init__()

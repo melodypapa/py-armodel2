@@ -25,6 +25,12 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_in
 class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventNeeds."""
 
+    deferring_fids: list[FunctionInhibitionNeeds]
+    diag_event_debounce: Optional[Any]
+    inhibiting_fid: Optional[FunctionInhibitionNeeds]
+    inhibitings: list[FunctionInhibitionNeeds]
+    prestored: Optional[Boolean]
+    uses_monitor: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticEventNeeds."""
         super().__init__()

@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class RModeInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR RModeInAtomicSwcInstanceRef."""
 
+    base: Optional[AtomicSwComponentType]
+    context_mode_group_prototype: Optional[ModeDeclarationGroup]
+    context_port_prototype: Optional[AbstractRequiredPortPrototype]
+    target_mode_declaration: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()

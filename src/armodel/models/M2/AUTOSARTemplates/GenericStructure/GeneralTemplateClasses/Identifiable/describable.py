@@ -33,6 +33,10 @@ class Describable(ARObject):
     """AUTOSAR Describable."""
     """Abstract base class - do not instantiate directly."""
 
+    admin_data: Optional[AdminData]
+    category: Optional[CategoryString]
+    desc: Optional[MultiLanguageOverviewParagraph]
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize Describable."""
         super().__init__()

@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEcuReset(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticEcuReset."""
 
+    custom_sub: Optional[PositiveInteger]
+    ecu_reset_class: Optional[DiagnosticEcuReset]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuReset."""
         super().__init__()

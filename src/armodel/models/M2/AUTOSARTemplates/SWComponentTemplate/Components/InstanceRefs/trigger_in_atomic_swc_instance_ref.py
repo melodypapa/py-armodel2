@@ -25,6 +25,9 @@ class TriggerInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR TriggerInAtomicSwcInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    base: Optional[AtomicSwComponentType]
+    context_port: Optional[PortPrototype]
+    target: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerInAtomicSwcInstanceRef."""
         super().__init__()

@@ -58,6 +58,22 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcInternalBehavior(InternalBehavior):
     """AUTOSAR SwcInternalBehavior."""
 
+    ar_typed_pers: list[VariableDataPrototype]
+    events: list[RTEEvent]
+    exclusive_areas: list[SwcExclusiveAreaPolicy]
+    explicit_inters: list[VariableDataPrototype]
+    implicit_inters: list[VariableDataPrototype]
+    included_data_type_sets: list[IncludedDataTypeSet]
+    included_modes: list[IncludedModeDeclarationGroupSet]
+    instantiation_data_defs: list[InstantiationDataDefProps]
+    per_instance_memories: list[PerInstanceMemory]
+    per_instances: list[ParameterDataPrototype]
+    port_api_options: list[PortAPIOption]
+    runnables: list[RunnableEntity]
+    services: list[Any]
+    shareds: list[ParameterDataPrototype]
+    supports: Optional[Boolean]
+    variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""
         super().__init__()

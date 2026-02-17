@@ -26,6 +26,9 @@ from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
 class SwSystemconstValue(ARObject):
     """AUTOSAR SwSystemconstValue."""
 
+    annotations: list[Annotation]
+    sw_systemconst: SwSystemconst
+    value: Numerical
     def __init__(self) -> None:
         """Initialize SwSystemconstValue."""
         super().__init__()

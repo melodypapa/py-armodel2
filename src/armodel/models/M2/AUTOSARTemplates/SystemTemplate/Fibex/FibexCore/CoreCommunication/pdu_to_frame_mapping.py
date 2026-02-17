@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class PduToFrameMapping(ARObject):
     """AUTOSAR PduToFrameMapping."""
 
+    packing_byte: Optional[ByteOrderEnum]
+    pdu: Optional[Pdu]
+    start_position: Optional[Integer]
+    update: Optional[Integer]
     def __init__(self) -> None:
         """Initialize PduToFrameMapping."""
         super().__init__()

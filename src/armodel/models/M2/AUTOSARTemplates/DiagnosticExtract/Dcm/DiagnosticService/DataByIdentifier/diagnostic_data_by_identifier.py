@@ -21,6 +21,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticDataByIdentifier."""
     """Abstract base class - do not instantiate directly."""
 
+    data_identifier: Optional[DiagnosticAbstractDataIdentifier]
     def __init__(self) -> None:
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()

@@ -41,6 +41,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPort(Identifiable):
     """AUTOSAR CouplingPort."""
 
+    connection: Optional[EthernetConnectionNegotiationEnum]
+    coupling_port_details: Optional[CouplingPortDetails]
+    coupling_port_role_enum: Optional[CouplingPortRoleEnum]
+    default_vlan: Optional[Any]
+    mac_layer_type_enum: Optional[EthernetMacLayerTypeEnum]
+    mac_multicast_groups: list[MacMulticastGroup]
+    mac_sec_propses: list[MacSecProps]
+    physical_layer: Optional[EthernetPhysicalLayerTypeEnum]
+    plca_props: Optional[PlcaProps]
+    pnc_mapping_idents: list[PncMappingIdent]
+    receive_activity: Optional[Any]
+    vlans: list[VlanMembership]
+    vlan_modifier: Optional[Any]
+    wakeup_sleep: Optional[Any]
     def __init__(self) -> None:
         """Initialize CouplingPort."""
         super().__init__()

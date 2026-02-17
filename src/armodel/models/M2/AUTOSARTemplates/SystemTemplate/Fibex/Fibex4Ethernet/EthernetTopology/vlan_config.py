@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class VlanConfig(Identifiable):
     """AUTOSAR VlanConfig."""
 
+    vlan_identifier: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize VlanConfig."""
         super().__init__()

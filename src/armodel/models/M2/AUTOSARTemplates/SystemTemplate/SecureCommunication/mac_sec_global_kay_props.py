@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MacSecGlobalKayProps(ARElement):
     """AUTOSAR MacSecGlobalKayProps."""
 
+    bypass_ether: PositiveInteger
+    bypass_vlan: PositiveInteger
     def __init__(self) -> None:
         """Initialize MacSecGlobalKayProps."""
         super().__init__()

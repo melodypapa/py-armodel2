@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster import (
 class DataComProps(CpSoftwareClusterCommunicationResourceProps):
     """AUTOSAR DataComProps."""
 
+    data: Optional[DataConsistencyPolicyEnum]
+    send_indication_enum: Optional[SendIndicationEnum]
     def __init__(self) -> None:
         """Initialize DataComProps."""
         super().__init__()

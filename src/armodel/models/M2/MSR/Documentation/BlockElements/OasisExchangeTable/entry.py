@@ -28,6 +28,18 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class Entry(ARObject):
     """AUTOSAR Entry."""
 
+    align: Optional[AlignEnum]
+    bgcolor: String
+    colname: Optional[String]
+    colsep: Optional[TableSeparatorString]
+    entry_contents: DocumentationBlock
+    morerows: Optional[String]
+    nameend: Optional[String]
+    namest: Optional[String]
+    rotate: Optional[String]
+    rowsep: Optional[TableSeparatorString]
+    spanname: Optional[String]
+    valign: Optional[ValignEnum]
     def __init__(self) -> None:
         """Initialize Entry."""
         super().__init__()

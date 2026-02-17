@@ -25,6 +25,21 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Graphic(EngineeringObject):
     """AUTOSAR Graphic."""
 
+    editfit: Optional[GraphicFitEnum]
+    edit_height: Optional[String]
+    editscale: Optional[String]
+    edit_width: Optional[String]
+    filename: Optional[String]
+    fit: Optional[GraphicFitEnum]
+    generator: Optional[NameToken]
+    height: Optional[String]
+    html_fit: Optional[GraphicFitEnum]
+    html_height: Optional[String]
+    html_scale: Optional[String]
+    html_width: Optional[String]
+    notation: Optional[GraphicNotationEnum]
+    scale: Optional[String]
+    width: Optional[String]
     def __init__(self) -> None:
         """Initialize Graphic."""
         super().__init__()

@@ -21,6 +21,7 @@ class ValueSpecification(ARObject):
     """AUTOSAR ValueSpecification."""
     """Abstract base class - do not instantiate directly."""
 
+    short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize ValueSpecification."""
         super().__init__()

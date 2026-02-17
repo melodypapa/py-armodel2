@@ -25,6 +25,17 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.e2_e_profile_
 class EndToEndTransformationComSpecProps(TransformationComSpecProps):
     """AUTOSAR EndToEndTransformationComSpecProps."""
 
+    clear_from_valid: Optional[Boolean]
+    disable_end_to: Optional[Boolean]
+    e2e_profile: Optional[E2EProfileCompatibilityProps]
+    max_delta: Optional[PositiveInteger]
+    max_error_state: Optional[PositiveInteger]
+    max_no_new_or: Optional[PositiveInteger]
+    min_ok_state_init: Optional[PositiveInteger]
+    min_ok_state: Optional[PositiveInteger]
+    sync_counter_init: Optional[PositiveInteger]
+    window_size_init: Optional[PositiveInteger]
+    window_size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize EndToEndTransformationComSpecProps."""
         super().__init__()

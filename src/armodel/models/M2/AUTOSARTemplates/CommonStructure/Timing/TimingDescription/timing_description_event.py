@@ -21,6 +21,8 @@ class TimingDescriptionEvent(TimingDescription):
     """AUTOSAR TimingDescriptionEvent."""
     """Abstract base class - do not instantiate directly."""
 
+    clock_reference: Optional[TimingClock]
+    occurrence: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingDescriptionEvent."""
         super().__init__()

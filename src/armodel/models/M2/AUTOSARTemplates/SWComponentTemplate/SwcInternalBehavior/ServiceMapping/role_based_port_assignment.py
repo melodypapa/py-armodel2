@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class RoleBasedPortAssignment(ARObject):
     """AUTOSAR RoleBasedPortAssignment."""
 
+    port_prototype: Optional[PortPrototype]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedPortAssignment."""
         super().__init__()

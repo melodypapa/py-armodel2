@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class BusMirrorChannel(ARObject):
     """AUTOSAR BusMirrorChannel."""
 
+    bus_mirror: Optional[PositiveInteger]
+    channel: Optional[PhysicalChannel]
     def __init__(self) -> None:
         """Initialize BusMirrorChannel."""
         super().__init__()

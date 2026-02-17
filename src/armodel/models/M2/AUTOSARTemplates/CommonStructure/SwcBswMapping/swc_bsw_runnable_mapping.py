@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcBswRunnableMapping(ARObject):
     """AUTOSAR SwcBswRunnableMapping."""
 
+    bsw_entity: Optional[BswModuleEntity]
+    swc_runnable: Optional[RunnableEntity]
     def __init__(self) -> None:
         """Initialize SwcBswRunnableMapping."""
         super().__init__()

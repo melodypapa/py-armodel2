@@ -27,6 +27,7 @@ class MultilanguageReferrable(Referrable):
     """AUTOSAR MultilanguageReferrable."""
     """Abstract base class - do not instantiate directly."""
 
+    long_name: Optional[MultilanguageLongName]
     def __init__(self) -> None:
         """Initialize MultilanguageReferrable."""
         super().__init__()

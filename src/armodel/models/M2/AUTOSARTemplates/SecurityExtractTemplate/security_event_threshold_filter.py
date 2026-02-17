@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventThresholdFilter."""
 
+    interval_length: Optional[TimeValue]
+    threshold: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecurityEventThresholdFilter."""
         super().__init__()

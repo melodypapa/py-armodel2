@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TriggerMapping(ARObject):
     """AUTOSAR TriggerMapping."""
 
+    first_trigger: Optional[Trigger]
+    second_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()

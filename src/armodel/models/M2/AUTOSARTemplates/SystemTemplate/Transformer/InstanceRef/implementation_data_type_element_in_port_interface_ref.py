@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR ImplementationDataTypeElementInPortInterfaceRef."""
 
+    contexts: list[Any]
+    root_data: Optional[AutosarDataPrototype]
+    target: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElementInPortInterfaceRef."""
         super().__init__()

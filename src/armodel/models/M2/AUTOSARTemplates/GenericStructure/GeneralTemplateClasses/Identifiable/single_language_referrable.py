@@ -21,6 +21,7 @@ class SingleLanguageReferrable(Referrable):
     """AUTOSAR SingleLanguageReferrable."""
     """Abstract base class - do not instantiate directly."""
 
+    long_name1: Optional[SingleLanguageLongName]
     def __init__(self) -> None:
         """Initialize SingleLanguageReferrable."""
         super().__init__()

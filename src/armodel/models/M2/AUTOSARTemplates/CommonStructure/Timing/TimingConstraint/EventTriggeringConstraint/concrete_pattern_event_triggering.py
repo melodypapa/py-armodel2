@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ConcretePatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR ConcretePatternEventTriggering."""
 
+    offsets: list[MultidimensionalTime]
+    pattern_jitter: Optional[MultidimensionalTime]
+    pattern_length: Optional[MultidimensionalTime]
+    pattern_period: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize ConcretePatternEventTriggering."""
         super().__init__()

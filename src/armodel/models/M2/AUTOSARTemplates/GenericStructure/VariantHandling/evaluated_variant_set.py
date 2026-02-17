@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.predefi
 class EvaluatedVariantSet(ARElement):
     """AUTOSAR EvaluatedVariantSet."""
 
+    approval_status: NameToken
+    evaluateds: list[PredefinedVariant]
     def __init__(self) -> None:
         """Initialize EvaluatedVariantSet."""
         super().__init__()

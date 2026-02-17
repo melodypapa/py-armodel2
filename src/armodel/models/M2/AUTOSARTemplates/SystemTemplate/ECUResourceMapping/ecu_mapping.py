@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.ECUResourceMapping.hw_por
 class ECUMapping(Identifiable):
     """AUTOSAR ECUMapping."""
 
+    comm_controllers: list[Any]
+    ecu: Optional[HwElement]
+    ecu_instance: Optional[EcuInstance]
+    hw_port_mapping: HwPortMapping
     def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()

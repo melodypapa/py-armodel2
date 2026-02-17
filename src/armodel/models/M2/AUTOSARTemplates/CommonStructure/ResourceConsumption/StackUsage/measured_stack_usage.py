@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MeasuredStackUsage(StackUsage):
     """AUTOSAR MeasuredStackUsage."""
 
+    average_memory_consumption: Optional[PositiveInteger]
+    maximum_memory_consumption: Optional[PositiveInteger]
+    minimum_memory_consumption: Optional[PositiveInteger]
+    test_pattern: Optional[String]
     def __init__(self) -> None:
         """Initialize MeasuredStackUsage."""
         super().__init__()

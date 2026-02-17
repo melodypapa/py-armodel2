@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinConfigurableFrame(ARObject):
     """AUTOSAR LinConfigurableFrame."""
 
+    frame: Optional[LinFrame]
+    message_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinConfigurableFrame."""
         super().__init__()

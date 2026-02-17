@@ -25,6 +25,13 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthGlobalTimeManagedCouplingPort(ARObject):
     """AUTOSAR EthGlobalTimeManagedCouplingPort."""
 
+    coupling_port: Optional[CouplingPort]
+    global_time_port_role: Optional[GlobalTimePortRoleEnum]
+    global_time_tx_period: Optional[TimeValue]
+    pdelay_latency: Optional[TimeValue]
+    pdelay_request: Optional[TimeValue]
+    pdelay_resp_and: Optional[TimeValue]
+    pdelay: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EthGlobalTimeManagedCouplingPort."""
         super().__init__()

@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSoftwareClusterToResourceMapping(Identifiable):
     """AUTOSAR CpSoftwareClusterToResourceMapping."""
 
+    provider: Optional[CpSoftwareCluster]
+    requesters: list[CpSoftwareCluster]
+    service: Optional[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToResourceMapping."""
         super().__init__()

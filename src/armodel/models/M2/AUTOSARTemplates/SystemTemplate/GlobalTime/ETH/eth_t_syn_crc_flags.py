@@ -18,6 +18,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EthTSynCrcFlags(ARObject):
     """AUTOSAR EthTSynCrcFlags."""
 
+    crc_correction: Optional[Boolean]
+    crc_domain: Optional[Boolean]
+    crc_message: Optional[Boolean]
+    crc_precise: Optional[Boolean]
+    crc_sequence_id: Optional[Boolean]
+    crc_source_port: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EthTSynCrcFlags."""
         super().__init__()

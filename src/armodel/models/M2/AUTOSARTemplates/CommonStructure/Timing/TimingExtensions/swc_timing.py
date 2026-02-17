@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcTiming(TimingExtension):
     """AUTOSAR SwcTiming."""
 
+    behavior: Optional[SwcInternalBehavior]
     def __init__(self) -> None:
         """Initialize SwcTiming."""
         super().__init__()

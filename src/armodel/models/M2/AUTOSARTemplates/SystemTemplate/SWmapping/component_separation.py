@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
 class ComponentSeparation(MappingConstraint):
     """AUTOSAR ComponentSeparation."""
 
+    mapping_scope_enum: Optional[MappingScopeEnum]
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""
         super().__init__()

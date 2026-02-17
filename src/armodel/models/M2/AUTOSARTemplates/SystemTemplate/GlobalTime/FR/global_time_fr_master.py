@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
 class GlobalTimeFrMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeFrMaster."""
 
+    crc_secured: Optional[GlobalTimeCrcSupportEnum]
     def __init__(self) -> None:
         """Initialize GlobalTimeFrMaster."""
         super().__init__()

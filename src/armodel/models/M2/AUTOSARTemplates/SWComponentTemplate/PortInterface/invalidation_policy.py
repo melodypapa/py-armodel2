@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class InvalidationPolicy(ARObject):
     """AUTOSAR InvalidationPolicy."""
 
+    data_element: Optional[VariableDataPrototype]
+    handle_invalid_enum: Optional[HandleInvalidEnum]
     def __init__(self) -> None:
         """Initialize InvalidationPolicy."""
         super().__init__()

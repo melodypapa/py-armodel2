@@ -19,6 +19,7 @@ class RestrictionWithSeverity(ARObject):
     """AUTOSAR RestrictionWithSeverity."""
     """Abstract base class - do not instantiate directly."""
 
+    severity: SeverityEnum
     def __init__(self) -> None:
         """Initialize RestrictionWithSeverity."""
         super().__init__()

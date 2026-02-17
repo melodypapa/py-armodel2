@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsOwnershipStrength(ARObject):
     """AUTOSAR DdsOwnershipStrength."""
 
+    ownership: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DdsOwnershipStrength."""
         super().__init__()

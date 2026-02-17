@@ -35,6 +35,14 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class EventHandler(Identifiable):
     """AUTOSAR EventHandler."""
 
+    consumed_event_groups: list[ConsumedEventGroup]
+    event_group: Optional[PositiveInteger]
+    event_multicast: Optional[ApplicationEndpoint]
+    multicast: Optional[PositiveInteger]
+    pdu_activation_routings: list[PduActivationRoutingGroup]
+    routing_groups: list[SoAdRoutingGroup]
+    sd_server_config: Optional[Any]
+    sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig]
     def __init__(self) -> None:
         """Initialize EventHandler."""
         super().__init__()

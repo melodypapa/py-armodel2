@@ -25,6 +25,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class BswModeSenderPolicy(ARObject):
     """AUTOSAR BswModeSenderPolicy."""
 
+    ack_request_request: Optional[BswModeSwitchAckRequest]
+    enhanced_mode: Optional[Boolean]
+    provided_mode: Optional[ModeDeclarationGroup]
+    queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BswModeSenderPolicy."""
         super().__init__()

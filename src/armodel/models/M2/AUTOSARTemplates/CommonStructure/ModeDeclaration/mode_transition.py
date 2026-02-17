@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeTransition(Identifiable):
     """AUTOSAR ModeTransition."""
 
+    entered_mode: Optional[ModeDeclaration]
+    exited_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeTransition."""
         super().__init__()

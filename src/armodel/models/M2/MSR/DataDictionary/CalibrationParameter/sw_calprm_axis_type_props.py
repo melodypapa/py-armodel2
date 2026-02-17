@@ -22,6 +22,8 @@ class SwCalprmAxisTypeProps(ARObject):
     """AUTOSAR SwCalprmAxisTypeProps."""
     """Abstract base class - do not instantiate directly."""
 
+    max_gradient: Optional[Float]
+    monotony: Optional[MonotonyEnum]
     def __init__(self) -> None:
         """Initialize SwCalprmAxisTypeProps."""
         super().__init__()

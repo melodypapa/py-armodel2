@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticReadDTCInformation."""
 
+    read: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDTCInformation."""
         super().__init__()

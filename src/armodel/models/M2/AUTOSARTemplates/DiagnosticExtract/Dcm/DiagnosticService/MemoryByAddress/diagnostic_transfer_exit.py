@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticTransferExit(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticTransferExit."""
 
+    transfer_exit: Optional[DiagnosticTransferExit]
     def __init__(self) -> None:
         """Initialize DiagnosticTransferExit."""
         super().__init__()

@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class IdsmSignatureSupportCp(ARObject):
     """AUTOSAR IdsmSignatureSupportCp."""
 
+    authentication: Optional[CryptoServicePrimitive]
+    crypto_service_key: Optional[CryptoServiceKey]
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportCp."""
         super().__init__()

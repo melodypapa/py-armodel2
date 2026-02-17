@@ -19,6 +19,8 @@ class EcucAbstractConfigurationClass(ARObject):
     """AUTOSAR EcucAbstractConfigurationClass."""
     """Abstract base class - do not instantiate directly."""
 
+    config_class: Optional[EcucConfigurationClassEnum]
+    config_variant: Optional[Any]
     def __init__(self) -> None:
         """Initialize EcucAbstractConfigurationClass."""
         super().__init__()

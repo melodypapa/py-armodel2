@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class StreamFilterRuleDataLinkLayer(ARObject):
     """AUTOSAR StreamFilterRuleDataLinkLayer."""
 
+    destination_mac: Optional[StreamFilterMACAddress]
+    ether_type: Optional[PositiveInteger]
+    source_mac: Optional[StreamFilterMACAddress]
+    vlan_id: Optional[PositiveInteger]
+    vlan_priority: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize StreamFilterRuleDataLinkLayer."""
         super().__init__()

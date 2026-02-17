@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_securit
 class DiagnosticSecurityAccess(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSecurityAccess."""
 
+    request_seed_id: Optional[PositiveInteger]
+    security_access: Optional[Any]
+    security_delay: Optional[TimeValue]
+    security_level: Optional[DiagnosticSecurityLevel]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityAccess."""
         super().__init__()

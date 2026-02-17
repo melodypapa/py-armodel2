@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class WaitPoint(Identifiable):
     """AUTOSAR WaitPoint."""
 
+    timeout: Optional[TimeValue]
+    trigger: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize WaitPoint."""
         super().__init__()

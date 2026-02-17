@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortFifo(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortFifo."""
 
+    assigned_traffic: PositiveInteger
+    minimum_fifo: Optional[PositiveInteger]
+    shaper: Optional[Any]
     def __init__(self) -> None:
         """Initialize CouplingPortFifo."""
         super().__init__()

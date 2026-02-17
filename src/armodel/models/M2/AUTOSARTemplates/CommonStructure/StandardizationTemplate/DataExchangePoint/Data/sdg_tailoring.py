@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SdgTailoring(RestrictionWithSeverity):
     """AUTOSAR SdgTailoring."""
 
+    sdg_class: Optional[SdgClass]
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()

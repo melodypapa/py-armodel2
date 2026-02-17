@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 class EcucQuery(Identifiable):
     """AUTOSAR EcucQuery."""
 
+    ecuc_query: Optional[EcucQueryExpression]
     def __init__(self) -> None:
         """Initialize EcucQuery."""
         super().__init__()

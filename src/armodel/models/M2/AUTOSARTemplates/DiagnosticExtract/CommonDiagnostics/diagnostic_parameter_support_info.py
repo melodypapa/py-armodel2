@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticParameterSupportInfo(ARObject):
     """AUTOSAR DiagnosticParameterSupportInfo."""
 
+    support_info_bit: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterSupportInfo."""
         super().__init__()

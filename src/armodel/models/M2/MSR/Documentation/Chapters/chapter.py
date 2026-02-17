@@ -27,6 +27,8 @@ if TYPE_CHECKING:
 class Chapter(Paginateable):
     """AUTOSAR Chapter."""
 
+    chapter_model: ChapterModel
+    help_entry: Optional[String]
     def __init__(self) -> None:
         """Initialize Chapter."""
         super().__init__()

@@ -20,6 +20,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticEventPortMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticEventPortMapping."""
 
+    bsw_service: Optional[Any]
+    diagnostic_event: Optional[DiagnosticEvent]
+    swc_flat_service: Optional[Any]
+    swc_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventPortMapping."""
         super().__init__()

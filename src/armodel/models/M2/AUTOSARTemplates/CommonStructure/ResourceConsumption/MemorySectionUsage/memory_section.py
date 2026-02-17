@@ -33,6 +33,13 @@ from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import
 class MemorySection(Identifiable):
     """AUTOSAR MemorySection."""
 
+    alignment: Optional[AlignmentType]
+    executable_entities: list[ExecutableEntity]
+    options: list[Identifier]
+    prefix: Optional[SectionNamePrefix]
+    size: Optional[PositiveInteger]
+    sw_addrmethod: Optional[SwAddrMethod]
+    symbol: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize MemorySection."""
         super().__init__()

@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticParameterElementAccess(ARObject):
     """AUTOSAR DiagnosticParameterElementAccess."""
 
+    context_elements: list[DiagnosticParameter]
+    target_element: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElementAccess."""
         super().__init__()

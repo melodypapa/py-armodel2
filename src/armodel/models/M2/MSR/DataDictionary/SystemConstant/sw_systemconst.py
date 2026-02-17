@@ -25,6 +25,7 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props im
 class SwSystemconst(ARElement):
     """AUTOSAR SwSystemconst."""
 
+    sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SwSystemconst."""
         super().__init__()

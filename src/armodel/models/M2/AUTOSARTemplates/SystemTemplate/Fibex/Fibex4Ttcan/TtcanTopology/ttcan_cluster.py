@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TtcanCluster(ARObject):
     """AUTOSAR TtcanCluster."""
 
+    basic_cycle_length: Optional[Integer]
+    ntu: Optional[TimeValue]
+    operation_mode: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TtcanCluster."""
         super().__init__()

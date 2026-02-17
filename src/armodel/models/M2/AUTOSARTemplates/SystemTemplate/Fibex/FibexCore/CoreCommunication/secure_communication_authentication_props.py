@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecureCommunicationAuthenticationProps(Identifiable):
     """AUTOSAR SecureCommunicationAuthenticationProps."""
 
+    auth_info_tx: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize SecureCommunicationAuthenticationProps."""
         super().__init__()

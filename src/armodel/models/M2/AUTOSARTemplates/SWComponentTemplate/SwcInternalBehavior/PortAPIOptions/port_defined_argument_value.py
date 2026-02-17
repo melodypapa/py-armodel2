@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class PortDefinedArgumentValue(ARObject):
     """AUTOSAR PortDefinedArgumentValue."""
 
+    value: Optional[ValueSpecification]
+    value_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize PortDefinedArgumentValue."""
         super().__init__()

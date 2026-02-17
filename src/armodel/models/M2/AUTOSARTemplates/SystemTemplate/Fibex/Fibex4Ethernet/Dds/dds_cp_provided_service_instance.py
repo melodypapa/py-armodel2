@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
     """AUTOSAR DdsCpProvidedServiceInstance."""
 
+    local_unicast: Optional[ApplicationEndpoint]
+    minor_version: Optional[PositiveInteger]
+    provided_ddses: list[DdsCpServiceInstance]
+    static_remotes: list[ApplicationEndpoint]
     def __init__(self) -> None:
         """Initialize DdsCpProvidedServiceInstance."""
         super().__init__()

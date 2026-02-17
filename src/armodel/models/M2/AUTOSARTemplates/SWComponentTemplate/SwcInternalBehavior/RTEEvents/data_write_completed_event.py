@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class DataWriteCompletedEvent(RTEEvent):
     """AUTOSAR DataWriteCompletedEvent."""
 
+    event_source: Optional[VariableAccess]
     def __init__(self) -> None:
         """Initialize DataWriteCompletedEvent."""
         super().__init__()

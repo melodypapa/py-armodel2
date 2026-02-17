@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswEntryRelationship(ARObject):
     """AUTOSAR BswEntryRelationship."""
 
+    bsw_entry: Optional[BswEntryRelationship]
+    from_: Optional[BswModuleEntry]
+    to: Optional[BswModuleEntry]
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
         super().__init__()

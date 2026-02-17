@@ -35,6 +35,8 @@ class Referrable(ARObject):
     """AUTOSAR Referrable."""
     """Abstract base class - do not instantiate directly."""
 
+    short_name: Identifier
+    short_name_fragments: list[ShortNameFragment]
     def __init__(self) -> None:
         """Initialize Referrable."""
         super().__init__()

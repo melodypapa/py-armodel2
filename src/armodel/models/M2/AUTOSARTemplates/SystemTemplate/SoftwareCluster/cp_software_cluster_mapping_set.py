@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_applicat
 class CpSoftwareClusterMappingSet(ARElement):
     """AUTOSAR CpSoftwareClusterMappingSet."""
 
+    port_element_tos: list[PortElementToCommunicationResourceMapping]
+    resource_tos: list[CpSoftwareCluster]
+    software_clusters: list[Any]
+    swc_tos: list[SwcToApplicationPartitionMapping]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterMappingSet."""
         super().__init__()

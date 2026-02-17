@@ -28,6 +28,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_syst
 class McSupportData(ARObject):
     """AUTOSAR McSupportData."""
 
+    emulations: list[McSwEmulationMethodSupport]
+    mc_parameters: list[McDataInstance]
+    mc_variables: list[McDataInstance]
+    measurables: list[SwSystemconstantValueSet]
+    rpt_support_data: Optional[RptSupportData]
     def __init__(self) -> None:
         """Initialize McSupportData."""
         super().__init__()

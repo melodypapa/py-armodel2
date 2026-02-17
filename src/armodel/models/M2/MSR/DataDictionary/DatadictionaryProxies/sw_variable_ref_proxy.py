@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class SwVariableRefProxy(ARObject):
     """AUTOSAR SwVariableRefProxy."""
 
+    autosar_variable_ref: Optional[AutosarVariableRef]
+    mc_data_instance: Optional[McDataInstance]
     def __init__(self) -> None:
         """Initialize SwVariableRefProxy."""
         super().__init__()

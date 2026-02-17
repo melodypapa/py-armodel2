@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_partition i
 class ApplicationPartitionToEcuPartitionMapping(Identifiable):
     """AUTOSAR ApplicationPartitionToEcuPartitionMapping."""
 
+    applications: list[ApplicationPartition]
+    ecu_partition: Optional[EcuPartition]
     def __init__(self) -> None:
         """Initialize ApplicationPartitionToEcuPartitionMapping."""
         super().__init__()

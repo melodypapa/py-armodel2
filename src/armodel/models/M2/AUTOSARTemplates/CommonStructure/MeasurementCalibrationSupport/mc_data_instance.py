@@ -48,6 +48,18 @@ if TYPE_CHECKING:
 class McDataInstance(Identifiable):
     """AUTOSAR McDataInstance."""
 
+    array_size: Optional[PositiveInteger]
+    display_identifier: Optional[McdIdentifier]
+    flat_map_entry: Optional[FlatInstanceDescriptor]
+    instance_in: Optional[ImplementationElementInParameterInstanceRef]
+    mc_data_access_details: Optional[McDataAccessDetails]
+    mc_datas: list[RoleBasedMcDataAssignment]
+    resulting: Optional[SwDataDefProps]
+    resulting_rpt_sw: Optional[RptSwPrototypingAccess]
+    role: Optional[Identifier]
+    rpt_impl_policy: Optional[RptImplPolicy]
+    sub_elements: list[McDataInstance]
+    symbol: Optional[SymbolString]
     def __init__(self) -> None:
         """Initialize McDataInstance."""
         super().__init__()

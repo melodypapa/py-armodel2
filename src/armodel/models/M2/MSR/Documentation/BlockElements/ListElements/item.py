@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 class Item(Paginateable):
     """AUTOSAR Item."""
 
+    item_contents: DocumentationBlock
     def __init__(self) -> None:
         """Initialize Item."""
         super().__init__()

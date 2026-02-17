@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestItemNumericalValue(BinaryManifestItemValue):
     """AUTOSAR BinaryManifestItemNumericalValue."""
 
+    value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize BinaryManifestItemNumericalValue."""
         super().__init__()

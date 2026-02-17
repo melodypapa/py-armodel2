@@ -30,6 +30,8 @@ class RTEEvent(AbstractEvent):
     """AUTOSAR RTEEvent."""
     """Abstract base class - do not instantiate directly."""
 
+    disabled_mode_instance_refs: list[ModeDeclaration]
+    start_on_event: Optional[RunnableEntity]
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()

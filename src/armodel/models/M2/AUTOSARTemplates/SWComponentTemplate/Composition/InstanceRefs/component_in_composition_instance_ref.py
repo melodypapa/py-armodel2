@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 class ComponentInCompositionInstanceRef(ARObject):
     """AUTOSAR ComponentInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    contexts: list[Any]
+    target: Optional[Any]
     def __init__(self) -> None:
         """Initialize ComponentInCompositionInstanceRef."""
         super().__init__()

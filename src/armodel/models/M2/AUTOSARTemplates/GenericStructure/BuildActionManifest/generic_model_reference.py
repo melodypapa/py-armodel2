@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GenericModelReference(ARObject):
     """AUTOSAR GenericModelReference."""
 
+    base: NameToken
+    dest: NameToken
+    ref: Ref
     def __init__(self) -> None:
         """Initialize GenericModelReference."""
         super().__init__()

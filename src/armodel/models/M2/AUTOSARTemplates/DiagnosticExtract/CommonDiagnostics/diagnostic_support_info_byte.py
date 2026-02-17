@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSupportInfoByte(ARObject):
     """AUTOSAR DiagnosticSupportInfoByte."""
 
+    position: Optional[PositiveInteger]
+    size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticSupportInfoByte."""
         super().__init__()

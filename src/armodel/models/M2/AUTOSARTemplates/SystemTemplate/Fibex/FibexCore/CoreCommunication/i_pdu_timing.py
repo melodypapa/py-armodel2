@@ -20,6 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IPduTiming(Describable):
     """AUTOSAR IPduTiming."""
 
+    minimum_delay: Optional[TimeValue]
+    transmission: Optional[Any]
     def __init__(self) -> None:
         """Initialize IPduTiming."""
         super().__init__()

@@ -27,6 +27,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_ecu_mapp
 class EcuResourceEstimation(ARObject):
     """AUTOSAR EcuResourceEstimation."""
 
+    bsw_resource: Optional[ResourceConsumption]
+    ecu_instance: Optional[EcuInstance]
+    introduction: Optional[DocumentationBlock]
+    rte_resource: Optional[ResourceConsumption]
+    sw_comp_to_ecus: list[SwcToEcuMapping]
     def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
         super().__init__()

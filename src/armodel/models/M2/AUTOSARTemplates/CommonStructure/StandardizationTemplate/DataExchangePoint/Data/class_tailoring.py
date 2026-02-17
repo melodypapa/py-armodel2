@@ -22,6 +22,9 @@ class ClassTailoring(ARObject):
     """AUTOSAR ClassTailoring."""
     """Abstract base class - do not instantiate directly."""
 
+    class_contents: list[ClassContentConditional]
+    multiplicity: Optional[Any]
+    variation: Optional[VariationRestrictionWithSeverity]
     def __init__(self) -> None:
         """Initialize ClassTailoring."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.docum
 class SpecificationDocumentScope(SpecElementReference):
     """AUTOSAR SpecificationDocumentScope."""
 
+    custom_documentation: Optional[Documentation]
+    documents: list[DocumentElementScope]
     def __init__(self) -> None:
         """Initialize SpecificationDocumentScope."""
         super().__init__()

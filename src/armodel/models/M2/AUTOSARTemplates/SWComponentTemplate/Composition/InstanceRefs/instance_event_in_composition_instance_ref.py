@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class InstanceEventInCompositionInstanceRef(ARObject):
     """AUTOSAR InstanceEventInCompositionInstanceRef."""
 
+    base: Optional[CompositionSwComponentType]
+    context_prototypes: list[Any]
+    target_event: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize InstanceEventInCompositionInstanceRef."""
         super().__init__()

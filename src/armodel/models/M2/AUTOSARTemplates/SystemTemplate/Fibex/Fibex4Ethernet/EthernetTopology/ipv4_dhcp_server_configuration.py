@@ -21,6 +21,11 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4DhcpServerConfiguration(Describable):
     """AUTOSAR Ipv4DhcpServerConfiguration."""
 
+    address_range: Optional[Ip4AddressString]
+    default_gateway: Optional[Ip4AddressString]
+    default_lease: Optional[TimeValue]
+    dns_servers: list[Ip4AddressString]
+    network_mask: Optional[Ip4AddressString]
     def __init__(self) -> None:
         """Initialize Ipv4DhcpServerConfiguration."""
         super().__init__()

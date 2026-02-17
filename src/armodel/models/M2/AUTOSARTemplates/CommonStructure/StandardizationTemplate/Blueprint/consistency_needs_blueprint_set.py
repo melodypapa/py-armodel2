@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 class ConsistencyNeedsBlueprintSet(ARElement):
     """AUTOSAR ConsistencyNeedsBlueprintSet."""
 
+    consistency_needses: list[ConsistencyNeeds]
     def __init__(self) -> None:
         """Initialize ConsistencyNeedsBlueprintSet."""
         super().__init__()

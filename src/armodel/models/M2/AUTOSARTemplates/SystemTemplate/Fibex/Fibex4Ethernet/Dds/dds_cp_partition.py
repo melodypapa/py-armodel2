@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsCpPartition(Identifiable):
     """AUTOSAR DdsCpPartition."""
 
+    partition_name: Optional[String]
     def __init__(self) -> None:
         """Initialize DdsCpPartition."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR ModeInterfaceMapping."""
 
+    mode_mapping: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeInterfaceMapping."""
         super().__init__()

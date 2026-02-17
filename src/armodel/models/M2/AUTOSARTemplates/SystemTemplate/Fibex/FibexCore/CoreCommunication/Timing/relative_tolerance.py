@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RelativeTolerance(ARObject):
     """AUTOSAR RelativeTolerance."""
 
+    relative: Optional[Integer]
     def __init__(self) -> None:
         """Initialize RelativeTolerance."""
         super().__init__()

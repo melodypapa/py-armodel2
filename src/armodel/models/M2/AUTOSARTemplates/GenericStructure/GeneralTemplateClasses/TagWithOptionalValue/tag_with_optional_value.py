@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TagWithOptionalValue(ARObject):
     """AUTOSAR TagWithOptionalValue."""
 
+    key: Optional[String]
+    sequence_offset: Optional[Integer]
+    value: Optional[String]
     def __init__(self) -> None:
         """Initialize TagWithOptionalValue."""
         super().__init__()

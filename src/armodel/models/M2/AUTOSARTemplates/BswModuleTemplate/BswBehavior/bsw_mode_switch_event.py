@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
 class BswModeSwitchEvent(BswScheduleEvent):
     """AUTOSAR BswModeSwitchEvent."""
 
+    activation: Optional[ModeActivationKind]
     def __init__(self) -> None:
         """Initialize BswModeSwitchEvent."""
         super().__init__()

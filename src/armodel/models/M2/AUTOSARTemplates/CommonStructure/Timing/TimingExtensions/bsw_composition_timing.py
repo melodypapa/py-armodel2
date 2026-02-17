@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_
 class BswCompositionTiming(TimingExtension):
     """AUTOSAR BswCompositionTiming."""
 
+    implementations: list[BswImplementation]
     def __init__(self) -> None:
         """Initialize BswCompositionTiming."""
         super().__init__()

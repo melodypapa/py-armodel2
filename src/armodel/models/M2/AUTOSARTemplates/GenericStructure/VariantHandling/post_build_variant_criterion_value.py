@@ -23,6 +23,9 @@ from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
 class PostBuildVariantCriterionValue(ARObject):
     """AUTOSAR PostBuildVariantCriterionValue."""
 
+    annotations: list[Annotation]
+    value: Integer
+    variant_criterion: Any
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValue."""
         super().__init__()

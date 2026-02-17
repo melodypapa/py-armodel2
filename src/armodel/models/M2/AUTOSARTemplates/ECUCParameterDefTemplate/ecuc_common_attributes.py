@@ -28,6 +28,11 @@ class EcucCommonAttributes(EcucDefinitionElement):
     """AUTOSAR EcucCommonAttributes."""
     """Abstract base class - do not instantiate directly."""
 
+    multiplicities: list[EcucMultiplicityConfigurationClass]
+    origin: Optional[String]
+    post_build_variant: Optional[Boolean]
+    requires_index: Optional[Boolean]
+    value_configs: list[EcucValueConfigurationClass]
     def __init__(self) -> None:
         """Initialize EcucCommonAttributes."""
         super().__init__()

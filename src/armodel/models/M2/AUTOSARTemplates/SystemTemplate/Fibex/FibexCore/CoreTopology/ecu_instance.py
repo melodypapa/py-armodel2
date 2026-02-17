@@ -57,6 +57,30 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class EcuInstance(FibexElement):
     """AUTOSAR EcuInstance."""
 
+    associated_coms: list[ISignalIPduGroup]
+    associateds: list[ConsumedProvidedServiceInstanceGroup]
+    associated_pdurs: list[PdurIPduGroup]
+    channel: Optional[Boolean]
+    client_id_range: Optional[ClientIdRange]
+    com: Optional[TimeValue]
+    com_enable: Optional[Boolean]
+    comm_controllers: list[Any]
+    connectors: list[Any]
+    dlt_config: Optional[DltConfig]
+    do_ip_config: Optional[DoIpConfig]
+    ecu_task_proxies: list[OsTaskProxy]
+    eth_switch_port: Optional[Boolean]
+    firewall_rules: list[StateDependentFirewall]
+    partitions: list[EcuPartition]
+    pnc_nm_request: Optional[Boolean]
+    pnc_prepare: Optional[TimeValue]
+    pnc: Optional[Boolean]
+    pn_reset_time: Optional[TimeValue]
+    sleep_mode: Optional[Boolean]
+    tcp_ip_icmp_props: Optional[EthTcpIpIcmpProps]
+    tcp_ip_props: Optional[EthTcpIpProps]
+    v2x_supported: Optional[Any]
+    wake_up_over_bus_supported: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcuInstance."""
         super().__init__()

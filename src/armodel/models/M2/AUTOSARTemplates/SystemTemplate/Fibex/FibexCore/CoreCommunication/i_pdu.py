@@ -22,6 +22,7 @@ class IPdu(Pdu):
     """AUTOSAR IPdu."""
     """Abstract base class - do not instantiate directly."""
 
+    contained_i_pdu_props: Optional[ContainedIPduProps]
     def __init__(self) -> None:
         """Initialize IPdu."""
         super().__init__()

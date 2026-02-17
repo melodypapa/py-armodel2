@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SoftwareContext(ARObject):
     """AUTOSAR SoftwareContext."""
 
+    input: Optional[String]
+    state: Optional[String]
     def __init__(self) -> None:
         """Initialize SoftwareContext."""
         super().__init__()

@@ -22,6 +22,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class FlexrayTpEcu(ARObject):
     """AUTOSAR FlexrayTpEcu."""
 
+    cancellation: Optional[Boolean]
+    cycle_time_main: Optional[TimeValue]
+    ecu_instance: Optional[EcuInstance]
+    full_duplex: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize FlexrayTpEcu."""
         super().__init__()

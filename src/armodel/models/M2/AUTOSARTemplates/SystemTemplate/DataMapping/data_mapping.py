@@ -20,6 +20,7 @@ class DataMapping(ARObject):
     """AUTOSAR DataMapping."""
     """Abstract base class - do not instantiate directly."""
 
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize DataMapping."""
         super().__init__()

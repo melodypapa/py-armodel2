@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class InitialSdDelayConfig(ARObject):
     """AUTOSAR InitialSdDelayConfig."""
 
+    initial_delay_max: Optional[TimeValue]
+    initial_delay_min: Optional[TimeValue]
+    initial: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize InitialSdDelayConfig."""
         super().__init__()

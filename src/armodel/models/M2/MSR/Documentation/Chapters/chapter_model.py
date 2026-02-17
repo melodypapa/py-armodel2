@@ -28,6 +28,9 @@ if TYPE_CHECKING:
 class ChapterModel(ARObject):
     """AUTOSAR ChapterModel."""
 
+    chapter: Optional[ChapterOrMsrQuery]
+    chapter_content: Optional[ChapterContent]
+    topic1: Optional[TopicOrMsrQuery]
     def __init__(self) -> None:
         """Initialize ChapterModel."""
         super().__init__()

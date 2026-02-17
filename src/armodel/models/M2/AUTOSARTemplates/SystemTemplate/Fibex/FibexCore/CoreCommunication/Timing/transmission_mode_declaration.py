@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TransmissionModeDeclaration(ARObject):
     """AUTOSAR TransmissionModeDeclaration."""
 
+    mode_drivens: list[ModeDrivenTransmissionModeCondition]
+    transmission: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransmissionModeDeclaration."""
         super().__init__()

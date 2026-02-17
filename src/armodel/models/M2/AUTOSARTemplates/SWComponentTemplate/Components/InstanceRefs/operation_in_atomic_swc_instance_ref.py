@@ -25,6 +25,9 @@ class OperationInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR OperationInAtomicSwcInstanceRef."""
     """Abstract base class - do not instantiate directly."""
 
+    base: Optional[AtomicSwComponentType]
+    context_port: Optional[PortPrototype]
+    target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInAtomicSwcInstanceRef."""
         super().__init__()

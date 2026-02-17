@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcuPartition(Identifiable):
     """AUTOSAR EcuPartition."""
 
+    exec_in_user: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcuPartition."""
         super().__init__()

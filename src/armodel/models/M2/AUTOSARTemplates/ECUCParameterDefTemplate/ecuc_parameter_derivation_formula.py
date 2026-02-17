@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query impo
 class EcucParameterDerivationFormula(ARObject):
     """AUTOSAR EcucParameterDerivationFormula."""
 
+    ecuc_query: Optional[EcucQuery]
     def __init__(self) -> None:
         """Initialize EcucParameterDerivationFormula."""
         super().__init__()

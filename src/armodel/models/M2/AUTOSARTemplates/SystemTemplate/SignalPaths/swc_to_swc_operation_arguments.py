@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class SwcToSwcOperationArguments(ARObject):
     """AUTOSAR SwcToSwcOperationArguments."""
 
+    direction: Optional[Any]
+    operations: list[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize SwcToSwcOperationArguments."""
         super().__init__()

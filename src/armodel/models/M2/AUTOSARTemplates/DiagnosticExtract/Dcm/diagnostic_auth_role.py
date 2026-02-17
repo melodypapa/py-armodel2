@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticAuthRole(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAuthRole."""
 
+    bit_position: Optional[PositiveInteger]
+    is_default: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthRole."""
         super().__init__()

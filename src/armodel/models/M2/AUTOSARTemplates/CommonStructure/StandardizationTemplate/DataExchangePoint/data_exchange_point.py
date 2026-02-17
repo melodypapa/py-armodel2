@@ -26,6 +26,10 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class DataExchangePoint(ARElement):
     """AUTOSAR DataExchangePoint."""
 
+    data_format: Optional[DataFormatTailoring]
+    kind: DataExchangePoint
+    referenced: Baseline
+    specification_scope: Optional[SpecificationScope]
     def __init__(self) -> None:
         """Initialize DataExchangePoint."""
         super().__init__()

@@ -22,6 +22,7 @@ class AbstractEvent(Identifiable):
     """AUTOSAR AbstractEvent."""
     """Abstract base class - do not instantiate directly."""
 
+    activation: Optional[ExecutableEntity]
     def __init__(self) -> None:
         """Initialize AbstractEvent."""
         super().__init__()

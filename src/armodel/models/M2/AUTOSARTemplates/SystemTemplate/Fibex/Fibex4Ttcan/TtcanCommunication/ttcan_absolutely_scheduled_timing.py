@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TtcanAbsolutelyScheduledTiming(ARObject):
     """AUTOSAR TtcanAbsolutelyScheduledTiming."""
 
+    communication_cycle_cycle: Optional[CommunicationCycle]
+    time_mark: Optional[Integer]
+    trigger: Optional[TtcanTriggerType]
     def __init__(self) -> None:
         """Initialize TtcanAbsolutelyScheduledTiming."""
         super().__init__()

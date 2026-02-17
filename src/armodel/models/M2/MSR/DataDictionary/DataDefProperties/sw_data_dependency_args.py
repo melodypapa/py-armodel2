@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_
 class SwDataDependencyArgs(ARObject):
     """AUTOSAR SwDataDependencyArgs."""
 
+    sw_calprm_ref_proxy: Optional[SwCalprmRefProxy]
+    sw_variable_ref_proxy: Optional[SwVariableRefProxy]
     def __init__(self) -> None:
         """Initialize SwDataDependencyArgs."""
         super().__init__()

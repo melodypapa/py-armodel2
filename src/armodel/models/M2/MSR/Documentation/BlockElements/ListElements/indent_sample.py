@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_
 class IndentSample(ARObject):
     """AUTOSAR IndentSample."""
 
+    item_label_pos_enum: Optional[ItemLabelPosEnum]
+    l2: LOverviewParagraph
     def __init__(self) -> None:
         """Initialize IndentSample."""
         super().__init__()

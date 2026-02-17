@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdRatioDenominatorNeeds."""
 
+    denominator: Optional[DiagnosticDenominatorConditionEnum]
     def __init__(self) -> None:
         """Initialize ObdRatioDenominatorNeeds."""
         super().__init__()

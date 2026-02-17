@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswOperationInvokedEvent(BswEvent):
     """AUTOSAR BswOperationInvokedEvent."""
 
+    entry: Optional[BswModuleClientServerEntry]
     def __init__(self) -> None:
         """Initialize BswOperationInvokedEvent."""
         super().__init__()

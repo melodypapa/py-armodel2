@@ -44,6 +44,16 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class ISignal(FibexElement):
     """AUTOSAR ISignal."""
 
+    data: Optional[DataTransformation]
+    data_type_policy_enum: Optional[DataTypePolicyEnum]
+    init_value: Optional[ValueSpecification]
+    i_signal_props: Optional[ISignalProps]
+    i_signal_type_enum: Optional[ISignalTypeEnum]
+    length: Optional[UnlimitedInteger]
+    network: Optional[SwDataDefProps]
+    system_signal: Optional[SystemSignal]
+    timeout: Optional[ValueSpecification]
+    transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignal."""
         super().__init__()

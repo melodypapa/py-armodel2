@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeInBswModuleDescriptionInstanceRef(ARObject):
     """AUTOSAR ModeInBswModuleDescriptionInstanceRef."""
 
+    base: Optional[BswModuleDescription]
+    context_mode_group: Optional[ModeDeclarationGroup]
+    target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInBswModuleDescriptionInstanceRef."""
         super().__init__()

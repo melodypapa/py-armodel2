@@ -41,6 +41,17 @@ if TYPE_CHECKING:
 class BswModuleEntry(ARElement):
     """AUTOSAR BswModuleEntry."""
 
+    arguments: list[SwServiceArg]
+    bsw_entry_kind_enum: Optional[BswEntryKindEnum]
+    call_type: Optional[BswCallType]
+    execution: Optional[BswExecutionContext]
+    function: Optional[NameToken]
+    is_reentrant: Optional[Boolean]
+    is_synchronous: Optional[Boolean]
+    return_type: Optional[SwServiceArg]
+    role: Optional[Identifier]
+    service_id: Optional[PositiveInteger]
+    sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize BswModuleEntry."""
         super().__init__()

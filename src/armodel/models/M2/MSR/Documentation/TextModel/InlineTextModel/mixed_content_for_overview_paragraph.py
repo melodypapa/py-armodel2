@@ -42,6 +42,16 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref_targe
 class MixedContentForOverviewParagraph(ARObject):
     """AUTOSAR MixedContentForOverviewParagraph."""
 
+    br: Br
+    e: EmphasisText
+    ft: SlOverviewParagraph
+    ie: IndexEntry
+    sub: Superscript
+    sup: Superscript
+    trace: Traceable
+    tt: Tt
+    xref: Xref
+    xref_target: XrefTarget
     def __init__(self) -> None:
         """Initialize MixedContentForOverviewParagraph."""
         super().__init__()

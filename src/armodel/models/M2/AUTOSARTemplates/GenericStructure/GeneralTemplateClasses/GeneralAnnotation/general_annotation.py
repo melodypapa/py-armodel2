@@ -26,6 +26,9 @@ class GeneralAnnotation(ARObject):
     """AUTOSAR GeneralAnnotation."""
     """Abstract base class - do not instantiate directly."""
 
+    annotation: String
+    annotation_text: DocumentationBlock
+    label: Optional[MultilanguageLongName]
     def __init__(self) -> None:
         """Initialize GeneralAnnotation."""
         super().__init__()

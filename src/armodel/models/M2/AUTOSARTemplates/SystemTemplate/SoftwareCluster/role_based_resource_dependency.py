@@ -22,6 +22,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class RoleBasedResourceDependency(ARObject):
     """AUTOSAR RoleBasedResourceDependency."""
 
+    resource: Optional[CpSoftwareCluster]
+    role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedResourceDependency."""
         super().__init__()

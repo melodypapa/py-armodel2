@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class ComponentInSystemInstanceRef(ARObject):
     """AUTOSAR ComponentInSystemInstanceRef."""
 
+    base: Optional[System]
+    context: Optional[RootSwCompositionPrototype]
+    target: Any
     def __init__(self) -> None:
         """Initialize ComponentInSystemInstanceRef."""
         super().__init__()

@@ -27,6 +27,10 @@ class BusMirrorChannelMapping(FibexElement):
     """AUTOSAR BusMirrorChannelMapping."""
     """Abstract base class - do not instantiate directly."""
 
+    mirroring: Optional[MirroringProtocolEnum]
+    source_channel: Optional[BusMirrorChannel]
+    target_channel: Optional[BusMirrorChannel]
+    target_pdus: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMapping."""
         super().__init__()

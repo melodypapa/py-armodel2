@@ -27,6 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientServerInterface(PortInterface):
     """AUTOSAR ClientServerInterface."""
 
+    operations: list[ClientServerOperation]
+    possible_errors: list[ApplicationError]
     def __init__(self) -> None:
         """Initialize ClientServerInterface."""
         super().__init__()

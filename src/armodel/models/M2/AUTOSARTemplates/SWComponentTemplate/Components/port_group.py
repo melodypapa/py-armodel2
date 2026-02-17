@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class PortGroup(Identifiable):
     """AUTOSAR PortGroup."""
 
+    inner_groups: list[PortGroup]
+    outer_ports: list[PortPrototype]
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()

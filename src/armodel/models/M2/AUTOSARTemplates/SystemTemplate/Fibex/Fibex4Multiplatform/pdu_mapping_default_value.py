@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform
 class PduMappingDefaultValue(ARObject):
     """AUTOSAR PduMappingDefaultValue."""
 
+    default_values: list[DefaultValueElement]
     def __init__(self) -> None:
         """Initialize PduMappingDefaultValue."""
         super().__init__()

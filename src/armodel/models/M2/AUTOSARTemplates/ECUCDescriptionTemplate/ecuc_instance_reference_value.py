@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
     """AUTOSAR EcucInstanceReferenceValue."""
 
+    value: Optional[AtpFeature]
     def __init__(self) -> None:
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()

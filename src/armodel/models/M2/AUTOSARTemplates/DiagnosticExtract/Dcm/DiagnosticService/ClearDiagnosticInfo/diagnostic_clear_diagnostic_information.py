@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticClearDiagnosticInformation."""
 
+    clear_diagnostic: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticClearDiagnosticInformation."""
         super().__init__()

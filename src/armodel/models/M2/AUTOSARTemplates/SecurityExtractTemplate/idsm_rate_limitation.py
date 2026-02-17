@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IdsmRateLimitation(Identifiable):
     """AUTOSAR IdsmRateLimitation."""
 
+    max_events_in: PositiveInteger
+    time_interval: Float
     def __init__(self) -> None:
         """Initialize IdsmRateLimitation."""
         super().__init__()

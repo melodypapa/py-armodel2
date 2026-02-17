@@ -24,6 +24,10 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transfor
 class ClientServerOperationMapping(ARObject):
     """AUTOSAR ClientServerOperationMapping."""
 
+    arguments: list[DataPrototypeMapping]
+    first_operation: Optional[ClientServerOperation]
+    first_to_second: Optional[DataTransformation]
+    second: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerOperationMapping."""
         super().__init__()

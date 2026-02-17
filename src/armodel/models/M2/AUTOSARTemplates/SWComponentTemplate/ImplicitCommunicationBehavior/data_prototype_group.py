@@ -21,6 +21,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeGroup(Identifiable):
     """AUTOSAR DataPrototypeGroup."""
 
+    data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup]
+    implicit_datas: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()

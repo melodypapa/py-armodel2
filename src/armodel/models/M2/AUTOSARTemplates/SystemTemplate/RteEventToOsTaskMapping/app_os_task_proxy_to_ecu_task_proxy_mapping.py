@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.o
 class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
     """AUTOSAR AppOsTaskProxyToEcuTaskProxyMapping."""
 
+    app_task_proxy: Optional[OsTaskProxy]
+    ecu_task_proxy: Optional[OsTaskProxy]
+    offset: Optional[Integer]
     def __init__(self) -> None:
         """Initialize AppOsTaskProxyToEcuTaskProxyMapping."""
         super().__init__()

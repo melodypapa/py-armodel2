@@ -27,6 +27,11 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import 
 class MixedContentForLongName(ARObject):
     """AUTOSAR MixedContentForLongName."""
 
+    e: EmphasisText
+    ie: IndexEntry
+    sub: Superscript
+    sup: Superscript
+    tt: Tt
     def __init__(self) -> None:
         """Initialize MixedContentForLongName."""
         super().__init__()

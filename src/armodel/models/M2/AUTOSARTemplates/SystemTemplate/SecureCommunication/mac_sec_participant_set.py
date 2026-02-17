@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecParticipantSet(ARElement):
     """AUTOSAR MacSecParticipantSet."""
 
+    ethernet_cluster: Optional[EthernetCluster]
+    mka_participants: list[MacSecKayParticipant]
     def __init__(self) -> None:
         """Initialize MacSecParticipantSet."""
         super().__init__()

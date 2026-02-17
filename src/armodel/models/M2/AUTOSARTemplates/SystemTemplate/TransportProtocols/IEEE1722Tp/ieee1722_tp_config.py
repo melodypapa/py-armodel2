@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpConfig(TpConfig):
     """AUTOSAR IEEE1722TpConfig."""
 
+    tp_connections: list[IEEE1722TpConnection]
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""
         super().__init__()

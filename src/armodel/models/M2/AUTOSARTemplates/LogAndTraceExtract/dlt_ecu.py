@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_application impor
 class DltEcu(ARElement):
     """AUTOSAR DltEcu."""
 
+    applications: list[DltApplication]
+    ecu_id: Optional[String]
     def __init__(self) -> None:
         """Initialize DltEcu."""
         super().__init__()

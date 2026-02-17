@@ -30,6 +30,11 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
 class SwCalprmAxis(ARObject):
     """AUTOSAR SwCalprmAxis."""
 
+    category: Optional[CalprmAxisCategoryEnum]
+    display_format_string: Optional[DisplayFormatString]
+    sw_axis_index: Optional[AxisIndexType]
+    sw_calibration_access: Optional[SwCalibrationAccessEnum]
+    sw_calprm_axis: Optional[SwCalprmAxisTypeProps]
     def __init__(self) -> None:
         """Initialize SwCalprmAxis."""
         super().__init__()

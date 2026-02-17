@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 class MsrQueryResultChapter(ARObject):
     """AUTOSAR MsrQueryResultChapter."""
 
+    chapters: list[Chapter]
     def __init__(self) -> None:
         """Initialize MsrQueryResultChapter."""
         super().__init__()

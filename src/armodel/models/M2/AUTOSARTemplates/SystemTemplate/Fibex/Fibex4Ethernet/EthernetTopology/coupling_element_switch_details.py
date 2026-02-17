@@ -29,6 +29,11 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
     """AUTOSAR CouplingElementSwitchDetails."""
 
+    flow_meterings: list[SwitchFlowMeteringEntry]
+    stream_filters: list[SwitchStreamFilterEntry]
+    stream_gates: list[SwitchStreamGateEntry]
+    switch_streams: list[Any]
+    traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry]
     def __init__(self) -> None:
         """Initialize CouplingElementSwitchDetails."""
         super().__init__()

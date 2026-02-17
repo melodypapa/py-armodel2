@@ -18,6 +18,7 @@ class TDEventVfb(TimingDescriptionEvent):
     """AUTOSAR TDEventVfb."""
     """Abstract base class - do not instantiate directly."""
 
+    component: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventVfb."""
         super().__init__()

@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpAcfConnection(IEEE1722TpConnection):
     """AUTOSAR IEEE1722TpAcfConnection."""
 
+    acf_transporteds: list[IEEE1722TpAcfBus]
+    collection: Optional[TimeValue]
+    mixed_bus_type: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfConnection."""
         super().__init__()

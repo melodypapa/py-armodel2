@@ -21,6 +21,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SegmentPosition(ARObject):
     """AUTOSAR SegmentPosition."""
 
+    segment_byte: Optional[ByteOrderEnum]
+    segment_length: Optional[Integer]
+    segment: Optional[Integer]
     def __init__(self) -> None:
         """Initialize SegmentPosition."""
         super().__init__()

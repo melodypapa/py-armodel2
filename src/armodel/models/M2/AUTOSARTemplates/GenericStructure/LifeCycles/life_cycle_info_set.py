@@ -30,6 +30,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 class LifeCycleInfoSet(ARElement):
     """AUTOSAR LifeCycleInfoSet."""
 
+    default_lc_state: LifeCycleState
+    default_period: Optional[LifeCyclePeriod]
+    life_cycle_infos: list[LifeCycleInfo]
+    used_life_cycle: LifeCycleStateDefinitionGroup
     def __init__(self) -> None:
         """Initialize LifeCycleInfoSet."""
         super().__init__()

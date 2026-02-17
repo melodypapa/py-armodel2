@@ -40,6 +40,13 @@ class ExecutionTime(Identifiable):
     """AUTOSAR ExecutionTime."""
     """Abstract base class - do not instantiate directly."""
 
+    exclusive_area: Optional[ExclusiveArea]
+    executable_entity: Optional[ExecutableEntity]
+    hardware: Optional[HardwareConfiguration]
+    hw_element: Optional[HwElement]
+    included_libraries: list[DependencyOnArtifact]
+    memory_section_locations: list[MemorySectionLocation]
+    software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize ExecutionTime."""
         super().__init__()

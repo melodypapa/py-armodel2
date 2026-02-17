@@ -304,7 +304,7 @@ def generate_class_code(
     # Generate class code
     if class_name == "ARObject":
         future_import = "from __future__ import annotations\n"
-        type_checking_import = "from typing import TYPE_CHECKING, Optional, Union, get_type_hints\n"
+        type_checking_import = "from typing import TYPE_CHECKING, Optional, Union, get_type_hints, get_args, get_origin\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         # Import NameConverter for reflection-based serialization
         name_converter_import = "from armodel.serialization.name_converter import NameConverter\n"
@@ -524,6 +524,21 @@ class {class_name}:
     # Track types that need TYPE_CHECKING imports due to circular dependencies
     circular_import_types = set()
 
+    # Add class-level type annotations for get_type_hints() to work
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+
+            # Determine Python type
+            python_type = get_python_type(attr_type, multiplicity, package_data)
+
+            # Get Python identifier
+            python_name, _ = get_python_identifier(attr_name)
+
+            # Add class-level annotation
+            code += f"    {python_name}: {python_type}\n"
+
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""
 '''
@@ -684,7 +699,34 @@ class {class_name}:
         try:
             type_hints = get_type_hints(cls)
         except Exception:
+            # Fallback: Use __annotations__ directly if get_type_hints fails
+            # This can happen due to circular imports or missing types
+            # Note: Annotations will be strings due to 'from __future__ import annotations'
             type_hints = {}
+            # Collect annotations from entire MRO
+            for base_cls in cls.__mro__:
+                if hasattr(base_cls, '__annotations__'):
+                    for attr_name, attr_type_str in base_cls.__annotations__.items():
+                        if attr_name not in type_hints:
+                            # Keep as string - _extract_value will handle it
+                            type_hints[attr_name] = attr_type_str
+
+        # Helper function to strip namespace from tag
+        def strip_namespace(tag: str) -> str:
+            """Strip namespace from XML tag.
+
+            Args:
+                tag: XML tag with optional namespace
+
+            Returns:
+                Tag without namespace
+            """
+            if '}' in tag:
+                return tag.split('}')[1]
+            return tag
+
+        # Strip namespace from element tag for matching
+        element_tag_stripped = strip_namespace(element.tag)
 
         # Process each attribute from type hints
         for attr_name, attr_type in type_hints.items():
@@ -695,8 +737,15 @@ class {class_name}:
             if ARObject._is_xml_attribute_static(cls, attr_name):
                 value = element.get(xml_tag)
             else:
-                # Find child element
+                # Find child element - try both with and without namespace
                 child = element.find(xml_tag)
+                if child is None:
+                    # Try to find by matching stripped tag names
+                    for elem in element:
+                        if strip_namespace(elem.tag) == xml_tag:
+                            child = elem
+                            break
+
                 if child is not None:
                     # Get value based on type
                     value = ARObject._extract_value(child, attr_type)
@@ -735,7 +784,7 @@ class {class_name}:
 
         Args:
             element: XML element
-            attr_type: Expected type (from type hints)
+            attr_type: Expected type (from type hints) - can be type object or string
 
         Returns:
             Extracted value
@@ -743,16 +792,101 @@ class {class_name}:
         if element is None:
             return None
 
-        # Get text content
-        text = element.text
+        # Handle string type annotations (from __annotations__ with future import)
+        if isinstance(attr_type, str):
+            # Parse string type annotations like "list[ARPackage]" or "Optional[SomeType]"
+            import re
 
-        # Handle None
+            # Extract list type
+            list_match = re.match(r'list\[(.+?)\]', attr_type)
+            if list_match:
+                inner_type_str = list_match.group(1)
+                # Find all direct child elements
+                children = list(element)
+
+                # Try to import the class
+                result = []
+                for child in children:
+                    # Try to deserialize using the class
+                    try:
+                        # Import the class dynamically
+                        # For now, just get the text content as fallback
+                        result.append(child.text if child.text else None)
+                    except Exception:
+                        result.append(child.text if child.text else None)
+
+                return result
+
+            # Handle optional types
+            optional_match = re.match(r'Optional\[(.+?)\]', attr_type)
+            if optional_match:
+                inner_type_str = optional_match.group(1)
+                # For now, just return text content
+                return element.text if element.text else None
+
+            # For simple string types, just return text
+            return element.text if element.text else None
+
+        # Check if it's a list type
+        if get_origin(attr_type) is list:
+            # Get the element type
+            type_args = get_args(attr_type)
+            if type_args:
+                item_type = type_args[0]
+
+                # Find all direct child elements (not grandchildren)
+                children = list(element)
+
+                # Deserialize each child element
+                result = []
+                for child in children:
+                    # For object types, deserialize recursively
+                    if hasattr(item_type, 'deserialize'):
+                        item = item_type.deserialize(child)
+                        result.append(item)
+                    else:
+                        # For primitives, get text content
+                        result.append(child.text if child.text else None)
+
+                return result
+
+        # Check if it's an Optional type
+        if get_origin(attr_type) is Union:
+            type_args = get_args(attr_type)
+            # Get the first non-None type
+            for arg in type_args:
+                if arg is not type(None):
+                    attr_type = arg
+                    break
+
+        # For object types with deserialize method, recursively deserialize
+        # Check if attr_type is a class (not a primitive type like str, int, etc.)
+        if isinstance(attr_type, type) and hasattr(attr_type, 'deserialize'):
+            return attr_type.deserialize(element)
+
+        # For primitive types, return text content
+        text = element.text
         if text is None:
             return None
 
-        # For now, return as string
-        # Type conversion will be added later
-        return text
+        # Simple type conversions for primitives
+        if attr_type == str:
+            return text
+        elif attr_type == int:
+            try:
+                return int(text)
+            except ValueError:
+                return text
+        elif attr_type == float:
+            try:
+                return float(text)
+            except ValueError:
+                return text
+        elif attr_type == bool:
+            return text.lower() in ('true', '1', 'yes')
+        else:
+            # Default to string
+            return text
 '''
     else:
         # Other classes inherit serialize/deserialize from ARObject

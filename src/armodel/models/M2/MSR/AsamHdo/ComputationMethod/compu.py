@@ -21,6 +21,8 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import (
 class Compu(ARObject):
     """AUTOSAR Compu."""
 
+    compu_content: Optional[CompuContent]
+    compu_default: Optional[CompuConst]
     def __init__(self) -> None:
         """Initialize Compu."""
         super().__init__()

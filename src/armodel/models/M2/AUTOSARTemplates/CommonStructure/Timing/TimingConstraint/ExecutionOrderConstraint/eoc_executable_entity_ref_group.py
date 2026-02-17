@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
     """AUTOSAR EOCExecutableEntityRefGroup."""
 
+    let_data_exchange: Optional[LetDataExchangeParadigmEnum]
+    let_intervals: list[TimingDescriptionEvent]
+    max_cycle: Optional[PositiveInteger]
+    max_cycles: Optional[Integer]
+    max_slots: Optional[Integer]
+    max_slots_per: Optional[PositiveInteger]
+    nested_elements: list[Any]
+    successors: list[Any]
+    triggering_event: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefGroup."""
         super().__init__()

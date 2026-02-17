@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 class ChapterOrMsrQuery(ARObject):
     """AUTOSAR ChapterOrMsrQuery."""
 
+    chapter: Chapter
+    msr_query_chapter: MsrQueryChapter
     def __init__(self) -> None:
         """Initialize ChapterOrMsrQuery."""
         super().__init__()

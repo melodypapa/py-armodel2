@@ -28,6 +28,10 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangua
 class AliasNameAssignment(ARObject):
     """AUTOSAR AliasNameAssignment."""
 
+    flat_instance: Optional[FlatInstanceDescriptor]
+    identifiable: Optional[Identifiable]
+    label: Optional[MultilanguageLongName]
+    short_label: Optional[String]
     def __init__(self) -> None:
         """Initialize AliasNameAssignment."""
         super().__init__()

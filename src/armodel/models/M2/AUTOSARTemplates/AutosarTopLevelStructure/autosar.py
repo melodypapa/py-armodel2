@@ -40,6 +40,10 @@ from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.file_info_comme
 class AUTOSAR(ARObject):
     """AUTOSAR AUTOSAR."""
 
+    admin_data: Optional[AdminData]
+    ar_packages: list[ARPackage]
+    file_info: Optional[FileInfoComment]
+    introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize AUTOSAR."""
         super().__init__()

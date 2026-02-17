@@ -26,6 +26,11 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRoutine(DiagnosticCommonElement):
     """AUTOSAR DiagnosticRoutine."""
 
+    id: Optional[PositiveInteger]
+    request_result: Optional[Any]
+    routine_info: Optional[PositiveInteger]
+    start: Optional[DiagnosticStartRoutine]
+    stop: Optional[DiagnosticStopRoutine]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutine."""
         super().__init__()

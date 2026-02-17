@@ -24,6 +24,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class Code(Identifiable):
     """AUTOSAR Code."""
 
+    artifacts: list[AutosarEngineeringObject]
+    callback_headers: list[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize Code."""
         super().__init__()

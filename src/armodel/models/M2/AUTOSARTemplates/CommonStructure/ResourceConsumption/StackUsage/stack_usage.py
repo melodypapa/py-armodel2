@@ -31,6 +31,10 @@ class StackUsage(Identifiable):
     """AUTOSAR StackUsage."""
     """Abstract base class - do not instantiate directly."""
 
+    executable_entity: Optional[ExecutableEntity]
+    hardware: Optional[HardwareConfiguration]
+    hw_element: Optional[HwElement]
+    software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize StackUsage."""
         super().__init__()

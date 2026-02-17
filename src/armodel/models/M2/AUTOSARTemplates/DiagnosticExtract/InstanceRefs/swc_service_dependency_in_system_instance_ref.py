@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_proto
 class SwcServiceDependencyInSystemInstanceRef(ARObject):
     """AUTOSAR SwcServiceDependencyInSystemInstanceRef."""
 
+    context_root_sw: Optional[RootSwCompositionPrototype]
+    context_sw_prototypes: list[Any]
+    target_swc: Optional[Any]
     def __init__(self) -> None:
         """Initialize SwcServiceDependencyInSystemInstanceRef."""
         super().__init__()

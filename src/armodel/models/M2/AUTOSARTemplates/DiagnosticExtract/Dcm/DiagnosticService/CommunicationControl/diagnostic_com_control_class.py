@@ -23,6 +23,10 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticComControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticComControlClass."""
 
+    all_channelses: list[CommunicationCluster]
+    all_physicals: list[Any]
+    specific_channels: list[DiagnosticComControl]
+    sub_nodes: list[DiagnosticComControl]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()

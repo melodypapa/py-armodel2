@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeDrivenTransmissionModeCondition(ARObject):
     """AUTOSAR ModeDrivenTransmissionModeCondition."""
 
+    modes: list[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeDrivenTransmissionModeCondition."""
         super().__init__()

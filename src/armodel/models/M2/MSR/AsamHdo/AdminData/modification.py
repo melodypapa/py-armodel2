@@ -18,6 +18,8 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class Modification(ARObject):
     """AUTOSAR Modification."""
 
+    change: MultiLanguageOverviewParagraph
+    reason: Optional[MultiLanguageOverviewParagraph]
     def __init__(self) -> None:
         """Initialize Modification."""
         super().__init__()

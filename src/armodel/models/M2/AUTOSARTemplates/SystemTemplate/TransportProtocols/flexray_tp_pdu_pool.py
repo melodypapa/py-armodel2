@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FlexrayTpPduPool(Identifiable):
     """AUTOSAR FlexrayTpPduPool."""
 
+    n_pdus: list[NPdu]
     def __init__(self) -> None:
         """Initialize FlexrayTpPduPool."""
         super().__init__()

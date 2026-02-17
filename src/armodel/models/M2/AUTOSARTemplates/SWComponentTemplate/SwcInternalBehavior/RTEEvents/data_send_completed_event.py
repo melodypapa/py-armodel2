@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class DataSendCompletedEvent(RTEEvent):
     """AUTOSAR DataSendCompletedEvent."""
 
+    event_source: Optional[VariableAccess]
     def __init__(self) -> None:
         """Initialize DataSendCompletedEvent."""
         super().__init__()

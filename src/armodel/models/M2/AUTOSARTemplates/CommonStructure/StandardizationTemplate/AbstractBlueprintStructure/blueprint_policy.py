@@ -19,6 +19,7 @@ class BlueprintPolicy(ARObject):
     """AUTOSAR BlueprintPolicy."""
     """Abstract base class - do not instantiate directly."""
 
+    attribute_name: String
     def __init__(self) -> None:
         """Initialize BlueprintPolicy."""
         super().__init__()

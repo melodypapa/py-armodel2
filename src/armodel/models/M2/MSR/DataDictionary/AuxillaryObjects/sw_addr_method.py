@@ -27,6 +27,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwAddrMethod(ARElement):
     """AUTOSAR SwAddrMethod."""
 
+    memory: Optional[MemoryAllocationKeywordPolicyType]
+    options: list[Identifier]
+    section: Optional[SectionInitializationPolicyType]
+    section_type: Optional[MemorySectionType]
     def __init__(self) -> None:
         """Initialize SwAddrMethod."""
         super().__init__()

@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticParameterIdent(IdentCaption):
     """AUTOSAR DiagnosticParameterIdent."""
 
+    sub_elements: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterIdent."""
         super().__init__()

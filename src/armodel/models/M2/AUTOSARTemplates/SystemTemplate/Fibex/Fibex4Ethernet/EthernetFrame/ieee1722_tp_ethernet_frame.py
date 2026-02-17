@@ -21,6 +21,10 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ieee1722TpEthernetFrame(AbstractEthernetFrame):
     """AUTOSAR Ieee1722TpEthernetFrame."""
 
+    relative: Optional[TimeValue]
+    stream_identifier: Optional[PositiveInteger]
+    sub_type: Optional[PositiveInteger]
+    version: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize Ieee1722TpEthernetFrame."""
         super().__init__()

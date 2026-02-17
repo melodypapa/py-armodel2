@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptSupportData(ARObject):
     """AUTOSAR RptSupportData."""
 
+    executions: list[RptExecutionContext]
+    rpt_components: list[RptComponent]
+    rpt_service_points: list[RptServicePoint]
     def __init__(self) -> None:
         """Initialize RptSupportData."""
         super().__init__()

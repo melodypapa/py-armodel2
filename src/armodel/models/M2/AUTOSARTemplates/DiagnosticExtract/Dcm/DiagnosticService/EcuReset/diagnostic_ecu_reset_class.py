@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticEcuResetClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticEcuResetClass."""
 
+    respond_to: Optional[DiagnosticResponseToEcuResetEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuResetClass."""
         super().__init__()

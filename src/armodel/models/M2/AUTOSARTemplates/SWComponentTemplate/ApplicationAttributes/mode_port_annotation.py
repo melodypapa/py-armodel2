@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModePortAnnotation(GeneralAnnotation):
     """AUTOSAR ModePortAnnotation."""
 
+    mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModePortAnnotation."""
         super().__init__()

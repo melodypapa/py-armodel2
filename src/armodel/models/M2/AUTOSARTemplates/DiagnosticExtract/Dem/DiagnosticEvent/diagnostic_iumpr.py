@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticIumpr(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIumpr."""
 
+    event: Optional[DiagnosticEvent]
+    ratio_kind: Optional[DiagnosticIumprKindEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticIumpr."""
         super().__init__()

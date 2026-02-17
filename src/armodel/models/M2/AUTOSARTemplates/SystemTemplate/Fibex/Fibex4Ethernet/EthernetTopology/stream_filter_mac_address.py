@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class StreamFilterMACAddress(ARObject):
     """AUTOSAR StreamFilterMACAddress."""
 
+    mac_address_string: Optional[MacAddressString]
     def __init__(self) -> None:
         """Initialize StreamFilterMACAddress."""
         super().__init__()

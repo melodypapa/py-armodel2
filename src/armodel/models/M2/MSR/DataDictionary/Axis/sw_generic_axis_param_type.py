@@ -20,6 +20,7 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr imp
 class SwGenericAxisParamType(Identifiable):
     """AUTOSAR SwGenericAxisParamType."""
 
+    data_constr: Optional[DataConstr]
     def __init__(self) -> None:
         """Initialize SwGenericAxisParamType."""
         super().__init__()

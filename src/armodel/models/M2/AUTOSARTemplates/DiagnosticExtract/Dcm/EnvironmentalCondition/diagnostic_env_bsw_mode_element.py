@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class DiagnosticEnvBswModeElement(DiagnosticEnvModeElement):
     """AUTOSAR DiagnosticEnvBswModeElement."""
 
+    mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvBswModeElement."""
         super().__init__()

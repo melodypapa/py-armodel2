@@ -18,6 +18,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class StreamFilterPortRange(ARObject):
     """AUTOSAR StreamFilterPortRange."""
 
+    max: Optional[PositiveInteger]
+    min: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize StreamFilterPortRange."""
         super().__init__()

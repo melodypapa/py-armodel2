@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientServerInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR ClientServerInterfaceMapping."""
 
+    error_mappings: list[ClientServerApplicationErrorMapping]
+    operations: list[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceMapping."""
         super().__init__()

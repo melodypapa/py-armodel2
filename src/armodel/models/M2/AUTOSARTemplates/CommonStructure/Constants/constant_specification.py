@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
 class ConstantSpecification(ARElement):
     """AUTOSAR ConstantSpecification."""
 
+    value_spec: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecification."""
         super().__init__()

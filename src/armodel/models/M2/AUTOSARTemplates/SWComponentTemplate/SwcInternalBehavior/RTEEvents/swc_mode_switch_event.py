@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
 class SwcModeSwitchEvent(RTEEvent):
     """AUTOSAR SwcModeSwitchEvent."""
 
+    activation: Optional[ModeActivationKind]
     def __init__(self) -> None:
         """Initialize SwcModeSwitchEvent."""
         super().__init__()

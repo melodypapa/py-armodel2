@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingFunctionalCluster."""
 
+    affected: String
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingFunctionalCluster."""
         super().__init__()

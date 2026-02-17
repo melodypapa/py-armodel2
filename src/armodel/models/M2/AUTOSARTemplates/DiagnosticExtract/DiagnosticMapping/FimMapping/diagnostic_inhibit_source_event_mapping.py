@@ -23,6 +23,9 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim.diagnostic_fim_eve
 class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticInhibitSourceEventMapping."""
 
+    diagnostic_event: Optional[DiagnosticEvent]
+    event_group_group: Optional[DiagnosticFimEventGroup]
+    inhibition_source: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticInhibitSourceEventMapping."""
         super().__init__()

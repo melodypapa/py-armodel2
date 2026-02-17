@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class PrimitiveAttributeCondition(AttributeCondition):
     """AUTOSAR PrimitiveAttributeCondition."""
 
+    attribute: Any
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()

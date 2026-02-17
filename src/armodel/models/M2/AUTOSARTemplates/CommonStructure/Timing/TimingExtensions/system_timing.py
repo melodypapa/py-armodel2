@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class SystemTiming(TimingExtension):
     """AUTOSAR SystemTiming."""
 
+    system: Optional[System]
     def __init__(self) -> None:
         """Initialize SystemTiming."""
         super().__init__()

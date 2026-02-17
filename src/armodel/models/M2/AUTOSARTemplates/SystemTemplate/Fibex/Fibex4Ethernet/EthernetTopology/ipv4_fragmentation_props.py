@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4FragmentationProps(ARObject):
     """AUTOSAR Ipv4FragmentationProps."""
 
+    tcp_ip_ip: Optional[Boolean]
+    tcp_ip_ip_num: Optional[PositiveInteger]
+    tcp_ip_ip_reass: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize Ipv4FragmentationProps."""
         super().__init__()

@@ -32,6 +32,13 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Collection(ARElement):
     """AUTOSAR Collection."""
 
+    auto_collect_enum: Optional[AutoCollectEnum]
+    collecteds: list[AtpFeature]
+    collection: Optional[NameToken]
+    elements: list[Identifiable]
+    element_role: Optional[Identifier]
+    source_elements: list[Identifiable]
+    source_instances: list[AtpFeature]
     def __init__(self) -> None:
         """Initialize Collection."""
         super().__init__()

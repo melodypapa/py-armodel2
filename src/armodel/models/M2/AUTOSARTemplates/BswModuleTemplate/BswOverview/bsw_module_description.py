@@ -52,6 +52,20 @@ if TYPE_CHECKING:
 class BswModuleDescription(ARElement):
     """AUTOSAR BswModuleDescription."""
 
+    bsw_modules: list[BswModuleDependency]
+    bsw_module_documentation: Optional[SwComponentDocumentation]
+    expected_entries: list[BswModuleEntry]
+    implementeds: list[BswModuleEntry]
+    internal_behaviors: list[BswInternalBehavior]
+    module_id: Optional[PositiveInteger]
+    provided_clients: list[BswModuleClientServerEntry]
+    provided_datas: list[VariableDataPrototype]
+    provided_modes: list[ModeDeclarationGroup]
+    released_triggers: list[Trigger]
+    required_clients: list[BswModuleClientServerEntry]
+    required_datas: list[VariableDataPrototype]
+    required_modes: list[ModeDeclarationGroup]
+    required_triggers: list[Trigger]
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""
         super().__init__()

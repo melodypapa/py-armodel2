@@ -19,6 +19,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GlobalTimeCorrectionProps(ARObject):
     """AUTOSAR GlobalTimeCorrectionProps."""
 
+    offset_correction: Optional[TimeValue]
+    rate_correction: Optional[TimeValue]
+    rate_corrections: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize GlobalTimeCorrectionProps."""
         super().__init__()

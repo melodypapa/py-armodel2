@@ -24,6 +24,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DataTransformation(Identifiable):
     """AUTOSAR DataTransformation."""
 
+    data: Optional[DataTransformationKindEnum]
+    execute_despite: Optional[Boolean]
+    transformers: list[Any]
     def __init__(self) -> None:
         """Initialize DataTransformation."""
         super().__init__()

@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibr
 class InterpolationRoutineMappingSet(ARElement):
     """AUTOSAR InterpolationRoutineMappingSet."""
 
+    interpolation_routines: list[InterpolationRoutine]
     def __init__(self) -> None:
         """Initialize InterpolationRoutineMappingSet."""
         super().__init__()

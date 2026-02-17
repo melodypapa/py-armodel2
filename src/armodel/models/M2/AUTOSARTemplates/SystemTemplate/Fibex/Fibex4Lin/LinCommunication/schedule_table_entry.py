@@ -23,6 +23,9 @@ class ScheduleTableEntry(ARObject):
     """AUTOSAR ScheduleTableEntry."""
     """Abstract base class - do not instantiate directly."""
 
+    delay: Optional[TimeValue]
+    introduction: Optional[DocumentationBlock]
+    position_in_table: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ScheduleTableEntry."""
         super().__init__()

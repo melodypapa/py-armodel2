@@ -22,6 +22,8 @@ if TYPE_CHECKING:
 class AutosarParameterRef(ARObject):
     """AUTOSAR AutosarParameterRef."""
 
+    autosar: Optional[DataPrototype]
+    local_parameter: Optional[DataPrototype]
     def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()

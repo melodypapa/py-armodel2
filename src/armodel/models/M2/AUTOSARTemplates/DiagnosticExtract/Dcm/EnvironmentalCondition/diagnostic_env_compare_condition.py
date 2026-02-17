@@ -21,6 +21,7 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart):
     """AUTOSAR DiagnosticEnvCompareCondition."""
     """Abstract base class - do not instantiate directly."""
 
+    compare_type: Optional[DiagnosticCompareTypeEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvCompareCondition."""
         super().__init__()

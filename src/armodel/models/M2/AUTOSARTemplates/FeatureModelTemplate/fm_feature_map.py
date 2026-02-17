@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 class FMFeatureMap(ARElement):
     """AUTOSAR FMFeatureMap."""
 
+    mappings: list[FMFeatureMapElement]
     def __init__(self) -> None:
         """Initialize FMFeatureMap."""
         super().__init__()

@@ -23,6 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class PTriggerInAtomicSwcTypeInstanceRef(TriggerInAtomicSwcInstanceRef):
     """AUTOSAR PTriggerInAtomicSwcTypeInstanceRef."""
 
+    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
+    target_trigger: Optional[Trigger]
     def __init__(self) -> None:
         """Initialize PTriggerInAtomicSwcTypeInstanceRef."""
         super().__init__()

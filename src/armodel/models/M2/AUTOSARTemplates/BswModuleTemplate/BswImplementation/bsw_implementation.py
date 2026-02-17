@@ -31,6 +31,12 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def
 class BswImplementation(Implementation):
     """AUTOSAR BswImplementation."""
 
+    ar_release: Optional[RevisionLabelString]
+    behavior: Optional[BswInternalBehavior]
+    preconfigureds: list[Any]
+    recommendeds: list[Any]
+    vendor_api_infix: Optional[Identifier]
+    vendor_specifics: list[EcucModuleDef]
     def __init__(self) -> None:
         """Initialize BswImplementation."""
         super().__init__()

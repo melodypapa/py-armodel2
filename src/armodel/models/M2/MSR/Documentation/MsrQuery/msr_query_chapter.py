@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 class MsrQueryChapter(Paginateable):
     """AUTOSAR MsrQueryChapter."""
 
+    msr_query_props: MsrQueryProps
+    msr_query_result_chapter: Optional[MsrQueryResultChapter]
     def __init__(self) -> None:
         """Initialize MsrQueryChapter."""
         super().__init__()

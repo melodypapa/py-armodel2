@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ValueList(ARObject):
     """AUTOSAR ValueList."""
 
+    v: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize ValueList."""
         super().__init__()

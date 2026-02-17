@@ -34,6 +34,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DltLogChannel(Identifiable):
     """AUTOSAR DltLogChannel."""
 
+    applications: list[DltContext]
+    default_trace: Optional[DltDefaultTraceStateEnum]
+    dlt_messages: list[DltMessage]
+    log_channel_id: Optional[String]
+    log_trace_default_log: Optional[LogTraceDefaultLogLevelEnum]
+    non_verbose: Optional[Boolean]
+    rx_pdu_triggering_channel: Optional[PduTriggering]
+    segmentation: Optional[Boolean]
+    tx_pdu_triggering: Optional[PduTriggering]
     def __init__(self) -> None:
         """Initialize DltLogChannel."""
         super().__init__()

@@ -29,6 +29,17 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticCommonProps(ARObject):
     """AUTOSAR DiagnosticCommonProps."""
 
+    authentication: Optional[TimeValue]
+    debounces: list[Any]
+    default: Optional[ByteOrderEnum]
+    event: Optional[DiagnosticEvent]
+    max_number_of: Optional[PositiveInteger]
+    occurrence: Optional[DiagnosticOccurrenceCounterProcessingEnum]
+    reset_confirmed: Optional[Boolean]
+    reset_pending_bit: Optional[Boolean]
+    response_on_all: Optional[Boolean]
+    response_on: Optional[Boolean]
+    type_of_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:
         """Initialize DiagnosticCommonProps."""
         super().__init__()
