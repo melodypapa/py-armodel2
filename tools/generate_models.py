@@ -779,6 +779,67 @@ class {class_name}:
         return False
 
     @staticmethod
+    def _import_class_by_name(class_name: str):
+        """Import a class by name from armodel.models.M2.
+
+        Args:
+            class_name: Name of the class to import (e.g., "ARPackage")
+
+        Returns:
+            The imported class, or None if not found
+        """
+        import sys
+        import importlib
+
+        # Check if already in sys.modules
+        for module_name, module in sys.modules.items():
+            if module_name.startswith('armodel.models.M2'):
+                if hasattr(module, class_name):
+                    cls = getattr(module, class_name)
+                    if isinstance(cls, type):
+                        return cls
+
+        # Try to import from known locations
+        # Convert class name to snake_case for filename
+        class_filename = class_name.replace('<', '_').replace('>', '_')
+
+        # Common package paths to search
+        search_paths = [
+            f'armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.{class_name}.{class_filename}',
+            f'armodel.models.M2.AUTOSARTemplates.{class_name}.{class_filename}',
+            f'armodel.models.M2.MSR.{class_name}.{class_filename}',
+        ]
+
+        for module_path in search_paths:
+            try:
+                module = importlib.import_module(module_path)
+                if hasattr(module, class_name):
+                    return getattr(module, class_name)
+            except (ImportError, ModuleError):
+                continue
+
+        # Fallback: try searching through all M2 modules
+        try:
+            from armodel.models.M2 import AUTOSARTemplates, MSR
+
+            # Search in AUTOSARTemplates
+            if hasattr(AUTOSARTemplates, '__path__'):
+                from pkgutil import walk_packages
+                for importer, modname, ispkg in walk_packages(AUTOSARTemplates.__path__, AUTOSARTemplates.__name__ + '.'):
+                    try:
+                        module = importlib.import_module(modname)
+                        if hasattr(module, class_name):
+                            cls = getattr(module, class_name)
+                            if isinstance(cls, type):
+                                return cls
+                    except (ImportError, ModuleError):
+                        continue
+        except Exception:
+            pass
+
+        return None
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
         """Extract value from XML element based on type.
 
@@ -804,15 +865,16 @@ class {class_name}:
                 # Find all direct child elements
                 children = list(element)
 
-                # Try to import the class
+                # Try to import the class and deserialize
                 result = []
                 for child in children:
                     # Try to deserialize using the class
-                    try:
-                        # Import the class dynamically
-                        # For now, just get the text content as fallback
-                        result.append(child.text if child.text else None)
-                    except Exception:
+                    item_class = ARObject._import_class_by_name(inner_type_str)
+                    if item_class and hasattr(item_class, 'deserialize'):
+                        item = item_class.deserialize(child)
+                        result.append(item)
+                    else:
+                        # Fallback to text content
                         result.append(child.text if child.text else None)
 
                 return result
@@ -821,8 +883,18 @@ class {class_name}:
             optional_match = re.match(r'Optional\[(.+?)\]', attr_type)
             if optional_match:
                 inner_type_str = optional_match.group(1)
-                # For now, just return text content
+                # Try to import and deserialize
+                item_class = ARObject._import_class_by_name(inner_type_str)
+                if item_class and hasattr(item_class, 'deserialize'):
+                    return item_class.deserialize(element)
+
+                # Fallback to text content
                 return element.text if element.text else None
+
+            # For simple class names, try to import and deserialize
+            item_class = ARObject._import_class_by_name(attr_type)
+            if item_class and hasattr(item_class, 'deserialize'):
+                return item_class.deserialize(element)
 
             # For simple string types, just return text
             return element.text if element.text else None

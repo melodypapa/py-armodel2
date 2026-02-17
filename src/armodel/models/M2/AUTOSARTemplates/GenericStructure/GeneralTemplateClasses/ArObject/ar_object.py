@@ -148,13 +148,15 @@ class ARObject:
         except Exception:
             # Fallback: Use __annotations__ directly if get_type_hints fails
             # This can happen due to circular imports or missing types
+            # Note: Annotations will be strings due to 'from __future__ import annotations'
             type_hints = {}
             # Collect annotations from entire MRO
             for base_cls in cls.__mro__:
                 if hasattr(base_cls, '__annotations__'):
-                    for attr_name, attr_type in base_cls.__annotations__.items():
+                    for attr_name, attr_type_str in base_cls.__annotations__.items():
                         if attr_name not in type_hints:
-                            type_hints[attr_name] = attr_type
+                            # Keep as string - _extract_value will handle it
+                            type_hints[attr_name] = attr_type_str
 
         # Helper function to strip namespace from tag
         def strip_namespace(tag: str) -> str:
@@ -224,18 +226,125 @@ class ARObject:
         return False
 
     @staticmethod
+    def _import_class_by_name(class_name: str):
+        """Import a class by name from armodel.models.M2.
+
+        Args:
+            class_name: Name of the class to import (e.g., "ARPackage")
+
+        Returns:
+            The imported class, or None if not found
+        """
+        import sys
+        import importlib
+
+        # Check if already in sys.modules
+        for module_name, module in sys.modules.items():
+            if module_name.startswith('armodel.models.M2'):
+                if hasattr(module, class_name):
+                    cls = getattr(module, class_name)
+                    if isinstance(cls, type):
+                        return cls
+
+        # Try to import from known locations
+        # Convert class name to snake_case for filename
+        class_filename = class_name.replace('<', '_').replace('>', '_')
+
+        # Common package paths to search
+        search_paths = [
+            f'armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.{class_name}.{class_filename}',
+            f'armodel.models.M2.AUTOSARTemplates.{class_name}.{class_filename}',
+            f'armodel.models.M2.MSR.{class_name}.{class_filename}',
+        ]
+
+        for module_path in search_paths:
+            try:
+                module = importlib.import_module(module_path)
+                if hasattr(module, class_name):
+                    return getattr(module, class_name)
+            except (ImportError, ModuleError):
+                continue
+
+        # Fallback: try searching through all M2 modules
+        try:
+            from armodel.models.M2 import AUTOSARTemplates, MSR
+
+            # Search in AUTOSARTemplates
+            if hasattr(AUTOSARTemplates, '__path__'):
+                from pkgutil import walk_packages
+                for importer, modname, ispkg in walk_packages(AUTOSARTemplates.__path__, AUTOSARTemplates.__name__ + '.'):
+                    try:
+                        module = importlib.import_module(modname)
+                        if hasattr(module, class_name):
+                            cls = getattr(module, class_name)
+                            if isinstance(cls, type):
+                                return cls
+                    except (ImportError, ModuleError):
+                        continue
+        except Exception:
+            pass
+
+        return None
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
         """Extract value from XML element based on type.
 
         Args:
             element: XML element
-            attr_type: Expected type (from type hints)
+            attr_type: Expected type (from type hints) - can be type object or string
 
         Returns:
             Extracted value
         """
         if element is None:
             return None
+
+        # Handle string type annotations (from __annotations__ with future import)
+        if isinstance(attr_type, str):
+            # Parse string type annotations like "list[ARPackage]" or "Optional[SomeType]"
+            import re
+
+            # Extract list type
+            list_match = re.match(r'list\[(.+?)\]', attr_type)
+            if list_match:
+                inner_type_str = list_match.group(1)
+                # Find all direct child elements
+                children = list(element)
+
+                # Try to import the class and deserialize
+                result = []
+                for child in children:
+                    # Try to deserialize using the class
+                    item_class = ARObject._import_class_by_name(inner_type_str)
+                    if item_class and hasattr(item_class, 'deserialize'):
+                        item = item_class.deserialize(child)
+                        result.append(item)
+                    else:
+                        # Fallback to text content
+                        result.append(child.text if child.text else None)
+
+                return result
+
+            # Handle optional types
+            optional_match = re.match(r'Optional\[(.+?)\]', attr_type)
+            if optional_match:
+                inner_type_str = optional_match.group(1)
+                # Try to import and deserialize
+                item_class = ARObject._import_class_by_name(inner_type_str)
+                if item_class and hasattr(item_class, 'deserialize'):
+                    return item_class.deserialize(element)
+
+                # Fallback to text content
+                return element.text if element.text else None
+
+            # For simple class names, try to import and deserialize
+            item_class = ARObject._import_class_by_name(attr_type)
+            if item_class and hasattr(item_class, 'deserialize'):
+                return item_class.deserialize(element)
+
+            # For simple string types, just return text
+            return element.text if element.text else None
 
         # Check if it's a list type
         if get_origin(attr_type) is list:
