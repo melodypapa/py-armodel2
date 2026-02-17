@@ -79,29 +79,31 @@ ARObject (root base class)
 
 ## Class Design Patterns
 
-### 1. XMLMember Metadata Pattern
+### 1. Reflection-Based Serialization
 
-Every model class defines its XML mapping using declarative metadata:
+Model classes use type hints and automatic reflection for serialization:
 
 ```python
-_xml_members: dict[str, "XMLMember"] = {
-    "short_name": XMLMember(
-        xml_tag="SHORT-NAME",
-        is_attribute=False,
-        multiplicity="1",
-    ),
-    "category": XMLMember(
-        xml_tag="CATEGORY",
-        is_attribute=True,
-        multiplicity="0..1",
-    ),
-    "items": XMLMember(
-        xml_tag=None,  # Auto-inferred from member name
-        is_attribute=False,
-        multiplicity="*",
-        element_class=SomeClass,
-    ),
-}
+class ARPackage(ARObject):
+    short_name: Optional[str] = None
+    category: Optional[str] = None
+    ar_packages: list[ARPackage] = []
+
+    # No _xml_members dict needed!
+    # Serialization is automatic via ARObject base class
+```
+
+**Special cases use decorators**:
+```python
+@xml_tag("AUTOSAR")
+class AUTOSAR(ARObject):
+    def __init__(self) -> None:
+        self._schema_version: str = "4.5.0"
+
+    @xml_attribute
+    @property
+    def schema_version(self) -> str:
+        return self._schema_version
 ```
 
 ### 2. Multiplicity Mapping
@@ -139,17 +141,17 @@ class MyClassBuilder:
 All classes inherit serialize/deserialize from `ARObject` base class:
 
 ```python
-# Inherited from ARObject - no implementation needed in most classes
-obj.serialize(namespace, element)
-MyClass.deserialize(element)
+# Inherited from ARObject - no implementation needed
+obj.serialize(namespace)  # Returns xml.etree.ElementTree.Element
+MyClass.deserialize(element)  # @classmethod - returns MyClass instance
 ```
 
 The base class automatically:
-- Collects `_xml_members` from entire class hierarchy (MRO)
-- Serializes based on XMLMember descriptors
+- Discovers attributes via `vars(self)` and `get_type_hints()`
+- Converts names using `NameConverter` (snake_case ↔ UPPER-CASE-WITH-HYPHENS)
 - Handles XML attributes vs child elements
-- Manages namespace declarations
-- Converts between Python naming (snake_case) and XML naming (UPPER-CASE)
+- Manages nested objects, lists, and primitives
+- Supports optional fields and circular imports
 
 ## AUTOSARTemplates Packages
 
@@ -279,39 +281,70 @@ All model classes follow `docs/designs/design_rules.md`:
 
 ## Serialization Framework
 
-### Registry Pattern
+### Reflection-Based Architecture
 
-Model classes use a declarative, registry-based serialization framework:
+Model classes use a reflection-based serialization framework that eliminates boilerplate:
 
 **Key Components**:
-- `ARObject.serialize()` - Base method using registry
-- `XMLMember` - Declarative metadata descriptor
-- `SerializationRegistry` - Global singleton
-- `SerializationStrategy` - Pluggable behaviors
+- `ARObject.serialize()` - Base method using `vars()` and `get_type_hints()`
+- `ARObject.deserialize()` - Class method for XML deserialization
+- `NameConverter` - Utility for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
+- `@xml_attribute`, `@xml_tag()` - Decorators for edge cases only
 
-### Metadata Collection
+**No XMLMember, No Registry, No Strategies!**
+
+### Automatic Behavior
 
 The framework automatically:
-- Collects `_xml_members` from entire class hierarchy (MRO)
-- Traverses parent→child order
-- Caches metadata for performance
-- Handles both XMLMember dict and legacy tuple formats
+- Discovers all non-private attributes via `vars(self)`
+- Converts Python names to XML tags using `NameConverter`
+- Uses type hints for deserialization
+- Handles nested objects, lists, and primitives
+- Supports optional fields and circular imports
+
+### Decorator Usage
+
+Use decorators only when XML structure doesn't match default behavior:
+
+```python
+from armodel.serialization.decorators import xml_attribute, xml_tag
+
+@xml_tag("AUTOSAR")  # Custom tag name
+class AUTOSAR(ARObject):
+    def __init__(self) -> None:
+        self._schema_version: str = "4.5.0"
+        self.ar_packages: list[ARPackage] = []
+
+    @xml_attribute  # Serialize as XML attribute
+    @property
+    def schema_version(self) -> str:
+        return self._schema_version
+```
 
 ### Circular Import Handling
 
-For classes with circular dependencies, use string class names:
+For classes with circular dependencies, use `TYPE_CHECKING`:
 
 ```python
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from armodel.models.M2.SomeModule import SomeClass
 
-_xml_members = [
-    ("related", None, False, False, "SomeClass"),  # String, not class
-]
+class MyClass(ARObject):
+    related: Optional[SomeClass] = None  # Type hint works, no runtime import
 ```
+
+The `ARObject.deserialize()` method handles this automatically by falling back to string annotations and dynamic imports.
+
+### Documentation
+
+See `docs/designs/serialization.md` for complete serialization framework documentation including:
+- Decorator usage and examples
+- Name conversion rules
+- Common patterns
+- Troubleshooting guide
 
 ## Known Limitations
 
