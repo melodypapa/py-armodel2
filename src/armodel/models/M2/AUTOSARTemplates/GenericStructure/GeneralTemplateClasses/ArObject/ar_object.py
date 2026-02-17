@@ -35,7 +35,7 @@ class ARObject:
         converts names to XML tags, and serializes them as child elements.
 
         Note: This is a base class for all AUTOSAR elements. Namespace handling
-        should be done by the root AUTOSAR element only, not by child elements.
+        is applied only when the current object type is AUTOSAR (the root element).
 
         Returns:
             xml.etree.ElementTree.Element representing this object
@@ -43,6 +43,12 @@ class ARObject:
         # Get XML tag name for this class
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
+
+        # Add AUTOSAR namespace attributes if this is an AUTOSAR instance (root element only)
+        if self.__class__.__name__ == 'AUTOSAR':
+            elem.set("xmlns", "http://autosar.org/schema/r4.0")
+            elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+            elem.set("xsi:schemaLocation", "http://autosar.org/schema/r4.0 AUTOSAR_4-0-3.xsd")
 
         # Get all instance attributes
         for name, value in vars(self).items():

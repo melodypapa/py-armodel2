@@ -47,32 +47,6 @@ class TestARPackage:
         assert len(pkg.ar_packages) == 1
         assert isinstance(pkg.ar_packages[0], ARPackage)
 
-    @pytest.mark.skip(reason="serialize() method not yet implemented in generated code")
-    def test_ar_package_serialize(self):
-        """Test ARPackage serialization."""
-        pkg = ARPackageBuilder().build()
-        namespace = "http://autosar.org/schema/r4.0"
-        element = pkg.serialize(namespace)
-
-        assert element is not None
-        assert isinstance(element, ET.Element)
-        assert element.tag == f"{{{namespace}}}AR-PACKAGE"
-
-    @pytest.mark.skip(reason="deserialize() method not yet implemented in generated code")
-    def test_ar_package_deserialize(self):
-        """Test ARPackage deserialization."""
-        namespace = "http://autosar.org/schema/r4.0"
-        element = ET.Element(f"{{{namespace}}}AR-PACKAGE")
-
-        short_name = ET.Element(f"{{{namespace}}}SHORT-NAME")
-        short_name.text = "TestPackage"
-        element.append(short_name)
-
-        pkg = ARPackage.deserialize(element)
-
-        assert pkg is not None
-        assert pkg.short_name == "TestPackage"
-
     def test_ar_package_method_resolution_order(self):
         """Test that MRO is correct (SWUT_MODELS_401)."""
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
