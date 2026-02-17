@@ -20,16 +20,6 @@ class TestARXMLReader:
   </AR-PACKAGES>
 </AUTOSAR>'''
 
-    @pytest.mark.skip(reason="deserialize() method not yet implemented in generated code")
-    def test_load_arxml_file(self, tmp_path):
-        """Test loading ARXML file."""
-        test_file = tmp_path / "test.arxml"
-        test_file.write_text(self.test_arxml_content)
-
-        autosar = self.reader.load_arxml(test_file)
-
-        assert autosar is not None
-
     def test_get_schema_version(self, tmp_path):
         """Test getting schema version from ARXML file."""
         test_file = tmp_path / "test.arxml"
