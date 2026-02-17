@@ -1,9 +1,16 @@
 """Integration tests for CLI format command."""
 
+import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 import pytest
+
+
+# Get the src directory dynamically - works in all environments
+# From tests/integration/cli/test_format_command.py -> go to repo root -> src
+_SRC_DIR = Path(__file__).parent.parent.parent.parent / "src"
 
 
 def test_format_command_integration():
@@ -18,12 +25,16 @@ def test_format_command_integration():
         output_path = tmp.name
 
     try:
+        # Prepare environment with PYTHONPATH
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(_SRC_DIR)
+
         # Run CLI command
         result = subprocess.run(
-            ["python3", "-m", "armodel.cli.main", "format", str(fixture_path), "-o", output_path],
+            [sys.executable, "-m", "armodel.cli.main", "format", str(fixture_path), "-o", output_path],
             capture_output=True,
             text=True,
-            env={"PYTHONPATH": "/Users/ray/Workspace/py-armodel2/src"},
+            env=env,
         )
 
         assert result.returncode == 0, f"CLI failed: {result.stderr}"
@@ -43,9 +54,13 @@ def test_format_command_integration():
 
 def test_format_command_nonexistent_file():
     """Test format command with nonexistent input file."""
+    # Prepare environment with PYTHONPATH
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(_SRC_DIR)
+
     result = subprocess.run(
         [
-            "python3",
+            sys.executable,
             "-m",
             "armodel.cli.main",
             "format",
@@ -55,7 +70,7 @@ def test_format_command_nonexistent_file():
         ],
         capture_output=True,
         text=True,
-        env={"PYTHONPATH": "/Users/ray/Workspace/py-armodel2/src"},
+        env=env,
     )
 
     assert result.returncode == 1  # EXIT_FILE_NOT_FOUND
