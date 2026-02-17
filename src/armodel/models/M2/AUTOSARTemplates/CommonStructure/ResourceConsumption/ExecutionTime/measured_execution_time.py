@@ -1,4 +1,9 @@
-"""MeasuredExecutionTime AUTOSAR element."""
+"""MeasuredExecutionTime AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 166)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_ExecutionTime.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

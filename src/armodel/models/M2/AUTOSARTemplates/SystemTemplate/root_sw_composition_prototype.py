@@ -1,4 +1,12 @@
-"""RootSwCompositionPrototype AUTOSAR element."""
+"""RootSwCompositionPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1003)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 186)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 240)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 18)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

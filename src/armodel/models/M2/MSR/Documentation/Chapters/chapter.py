@@ -1,4 +1,10 @@
-"""Chapter AUTOSAR element."""
+"""Chapter AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 698)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 329)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_Chapters.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

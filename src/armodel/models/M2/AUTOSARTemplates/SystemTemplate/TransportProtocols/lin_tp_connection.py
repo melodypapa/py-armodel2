@@ -1,4 +1,9 @@
-"""LinTpConnection AUTOSAR element."""
+"""LinTpConnection AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 615)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

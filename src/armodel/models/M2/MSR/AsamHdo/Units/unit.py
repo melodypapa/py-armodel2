@@ -1,4 +1,12 @@
-"""Unit AUTOSAR element."""
+"""Unit AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 333)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 64)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 400)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 479)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Units.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

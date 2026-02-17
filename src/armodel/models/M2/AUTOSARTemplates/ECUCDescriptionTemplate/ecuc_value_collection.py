@@ -1,4 +1,11 @@
-"""EcucValueCollection AUTOSAR element."""
+"""EcucValueCollection AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 108)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2022)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

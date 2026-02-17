@@ -1,4 +1,9 @@
-"""HwCategory AUTOSAR element."""
+"""HwCategory AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 24)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate_HwElementCategory.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

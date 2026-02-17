@@ -1,4 +1,14 @@
-"""VariationPoint AUTOSAR element."""
+"""VariationPoint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 315)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1010)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2078)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 80)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 226)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 39)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

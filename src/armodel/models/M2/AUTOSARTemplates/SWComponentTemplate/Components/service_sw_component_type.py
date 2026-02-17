@@ -1,4 +1,12 @@
-"""ServiceSwComponentType AUTOSAR element."""
+"""ServiceSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 336)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 306)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 659)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2056)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

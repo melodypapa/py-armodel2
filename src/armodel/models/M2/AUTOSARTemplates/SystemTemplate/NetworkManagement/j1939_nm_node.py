@@ -1,4 +1,10 @@
-"""J1939NmNode AUTOSAR element."""
+"""J1939NmNode AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 322)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 691)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_NetworkManagement.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

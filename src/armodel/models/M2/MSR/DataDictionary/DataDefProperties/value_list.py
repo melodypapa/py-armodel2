@@ -1,4 +1,12 @@
-"""ValueList AUTOSAR element."""
+"""ValueList AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 350)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 314)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 459)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

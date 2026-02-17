@@ -1,4 +1,22 @@
-"""PortPrototype AUTOSAR element."""
+"""PortPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 326)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 326)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 304)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 62)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 66)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2047)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 236)
+  - AUTOSAR_FO_TPS_ARXMLSerializationRules.pdf (page 30)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 48)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 76)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 458)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 33)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 65)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 201)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

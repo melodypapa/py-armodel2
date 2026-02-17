@@ -1,4 +1,9 @@
-"""MsrQueryProps AUTOSAR element."""
+"""MsrQueryProps AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 344)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_MsrQuery.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

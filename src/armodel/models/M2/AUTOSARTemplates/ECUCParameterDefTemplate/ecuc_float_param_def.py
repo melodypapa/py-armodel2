@@ -1,4 +1,10 @@
-"""EcucFloatParamDef AUTOSAR element."""
+"""EcucFloatParamDef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 61)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 186)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

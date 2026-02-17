@@ -1,4 +1,10 @@
-"""RptImplPolicy AUTOSAR element."""
+"""RptImplPolicy AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 202)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 854)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

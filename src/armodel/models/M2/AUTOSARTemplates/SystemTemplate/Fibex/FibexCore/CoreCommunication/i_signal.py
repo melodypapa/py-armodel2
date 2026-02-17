@@ -1,4 +1,12 @@
-"""ISignal AUTOSAR element."""
+"""ISignal AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 315)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 992)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 320)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 227)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

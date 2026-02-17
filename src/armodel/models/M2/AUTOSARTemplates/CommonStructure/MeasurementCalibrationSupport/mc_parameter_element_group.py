@@ -1,4 +1,9 @@
-"""McParameterElementGroup AUTOSAR element."""
+"""McParameterElementGroup AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 181)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

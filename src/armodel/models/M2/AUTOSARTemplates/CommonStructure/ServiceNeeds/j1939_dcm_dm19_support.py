@@ -1,4 +1,9 @@
-"""J1939DcmDm19Support AUTOSAR element."""
+"""J1939DcmDm19Support AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 831)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""SoftwareContext AUTOSAR element."""
+"""SoftwareContext AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 163)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

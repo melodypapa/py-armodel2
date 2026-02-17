@@ -1,4 +1,9 @@
-"""AsynchronousServerCallPoint AUTOSAR element."""
+"""AsynchronousServerCallPoint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 581)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServerCall.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

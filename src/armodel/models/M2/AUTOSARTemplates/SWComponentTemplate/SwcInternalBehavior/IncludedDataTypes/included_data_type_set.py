@@ -1,4 +1,9 @@
-"""IncludedDataTypeSet AUTOSAR element."""
+"""IncludedDataTypeSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 600)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_IncludedDataTypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

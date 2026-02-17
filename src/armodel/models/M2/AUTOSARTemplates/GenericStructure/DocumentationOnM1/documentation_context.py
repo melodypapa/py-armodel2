@@ -1,4 +1,9 @@
-"""DocumentationContext AUTOSAR element."""
+"""DocumentationContext AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 327)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_DocumentationOnM1.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

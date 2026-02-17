@@ -1,4 +1,9 @@
-"""TtcanCommunicationController AUTOSAR element."""
+"""TtcanCommunicationController AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 76)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ttcan_TtcanTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

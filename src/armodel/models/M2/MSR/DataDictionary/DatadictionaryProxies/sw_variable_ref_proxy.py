@@ -1,4 +1,9 @@
-"""SwVariableRefProxy AUTOSAR element."""
+"""SwVariableRefProxy AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 370)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DatadictionaryProxies.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

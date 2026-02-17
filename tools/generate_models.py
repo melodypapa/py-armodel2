@@ -228,6 +228,7 @@ def generate_class_code(
     hierarchy_info: Dict[str, Dict[str, Any]],
     package_data: Dict[str, Dict[str, Any]],
     include_members: bool = False,
+    json_file_path: str = "",
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -236,6 +237,7 @@ def generate_class_code(
         hierarchy_info: Dictionary with parent and abstract information from hierarchy.json
         package_data: Dictionary with package data including class attributes
         include_members: Whether to include member lists from package definitions
+        json_file_path: Path to the JSON file containing the class definition
 
     Returns:
         Generated Python code as string
@@ -261,24 +263,50 @@ def generate_class_code(
         # Prevent ARObject from being its own parent
         parent_class = None
 
+    # Get class information from package_data (includes sources with PDF references)
+    sources = []
+    if include_members and package_path in package_data:
+        for cls in package_data[package_path].get("classes", []):
+            if cls["name"] == class_name:
+                sources = cls.get("sources", [])
+                break
+
+    # Build docstring with PDF references and JSON file path
+    docstring_lines = [f"{class_name} AUTOSAR element."]
+    
+    # Add PDF file references if available
+    if sources:
+        docstring_lines.append("")
+        docstring_lines.append("References:")
+        for source in sources:
+            pdf_file = source.get("pdf_file", "N/A")
+            page_number = source.get("page_number", "N/A")
+            docstring_lines.append(f"  - {pdf_file} (page {page_number})")
+    
+    # Add JSON file path if available
+    if json_file_path:
+        docstring_lines.append("")
+        docstring_lines.append(f"JSON Source: {json_file_path}")
+    
+    docstring = "\n".join(docstring_lines)
+
     # Generate class code
-    # For ARObject, we need TYPE_CHECKING import for XMLMember type hint
+    # For ARObject, we need XMLMember at runtime (not just TYPE_CHECKING) because it's used in class body
     if class_name == "ARObject":
         type_checking_import = "from typing import TYPE_CHECKING, Optional, Union\n"
         base_import = "import xml.etree.ElementTree as ET\n"
-        code = f'''"""{class_name} AUTOSAR element."""
+        # Import XMLMember at runtime since it's used in class body (_xml_members dict)
+        xmlmember_import = "from armodel.serialization.metadata import XMLMember\n"
+        code = f'''"""{docstring}"""
 
-{type_checking_import}{base_import}
-
-if TYPE_CHECKING:
-    from armodel.serialization.metadata import XMLMember
+{type_checking_import}{base_import}{xmlmember_import}
 '''
     else:
         # For other classes, add Optional import and XMLMember
         basic_import = "from typing import Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
         xmlmember_import = "from armodel.serialization import XMLMember\n"
-        code = f'''"""{class_name} AUTOSAR element."""
+        code = f'''"""{docstring}"""
 
 {basic_import}{base_import}{xmlmember_import}
 '''
@@ -889,6 +917,14 @@ def generate_all_models(
         # Create directory structure
         create_directory_structure(types, output_dir, package_data)
 
+        # Create a mapping of class names to their JSON file paths
+        class_json_file_map = {}
+        for package_path, package_info in package_data.items():
+            if "classes" in package_info:
+                json_file_path = str(packages_dir / f"{package_path.replace('::', '_')}.classes.json")
+                for cls in package_info["classes"]:
+                    class_json_file_map[cls["name"]] = json_file_path
+
         # Generate each class
         for type_def in types:
             if type_def.get("type") != "Class":
@@ -897,13 +933,16 @@ def generate_all_models(
             class_name = type_def["name"]
             package_path = type_def.get("package_path", "")
 
+            # Get the JSON file path for this class
+            json_file_path = class_json_file_map.get(class_name, "")
+
             # Convert package path to file path
             dir_path = output_dir / package_path.replace("::", "/")
             filename = dir_path / f"{to_snake_case(class_name)}.py"
 
             # Generate class code
             class_code = generate_class_code(
-                type_def, hierarchy_info, package_data, include_members
+                type_def, hierarchy_info, package_data, include_members, json_file_path
             )
             builder_code = generate_builder_code(type_def)
 

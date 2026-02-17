@@ -1,4 +1,9 @@
-"""ModeAccessPointIdent AUTOSAR element."""
+"""ModeAccessPointIdent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 852)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

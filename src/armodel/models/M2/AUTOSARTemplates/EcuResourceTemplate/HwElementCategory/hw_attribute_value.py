@@ -1,4 +1,9 @@
-"""HwAttributeValue AUTOSAR element."""
+"""HwAttributeValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 16)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate_HwElementCategory.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

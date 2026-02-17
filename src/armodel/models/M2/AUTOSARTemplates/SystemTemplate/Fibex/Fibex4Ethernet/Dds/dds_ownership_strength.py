@@ -1,4 +1,9 @@
-"""DdsOwnershipStrength AUTOSAR element."""
+"""DdsOwnershipStrength AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 533)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_Dds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

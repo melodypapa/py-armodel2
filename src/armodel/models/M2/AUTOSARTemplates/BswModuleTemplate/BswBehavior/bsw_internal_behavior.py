@@ -1,4 +1,13 @@
-"""BswInternalBehavior AUTOSAR element."""
+"""BswInternalBehavior AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 65)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 649)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2003)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 208)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 165)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""ApplicationInterface AUTOSAR element."""
+"""ApplicationInterface AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AbstractPlatform.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

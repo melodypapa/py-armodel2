@@ -1,4 +1,10 @@
-"""CommunicationCluster AUTOSAR element."""
+"""CommunicationCluster AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 107)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 57)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

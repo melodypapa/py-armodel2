@@ -1,4 +1,9 @@
-"""LinConfigurableFrame AUTOSAR element."""
+"""LinConfigurableFrame AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 99)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

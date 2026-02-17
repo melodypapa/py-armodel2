@@ -1,4 +1,22 @@
-"""Referrable AUTOSAR element."""
+"""Referrable AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 305)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 63)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1002)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2049)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 238)
+  - AUTOSAR_FO_TPS_ARXMLSerializationRules.pdf (page 31)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 49)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 78)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 63)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 33)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 66)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 202)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_Identifiable.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

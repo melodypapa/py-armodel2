@@ -1,4 +1,10 @@
-"""EcucAbstractStringParamDef AUTOSAR element."""
+"""EcucAbstractStringParamDef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 63)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 183)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

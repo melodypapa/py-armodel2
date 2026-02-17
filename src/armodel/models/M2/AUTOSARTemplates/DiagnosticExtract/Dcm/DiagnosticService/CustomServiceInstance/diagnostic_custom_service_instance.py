@@ -1,4 +1,9 @@
-"""DiagnosticCustomServiceInstance AUTOSAR element."""
+"""DiagnosticCustomServiceInstance AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 70)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_CustomServiceInstance.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

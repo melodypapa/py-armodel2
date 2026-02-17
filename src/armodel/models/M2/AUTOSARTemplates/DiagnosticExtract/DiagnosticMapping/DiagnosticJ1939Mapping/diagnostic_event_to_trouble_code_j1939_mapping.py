@@ -1,4 +1,9 @@
-"""DiagnosticEventToTroubleCodeJ1939Mapping AUTOSAR element."""
+"""DiagnosticEventToTroubleCodeJ1939Mapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 269)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

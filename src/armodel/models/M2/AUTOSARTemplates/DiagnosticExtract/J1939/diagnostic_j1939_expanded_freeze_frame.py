@@ -1,4 +1,9 @@
-"""DiagnosticJ1939ExpandedFreezeFrame AUTOSAR element."""
+"""DiagnosticJ1939ExpandedFreezeFrame AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 221)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_J1939.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

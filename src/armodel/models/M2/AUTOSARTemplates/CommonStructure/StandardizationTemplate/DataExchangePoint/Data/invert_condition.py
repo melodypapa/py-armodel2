@@ -1,4 +1,9 @@
-"""InvertCondition AUTOSAR element."""
+"""InvertCondition AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 104)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_DataExchangePoint_Data.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

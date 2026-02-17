@@ -1,4 +1,9 @@
-"""ApplicationCompositeElementInPortInterfaceInstanceRef AUTOSAR element."""
+"""ApplicationCompositeElementInPortInterfaceInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 952)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface_InstanceRefs.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

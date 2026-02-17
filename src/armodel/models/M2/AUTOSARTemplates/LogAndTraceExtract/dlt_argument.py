@@ -1,4 +1,10 @@
-"""DltArgument AUTOSAR element."""
+"""DltArgument AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 983)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 13)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

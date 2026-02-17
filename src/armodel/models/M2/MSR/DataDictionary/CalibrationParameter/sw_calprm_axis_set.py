@@ -1,4 +1,9 @@
-"""SwCalprmAxisSet AUTOSAR element."""
+"""SwCalprmAxisSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 351)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_CalibrationParameter.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

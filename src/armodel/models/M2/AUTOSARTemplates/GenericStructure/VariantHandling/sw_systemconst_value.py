@@ -1,4 +1,11 @@
-"""SwSystemconstValue AUTOSAR element."""
+"""SwSystemconstValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2068)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 80)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

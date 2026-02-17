@@ -1,4 +1,10 @@
-"""CryptoServicePrimitive AUTOSAR element."""
+"""CryptoServicePrimitive AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 376)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 59)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,11 @@
-"""NonqueuedReceiverComSpec AUTOSAR element."""
+"""NonqueuedReceiverComSpec AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 172)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2039)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 198)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

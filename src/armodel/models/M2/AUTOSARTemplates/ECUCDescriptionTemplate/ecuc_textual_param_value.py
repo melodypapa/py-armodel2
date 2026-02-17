@@ -1,4 +1,11 @@
-"""EcucTextualParamValue AUTOSAR element."""
+"""EcucTextualParamValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 127)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 443)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

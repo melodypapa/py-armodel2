@@ -1,4 +1,10 @@
-"""DiagnosticsCommunicationSecurityNeeds AUTOSAR element."""
+"""DiagnosticsCommunicationSecurityNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 248)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 783)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

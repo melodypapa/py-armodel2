@@ -1,4 +1,9 @@
-"""CryptoKeySlot AUTOSAR element."""
+"""CryptoKeySlot AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 57)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_CryptoDeployment.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

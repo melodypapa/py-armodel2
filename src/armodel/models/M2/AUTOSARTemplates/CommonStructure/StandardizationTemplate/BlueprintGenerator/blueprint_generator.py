@@ -1,4 +1,9 @@
-"""BlueprintGenerator AUTOSAR element."""
+"""BlueprintGenerator AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 424)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintGenerator.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

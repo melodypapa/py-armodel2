@@ -1,4 +1,9 @@
-"""ServiceInstanceCollectionSet AUTOSAR element."""
+"""ServiceInstanceCollectionSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 476)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_ServiceInstances.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

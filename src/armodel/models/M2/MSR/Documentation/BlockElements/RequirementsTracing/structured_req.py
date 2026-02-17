@@ -1,4 +1,12 @@
-"""StructuredReq AUTOSAR element."""
+"""StructuredReq AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 168)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 49)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 313)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 208)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_RequirementsTracing.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

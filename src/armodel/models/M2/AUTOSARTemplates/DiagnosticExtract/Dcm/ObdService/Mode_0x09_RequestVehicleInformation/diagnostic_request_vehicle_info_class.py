@@ -1,4 +1,9 @@
-"""DiagnosticRequestVehicleInfoClass AUTOSAR element."""
+"""DiagnosticRequestVehicleInfoClass AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 160)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x09_RequestVehicleInformation.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""SenderReceiverToSignalMapping AUTOSAR element."""
+"""SenderReceiverToSignalMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1005)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 229)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_DataMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""UnitGroup AUTOSAR element."""
+"""UnitGroup AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 314)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 402)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Units.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""CouplingPortFifo AUTOSAR element."""
+"""CouplingPortFifo AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 124)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

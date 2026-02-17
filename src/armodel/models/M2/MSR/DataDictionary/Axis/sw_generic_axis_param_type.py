@@ -1,4 +1,9 @@
-"""SwGenericAxisParamType AUTOSAR element."""
+"""SwGenericAxisParamType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 356)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

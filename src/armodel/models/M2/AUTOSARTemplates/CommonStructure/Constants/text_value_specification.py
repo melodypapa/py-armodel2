@@ -1,4 +1,10 @@
-"""TextValueSpecification AUTOSAR element."""
+"""TextValueSpecification AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 435)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2074)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

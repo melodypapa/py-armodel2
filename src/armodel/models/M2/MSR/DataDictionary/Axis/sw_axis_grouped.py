@@ -1,4 +1,9 @@
-"""SwAxisGrouped AUTOSAR element."""
+"""SwAxisGrouped AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 357)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""OffsetTimingConstraint AUTOSAR element."""
+"""OffsetTimingConstraint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 114)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_OffsetConstraint.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

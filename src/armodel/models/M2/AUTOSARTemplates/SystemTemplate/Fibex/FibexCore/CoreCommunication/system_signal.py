@@ -1,4 +1,11 @@
-"""SystemSignal AUTOSAR element."""
+"""SystemSignal AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 332)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1009)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 218)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

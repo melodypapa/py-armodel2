@@ -1,4 +1,10 @@
-"""VfbTiming AUTOSAR element."""
+"""VfbTiming AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 24)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 223)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingExtensions.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

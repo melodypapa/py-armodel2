@@ -1,4 +1,12 @@
-"""DocumentationBlock AUTOSAR element."""
+"""DocumentationBlock AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 52)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 983)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 285)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 181)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

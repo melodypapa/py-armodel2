@@ -1,4 +1,9 @@
-"""PncMapping AUTOSAR element."""
+"""PncMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 264)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_PncMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

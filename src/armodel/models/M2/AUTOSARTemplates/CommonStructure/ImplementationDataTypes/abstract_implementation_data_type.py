@@ -1,4 +1,10 @@
-"""AbstractImplementationDataType AUTOSAR element."""
+"""AbstractImplementationDataType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 267)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 42)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

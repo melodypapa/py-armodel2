@@ -1,4 +1,10 @@
-"""DataTransformation AUTOSAR element."""
+"""DataTransformation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 149)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 763)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""InternalConstrs AUTOSAR element."""
+"""InternalConstrs AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 407)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Constraints_GlobalConstraints.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""AbstractEvent AUTOSAR element."""
+"""AbstractEvent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 541)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 204)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

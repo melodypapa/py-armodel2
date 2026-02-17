@@ -1,4 +1,17 @@
-"""SwComponentPrototype AUTOSAR element."""
+"""SwComponentPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 330)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 307)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 77)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 896)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 245)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 21)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 79)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 466)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 210)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

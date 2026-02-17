@@ -1,4 +1,10 @@
-"""SupervisedEntityNeeds AUTOSAR element."""
+"""SupervisedEntityNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 234)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 707)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

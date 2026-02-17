@@ -1,4 +1,9 @@
-"""SwDataDependency AUTOSAR element."""
+"""SwDataDependency AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 373)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

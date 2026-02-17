@@ -1,4 +1,11 @@
-"""BswServiceDependency AUTOSAR element."""
+"""BswServiceDependency AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 225)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 225)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 978)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,11 @@
-"""SensorActuatorSwComponentType AUTOSAR element."""
+"""SensorActuatorSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 646)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2055)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 244)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

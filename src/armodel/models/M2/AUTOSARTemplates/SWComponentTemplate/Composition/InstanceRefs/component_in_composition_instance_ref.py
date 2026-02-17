@@ -1,4 +1,10 @@
-"""ComponentInCompositionInstanceRef AUTOSAR element."""
+"""ComponentInCompositionInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 950)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 219)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition_InstanceRefs.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

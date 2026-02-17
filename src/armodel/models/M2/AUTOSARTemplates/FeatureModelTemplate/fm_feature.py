@@ -1,4 +1,10 @@
-"""FMFeature AUTOSAR element."""
+"""FMFeature AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 24)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 444)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

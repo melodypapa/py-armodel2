@@ -1,4 +1,9 @@
-"""BlueprintMapping AUTOSAR element."""
+"""BlueprintMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 163)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintDedicated_Generic.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

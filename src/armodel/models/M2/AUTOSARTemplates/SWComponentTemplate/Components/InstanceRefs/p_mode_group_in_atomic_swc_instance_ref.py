@@ -1,4 +1,9 @@
-"""PModeGroupInAtomicSwcInstanceRef AUTOSAR element."""
+"""PModeGroupInAtomicSwcInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 949)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

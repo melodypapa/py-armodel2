@@ -1,4 +1,14 @@
-"""InternalBehavior AUTOSAR element."""
+"""InternalBehavior AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 64)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 319)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 516)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2033)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 231)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 453)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

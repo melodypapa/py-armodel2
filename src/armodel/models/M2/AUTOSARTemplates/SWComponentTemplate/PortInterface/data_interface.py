@@ -1,4 +1,10 @@
-"""DataInterface AUTOSAR element."""
+"""DataInterface AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 310)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 87)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

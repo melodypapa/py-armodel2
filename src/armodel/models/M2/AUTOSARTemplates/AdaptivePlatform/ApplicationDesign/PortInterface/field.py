@@ -1,4 +1,9 @@
-"""Field AUTOSAR element."""
+"""Field AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 45)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_ApplicationDesign_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

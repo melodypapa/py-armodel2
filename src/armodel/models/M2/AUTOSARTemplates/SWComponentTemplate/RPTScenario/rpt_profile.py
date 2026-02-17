@@ -1,4 +1,9 @@
-"""RptProfile AUTOSAR element."""
+"""RptProfile AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 853)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_RPTScenario.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

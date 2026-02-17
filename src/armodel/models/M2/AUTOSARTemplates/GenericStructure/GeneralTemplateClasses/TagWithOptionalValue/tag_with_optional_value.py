@@ -1,4 +1,10 @@
-"""TagWithOptionalValue AUTOSAR element."""
+"""TagWithOptionalValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 477)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 166)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_TagWithOptionalValue.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

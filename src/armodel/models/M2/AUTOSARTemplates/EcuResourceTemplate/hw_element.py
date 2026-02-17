@@ -1,4 +1,12 @@
-"""HwElement AUTOSAR element."""
+"""HwElement AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 296)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 18)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 991)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2026)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

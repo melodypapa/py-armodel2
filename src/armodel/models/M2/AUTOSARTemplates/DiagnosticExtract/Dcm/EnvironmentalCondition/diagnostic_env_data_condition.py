@@ -1,4 +1,9 @@
-"""DiagnosticEnvDataCondition AUTOSAR element."""
+"""DiagnosticEnvDataCondition AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 84)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_EnvironmentalCondition.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

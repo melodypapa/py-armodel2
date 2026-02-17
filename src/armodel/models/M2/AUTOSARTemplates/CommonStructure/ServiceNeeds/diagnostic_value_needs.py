@@ -1,4 +1,11 @@
-"""DiagnosticValueNeeds AUTOSAR element."""
+"""DiagnosticValueNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 245)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 114)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 782)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""DiagnosticIumprGroupIdentifier AUTOSAR element."""
+"""DiagnosticIumprGroupIdentifier AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 211)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticEvent.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

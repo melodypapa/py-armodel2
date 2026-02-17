@@ -1,4 +1,9 @@
-"""DiagnosticDynamicallyDefineDataIdentifierClass AUTOSAR element."""
+"""DiagnosticDynamicallyDefineDataIdentifierClass AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 128)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_DynamicallyDefineDataIdentifier.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

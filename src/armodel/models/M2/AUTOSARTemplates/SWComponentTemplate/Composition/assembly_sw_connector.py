@@ -1,4 +1,12 @@
-"""AssemblySwConnector AUTOSAR element."""
+"""AssemblySwConnector AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 289)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 80)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2000)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 423)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

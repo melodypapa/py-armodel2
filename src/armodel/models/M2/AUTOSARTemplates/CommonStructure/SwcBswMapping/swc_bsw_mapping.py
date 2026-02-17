@@ -1,4 +1,11 @@
-"""SwcBswMapping AUTOSAR element."""
+"""SwcBswMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 110)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 656)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 217)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_SwcBswMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

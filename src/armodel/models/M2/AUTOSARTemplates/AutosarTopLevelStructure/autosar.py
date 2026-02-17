@@ -1,4 +1,22 @@
-"""AUTOSAR AUTOSAR element."""
+"""AUTOSAR AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 301)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 298)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 287)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 59)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 968)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1993)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 203)
+  - AUTOSAR_FO_TPS_ARXMLSerializationRules.pdf (page 30)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 42)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 71)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 421)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 29)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 56)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 157)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AutosarTopLevelStructure.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

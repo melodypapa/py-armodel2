@@ -1,4 +1,9 @@
-"""DiagnosticTestRoutineIdentifier AUTOSAR element."""
+"""DiagnosticTestRoutineIdentifier AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 158)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x08_RequestControlOfOnBoard.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

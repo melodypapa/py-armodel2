@@ -1,4 +1,9 @@
-"""TriggerInSystemInstanceRef AUTOSAR element."""
+"""TriggerInSystemInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1005)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_InstanceRefs.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

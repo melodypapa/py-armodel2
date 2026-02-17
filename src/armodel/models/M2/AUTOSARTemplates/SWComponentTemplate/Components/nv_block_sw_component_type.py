@@ -1,4 +1,10 @@
-"""NvBlockSwComponentType AUTOSAR element."""
+"""NvBlockSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 663)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2040)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

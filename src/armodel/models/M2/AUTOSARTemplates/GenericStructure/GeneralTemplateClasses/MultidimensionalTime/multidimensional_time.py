@@ -1,4 +1,11 @@
-"""MultidimensionalTime AUTOSAR element."""
+"""MultidimensionalTime AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 164)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 109)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 165)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_MultidimensionalTime.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

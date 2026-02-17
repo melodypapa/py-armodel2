@@ -1,4 +1,9 @@
-"""Modification AUTOSAR element."""
+"""Modification AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 86)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_AdminData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

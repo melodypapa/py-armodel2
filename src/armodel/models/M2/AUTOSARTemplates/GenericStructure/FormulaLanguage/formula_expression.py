@@ -1,4 +1,11 @@
-"""FormulaExpression AUTOSAR element."""
+"""FormulaExpression AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 223)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 73)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 448)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_FormulaLanguage.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,12 @@
-"""EcuInstance AUTOSAR element."""
+"""EcuInstance AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 312)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 985)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 50)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 59)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

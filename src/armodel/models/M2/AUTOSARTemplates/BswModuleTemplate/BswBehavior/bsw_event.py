@@ -1,4 +1,10 @@
-"""BswEvent AUTOSAR element."""
+"""BswEvent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 87)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 206)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

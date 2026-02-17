@@ -1,4 +1,12 @@
-"""DataTypeMappingSet AUTOSAR element."""
+"""DataTypeMappingSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 311)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 234)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2015)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 180)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

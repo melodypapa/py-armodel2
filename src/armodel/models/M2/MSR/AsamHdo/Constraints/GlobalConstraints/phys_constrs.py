@@ -1,4 +1,10 @@
-"""PhysConstrs AUTOSAR element."""
+"""PhysConstrs AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 406)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2043)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Constraints_GlobalConstraints.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,11 @@
-"""AttributeValueVariationPoint AUTOSAR element."""
+"""AttributeValueVariationPoint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 617)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 209)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 41)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling_AttributeValueVariationPoints.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

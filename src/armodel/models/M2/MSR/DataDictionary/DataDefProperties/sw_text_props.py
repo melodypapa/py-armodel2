@@ -1,4 +1,12 @@
-"""SwTextProps AUTOSAR element."""
+"""SwTextProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 343)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 313)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 249)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 216)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

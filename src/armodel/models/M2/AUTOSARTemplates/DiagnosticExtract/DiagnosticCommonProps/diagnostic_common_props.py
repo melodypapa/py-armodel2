@@ -1,4 +1,9 @@
-"""DiagnosticCommonProps AUTOSAR element."""
+"""DiagnosticCommonProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 64)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticCommonProps.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

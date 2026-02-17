@@ -1,4 +1,9 @@
-"""IEEE1722TpAcfCanPart AUTOSAR element."""
+"""IEEE1722TpAcfCanPart AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 661)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp_IEEE1722TpAcf.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,13 @@
-"""AtpInstanceRef AUTOSAR element."""
+"""AtpInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 301)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 971)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2000)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 206)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_AbstractStructure.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

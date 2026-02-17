@@ -1,4 +1,9 @@
-"""DiagnosticJ1939SwMapping AUTOSAR element."""
+"""DiagnosticJ1939SwMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 268)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_DiagnosticJ1939Mapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,12 @@
-"""PRPortPrototype AUTOSAR element."""
+"""PRPortPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 68)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2042)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 199)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

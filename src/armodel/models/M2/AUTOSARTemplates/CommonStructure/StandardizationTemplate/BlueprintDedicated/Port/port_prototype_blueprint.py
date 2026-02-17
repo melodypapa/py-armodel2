@@ -1,4 +1,11 @@
-"""PortPrototypeBlueprint AUTOSAR element."""
+"""PortPrototypeBlueprint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 237)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 459)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 60)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_BlueprintDedicated_Port.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

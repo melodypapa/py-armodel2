@@ -1,4 +1,13 @@
-"""ModeDeclarationGroupPrototype AUTOSAR element."""
+"""ModeDeclarationGroupPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 42)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 323)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 113)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2038)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 233)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ModeDeclaration.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,11 @@
-"""PostBuildVariantCondition AUTOSAR element."""
+"""PostBuildVariantCondition AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 614)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 76)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 232)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

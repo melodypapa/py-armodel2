@@ -1,4 +1,11 @@
-"""AtpBlueprint AUTOSAR element."""
+"""AtpBlueprint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 305)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 424)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 161)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_AbstractBlueprintStructure.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

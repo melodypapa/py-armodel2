@@ -1,4 +1,14 @@
-"""SwSystemconst AUTOSAR element."""
+"""SwSystemconst AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 343)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 312)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 448)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2068)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 79)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 234)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_SystemConstant.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

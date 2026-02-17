@@ -1,4 +1,14 @@
-"""SwSystemconstantValueSet AUTOSAR element."""
+"""SwSystemconstantValueSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 313)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1007)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2069)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 246)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 56)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 258)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

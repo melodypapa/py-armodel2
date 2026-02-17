@@ -1,4 +1,12 @@
-"""Sdg AUTOSAR element."""
+"""Sdg AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 328)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1004)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 78)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 90)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

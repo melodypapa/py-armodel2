@@ -1,4 +1,10 @@
-"""InterpolationRoutineMappingSet AUTOSAR element."""
+"""InterpolationRoutineMappingSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 429)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 46)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_MeasurementAndCalibration_InterpolationRoutine.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

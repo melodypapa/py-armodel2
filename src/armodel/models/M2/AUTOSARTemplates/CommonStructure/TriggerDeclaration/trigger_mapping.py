@@ -1,4 +1,9 @@
-"""TriggerMapping AUTOSAR element."""
+"""TriggerMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 134)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_TriggerDeclaration.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

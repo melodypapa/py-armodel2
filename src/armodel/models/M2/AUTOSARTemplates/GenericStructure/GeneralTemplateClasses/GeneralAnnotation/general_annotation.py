@@ -1,4 +1,10 @@
-"""GeneralAnnotation AUTOSAR element."""
+"""GeneralAnnotation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 162)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 163)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_GeneralAnnotation.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

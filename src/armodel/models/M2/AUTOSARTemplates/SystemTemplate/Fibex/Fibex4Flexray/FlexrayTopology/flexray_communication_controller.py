@@ -1,4 +1,10 @@
-"""FlexrayCommunicationController AUTOSAR element."""
+"""FlexrayCommunicationController AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 84)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 446)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Flexray_FlexrayTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

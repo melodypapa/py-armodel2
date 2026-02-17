@@ -1,4 +1,9 @@
-"""ApplicationDeferredDataType AUTOSAR element."""
+"""ApplicationDeferredDataType AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 37)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AbstractPlatform.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

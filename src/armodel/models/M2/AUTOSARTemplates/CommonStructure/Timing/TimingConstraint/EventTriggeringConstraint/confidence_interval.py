@@ -1,4 +1,9 @@
-"""ConfidenceInterval AUTOSAR element."""
+"""ConfidenceInterval AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 112)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_EventTriggeringConstraint.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

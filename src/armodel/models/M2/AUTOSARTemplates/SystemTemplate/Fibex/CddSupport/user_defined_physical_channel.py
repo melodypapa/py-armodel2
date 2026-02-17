@@ -1,4 +1,9 @@
-"""UserDefinedPhysicalChannel AUTOSAR element."""
+"""UserDefinedPhysicalChannel AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 179)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_CddSupport.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

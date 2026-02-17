@@ -1,4 +1,9 @@
-"""DiagnosticRequestEmissionRelatedDTCPermanentStatusClass AUTOSAR element."""
+"""DiagnosticRequestEmissionRelatedDTCPermanentStatusClass AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 161)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x0A_RequestEmissionRelated.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

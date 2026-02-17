@@ -1,4 +1,9 @@
-"""SynchronizationTimingConstraint AUTOSAR element."""
+"""SynchronizationTimingConstraint AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 92)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingConstraint_SynchronizationTiming.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

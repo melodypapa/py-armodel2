@@ -1,4 +1,9 @@
-"""RptExecutableEntity AUTOSAR element."""
+"""RptExecutableEntity AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 200)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

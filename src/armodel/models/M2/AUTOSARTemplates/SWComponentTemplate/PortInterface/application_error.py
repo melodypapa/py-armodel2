@@ -1,4 +1,10 @@
-"""ApplicationError AUTOSAR element."""
+"""ApplicationError AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 108)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1996)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

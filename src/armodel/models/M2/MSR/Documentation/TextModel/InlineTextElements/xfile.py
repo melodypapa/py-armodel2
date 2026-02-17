@@ -1,4 +1,9 @@
-"""Xfile AUTOSAR element."""
+"""Xfile AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 319)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextElements.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

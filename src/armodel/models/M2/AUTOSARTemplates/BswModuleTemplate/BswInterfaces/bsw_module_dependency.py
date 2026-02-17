@@ -1,4 +1,9 @@
-"""BswModuleDependency AUTOSAR element."""
+"""BswModuleDependency AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 47)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

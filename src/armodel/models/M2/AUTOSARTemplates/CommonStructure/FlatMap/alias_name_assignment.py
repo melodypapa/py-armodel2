@@ -1,4 +1,10 @@
-"""AliasNameAssignment AUTOSAR element."""
+"""AliasNameAssignment AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 175)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 968)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

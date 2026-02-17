@@ -1,4 +1,9 @@
-"""DiagnosticIumprToFunctionIdentifierMapping AUTOSAR element."""
+"""DiagnosticIumprToFunctionIdentifierMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 265)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

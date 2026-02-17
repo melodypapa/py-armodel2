@@ -1,4 +1,9 @@
-"""BulkNvDataDescriptor AUTOSAR element."""
+"""BulkNvDataDescriptor AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 692)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockComponent.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

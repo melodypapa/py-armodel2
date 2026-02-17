@@ -1,4 +1,9 @@
-"""ReferenceBase AUTOSAR element."""
+"""ReferenceBase AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 72)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ARPackage.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

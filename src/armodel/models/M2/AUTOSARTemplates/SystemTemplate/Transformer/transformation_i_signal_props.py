@@ -1,4 +1,9 @@
-"""TransformationISignalProps AUTOSAR element."""
+"""TransformationISignalProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 772)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

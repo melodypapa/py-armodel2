@@ -1,4 +1,9 @@
-"""DiagnosticSessionControlClass AUTOSAR element."""
+"""DiagnosticSessionControlClass AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 93)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_SessionControl.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

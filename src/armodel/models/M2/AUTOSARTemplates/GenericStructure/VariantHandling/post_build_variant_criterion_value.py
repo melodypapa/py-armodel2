@@ -1,4 +1,11 @@
-"""PostBuildVariantCriterionValue AUTOSAR element."""
+"""PostBuildVariantCriterionValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 305)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 77)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 258)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

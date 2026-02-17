@@ -1,4 +1,11 @@
-"""DiagnosticRoutineNeeds AUTOSAR element."""
+"""DiagnosticRoutineNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 247)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 126)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 780)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,15 @@
-"""AtomicSwComponentType AUTOSAR element."""
+"""AtomicSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 304)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 300)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 70)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2000)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 205)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 43)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 161)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

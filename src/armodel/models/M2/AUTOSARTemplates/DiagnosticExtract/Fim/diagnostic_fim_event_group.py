@@ -1,4 +1,9 @@
-"""DiagnosticFimEventGroup AUTOSAR element."""
+"""DiagnosticFimEventGroup AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 217)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Fim.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

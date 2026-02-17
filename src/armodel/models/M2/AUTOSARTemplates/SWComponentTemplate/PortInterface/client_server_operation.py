@@ -1,4 +1,16 @@
-"""ClientServerOperation AUTOSAR element."""
+"""ClientServerOperation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 309)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 306)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 102)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2008)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 218)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 28)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 433)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 174)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

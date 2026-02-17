@@ -1,4 +1,12 @@
-"""ComplexDeviceDriverSwComponentType AUTOSAR element."""
+"""ComplexDeviceDriverSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 310)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 648)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2010)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 218)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

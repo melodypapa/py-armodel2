@@ -1,4 +1,9 @@
-"""DiagnosticControlDTCSetting AUTOSAR element."""
+"""DiagnosticControlDTCSetting AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 110)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_ControlDTCSetting.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

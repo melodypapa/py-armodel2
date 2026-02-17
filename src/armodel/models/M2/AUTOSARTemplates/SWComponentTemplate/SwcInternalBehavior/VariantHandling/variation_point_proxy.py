@@ -1,4 +1,10 @@
-"""VariationPointProxy AUTOSAR element."""
+"""VariationPointProxy AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 613)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 479)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

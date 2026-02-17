@@ -1,4 +1,10 @@
-"""GeneralPurposeIPdu AUTOSAR element."""
+"""GeneralPurposeIPdu AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 345)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 60)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""CompuConstTextContent AUTOSAR element."""
+"""CompuConstTextContent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 388)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2010)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

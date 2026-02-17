@@ -1,4 +1,10 @@
-"""ISignalTriggering AUTOSAR element."""
+"""ISignalTriggering AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 330)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 229)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""SecurityEventContextMapping AUTOSAR element."""
+"""SecurityEventContextMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 32)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

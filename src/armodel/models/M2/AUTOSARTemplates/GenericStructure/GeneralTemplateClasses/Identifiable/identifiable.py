@@ -1,4 +1,21 @@
-"""Identifiable AUTOSAR element."""
+"""Identifiable AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 318)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 317)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 296)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 60)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 995)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2027)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 229)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 45)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 74)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 59)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 31)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 60)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 191)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_Identifiable.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

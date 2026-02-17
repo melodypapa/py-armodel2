@@ -1,4 +1,10 @@
-"""FibexElement AUTOSAR element."""
+"""FibexElement AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2026)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 445)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

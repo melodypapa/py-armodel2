@@ -1,4 +1,11 @@
-"""BuildActionManifest AUTOSAR element."""
+"""BuildActionManifest AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 134)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 365)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 173)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_BuildActionManifest.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""DataFilter AUTOSAR element."""
+"""DataFilter AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 182)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 394)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Filter.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

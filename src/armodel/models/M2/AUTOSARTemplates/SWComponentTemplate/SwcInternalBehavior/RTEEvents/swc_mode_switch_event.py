@@ -1,4 +1,9 @@
-"""SwcModeSwitchEvent AUTOSAR element."""
+"""SwcModeSwitchEvent AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 544)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_RTEEvents.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

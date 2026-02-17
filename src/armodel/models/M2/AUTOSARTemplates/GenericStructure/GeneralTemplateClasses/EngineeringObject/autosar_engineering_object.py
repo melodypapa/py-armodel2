@@ -1,4 +1,11 @@
-"""AutosarEngineeringObject AUTOSAR element."""
+"""AutosarEngineeringObject AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 132)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 622)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 161)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_EngineeringObject.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

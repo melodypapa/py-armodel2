@@ -1,4 +1,9 @@
-"""LVerbatim AUTOSAR element."""
+"""LVerbatim AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 347)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

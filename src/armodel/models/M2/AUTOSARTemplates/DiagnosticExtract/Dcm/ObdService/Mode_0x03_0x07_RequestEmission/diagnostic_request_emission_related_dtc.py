@@ -1,4 +1,9 @@
-"""DiagnosticRequestEmissionRelatedDTC AUTOSAR element."""
+"""DiagnosticRequestEmissionRelatedDTC AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 153)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x03_0x07_RequestEmission.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

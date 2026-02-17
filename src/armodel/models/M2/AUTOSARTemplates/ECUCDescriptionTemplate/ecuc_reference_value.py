@@ -1,4 +1,10 @@
-"""EcucReferenceValue AUTOSAR element."""
+"""EcucReferenceValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 132)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 443)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

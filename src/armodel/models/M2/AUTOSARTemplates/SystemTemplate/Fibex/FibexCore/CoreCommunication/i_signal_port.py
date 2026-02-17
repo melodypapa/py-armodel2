@@ -1,4 +1,9 @@
-"""ISignalPort AUTOSAR element."""
+"""ISignalPort AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 305)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

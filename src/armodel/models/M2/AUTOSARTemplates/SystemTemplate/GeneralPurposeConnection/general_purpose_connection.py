@@ -1,4 +1,9 @@
-"""GeneralPurposeConnection AUTOSAR element."""
+"""GeneralPurposeConnection AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 388)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GeneralPurposeConnection.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

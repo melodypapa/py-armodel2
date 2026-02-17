@@ -1,4 +1,9 @@
-"""DiagnosticSecurityEventReportingModeMapping AUTOSAR element."""
+"""DiagnosticSecurityEventReportingModeMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 243)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticMapping_ServiceMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

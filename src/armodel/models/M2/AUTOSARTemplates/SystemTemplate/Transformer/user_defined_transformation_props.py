@@ -1,4 +1,9 @@
-"""UserDefinedTransformationProps AUTOSAR element."""
+"""UserDefinedTransformationProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 829)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

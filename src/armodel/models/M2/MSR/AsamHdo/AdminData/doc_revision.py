@@ -1,4 +1,10 @@
-"""DocRevision AUTOSAR element."""
+"""DocRevision AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 293)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 85)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_AdminData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

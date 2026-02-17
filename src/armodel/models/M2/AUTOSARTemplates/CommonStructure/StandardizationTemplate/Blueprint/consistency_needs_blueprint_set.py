@@ -1,4 +1,9 @@
-"""ConsistencyNeedsBlueprintSet AUTOSAR element."""
+"""ConsistencyNeedsBlueprintSet AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 179)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_StandardizationTemplate_Blueprint.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

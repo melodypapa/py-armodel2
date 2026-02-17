@@ -1,4 +1,11 @@
-"""FlatInstanceDescriptor AUTOSAR element."""
+"""FlatInstanceDescriptor AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 316)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 989)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 966)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_FlatMap.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

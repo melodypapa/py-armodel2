@@ -1,4 +1,9 @@
-"""EcucAbstractExternalReferenceDef AUTOSAR element."""
+"""EcucAbstractExternalReferenceDef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 72)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""DiagnosticEcuInstanceProps AUTOSAR element."""
+"""DiagnosticEcuInstanceProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 207)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

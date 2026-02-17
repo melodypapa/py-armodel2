@@ -1,4 +1,9 @@
-"""DiagnosticEcuResetClass AUTOSAR element."""
+"""DiagnosticEcuResetClass AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 102)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_EcuReset.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

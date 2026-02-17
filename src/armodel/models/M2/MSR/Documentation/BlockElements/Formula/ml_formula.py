@@ -1,4 +1,10 @@
-"""MlFormula AUTOSAR element."""
+"""MlFormula AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 301)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 309)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Formula.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

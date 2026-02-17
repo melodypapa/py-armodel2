@@ -1,4 +1,14 @@
-"""BswModuleDescription AUTOSAR element."""
+"""BswModuleDescription AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 26)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 303)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 973)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 212)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 426)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 168)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswOverview.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

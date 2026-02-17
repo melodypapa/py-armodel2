@@ -1,4 +1,10 @@
-"""ServiceProxySwComponentType AUTOSAR element."""
+"""ServiceProxySwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 661)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2056)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

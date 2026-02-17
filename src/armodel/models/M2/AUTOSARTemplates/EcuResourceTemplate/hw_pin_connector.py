@@ -1,4 +1,9 @@
-"""HwPinConnector AUTOSAR element."""
+"""HwPinConnector AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 22)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""Pdu AUTOSAR element."""
+"""Pdu AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 303)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 340)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,12 @@
-"""BaseTypeDirectDefinition AUTOSAR element."""
+"""BaseTypeDirectDefinition AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 290)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2002)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 29)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_BaseTypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

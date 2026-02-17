@@ -1,4 +1,9 @@
-"""DiagnosticClearResetEmissionRelatedInfo AUTOSAR element."""
+"""DiagnosticClearResetEmissionRelatedInfo AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 154)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_ObdService_Mode_0x04_ClearResetEmission.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

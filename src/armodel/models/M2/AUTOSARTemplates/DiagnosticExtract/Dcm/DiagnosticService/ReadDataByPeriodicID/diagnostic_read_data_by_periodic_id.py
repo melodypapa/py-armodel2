@@ -1,4 +1,9 @@
-"""DiagnosticReadDataByPeriodicID AUTOSAR element."""
+"""DiagnosticReadDataByPeriodicID AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 129)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dcm_DiagnosticService_ReadDataByPeriodicID.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

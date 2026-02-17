@@ -1,4 +1,14 @@
-"""VariableDataPrototype AUTOSAR element."""
+"""VariableDataPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 107)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 310)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2077)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 256)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 29)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 223)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_DataPrototypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

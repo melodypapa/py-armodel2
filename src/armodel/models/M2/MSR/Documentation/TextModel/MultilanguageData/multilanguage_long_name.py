@@ -1,4 +1,11 @@
-"""MultilanguageLongName AUTOSAR element."""
+"""MultilanguageLongName AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 179)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 163)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 62)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

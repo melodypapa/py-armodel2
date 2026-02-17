@@ -1,4 +1,9 @@
-"""LGraphic AUTOSAR element."""
+"""LGraphic AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 307)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

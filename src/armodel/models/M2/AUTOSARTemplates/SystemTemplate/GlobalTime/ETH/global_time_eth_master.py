@@ -1,4 +1,9 @@
-"""GlobalTimeEthMaster AUTOSAR element."""
+"""GlobalTimeEthMaster AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 866)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_GlobalTime_ETH.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,12 @@
-"""MultiLanguageOverviewParagraph AUTOSAR element."""
+"""MultiLanguageOverviewParagraph AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 53)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 389)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 347)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 65)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

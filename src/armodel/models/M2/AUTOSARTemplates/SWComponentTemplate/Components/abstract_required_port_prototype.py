@@ -1,4 +1,11 @@
-"""AbstractRequiredPortPrototype AUTOSAR element."""
+"""AbstractRequiredPortPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 67)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 204)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 422)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,12 @@
-"""ConditionByFormula AUTOSAR element."""
+"""ConditionByFormula AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 613)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2012)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 73)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 231)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHandling.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

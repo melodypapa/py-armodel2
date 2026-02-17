@@ -1,4 +1,10 @@
-"""DltMessage AUTOSAR element."""
+"""DltMessage AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2018)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 12)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_LogAndTraceExtract.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

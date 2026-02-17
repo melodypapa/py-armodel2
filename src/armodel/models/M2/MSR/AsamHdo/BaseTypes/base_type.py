@@ -1,4 +1,11 @@
-"""BaseType AUTOSAR element."""
+"""BaseType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 291)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2002)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_BaseTypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

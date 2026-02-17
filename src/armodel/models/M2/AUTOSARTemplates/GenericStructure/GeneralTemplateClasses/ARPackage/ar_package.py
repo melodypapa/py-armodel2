@@ -1,4 +1,18 @@
-"""ARPackage AUTOSAR element."""
+"""ARPackage AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 300)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 297)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 286)
+  - AUTOSAR_CP_TPS_ECUResourceTemplate.pdf (page 58)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 967)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1992)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 203)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 53)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 55)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 156)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ARPackage.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,14 @@
-"""SwcInternalBehavior AUTOSAR element."""
+"""SwcInternalBehavior AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 345)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 518)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2070)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 246)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 472)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 217)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

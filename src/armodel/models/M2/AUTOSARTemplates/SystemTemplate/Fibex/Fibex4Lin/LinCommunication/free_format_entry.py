@@ -1,4 +1,9 @@
-"""FreeFormatEntry AUTOSAR element."""
+"""FreeFormatEntry AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 433)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Lin_LinCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

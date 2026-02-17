@@ -1,4 +1,10 @@
-"""StackUsage AUTOSAR element."""
+"""StackUsage AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 149)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2059)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_StackUsage.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

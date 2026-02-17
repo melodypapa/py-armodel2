@@ -1,4 +1,10 @@
-"""RoleBasedDataTypeAssignment AUTOSAR element."""
+"""RoleBasedDataTypeAssignment AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 227)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 610)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServiceMapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

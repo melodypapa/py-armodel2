@@ -1,4 +1,14 @@
-"""SenderReceiverInterface AUTOSAR element."""
+"""SenderReceiverInterface AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 335)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 329)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 94)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2054)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 244)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 208)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""AbstractValueRestriction AUTOSAR element."""
+"""AbstractValueRestriction AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 103)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 87)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ModelRestrictionTypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

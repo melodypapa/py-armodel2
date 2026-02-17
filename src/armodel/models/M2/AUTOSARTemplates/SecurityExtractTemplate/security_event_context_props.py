@@ -1,4 +1,10 @@
-"""SecurityEventContextProps AUTOSAR element."""
+"""SecurityEventContextProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 258)
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 33)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

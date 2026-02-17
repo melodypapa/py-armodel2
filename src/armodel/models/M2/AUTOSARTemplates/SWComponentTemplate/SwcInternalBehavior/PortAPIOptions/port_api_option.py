@@ -1,4 +1,10 @@
-"""PortAPIOption AUTOSAR element."""
+"""PortAPIOption AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 589)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2045)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_PortAPIOptions.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""J1939ControllerApplicationToJ1939NmNodeMapping AUTOSAR element."""
+"""J1939ControllerApplicationToJ1939NmNodeMapping AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 206)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SWmapping.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

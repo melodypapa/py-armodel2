@@ -1,4 +1,9 @@
-"""CollectableElement AUTOSAR element."""
+"""CollectableElement AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 399)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_ElementCollection.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

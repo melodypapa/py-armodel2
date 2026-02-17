@@ -1,4 +1,11 @@
-"""SwcImplementation AUTOSAR element."""
+"""SwcImplementation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 344)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 623)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2069)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcImplementation.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

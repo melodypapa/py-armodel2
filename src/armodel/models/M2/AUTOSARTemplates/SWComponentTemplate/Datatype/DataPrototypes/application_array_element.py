@@ -1,4 +1,10 @@
-"""ApplicationArrayElement AUTOSAR element."""
+"""ApplicationArrayElement AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 252)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 43)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_DataPrototypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

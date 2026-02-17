@@ -1,4 +1,9 @@
-"""EcucAddInfoParamValue AUTOSAR element."""
+"""EcucAddInfoParamValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 129)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCDescriptionTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

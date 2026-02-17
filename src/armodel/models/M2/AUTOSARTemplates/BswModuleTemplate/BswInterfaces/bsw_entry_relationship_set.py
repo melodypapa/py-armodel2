@@ -1,4 +1,10 @@
-"""BswEntryRelationshipSet AUTOSAR element."""
+"""BswEntryRelationshipSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 51)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 51)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

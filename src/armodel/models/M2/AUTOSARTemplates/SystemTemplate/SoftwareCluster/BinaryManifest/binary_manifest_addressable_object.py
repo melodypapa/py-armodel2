@@ -1,4 +1,9 @@
-"""BinaryManifestAddressableObject AUTOSAR element."""
+"""BinaryManifestAddressableObject AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 920)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster_BinaryManifest.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

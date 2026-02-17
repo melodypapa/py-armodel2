@@ -1,4 +1,9 @@
-"""MultiLanguagePlainText AUTOSAR element."""
+"""MultiLanguagePlainText AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 349)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

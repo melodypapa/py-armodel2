@@ -1,4 +1,9 @@
-"""MixedContentForUnitNames AUTOSAR element."""
+"""MixedContentForUnitNames AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 456)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_InlineTextModel.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

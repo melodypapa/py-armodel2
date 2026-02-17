@@ -1,4 +1,11 @@
-"""SwAddrMethod AUTOSAR element."""
+"""SwAddrMethod AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 144)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 413)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 209)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_AuxillaryObjects.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

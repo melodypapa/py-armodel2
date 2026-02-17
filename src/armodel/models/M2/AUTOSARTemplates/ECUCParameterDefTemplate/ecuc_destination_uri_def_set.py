@@ -1,4 +1,9 @@
-"""EcucDestinationUriDefSet AUTOSAR element."""
+"""EcucDestinationUriDefSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 82)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,11 @@
-"""ApplicationRecordDataType AUTOSAR element."""
+"""ApplicationRecordDataType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 261)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1997)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 34)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

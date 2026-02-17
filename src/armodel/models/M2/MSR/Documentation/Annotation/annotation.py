@@ -1,4 +1,10 @@
-"""Annotation AUTOSAR element."""
+"""Annotation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 334)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 163)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_Annotation.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

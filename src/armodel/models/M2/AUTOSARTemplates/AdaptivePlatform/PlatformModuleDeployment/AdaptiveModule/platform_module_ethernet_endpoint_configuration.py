@@ -1,4 +1,9 @@
-"""PlatformModuleEthernetEndpointConfiguration AUTOSAR element."""
+"""PlatformModuleEthernetEndpointConfiguration AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 65)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_AdaptiveModule.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

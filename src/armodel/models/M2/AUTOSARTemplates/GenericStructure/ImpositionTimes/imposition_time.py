@@ -1,4 +1,9 @@
-"""ImpositionTime AUTOSAR element."""
+"""ImpositionTime AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 194)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_ImpositionTimes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

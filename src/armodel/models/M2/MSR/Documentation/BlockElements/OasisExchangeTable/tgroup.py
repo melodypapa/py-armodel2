@@ -1,4 +1,9 @@
-"""Tgroup AUTOSAR element."""
+"""Tgroup AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 334)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_OasisExchangeTable.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

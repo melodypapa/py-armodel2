@@ -1,4 +1,10 @@
-"""HeapUsage AUTOSAR element."""
+"""HeapUsage AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 152)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2026)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceConsumption_HeapUsage.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,9 @@
-"""ReceiverAnnotation AUTOSAR element."""
+"""ReceiverAnnotation AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 153)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_ApplicationAttributes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

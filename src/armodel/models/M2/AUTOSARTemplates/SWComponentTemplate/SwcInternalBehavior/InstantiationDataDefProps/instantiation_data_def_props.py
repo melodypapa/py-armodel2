@@ -1,4 +1,9 @@
-"""InstantiationDataDefProps AUTOSAR element."""
+"""InstantiationDataDefProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 588)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_InstantiationDataDefProps.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

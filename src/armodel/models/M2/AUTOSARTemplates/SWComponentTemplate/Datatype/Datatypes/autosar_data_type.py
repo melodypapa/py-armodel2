@@ -1,4 +1,13 @@
-"""AutosarDataType AUTOSAR element."""
+"""AutosarDataType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 306)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 231)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2001)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 44)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

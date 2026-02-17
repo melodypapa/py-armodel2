@@ -1,4 +1,9 @@
-"""FlexrayTpNode AUTOSAR element."""
+"""FlexrayTpNode AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 596)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

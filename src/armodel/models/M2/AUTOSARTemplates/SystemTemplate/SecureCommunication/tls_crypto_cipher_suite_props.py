@@ -1,4 +1,9 @@
-"""TlsCryptoCipherSuiteProps AUTOSAR element."""
+"""TlsCryptoCipherSuiteProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 563)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_SecureCommunication.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

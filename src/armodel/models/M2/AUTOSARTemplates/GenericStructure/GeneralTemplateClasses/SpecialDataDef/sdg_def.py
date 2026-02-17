@@ -1,4 +1,10 @@
-"""SdgDef AUTOSAR element."""
+"""SdgDef AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 99)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 207)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_SpecialDataDef.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

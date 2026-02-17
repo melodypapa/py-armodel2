@@ -1,4 +1,11 @@
-"""ObdPidServiceNeeds AUTOSAR element."""
+"""ObdPidServiceNeeds AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 233)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 797)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ServiceNeeds.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

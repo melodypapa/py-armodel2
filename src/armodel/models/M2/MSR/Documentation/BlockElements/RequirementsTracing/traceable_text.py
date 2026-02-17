@@ -1,4 +1,11 @@
-"""TraceableText AUTOSAR element."""
+"""TraceableText AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 178)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 313)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 222)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_RequirementsTracing.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

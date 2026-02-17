@@ -1,4 +1,13 @@
-"""BswModuleEntry AUTOSAR element."""
+"""BswModuleEntry AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 32)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 976)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 216)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 431)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 171)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

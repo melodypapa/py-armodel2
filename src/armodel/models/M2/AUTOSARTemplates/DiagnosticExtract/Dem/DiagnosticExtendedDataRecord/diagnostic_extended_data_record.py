@@ -1,4 +1,9 @@
-"""DiagnosticExtendedDataRecord AUTOSAR element."""
+"""DiagnosticExtendedDataRecord AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 190)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_Dem_DiagnosticExtendedDataRecord.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

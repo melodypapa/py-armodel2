@@ -1,4 +1,10 @@
-"""TDEventVfbPort AUTOSAR element."""
+"""TDEventVfbPort AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 52)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 221)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

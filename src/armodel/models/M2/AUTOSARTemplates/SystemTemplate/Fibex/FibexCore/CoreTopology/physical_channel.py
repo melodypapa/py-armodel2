@@ -1,4 +1,11 @@
-"""PhysicalChannel AUTOSAR element."""
+"""PhysicalChannel AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 325)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 58)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 235)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,15 @@
-"""MultilanguageReferrable AUTOSAR element."""
+"""MultilanguageReferrable AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 179)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 301)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1000)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 48)
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 75)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 63)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 197)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_Identifiable.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

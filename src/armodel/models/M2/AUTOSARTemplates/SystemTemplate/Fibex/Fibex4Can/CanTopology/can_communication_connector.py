@@ -1,4 +1,9 @@
-"""CanCommunicationConnector AUTOSAR element."""
+"""CanCommunicationConnector AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 74)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Can_CanTopology.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

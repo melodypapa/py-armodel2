@@ -1,4 +1,9 @@
-"""IEEE1722TpAvConnection AUTOSAR element."""
+"""IEEE1722TpAvConnection AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 639)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_TransportProtocols_IEEE1722Tp.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

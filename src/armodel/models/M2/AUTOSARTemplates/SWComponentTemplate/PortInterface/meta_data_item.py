@@ -1,4 +1,10 @@
-"""MetaDataItem AUTOSAR element."""
+"""MetaDataItem AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 98)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2037)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

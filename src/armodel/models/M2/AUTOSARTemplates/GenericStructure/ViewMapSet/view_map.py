@@ -1,4 +1,10 @@
-"""ViewMap AUTOSAR element."""
+"""ViewMap AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2079)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 401)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_ViewMapSet.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

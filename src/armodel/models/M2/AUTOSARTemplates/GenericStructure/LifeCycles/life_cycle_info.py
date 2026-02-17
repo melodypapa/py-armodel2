@@ -1,4 +1,10 @@
-"""LifeCycleInfo AUTOSAR element."""
+"""LifeCycleInfo AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 392)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 195)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

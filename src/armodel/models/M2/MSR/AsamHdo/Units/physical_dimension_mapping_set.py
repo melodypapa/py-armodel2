@@ -1,4 +1,9 @@
-"""PhysicalDimensionMappingSet AUTOSAR element."""
+"""PhysicalDimensionMappingSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 399)
+
+JSON Source: docs/json/packages/M2_MSR_AsamHdo_Units.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

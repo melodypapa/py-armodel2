@@ -1,4 +1,10 @@
-"""PassThroughSwConnector AUTOSAR element."""
+"""PassThroughSwConnector AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 83)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2043)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

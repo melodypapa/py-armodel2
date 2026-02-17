@@ -1,4 +1,11 @@
-"""PortDefinedArgumentValue AUTOSAR element."""
+"""PortDefinedArgumentValue AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 326)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 593)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 199)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_PortAPIOptions.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

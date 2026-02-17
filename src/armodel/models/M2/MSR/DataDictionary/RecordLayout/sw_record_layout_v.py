@@ -1,4 +1,9 @@
-"""SwRecordLayoutV AUTOSAR element."""
+"""SwRecordLayoutV AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 421)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_RecordLayout.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

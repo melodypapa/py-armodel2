@@ -1,4 +1,10 @@
-"""McFunctionDataRefSet AUTOSAR element."""
+"""McFunctionDataRefSet AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 187)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 455)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport_RptSupport.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""TransformationTechnology AUTOSAR element."""
+"""TransformationTechnology AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 198)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 764)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Transformer.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

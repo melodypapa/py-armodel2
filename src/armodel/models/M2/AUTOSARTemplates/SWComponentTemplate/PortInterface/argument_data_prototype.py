@@ -1,4 +1,14 @@
-"""ArgumentDataPrototype AUTOSAR element."""
+"""ArgumentDataPrototype AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 303)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 300)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 102)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1998)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 29)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 160)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

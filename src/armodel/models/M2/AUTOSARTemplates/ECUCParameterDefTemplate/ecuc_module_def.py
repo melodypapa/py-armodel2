@@ -1,4 +1,11 @@
-"""EcucModuleDef AUTOSAR element."""
+"""EcucModuleDef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 314)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 32)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 187)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

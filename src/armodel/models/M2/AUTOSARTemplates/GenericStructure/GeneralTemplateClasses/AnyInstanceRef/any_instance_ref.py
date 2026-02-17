@@ -1,4 +1,12 @@
-"""AnyInstanceRef AUTOSAR element."""
+"""AnyInstanceRef AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 289)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 970)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1995)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 328)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemplateClasses_AnyInstanceRef.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

@@ -1,4 +1,10 @@
-"""DelegationSwConnector AUTOSAR element."""
+"""DelegationSwConnector AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 80)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2016)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composition.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

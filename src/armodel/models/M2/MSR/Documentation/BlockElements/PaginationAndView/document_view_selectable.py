@@ -1,4 +1,9 @@
-"""DocumentViewSelectable AUTOSAR element."""
+"""DocumentViewSelectable AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 340)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_PaginationAndView.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

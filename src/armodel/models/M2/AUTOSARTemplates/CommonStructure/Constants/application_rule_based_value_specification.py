@@ -1,4 +1,10 @@
-"""ApplicationRuleBasedValueSpecification AUTOSAR element."""
+"""ApplicationRuleBasedValueSpecification AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 302)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 462)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

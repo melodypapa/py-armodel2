@@ -1,4 +1,9 @@
-"""FMFeatureSelectionSet AUTOSAR element."""
+"""FMFeatureSelectionSet AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_FeatureModelExchangeFormat.pdf (page 44)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_FeatureModelTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

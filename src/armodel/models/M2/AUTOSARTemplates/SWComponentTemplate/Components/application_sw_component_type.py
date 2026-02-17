@@ -1,4 +1,13 @@
-"""ApplicationSwComponentType AUTOSAR element."""
+"""ApplicationSwComponentType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 231)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 71)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 1998)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 205)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 423)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

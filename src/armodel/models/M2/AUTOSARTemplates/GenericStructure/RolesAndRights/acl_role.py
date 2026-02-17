@@ -1,4 +1,10 @@
-"""AclRole AUTOSAR element."""
+"""AclRole AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 384)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 159)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_RolesAndRights.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

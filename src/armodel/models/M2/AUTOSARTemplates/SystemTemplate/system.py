@@ -1,4 +1,15 @@
-"""System AUTOSAR element."""
+"""System AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 349)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 331)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 1007)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 40)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 249)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 17)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 476)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

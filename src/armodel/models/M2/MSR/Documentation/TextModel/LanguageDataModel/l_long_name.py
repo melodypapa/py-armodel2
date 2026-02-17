@@ -1,4 +1,10 @@
-"""LLongName AUTOSAR element."""
+"""LLongName AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 179)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 62)
+
+JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_LanguageDataModel.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

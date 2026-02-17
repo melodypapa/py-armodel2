@@ -1,4 +1,9 @@
-"""FileInfoComment AUTOSAR element."""
+"""FileInfoComment AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 29)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_AutosarTopLevelStructure.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

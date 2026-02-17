@@ -1,4 +1,9 @@
-"""TDEventIPdu AUTOSAR element."""
+"""TDEventIPdu AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 66)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

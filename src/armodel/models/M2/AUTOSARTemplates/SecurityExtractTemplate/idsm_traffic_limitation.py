@@ -1,4 +1,9 @@
-"""IdsmTrafficLimitation AUTOSAR element."""
+"""IdsmTrafficLimitation AUTOSAR element.
+
+References:
+  - AUTOSAR_FO_TPS_SecurityExtractTemplate.pdf (page 28)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SecurityExtractTemplate.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

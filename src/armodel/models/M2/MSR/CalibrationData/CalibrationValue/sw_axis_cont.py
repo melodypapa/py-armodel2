@@ -1,4 +1,9 @@
-"""SwAxisCont AUTOSAR element."""
+"""SwAxisCont AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 457)
+
+JSON Source: docs/json/packages/M2_MSR_CalibrationData_CalibrationValue.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

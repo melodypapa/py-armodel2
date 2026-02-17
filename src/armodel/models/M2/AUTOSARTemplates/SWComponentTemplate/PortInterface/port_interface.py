@@ -1,4 +1,14 @@
-"""PortInterface AUTOSAR element."""
+"""PortInterface AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 326)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 87)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2046)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 27)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 457)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 200)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_PortInterface.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

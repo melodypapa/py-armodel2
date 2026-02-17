@@ -1,4 +1,17 @@
-"""SwDataDefProps AUTOSAR element."""
+"""SwDataDefProps AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 339)
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 46)
+  - AUTOSAR_CP_TPS_ECUConfiguration.pdf (page 307)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 329)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2062)
+  - AUTOSAR_FO_TPS_AbstractPlatformSpecification.pdf (page 31)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 467)
+  - AUTOSAR_FO_TPS_LogAndTraceExtract.pdf (page 34)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 211)
+
+JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

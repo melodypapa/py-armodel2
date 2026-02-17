@@ -1,4 +1,9 @@
-"""DiagnosticInfoType AUTOSAR element."""
+"""DiagnosticInfoType AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf (page 160)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_DiagnosticExtract_CommonDiagnostics.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET

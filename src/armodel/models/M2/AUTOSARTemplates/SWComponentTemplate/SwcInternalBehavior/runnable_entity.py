@@ -1,4 +1,14 @@
-"""RunnableEntity AUTOSAR element."""
+"""RunnableEntity AUTOSAR element.
+
+References:
+  - AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf (page 331)
+  - AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf (page 524)
+  - AUTOSAR_CP_TPS_SystemTemplate.pdf (page 2050)
+  - AUTOSAR_CP_TPS_TimingExtensions.pdf (page 240)
+  - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 461)
+  - AUTOSAR_FO_TPS_StandardizationTemplate.pdf (page 203)
+
+JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
 
 from typing import Optional
 import xml.etree.ElementTree as ET
