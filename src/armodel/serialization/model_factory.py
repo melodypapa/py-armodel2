@@ -63,14 +63,18 @@ class ModelFactory:
         if "class_import_paths" in self._mappings:
             self._import_path_cache = self._mappings["class_import_paths"]
     
-    def get_class(self, xml_tag: str) -> Optional[Type[Any]]:
+    def get_class(self, xml_tag: str, raise_on_failure: bool = True) -> Optional[Type[Any]]:
         """Get class by XML tag.
 
         Args:
             xml_tag: XML tag name (e.g., "SW-BASE-TYPE")
+            raise_on_failure: If True, raise ImportError instead of returning None
 
         Returns:
-            Class type or None if not found
+            Class type or None if not found (when raise_on_failure=False)
+
+        Raises:
+            ImportError: If class cannot be imported and raise_on_failure=True
         """
         # Check cache first
         if xml_tag in self._class_cache:
@@ -88,11 +92,16 @@ class ModelFactory:
             class_name = NameConverter.tag_to_class_name(xml_tag)
 
         if class_name:
-            cls = self._import_class(class_name)
+            cls = self._import_class(class_name, raise_on_failure=raise_on_failure)
             if cls:
                 self._class_cache[xml_tag] = cls
                 return cls
 
+        if raise_on_failure:
+            raise ImportError(
+                f"No class mapping found for XML tag '{xml_tag}'. "
+                f"Check that the tag is defined in model_mappings.yaml."
+            )
         return None
     
     def get_polymorphic_implementations(self, base_class_name: str) -> List[str]:
@@ -134,14 +143,18 @@ class ModelFactory:
 
         return None
     
-    def _import_class(self, class_name: str) -> Optional[Type[Any]]:
+    def _import_class(self, class_name: str, raise_on_failure: bool = False) -> Optional[Type[Any]]:
         """Import class by name with caching.
 
         Args:
             class_name: Name of class to import (e.g., "SwBaseType")
+            raise_on_failure: If True, raise ImportError instead of returning None
 
         Returns:
-            Imported class or None if not found
+            Imported class or None if not found (when raise_on_failure=False)
+
+        Raises:
+            ImportError: If class cannot be imported and raise_on_failure=True
         """
         # Check cache
         if class_name in self._class_cache:
@@ -157,11 +170,28 @@ class ModelFactory:
                 if isinstance(cls, type):
                     self._class_cache[class_name] = cls
                     return cls
-            except (ImportError, AttributeError):
-                pass
+            except ImportError as e:
+                if raise_on_failure:
+                    raise ImportError(
+                        f"Failed to import class '{class_name}' from '{import_path}': {e}. "
+                        f"This may be due to a circular import. "
+                        f"Check that the class is properly configured in skip_classes.yaml "
+                        f"or uses TYPE_CHECKING for circular imports."
+                    ) from e
+            except AttributeError as e:
+                if raise_on_failure:
+                    raise ImportError(
+                        f"Class '{class_name}' not found in module '{import_path}': {e}"
+                    ) from e
 
         # Fallback to search
-        return self._search_and_import_class(class_name)
+        cls = self._search_and_import_class(class_name)
+        if cls is None and raise_on_failure:
+            raise ImportError(
+                f"Class '{class_name}' not found. "
+                f"Check that it exists in the model mappings and can be imported."
+            )
+        return cls
     
     def _search_and_import_class(self, class_name: str) -> Optional[Type[Any]]:
         """Search for and import class (fallback method).

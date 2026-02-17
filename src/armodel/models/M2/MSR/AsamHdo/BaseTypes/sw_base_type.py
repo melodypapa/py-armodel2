@@ -26,51 +26,6 @@ class SwBaseType(BaseType):
         """Initialize SwBaseType."""
         super().__init__()
 
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> SwBaseType:
-        """Deserialize XML element to SwBaseType, handling both nested and flat formats.
-
-        Handles two XML structures:
-        1. Standard: <BASE-TYPE-DEFINITION> wrapper with concrete subclass
-        2. Flat: Direct children (BASE-TYPE-SIZE, BASE-TYPE-ENCODING, etc.)
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized SwBaseType object
-        """
-        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
-            ARObject,
-        )
-        from armodel.models.M2.MSR.AsamHdo.BaseTypes.base_type_direct_definition import (
-            BaseTypeDirectDefinition,
-        )
-
-        # First, use parent's standard deserialize for common fields
-        obj = super().deserialize(element)
-
-        # Check for BASE-TYPE-DEFINITION wrapper (standard format)
-        # Try both with and without namespace
-        def_elem = element.find('BASE-TYPE-DEFINITION')
-        if def_elem is None:
-            # Try with namespace wildcard
-            def_elem = element.find('{*}BASE-TYPE-DEFINITION')
-        
-        if def_elem is None:
-            # Flat format: create BaseTypeDirectDefinition manually
-            # Use namespace wildcard to find elements
-            defn = BaseTypeDirectDefinition()
-            defn.base_type_size = ARObject._extract_text(element.find('{*}BASE-TYPE-SIZE'))
-            defn.base_type_encoding = ARObject._extract_text(element.find('{*}BASE-TYPE-ENCODING'))
-            defn.mem_alignment = ARObject._extract_text(element.find('{*}MEM-ALIGNMENT'))
-            defn.byte_order = ARObject._extract_text(element.find('{*}BYTE-ORDER'))
-            defn.native = ARObject._extract_text(element.find('{*}NATIVE-DECLARATION'))
-
-            obj.base_type_definition = defn
-
-        return obj
-
 
 class SwBaseTypeBuilder:
     """Builder for SwBaseType."""

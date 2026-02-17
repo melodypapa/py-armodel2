@@ -32,14 +32,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     NativeDeclarationString,
     Numerical,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
-    AbstractImplementationDataType,
-)
 from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
     Annotation,
-)
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
-    ApplicationPrimitiveDataType,
 )
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
     CompuMethod,
@@ -74,16 +68,22 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_text_props import
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
-    ValueSpecification,
-)
 
 if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
+        AbstractImplementationDataType,
+    )
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
+        ApplicationPrimitiveDataType,
+    )
     from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_pointer_target_props import (
         SwPointerTargetProps,
     )
     from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_proxy import (
         SwVariableRefProxy,
+    )
+    from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
+        ValueSpecification,
     )
 
 
