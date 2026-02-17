@@ -19,7 +19,7 @@ def test_serialize_creates_element():
 
 def test_serialize_converts_names():
     obj = TestARObject()
-    elem = obj.serialize("")
+    elem = obj.serialize()
 
     # Verify snake_case → UPPER-CASE conversion
     assert elem.find("SHORT-NAME") is not None
