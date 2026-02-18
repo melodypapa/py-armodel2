@@ -187,9 +187,9 @@ class ARObject:
     def _serialize_with_correct_tag(self, value, xml_tag: str) -> ET.Element:
         """Serialize a value with the correct XML tag from parent context.
 
-        For ARPrimitive and AREnum types, uses the parent attribute's tag instead of
-        the class name to ensure correct XML element names (e.g., LIMIT instead of
-        the class name that might differ).
+        For ARPrimitive, AREnum, and ARRef types, uses the parent attribute's tag
+        instead of the class name to ensure correct XML element names (e.g., LIMIT
+        instead of the class name that might differ).
 
         Args:
             value: The value to serialize
@@ -200,6 +200,7 @@ class ARObject:
         """
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
         if isinstance(value, ARPrimitive):
             # Serialize the primitive but wrap it with the correct tag
@@ -216,6 +217,15 @@ class ARObject:
             child = ET.Element(xml_tag)
             child.text = str(value.value).upper()
             return child
+        elif isinstance(value, ARRef):
+            # For ARRef types, serialize and wrap with the correct tag
+            # ARRef.serialize() returns an element with DEST attribute and text content
+            serialized = value.serialize()
+            wrapper = ET.Element(xml_tag)
+            # Copy all attributes (especially DEST) and text content
+            wrapper.attrib.update(serialized.attrib)
+            wrapper.text = serialized.text
+            return wrapper
         else:
             # For complex objects, serialize directly
             return value.serialize()
@@ -753,6 +763,20 @@ class ARObject:
                                 return cls
                     except (ImportError, ModuleNotFoundError):
                         continue
+        except Exception:
+            pass
+
+        # Last resort: Use ModelFactory if available
+        try:
+            from armodel.serialization.model_factory import ModelFactory
+            factory = ModelFactory()
+            if factory.is_initialized():
+                # Try to get the XML tag from class name and look up in factory
+                from armodel.serialization.name_converter import NameConverter
+                xml_tag = NameConverter.to_xml_tag(class_name)
+                cls = factory.get_class(xml_tag)
+                if cls:
+                    return cls
         except Exception:
             pass
 
