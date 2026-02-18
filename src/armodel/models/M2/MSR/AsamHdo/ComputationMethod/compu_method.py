@@ -27,10 +27,16 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu import (
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
+from armodel.serialization.decorators import xml_element_tag
 
 
 class CompuMethod(ARElement):
     """AUTOSAR CompuMethod."""
+
+    compu_internal_to_phys: Optional[Compu]
+    compu_phys_to_internal: Optional[Compu]
+    display_format: Optional[DisplayFormatString]
+    unit: Optional[Unit]
 
     @property
     def is_abstract(self) -> bool:
@@ -41,17 +47,24 @@ class CompuMethod(ARElement):
         """
         return False
 
-    compu_internal_to_phys: Optional[Compu]
-    compu_phys_to_internal: Optional[Compu]
-    display_format: Optional[DisplayFormatString]
-    unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize CompuMethod."""
         super().__init__()
-        self.compu_internal_to_phys: Optional[Compu] = None
+        self._compu_internal_to_phys: Optional[Compu] = None
         self.compu_phys_to_internal: Optional[Compu] = None
         self.display_format: Optional[DisplayFormatString] = None
         self.unit: Optional[Unit] = None
+
+    @property
+    @xml_element_tag("COMPU-INTERNAL-TO-PHYS")
+    def compu_internal_to_phys(self) -> Optional[Compu]:
+        """Get compu_internal_to_phys value."""
+        return self._compu_internal_to_phys
+
+    @compu_internal_to_phys.setter
+    def compu_internal_to_phys(self, value: Optional[Compu]) -> None:
+        """Set compu_internal_to_phys value."""
+        self._compu_internal_to_phys = value
 
 
 class CompuMethodBuilder:

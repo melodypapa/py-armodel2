@@ -85,6 +85,42 @@ class ARXMLWriter:
                 self._indent(tree_root)
 
         tree.write(str(filepath), encoding=self._encoding, xml_declaration=True)
+        
+        # Fix XML declaration quotes
+        self._fix_xml_declaration_quotes_file(filepath)
+
+    def _fix_xml_declaration_quotes_file(self, filepath: Path) -> None:
+        """Replace single quotes with double quotes in XML declaration.
+
+        Post-processes the file to convert:
+        <?xml version='1.0' encoding='UTF-8'?>
+        to:
+        <?xml version="1.0" encoding="UTF-8"?>
+
+        Args:
+            filepath: Path to the ARXML file to fix
+        """
+        with open(filepath, 'rb') as f:
+            content = f.read()
+        
+        content = content.replace(b"<?xml version='1.0'", b'<?xml version="1.0"')
+        content = content.replace(b"encoding='UTF-8'?>", b'encoding="UTF-8"?>')
+        
+        with open(filepath, 'wb') as f:
+            f.write(content)
+
+    def _fix_xml_declaration_quotes_str(self, xml_str: str) -> str:
+        """Replace single quotes with double quotes in XML declaration string.
+
+        Args:
+            xml_str: XML string to fix
+
+        Returns:
+            XML string with corrected quotes
+        """
+        xml_str = xml_str.replace("<?xml version='1.0'", '<?xml version="1.0"')
+        xml_str = xml_str.replace("encoding='UTF-8'?>", 'encoding="UTF-8"?>')
+        return xml_str
 
     def _indent(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML element for pretty printing.
@@ -126,4 +162,9 @@ class ARXMLWriter:
 
         # Convert to string (ET.tostring returns bytes, need to decode)
         xml_bytes = ET.tostring(root, encoding=self._encoding, xml_declaration=True)
-        return str(xml_bytes.decode(self._encoding))
+        xml_str = xml_bytes.decode(self._encoding)
+        
+        # Fix XML declaration quotes
+        xml_str = self._fix_xml_declaration_quotes_str(xml_str)
+        
+        return xml_str

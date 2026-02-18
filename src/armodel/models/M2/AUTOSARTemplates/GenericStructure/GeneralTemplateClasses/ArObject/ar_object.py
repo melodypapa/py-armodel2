@@ -66,8 +66,8 @@ class ARObject:
             if name.startswith('_'):
                 continue
 
-            # Convert Python name to XML tag
-            xml_tag = NameConverter.to_xml_tag(name)
+            # Check for custom XML element tag via @xml_element_tag decorator
+            xml_tag = self._get_element_tag(name)
 
             # Skip None values
             if value is None:
@@ -96,6 +96,40 @@ class ARObject:
                 child = ET.Element(xml_tag)
                 child.text = str(value)
                 elem.append(child)
+
+        # Also serialize properties that have custom XML tags
+        for name, obj in self.__class__.__dict__.items():
+            if isinstance(obj, property) and hasattr(obj.fget, '_xml_element_tag'):
+                # Get the property value
+                try:
+                    value = getattr(self, name)
+                except AttributeError:
+                    continue
+
+                # Skip None values
+                if value is None:
+                    continue
+
+                # Get the custom XML tag
+                xml_tag = obj.fget._xml_element_tag
+
+                # Serialize the value
+                if hasattr(value, 'serialize'):
+                    # Create wrapper element with custom tag
+                    wrapper = ET.Element(xml_tag)
+                    # Serialize the value and append its children to the wrapper
+                    serialized_value = value.serialize()
+                    # Copy all children from the serialized value to the wrapper
+                    for child in list(serialized_value):
+                        wrapper.append(child)
+                    # Copy all attributes from the serialized value to the wrapper
+                    for attr_name, attr_value in serialized_value.attrib.items():
+                        wrapper.set(attr_name, attr_value)
+                    elem.append(wrapper)
+                else:
+                    child = ET.Element(xml_tag)
+                    child.text = str(value)
+                    elem.append(child)
 
         return elem
 
@@ -137,6 +171,31 @@ class ARObject:
             return attr._is_xml_attribute
 
         return False
+
+    def _get_element_tag(self, attr_name: str) -> str:
+        """Get XML tag name for a class attribute/element.
+
+        Checks for @xml_element_tag decorator override, otherwise auto-generates
+        from Python attribute name.
+
+        Args:
+            attr_name: Name of the Python attribute
+
+        Returns:
+            XML tag name to use for this element
+        """
+        # Check for decorator override on the class attribute
+        attr = getattr(self.__class__, attr_name, None)
+        if attr:
+            # If it's a property, check the getter (fget) for the decorator
+            if isinstance(attr, property) and hasattr(attr.fget, '_xml_element_tag'):
+                return attr.fget._xml_element_tag
+            # Otherwise check the attribute directly
+            elif hasattr(attr, '_xml_element_tag'):
+                return attr._xml_element_tag
+
+        # Auto-generate from Python name
+        return NameConverter.to_xml_tag(attr_name)
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> ARObject:

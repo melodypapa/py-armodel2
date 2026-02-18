@@ -45,3 +45,23 @@ def xml_tag(tag_name: str) -> Callable[[Any], Any]:
         cls_or_func._xml_tag = tag_name  # type: ignore[union-attr]
         return cls_or_func
     return decorator
+
+
+def xml_element_tag(tag_name: str) -> Callable[[Any], Any]:
+    """Decorator to specify custom XML tag name for a class attribute/element.
+
+    Usage:
+        class CompuMethod(ARElement):
+            @xml_element_tag("COMPU-INTERNAL-TO-PHYS")
+            compu_internal_to_phys: Optional[Compu] = None
+
+    Args:
+        tag_name: Custom XML tag name to use for this element
+
+    Returns:
+        Decorator function that sets _xml_element_tag on the class attribute
+    """
+    def decorator(cls_or_func: Any) -> Any:
+        cls_or_func._xml_element_tag = tag_name  # type: ignore[union-attr]
+        return cls_or_func
+    return decorator
