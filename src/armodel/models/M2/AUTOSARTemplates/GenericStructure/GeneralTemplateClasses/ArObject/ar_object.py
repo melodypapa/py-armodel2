@@ -81,6 +81,7 @@ class ARObject:
                 # For ARPrimitive types, wrap with the correct tag name from parent context
                 # to avoid using the class name (e.g., LIMIT instead of LOWER-LIMIT)
                 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+                from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
                 if isinstance(value, ARPrimitive):
                     # Serialize the primitive but wrap it with the correct tag
                     serialized = value.serialize()
@@ -95,6 +96,12 @@ class ARObject:
                     for child in list(serialized):
                         wrapper.append(child)
                     elem.append(wrapper)
+                elif isinstance(value, AREnum):
+                    # For AREnum types, serialize the value using the parent attribute's tag
+                    # to use the correct XML element name (e.g., MONOTONY instead of MONOTONY-ENUM)
+                    child = ET.Element(xml_tag)
+                    child.text = str(value.value).upper()  # AREnum always uppercase
+                    elem.append(child)
                 else:
                     # For complex objects, serialize directly
                     child = value.serialize()

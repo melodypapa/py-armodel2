@@ -57,6 +57,7 @@ The project uses a reflection-based serialization framework that eliminates boil
 - `ARObject.serialize()` - Base method that uses reflection to discover attributes
 - `ARObject.deserialize()` - Class method that deserializes using type hints
 - `NameConverter` - Utility for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
+- `ModelFactory` - Factory for creating model instances from XML tags (supports polymorphic deserialization)
 - `@xml_attribute`, `@xml_tag()` - Decorators for edge cases
 
 **Each class defines**:
@@ -69,6 +70,11 @@ The project uses a reflection-based serialization framework that eliminates boil
 - Uses `get_type_hints()` for type information
 - Converts names automatically via NameConverter
 - Supports nested objects, lists, and primitives
+- **Polymorphic deserialization**: When an attribute is `Optional[BaseType]` and the XML contains a concrete implementation tag (e.g., `COMPU-SCALES` instead of `COMPU-CONTENT`), the framework uses `ModelFactory` to find and deserialize the concrete class
+
+**Custom serialize/deserialize**: Some classes override these methods for special handling:
+- **CompuMethod**: Custom `serialize()`/`deserialize()` to handle `compu_internal_to_phys` → `<COMPU-INTERNAL-TO-PHYS>` and `compu_phys_to_internal` → `<COMPU-PHYS-TO-INTERNAL>` tag names
+- Pattern: When child element tag must differ from parent attribute name, override `serialize()` to manually set the tag, and `deserialize()` to temporarily change the tag before calling the child's `deserialize()` method
 
 **Example**:
 ```python
@@ -160,6 +166,30 @@ The `ARObject.deserialize()` method uses dynamic class importing to handle circu
 - Dynamically imports classes by name using `_import_class_by_name()`
 
 This allows seamless deserialization even with complex circular dependencies.
+
+### Primitive and Enum Type Wrappers
+
+The codebase uses transparent wrapper types for AUTOSAR primitives and enumerations:
+
+**ARPrimitive**: Wraps primitive values (int, float, str, bool) with AUTOSAR type information
+- Automatically unwrapped to native Python types during deserialization
+- Transparently compares with native types: `ARPrimitive(5) == 5` returns `True`
+- Used when AUTOSAR specifies primitive types with constraints (e.g., positive integers)
+
+**AREnum**: Wraps enumeration values
+- Maintains enum identity for type safety
+- Transparently compares with string values: `AREnum("VALUE") == "VALUE"` returns `True`
+- All enum values use UPPER_SNAKE_CASE formatting (enforced by code generator)
+
+**Example**:
+```python
+# During deserialization, ARPrimitive is automatically unwrapped
+value = ar_object.some_int  # Returns int 42, not ARPrimitive(42)
+
+# Enum comparisons work transparently
+if ar_object.some_enum == "EXPECTED_VALUE":  # Works even if some_enum is AREnum
+    ...
+```
 
 ## Important Implementation Details
 

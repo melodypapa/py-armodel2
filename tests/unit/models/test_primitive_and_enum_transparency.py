@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.boolean import (
     Boolean,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit import (
+    Limit,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import (
+    IntervalTypeEnum,
+)
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.monotony_enum import (
+    MonotonyEnum,
+)
 
 
 class TestARPrimitiveTransparentEquality:
@@ -227,3 +236,174 @@ class TestARObjectExtractValueUnwrapping:
         assert result == "mostSignificantByteFirst", (
             "Enum should equal its string value"
         )
+
+
+class TestARPrimitiveWithAttributes:
+    """Tests for ARPrimitive types with additional attributes (e.g., Limit with interval_type)."""
+
+    def test_limit_with_interval_type_serialize(self) -> None:
+        """Test Limit serialization with interval_type attribute."""
+        limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
+        elem = limit.serialize()
+
+        assert elem.tag == "LIMIT"
+        assert elem.text == "100"
+        assert elem.get("INTERVAL-TYPE") == "CLOSED"
+
+    def test_limit_with_interval_type_deserialize(self) -> None:
+        """Test Limit deserialization with interval_type attribute."""
+        xml = '<LIMIT INTERVAL-TYPE="CLOSED">100</LIMIT>'
+        elem = ET.fromstring(xml)
+        limit = Limit.deserialize(elem)
+
+        assert limit.value == "100"
+        assert limit.interval_type == IntervalTypeEnum.CLOSED
+
+    def test_limit_with_open_interval_type(self) -> None:
+        """Test Limit serialization with OPEN interval_type."""
+        limit = Limit(value="50", interval_type=IntervalTypeEnum.OPEN)
+        elem = limit.serialize()
+
+        assert elem.get("INTERVAL-TYPE") == "OPEN"
+
+    def test_limit_without_interval_type(self) -> None:
+        """Test Limit serialization without interval_type (optional attribute)."""
+        limit = Limit(value="75")
+        elem = limit.serialize()
+
+        assert elem.text == "75"
+        assert elem.get("INTERVAL-TYPE") is None
+
+    def test_limit_round_trip_with_interval_type(self) -> None:
+        """Test Limit round-trip serialization with interval_type."""
+        # Arrange
+        original = Limit(value="200", interval_type=IntervalTypeEnum.CLOSED)
+
+        # Act - serialize and deserialize
+        elem = original.serialize()
+        restored = Limit.deserialize(elem)
+
+        # Assert
+        assert restored.value == original.value
+        assert restored.interval_type == original.interval_type
+        assert restored.interval_type == IntervalTypeEnum.CLOSED
+
+
+class TestAREnumUppercaseSerialization:
+    """Tests for AREnum uppercase serialization."""
+
+    def test_interval_type_enum_serializes_uppercase_closed(self) -> None:
+        """Test IntervalTypeEnum.CLOSED serializes as 'CLOSED'."""
+        enum_val = IntervalTypeEnum.CLOSED
+        elem = enum_val.serialize()
+
+        assert elem.text == "CLOSED", f"Expected 'CLOSED', got '{elem.text}'"
+
+    def test_interval_type_enum_serializes_uppercase_open(self) -> None:
+        """Test IntervalTypeEnum.OPEN serializes as 'OPEN'."""
+        enum_val = IntervalTypeEnum.OPEN
+        elem = enum_val.serialize()
+
+        assert elem.text == "OPEN"
+
+    def test_monotony_enum_serializes_uppercase(self) -> None:
+        """Test MonotonyEnum values serialize as uppercase."""
+        test_cases = [
+            (MonotonyEnum.STRICTLY_INCREASING, "STRICTLYINCREASING"),
+            (MonotonyEnum.STRICTLY_DECREASING, "STRICTLYDECREASING"),
+            (MonotonyEnum.MONOTONOUS, "MONOTONOUS"),
+            (MonotonyEnum.NO_MONOTONY, "NOMONOTONY"),
+        ]
+
+        for enum_val, expected_upper in test_cases:
+            elem = enum_val.serialize()
+            assert elem.text == expected_upper, f"Expected '{expected_upper}', got '{elem.text}'"
+
+
+class TestAREnumCaseInsensitiveDeserialization:
+    """Tests for AREnum case-insensitive deserialization."""
+
+    def test_interval_type_enum_deserialize_uppercase(self) -> None:
+        """Test IntervalTypeEnum deserialization with uppercase value."""
+        xml = '<INTERVAL-TYPE>CLOSED</INTERVAL-TYPE>'
+        elem = ET.fromstring(xml)
+        enum_val = IntervalTypeEnum.deserialize(elem)
+
+        assert enum_val == IntervalTypeEnum.CLOSED
+        assert enum_val.value == "closed"
+
+    def test_interval_type_enum_deserialize_lowercase(self) -> None:
+        """Test IntervalTypeEnum deserialization with lowercase value."""
+        xml = '<INTERVAL-TYPE>closed</INTERVAL-TYPE>'
+        elem = ET.fromstring(xml)
+        enum_val = IntervalTypeEnum.deserialize(elem)
+
+        assert enum_val == IntervalTypeEnum.CLOSED
+        assert enum_val.value == "closed"
+
+    def test_interval_type_enum_deserialize_mixed_case(self) -> None:
+        """Test IntervalTypeEnum deserialization with mixed case value."""
+        xml = '<INTERVAL-TYPE>Closed</INTERVAL-TYPE>'
+        elem = ET.fromstring(xml)
+        enum_val = IntervalTypeEnum.deserialize(elem)
+
+        assert enum_val == IntervalTypeEnum.CLOSED
+
+    def test_monotony_enum_deserialize_case_insensitive(self) -> None:
+        """Test MonotonyEnum deserialization is case-insensitive."""
+        test_cases = [
+            ('STRICTLYINCREASING', MonotonyEnum.STRICTLY_INCREASING),
+            ('strictlyincreasing', MonotonyEnum.STRICTLY_INCREASING),
+            ('StrictlyIncreasing', MonotonyEnum.STRICTLY_INCREASING),
+            ('noMonotony', MonotonyEnum.NO_MONOTONY),
+            ('NOMONOTONY', MonotonyEnum.NO_MONOTONY),
+        ]
+
+        for xml_value, expected_enum in test_cases:
+            xml = f'<MONOTONY>{xml_value}</MONOTONY>'
+            elem = ET.fromstring(xml)
+            enum_val = MonotonyEnum.deserialize(elem)
+            assert enum_val == expected_enum, f"Failed for '{xml_value}'"
+
+
+class TestARPrimitiveWithAttributesUnwrapping:
+    """Tests for ARObject._unwrap_primitive with primitives that have additional attributes."""
+
+    def test_unwrap_primitive_without_attributes_returns_value(self) -> None:
+        """Test unwrapping primitive without attributes returns value."""
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+            ARObject,
+        )
+
+        integer = Integer(42)
+        result = ARObject._unwrap_primitive(integer)
+
+        assert isinstance(result, int)
+        assert result == 42
+
+    def test_unwrap_primitive_with_attributes_returns_wrapper(self) -> None:
+        """Test unwrapping primitive with attributes returns wrapper."""
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+            ARObject,
+        )
+
+        limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
+        result = ARObject._unwrap_primitive(limit)
+
+        # Should return the Limit wrapper, not the value
+        assert isinstance(result, Limit)
+        assert result.value == "100"
+        assert result.interval_type == IntervalTypeEnum.CLOSED
+
+    def test_unwrap_primitive_with_none_attributes_returns_value(self) -> None:
+        """Test unwrapping primitive with None attributes returns value."""
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
+            ARObject,
+        )
+
+        limit = Limit(value="50", interval_type=None)
+        result = ARObject._unwrap_primitive(limit)
+
+        # Should return the value since interval_type is None
+        assert isinstance(result, str)
+        assert result == "50"

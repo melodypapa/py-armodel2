@@ -4,6 +4,8 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from enum import Enum
 
+from armodel.serialization.name_converter import NameConverter
+
 class AREnum(Enum):
     """Base class for all AUTOSAR enumeration types.
 
@@ -14,6 +16,16 @@ class AREnum(Enum):
     def __init__(self) -> None:
         """Initialize AREnum."""
         super().__init__()
+
+    def _get_xml_tag(self) -> str:
+        """Get XML tag name for this enum class.
+
+        Auto-generates from class name using NameConverter.
+
+        Returns:
+            XML tag name
+        """
+        return NameConverter.to_xml_tag(self.__class__.__name__)
 
     def serialize(self, namespace: str = "") -> ET.Element:
         """Serialize the enum to an XML element.
