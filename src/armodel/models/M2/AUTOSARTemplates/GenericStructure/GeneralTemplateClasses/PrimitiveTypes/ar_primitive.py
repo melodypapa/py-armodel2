@@ -1,10 +1,11 @@
 """ARPrimitive base class for all AUTOSAR primitive types."""
 
 from __future__ import annotations
-from typing import Optional, Any, get_type_hints
+from typing import Optional, Any, get_type_hints, Union
 import xml.etree.ElementTree as ET
 
 from armodel.serialization.name_converter import NameConverter
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
 class ARPrimitive:
     """Base class for all AUTOSAR primitive types.
@@ -69,7 +70,11 @@ class ARPrimitive:
             # Serialize as XML attribute
             if hasattr(value, 'value'):
                 # Handle primitive types with value attribute
-                elem.set(xml_tag, str(value.value))
+                # Check if it's an AREnum and convert to uppercase
+                if isinstance(value, AREnum):
+                    elem.set(xml_tag, str(value.value).upper())
+                else:
+                    elem.set(xml_tag, str(value.value))
             else:
                 elem.set(xml_tag, str(value))
 
@@ -121,8 +126,28 @@ class ARPrimitive:
 
             # Convert to appropriate type based on type hints
             if param_name in type_hints and attr_value is not None:
-                # Simple type conversion (can be enhanced for complex types)
-                attr_values[param_name] = str(attr_value)
+                attr_type = type_hints[param_name]
+                
+                # Unwrap Optional type if present
+                from typing import get_origin, get_args
+                origin = get_origin(attr_type)
+                if origin is Union:
+                    type_args = get_args(attr_type)
+                    # Get the first non-None type
+                    for arg in type_args:
+                        if arg is not type(None):
+                            attr_type = arg
+                            break
+                
+                # Check if it's an AREnum type
+                if isinstance(attr_type, type) and issubclass(attr_type, AREnum):
+                    # Deserialize as enum by creating a fake XML element
+                    fake_elem = ET.Element('TEMP')
+                    fake_elem.text = attr_value
+                    attr_values[param_name] = attr_type.deserialize(fake_elem)
+                else:
+                    # Simple type conversion for other types
+                    attr_values[param_name] = str(attr_value)
             elif attr_value is not None:
                 attr_values[param_name] = attr_value
 

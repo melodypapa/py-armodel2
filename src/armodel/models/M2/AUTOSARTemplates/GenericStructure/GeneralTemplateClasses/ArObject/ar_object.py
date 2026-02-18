@@ -78,8 +78,27 @@ class ARObject:
                 elem.set(xml_tag, str(value))
             elif hasattr(value, 'serialize'):
                 # Recursively serialize child objects
-                child = value.serialize()
-                elem.append(child)
+                # For ARPrimitive types, wrap with the correct tag name from parent context
+                # to avoid using the class name (e.g., LIMIT instead of LOWER-LIMIT)
+                from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+                if isinstance(value, ARPrimitive):
+                    # Serialize the primitive but wrap it with the correct tag
+                    serialized = value.serialize()
+                    # Create a wrapper element with the correct tag
+                    wrapper = ET.Element(xml_tag)
+                    # Copy attributes
+                    for attr_name, attr_value in serialized.attrib.items():
+                        wrapper.set(attr_name, attr_value)
+                    # Copy text content
+                    wrapper.text = serialized.text
+                    # Copy children (if any)
+                    for child in list(serialized):
+                        wrapper.append(child)
+                    elem.append(wrapper)
+                else:
+                    # For complex objects, serialize directly
+                    child = value.serialize()
+                    elem.append(child)
             elif isinstance(value, list):
                 # Serialize list items - create wrapper element
                 wrapper = ET.Element(xml_tag)
@@ -490,7 +509,20 @@ class ARObject:
         )
         # Unwrap ARPrimitive instances (but not AREnum)
         if isinstance(result, ARPrimitive):
-            return result.value
+            # Check if the primitive has additional attributes besides 'value'
+            # If so, don't unwrap it (e.g., Limit has interval_type attribute)
+            has_additional_attrs = False
+            for attr_name, attr_value in vars(result).items():
+                if not attr_name.startswith('_') and attr_name != 'value' and attr_value is not None:
+                    has_additional_attrs = True
+                    break
+            
+            if has_additional_attrs:
+                # Don't unwrap primitives with additional attributes
+                return result
+            else:
+                # Unwrap simple primitives
+                return result.value
         return result
 
     @staticmethod

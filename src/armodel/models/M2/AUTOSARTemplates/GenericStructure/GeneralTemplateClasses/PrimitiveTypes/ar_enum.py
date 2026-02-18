@@ -30,9 +30,9 @@ class AREnum(Enum):
         if namespace:
             elem.set("xmlns", namespace)
 
-        # Get the value from the enum
+        # Get the value from the enum and convert to uppercase
         if hasattr(self, 'value'):
-            elem.text = str(self.value)
+            elem.text = str(self.value).upper()
         return elem
 
     @classmethod
@@ -60,9 +60,15 @@ class AREnum(Enum):
             for attr_name in dir(cls):
                 if attr_name.isupper() and not attr_name.startswith('_'):
                     attr_value = getattr(cls, attr_name)
-                    if isinstance(attr_value, str) and attr_value.lower() == text.lower():
-                        # Create instance with the matching value
-                        return cls(attr_value)
+                    # Handle both string values and enum instances
+                    if isinstance(attr_value, str):
+                        if attr_value.lower() == text.lower():
+                            # Create instance with the matching value
+                            return cls(attr_value)
+                    elif hasattr(attr_value, 'value') and isinstance(attr_value.value, str):
+                        if attr_value.value.lower() == text.lower():
+                            # Return the enum instance directly
+                            return attr_value
 
             # Fallback: create a custom instance if no match found
             return cls(text)
