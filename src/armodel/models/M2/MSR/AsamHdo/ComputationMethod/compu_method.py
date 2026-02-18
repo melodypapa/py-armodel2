@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_MSR_AsamHdo_ComputationMethod.classes.json"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
-import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -51,12 +50,12 @@ class CompuMethod(ARElement):
         """Initialize CompuMethod."""
         super().__init__()
         self._compu_internal_to_phys: Optional[Compu] = None
-        self.compu_phys_to_internal: Optional[Compu] = None
+        self._compu_phys_to_internal: Optional[Compu] = None
         self.display_format: Optional[DisplayFormatString] = None
         self.unit: Optional[Unit] = None
 
     @property
-    @xml_element_tag("COMPU-INTERNAL-TO-PHYS")
+    @xml_element_tag("COMPU-INTERNAL-TO-PHYS", Compu)
     def compu_internal_to_phys(self) -> Optional[Compu]:
         """Get compu_internal_to_phys value."""
         return self._compu_internal_to_phys
@@ -65,6 +64,17 @@ class CompuMethod(ARElement):
     def compu_internal_to_phys(self, value: Optional[Compu]) -> None:
         """Set compu_internal_to_phys value."""
         self._compu_internal_to_phys = value
+
+    @property
+    @xml_element_tag("COMPU-PHYS-TO-INTERNAL", Compu)
+    def compu_phys_to_internal(self) -> Optional[Compu]:
+        """Get compu_phys_to_internal value."""
+        return self._compu_phys_to_internal
+
+    @compu_phys_to_internal.setter
+    def compu_phys_to_internal(self, value: Optional[Compu]) -> None:
+        """Set compu_phys_to_internal value."""
+        self._compu_phys_to_internal = value
 
 
 class CompuMethodBuilder:

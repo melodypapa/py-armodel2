@@ -20,6 +20,10 @@ skip_classes:
 
   # CompuMethod is a complex class with custom serialization logic with compuInternalToPhys
   - "CompuMethod"
+  - "Compu"
+  - "CompuScales"
+  - "CompuConst"
+  - "CompuConstTextContent"
 
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.

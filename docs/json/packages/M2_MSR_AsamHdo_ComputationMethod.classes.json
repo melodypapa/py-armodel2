@@ -532,7 +532,7 @@
         }
       ],
       "attributes": {
-        "compuConstContent": {
+        "compuConstContentType": {
           "type": "CompuConstContent",
           "multiplicity": "0..1",
           "kind": "attribute",

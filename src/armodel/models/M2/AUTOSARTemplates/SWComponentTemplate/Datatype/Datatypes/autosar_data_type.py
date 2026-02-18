@@ -37,11 +37,11 @@ class AutosarDataType(ARElement, ABC):
         """
         return True
 
-    sw_data_def: Optional[SwDataDefProps]
+    sw_data_def_props: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize AutosarDataType."""
         super().__init__()
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
 
 class AutosarDataTypeBuilder:
