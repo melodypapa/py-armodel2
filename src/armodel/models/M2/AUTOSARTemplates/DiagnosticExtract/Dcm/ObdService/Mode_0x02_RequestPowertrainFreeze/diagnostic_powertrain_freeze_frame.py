@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticPowertrainFreezeFrame."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     pids: list[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticPowertrainFreezeFrame."""

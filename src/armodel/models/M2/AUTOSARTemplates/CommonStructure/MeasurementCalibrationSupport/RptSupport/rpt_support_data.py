@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptSupportData(ARObject):
     """AUTOSAR RptSupportData."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     executions: list[RptExecutionContext]
     rpt_components: list[RptComponent]
     rpt_service_points: list[RptServicePoint]

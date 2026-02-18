@@ -23,11 +23,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
+from abc import ABC, abstractmethod
 
 
-class FrameTriggering(Identifiable):
+class FrameTriggering(Identifiable, ABC):
     """AUTOSAR FrameTriggering."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     frame: Optional[Frame]
     frame_ports: list[FramePort]

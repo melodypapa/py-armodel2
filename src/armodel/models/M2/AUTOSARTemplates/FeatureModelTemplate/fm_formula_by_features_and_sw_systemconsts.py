@@ -13,10 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
 )
+from abc import ABC, abstractmethod
 
 
-class FMFormulaByFeaturesAndSwSystemconsts(ARObject):
+class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
     """AUTOSAR FMFormulaByFeaturesAndSwSystemconsts."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     feature: Optional[FMFeature]
     def __init__(self) -> None:

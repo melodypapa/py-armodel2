@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class BswModuleDependency(Identifiable):
     """AUTOSAR BswModuleDependency."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     target_module_id: Optional[PositiveInteger]
     target_module: Optional[BswModuleDescription]
     def __init__(self) -> None:

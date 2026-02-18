@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TargetIPduRef(ARObject):
     """AUTOSAR TargetIPduRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_value: Optional[PduMappingDefaultValue]
     target_i_pdu: Optional[PduTriggering]
     def __init__(self) -> None:

@@ -53,6 +53,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class DdsCpQosProfile(Identifiable):
     """AUTOSAR DdsCpQosProfile."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     deadline: Optional[DdsDeadline]
     destination_order: Optional[DdsDestinationOrder]
     durability: Optional[DdsDurabilityService]

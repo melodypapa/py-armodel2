@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
 )
+from abc import ABC, abstractmethod
 
 
-class TpConfig(FibexElement):
+class TpConfig(FibexElement, ABC):
     """AUTOSAR TpConfig."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     communication_cluster: Optional[CommunicationCluster]
     def __init__(self) -> None:

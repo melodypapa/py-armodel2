@@ -28,6 +28,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class Entry(ARObject):
     """AUTOSAR Entry."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     align: Optional[AlignEnum]
     bgcolor: String
     colname: Optional[String]

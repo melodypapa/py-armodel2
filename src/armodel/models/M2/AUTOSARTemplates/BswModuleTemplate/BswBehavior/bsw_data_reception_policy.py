@@ -13,10 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class BswDataReceptionPolicy(ARObject):
+class BswDataReceptionPolicy(ARObject, ABC):
     """AUTOSAR BswDataReceptionPolicy."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     received_data: Optional[VariableDataPrototype]
     def __init__(self) -> None:

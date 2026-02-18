@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class MsrQueryP2(ARObject):
     """AUTOSAR MsrQueryP2."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     msr_query_props: MsrQueryProps
     msr_query_result: Optional[DocumentationBlock]
     def __init__(self) -> None:

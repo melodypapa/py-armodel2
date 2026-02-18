@@ -24,11 +24,20 @@ if TYPE_CHECKING:
         RunnableEntity,
     )
 
+from abc import ABC, abstractmethod
 
 
-class RTEEvent(AbstractEvent):
+class RTEEvent(AbstractEvent, ABC):
     """AUTOSAR RTEEvent."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     disabled_mode_instance_refs: list[ModeDeclaration]
     start_on_event: Optional[RunnableEntity]

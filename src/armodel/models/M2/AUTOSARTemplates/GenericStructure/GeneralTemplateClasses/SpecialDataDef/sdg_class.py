@@ -28,6 +28,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
 class SdgClass(SdgElementWithGid):
     """AUTOSAR SdgClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     attributes: list[SdgAttribute]
     caption: Optional[Boolean]
     extends_meta: Optional[MetaClassName]

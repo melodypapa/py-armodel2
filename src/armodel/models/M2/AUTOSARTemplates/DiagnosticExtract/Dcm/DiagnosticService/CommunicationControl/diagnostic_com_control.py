@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticComControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticComControl."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     com_control: Optional[DiagnosticComControl]
     custom_sub: Optional[PositiveInteger]
     def __init__(self) -> None:

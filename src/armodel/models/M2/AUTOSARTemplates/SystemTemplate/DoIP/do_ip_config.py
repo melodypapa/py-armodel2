@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_
 class DoIpConfig(ARObject):
     """AUTOSAR DoIpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     doip_interfaces: list[DoIpInterface]
     logic_address: Optional[DoIpLogicAddress]
     def __init__(self) -> None:

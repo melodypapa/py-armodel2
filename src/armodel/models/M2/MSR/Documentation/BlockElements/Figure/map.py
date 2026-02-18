@@ -22,6 +22,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.area import (
 class Map(ARObject):
     """AUTOSAR Map."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     area: Area
     class_: Optional[String]
     name: Optional[NameToken]

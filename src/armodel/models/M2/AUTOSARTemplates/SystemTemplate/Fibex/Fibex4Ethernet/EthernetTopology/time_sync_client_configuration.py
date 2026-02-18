@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class TimeSyncClientConfiguration(ARObject):
     """AUTOSAR TimeSyncClientConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ordered_masters: list[OrderedMaster]
     time_sync: Optional[TimeSyncTechnologyEnum]
     def __init__(self) -> None:

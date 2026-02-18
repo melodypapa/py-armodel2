@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
 class BswModeSwitchEvent(BswScheduleEvent):
     """AUTOSAR BswModeSwitchEvent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     activation: Optional[ModeActivationKind]
     def __init__(self) -> None:
         """Initialize BswModeSwitchEvent."""

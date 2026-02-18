@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class PortGroup(Identifiable):
     """AUTOSAR PortGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     inner_groups: list[PortGroup]
     outer_ports: list[PortPrototype]
     def __init__(self) -> None:

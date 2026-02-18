@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH.eth_t_syn_
 class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR EthGlobalTimeDomainProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crc_flags: Optional[EthTSynCrcFlags]
     destination: Optional[MacAddressString]
     fup_data_id_list: PositiveInteger

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class HttpTp(TransportProtocolConfiguration):
     """AUTOSAR HttpTp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     content_type: Optional[String]
     protocol_version: Optional[String]
     request_method_enum: Optional[Any]

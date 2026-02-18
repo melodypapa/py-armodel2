@@ -13,6 +13,11 @@ from .type_utils import (
 )
 
 
+# Base class names for AUTOSAR primitives and enums
+PRIMITIVE_BASE_CLASS = "ARPrimitive"
+ENUM_BASE_CLASS = "AREnum"
+
+
 def generate_class_code(
     type_def: dict,
     hierarchy_info: Dict[str, Dict[str, Any]],
@@ -305,6 +310,8 @@ def generate_class_code(
     # Generate class definition with ABC for abstract classes
     if is_abstract:
         # Abstract classes inherit from ABC
+        # Add abc import for abstract classes
+        code += "from abc import ABC, abstractmethod\n"
         if parent_class:
             code += f'''\n
 class {class_name}({parent_class}, ABC):
@@ -313,9 +320,9 @@ class {class_name}({parent_class}, ABC):
             code += f'''\n
 class {class_name}(ABC):
     """AUTOSAR {class_name}."""\n'''
-        # Add is_abstract abstract method for abstract classes
+        # Add is_abstract property for abstract classes
         code += '''
-    @abstractmethod
+    @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
 
@@ -335,8 +342,9 @@ class {class_name}({parent_class}):
             code += f'''\n
 class {class_name}:
     """AUTOSAR {class_name}."""\n'''
-        # Add concrete is_abstract method for non-abstract classes
+        # Add is_abstract property for non-abstract classes
         code += '''
+    @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
 
@@ -874,22 +882,21 @@ def generate_enum_code(enum_def: dict, json_file_path: str = "") -> str:
 
     docstring = "\n".join(docstring_lines)
 
-    # Generate enum code as a class inheriting from both EnumerationType and Enum
+    # Generate enum code as a class inheriting from AREnum only
+    # The serialize() and deserialize() methods are inherited from AREnum
     code = f'''"""{docstring}"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
-from enum import Enum
-import xml.etree.ElementTree as ET
 
-if TYPE_CHECKING:
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.enumeration_type import EnumerationType
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class {enum_name}(EnumerationType, Enum):
+class {enum_name}(AREnum):
     """AUTOSAR {enum_name} enumeration.
 
-    This enum inherits from both EnumerationType (for ARObject compatibility)
-    and Enum (for Python enumeration semantics).
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
     """
 
     def __init__(self, value: str) -> None:
@@ -898,37 +905,7 @@ class {enum_name}(EnumerationType, Enum):
         Args:
             value: The enum value as a string
         """
-        # Store the value for Enum
         self._value_ = value
-        # Initialize ARObject base
-        EnumerationType.__init__(self)
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "{enum_name}":
-        """Deserialize an XML element to an {enum_name} instance.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized {enum_name} enum value
-        """
-        if element.text:
-            # Try to find matching enum value (case-insensitive)
-            text = element.text.strip()
-            for member in cls:
-                if member.value.lower() == text.lower():
-                    return member
-            # Fallback: try direct creation
-            try:
-                return cls(text)
-            except ValueError:
-                # Create a custom instance if no match found
-                obj = cls.__new__(cls)
-                object.__setattr__(obj, '_value_', text)
-                EnumerationType.__init__(obj)
-                return obj
-        raise ValueError(f"Cannot deserialize {{cls.__name__}} from empty element")
 
 '''
 
@@ -952,29 +929,29 @@ class {enum_name}(EnumerationType, Enum):
 
     # Generate enum members from unique literals
     for literal in unique_literals:
-        literal_name = literal["name"].upper()
         literal_value = literal["name"]
+        # Convert enum member name to UPPER_SNAKE_CASE with underscores between words
+        literal_name = to_snake_case(literal_value).upper()
         code += f'    {literal_name} = "{literal_value}"\n'
 
     return code
 
 
 def generate_primitive_type_base() -> str:
-    """Generate the PrimitiveType base class code.
+    """Generate the ARPrimitive base class code.
 
     Returns:
         Generated Python code as string
     """
-    code = '''"""PrimitiveType base class for all AUTOSAR primitive types."""
+    code = '''"""ARPrimitive base class for all AUTOSAR primitive types."""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
-if TYPE_CHECKING:
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
-class PrimitiveType(ARObject):
+class ARPrimitive(ARObject):
     """Base class for all AUTOSAR primitive types.
 
     All primitive types (String, Integer, Float, etc.) inherit from this class.
@@ -985,7 +962,7 @@ class PrimitiveType(ARObject):
     """The underlying Python type for this primitive."""
 
     def __init__(self) -> None:
-        """Initialize PrimitiveType."""
+        """Initialize ARPrimitive."""
         super().__init__()
         self.value: Optional[Any] = None
 
@@ -1010,18 +987,37 @@ class PrimitiveType(ARObject):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "PrimitiveType":
-        """Deserialize an XML element to a PrimitiveType instance.
+    def deserialize(cls, element: ET.Element) -> "ARPrimitive":
+        """Deserialize an XML element to an ARPrimitive instance.
+
+        Automatically converts the text content to the appropriate Python type
+        based on the python_type class attribute.
 
         Args:
             element: XML element to deserialize from
 
         Returns:
-            Deserialized PrimitiveType instance
+            Deserialized ARPrimitive instance
         """
         obj = cls()
         if element.text:
-            obj.value = element.text
+            # Convert to the appropriate Python type based on python_type
+            if cls.python_type is str:
+                obj.value = element.text
+            elif cls.python_type is int:
+                try:
+                    obj.value = int(element.text)
+                except ValueError:
+                    obj.value = element.text  # Keep as string if conversion fails
+            elif cls.python_type is float:
+                try:
+                    obj.value = float(element.text)
+                except ValueError:
+                    obj.value = element.text
+            elif cls.python_type is bool:
+                obj.value = element.text.lower() in ('true', '1', 'yes')
+            else:
+                obj.value = element.text
         return obj
 
     def __str__(self) -> str:
@@ -1036,21 +1032,20 @@ class PrimitiveType(ARObject):
 
 
 def generate_enumeration_type_base() -> str:
-    """Generate the EnumerationType base class code.
+    """Generate the AREnum base class code.
 
     Returns:
         Generated Python code as string
     """
-    code = '''"""EnumerationType base class for all AUTOSAR enumeration types."""
+    code = '''"""AREnum base class for all AUTOSAR enumeration types."""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
-if TYPE_CHECKING:
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
-class EnumerationType(ARObject):
+class AREnum(ARObject):
     """Base class for all AUTOSAR enumeration types.
 
     All enumeration types inherit from this class.
@@ -1058,7 +1053,7 @@ class EnumerationType(ARObject):
     """
 
     def __init__(self) -> None:
-        """Initialize EnumerationType."""
+        """Initialize AREnum."""
         super().__init__()
 
     def serialize(self, namespace: str = "") -> ET.Element:
@@ -1082,24 +1077,29 @@ class EnumerationType(ARObject):
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "EnumerationType":
-        """Deserialize an XML element to an EnumerationType instance.
+    def deserialize(cls, element: ET.Element) -> "AREnum":
+        """Deserialize an XML element to an AREnum instance.
+
+        This base method should be overridden by concrete enum classes
+        to handle matching against specific enum members.
 
         Args:
             element: XML element to deserialize from
 
         Returns:
-            Deserialized EnumerationType instance
+            Deserialized AREnum instance
+
+        Raises:
+            ValueError: If element is empty
         """
         if element.text:
-            # Try to find matching enum value
-            text = element.text.strip()
-            for member in cls:
-                if member.value.lower() == text.lower():
-                    return member
             # Fallback: create a custom instance
+            # Subclasses should override this to match against their members
+            text = element.text.strip()
             obj = cls.__new__(cls)
             object.__setattr__(obj, '_value_', text)
+            # Initialize parent class (ARObject)
+            super(cls, obj).__init__()
             return obj
         raise ValueError(f"Cannot deserialize {{cls.__name__}} from empty element")
 
@@ -1109,7 +1109,7 @@ class EnumerationType(ARObject):
 
     def __repr__(self) -> str:
         """Return detailed string representation."""
-        return f"{self.__class__.__name__}.{self.name}"
+        return f"{self.__class__.__name__}.{self.name if hasattr(self, 'name') else self.value}"
 '''
     return code
 
@@ -1168,19 +1168,23 @@ def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> st
 
     python_type = primitive_type_map.get(primitive_name, "str")
 
-    # Generate primitive type code as a class inheriting from PrimitiveType
+    # Generate primitive type code as a class inheriting from ARPrimitive
+    # Note: deserialize() is inherited from ARPrimitive base class
     code = f'''"""{docstring}"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
-if TYPE_CHECKING:
-    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.primitive_type import PrimitiveType
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
 
 # {note}
-class {primitive_name}(PrimitiveType):
-    """AUTOSAR {primitive_name} primitive type."""
+class {primitive_name}(ARPrimitive):
+    """AUTOSAR {primitive_name} primitive type.
+
+    Inherits deserialize() from ARPrimitive which automatically converts
+    XML text content to the appropriate Python type based on python_type.
+    """
 
     python_type: type = {python_type}
     """The underlying Python type for this primitive."""
@@ -1193,37 +1197,6 @@ class {primitive_name}(PrimitiveType):
         """
         super().__init__()
         self.value: Optional[{python_type}] = value
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "{primitive_name}":
-        """Deserialize an XML element to a {primitive_name} instance.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized {primitive_name} instance
-        """
-        obj = cls()
-        if element.text:
-            # Convert to the appropriate Python type
-            if cls.python_type == str:
-                obj.value = element.text
-            elif cls.python_type == int:
-                try:
-                    obj.value = int(element.text)
-                except ValueError:
-                    obj.value = element.text  # Keep as string if conversion fails
-            elif cls.python_type == float:
-                try:
-                    obj.value = float(element.text)
-                except ValueError:
-                    obj.value = element.text
-            elif cls.python_type == bool:
-                obj.value = element.text.lower() in ('true', '1', 'yes')
-            else:
-                obj.value = element.text
-        return obj
 '''
 
     return code

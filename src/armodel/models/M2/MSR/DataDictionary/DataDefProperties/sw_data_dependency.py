@@ -18,6 +18,15 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
 class SwDataDependency(ARObject):
     """AUTOSAR SwDataDependency."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_data: Optional[CompuGenericMath]
     def __init__(self) -> None:
         """Initialize SwDataDependency."""

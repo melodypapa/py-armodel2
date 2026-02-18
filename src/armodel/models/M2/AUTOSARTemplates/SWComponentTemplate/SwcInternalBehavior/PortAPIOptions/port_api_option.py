@@ -31,6 +31,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class PortAPIOption(ARObject):
     """AUTOSAR PortAPIOption."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     enable_take: Optional[Boolean]
     error_handling: Optional[DataTransformation]
     indirect_api: Optional[Boolean]

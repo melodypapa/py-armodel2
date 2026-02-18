@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangua
 class Prms(Paginateable):
     """AUTOSAR Prms."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     label: Optional[MultilanguageLongName]
     prm: Any
     def __init__(self) -> None:

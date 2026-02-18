@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class RoleBasedPortAssignment(ARObject):
     """AUTOSAR RoleBasedPortAssignment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     port_prototype: Optional[PortPrototype]
     role: Optional[Identifier]
     def __init__(self) -> None:

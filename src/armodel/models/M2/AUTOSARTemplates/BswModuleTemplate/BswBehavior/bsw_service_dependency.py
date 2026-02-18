@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class BswServiceDependency(ServiceDependency):
     """AUTOSAR BswServiceDependency."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     assigned_datas: list[Any]
     assigned_entries: list[RoleBasedBswModuleEntryAssignment]
     ident: Optional[Any]

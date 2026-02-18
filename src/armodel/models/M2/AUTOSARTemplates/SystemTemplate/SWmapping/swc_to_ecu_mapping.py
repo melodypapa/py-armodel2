@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 class SwcToEcuMapping(Identifiable):
     """AUTOSAR SwcToEcuMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     components: list[Any]
     controlled_hw: Optional[HwElement]
     ecu_instance: Optional[EcuInstance]

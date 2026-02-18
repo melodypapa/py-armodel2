@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanTo
 class TDEventTTCanCycleStart(TDEventCycleStart):
     """AUTOSAR TDEventTTCanCycleStart."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tt_can_cluster: Optional[TtcanCluster]
     def __init__(self) -> None:
         """Initialize TDEventTTCanCycleStart."""

@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ParameterSwComponentType(SwComponentType):
     """AUTOSAR ParameterSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     constants: list[ConstantSpecification]
     data_types: list[DataTypeMappingSet]
     instantiation_data_defs: list[InstantiationDataDefProps]

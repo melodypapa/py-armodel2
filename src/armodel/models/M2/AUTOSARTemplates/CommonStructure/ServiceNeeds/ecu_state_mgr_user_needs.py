@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class EcuStateMgrUserNeeds(ServiceNeeds):
     """AUTOSAR EcuStateMgrUserNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize EcuStateMgrUserNeeds."""
         super().__init__()

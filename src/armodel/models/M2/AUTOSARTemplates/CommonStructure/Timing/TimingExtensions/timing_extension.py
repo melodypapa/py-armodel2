@@ -24,11 +24,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from abc import ABC, abstractmethod
 
 
-class TimingExtension(ARElement):
+class TimingExtension(ARElement, ABC):
     """AUTOSAR TimingExtension."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     timing_clocks: list[TimingClock]
     timing_clock_syncs: list[TimingClockSyncAccuracy]

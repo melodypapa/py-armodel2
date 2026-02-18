@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetCommunicationConnector(CommunicationConnector):
     """AUTOSAR EthernetCommunicationConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     eth_ip_props: Optional[EthIpProps]
     maximum: Optional[PositiveInteger]
     neighbor_cache: Optional[PositiveInteger]

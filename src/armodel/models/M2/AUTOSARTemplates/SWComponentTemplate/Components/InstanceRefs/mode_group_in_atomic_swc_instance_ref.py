@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class ModeGroupInAtomicSwcInstanceRef(ARObject):
+class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
     """AUTOSAR ModeGroupInAtomicSwcInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     base: Optional[AtomicSwComponentType]
     context_port: Optional[PortPrototype]

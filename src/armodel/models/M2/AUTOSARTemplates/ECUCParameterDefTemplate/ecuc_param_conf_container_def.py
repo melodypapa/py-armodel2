@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 class EcucParamConfContainerDef(EcucContainerDef):
     """AUTOSAR EcucParamConfContainerDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     parameters: list[EcucParameterDef]
     references: list[Any]
     sub_containers: list[EcucContainerDef]

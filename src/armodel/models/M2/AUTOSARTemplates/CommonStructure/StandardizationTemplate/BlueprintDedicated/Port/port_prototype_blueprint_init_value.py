@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class PortPrototypeBlueprintInitValue(ARObject):
     """AUTOSAR PortPrototypeBlueprintInitValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_prototype: AutosarDataPrototype
     value: ValueSpecification
     def __init__(self) -> None:

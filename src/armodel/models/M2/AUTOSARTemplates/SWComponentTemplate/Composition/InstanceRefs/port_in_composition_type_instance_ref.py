@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class PortInCompositionTypeInstanceRef(ARObject):
+class PortInCompositionTypeInstanceRef(ARObject, ABC):
     """AUTOSAR PortInCompositionTypeInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     abstract_context: Optional[Any]
     base: Optional[CompositionSwComponentType]

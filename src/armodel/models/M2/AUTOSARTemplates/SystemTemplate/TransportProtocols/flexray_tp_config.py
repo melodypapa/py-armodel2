@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class FlexrayTpConfig(TpConfig):
     """AUTOSAR FlexrayTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     pdu_pools: list[FlexrayTpPduPool]
     tp_addresses: list[TpAddress]
     tp_connections: list[FlexrayTpConnection]

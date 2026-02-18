@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class PModeInSystemInstanceRef(ARObject):
     """AUTOSAR PModeInSystemInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[System]
     context: Optional[RootSwCompositionPrototype]
     context_mode_group: Optional[ModeDeclarationGroup]

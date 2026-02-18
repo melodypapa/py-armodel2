@@ -46,14 +46,7 @@ def create_directory_structure(
         # Collect all exports for __all__
         exports = []
 
-        # Special handling for PrimitiveTypes package - include base classes
-        if package_path == "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::PrimitiveTypes":
-            # Add base class imports
-            init_content += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.primitive_type import (\n    PrimitiveType,\n)\n"
-            exports.append("PrimitiveType")
-            init_content += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.enumeration_type import (\n    EnumerationType,\n)\n"
-            exports.append("EnumerationType")
-            init_content += "\n"
+        
 
         # Check if this package has primitive types and export them
         if package_path in package_data and "primitives" in package_data[package_path]:

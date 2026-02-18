@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim import (
 class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
     """AUTOSAR DiagnosticFunctionIdentifierInhibit."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     function: Optional[Any]
     inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
     inhibit_sources: list[Any]

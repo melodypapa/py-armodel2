@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticDemProvidedDataMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_element: Optional[DiagnosticDataElement]
     data_provider: Optional[NameToken]
     def __init__(self) -> None:

@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Address,
     SymbolString,
 )
+from abc import ABC, abstractmethod
 
 
-class BinaryManifestAddressableObject(Identifiable):
+class BinaryManifestAddressableObject(Identifiable, ABC):
     """AUTOSAR BinaryManifestAddressableObject."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     address: Optional[Address]
     symbol: Optional[SymbolString]

@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SignalServiceTranslationPropsSet(ARElement):
     """AUTOSAR SignalServiceTranslationPropsSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     signal_service_propses: list[Any]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationPropsSet."""

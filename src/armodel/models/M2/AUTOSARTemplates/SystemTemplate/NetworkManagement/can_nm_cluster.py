@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanNmCluster(NmCluster):
     """AUTOSAR CanNmCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     nm_busload: Optional[Boolean]
     nm_car_wake_up: Optional[PositiveInteger]
     nm_car_wake_up_filter_node_id: Optional[PositiveInteger]

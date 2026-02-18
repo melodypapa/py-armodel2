@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LifeCyclePeriod(ARObject):
     """AUTOSAR LifeCyclePeriod."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ar_release: Optional[RevisionLabelString]
     date: Optional[DateTime]
     product_release: Optional[RevisionLabelString]

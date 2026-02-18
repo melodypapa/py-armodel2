@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeUds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     consider_pto: Optional[Boolean]
     dtc_props_props: Optional[DiagnosticTroubleCode]
     event_readiness: Optional[EventObdReadinessGroup]

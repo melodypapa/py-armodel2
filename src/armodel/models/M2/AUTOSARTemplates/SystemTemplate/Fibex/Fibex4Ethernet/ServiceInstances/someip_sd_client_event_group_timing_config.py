@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SomeipSdClientEventGroupTimingConfig(ARElement):
     """AUTOSAR SomeipSdClientEventGroupTimingConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     request: Optional[RequestResponseDelay]
     subscribe: Optional[PositiveInteger]
     time_to_live: Optional[PositiveInteger]

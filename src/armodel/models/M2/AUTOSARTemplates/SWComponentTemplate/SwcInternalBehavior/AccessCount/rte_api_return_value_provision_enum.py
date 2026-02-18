@@ -5,11 +5,26 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_AccessCount.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class RteApiReturnValueProvisionEnum(Enum):
-    """AUTOSAR RteApiReturnValueProvisionEnum enumeration."""
+class RteApiReturnValueProvisionEnum(AREnum):
+    """AUTOSAR RteApiReturnValueProvisionEnum enumeration.
 
-    NORETURNVALUEPROVIDED = "noReturnValueProvided"
-    RETURNVALUEPROVIDED = "returnValueProvided"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    NO_RETURN_VALUE_PROVIDED = "noReturnValueProvided"
+    RETURN_VALUE_PROVIDED = "returnValueProvided"

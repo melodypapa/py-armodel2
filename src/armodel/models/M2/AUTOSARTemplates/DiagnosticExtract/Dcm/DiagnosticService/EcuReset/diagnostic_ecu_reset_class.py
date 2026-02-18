@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticEcuResetClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticEcuResetClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     respond_to: Optional[DiagnosticResponseToEcuResetEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticEcuResetClass."""

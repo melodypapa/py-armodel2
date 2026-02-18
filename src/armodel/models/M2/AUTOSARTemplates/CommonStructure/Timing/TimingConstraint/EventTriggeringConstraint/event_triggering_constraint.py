@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from abc import ABC, abstractmethod
 
 
-class EventTriggeringConstraint(TimingConstraint):
+class EventTriggeringConstraint(TimingConstraint, ABC):
     """AUTOSAR EventTriggeringConstraint."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     event: Optional[TimingDescriptionEvent]
     def __init__(self) -> None:

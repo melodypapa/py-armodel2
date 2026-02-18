@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticEcuReset(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticEcuReset."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     custom_sub: Optional[PositiveInteger]
     ecu_reset_class: Optional[DiagnosticEcuReset]
     def __init__(self) -> None:

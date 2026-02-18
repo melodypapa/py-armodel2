@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
 class PostBuildVariantCriterion(ARElement):
     """AUTOSAR PostBuildVariantCriterion."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_method: CompuMethod
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterion."""

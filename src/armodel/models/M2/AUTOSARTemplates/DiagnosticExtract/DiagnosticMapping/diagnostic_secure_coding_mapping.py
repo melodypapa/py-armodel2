@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticSecureCodingMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticSecureCodingMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_identifiers: list[Any]
     validation: Optional[DiagnosticStartRoutine]
     def __init__(self) -> None:

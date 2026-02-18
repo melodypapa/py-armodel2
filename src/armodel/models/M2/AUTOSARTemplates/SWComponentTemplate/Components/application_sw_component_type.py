@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw
 class ApplicationSwComponentType(AtomicSwComponentType):
     """AUTOSAR ApplicationSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize ApplicationSwComponentType."""
         super().__init__()

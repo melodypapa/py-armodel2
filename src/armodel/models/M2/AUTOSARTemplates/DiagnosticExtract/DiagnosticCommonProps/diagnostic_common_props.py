@@ -29,6 +29,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticCommonProps(ARObject):
     """AUTOSAR DiagnosticCommonProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     authentication: Optional[TimeValue]
     debounces: list[Any]
     default: Optional[ByteOrderEnum]

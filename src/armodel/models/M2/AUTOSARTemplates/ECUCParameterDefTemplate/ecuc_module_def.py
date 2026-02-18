@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
 class EcucModuleDef(EcucDefinitionElement):
     """AUTOSAR EcucModuleDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     api_service_prefix: Optional[CIdentifier]
     containers: list[EcucContainerDef]
     post_build_variant: Optional[Boolean]

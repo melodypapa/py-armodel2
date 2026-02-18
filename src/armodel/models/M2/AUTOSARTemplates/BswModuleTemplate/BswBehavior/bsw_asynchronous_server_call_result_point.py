@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
     """AUTOSAR BswAsynchronousServerCallResultPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     asynchronous: Optional[Any]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""

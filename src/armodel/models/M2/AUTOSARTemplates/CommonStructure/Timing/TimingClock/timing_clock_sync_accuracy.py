@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timin
 class TimingClockSyncAccuracy(Identifiable):
     """AUTOSAR TimingClockSyncAccuracy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     accuracy: Optional[MultidimensionalTime]
     lower: Optional[TimingClock]
     upper: Optional[TimingClock]

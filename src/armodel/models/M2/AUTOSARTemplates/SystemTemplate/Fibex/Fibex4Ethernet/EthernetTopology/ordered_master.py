@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class OrderedMaster(ARObject):
     """AUTOSAR OrderedMaster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     index: Optional[PositiveInteger]
     time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
     def __init__(self) -> None:

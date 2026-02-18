@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_syst
 class SwSystemconstantValueSet(ARElement):
     """AUTOSAR SwSystemconstantValueSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sws: list[SwSystemconstValue]
     def __init__(self) -> None:
         """Initialize SwSystemconstantValueSet."""

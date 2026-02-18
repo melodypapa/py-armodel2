@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinSlave(ARObject):
     """AUTOSAR LinSlave."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     assign_nad: Optional[Boolean]
     configured_nad: Optional[Integer]
     function_id: Optional[PositiveInteger]

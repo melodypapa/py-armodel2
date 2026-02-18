@@ -33,6 +33,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argume
 class ClientServerOperation(Identifiable):
     """AUTOSAR ClientServerOperation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arguments: list[ArgumentDataPrototype]
     diag_arg_integrity: Optional[Boolean]
     possible_errors: list[ApplicationError]

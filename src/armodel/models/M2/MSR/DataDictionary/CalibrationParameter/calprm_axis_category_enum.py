@@ -5,13 +5,28 @@ References:
 
 JSON Source: packages/M2_MSR_DataDictionary_CalibrationParameter.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class CalprmAxisCategoryEnum(Enum):
-    """AUTOSAR CalprmAxisCategoryEnum enumeration."""
+class CalprmAxisCategoryEnum(AREnum):
+    """AUTOSAR CalprmAxisCategoryEnum enumeration.
 
-    COMAXIS = "comAxis"
-    FIXAXIS = "fixAXIS"
-    RESAXIS = "resAxis"
-    STDAXIS = "stdAxis"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    COM_AXIS = "comAxis"
+    FIX_AXIS = "fixAXIS"
+    RES_AXIS = "resAxis"
+    STD_AXIS = "stdAxis"

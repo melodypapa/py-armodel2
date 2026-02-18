@@ -53,6 +53,15 @@ if TYPE_CHECKING:
 class RunnableEntity(ExecutableEntity):
     """AUTOSAR RunnableEntity."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arguments: list[RunnableEntity]
     asynchronous_servers: list[Any]
     can_be_invoked: Optional[Boolean]

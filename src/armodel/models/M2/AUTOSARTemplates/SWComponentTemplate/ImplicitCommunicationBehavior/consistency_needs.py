@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicatio
 class ConsistencyNeeds(Identifiable):
     """AUTOSAR ConsistencyNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dpg_does_nots: list[DataPrototypeGroup]
     dpg_requireses: list[DataPrototypeGroup]
     reg_does_nots: list[RunnableEntityGroup]

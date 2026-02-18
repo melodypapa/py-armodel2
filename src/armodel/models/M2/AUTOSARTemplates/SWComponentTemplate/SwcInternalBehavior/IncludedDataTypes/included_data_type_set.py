@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class IncludedDataTypeSet(ARObject):
     """AUTOSAR IncludedDataTypeSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_types: list[AutosarDataType]
     literal_prefix: Optional[Identifier]
     def __init__(self) -> None:

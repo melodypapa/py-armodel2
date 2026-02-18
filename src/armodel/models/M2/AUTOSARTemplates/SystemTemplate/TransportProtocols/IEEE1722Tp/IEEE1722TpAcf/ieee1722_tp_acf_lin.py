@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfLin."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base_frequency: Optional[PositiveInteger]
     frame_sync_enabled: Optional[Boolean]
     timestamp: Optional[PositiveInteger]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IdsMgrNeeds(ServiceNeeds):
     """AUTOSAR IdsMgrNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     use_smart: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize IdsMgrNeeds."""

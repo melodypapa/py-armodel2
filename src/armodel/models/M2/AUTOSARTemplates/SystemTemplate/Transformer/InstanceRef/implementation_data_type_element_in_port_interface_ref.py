@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
     """AUTOSAR ImplementationDataTypeElementInPortInterfaceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     contexts: list[Any]
     root_data: Optional[AutosarDataPrototype]
     target: Optional[AbstractImplementationDataType]

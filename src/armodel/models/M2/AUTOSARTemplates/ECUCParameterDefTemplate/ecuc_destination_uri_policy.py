@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 class EcucDestinationUriPolicy(ARObject):
     """AUTOSAR EcucDestinationUriPolicy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     containers: list[EcucContainerDef]
     destination_uri: Optional[Any]
     parameters: list[EcucParameterDef]

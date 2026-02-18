@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class TDEventBswModule(TDEventBsw):
     """AUTOSAR TDEventBswModule."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_module_entry_entry: Optional[BswModuleEntry]
     td_event_bsw: Optional[TDEventBswModule]
     def __init__(self) -> None:

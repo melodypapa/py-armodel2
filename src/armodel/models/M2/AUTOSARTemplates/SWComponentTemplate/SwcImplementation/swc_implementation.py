@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcImplementation(Implementation):
     """AUTOSAR SwcImplementation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     behavior: Optional[SwcInternalBehavior]
     per_instance_memories: list[PerInstanceMemory]
     required: Optional[String]

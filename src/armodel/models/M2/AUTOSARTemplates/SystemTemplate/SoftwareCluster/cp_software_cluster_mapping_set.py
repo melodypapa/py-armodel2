@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.swc_to_applicat
 class CpSoftwareClusterMappingSet(ARElement):
     """AUTOSAR CpSoftwareClusterMappingSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     port_element_tos: list[PortElementToCommunicationResourceMapping]
     resource_tos: list[CpSoftwareCluster]
     software_clusters: list[Any]

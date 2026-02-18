@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
     """AUTOSAR RModeGroupInAtomicSWCInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
     target_mode: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:

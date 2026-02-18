@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.atp_blueprintable import (
     AtpBlueprintable,
 )
+from abc import ABC, abstractmethod
 
 
-class AtpBlueprintMapping(ARObject):
+class AtpBlueprintMapping(ARObject, ABC):
     """AUTOSAR AtpBlueprintMapping."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     atp_blueprint: AtpBlueprint
     atp_blueprinted: AtpBlueprintable

@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class SwCalprmRefProxy(ARObject):
     """AUTOSAR SwCalprmRefProxy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ar_parameter: Optional[AutosarParameterRef]
     mc_data_instance: Optional[McDataInstance]
     def __init__(self) -> None:

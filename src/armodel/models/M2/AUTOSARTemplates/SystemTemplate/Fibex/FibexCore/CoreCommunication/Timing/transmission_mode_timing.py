@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class TransmissionModeTiming(ARObject):
     """AUTOSAR TransmissionModeTiming."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cyclic_timing: Optional[CyclicTiming]
     event_controlled_timing_timing: Optional[EventControlledTiming]
     def __init__(self) -> None:

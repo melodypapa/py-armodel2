@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class MetaDataItemSet(ARObject):
     """AUTOSAR MetaDataItemSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_elements: list[VariableDataPrototype]
     meta_data_items: list[MetaDataItem]
     def __init__(self) -> None:

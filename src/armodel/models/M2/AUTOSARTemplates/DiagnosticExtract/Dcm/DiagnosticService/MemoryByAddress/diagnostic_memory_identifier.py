@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_
 class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticMemoryIdentifier."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     access: Optional[DiagnosticAccessPermission]
     id: Optional[PositiveInteger]
     memory_high: Optional[String]

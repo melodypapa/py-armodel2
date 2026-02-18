@@ -29,6 +29,15 @@ if TYPE_CHECKING:
 class HwElement(HwDescriptionEntity):
     """AUTOSAR HwElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hw_elements: list[HwElementConnector]
     hw_pin_groups: list[HwPinGroup]
     nested_elements: list[HwElement]

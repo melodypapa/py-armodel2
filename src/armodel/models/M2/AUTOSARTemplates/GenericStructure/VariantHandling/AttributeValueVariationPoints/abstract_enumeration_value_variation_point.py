@@ -14,10 +14,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifier,
     Ref,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractEnumerationValueVariationPoint(ARObject):
+class AbstractEnumerationValueVariationPoint(ARObject, ABC):
     """AUTOSAR AbstractEnumerationValueVariationPoint."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     base: Optional[Identifier]
     enum_table: Optional[Ref]

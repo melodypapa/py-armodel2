@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_multiplici
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_value_configuration_class import (
     EcucValueConfigurationClass,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucCommonAttributes(EcucDefinitionElement):
+class EcucCommonAttributes(EcucDefinitionElement, ABC):
     """AUTOSAR EcucCommonAttributes."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     multiplicities: list[EcucMultiplicityConfigurationClass]
     origin: Optional[String]

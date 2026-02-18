@@ -52,6 +52,15 @@ if TYPE_CHECKING:
 class BswModuleDescription(ARElement):
     """AUTOSAR BswModuleDescription."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_modules: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entries: list[BswModuleEntry]

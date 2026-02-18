@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
     """AUTOSAR J1939ControllerApplicationToJ1939NmNodeMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     j1939_controller: Optional[Any]
     j1939_nm_node: Optional[J1939NmNode]
     def __init__(self) -> None:

@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr_rul
 class DataConstr(ARElement):
     """AUTOSAR DataConstr."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_constr_rules: list[DataConstrRule]
     def __init__(self) -> None:
         """Initialize DataConstr."""

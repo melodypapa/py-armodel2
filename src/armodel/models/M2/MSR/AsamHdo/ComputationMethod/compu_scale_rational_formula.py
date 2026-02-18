@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs impor
 class CompuScaleRationalFormula(CompuScaleContents):
     """AUTOSAR CompuScaleRationalFormula."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_rational_coeffs: Optional[CompuRationalCoeffs]
     def __init__(self) -> None:
         """Initialize CompuScaleRationalFormula."""

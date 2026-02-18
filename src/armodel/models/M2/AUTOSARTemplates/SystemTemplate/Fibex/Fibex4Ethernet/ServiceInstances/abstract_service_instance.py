@@ -24,11 +24,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Obso
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.TagWithOptionalValue.tag_with_optional_value import (
     TagWithOptionalValue,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractServiceInstance(Identifiable):
+class AbstractServiceInstance(Identifiable, ABC):
     """AUTOSAR AbstractServiceInstance."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     capabilities: list[TagWithOptionalValue]
     major_version: Optional[PositiveInteger]

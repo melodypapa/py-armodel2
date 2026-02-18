@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanControllerFdConfiguration(ARObject):
     """AUTOSAR CanControllerFdConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     padding_value: Optional[PositiveInteger]
     prop_seg: Optional[PositiveInteger]
     ssp_offset: Optional[PositiveInteger]

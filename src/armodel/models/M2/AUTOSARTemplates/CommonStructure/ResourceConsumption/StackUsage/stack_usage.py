@@ -25,11 +25,20 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.software_context import (
     SoftwareContext,
 )
+from abc import ABC, abstractmethod
 
 
-class StackUsage(Identifiable):
+class StackUsage(Identifiable, ABC):
     """AUTOSAR StackUsage."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     executable_entity: Optional[ExecutableEntity]
     hardware: Optional[HardwareConfiguration]

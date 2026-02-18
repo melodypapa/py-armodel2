@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicato
 class DiagnosticConnectedIndicator(Identifiable):
     """AUTOSAR DiagnosticConnectedIndicator."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     behavior_indicator_behavior_enum: Optional[Any]
     healing_cycle: Optional[PositiveInteger]
     indicator: Optional[DiagnosticIndicator]

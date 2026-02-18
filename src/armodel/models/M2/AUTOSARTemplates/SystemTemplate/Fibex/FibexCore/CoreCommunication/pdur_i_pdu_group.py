@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class PdurIPduGroup(FibexElement):
     """AUTOSAR PdurIPduGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     communication: Optional[String]
     i_pdus: list[PduTriggering]
     def __init__(self) -> None:

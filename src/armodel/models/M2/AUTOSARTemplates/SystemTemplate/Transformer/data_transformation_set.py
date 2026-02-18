@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class DataTransformationSet(ARElement):
     """AUTOSAR DataTransformationSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     datas: list[DataTransformation]
     transformation_technologies: list[TransformationTechnology]
     def __init__(self) -> None:

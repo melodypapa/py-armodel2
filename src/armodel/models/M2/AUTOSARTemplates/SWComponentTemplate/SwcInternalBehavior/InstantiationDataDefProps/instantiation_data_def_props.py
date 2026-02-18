@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class InstantiationDataDefProps(ARObject):
     """AUTOSAR InstantiationDataDefProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     parameter: Optional[AutosarParameterRef]
     sw_data_def: Optional[SwDataDefProps]
     variable_instance: Optional[AutosarVariableRef]

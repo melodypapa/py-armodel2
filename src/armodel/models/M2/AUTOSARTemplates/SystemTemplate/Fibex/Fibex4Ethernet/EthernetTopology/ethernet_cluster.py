@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetCluster(ARObject):
     """AUTOSAR EthernetCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     coupling_port: Optional[TimeValue]
     mac_multicast_groups: list[MacMulticastGroup]
     def __init__(self) -> None:

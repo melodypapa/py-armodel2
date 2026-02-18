@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
     """AUTOSAR DiagnosticWriteDataByIdentifier."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     write_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifier."""

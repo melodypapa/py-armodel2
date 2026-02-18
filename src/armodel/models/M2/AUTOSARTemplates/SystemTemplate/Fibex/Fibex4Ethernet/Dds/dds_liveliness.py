@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsLiveliness(ARObject):
     """AUTOSAR DdsLiveliness."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     liveliness_lease: Optional[Float]
     liveness_kind: Optional[DdsLivenessKindEnum]
     def __init__(self) -> None:

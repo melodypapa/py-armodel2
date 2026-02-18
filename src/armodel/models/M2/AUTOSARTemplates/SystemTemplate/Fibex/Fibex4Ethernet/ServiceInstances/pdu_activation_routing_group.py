@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class PduActivationRoutingGroup(Identifiable):
     """AUTOSAR PduActivationRoutingGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     event_group: Optional[EventGroupControlTypeEnum]
     i_pdu_identifiers: list[SoConIPduIdentifier]
     def __init__(self) -> None:

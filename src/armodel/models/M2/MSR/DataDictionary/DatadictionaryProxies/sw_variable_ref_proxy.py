@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class SwVariableRefProxy(ARObject):
     """AUTOSAR SwVariableRefProxy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     autosar_variable_ref: Optional[AutosarVariableRef]
     mc_data_instance: Optional[McDataInstance]
     def __init__(self) -> None:

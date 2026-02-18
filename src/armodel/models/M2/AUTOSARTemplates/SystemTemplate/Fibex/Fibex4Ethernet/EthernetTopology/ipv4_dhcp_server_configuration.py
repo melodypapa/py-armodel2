@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4DhcpServerConfiguration(Describable):
     """AUTOSAR Ipv4DhcpServerConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     address_range: Optional[Ip4AddressString]
     default_gateway: Optional[Ip4AddressString]
     default_lease: Optional[TimeValue]

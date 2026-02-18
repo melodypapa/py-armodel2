@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SomeipSdServerServiceInstanceConfig(ARElement):
     """AUTOSAR SomeipSdServerServiceInstanceConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     initial_offer_behavior: Optional[InitialSdDelayConfig]
     offer_cyclic_delay: Optional[TimeValue]
     priority: Optional[PositiveInteger]

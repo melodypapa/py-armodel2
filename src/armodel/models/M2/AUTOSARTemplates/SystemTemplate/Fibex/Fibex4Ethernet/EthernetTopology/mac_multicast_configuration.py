@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class MacMulticastConfiguration(NetworkEndpointAddress):
     """AUTOSAR MacMulticastConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mac_multicast_group_group: Optional[MacMulticastGroup]
     def __init__(self) -> None:
         """Initialize MacMulticastConfiguration."""

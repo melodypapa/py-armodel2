@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
 class IdsDesign(ARElement):
     """AUTOSAR IdsDesign."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     elements: list[IdsCommonElement]
     def __init__(self) -> None:
         """Initialize IdsDesign."""

@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RunnableEntityGroup(Identifiable):
     """AUTOSAR RunnableEntityGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     runnable_entities: list[RunnableEntity]
     runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup]
     def __init__(self) -> None:

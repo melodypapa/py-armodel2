@@ -30,6 +30,15 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
 class SwCalprmAxis(ARObject):
     """AUTOSAR SwCalprmAxis."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category: Optional[CalprmAxisCategoryEnum]
     display_format_string: Optional[DisplayFormatString]
     sw_axis_index: Optional[AxisIndexType]

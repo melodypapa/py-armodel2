@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class CanTpEcu(ARObject):
     """AUTOSAR CanTpEcu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cycle_time_main: Optional[TimeValue]
     ecu_instance: Optional[EcuInstance]
     def __init__(self) -> None:

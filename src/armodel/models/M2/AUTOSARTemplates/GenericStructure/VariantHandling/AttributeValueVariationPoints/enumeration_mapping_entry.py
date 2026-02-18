@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EnumerationMappingEntry(ARObject):
     """AUTOSAR EnumerationMappingEntry."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     enumerator: NameToken
     numerical_value: PositiveInteger
     def __init__(self) -> None:

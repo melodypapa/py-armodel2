@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class ParameterAccess(AbstractAccessPoint):
     """AUTOSAR ParameterAccess."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     accessed_parameter: Optional[AutosarParameterRef]
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:

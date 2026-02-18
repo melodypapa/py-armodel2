@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
     """AUTOSAR SystemSignalGroupToCommunicationResourceMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     software_cluster: Optional[CpSoftwareCluster]
     system_signal_group: Optional[SystemSignalGroup]
     def __init__(self) -> None:

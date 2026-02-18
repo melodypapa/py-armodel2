@@ -5,23 +5,38 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class CycleRepetitionType(Enum):
-    """AUTOSAR CycleRepetitionType enumeration."""
+class CycleRepetitionType(AREnum):
+    """AUTOSAR CycleRepetitionType enumeration.
 
-    CYCLEREPETITION1 = "cycleRepetition1"
-    CYCLEREPETITION10 = "cycleRepetition10"
-    CYCLEREPETITION16 = "cycleRepetition16"
-    CYCLEREPETITION2 = "cycleRepetition2"
-    CYCLEREPETITION20 = "cycleRepetition20"
-    CYCLEREPETITION32 = "cycleRepetition32"
-    CYCLEREPETITION4 = "cycleRepetition4"
-    CYCLEREPETITION40 = "cycleRepetition40"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    CYCLE_REPETITION1 = "cycleRepetition1"
+    CYCLE_REPETITION10 = "cycleRepetition10"
+    CYCLE_REPETITION16 = "cycleRepetition16"
+    CYCLE_REPETITION2 = "cycleRepetition2"
+    CYCLE_REPETITION20 = "cycleRepetition20"
+    CYCLE_REPETITION32 = "cycleRepetition32"
+    CYCLE_REPETITION4 = "cycleRepetition4"
+    CYCLE_REPETITION40 = "cycleRepetition40"
     SYSTEM = "System"
     AUTOSAR = "AUTOSAR"
-    CYCLEREPETITION5 = "cycleRepetition5"
-    CYCLEREPETITION50 = "cycleRepetition50"
-    CYCLEREPETITION64 = "cycleRepetition64"
-    CYCLEREPETITION8 = "cycleRepetition8"
+    CYCLE_REPETITION5 = "cycleRepetition5"
+    CYCLE_REPETITION50 = "cycleRepetition50"
+    CYCLE_REPETITION64 = "cycleRepetition64"
+    CYCLE_REPETITION8 = "cycleRepetition8"

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecKayParticipant(Identifiable):
     """AUTOSAR MacSecKayParticipant."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ckn: Optional[CryptoServiceKey]
     crypto_algo: Optional[MacSecCryptoAlgoConfig]
     sak: Optional[CryptoServiceKey]

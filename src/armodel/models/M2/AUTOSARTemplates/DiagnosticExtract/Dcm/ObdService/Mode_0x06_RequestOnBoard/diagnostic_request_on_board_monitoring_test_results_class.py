@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticRequestOnBoardMonitoringTestResultsClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticRequestOnBoardMonitoringTestResultsClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResultsClass."""
         super().__init__()

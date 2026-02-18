@@ -5,11 +5,26 @@ References:
 
 JSON Source: packages/M2_MSR_Documentation_TextModel_LanguageDataModel.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class LEnum(Enum):
-    """AUTOSAR LEnum enumeration."""
+class LEnum(AREnum):
+    """AUTOSAR LEnum enumeration.
+
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
 
     AA = "aa"
     AB = "ab"
@@ -23,7 +38,7 @@ class LEnum(Enum):
     BE = "be"
     BG = "bg"
     BH = "bh"
-    AUTOSARBI = "AUTOSARbi"
+    AUTOSA_RBI = "AUTOSARbi"
     BN = "bn"
     BO = "bo"
     BR = "br"
@@ -45,7 +60,7 @@ class LEnum(Enum):
     FJ = "fj"
     FO = "fo"
     AUTOSAR = "AUTOSAR"
-    FORALL = "forAll"
+    FOR_ALL = "forAll"
     FR = "fr"
     FY = "fy"
     GA = "ga"

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
 class LinSporadicFrame(LinFrame):
     """AUTOSAR LinSporadicFrame."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     substituteds: list[LinUnconditionalFrame]
     def __init__(self) -> None:
         """Initialize LinSporadicFrame."""

@@ -20,11 +20,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.role_based_resource_dependency import (
     RoleBasedResourceDependency,
 )
+from abc import ABC, abstractmethod
 
 
-class CpSoftwareClusterResource(Identifiable):
+class CpSoftwareClusterResource(Identifiable, ABC):
     """AUTOSAR CpSoftwareClusterResource."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     dependents: list[RoleBasedResourceDependency]
     global_resource: Optional[PositiveInteger]

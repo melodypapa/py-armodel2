@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class TransformationPropsSet(ARElement):
     """AUTOSAR TransformationPropsSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     transformation_props_propses: list[TransformationProps]
     def __init__(self) -> None:
         """Initialize TransformationPropsSet."""

@@ -5,11 +5,26 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_Timing_TimingDescription_TimingDescription.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class TDEventBswModuleTypeEnum(Enum):
-    """AUTOSAR TDEventBswModuleTypeEnum enumeration."""
+class TDEventBswModuleTypeEnum(AREnum):
+    """AUTOSAR TDEventBswModuleTypeEnum enumeration.
 
-    BSWMENTRYCALLED = "bswMEntryCalled"
-    BSWMENTRYCALLRETURNED = "bswMEntryCallReturned"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    BSW_M_ENTRY_CALLED = "bswMEntryCalled"
+    BSW_M_ENTRY_CALL_RETURNED = "bswMEntryCallReturned"

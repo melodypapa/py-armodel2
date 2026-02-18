@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class Code(Identifiable):
     """AUTOSAR Code."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     artifacts: list[AutosarEngineeringObject]
     callback_headers: list[ServiceNeeds]
     def __init__(self) -> None:

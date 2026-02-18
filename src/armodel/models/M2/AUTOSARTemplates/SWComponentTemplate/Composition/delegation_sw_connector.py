@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class DelegationSwConnector(SwConnector):
     """AUTOSAR DelegationSwConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     inner_port_instance_ref: Optional[PortPrototype]
     outer_port: Optional[PortPrototype]
     def __init__(self) -> None:

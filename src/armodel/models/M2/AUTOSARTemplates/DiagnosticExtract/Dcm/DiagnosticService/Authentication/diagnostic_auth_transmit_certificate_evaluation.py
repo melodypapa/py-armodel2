@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
     """AUTOSAR DiagnosticAuthTransmitCertificateEvaluation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     evaluation_id: Optional[PositiveInteger]
     function: Optional[String]
     def __init__(self) -> None:

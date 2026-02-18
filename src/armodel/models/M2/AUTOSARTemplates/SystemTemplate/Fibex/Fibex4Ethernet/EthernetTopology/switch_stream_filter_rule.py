@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamFilterRule(Identifiable):
     """AUTOSAR SwitchStreamFilterRule."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_link_layer: Optional[StreamFilterRuleDataLinkLayer]
     ieee1722_tp: Optional[StreamFilterIEEE1722Tp]
     ip_tp_rule: Optional[StreamFilterRuleIpTp]

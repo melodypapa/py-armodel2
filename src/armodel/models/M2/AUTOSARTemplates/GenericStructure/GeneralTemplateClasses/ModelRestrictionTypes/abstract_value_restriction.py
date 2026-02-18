@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     RegularExpression,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractValueRestriction(ARObject):
+class AbstractValueRestriction(ARObject, ABC):
     """AUTOSAR AbstractValueRestriction."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     max: Optional[Limit]
     max_length: Optional[PositiveInteger]

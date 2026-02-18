@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class BswExclusiveAreaPolicy(ARObject):
     """AUTOSAR BswExclusiveAreaPolicy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     api_principle_enum: Optional[ApiPrincipleEnum]
     exclusive_area: Optional[ExclusiveArea]
     def __init__(self) -> None:

@@ -24,11 +24,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_props import (
     SymbolProps,
 )
+from abc import ABC, abstractmethod
 
 
-class AtomicSwComponentType(SwComponentType):
+class AtomicSwComponentType(SwComponentType, ABC):
     """AUTOSAR AtomicSwComponentType."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     internal_behavior: Optional[SwcInternalBehavior]
     symbol_props: Optional[SymbolProps]

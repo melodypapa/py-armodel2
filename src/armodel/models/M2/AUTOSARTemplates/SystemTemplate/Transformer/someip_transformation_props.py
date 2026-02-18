@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SOMEIPTransformationProps(TransformationProps):
     """AUTOSAR SOMEIPTransformationProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     alignment: Optional[PositiveInteger]
     size_of_array: Optional[PositiveInteger]
     size_of_string: Optional[PositiveInteger]

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip
 class SomeipTpConfig(TpConfig):
     """AUTOSAR SomeipTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_channels: list[SomeipTpChannel]
     tp_connections: list[SomeipTpConnection]
     def __init__(self) -> None:

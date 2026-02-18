@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class GlobalTimeCorrectionProps(ARObject):
     """AUTOSAR GlobalTimeCorrectionProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     offset_correction: Optional[TimeValue]
     rate_correction: Optional[TimeValue]
     rate_corrections: Optional[PositiveInteger]

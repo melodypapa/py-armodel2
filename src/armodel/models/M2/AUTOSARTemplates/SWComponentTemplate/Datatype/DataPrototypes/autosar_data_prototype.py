@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
     AutosarDataType,
 )
+from abc import ABC, abstractmethod
 
 
-class AutosarDataPrototype(DataPrototype):
+class AutosarDataPrototype(DataPrototype, ABC):
     """AUTOSAR AutosarDataPrototype."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     type: Optional[AutosarDataType]
     def __init__(self) -> None:

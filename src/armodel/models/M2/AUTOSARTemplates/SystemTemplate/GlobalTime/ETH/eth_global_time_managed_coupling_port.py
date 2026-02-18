@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthGlobalTimeManagedCouplingPort(ARObject):
     """AUTOSAR EthGlobalTimeManagedCouplingPort."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     coupling_port: Optional[CouplingPort]
     global_time_port_role: Optional[GlobalTimePortRoleEnum]
     global_time_tx_period: Optional[TimeValue]

@@ -22,8 +22,9 @@ class TestSwBaseType:
         obj = SwBaseType.deserialize(element)
 
         assert obj is not None
+        # short_name is now unwrapped to plain string
         assert obj.short_name == "float32"
-        assert obj.category == "FIXED_LENGTH"
+        assert str(obj.category) == "FIXED_LENGTH"
         assert obj.base_type_definition is not None
         assert obj.base_type_definition.base_type_size == "32"
         assert obj.base_type_definition.base_type_encoding == "IEEE754"
@@ -43,7 +44,7 @@ class TestSwBaseType:
         obj = SwBaseType.deserialize(element)
 
         assert obj is not None
-        assert obj.short_name == "float32"
+        assert str(obj.short_name) == "float32"
         # Nested format is handled by standard reflection-based deserializer
         # Just verify base_type_definition is created (polymorphic deserialization)
         assert obj.base_type_definition is not None
@@ -78,8 +79,8 @@ class TestSwBaseType:
         obj = SwBaseType.deserialize(element)
 
         assert obj is not None
-        assert obj.short_name == "void"
-        assert obj.category == "VOID"
+        assert str(obj.short_name) == "void"
+        assert str(obj.category) == "VOID"
         assert obj.base_type_definition is not None
         assert obj.base_type_definition.base_type_size is None
         assert obj.base_type_definition.base_type_encoding is None

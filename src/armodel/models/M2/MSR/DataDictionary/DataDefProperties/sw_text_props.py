@@ -27,6 +27,15 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import (
 class SwTextProps(ARObject):
     """AUTOSAR SwTextProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     array_size: Optional[ArraySizeSemanticsEnum]
     base_type: Optional[SwBaseType]
     sw_fill_character: Optional[Integer]

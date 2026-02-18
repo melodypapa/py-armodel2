@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TDEventTrigger(TDEventVfbPort):
     """AUTOSAR TDEventTrigger."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     td_event_trigger: Optional[TDEventTriggerTypeEnum]
     trigger: Optional[Trigger]
     def __init__(self) -> None:

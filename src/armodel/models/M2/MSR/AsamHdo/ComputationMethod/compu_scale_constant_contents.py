@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (
 class CompuScaleConstantContents(CompuScaleContents):
     """AUTOSAR CompuScaleConstantContents."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_const: Optional[CompuConst]
     def __init__(self) -> None:
         """Initialize CompuScaleConstantContents."""

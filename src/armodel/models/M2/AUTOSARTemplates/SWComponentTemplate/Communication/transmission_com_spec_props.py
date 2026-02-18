@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TransmissionComSpecProps(ARObject):
     """AUTOSAR TransmissionComSpecProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_update: Optional[TimeValue]
     minimum_send: Optional[TimeValue]
     transmission: Optional[Any]

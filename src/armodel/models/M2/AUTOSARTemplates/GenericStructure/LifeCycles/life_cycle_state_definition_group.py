@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 class LifeCycleStateDefinitionGroup(ARElement):
     """AUTOSAR LifeCycleStateDefinitionGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     lc_states: list[LifeCycleState]
     def __init__(self) -> None:
         """Initialize LifeCycleStateDefinitionGroup."""

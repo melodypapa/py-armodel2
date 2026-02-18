@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.can_nm_
 class CanNmClusterCoupling(NmClusterCoupling):
     """AUTOSAR CanNmClusterCoupling."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     coupled_clusters: list[CanNmCluster]
     nm_busload_reduction: Optional[Any]
     nm_immediate: Optional[Boolean]

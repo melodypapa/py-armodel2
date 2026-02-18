@@ -29,6 +29,15 @@ if TYPE_CHECKING:
 class SwAxisGrouped(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisGrouped."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     shared_axis_type: Optional[ApplicationPrimitiveDataType]
     sw_axis_index: Optional[AxisIndexType]
     sw_calprm_ref_proxy: SwCalprmRefProxy

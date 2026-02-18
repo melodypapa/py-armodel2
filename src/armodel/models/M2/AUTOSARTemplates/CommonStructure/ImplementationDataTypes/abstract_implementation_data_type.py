@@ -13,11 +13,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
     AutosarDataType,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractImplementationDataType(AutosarDataType):
+class AbstractImplementationDataType(AutosarDataType, ABC):
     """AUTOSAR AbstractImplementationDataType."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize AbstractImplementationDataType."""

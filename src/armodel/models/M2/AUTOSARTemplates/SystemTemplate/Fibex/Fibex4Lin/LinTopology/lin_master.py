@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopolo
 class LinMaster(ARObject):
     """AUTOSAR LinMaster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     lin_slaves: list[LinSlaveConfig]
     time_base: Optional[TimeValue]
     time_base_jitter: Optional[TimeValue]

@@ -13,11 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection_ident import (
     TpConnectionIdent,
 )
+from abc import ABC, abstractmethod
 
 
-class TpConnection(ARObject):
+class TpConnection(ARObject, ABC):
     """AUTOSAR TpConnection."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     ident: Optional[TpConnectionIdent]
     def __init__(self) -> None:

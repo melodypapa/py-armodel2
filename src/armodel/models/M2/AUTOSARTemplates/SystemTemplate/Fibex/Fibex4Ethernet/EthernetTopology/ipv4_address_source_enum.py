@@ -5,13 +5,28 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4Ethernet_EthernetTopology.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class Ipv4AddressSourceEnum(Enum):
-    """AUTOSAR Ipv4AddressSourceEnum enumeration."""
+class Ipv4AddressSourceEnum(AREnum):
+    """AUTOSAR Ipv4AddressSourceEnum enumeration.
 
-    AUTOIP = "autoIp"
-    AUTOIP_DOIP = "autoIp_doip"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    AUTO_IP = "autoIp"
+    AUTO_IP_DOIP = "autoIp_doip"
     DHCPV4 = "dhcpv4"
     FIXED = "fixed"

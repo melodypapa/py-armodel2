@@ -33,11 +33,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SoftwareComponentDoc
 from armodel.models.M2.MSR.AsamHdo.Units.unit_group import (
     UnitGroup,
 )
+from abc import ABC, abstractmethod
 
 
-class SwComponentType(ARElement):
+class SwComponentType(ARElement, ABC):
     """AUTOSAR SwComponentType."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     consistency_needses: list[ConsistencyNeeds]
     ports: list[PortPrototype]

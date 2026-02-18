@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class McSwEmulationMethodSupport(ARObject):
     """AUTOSAR McSwEmulationMethodSupport."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base_reference: Optional[VariableDataPrototype]
     category: Optional[Identifier]
     element_groups: list[McParameterElementGroup]

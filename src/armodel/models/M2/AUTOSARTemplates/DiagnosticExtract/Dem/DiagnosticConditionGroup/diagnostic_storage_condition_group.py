@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditio
 class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
     """AUTOSAR DiagnosticStorageConditionGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     storages: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionGroup."""

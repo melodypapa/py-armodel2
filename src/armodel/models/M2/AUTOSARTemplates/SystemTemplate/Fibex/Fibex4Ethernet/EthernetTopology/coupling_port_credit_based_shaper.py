@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortCreditBasedShaper(Identifiable):
     """AUTOSAR CouplingPortCreditBasedShaper."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     idle_slope: Optional[PositiveInteger]
     lower_boundary: Optional[PositiveInteger]
     upper_boundary: Optional[PositiveInteger]

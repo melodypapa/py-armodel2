@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.AdaptiveModule.platform_module_ethernet_endpoint_configuration import (
     PlatformModuleEthernetEndpointConfiguration,
 )
+from abc import ABC, abstractmethod
 
 
-class IdsPlatformInstantiation(Identifiable):
+class IdsPlatformInstantiation(Identifiable, ABC):
     """AUTOSAR IdsPlatformInstantiation."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     networks: list[PlatformModuleEthernetEndpointConfiguration]
     time_base_resource: Optional[Any]

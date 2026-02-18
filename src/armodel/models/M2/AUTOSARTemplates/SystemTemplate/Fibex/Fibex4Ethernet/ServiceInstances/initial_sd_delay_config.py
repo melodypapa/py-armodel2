@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class InitialSdDelayConfig(ARObject):
     """AUTOSAR InitialSdDelayConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     initial_delay_max: Optional[TimeValue]
     initial_delay_min: Optional[TimeValue]
     initial: Optional[PositiveInteger]

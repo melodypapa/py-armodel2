@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destinatio
 class EcucDestinationUriDefSet(ARElement):
     """AUTOSAR EcucDestinationUriDefSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     destination_uri_defs: list[EcucDestinationUriDef]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDefSet."""

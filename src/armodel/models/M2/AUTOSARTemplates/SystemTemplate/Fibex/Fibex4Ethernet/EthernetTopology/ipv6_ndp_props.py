@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6NdpProps(ARObject):
     """AUTOSAR Ipv6NdpProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_ip_ndp_default: Optional[TimeValue]
     tcp_ip_ndp_default_router_list_size: Optional[PositiveInteger]
     tcp_ip_ndp: Optional[Boolean]

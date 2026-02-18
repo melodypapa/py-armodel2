@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.someip
 class SomeipTpConnection(ARObject):
     """AUTOSAR SomeipTpConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_channel: Optional[SomeipTpChannel]
     tp_sdu: Optional[PduTriggering]
     transport_pdu: Optional[PduTriggering]

@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
+from abc import ABC, abstractmethod
 
 
-class GlobalTimeMaster(Identifiable):
+class GlobalTimeMaster(Identifiable, ABC):
     """AUTOSAR GlobalTimeMaster."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     communication_connector: Optional[CommunicationConnector]
     icv_secured: Optional[GlobalTimeIcvSupportEnum]

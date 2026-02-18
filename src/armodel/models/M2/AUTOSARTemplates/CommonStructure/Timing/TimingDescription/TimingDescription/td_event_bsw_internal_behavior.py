@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 class TDEventBswInternalBehavior(TimingDescriptionEvent):
     """AUTOSAR TDEventBswInternalBehavior."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_module_entity_entity: Optional[BswModuleEntity]
     td_event_bsw_behavior_type: Optional[Any]
     def __init__(self) -> None:

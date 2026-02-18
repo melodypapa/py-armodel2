@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_fail
 class ErrorTracerNeeds(ServiceNeeds):
     """AUTOSAR ErrorTracerNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     traced_failures: list[TracedFailure]
     def __init__(self) -> None:
         """Initialize ErrorTracerNeeds."""

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 class PassThroughSwConnector(SwConnector):
     """AUTOSAR PassThroughSwConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     provided_outer: Optional[AbstractProvidedPortPrototype]
     required_outer: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:

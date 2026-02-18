@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FlexrayTpPduPool(Identifiable):
     """AUTOSAR FlexrayTpPduPool."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     n_pdus: list[NPdu]
     def __init__(self) -> None:
         """Initialize FlexrayTpPduPool."""

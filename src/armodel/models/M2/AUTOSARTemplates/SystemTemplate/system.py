@@ -51,6 +51,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system_mapping import (
 class System(ARElement):
     """AUTOSAR System."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_ids: list[ClientIdDefinitionSet]
     container_i_pdu_header_byte: Optional[Any]
     ecu_extract_version: Optional[RevisionLabelString]

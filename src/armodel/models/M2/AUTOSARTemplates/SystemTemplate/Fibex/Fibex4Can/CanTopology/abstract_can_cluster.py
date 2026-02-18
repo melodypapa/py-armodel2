@@ -16,10 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.can_cluster_bus_off_recovery import (
     CanClusterBusOffRecovery,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractCanCluster(ARObject):
+class AbstractCanCluster(ARObject, ABC):
     """AUTOSAR AbstractCanCluster."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     bus_off_recovery: Optional[CanClusterBusOffRecovery]
     can_fd_baudrate: Optional[PositiveUnlimitedInteger]

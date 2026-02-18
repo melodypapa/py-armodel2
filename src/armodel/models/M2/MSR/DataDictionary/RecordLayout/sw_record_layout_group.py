@@ -29,6 +29,15 @@ from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
 class SwRecordLayoutGroup(ARObject):
     """AUTOSAR SwRecordLayoutGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category: Optional[AsamRecordLayoutSemantics]
     desc: Optional[MultiLanguageOverviewParagraph]
     short_label: Optional[Identifier]

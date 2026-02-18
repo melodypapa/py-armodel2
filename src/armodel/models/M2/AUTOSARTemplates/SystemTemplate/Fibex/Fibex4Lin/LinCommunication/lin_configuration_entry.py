@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopolo
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_slave_config_ident import (
     LinSlaveConfigIdent,
 )
+from abc import ABC, abstractmethod
 
 
-class LinConfigurationEntry(ScheduleTableEntry):
+class LinConfigurationEntry(ScheduleTableEntry, ABC):
     """AUTOSAR LinConfigurationEntry."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     assigned: Optional[LinSlave]
     assigned_lin: Optional[LinSlaveConfigIdent]

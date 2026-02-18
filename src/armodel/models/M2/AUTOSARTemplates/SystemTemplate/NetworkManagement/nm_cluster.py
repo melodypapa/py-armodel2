@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
 )
+from abc import ABC, abstractmethod
 
 
-class NmCluster(Identifiable):
+class NmCluster(Identifiable, ABC):
     """AUTOSAR NmCluster."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     communication_cluster: Optional[CommunicationCluster]
     nm_channel: Optional[Boolean]

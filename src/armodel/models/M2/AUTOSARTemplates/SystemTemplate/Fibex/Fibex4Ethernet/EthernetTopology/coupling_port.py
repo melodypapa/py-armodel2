@@ -41,6 +41,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPort(Identifiable):
     """AUTOSAR CouplingPort."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connection: Optional[EthernetConnectionNegotiationEnum]
     coupling_port_details: Optional[CouplingPortDetails]
     coupling_port_role_enum: Optional[CouplingPortRoleEnum]

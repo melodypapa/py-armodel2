@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.ECUResourceMapping.hw_por
 class ECUMapping(Identifiable):
     """AUTOSAR ECUMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     comm_controllers: list[Any]
     ecu: Optional[HwElement]
     ecu_instance: Optional[EcuInstance]

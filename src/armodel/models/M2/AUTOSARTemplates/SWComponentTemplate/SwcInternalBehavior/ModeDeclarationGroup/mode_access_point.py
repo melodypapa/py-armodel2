@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeAccessPoint(ARObject):
     """AUTOSAR ModeAccessPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ident: Optional[ModeAccessPointIdent]
     mode_group_instance_ref: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:

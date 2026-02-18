@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.do_i
 class DoIpTpConfig(TpConfig):
     """AUTOSAR DoIpTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     do_ip_logic_address_addresses: list[DoIpLogicAddress]
     tp_connections: list[DoIpTpConnection]
     def __init__(self) -> None:

@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_r
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef):
+class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
     """AUTOSAR EcucAbstractInternalReferenceDef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     requires: Optional[Boolean]
     def __init__(self) -> None:

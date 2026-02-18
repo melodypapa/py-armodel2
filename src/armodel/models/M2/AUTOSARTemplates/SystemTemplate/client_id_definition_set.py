@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.client_id_definition impo
 class ClientIdDefinitionSet(ARElement):
     """AUTOSAR ClientIdDefinitionSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_ids: list[ClientIdDefinition]
     def __init__(self) -> None:
         """Initialize ClientIdDefinitionSet."""

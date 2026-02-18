@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.Documentation.Chapters.topic_content_or_msr_query imp
 class Topic1(Paginateable):
     """AUTOSAR Topic1."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     help_entry: Optional[String]
     topic_content_or_msr: Optional[TopicContentOrMsrQuery]
     def __init__(self) -> None:

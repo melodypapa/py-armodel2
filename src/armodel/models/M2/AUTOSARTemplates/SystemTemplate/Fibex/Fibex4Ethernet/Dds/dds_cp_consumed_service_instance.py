@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
     """AUTOSAR DdsCpConsumedServiceInstance."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     consumed_ddses: list[DdsCpServiceInstance]
     local_unicast: Optional[ApplicationEndpoint]
     minor_version: Optional[AnyVersionString]

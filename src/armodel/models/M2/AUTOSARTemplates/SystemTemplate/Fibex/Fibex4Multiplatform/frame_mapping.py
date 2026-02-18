@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FrameMapping(ARObject):
     """AUTOSAR FrameMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     introduction: Optional[DocumentationBlock]
     source_frame: Optional[FrameTriggering]
     target_frame: Optional[FrameTriggering]

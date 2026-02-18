@@ -34,6 +34,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class PduTriggering(Identifiable):
     """AUTOSAR PduTriggering."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_pdu: Optional[Pdu]
     i_pdu_ports: list[IPduPort]
     i_signals: list[ISignalTriggering]

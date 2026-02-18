@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class AccessCountSet(ARObject):
     """AUTOSAR AccessCountSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     access_counts: list[AccessCount]
     count_profile: Optional[NameToken]
     def __init__(self) -> None:

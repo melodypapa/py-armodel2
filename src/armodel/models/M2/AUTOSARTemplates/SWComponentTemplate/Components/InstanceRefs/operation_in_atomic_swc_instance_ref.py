@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class OperationInAtomicSwcInstanceRef(ARObject):
+class OperationInAtomicSwcInstanceRef(ARObject, ABC):
     """AUTOSAR OperationInAtomicSwcInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     base: Optional[AtomicSwComponentType]
     context_port: Optional[PortPrototype]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TtcanCluster(ARObject):
     """AUTOSAR TtcanCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     basic_cycle_length: Optional[Integer]
     ntu: Optional[TimeValue]
     operation_mode: Optional[Boolean]

@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class BlueprintPolicyNotModifiable(BlueprintPolicy):
     """AUTOSAR BlueprintPolicyNotModifiable."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize BlueprintPolicyNotModifiable."""
         super().__init__()

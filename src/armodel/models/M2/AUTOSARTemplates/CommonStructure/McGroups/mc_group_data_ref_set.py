@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class McGroupDataRefSet(ARObject):
     """AUTOSAR McGroupDataRefSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     flat_map_entries: list[FlatInstanceDescriptor]
     mc_data_instances: list[McDataInstance]
     def __init__(self) -> None:

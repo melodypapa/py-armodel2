@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class ExternalTriggeringPoint(ARObject):
     """AUTOSAR ExternalTriggeringPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ident: Optional[ExternalTriggeringPoint]
     trigger: Optional[Trigger]
     def __init__(self) -> None:

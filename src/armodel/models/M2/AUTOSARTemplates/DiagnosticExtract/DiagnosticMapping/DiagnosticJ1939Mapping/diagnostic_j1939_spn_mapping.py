@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DiagnosticJ1939SpnMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticJ1939SpnMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sending_nodes: list[DiagnosticJ1939Node]
     spn: Optional[DiagnosticJ1939Spn]
     system_signal: Optional[SystemSignal]

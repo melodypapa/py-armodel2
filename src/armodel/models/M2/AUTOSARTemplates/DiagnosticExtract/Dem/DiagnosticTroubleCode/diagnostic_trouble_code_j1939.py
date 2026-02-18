@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
     """AUTOSAR DiagnosticTroubleCodeJ1939."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dtc_props_props: Optional[DiagnosticTroubleCode]
     fmi: Optional[PositiveInteger]
     kind: Optional[DiagnosticTroubleCode]

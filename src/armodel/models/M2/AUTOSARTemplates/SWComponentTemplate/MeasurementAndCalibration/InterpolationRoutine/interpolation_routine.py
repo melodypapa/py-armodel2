@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class InterpolationRoutine(ARObject):
     """AUTOSAR InterpolationRoutine."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     interpolation: Optional[BswModuleEntry]
     is_default: Optional[Boolean]
     short_label: Optional[Identifier]

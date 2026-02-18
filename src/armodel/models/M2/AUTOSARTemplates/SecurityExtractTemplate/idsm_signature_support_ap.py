@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class IdsmSignatureSupportAp(ARObject):
     """AUTOSAR IdsmSignatureSupportAp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crypto_primitive: String
     key_slot: Optional[CryptoKeySlot]
     def __init__(self) -> None:

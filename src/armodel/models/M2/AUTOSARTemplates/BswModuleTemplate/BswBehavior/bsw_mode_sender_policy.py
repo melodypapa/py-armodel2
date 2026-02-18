@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class BswModeSenderPolicy(ARObject):
     """AUTOSAR BswModeSenderPolicy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ack_request_request: Optional[BswModeSwitchAckRequest]
     enhanced_mode: Optional[Boolean]
     provided_mode: Optional[ModeDeclarationGroup]

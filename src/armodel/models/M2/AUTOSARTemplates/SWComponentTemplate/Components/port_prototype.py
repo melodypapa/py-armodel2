@@ -49,11 +49,20 @@ if TYPE_CHECKING:
         IoHwAbstractionServerAnnotation,
     )
 
+from abc import ABC, abstractmethod
 
 
-class PortPrototype(Identifiable):
+class PortPrototype(Identifiable, ABC):
     """AUTOSAR PortPrototype."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     client_servers: list[ClientServerAnnotation]
     delegated_port: Optional[DelegatedPortAnnotation]

@@ -33,6 +33,15 @@ if TYPE_CHECKING:
 class NmEcu(Identifiable):
     """AUTOSAR NmEcu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bus_dependent_nm_ecus: list[BusspecificNmEcu]
     ecu_instance: Optional[EcuInstance]
     nm_bus_synchronization: Optional[Any]

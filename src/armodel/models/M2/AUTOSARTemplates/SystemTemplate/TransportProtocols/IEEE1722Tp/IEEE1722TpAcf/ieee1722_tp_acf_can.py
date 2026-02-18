@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
     """AUTOSAR IEEE1722TpAcfCan."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     message_type_message_type_enum: Optional[IEEE1722TpAcfCan]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfCan."""

@@ -28,6 +28,15 @@ if TYPE_CHECKING:
 class ArrayValueSpecification(CompositeValueSpecification):
     """AUTOSAR ArrayValueSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     elements: list[ValueSpecification]
     intended_partial: Optional[PositiveInteger]
     def __init__(self) -> None:

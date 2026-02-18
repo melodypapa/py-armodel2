@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 class PortInterfaceMappingSet(ARElement):
     """AUTOSAR PortInterfaceMappingSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     port_interfaces: list[PortInterfaceMapping]
     def __init__(self) -> None:
         """Initialize PortInterfaceMappingSet."""

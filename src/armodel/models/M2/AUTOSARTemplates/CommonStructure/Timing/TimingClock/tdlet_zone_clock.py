@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TDLETZoneClock(TimingClock):
     """AUTOSAR TDLETZoneClock."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     accuracy_ext: Optional[MultidimensionalTime]
     accuracy_int: Optional[MultidimensionalTime]
     def __init__(self) -> None:

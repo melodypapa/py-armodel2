@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
 class ConstraintTailoring(RestrictionWithSeverity):
     """AUTOSAR ConstraintTailoring."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     constraint: Optional[TraceableText]
     def __init__(self) -> None:
         """Initialize ConstraintTailoring."""

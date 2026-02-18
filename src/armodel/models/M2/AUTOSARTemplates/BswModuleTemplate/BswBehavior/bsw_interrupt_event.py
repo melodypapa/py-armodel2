@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_event 
 class BswInterruptEvent(BswEvent):
     """AUTOSAR BswInterruptEvent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize BswInterruptEvent."""
         super().__init__()

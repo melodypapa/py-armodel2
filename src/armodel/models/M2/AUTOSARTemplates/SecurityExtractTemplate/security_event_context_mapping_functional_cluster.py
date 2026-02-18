@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
     """AUTOSAR SecurityEventContextMappingFunctionalCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     affected: String
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingFunctionalCluster."""

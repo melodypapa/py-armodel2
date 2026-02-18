@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_
 class MultiLanguageOverviewParagraph(ARObject):
     """AUTOSAR MultiLanguageOverviewParagraph."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     l2: LOverviewParagraph
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""

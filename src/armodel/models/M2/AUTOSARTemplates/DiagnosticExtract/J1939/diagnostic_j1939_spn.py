@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticJ1939Spn(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939Spn."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     spn: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Spn."""

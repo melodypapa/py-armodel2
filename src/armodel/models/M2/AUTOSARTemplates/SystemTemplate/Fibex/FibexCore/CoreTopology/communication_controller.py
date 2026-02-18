@@ -13,10 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
 
 
-class CommunicationController(ARObject):
+class CommunicationController(ARObject, ABC):
     """AUTOSAR CommunicationController."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     wake_up_by: Optional[Boolean]
     def __init__(self) -> None:

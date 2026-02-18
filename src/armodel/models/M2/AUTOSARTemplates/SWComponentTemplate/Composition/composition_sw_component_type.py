@@ -38,6 +38,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
 class CompositionSwComponentType(SwComponentType):
     """AUTOSAR CompositionSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     components: list[Any]
     connectors: list[SwConnector]
     constant_values: list[ConstantSpecification]

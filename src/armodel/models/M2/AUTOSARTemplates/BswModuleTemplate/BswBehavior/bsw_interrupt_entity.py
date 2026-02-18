@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BswInterruptEntity(BswModuleEntity):
     """AUTOSAR BswInterruptEntity."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     interrupt_category: Optional[BswInterruptCategory]
     interrupt_source: Optional[String]
     def __init__(self) -> None:

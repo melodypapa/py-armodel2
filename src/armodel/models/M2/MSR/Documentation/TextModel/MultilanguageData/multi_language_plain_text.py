@@ -18,6 +18,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_plain_tex
 class MultiLanguagePlainText(ARObject):
     """AUTOSAR MultiLanguagePlainText."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     l10: LPlainText
     def __init__(self) -> None:
         """Initialize MultiLanguagePlainText."""

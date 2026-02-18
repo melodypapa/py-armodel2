@@ -29,6 +29,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_lin_
 class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
     """AUTOSAR BusMirrorChannelMappingCan."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     can_id_ranges: list[BusMirrorCanIdRangeMapping]
     can_id_to_can_ids: list[BusMirrorCanIdToCanIdMapping]
     lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping]

@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.applic
 class ClientServerApplicationErrorMapping(ARObject):
     """AUTOSAR ClientServerApplicationErrorMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     first_application: Optional[ApplicationError]
     second: Optional[ApplicationError]
     def __init__(self) -> None:

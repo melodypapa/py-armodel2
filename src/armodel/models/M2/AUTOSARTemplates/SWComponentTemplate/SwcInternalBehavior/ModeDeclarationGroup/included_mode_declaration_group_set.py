@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class IncludedModeDeclarationGroupSet(ARObject):
     """AUTOSAR IncludedModeDeclarationGroupSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     modes: list[ModeDeclarationGroup]
     prefix: Optional[Identifier]
     def __init__(self) -> None:

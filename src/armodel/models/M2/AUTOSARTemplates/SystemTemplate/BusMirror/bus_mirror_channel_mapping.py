@@ -21,11 +21,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_chan
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
+from abc import ABC, abstractmethod
 
 
-class BusMirrorChannelMapping(FibexElement):
+class BusMirrorChannelMapping(FibexElement, ABC):
     """AUTOSAR BusMirrorChannelMapping."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     mirroring: Optional[MirroringProtocolEnum]
     source_channel: Optional[BusMirrorChannel]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class McFunction(ARElement):
     """AUTOSAR McFunction."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def_calprm_set: Optional[McFunctionDataRefSet]
     in_measurement: Optional[McFunctionDataRefSet]
     loc: Optional[McFunctionDataRefSet]

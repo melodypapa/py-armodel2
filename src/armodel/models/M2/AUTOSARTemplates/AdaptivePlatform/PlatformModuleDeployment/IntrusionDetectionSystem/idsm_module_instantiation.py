@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class IdsmModuleInstantiation(IdsPlatformInstantiation):
     """AUTOSAR IdsmModuleInstantiation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize IdsmModuleInstantiation."""
         super().__init__()

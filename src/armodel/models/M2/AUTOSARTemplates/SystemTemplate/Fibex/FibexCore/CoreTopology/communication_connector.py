@@ -23,11 +23,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.comm_connector_port import (
     CommConnectorPort,
 )
+from abc import ABC, abstractmethod
 
 
-class CommunicationConnector(Identifiable):
+class CommunicationConnector(Identifiable, ABC):
     """AUTOSAR CommunicationConnector."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     comm_controller: Optional[Any]
     create_ecu: Optional[Boolean]

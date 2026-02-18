@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
+from abc import ABC, abstractmethod
 
 
-class TriggerInAtomicSwcInstanceRef(ARObject):
+class TriggerInAtomicSwcInstanceRef(ARObject, ABC):
     """AUTOSAR TriggerInAtomicSwcInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     base: Optional[AtomicSwComponentType]
     context_port: Optional[PortPrototype]

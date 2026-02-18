@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractProvidedPortPrototype(PortPrototype):
+class AbstractProvidedPortPrototype(PortPrototype, ABC):
     """AUTOSAR AbstractProvidedPortPrototype."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     provided_coms: list[PPortComSpec]
     def __init__(self) -> None:

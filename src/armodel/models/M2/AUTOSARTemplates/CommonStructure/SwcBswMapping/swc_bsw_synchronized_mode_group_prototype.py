@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class SwcBswSynchronizedModeGroupPrototype(ARObject):
     """AUTOSAR SwcBswSynchronizedModeGroupPrototype."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_mode_group_prototype: Optional[ModeDeclarationGroup]
     swc_mode_group_swc_instance_ref: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:

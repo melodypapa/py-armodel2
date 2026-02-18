@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_content import (
 class Compu(ARObject):
     """AUTOSAR Compu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_content: Optional[CompuContent]
     compu_default: Optional[CompuConst]
     def __init__(self) -> None:

@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticMemoryDestination(DiagnosticCommonElement):
+class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
     """AUTOSAR DiagnosticMemoryDestination."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     aging_requires: Optional[Boolean]
     clear_dtc: Optional[Any]

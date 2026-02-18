@@ -18,10 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
+from abc import ABC, abstractmethod
 
 
-class CommunicationCluster(ARObject):
+class CommunicationCluster(ARObject, ABC):
     """AUTOSAR CommunicationCluster."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     baudrate: Optional[PositiveUnlimitedInteger]
     physical_channels: list[PhysicalChannel]

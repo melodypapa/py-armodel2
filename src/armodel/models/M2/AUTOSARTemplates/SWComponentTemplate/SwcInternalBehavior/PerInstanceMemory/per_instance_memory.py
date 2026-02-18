@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class PerInstanceMemory(Identifiable):
     """AUTOSAR PerInstanceMemory."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     init_value: Optional[String]
     sw_data_def: Optional[SwDataDefProps]
     type: Optional[CIdentifier]

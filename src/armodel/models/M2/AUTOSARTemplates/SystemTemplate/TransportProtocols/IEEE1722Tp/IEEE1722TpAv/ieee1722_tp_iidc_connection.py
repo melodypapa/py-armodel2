@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpIidcConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     iidc_channel: Optional[PositiveInteger]
     iidc_data_block: Optional[PositiveInteger]
     iidc_fraction: Optional[PositiveInteger]

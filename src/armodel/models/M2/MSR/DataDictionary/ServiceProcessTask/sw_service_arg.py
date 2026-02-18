@@ -33,6 +33,15 @@ if TYPE_CHECKING:
 class SwServiceArg(Identifiable):
     """AUTOSAR SwServiceArg."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     direction: Optional[ArgumentDirectionEnum]
     sw_arraysize: Optional[ValueList]
     sw_data_def: Optional[SwDataDefProps]

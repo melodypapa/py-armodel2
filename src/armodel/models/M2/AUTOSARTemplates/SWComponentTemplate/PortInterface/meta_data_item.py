@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.text_value_spe
 class MetaDataItem(ARObject):
     """AUTOSAR MetaDataItem."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     length: Optional[PositiveInteger]
     meta_data_item: Optional[TextValueSpecification]
     def __init__(self) -> None:

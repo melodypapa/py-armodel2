@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939Cluster(ARObject):
     """AUTOSAR J1939Cluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     network_id: Optional[PositiveInteger]
     request2_support: Optional[Boolean]
     uses_address: Optional[Boolean]

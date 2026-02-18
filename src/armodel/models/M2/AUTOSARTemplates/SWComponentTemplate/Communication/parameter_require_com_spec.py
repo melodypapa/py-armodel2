@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class ParameterRequireComSpec(RPortComSpec):
     """AUTOSAR ParameterRequireComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     init_value: Optional[ValueSpecification]
     parameter: Optional[ParameterDataPrototype]
     def __init__(self) -> None:

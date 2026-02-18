@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FirewallRule(ARElement):
     """AUTOSAR FirewallRule."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bucket_size: Optional[PositiveInteger]
     data_link_layer_rule: Optional[Any]
     dds_rule: Optional[Any]

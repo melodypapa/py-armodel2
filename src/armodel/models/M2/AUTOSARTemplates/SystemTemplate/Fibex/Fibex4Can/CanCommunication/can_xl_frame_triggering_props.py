@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanXlFrameTriggeringProps(ARObject):
     """AUTOSAR CanXlFrameTriggeringProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     acceptance_field: Optional[PositiveInteger]
     priority_id: Optional[PositiveInteger]
     sdu_type: Optional[PositiveInteger]

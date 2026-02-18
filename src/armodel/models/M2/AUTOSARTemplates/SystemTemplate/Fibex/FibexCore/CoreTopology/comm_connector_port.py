@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from abc import ABC, abstractmethod
 
 
-class CommConnectorPort(Identifiable):
+class CommConnectorPort(Identifiable, ABC):
     """AUTOSAR CommConnectorPort."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     communication: Optional[Any]
     def __init__(self) -> None:

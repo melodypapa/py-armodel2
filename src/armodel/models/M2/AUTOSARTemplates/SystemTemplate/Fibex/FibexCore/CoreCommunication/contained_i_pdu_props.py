@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ContainedIPduProps(ARObject):
     """AUTOSAR ContainedIPduProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     collection: Optional[Any]
     contained_pdu: Optional[PduTriggering]
     header_id_long: Optional[PositiveInteger]

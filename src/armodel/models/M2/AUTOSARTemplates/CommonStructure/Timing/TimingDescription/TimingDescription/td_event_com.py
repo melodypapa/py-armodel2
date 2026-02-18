@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
+from abc import ABC, abstractmethod
 
 
-class TDEventCom(TimingDescriptionEvent):
+class TDEventCom(TimingDescriptionEvent, ABC):
     """AUTOSAR TDEventCom."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     ecu_instance: Optional[EcuInstance]
     def __init__(self) -> None:

@@ -21,11 +21,20 @@ if TYPE_CHECKING:
         SwDataDefProps,
     )
 
+from abc import ABC, abstractmethod
 
 
-class DataPrototype(Identifiable):
+class DataPrototype(Identifiable, ABC):
     """AUTOSAR DataPrototype."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:

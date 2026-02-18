@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class VlanConfig(Identifiable):
     """AUTOSAR VlanConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     vlan_identifier: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize VlanConfig."""

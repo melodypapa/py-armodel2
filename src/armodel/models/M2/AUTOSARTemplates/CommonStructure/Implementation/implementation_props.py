@@ -17,11 +17,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
 )
+from abc import ABC, abstractmethod
 
 
-class ImplementationProps(Referrable):
+class ImplementationProps(Referrable, ABC):
     """AUTOSAR ImplementationProps."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     symbol: Optional[CIdentifier]
     def __init__(self) -> None:

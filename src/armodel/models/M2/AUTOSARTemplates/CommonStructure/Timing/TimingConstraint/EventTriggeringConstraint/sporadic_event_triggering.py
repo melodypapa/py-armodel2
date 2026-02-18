@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SporadicEventTriggering(EventTriggeringConstraint):
     """AUTOSAR SporadicEventTriggering."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     jitter: Optional[MultidimensionalTime]
     maximum_inter: Optional[MultidimensionalTime]
     minimum_inter: Optional[MultidimensionalTime]

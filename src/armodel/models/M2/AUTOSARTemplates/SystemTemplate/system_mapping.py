@@ -74,6 +74,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.system_si
 class SystemMapping(Identifiable):
     """AUTOSAR SystemMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     applications: list[ApplicationPartitionToEcuPartitionMapping]
     app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping]
     coms: list[ComManagementMapping]

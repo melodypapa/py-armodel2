@@ -11,11 +11,20 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from abc import ABC, abstractmethod
 
 
-class PPortComSpec(ARObject):
+class PPortComSpec(ARObject, ABC):
     """AUTOSAR PPortComSpec."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize PPortComSpec."""

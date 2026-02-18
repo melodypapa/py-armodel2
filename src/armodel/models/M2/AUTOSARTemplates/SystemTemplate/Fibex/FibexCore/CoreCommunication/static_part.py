@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class StaticPart(MultiplexedPart):
     """AUTOSAR StaticPart."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_pdu: Optional[ISignalIPdu]
     def __init__(self) -> None:
         """Initialize StaticPart."""

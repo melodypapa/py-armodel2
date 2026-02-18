@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender
 class QueuedSenderComSpec(SenderComSpec):
     """AUTOSAR QueuedSenderComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize QueuedSenderComSpec."""
         super().__init__()

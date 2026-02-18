@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.block_state impo
 class SecurityEventStateFilter(AbstractSecurityEventFilter):
     """AUTOSAR SecurityEventStateFilter."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     block_if_states: list[BlockState]
     def __init__(self) -> None:
         """Initialize SecurityEventStateFilter."""

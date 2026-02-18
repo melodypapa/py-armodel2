@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticReadDataByIdentifierClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_did_to_read: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByIdentifierClass."""

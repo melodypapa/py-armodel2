@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DynamicPart(MultiplexedPart):
     """AUTOSAR DynamicPart."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dynamic_parts: list[DynamicPartAlternative]
     def __init__(self) -> None:
         """Initialize DynamicPart."""

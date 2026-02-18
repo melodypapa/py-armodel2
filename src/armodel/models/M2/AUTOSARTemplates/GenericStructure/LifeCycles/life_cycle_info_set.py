@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_s
 class LifeCycleInfoSet(ARElement):
     """AUTOSAR LifeCycleInfoSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_lc_state: LifeCycleState
     default_period: Optional[LifeCyclePeriod]
     life_cycle_infos: list[LifeCycleInfo]

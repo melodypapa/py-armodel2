@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MsrQueryArg(ARObject):
     """AUTOSAR MsrQueryArg."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arg: String
     si: NameToken
     def __init__(self) -> None:

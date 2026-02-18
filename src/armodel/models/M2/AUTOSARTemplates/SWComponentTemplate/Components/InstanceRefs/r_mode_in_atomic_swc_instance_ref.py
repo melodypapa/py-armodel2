@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class RModeInAtomicSwcInstanceRef(ARObject):
     """AUTOSAR RModeInAtomicSwcInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[AtomicSwComponentType]
     context_mode_group_prototype: Optional[ModeDeclarationGroup]
     context_port_prototype: Optional[AbstractRequiredPortPrototype]

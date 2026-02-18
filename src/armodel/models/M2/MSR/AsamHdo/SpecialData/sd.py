@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Sd(ARObject):
     """AUTOSAR Sd."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     gid: NameToken
     value: VerbatimStringPlain
     xml_space: Optional[Any]

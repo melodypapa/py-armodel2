@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticCommonElement(ARElement):
+class DiagnosticCommonElement(ARElement, ABC):
     """AUTOSAR DiagnosticCommonElement."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize DiagnosticCommonElement."""

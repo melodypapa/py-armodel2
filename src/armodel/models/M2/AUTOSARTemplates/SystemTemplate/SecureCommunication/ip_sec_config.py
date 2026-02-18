@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class IPSecConfig(ARObject):
     """AUTOSAR IPSecConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ip_sec_config: Optional[IPSecConfigProps]
     ip_sec_rules: list[IPSecRule]
     def __init__(self) -> None:

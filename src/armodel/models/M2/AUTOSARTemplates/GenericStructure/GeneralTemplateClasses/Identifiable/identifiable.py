@@ -40,11 +40,20 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
 )
+from abc import ABC, abstractmethod
 
 
-class Identifiable(MultilanguageReferrable):
+class Identifiable(MultilanguageReferrable, ABC):
     """AUTOSAR Identifiable."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     admin_data: Optional[AdminData]
     annotations: list[Annotation]

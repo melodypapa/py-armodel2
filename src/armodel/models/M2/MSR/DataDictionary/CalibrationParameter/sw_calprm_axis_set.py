@@ -18,6 +18,15 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis im
 class SwCalprmAxisSet(ARObject):
     """AUTOSAR SwCalprmAxisSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_calprm_axises: list[SwCalprmAxis]
     def __init__(self) -> None:
         """Initialize SwCalprmAxisSet."""

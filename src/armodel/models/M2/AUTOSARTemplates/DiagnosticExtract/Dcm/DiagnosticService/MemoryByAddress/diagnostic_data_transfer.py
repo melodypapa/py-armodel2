@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticDataTransfer."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_transfer: Optional[DiagnosticDataTransfer]
     def __init__(self) -> None:
         """Initialize DiagnosticDataTransfer."""

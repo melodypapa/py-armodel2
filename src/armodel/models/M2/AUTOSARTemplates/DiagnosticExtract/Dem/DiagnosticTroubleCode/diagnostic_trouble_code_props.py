@@ -36,6 +36,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticFreezeFr
 class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCodeProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     aging: Optional[DiagnosticAging]
     diagnostic_memory: Optional[Any]
     extended_datas: list[DiagnosticExtendedDataRecord]

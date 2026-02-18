@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MacSecGlobalKayProps(ARElement):
     """AUTOSAR MacSecGlobalKayProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bypass_ether: PositiveInteger
     bypass_vlan: PositiveInteger
     def __init__(self) -> None:

@@ -13,11 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel import (
     LEnum,
 )
+from abc import ABC, abstractmethod
 
 
-class LanguageSpecific(ARObject):
+class LanguageSpecific(ARObject, ABC):
     """AUTOSAR LanguageSpecific."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     l: LEnum
     def __init__(self) -> None:

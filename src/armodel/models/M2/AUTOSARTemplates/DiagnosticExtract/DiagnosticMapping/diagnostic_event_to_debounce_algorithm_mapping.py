@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToDebounceAlgorithmMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     debounce: Optional[Any]
     diagnostic_event: Optional[DiagnosticEvent]
     def __init__(self) -> None:

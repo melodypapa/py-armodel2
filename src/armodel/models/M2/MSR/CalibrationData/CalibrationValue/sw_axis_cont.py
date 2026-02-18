@@ -33,6 +33,15 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class SwAxisCont(ARObject):
     """AUTOSAR SwAxisCont."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category: Optional[CalprmAxisCategoryEnum]
     sw_arraysize: Optional[ValueList]
     sw_axis_index: Optional[AxisIndexType]

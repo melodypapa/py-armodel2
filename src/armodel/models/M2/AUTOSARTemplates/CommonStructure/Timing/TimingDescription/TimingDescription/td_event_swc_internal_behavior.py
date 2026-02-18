@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class TDEventSwcInternalBehavior(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehavior."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     runnable: Optional[RunnableEntity]
     td_event_swc_behavior_type: Optional[Any]
     variable_access: Optional[VariableAccess]

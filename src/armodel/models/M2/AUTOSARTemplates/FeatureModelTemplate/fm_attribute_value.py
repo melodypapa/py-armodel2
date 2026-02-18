@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_def im
 class FMAttributeValue(ARObject):
     """AUTOSAR FMAttributeValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     definition: Optional[FMAttributeDef]
     value: Optional[Numerical]
     def __init__(self) -> None:

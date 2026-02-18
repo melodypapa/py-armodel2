@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class J1939NmNode(NmNode):
     """AUTOSAR J1939NmNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     address: Optional[J1939NmAddressConfigurationCapabilityEnum]
     node_name: Optional[J1939NodeName]
     def __init__(self) -> None:

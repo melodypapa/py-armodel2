@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_ro
 class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationUserDefined."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     auth_roles: list[DiagnosticAuthRole]
     memory_id: Optional[PositiveInteger]
     def __init__(self) -> None:

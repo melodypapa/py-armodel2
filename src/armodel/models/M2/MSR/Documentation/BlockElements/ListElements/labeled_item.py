@@ -29,6 +29,15 @@ if TYPE_CHECKING:
 class LabeledItem(Paginateable):
     """AUTOSAR LabeledItem."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     help_entry: Optional[String]
     item_contents: Optional[DocumentationBlock]
     item_label: MultiLanguageOverviewParagraph

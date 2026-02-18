@@ -36,6 +36,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanCo
 class CanFrameTriggering(FrameTriggering):
     """AUTOSAR CanFrameTriggering."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     absolutelies: list[TtcanAbsolutelyScheduledTiming]
     can_addressing: Optional[CanAddressingModeType]
     can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]

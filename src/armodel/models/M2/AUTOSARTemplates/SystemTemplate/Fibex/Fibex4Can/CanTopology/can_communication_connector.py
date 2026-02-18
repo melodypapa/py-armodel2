@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanCommunicationConnector(AbstractCanCommunicationConnector):
     """AUTOSAR CanCommunicationConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     pnc_wakeup_can: Optional[PositiveInteger]
     pnc_wakeup: Optional[PositiveUnlimitedInteger]
     pnc_wakeup_dlc: Optional[PositiveInteger]

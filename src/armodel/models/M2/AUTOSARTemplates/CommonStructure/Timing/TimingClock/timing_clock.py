@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_domain import (
     GlobalTimeDomain,
 )
+from abc import ABC, abstractmethod
 
 
-class TimingClock(Identifiable):
+class TimingClock(Identifiable, ABC):
     """AUTOSAR TimingClock."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     platform_time: Optional[GlobalTimeDomain]
     def __init__(self) -> None:

@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticRoutineSubfunction(Identifiable):
+class DiagnosticRoutineSubfunction(Identifiable, ABC):
     """AUTOSAR DiagnosticRoutineSubfunction."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     access: Optional[DiagnosticAccessPermission]
     def __init__(self) -> None:

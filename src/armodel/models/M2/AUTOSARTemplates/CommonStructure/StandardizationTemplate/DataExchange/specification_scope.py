@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class SpecificationScope(ARObject):
     """AUTOSAR SpecificationScope."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     specification_documents: list[SpecificationDocumentScope]
     def __init__(self) -> None:
         """Initialize SpecificationScope."""

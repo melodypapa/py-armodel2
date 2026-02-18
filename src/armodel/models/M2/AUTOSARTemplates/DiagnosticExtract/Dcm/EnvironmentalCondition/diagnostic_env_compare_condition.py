@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition import (
     DiagnosticCompareTypeEnum,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart):
+class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
     """AUTOSAR DiagnosticEnvCompareCondition."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     compare_type: Optional[DiagnosticCompareTypeEnum]
     def __init__(self) -> None:

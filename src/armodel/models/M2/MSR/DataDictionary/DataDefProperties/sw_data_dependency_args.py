@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_variable_ref_
 class SwDataDependencyArgs(ARObject):
     """AUTOSAR SwDataDependencyArgs."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_calprm_ref_proxy: Optional[SwCalprmRefProxy]
     sw_variable_ref_proxy: Optional[SwVariableRefProxy]
     def __init__(self) -> None:

@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
     """AUTOSAR DiagnosticExtendedDataRecord."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     custom_trigger: Optional[String]
     record_elements: list[DiagnosticParameter]
     record_number: Optional[PositiveInteger]

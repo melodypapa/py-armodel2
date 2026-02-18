@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CycleCounter(CommunicationCycle):
     """AUTOSAR CycleCounter."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cycle_counter: Optional[Integer]
     def __init__(self) -> None:
         """Initialize CycleCounter."""

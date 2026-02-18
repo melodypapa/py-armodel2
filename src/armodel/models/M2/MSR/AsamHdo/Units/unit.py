@@ -29,6 +29,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_lan
 class Unit(ARElement):
     """AUTOSAR Unit."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     display_name: Optional[SingleLanguageUnitNames]
     factor_si_to_unit: Optional[Float]
     offset_si_to_unit: Optional[Float]

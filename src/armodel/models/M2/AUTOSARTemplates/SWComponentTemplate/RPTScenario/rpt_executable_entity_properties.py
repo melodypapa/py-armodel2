@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RptExecutableEntityProperties(ARObject):
     """AUTOSAR RptExecutableEntityProperties."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_rpt_event_id: Optional[PositiveInteger]
     min_rpt_event_id: Optional[PositiveInteger]
     rpt_execution_control: Optional[RptExecutionControlEnum]

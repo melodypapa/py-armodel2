@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticFunctionInhibitSource(Identifiable):
     """AUTOSAR DiagnosticFunctionInhibitSource."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     event: Optional[Any]
     event_group: Optional[Any]
     def __init__(self) -> None:

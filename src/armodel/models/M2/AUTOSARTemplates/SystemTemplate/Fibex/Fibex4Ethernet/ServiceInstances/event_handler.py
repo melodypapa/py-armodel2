@@ -35,6 +35,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class EventHandler(Identifiable):
     """AUTOSAR EventHandler."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     consumed_event_groups: list[ConsumedEventGroup]
     event_group: Optional[PositiveInteger]
     event_multicast: Optional[ApplicationEndpoint]

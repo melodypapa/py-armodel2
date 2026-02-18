@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ModeSwitchEventTriggeredActivity(ARObject):
     """AUTOSAR ModeSwitchEventTriggeredActivity."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     role: Optional[Identifier]
     swc_mode_switch_event: Optional[SwcModeSwitchEvent]
     def __init__(self) -> None:

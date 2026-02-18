@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class BulkNvDataDescriptor(Identifiable):
     """AUTOSAR BulkNvDataDescriptor."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bulk_nv_block: Optional[VariableDataPrototype]
     nv_block_datas: list[NvBlockDataMapping]
     def __init__(self) -> None:

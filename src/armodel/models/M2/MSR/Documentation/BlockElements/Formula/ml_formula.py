@@ -30,6 +30,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class MlFormula(Paginateable):
     """AUTOSAR MlFormula."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     formula_caption: Optional[Caption]
     generic_math: Optional[MultiLanguagePlainText]
     l_graphics: list[LGraphic]

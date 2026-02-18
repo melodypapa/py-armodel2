@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SecureCommunicationProps(ARObject):
     """AUTOSAR SecureCommunicationProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     auth_data: Optional[PositiveInteger]
     authentication: Optional[PositiveInteger]
     data_id: Optional[PositiveInteger]

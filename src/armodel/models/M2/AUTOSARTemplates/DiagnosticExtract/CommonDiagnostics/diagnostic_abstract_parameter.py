@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
     DiagnosticDataElement,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticAbstractParameter(ARObject):
+class DiagnosticAbstractParameter(ARObject, ABC):
     """AUTOSAR DiagnosticAbstractParameter."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     bit_offset: Optional[PositiveInteger]
     data_element: Optional[DiagnosticDataElement]

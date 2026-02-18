@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResu
 class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestOnBoardMonitoringTestResults."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostic_test_results: list[DiagnosticTestResult]
     request_on: Optional[Any]
     def __init__(self) -> None:

@@ -15,10 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
     SwSystemconst,
 )
+from abc import ABC, abstractmethod
 
 
-class SwSystemconstDependentFormula(ARObject):
+class SwSystemconstDependentFormula(ARObject, ABC):
     """AUTOSAR SwSystemconstDependentFormula."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     sysc: Optional[SwSystemconst]
     sysc_string: Optional[SwSystemconst]

@@ -26,6 +26,15 @@ from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
 class SwSystemconstValue(ARObject):
     """AUTOSAR SwSystemconstValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     annotations: list[Annotation]
     sw_systemconst: SwSystemconst
     value: Numerical

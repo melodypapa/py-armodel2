@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_invocator import (
     BuildActionInvocator,
 )
+from abc import ABC, abstractmethod
 
 
-class BuildActionEntity(Identifiable):
+class BuildActionEntity(Identifiable, ABC):
     """AUTOSAR BuildActionEntity."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     delivery_artifacts: list[AutosarEngineeringObject]
     invocation: Optional[BuildActionInvocator]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
 class LogAndTraceMessageCollectionSet(ARElement):
     """AUTOSAR LogAndTraceMessageCollectionSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dlt_messages: list[DltMessage]
     def __init__(self) -> None:
         """Initialize LogAndTraceMessageCollectionSet."""

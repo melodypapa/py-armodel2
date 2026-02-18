@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class IdsmSignatureSupportCp(ARObject):
     """AUTOSAR IdsmSignatureSupportCp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     authentication: Optional[CryptoServicePrimitive]
     crypto_service_key: Optional[CryptoServiceKey]
     def __init__(self) -> None:

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_lim
 class IdsmProperties(IdsCommonElement):
     """AUTOSAR IdsmProperties."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rate_limitations: list[IdsmRateLimitation]
     traffic_limitations: list[IdsmTrafficLimitation]
     def __init__(self) -> None:

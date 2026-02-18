@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
 class ApplicationDeferredDataType(ApplicationDataType):
     """AUTOSAR ApplicationDeferredDataType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize ApplicationDeferredDataType."""
         super().__init__()

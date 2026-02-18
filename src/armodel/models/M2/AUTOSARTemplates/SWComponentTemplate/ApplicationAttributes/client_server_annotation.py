@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientServerAnnotation(GeneralAnnotation):
     """AUTOSAR ClientServerAnnotation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerAnnotation."""

@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UdpNmNode(NmNode):
     """AUTOSAR UdpNmNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     all_nm_messages: Optional[Boolean]
     nm_msg_cycle: Optional[TimeValue]
     def __init__(self) -> None:

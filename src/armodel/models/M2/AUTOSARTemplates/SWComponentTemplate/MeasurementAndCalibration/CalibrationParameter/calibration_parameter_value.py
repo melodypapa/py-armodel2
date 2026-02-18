@@ -25,6 +25,15 @@ if TYPE_CHECKING:
 class CalibrationParameterValue(ARObject):
     """AUTOSAR CalibrationParameterValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     appl_init_value: Optional[ValueSpecification]
     impl_init_value: Optional[ValueSpecification]
     initialized: Optional[FlatInstanceDescriptor]

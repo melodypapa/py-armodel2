@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class ArParameterInImplementationDataInstanceRef(ARObject):
     """AUTOSAR ArParameterInImplementationDataInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     context_datas: list[Any]
     port_prototype: Optional[PortPrototype]
     root_parameter: Optional[ParameterDataPrototype]

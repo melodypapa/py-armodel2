@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 class AnyInstanceRef(ARObject):
     """AUTOSAR AnyInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: AtpClassifier
     context_elements: list[AtpFeature]
     target: AtpFeature

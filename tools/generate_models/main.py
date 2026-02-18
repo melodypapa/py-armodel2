@@ -15,9 +15,7 @@ from .generators import (
     generate_builder_code,
     generate_class_code,
     generate_enum_code,
-    generate_enumeration_type_base,
     generate_primitive_code,
-    generate_primitive_type_base,
 )
 from .utils import create_directory_structure, to_snake_case
 from .type_utils import build_complete_dependency_graph
@@ -60,21 +58,7 @@ def generate_all_models(
     packages_dir = mapping_file.parent / "packages"
     package_data = load_all_package_data(packages_dir) if include_members else {}
 
-    # Generate base classes for primitives and enums first
-    if generate_primitives:
-        # Create PrimitiveTypes directory structure
-        primitive_types_dir = output_dir / "M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes"
-        primitive_types_dir.mkdir(parents=True, exist_ok=True)
-
-        # Generate primitive_type base class
-        primitive_type_file = primitive_types_dir / "primitive_type.py"
-        primitive_type_file.write_text(generate_primitive_type_base())
-        print("Generated PrimitiveType base class")
-
-        # Generate enumeration_type base class
-        enumeration_type_file = primitive_types_dir / "enumeration_type.py"
-        enumeration_type_file.write_text(generate_enumeration_type_base())
-        print("Generated EnumerationType base class")
+    
 
     if generate_classes:
         # Generate classes from mapping.json

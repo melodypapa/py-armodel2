@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class DataPrototypeTransformationProps(ARObject):
     """AUTOSAR DataPrototypeTransformationProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_prototype_in: Optional[DataPrototype]
     network: Optional[SwDataDefProps]
     transformation_props: Optional[TransformationProps]

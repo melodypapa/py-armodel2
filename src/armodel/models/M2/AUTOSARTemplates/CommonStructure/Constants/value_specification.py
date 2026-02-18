@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
+from abc import ABC, abstractmethod
 
 
-class ValueSpecification(ARObject):
+class ValueSpecification(ARObject, ABC):
     """AUTOSAR ValueSpecification."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     short_label: Optional[Identifier]
     def __init__(self) -> None:

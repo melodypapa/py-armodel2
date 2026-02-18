@@ -33,6 +33,15 @@ if TYPE_CHECKING:
 class FMFeature(ARElement):
     """AUTOSAR FMFeature."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     attribute_defs: list[FMAttributeDef]
     decomposition_decompositions: list[FMFeature]
     maximum: Optional[BindingTimeEnum]

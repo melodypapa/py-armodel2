@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_v
 class RtePluginProps(ARObject):
     """AUTOSAR RtePluginProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     associated: Optional[EcucContainerValue]
     associated_rte: Optional[EcucContainerValue]
     def __init__(self) -> None:

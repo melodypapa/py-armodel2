@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
     BswModuleDescription,
 )
+from abc import ABC, abstractmethod
 
 
-class TDEventBsw(TimingDescriptionEvent):
+class TDEventBsw(TimingDescriptionEvent, ABC):
     """AUTOSAR TDEventBsw."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     bsw_module_description: Optional[BswModuleDescription]
     def __init__(self) -> None:

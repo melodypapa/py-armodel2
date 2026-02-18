@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class ApplicationInterface(PortInterface):
     """AUTOSAR ApplicationInterface."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     attributes: list[Field]
     commands: list[ClientServerOperation]
     indications: list[VariableDataPrototype]

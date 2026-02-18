@@ -28,6 +28,15 @@ if TYPE_CHECKING:
 class SwSystemconst(ARElement):
     """AUTOSAR SwSystemconst."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SwSystemconst."""

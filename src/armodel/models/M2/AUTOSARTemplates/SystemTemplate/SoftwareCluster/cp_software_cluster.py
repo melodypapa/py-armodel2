@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 class CpSoftwareCluster(ARElement):
     """AUTOSAR CpSoftwareCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     software_cluster: Optional[PositiveInteger]
     sw_components: list[Any]
     sw_composition_component_types: list[CompositionSwComponentType]

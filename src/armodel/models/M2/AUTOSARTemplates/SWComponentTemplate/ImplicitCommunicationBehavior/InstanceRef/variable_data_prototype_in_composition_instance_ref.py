@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class VariableDataPrototypeInCompositionInstanceRef(ARObject):
     """AUTOSAR VariableDataPrototypeInCompositionInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[CompositionSwComponentType]
     context_port: Optional[PortPrototype]
     context_sws: list[Any]

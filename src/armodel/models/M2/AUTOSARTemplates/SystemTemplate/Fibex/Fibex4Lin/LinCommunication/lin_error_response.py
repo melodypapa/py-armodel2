@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class LinErrorResponse(ARObject):
     """AUTOSAR LinErrorResponse."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     response_error: Optional[ISignalTriggering]
     def __init__(self) -> None:
         """Initialize LinErrorResponse."""

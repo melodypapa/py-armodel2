@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class SwcServiceDependency(ServiceDependency):
     """AUTOSAR SwcServiceDependency."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     assigned_datas: list[Any]
     assigned_ports: list[RoleBasedPortAssignment]
     represented_port: Optional[PortGroup]

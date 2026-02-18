@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptExecutableEntity(Identifiable):
     """AUTOSAR RptExecutableEntity."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rpt_executable_entities: list[RptExecutableEntity]
     rpt_reads: list[RoleBasedMcDataAssignment]
     rpt_writes: list[RoleBasedMcDataAssignment]

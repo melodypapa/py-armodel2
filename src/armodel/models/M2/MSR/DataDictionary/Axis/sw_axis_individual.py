@@ -41,6 +41,15 @@ if TYPE_CHECKING:
 class SwAxisIndividual(SwCalprmAxisTypeProps):
     """AUTOSAR SwAxisIndividual."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_method: Optional[CompuMethod]
     data_constr: Optional[DataConstr]
     input_variable: Optional[ApplicationPrimitiveDataType]

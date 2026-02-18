@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CouplingPortRatePolicy(ARObject):
     """AUTOSAR CouplingPortRatePolicy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_length: Optional[PositiveInteger]
     policy_action: Optional[CouplingPortRatePolicy]
     priority: Optional[PositiveInteger]

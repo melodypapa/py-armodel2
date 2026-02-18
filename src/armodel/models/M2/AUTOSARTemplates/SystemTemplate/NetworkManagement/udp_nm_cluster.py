@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class UdpNmCluster(NmCluster):
     """AUTOSAR UdpNmCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     nm_cbv_position: Optional[Integer]
     nm_immediate: Optional[PositiveInteger]
     nm_message: Optional[TimeValue]

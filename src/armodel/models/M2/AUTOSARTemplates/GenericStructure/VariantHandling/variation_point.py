@@ -26,6 +26,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class VariationPoint(ARObject):
     """AUTOSAR VariationPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     blueprint: Optional[DocumentationBlock]
     sw_syscond: Optional[ConditionByFormula]
     def __init__(self) -> None:

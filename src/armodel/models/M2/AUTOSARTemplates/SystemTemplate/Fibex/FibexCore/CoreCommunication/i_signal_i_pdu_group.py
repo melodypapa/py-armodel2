@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalIPduGroup(FibexElement):
     """AUTOSAR ISignalIPduGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     communication: Optional[String]
     containeds: list[ISignalIPduGroup]
     i_signal_i_pdus: list[ISignalIPdu]

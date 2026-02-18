@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ieee1722TpEthernetFrame(AbstractEthernetFrame):
     """AUTOSAR Ieee1722TpEthernetFrame."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     relative: Optional[TimeValue]
     stream_identifier: Optional[PositiveInteger]
     sub_type: Optional[PositiveInteger]

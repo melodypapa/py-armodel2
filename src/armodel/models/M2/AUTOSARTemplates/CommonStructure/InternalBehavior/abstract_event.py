@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractEvent(Identifiable):
+class AbstractEvent(Identifiable, ABC):
     """AUTOSAR AbstractEvent."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     activation: Optional[ExecutableEntity]
     def __init__(self) -> None:

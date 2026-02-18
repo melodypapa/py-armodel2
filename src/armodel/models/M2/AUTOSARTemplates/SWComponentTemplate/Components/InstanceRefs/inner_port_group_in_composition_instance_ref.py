@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_grou
 class InnerPortGroupInCompositionInstanceRef(ARObject):
     """AUTOSAR InnerPortGroupInCompositionInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[CompositionSwComponentType]
     contexts: list[Any]
     target: Optional[PortGroup]

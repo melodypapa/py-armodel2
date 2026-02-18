@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_grou
 class ComManagementMapping(Identifiable):
     """AUTOSAR ComManagementMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     coms: list[PortGroup]
     physical_channels: list[PhysicalChannel]
     def __init__(self) -> None:

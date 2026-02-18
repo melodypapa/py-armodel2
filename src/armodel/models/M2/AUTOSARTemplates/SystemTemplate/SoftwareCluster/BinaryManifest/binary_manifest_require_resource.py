@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestRequireResource(BinaryManifestResource):
     """AUTOSAR BinaryManifestRequireResource."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connection_is: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BinaryManifestRequireResource."""

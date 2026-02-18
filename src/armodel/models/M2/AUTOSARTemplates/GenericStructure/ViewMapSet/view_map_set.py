@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.ViewMapSet.view_map imp
 class ViewMapSet(ARElement):
     """AUTOSAR ViewMapSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     view_maps: list[ViewMap]
     def __init__(self) -> None:
         """Initialize ViewMapSet."""

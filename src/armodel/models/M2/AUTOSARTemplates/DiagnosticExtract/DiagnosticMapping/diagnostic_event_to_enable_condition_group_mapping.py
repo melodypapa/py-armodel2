@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToEnableConditionGroupMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostic_event: Optional[DiagnosticEvent]
     enable_condition: Optional[Any]
     def __init__(self) -> None:

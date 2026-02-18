@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticReadDataByPeriodicIDClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_periodic_did: Optional[PositiveInteger]
     periodic_rates: list[DiagnosticPeriodicRate]
     scheduler_max: Optional[PositiveInteger]

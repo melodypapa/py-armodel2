@@ -8,8 +8,8 @@ This package generates Python model classes, enums, and primitives from AUTOSAR 
 
 The generator reads JSON schema files and produces Python code with:
 - **Classes**: AUTOSAR model classes with type hints, serialization/deserialization support
-- **Enums**: Enumeration types inheriting from `EnumerationType`
-- **Primitives**: Primitive types inheriting from `PrimitiveType`
+- **Enums**: Enumeration types inheriting from `AREnum`
+- **Primitives**: Primitive types inheriting from `ARPrimitive`
 
 Generated classes support:
 - Reflection-based XML serialization via `ARObject.serialize()`
@@ -27,7 +27,7 @@ generate_models/
 ├── generators.py     # Code generation functions
 ├── main.py           # CLI entry point
 ├── parsers.py        # JSON/YAML parsing functions
-├── type_utils.py     # Type-related utilities
+├── type_utils.py     # Type-related utilities and circular import detection
 └── utils.py          # Directory structure utilities
 ```
 
@@ -37,11 +37,10 @@ generate_models/
 
 ```bash
 # From the tools directory
-cd tools
-python -m generate_models <mapping.json> <hierarchy.json> <output_dir> [options]
+python -m tools.generate_models <mapping.json> <hierarchy.json> <output_dir> [options]
 
 # Example
-python -m generate_models ../docs/json/mapping.json ../docs/json/hierarchy.json ../src/armodel/models/ --members
+python -m tools.generate_models docs/json/mapping.json docs/json/hierarchy.json src/armodel/models/ --members
 ```
 
 ### Arguments
@@ -139,32 +138,64 @@ force_type_checking_imports:
 
 ## Generated Code Features
 
+### Reflection-Based Serialization
+
+All generated classes inherit from `ARObject` and support:
+- **Automatic serialization** via `serialize()` method
+- **XML deserialization** via `deserialize()` classmethod
+- **Automatic attribute discovery** using Python's `vars()` and `get_type_hints()`
+- **Name conversion** via `NameConverter` (snake_case ↔ UPPER-CASE-WITH-HYPHENS)
+
 ### Abstract Classes
 
-Abstract classes inherit from `ABC` and have an abstract `is_abstract()` method:
+Abstract classes inherit from `ABC` and have an `is_abstract` property:
 
 ```python
 from abc import ABC, abstractmethod
 
 class AbstractClass(ARObject, ABC):
-    @abstractmethod
+    @property
     def is_abstract(self) -> bool:
         return True
 ```
 
 ### Concrete Classes
 
-Concrete classes have a non-abstract `is_abstract()` method:
+Concrete classes have a non-abstract `is_abstract` property:
 
 ```python
 class ConcreteClass(ARObject):
+    @property
     def is_abstract(self) -> bool:
         return False
 ```
 
+### Type Hints and Multiplicity
+
+| AUTOSAR Multiplicity | Python Type | Initial Value |
+|---------------------|-------------|---------------|
+| `0..1` | `Optional[Type]` | `None` |
+| `1` | `Type` | `None` |
+| `*` | `list[Type]` | `[]` |
+
+### Circular Import Handling
+
+The generator automatically detects circular imports and places them in `TYPE_CHECKING` blocks:
+
+```python
+if TYPE_CHECKING:
+    from armodel.models.M2.SomePackage.some_class import (
+        SomeClass,
+    )
+```
+
+This is controlled by:
+- `force_type_checking_imports` in `skip_classes.yaml` for manual control
+- Automatic dependency graph analysis for detection
+
 ### Builder Pattern
 
-Each class has a corresponding builder:
+Each class has a corresponding builder for fluent construction:
 
 ```python
 obj = (ClassNameBuilder()
@@ -173,44 +204,77 @@ obj = (ClassNameBuilder()
        .build())
 ```
 
+### Documentation
+
+Generated classes include:
+- **PDF references** - Links to source PDF documentation (when available)
+- **JSON source** - Path to the JSON file containing the definition
+- **Type hints** - Full type annotations for all attributes
+
 ## Module Reference
 
 ### `generate_all_models()`
 
-Main entry point for code generation.
+Main entry point for code generation. Generates all model classes, enums, and primitives from JSON definitions with support for:
+
+- Class generation with circular import handling
+- Enum generation inheriting from `AREnum`
+- Primitive type generation inheriting from `ARPrimitive`
+- Member list inclusion from package definitions
+- Skip list support via `skip_classes.yaml`
 
 ### `parsers` Module
 
-- `parse_mapping_json()` - Parse mapping.json file
-- `parse_hierarchy_json()` - Parse hierarchy.json for class relationships
-- `parse_enum_json()` - Parse enum JSON files
-- `parse_primitive_json()` - Parse primitive JSON files
-- `load_skip_list()` - Load skip_classes.yaml configuration
-- `load_all_package_data()` - Load all package JSON files
+**JSON Parsing:**
+- `parse_mapping_json()` - Parse mapping.json file for type definitions
+- `parse_hierarchy_json()` - Parse hierarchy.json for class relationships and abstract markers
+- `parse_enum_json()` - Parse enum JSON files for enumeration literals
+- `parse_primitive_json()` - Parse primitive JSON files for type definitions
+
+**Configuration:**
+- `load_skip_list()` - Load skip_classes.yaml with classes to skip and force TYPE_CHECKING imports
+
+**Data Loading:**
+- `load_all_package_data()` - Load all package JSON files (*.classes.json, *.enums.json, *.primitives.json)
 
 ### `generators` Module
 
-- `generate_class_code()` - Generate Python class code
-- `generate_builder_code()` - Generate builder class code
-- `generate_enum_code()` - Generate enum code
+**Code Generation:**
+- `generate_class_code()` - Generate Python class code with full support for:
+  - Abstract and concrete classes
+  - Type hints with Optional, list, and Any types
+  - Circular import detection via TYPE_CHECKING blocks
+  - PDF source references in docstrings
+  - JSON file path documentation
+- `generate_builder_code()` - Generate builder class for fluent object construction
+- `generate_enum_code()` - Generate enum code with literals
 - `generate_primitive_code()` - Generate primitive type code
-- `generate_primitive_type_base()` - Generate PrimitiveType base class
-- `generate_enumeration_type_base()` - Generate EnumerationType base class
 
 ### `type_utils` Module
 
-- `is_primitive_type()` - Check if type is primitive
-- `is_enum_type()` - Check if type is enum
-- `get_python_type()` - Get Python type annotation for AUTOSAR type
-- `get_type_import_path()` - Get import path for a class
-- `build_complete_dependency_graph()` - Build dependency graph for circular import detection
-- `detect_circular_import()` - Detect circular import dependencies
+**Type Checking:**
+- `is_primitive_type()` - Check if type is defined in primitives JSON files
+- `is_enum_type()` - Check if type is defined in enums JSON files
+
+**Type Conversion:**
+- `get_python_type()` - Convert AUTOSAR type to Python type annotation:
+  - Handles multiplicity (0..1 → Optional, * → list, 1 → direct)
+  - Supports primitive types, class types, and Any for polymorphic types
+- `get_type_import_path()` - Generate block import statement for class types
+- `get_type_package_path()` - Get package path string for a class
+
+**Circular Import Detection:**
+- `build_complete_dependency_graph()` - Build complete dependency graph across all classes
+- `detect_circular_import()` - Detect circular import dependencies using depth-first search
 
 ### `utils` Module
 
-- `create_directory_structure()` - Create output directory structure
-- `to_snake_case()` - Convert CamelCase to snake_case
-- `get_python_identifier()` - Convert name to valid Python identifier
+- `create_directory_structure()` - Create output directory structure from type definitions
+- `to_snake_case()` - Convert CamelCase to snake_case for filenames
+
+### `_common` Module
+
+- `get_python_identifier()` - Convert AUTOSAR names to valid Python identifiers (handles keywords)
 
 ## Dependencies
 

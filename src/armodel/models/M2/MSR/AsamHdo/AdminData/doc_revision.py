@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.AsamHdo.AdminData.modification import (
 class DocRevision(ARObject):
     """AUTOSAR DocRevision."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     date: DateTime
     issued_by: Optional[String]
     modifications: list[Modification]

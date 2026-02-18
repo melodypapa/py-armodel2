@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform
 class IPduMapping(ARObject):
     """AUTOSAR IPduMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     introduction: Optional[DocumentationBlock]
     pdu_max_length: Optional[PositiveInteger]
     pdur_tp_chunk: Optional[PositiveInteger]

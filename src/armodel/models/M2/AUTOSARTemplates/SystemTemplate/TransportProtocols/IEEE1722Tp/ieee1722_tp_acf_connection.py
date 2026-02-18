@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpAcfConnection(IEEE1722TpConnection):
     """AUTOSAR IEEE1722TpAcfConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     acf_transporteds: list[IEEE1722TpAcfBus]
     collection: Optional[TimeValue]
     mixed_bus_type: Optional[Boolean]

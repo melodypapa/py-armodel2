@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entit
 class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
     """AUTOSAR ComplexDeviceDriverSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hardwares: list[HwDescriptionEntity]
     def __init__(self) -> None:
         """Initialize ComplexDeviceDriverSwComponentType."""

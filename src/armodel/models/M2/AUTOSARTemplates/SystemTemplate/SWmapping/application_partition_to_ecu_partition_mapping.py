@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.ecu_partition i
 class ApplicationPartitionToEcuPartitionMapping(Identifiable):
     """AUTOSAR ApplicationPartitionToEcuPartitionMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     applications: list[ApplicationPartition]
     ecu_partition: Optional[EcuPartition]
     def __init__(self) -> None:

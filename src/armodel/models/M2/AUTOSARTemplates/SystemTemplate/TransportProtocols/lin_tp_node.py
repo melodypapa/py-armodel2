@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class LinTpNode(Identifiable):
     """AUTOSAR LinTpNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connector: Optional[Any]
     drop_not: Optional[Boolean]
     max_number_of: Optional[Integer]

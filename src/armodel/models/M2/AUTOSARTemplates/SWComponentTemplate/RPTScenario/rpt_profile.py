@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RptProfile(Identifiable):
     """AUTOSAR RptProfile."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_service: Optional[PositiveInteger]
     min_service_point: Optional[PositiveInteger]
     service_point: Optional[CIdentifier]

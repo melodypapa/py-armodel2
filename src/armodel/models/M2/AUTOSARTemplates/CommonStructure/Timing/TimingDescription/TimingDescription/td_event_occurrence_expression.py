@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 class TDEventOccurrenceExpression(ARObject):
     """AUTOSAR TDEventOccurrenceExpression."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arguments: list[AutosarOperationArgumentInstance]
     formula: Optional[Any]
     modes: list[TimingModeInstance]

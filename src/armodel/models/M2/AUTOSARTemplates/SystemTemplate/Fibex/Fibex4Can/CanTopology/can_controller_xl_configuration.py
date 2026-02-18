@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanControllerXlConfiguration(ARObject):
     """AUTOSAR CanControllerXlConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     error_signaling: Optional[Boolean]
     prop_seg: Optional[PositiveInteger]
     pwm_l: Optional[PositiveInteger]

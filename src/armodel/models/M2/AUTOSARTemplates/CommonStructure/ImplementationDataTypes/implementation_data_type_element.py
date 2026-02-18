@@ -36,6 +36,15 @@ if TYPE_CHECKING:
 class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
     """AUTOSAR ImplementationDataTypeElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
     array_size: Optional[ArraySizeSemanticsEnum]
     array_size_handling: Optional[ArraySizeHandlingEnum]

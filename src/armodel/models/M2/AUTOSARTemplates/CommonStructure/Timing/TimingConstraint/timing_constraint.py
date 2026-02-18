@@ -15,11 +15,20 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
     TimingCondition,
 )
+from abc import ABC, abstractmethod
 
 
-class TimingConstraint(Traceable):
+class TimingConstraint(Traceable, ABC):
     """AUTOSAR TimingConstraint."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     timing_condition: Optional[TimingCondition]
     def __init__(self) -> None:

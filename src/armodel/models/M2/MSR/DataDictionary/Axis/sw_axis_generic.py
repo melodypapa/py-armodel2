@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.DataDictionary.Axis.sw_generic_axis_param import (
 class SwAxisGeneric(ARObject):
     """AUTOSAR SwAxisGeneric."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_axis_type: Optional[SwAxisType]
     sw_generic_axis_params: list[SwGenericAxisParam]
     def __init__(self) -> None:

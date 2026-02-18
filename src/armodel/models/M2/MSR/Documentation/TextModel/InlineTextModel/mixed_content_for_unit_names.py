@@ -13,10 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
     Superscript,
 )
+from abc import ABC, abstractmethod
 
 
-class MixedContentForUnitNames(ARObject):
+class MixedContentForUnitNames(ARObject, ABC):
     """AUTOSAR MixedContentForUnitNames."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     sub: Superscript
     sup: Superscript

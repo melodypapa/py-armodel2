@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeInBswInstanceRef(ARObject):
     """AUTOSAR ModeInBswInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     context_bsw: Optional[BswImplementation]
     context_mode: Optional[ModeDeclarationGroup]
     target_mode: Optional[ModeDeclaration]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
     """AUTOSAR DiagnosticMemoryDestinationPrimary."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationPrimary."""

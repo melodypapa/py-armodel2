@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DdsResourceLimits(ARObject):
     """AUTOSAR DdsResourceLimits."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_instances: Optional[PositiveInteger]
     max_samples: Optional[PositiveInteger]
     max_samples_per_instance: Optional[PositiveInteger]

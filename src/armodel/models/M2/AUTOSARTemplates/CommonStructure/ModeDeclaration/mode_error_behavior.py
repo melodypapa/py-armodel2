@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeErrorBehavior(ARObject):
     """AUTOSAR ModeErrorBehavior."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_mode: Optional[ModeDeclaration]
     error_reaction: Optional[ModeErrorReactionPolicyEnum]
     def __init__(self) -> None:

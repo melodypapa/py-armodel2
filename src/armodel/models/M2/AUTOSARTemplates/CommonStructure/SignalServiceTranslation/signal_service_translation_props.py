@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.PncMapping.pnc_mapping_id
 class SignalServiceTranslationProps(Identifiable):
     """AUTOSAR SignalServiceTranslationProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     controls: list[ConsumedEventGroup]
     control_pncs: list[PncMappingIdent]
     control_provideds: list[EventHandler]

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class Ipv4Props(ARObject):
     """AUTOSAR Ipv4Props."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arp_props: Optional[Ipv4ArpProps]
     auto_ip_props: Optional[Ipv4AutoIpProps]
     fragmentation: Optional[Ipv4FragmentationProps]

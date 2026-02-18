@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
 class GlobalTimeGateway(Identifiable):
     """AUTOSAR GlobalTimeGateway."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     host: Optional[EcuInstance]
     master: Optional[GlobalTimeMaster]
     slave: Optional[GlobalTimeSlave]

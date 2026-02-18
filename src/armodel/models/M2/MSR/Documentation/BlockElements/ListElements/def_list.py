@@ -23,6 +23,15 @@ if TYPE_CHECKING:
 class DefList(Paginateable):
     """AUTOSAR DefList."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def_item: DefItem
     def __init__(self) -> None:
         """Initialize DefList."""

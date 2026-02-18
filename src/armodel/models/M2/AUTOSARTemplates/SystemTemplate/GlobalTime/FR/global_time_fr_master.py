@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
 class GlobalTimeFrMaster(GlobalTimeMaster):
     """AUTOSAR GlobalTimeFrMaster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crc_secured: Optional[GlobalTimeCrcSupportEnum]
     def __init__(self) -> None:
         """Initialize GlobalTimeFrMaster."""

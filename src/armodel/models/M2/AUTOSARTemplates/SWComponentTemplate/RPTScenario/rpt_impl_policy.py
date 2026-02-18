@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptImplPolicy(ARObject):
     """AUTOSAR RptImplPolicy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rpt_enabler_impl: Optional[RptEnablerImplTypeEnum]
     rpt_preparation_enum: Optional[RptPreparationEnum]
     def __init__(self) -> None:

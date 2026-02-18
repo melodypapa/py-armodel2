@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     """AUTOSAR ObdMonitorServiceNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application_data: Optional[ApplicationDataType]
     event_needs: Optional[DiagnosticEventNeeds]
     unit_and_scaling_id: Optional[PositiveInteger]

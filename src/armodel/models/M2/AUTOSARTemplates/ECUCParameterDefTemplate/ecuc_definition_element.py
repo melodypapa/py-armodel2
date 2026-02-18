@@ -29,11 +29,20 @@ if TYPE_CHECKING:
         EcucValidationCondition,
     )
 
+from abc import ABC, abstractmethod
 
 
-class EcucDefinitionElement(Identifiable):
+class EcucDefinitionElement(Identifiable, ABC):
     """AUTOSAR EcucDefinitionElement."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     ecuc_cond: Optional[Any]
     ecuc_validations: list[EcucValidationCondition]

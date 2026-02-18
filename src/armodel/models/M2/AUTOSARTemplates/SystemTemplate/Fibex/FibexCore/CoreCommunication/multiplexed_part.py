@@ -13,11 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.segment_position import (
     SegmentPosition,
 )
+from abc import ABC, abstractmethod
 
 
-class MultiplexedPart(ARObject):
+class MultiplexedPart(ARObject, ABC):
     """AUTOSAR MultiplexedPart."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     segment_positions: list[SegmentPosition]
     def __init__(self) -> None:

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DdsCpServiceInstanceEvent(ARObject):
     """AUTOSAR DdsCpServiceInstanceEvent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dds_event: Optional[PduTriggering]
     dds_event_qos: Optional[DdsCpQosProfile]
     dds_event_topic: Optional[DdsCpTopic]

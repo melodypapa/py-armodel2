@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTroubleCodeGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dtcs: list[DiagnosticTroubleCode]
     group_number: Optional[PositiveInteger]
     def __init__(self) -> None:

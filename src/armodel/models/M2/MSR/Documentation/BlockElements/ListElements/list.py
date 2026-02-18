@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class List(Paginateable):
     """AUTOSAR List."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     item: Item
     type: Optional[ListEnum]
     def __init__(self) -> None:

@@ -23,11 +23,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
 
 
-class PortInterface(ARElement):
+class PortInterface(ARElement, ABC):
     """AUTOSAR PortInterface."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     is_service: Optional[Boolean]
     service_kind: Optional[ServiceProviderEnum]

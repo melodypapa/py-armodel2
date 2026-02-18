@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class Chapter(Paginateable):
     """AUTOSAR Chapter."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     chapter_model: ChapterModel
     help_entry: Optional[String]
     def __init__(self) -> None:

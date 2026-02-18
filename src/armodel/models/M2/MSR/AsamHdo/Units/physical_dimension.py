@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class PhysicalDimension(ARElement):
     """AUTOSAR PhysicalDimension."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     current_exp: Optional[Numerical]
     length_exp: Optional[Numerical]
     luminous: Optional[Numerical]

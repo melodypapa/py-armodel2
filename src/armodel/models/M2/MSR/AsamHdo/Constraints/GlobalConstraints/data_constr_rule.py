@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.phys_constrs im
 class DataConstrRule(ARObject):
     """AUTOSAR DataConstrRule."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     constr_level: Optional[Integer]
     internal_constrs: Optional[InternalConstrs]
     phys_constrs: Optional[PhysConstrs]

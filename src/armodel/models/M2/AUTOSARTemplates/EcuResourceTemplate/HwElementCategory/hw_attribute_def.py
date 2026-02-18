@@ -26,6 +26,15 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class HwAttributeDef(Identifiable):
     """AUTOSAR HwAttributeDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hw_attributes: list[HwAttributeLiteralDef]
     is_required: Optional[Boolean]
     unit: Optional[Unit]

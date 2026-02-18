@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_arg import (
 class MsrQueryProps(ARObject):
     """AUTOSAR MsrQueryProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     comment: Optional[String]
     msr_query_args: list[MsrQueryArg]
     msr_query_name: String

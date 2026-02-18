@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicato
 class DiagnosticIndicator(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIndicator."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     type: Optional[DiagnosticIndicatorTypeEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticIndicator."""

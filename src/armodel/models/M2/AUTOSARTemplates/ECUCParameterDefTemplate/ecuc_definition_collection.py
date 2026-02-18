@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def
 class EcucDefinitionCollection(ARElement):
     """AUTOSAR EcucDefinitionCollection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     modules: list[EcucModuleDef]
     def __init__(self) -> None:
         """Initialize EcucDefinitionCollection."""

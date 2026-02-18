@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BinaryManifestItem(BinaryManifestAddressableObject):
     """AUTOSAR BinaryManifestItem."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     auxiliary_fields: list[BinaryManifestItem]
     default_value: Optional[BinaryManifestItem]
     is_unused: Optional[Boolean]

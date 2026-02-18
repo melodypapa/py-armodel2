@@ -15,10 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from abc import ABC, abstractmethod
 
 
-class FormulaExpression(ARObject):
+class FormulaExpression(ARObject, ABC):
     """AUTOSAR FormulaExpression."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     atp_references: list[Referrable]
     atp_strings: list[Referrable]

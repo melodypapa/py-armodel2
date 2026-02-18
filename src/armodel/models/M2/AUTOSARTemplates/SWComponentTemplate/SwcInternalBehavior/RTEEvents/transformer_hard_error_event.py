@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class TransformerHardErrorEvent(RTEEvent):
     """AUTOSAR TransformerHardErrorEvent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     operation: Optional[ClientServerOperation]
     required_trigger: Optional[Trigger]
     def __init__(self) -> None:

@@ -57,6 +57,15 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class EcuInstance(FibexElement):
     """AUTOSAR EcuInstance."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     associated_coms: list[ISignalIPduGroup]
     associateds: list[ConsumedProvidedServiceInstanceGroup]
     associated_pdurs: list[PdurIPduGroup]

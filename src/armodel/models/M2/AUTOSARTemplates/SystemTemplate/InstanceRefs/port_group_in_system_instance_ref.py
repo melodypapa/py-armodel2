@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class PortGroupInSystemInstanceRef(ARObject):
     """AUTOSAR PortGroupInSystemInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[System]
     context: Optional[RootSwCompositionPrototype]
     target: PortGroup

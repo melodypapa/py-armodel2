@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeGroup(Identifiable):
     """AUTOSAR DataPrototypeGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup]
     implicit_datas: list[VariableDataPrototype]
     def __init__(self) -> None:

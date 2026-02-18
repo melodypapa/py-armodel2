@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table 
 class TopicContent(ARObject):
     """AUTOSAR TopicContent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     block_level: DocumentationBlock
     table: Optional[Table]
     traceable_table: Any

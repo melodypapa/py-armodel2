@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_reference_def import (
     EcucAbstractReferenceDef,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucAbstractExternalReferenceDef(EcucAbstractReferenceDef):
+class EcucAbstractExternalReferenceDef(EcucAbstractReferenceDef, ABC):
     """AUTOSAR EcucAbstractExternalReferenceDef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize EcucAbstractExternalReferenceDef."""

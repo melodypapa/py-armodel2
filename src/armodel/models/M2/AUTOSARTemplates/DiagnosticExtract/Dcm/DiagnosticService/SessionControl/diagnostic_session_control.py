@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session
 class DiagnosticSessionControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSessionControl."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostic_session_session: Optional[DiagnosticSession]
     session_control: Optional[DiagnosticSession]
     def __init__(self) -> None:

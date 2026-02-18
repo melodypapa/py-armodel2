@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RteEventInCompositionToOsTaskProxyMapping(Identifiable):
     """AUTOSAR RteEventInCompositionToOsTaskProxyMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     offset: Optional[PositiveInteger]
     os_task_proxy: Optional[OsTaskProxy]
     rte_event_instance_ref: Optional[RTEEvent]

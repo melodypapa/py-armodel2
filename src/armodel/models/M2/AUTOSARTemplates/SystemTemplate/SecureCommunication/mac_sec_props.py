@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.mac_s
 class MacSecProps(ARObject):
     """AUTOSAR MacSecProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     auto_start: Optional[Boolean]
     mac_sec_kay: Optional[MacSecLocalKayProps]
     on_fail: Optional[TimeValue]

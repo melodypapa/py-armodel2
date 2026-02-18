@@ -23,11 +23,20 @@ from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucParameterValue(EcucIndexableValue):
+class EcucParameterValue(EcucIndexableValue, ABC):
     """AUTOSAR EcucParameterValue."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     annotations: list[Annotation]
     definition: Optional[EcucParameterDef]

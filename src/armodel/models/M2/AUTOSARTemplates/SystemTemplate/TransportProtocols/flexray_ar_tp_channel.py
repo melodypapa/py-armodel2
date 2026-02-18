@@ -31,6 +31,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class FlexrayArTpChannel(ARObject):
     """AUTOSAR FlexrayArTpChannel."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ack_type: Optional[FrArTpAckType]
     cancellation: Optional[Boolean]
     extended: Optional[Boolean]

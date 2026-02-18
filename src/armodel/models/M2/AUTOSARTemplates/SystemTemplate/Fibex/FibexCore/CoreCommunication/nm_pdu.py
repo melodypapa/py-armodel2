@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class NmPdu(Pdu):
     """AUTOSAR NmPdu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_signal_to_i_pdus: list[ISignalToIPduMapping]
     nm_data: Optional[Boolean]
     nm_vote_information: Optional[Boolean]
