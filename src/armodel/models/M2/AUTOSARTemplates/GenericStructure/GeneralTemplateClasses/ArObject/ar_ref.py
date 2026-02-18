@@ -11,6 +11,7 @@ Example:
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization.decorators import xml_attribute
@@ -73,28 +74,53 @@ class ARRef(ARObject):
         """Set the DEST attribute."""
         self._dest = value
 
-    def serialize(self, namespace: str = "") -> str:
-        """Serialize the reference to XML.
+    def serialize(self, namespace: str = "") -> ET.Element:
+        """Serialize the reference to an XML element.
+
+        AUTOSAR references are serialized as elements with:
+        - DEST attribute (target type)
+        - Text content (reference path)
+
+        Args:
+            namespace: Optional namespace (not used for references)
 
         Returns:
-            The text content (reference path) of the reference element.
+            XML element representing the reference with DEST attribute and text content
 
-        Note:
-            The DEST attribute is handled by the @xml_attribute decorator.
-            The parent element's serialize() method handles wrapping this
-            in the appropriate XML tag.
+        Example:
+            <PDU-REF DEST="PDU-TRIGGERING">/Path/to/PduTriggering</PDU-REF>
         """
-        return self._value or ""
+        # Create element - the tag name will be set by parent via _serialize_with_correct_tag
+        # We use a temporary tag that will be replaced by parent
+        elem = ET.Element("ARREF")
+
+        # Set DEST attribute if present
+        if self._dest is not None:
+            elem.set("DEST", self._dest)
+
+        # Set text content (reference path)
+        if self._value is not None:
+            elem.text = self._value
+
+        return elem
 
     @classmethod
     def deserialize(cls, element) -> ARRef:
         """Deserialize an XML element to ARRef.
+
+        AUTOSAR reference elements have:
+        - DEST attribute (target type)
+        - Text content (reference path)
 
         Args:
             element: XML element representing the reference
 
         Returns:
             ARRef instance with DEST attribute and text content
+
+        Example:
+            Input: <PDU-REF DEST="PDU-TRIGGERING">/Path/to/PduTriggering</PDU-REF>
+            Output: ARRef(dest="PDU-TRIGGERING", value="/Path/to/PduTriggering")
         """
         ref = cls()
 
@@ -102,7 +128,11 @@ class ARRef(ARObject):
         ref.dest = element.get("DEST")
 
         # Get text content (reference path)
-        ref.value = element.text if element.text else None
+        # Strip leading/trailing whitespace from text content
+        if element.text:
+            ref.value = element.text.strip()
+        else:
+            ref.value = None
 
         return ref
 

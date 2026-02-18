@@ -379,11 +379,6 @@ class TestAUTOSARDatatypes:
     # TEST 7: Binary File Comparison
     # ========================================================================
 
-    @pytest.mark.xfail(
-        reason="Binary comparison may fail due to XML formatting differences (attribute ordering, whitespace). "
-               "All semantic data is preserved - see test_xml_content_comparison. "
-               "BaseType now uses flat format serialization matching the original ARXML structure."
-    )
     def test_binary_file_comparison(self, datatypes_file, tmp_path):
         """Test that generated file is binary identical to original file.
 
