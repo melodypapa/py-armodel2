@@ -1,6 +1,6 @@
-# GitHub Workflow Automation
+# Workflow Automation
 
-Automate the complete GitHub workflow for creating issues, feature branches, commits, and pull requests.
+Automate the complete workflow for creating issues, feature branches, commits, and pull requests.
 
 ## Workflow Steps
 
