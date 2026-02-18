@@ -376,6 +376,12 @@ class AUTOSAR(ARObject):
 - **Code Generator** (`tools/generate_models.py`) - Regenerate all model classes
 - **Mapping files** (`docs/json/mapping.json`, `docs/json/hierarchy.json`) - AUTOSAR schema mappings
 
+### CLI Module
+- **Main Entry** (`src/armodel/cli/main.py`) - CLI entry point with argparse router
+- **Common Utilities** (`src/armodel/cli/common.py`) - Exit codes and file validation helpers
+- **Commands** (`src/armodel/cli/commands/`) - Subcommand implementations
+  - `format.py` - ARXML formatting command
+
 ## New API Usage
 
 ### Reader API (Load Multiple Files)
@@ -407,13 +413,66 @@ writer.save_arxml(autosar, "output.arxml")
 
 ### CLI Tool
 
+The CLI uses a multi-command architecture (similar to `git` or `docker`):
+
 ```bash
 # Install to get CLI tool
 pip install -e ".[dev]"
 
-# Use CLI (if implemented)
+# Show version
+armodel --version
+
+# Show help
 armodel --help
+
+# Format ARXML files
+armodel format INPUT.arxml -o OUTPUT.arxml
 ```
+
+#### `armodel format` - Format ARXML Files
+
+Reads, parses, and reformats ARXML files with pretty-printing:
+
+```bash
+# Basic formatting
+armodel format unformatted.arxml -o formatted.arxml
+
+# Strict validation mode (fail on errors)
+armodel format input.arxml -o output.arxml --strict
+
+# Permissive mode (continue on warnings)
+armodel format input.arxml -o output.arxml --permissive
+
+# Custom encoding
+armodel format input.arxml -o output.arxml --encoding UTF-8
+
+# Verbose output for debugging
+armodel format input.arxml -o output.arxml -v
+
+# Quiet mode (for scripts/CI)
+armodel format input.arxml -o output.arxml -q
+```
+
+**Arguments:**
+| Argument | Description |
+|----------|-------------|
+| `INPUT` | Input ARXML file path (required) |
+| `-o, --output` | Output ARXML file path (required) |
+| `--strict` | Enable strict validation (fail on errors) |
+| `--permissive` | Enable permissive mode (continue on warnings) |
+| `--encoding` | Output encoding (default: UTF-8) |
+| `--no-pretty-print` | Disable pretty-printing |
+| `-v, --verbose` | Show detailed error messages |
+| `-q, --quiet` | Suppress output messages |
+
+**Exit Codes:**
+| Code | Constant | Description |
+|------|----------|-------------|
+| 0 | `EXIT_SUCCESS` | Success |
+| 1 | `EXIT_FILE_NOT_FOUND` | Input file not found |
+| 2 | `EXIT_PARSE_ERROR` | ARXML parsing error |
+| 3 | `EXIT_WRITE_ERROR` | File write error |
+| 4 | `EXIT_UNHANDLED_ERROR` | Unhandled exception |
 
 ## Generated Code Notes
 
@@ -471,12 +530,12 @@ The following classes are **NOT** auto-generated and must be maintained manually
 - **Model Design**: `docs/designs/model_design.md`
 
 ### Test Documentation
-- **Integration Tests**: `docs/tests/integration/round_trip.md`
+- **Integration Tests**: `docs/tests/integration/test_autosar_data_types.md`
 - **Unit Tests**: `docs/tests/unit/` (various modules)
 
-### Implementation Plans
-- **Reflection-Based Serialization Design**: `docs/plans/2026-02-17-reflection-based-serialization-design.md`
-- **Implementation Plan**: `docs/plans/2026-02-17-reflection-based-serialization-implementation.md`
+### CLI Documentation
+- **CLI Design**: `docs/plans/2026-02-18-cli-arxml-formatter-design.md`
+- **CLI Implementation**: `docs/plans/2026-02-18-cli-arxml-formatter.md`
 
 ### Examples
 - **New API Example**: `examples/new_api_example.py`
@@ -501,11 +560,13 @@ The following classes are **NOT** auto-generated and must be maintained manually
 - Located in `tests/unit/`
 - Mirror the `src/` directory structure
 - Test individual components in isolation
+- CLI tests in `tests/unit/cli/` (main entry point, command handlers)
 
 ### Integration Tests
 - Located in `tests/integration/`
 - Test complete workflows (read → process → write)
 - Main test: `test_autosar_datatypes.py` validates round-trip with real ARXML file
+- CLI integration tests in `tests/integration/cli/` (end-to-end command testing)
 
 ### Test Data
 - ARXML files: `demos/arxml/`

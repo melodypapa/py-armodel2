@@ -1,271 +1,16 @@
-#!/usr/bin/env python3
-"""Code generator for AUTOSAR model classes, enums, and primitives."""
+"""Code generation functions for AUTOSAR models."""
 
-import argparse
-import json
-import re
-from pathlib import Path
 from typing import Any, Dict, List
 
-try:
-    import yaml
-except ImportError:
-    yaml = None
-
-
-def parse_mapping_json(mapping_file: Path) -> Dict[str, Any]:
-    """Parse mapping.json file.
-
-    Args:
-        mapping_file: Path to mapping.json file
-
-    Returns:
-        Parsed JSON data as dictionary
-    """
-    with open(mapping_file, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def parse_enum_json(enum_file: Path) -> Dict[str, Any]:
-    """Parse enum JSON file.
-
-    Args:
-        enum_file: Path to enum JSON file
-
-    Returns:
-        Parsed JSON data as dictionary
-    """
-    with open(enum_file, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def parse_primitive_json(primitive_file: Path) -> Dict[str, Any]:
-    """Parse primitive JSON file.
-
-    Args:
-        primitive_file: Path to primitive JSON file
-
-    Returns:
-        Parsed JSON data as dictionary
-    """
-    with open(primitive_file, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
-    """Parse hierarchy.json file to extract class parent and abstract information.
-
-    Args:
-        hierarchy_file: Path to hierarchy.json file
-
-    Returns:
-        Dictionary mapping class names to their parent and abstract status
-    """
-    with open(hierarchy_file, "r", encoding="utf-8") as f:
-        hierarchy_content = f.read()
-
-    # Extract the hierarchy structure
-    lines = hierarchy_content.split("\n")
-
-    # Find classes and their parent/abstract status
-    class_info: Dict[str, Dict[str, Any]] = {}
-    indent_stack = []
-
-    for line in lines:
-        if line.startswith("## Class Hierarchy"):
-            continue
-        if not line.strip():
-            continue
-
-        # Count indentation
-        indent = len(line) - len(line.lstrip())
-        line = line.strip()
-
-        # Check for abstract marker
-        is_abstract = "(abstract)" in line
-
-        # Extract class name
-        class_name = line.replace("(abstract)", "").replace("*", "").strip()
-
-        # Determine parent based on indentation
-        while indent_stack and indent_stack[-1][0] >= indent:
-            indent_stack.pop()
-
-        if indent_stack:
-            parent = indent_stack[-1][1]
-        else:
-            parent = None
-
-        # Store class info
-        if class_name:
-            class_info[class_name] = {"parent": parent, "is_abstract": is_abstract}
-            indent_stack.append((indent, class_name))
-
-    return class_info
-
-
-def load_skip_list(skip_list_file: Path) -> tuple[List[str], Dict[str, List[str]]]:
-    """Parse skip_classes.yaml file to get list of classes to skip during generation.
-
-    Args:
-        skip_list_file: Path to skip_classes.yaml file
-
-    Returns:
-        Tuple of (skip_classes_list, force_type_checking_imports)
-        - skip_classes_list: List of class names to skip
-        - force_type_checking_imports: Dict mapping class names to list of types to force into TYPE_CHECKING
-          (empty dicts if file doesn't exist or yaml not available)
-    """
-    empty_result = ([], {})
-    
-    if yaml is None:
-        # YAML module not available, return empty result
-        return empty_result
-
-    if not skip_list_file.exists():
-        # File doesn't exist, return empty result
-        return empty_result
-
-    try:
-        with open(skip_list_file, "r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-            skip_classes = data.get("skip_classes", [])
-            force_type_checking = data.get("force_type_checking_imports", {})
-            return skip_classes, force_type_checking
-    except Exception:
-        # If there's any error loading the file, return empty result
-        return empty_result
-
-
-def create_directory_structure(
-    types: list, output_dir: Path, package_data: Dict[str, Dict[str, Any]]
-) -> None:
-    """Create directory structure from package paths.
-
-    Args:
-        types: List of type definitions from mapping.json
-        output_dir: Base directory for generated files
-        package_data: Dictionary with package data including primitive types
-
-    Returns:
-        None
-    """
-    # Extract all unique package paths
-    package_paths = set()
-    for type_def in types:
-        package_path = type_def.get("package_path", "")
-        if package_path:
-            package_paths.add(package_path)
-
-    # Also add package paths from package_data (for primitives and enums)
-    for package_path in package_data.keys():
-        if package_path:
-            package_paths.add(package_path)
-
-    # Create directories for each unique package path
-    for package_path in sorted(package_paths):
-        # Convert package path to directory path
-        dir_path = output_dir / package_path.replace("::", "/")
-
-        # Create directory
-        dir_path.mkdir(parents=True, exist_ok=True)
-
-        # Generate __init__.py content with proper docstring
-        package_name = package_path.split("::")[-1] if "::" in package_path else package_path
-        init_content = f'''"""{package_name} module."""
-
-from __future__ import annotations
-from typing import TYPE_CHECKING
-
-'''
-
-        # Collect all exports for __all__
-        exports = []
-
-        # Check if this package has primitive types and export them
-        if package_path in package_data and "primitives" in package_data[package_path]:
-            primitives = package_data[package_path]["primitives"]
-            if primitives:
-                # Generate imports for individual primitive types using absolute paths
-                # Use block import format as required by DESIGN_RULE_041
-                for prim in primitives:
-                    prim_name = prim["name"]
-                    # Convert package path to absolute import path
-                    python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(prim_name)}"
-                    init_content += f"from {module_path} import (\n    {prim_name},\n)\n"
-                    exports.append(prim_name)
-                init_content += "\n"
-
-        # Check if this package has classes and export them
-        # Use TYPE_CHECKING to avoid circular imports
-        if package_path in package_data and "classes" in package_data[package_path]:
-            classes = package_data[package_path]["classes"]
-            if classes:
-                init_content += "if TYPE_CHECKING:\n"
-                # Generate imports for individual classes using absolute paths
-                # Use block import format as required by DESIGN_RULE_041
-                for cls in classes:
-                    class_name = cls["name"]
-                    # Convert package path to absolute import path
-                    python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(class_name)}"
-                    init_content += f"    from {module_path} import (\n        {class_name},\n    )\n"
-                    exports.append(class_name)
-                init_content += "\n"
-
-        # Check if this package has enums and export them
-        if package_path in package_data and "enumerations" in package_data[package_path]:
-            enums = package_data[package_path]["enumerations"]
-            if enums:
-                # Generate imports for individual enums using absolute paths
-                # Use block import format as required by DESIGN_RULE_041
-                for enum in enums:
-                    enum_name = enum["name"]
-                    # Convert package path to absolute import path
-                    python_path = package_path.replace("::", ".")
-                    module_path = f"armodel.models.{python_path}.{to_snake_case(enum_name)}"
-                    init_content += f"from {module_path} import (\n    {enum_name},\n)\n"
-                    exports.append(enum_name)
-                init_content += "\n"
-
-        # Add __all__ definition with alphabetically sorted exports
-        if exports:
-            init_content += "__all__ = [\n"
-            for export in sorted(exports):
-                init_content += f'    "{export}",\n'
-            init_content += "]\n"
-
-        # Write __init__.py
-        init_file = dir_path / "__init__.py"
-        with open(init_file, "w", encoding="utf-8") as f:
-            f.write(init_content)
-
-    # Create __init__.py for each level to ensure proper package structure
-    # Every __init__.py must define __all__ as required by DESIGN_RULE_041
-    for init_path in sorted(output_dir.rglob("__init__.py"), reverse=True):
-        if init_path.parent != output_dir:
-            # Ensure parent packages have __init__.py with __all__ definition
-            parent_init = init_path.parent.parent / "__init__.py"
-            if not parent_init.exists():
-                parent_path_parts = init_path.parent.relative_to(output_dir).parts
-                parent_name = parent_path_parts[-2] if len(parent_path_parts) >= 2 else "armodel"
-                # Collect subpackages to export
-                subpackages = []
-                for item in init_path.parent.iterdir():
-                    if item.is_dir() and (item / "__init__.py").exists():
-                        subpackages.append(item.name)
-                # Generate __init__.py with __all__ definition
-                # Note: Parent packages just define __all__ without wildcard imports
-                # as required by DESIGN_RULE_041 (avoid wildcard imports)
-                init_content = f'"""{parent_name} module."""\n'
-                if subpackages:
-                    init_content += "\n"
-                    init_content += "__all__ = [\n"
-                    for subpkg in sorted(subpackages):
-                        init_content += f'    "{subpkg}",\n'
-                    init_content += "]\n"
-                parent_init.write_text(init_content)
+from ._common import get_python_identifier, to_snake_case
+from .type_utils import (
+    detect_circular_import,
+    get_python_type,
+    get_type_import_path,
+    get_type_package_path,
+    is_primitive_type,
+    is_enum_type,
+)
 
 
 def generate_class_code(
@@ -304,9 +49,22 @@ def generate_class_code(
     parent_class = None
     is_abstract = False
 
+    # First check hierarchy_info for parent and abstract status
     if class_name in hierarchy_info:
         parent_class = hierarchy_info[class_name]["parent"]
         is_abstract = hierarchy_info[class_name]["is_abstract"]
+
+    # Also check package_data for abstract status (takes precedence if available)
+    if include_members and package_path in package_data:
+        for cls in package_data[package_path].get("classes", []):
+            if cls["name"] == class_name:
+                # Use is_abstract from JSON if available
+                if "is_abstract" in cls:
+                    is_abstract = cls["is_abstract"]
+                # Use parent from JSON if available
+                if "parent" in cls and cls["parent"]:
+                    parent_class = cls["parent"]
+                break
 
     # Ensure ARObject is not the parent of itself
     # Default to ARObject only if class_name is not "ARObject" and no parent found
@@ -326,7 +84,7 @@ def generate_class_code(
 
     # Build docstring with PDF references and JSON file path
     docstring_lines = [f"{class_name} AUTOSAR element."]
-    
+
     # Add PDF file references if available
     if sources:
         docstring_lines.append("")
@@ -335,12 +93,12 @@ def generate_class_code(
             pdf_file = source.get("pdf_file", "N/A")
             page_number = source.get("page_number", "N/A")
             docstring_lines.append(f"  - {pdf_file} (page {page_number})")
-    
+
     # Add JSON file path if available
     if json_file_path:
         docstring_lines.append("")
         docstring_lines.append(f"JSON Source: {json_file_path}")
-    
+
     docstring = "\n".join(docstring_lines)
 
     # Generate class code
@@ -500,11 +258,11 @@ def generate_class_code(
 
         # Get forced TYPE_CHECKING imports for this class
         forced_type_checking_for_class = force_type_checking_imports.get(class_name, [])
-        
+
         # Separate circular and non-circular imports
         circular_imports = set()
         non_circular_imports = set()
-        
+
         if type_imports:
             for import_type in sorted(type_imports):
                 # Skip self-import (class importing itself)
@@ -519,7 +277,7 @@ def generate_class_code(
                     forced_for_this_class = import_type in forced_type_checking_for_class
                     # 3. Check for circular import via dependency graph
                     is_circular = detect_circular_import(class_name, import_type, package_data, dependency_graph)
-                    
+
                     if forced_globally or forced_for_this_class or is_circular:
                         circular_imports.add((import_type, import_path))
                     else:
@@ -544,28 +302,50 @@ def generate_class_code(
                     code += f"    from {module_path} import (\n        {import_type},\n    )\n"
             code += "\n"
 
-    # Generate class definition with parent or empty parentheses for ARObject
-    if parent_class:
-        code += f'''
-
-class {class_name}({parent_class}):
-    """AUTOSAR {class_name}."""
-'''
-    else:
-        code += f'''
-
-class {class_name}:
-    """AUTOSAR {class_name}."""
-'''
-
-    # Add abstract marker if needed
+    # Generate class definition with ABC for abstract classes
     if is_abstract:
-        code += '''    """Abstract base class - do not instantiate directly."""
+        # Abstract classes inherit from ABC
+        if parent_class:
+            code += f'''\n
+class {class_name}({parent_class}, ABC):
+    """AUTOSAR {class_name}."""\n'''
+        else:
+            code += f'''\n
+class {class_name}(ABC):
+    """AUTOSAR {class_name}."""\n'''
+        # Add is_abstract abstract method for abstract classes
+        code += '''
+    @abstractmethod
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
 '''
     else:
-        code += """
-"""
+        # Non-abstract classes
+        if parent_class:
+            code += f'''\n
+class {class_name}({parent_class}):
+    """AUTOSAR {class_name}."""\n'''
+        else:
+            code += f'''\n
+class {class_name}:
+    """AUTOSAR {class_name}."""\n'''
+        # Add concrete is_abstract method for non-abstract classes
+        code += '''
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
+'''
 
     if is_splitable:
         code += f'''    is_splitable = True
@@ -589,8 +369,7 @@ class {class_name}:
             code += f"    {python_name}: {python_type}\n"
 
     code += f'''    def __init__(self) -> None:
-        """Initialize {class_name}."""
-'''
+        """Initialize {class_name}."""\n'''
 
     # Add super().__init__() call for all classes except ARObject
     if class_name != "ARObject":
@@ -628,7 +407,18 @@ class {class_name}:
     if class_name == "ARObject":
         # ARObject uses reflection-based serialization framework
         # Add serialize(), deserialize(), and helper methods
-        code += '''
+        code += _generate_ar_object_methods()
+
+    return code
+
+
+def _generate_ar_object_methods() -> str:
+    """Generate the serialize/deserialize methods for ARObject.
+
+    Returns:
+        Generated code for ARObject methods
+    """
+    return '''
     def serialize(self, namespace: str = "") -> ET.Element:
         """Serialize object to XML element using reflection.
 
@@ -728,7 +518,7 @@ class {class_name}:
         return False
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> ARObject:
+    def deserialize(cls, element: ET.Element) -> "ARObject":
         """Deserialize XML element to Python object.
 
         Creates a new instance and populates attributes by matching
@@ -866,7 +656,7 @@ class {class_name}:
                 module = importlib.import_module(module_path)
                 if hasattr(module, class_name):
                     return getattr(module, class_name)
-            except (ImportError, ModuleError):
+            except (ImportError, ModuleNotFoundError):
                 continue
 
         # Fallback: try searching through all M2 modules
@@ -883,7 +673,7 @@ class {class_name}:
                             cls = getattr(module, class_name)
                             if isinstance(cls, type):
                                 return cls
-                    except (ImportError, ModuleError):
+                    except (ImportError, ModuleNotFoundError):
                         continue
         except Exception:
             pass
@@ -1011,12 +801,6 @@ class {class_name}:
             # Default to string
             return text
 '''
-    else:
-        # Other classes inherit serialize/deserialize from ARObject
-        # No need to generate these methods - they're inherited!
-        pass
-
-    return code
 
 
 def generate_builder_code(type_def: dict) -> str:
@@ -1090,14 +874,61 @@ def generate_enum_code(enum_def: dict, json_file_path: str = "") -> str:
 
     docstring = "\n".join(docstring_lines)
 
-    # Generate enum code
+    # Generate enum code as a class inheriting from both EnumerationType and Enum
     code = f'''"""{docstring}"""
 
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 from enum import Enum
+import xml.etree.ElementTree as ET
 
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.enumeration_type import EnumerationType
 
-class {enum_name}(Enum):
-    """AUTOSAR {enum_name} enumeration."""
+class {enum_name}(EnumerationType, Enum):
+    """AUTOSAR {enum_name} enumeration.
+
+    This enum inherits from both EnumerationType (for ARObject compatibility)
+    and Enum (for Python enumeration semantics).
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        # Store the value for Enum
+        self._value_ = value
+        # Initialize ARObject base
+        EnumerationType.__init__(self)
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "{enum_name}":
+        """Deserialize an XML element to an {enum_name} instance.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized {enum_name} enum value
+        """
+        if element.text:
+            # Try to find matching enum value (case-insensitive)
+            text = element.text.strip()
+            for member in cls:
+                if member.value.lower() == text.lower():
+                    return member
+            # Fallback: try direct creation
+            try:
+                return cls(text)
+            except ValueError:
+                # Create a custom instance if no match found
+                obj = cls.__new__(cls)
+                object.__setattr__(obj, '_value_', text)
+                EnumerationType.__init__(obj)
+                return obj
+        raise ValueError(f"Cannot deserialize {{cls.__name__}} from empty element")
 
 '''
 
@@ -1128,6 +959,161 @@ class {enum_name}(Enum):
     return code
 
 
+def generate_primitive_type_base() -> str:
+    """Generate the PrimitiveType base class code.
+
+    Returns:
+        Generated Python code as string
+    """
+    code = '''"""PrimitiveType base class for all AUTOSAR primitive types."""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Any
+import xml.etree.ElementTree as ET
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+
+class PrimitiveType(ARObject):
+    """Base class for all AUTOSAR primitive types.
+
+    All primitive types (String, Integer, Float, etc.) inherit from this class.
+    Provides common functionality for value wrapping and serialization.
+    """
+
+    python_type: type = str
+    """The underlying Python type for this primitive."""
+
+    def __init__(self) -> None:
+        """Initialize PrimitiveType."""
+        super().__init__()
+        self.value: Optional[Any] = None
+
+    def serialize(self, namespace: str = "") -> ET.Element:
+        """Serialize the primitive to an XML element.
+
+        Args:
+            namespace: XML namespace URI (optional)
+
+        Returns:
+            xml.etree.ElementTree.Element representing this primitive
+        """
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+
+        if namespace:
+            elem.set("xmlns", namespace)
+
+        if self.value is not None:
+            elem.text = str(self.value)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PrimitiveType":
+        """Deserialize an XML element to a PrimitiveType instance.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PrimitiveType instance
+        """
+        obj = cls()
+        if element.text:
+            obj.value = element.text
+        return obj
+
+    def __str__(self) -> str:
+        """Return string representation of the primitive value."""
+        return str(self.value) if self.value is not None else ""
+
+    def __repr__(self) -> str:
+        """Return detailed string representation."""
+        return f"{self.__class__.__name__}({self.value!r})"
+'''
+    return code
+
+
+def generate_enumeration_type_base() -> str:
+    """Generate the EnumerationType base class code.
+
+    Returns:
+        Generated Python code as string
+    """
+    code = '''"""EnumerationType base class for all AUTOSAR enumeration types."""
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+
+class EnumerationType(ARObject):
+    """Base class for all AUTOSAR enumeration types.
+
+    All enumeration types inherit from this class.
+    Provides common functionality for enum value serialization.
+    """
+
+    def __init__(self) -> None:
+        """Initialize EnumerationType."""
+        super().__init__()
+
+    def serialize(self, namespace: str = "") -> ET.Element:
+        """Serialize the enum to an XML element.
+
+        Args:
+            namespace: XML namespace URI (optional)
+
+        Returns:
+            xml.etree.ElementTree.Element representing this enum value
+        """
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+
+        if namespace:
+            elem.set("xmlns", namespace)
+
+        # Get the value from the enum
+        if hasattr(self, 'value'):
+            elem.text = str(self.value)
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EnumerationType":
+        """Deserialize an XML element to an EnumerationType instance.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EnumerationType instance
+        """
+        if element.text:
+            # Try to find matching enum value
+            text = element.text.strip()
+            for member in cls:
+                if member.value.lower() == text.lower():
+                    return member
+            # Fallback: create a custom instance
+            obj = cls.__new__(cls)
+            object.__setattr__(obj, '_value_', text)
+            return obj
+        raise ValueError(f"Cannot deserialize {{cls.__name__}} from empty element")
+
+    def __str__(self) -> str:
+        """Return string representation of the enum value."""
+        return str(self.value) if hasattr(self, 'value') else ""
+
+    def __repr__(self) -> str:
+        """Return detailed string representation."""
+        return f"{self.__class__.__name__}.{self.name}"
+'''
+    return code
+
+
 def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> str:
     """Generate Python primitive type definition from primitive definition.
 
@@ -1143,7 +1129,7 @@ def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> st
     sources = primitive_def.get("sources", [])
 
     # Build docstring with PDF references and JSON file path
-    docstring_lines = [f"{primitive_name} primitive type."]
+    docstring_lines = [f"{primitive_name} AUTOSAR primitive type."]
 
     # Add PDF file references if available
     if sources:
@@ -1182,594 +1168,62 @@ def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> st
 
     python_type = primitive_type_map.get(primitive_name, "str")
 
-    # Generate primitive type code
+    # Generate primitive type code as a class inheriting from PrimitiveType
     code = f'''"""{docstring}"""
 
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
+import xml.etree.ElementTree as ET
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.primitive_type import PrimitiveType
+
 # {note}
-{primitive_name} = {python_type}
+class {primitive_name}(PrimitiveType):
+    """AUTOSAR {primitive_name} primitive type."""
+
+    python_type: type = {python_type}
+    """The underlying Python type for this primitive."""
+
+    def __init__(self, value: Optional[{python_type}] = None) -> None:
+        """Initialize {primitive_name}.
+
+        Args:
+            value: The primitive value
+        """
+        super().__init__()
+        self.value: Optional[{python_type}] = value
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "{primitive_name}":
+        """Deserialize an XML element to a {primitive_name} instance.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized {primitive_name} instance
+        """
+        obj = cls()
+        if element.text:
+            # Convert to the appropriate Python type
+            if cls.python_type == str:
+                obj.value = element.text
+            elif cls.python_type == int:
+                try:
+                    obj.value = int(element.text)
+                except ValueError:
+                    obj.value = element.text  # Keep as string if conversion fails
+            elif cls.python_type == float:
+                try:
+                    obj.value = float(element.text)
+                except ValueError:
+                    obj.value = element.text
+            elif cls.python_type == bool:
+                obj.value = element.text.lower() in ('true', '1', 'yes')
+            else:
+                obj.value = element.text
+        return obj
 '''
 
     return code
-
-
-def to_snake_case(name: str) -> str:
-    """Convert CamelCase to snake_case.
-
-    Args:
-        name: CamelCase string
-
-    Returns:
-        snake_case string
-    """
-    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
-
-
-def get_python_identifier(name: str) -> tuple[str, str]:
-    """Convert a name to a valid Python identifier, handling keywords.
-
-    Args:
-        name: Name to convert (e.g., AUTOSAR attribute name)
-
-    Returns:
-        Tuple of (python_identifier, xml_tag_name)
-        - python_identifier: Valid Python identifier (with underscore appended if keyword)
-        - xml_tag_name: XML tag name to use (None if same as identifier, otherwise uppercase form)
-
-    Examples:
-        "shortName" -> ("short_name", None)
-        "class" -> ("class_", "CLASS")
-        "from" -> ("from_", "FROM")
-    """
-    # Python keywords that cannot be used as attribute names
-    python_keywords = {
-        "False",
-        "None",
-        "True",
-        "and",
-        "as",
-        "assert",
-        "async",
-        "await",
-        "break",
-        "class",
-        "continue",
-        "def",
-        "del",
-        "elif",
-        "else",
-        "except",
-        "finally",
-        "for",
-        "from",
-        "global",
-        "if",
-        "import",
-        "in",
-        "is",
-        "lambda",
-        "nonlocal",
-        "not",
-        "or",
-        "pass",
-        "raise",
-        "return",
-        "try",
-        "while",
-        "with",
-        "yield",
-    }
-
-    snake_name = to_snake_case(name)
-
-    # Check if the name is a Python keyword
-    if snake_name in python_keywords:
-        # Append underscore and use uppercase original as XML tag
-        return f"{snake_name}_", name.upper()
-    else:
-        # Not a keyword, use as-is
-        return snake_name, None
-
-
-def is_primitive_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> bool:
-    """Check if a type is a primitive type.
-
-    Args:
-        type_name: Name of the type to check
-        package_data: Package data dictionary
-
-    Returns:
-        True if the type is a primitive, False otherwise
-    """
-    # Check in all packages
-    for package_path, data in package_data.items():
-        if "primitives" in data:
-            for prim in data["primitives"]:
-                if prim["name"] == type_name:
-                    return True
-    return False
-
-
-def is_enum_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> bool:
-    """Check if a type is an enum type.
-
-    Args:
-        type_name: Name of the type to check
-        package_data: Package data dictionary
-
-    Returns:
-        True if the type is an enum, False otherwise
-    """
-    # Check in all packages
-    for package_path, data in package_data.items():
-        if "enumerations" in data:
-            for enum in data["enumerations"]:
-                if enum["name"] == type_name:
-                    return True
-    return False
-
-
-def get_python_type(
-    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]]
-) -> str:
-    """Get Python type annotation for AUTOSAR type.
-
-    Args:
-        type_name: AUTOSAR type name
-        multiplicity: Multiplicity (e.g., "0..1", "*", "1")
-        package_data: Package data dictionary
-
-    Returns:
-        Python type annotation string
-    """
-    # Check if type_name matches "any (xxx)" pattern and convert to Any
-    if type_name.startswith("any ("):
-        # This is a polymorphic type that can be any type implementing the interface
-        # Convert to Any in Python
-        type_name = "Any"
-
-    # Check if it's a primitive type
-    if is_primitive_type(type_name, package_data):
-        # Use AUTOSAR primitive type names directly instead of Python types
-        # The primitive types are imported from PrimitiveTypes module
-
-        # Apply multiplicity
-        # For primitive types:
-        # - multiplicity 0..1: Use Optional[PrimitiveType] and initialize with None
-        # - multiplicity *: Use list[PrimitiveType] and initialize with []
-        # - multiplicity 1: Use PrimitiveType and initialize with None (primitive types are nullable)
-        if multiplicity == "0..1":
-            return f"Optional[{type_name}]"
-        elif multiplicity == "*":
-            return f"list[{type_name}]"
-        elif multiplicity == "1":
-            return type_name
-        else:
-            return type_name
-    elif type_name == "Any":
-        # Handle the Any type specifically
-        if multiplicity == "0..1":
-            return "Optional[Any]"
-        elif multiplicity == "*":
-            return "list[Any]"
-        elif multiplicity == "1":
-            return "Any"
-        else:
-            return "Any"
-    else:
-        # It's a class type
-        # Apply multiplicity
-        # For class types:
-        # - multiplicity 0..1: Use Optional[type_name] and initialize with None
-        # - multiplicity *: Use list[type_name] and initialize with []
-        # - multiplicity 1: Use type_name and initialize with None (class types can be nullable)
-        if multiplicity == "0..1":
-            return f"Optional[{type_name}]"
-        elif multiplicity == "*":
-            return f"list[{type_name}]"
-        elif multiplicity == "1":
-            return type_name
-        else:
-            return type_name
-
-
-def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> str:
-    """Get Python import path for a class type.
-
-    Args:
-        type_name: Name of the class type
-        package_data: Package data dictionary
-
-    Returns:
-        Python import statement or empty string if not found
-    """
-    # Search for the type in all packages
-    for package_path, data in package_data.items():
-        if "classes" in data:
-            for cls in data["classes"]:
-                if cls["name"] == type_name:
-                    # Use the package field from the class itself to ensure correct directory structure
-                    # This is important because some classes have different directory names than expected
-                    # (e.g., ARObject is in ArObject directory, not ar_object)
-                    class_package_path = cls.get("package", package_path)
-                    
-                    # Convert package path to Python import path
-                    # Package path format: M2::AUTOSARTemplates::...
-                    # Python import path: armodel.models.M2.AUTOSARTemplates...
-                    # Import from the specific class file, not module
-                    python_path = class_package_path.replace("::", ".")
-
-                    # Return import path in format: from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import (\n    AdminData,\n)
-                    # Use block import format as required by DESIGN_RULE_041
-                    class_filename = to_snake_case(type_name)
-                    module_path = f"armodel.models.{python_path}.{class_filename}"
-
-                    return f"from {module_path} import (\n    {type_name},\n)"
-    return ""
-
-
-def get_type_package_path(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> str:
-    """Get the package path for a class type.
-
-    Args:
-        type_name: Name of the class type
-        package_data: Package data dictionary
-
-    Returns:
-        Package path string or empty string if not found
-    """
-    for package_path, data in package_data.items():
-        if "classes" in data:
-            for cls in data["classes"]:
-                if cls["name"] == type_name:
-                    class_package_path = cls.get("package", package_path)
-                    return class_package_path
-    return ""
-
-
-def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> Dict[str, set]:
-    """Build a complete dependency graph for all classes.
-
-    Args:
-        package_data: Package data dictionary
-
-    Returns:
-        Dictionary mapping class names to their dependencies
-    """
-    dependency_graph = {}
-    
-    # Initialize all classes with empty dependency sets
-    for package_path, data in package_data.items():
-        if "classes" in data:
-            for cls in data["classes"]:
-                class_name = cls["name"]
-                dependency_graph[class_name] = set()
-                
-                # Collect class-type dependencies from attributes
-                if "attributes" in cls:
-                    for attr_name, attr_info in cls["attributes"].items():
-                        attr_type = attr_info["type"]
-
-                        # Skip primitives, enums, "any" types, and self-references
-                        if (is_primitive_type(attr_type, package_data) or 
-                            is_enum_type(attr_type, package_data) or 
-                            attr_type.startswith("any (") or
-                            attr_type == class_name):
-                            continue
-                        
-                        # Add to dependencies
-                        dependency_graph[class_name].add(attr_type)
-    
-    return dependency_graph
-
-
-def detect_circular_import(
-    current_class: str,
-    attribute_type: str,
-    package_data: Dict[str, Dict[str, Any]],
-    dependency_graph: Dict[str, set],
-) -> bool:
-    """Detect if importing attribute_type would cause a circular import.
-
-    Args:
-        current_class: Name of the current class being generated
-        attribute_type: Name of the attribute type to import
-        package_data: Package data dictionary
-        dependency_graph: Graph of class dependencies (complete graph)
-
-    Returns:
-        True if circular import detected, False otherwise
-    """
-    # If current_class is attribute_type, it's a self-reference
-    if current_class == attribute_type:
-        return True
-    
-    # Check if attribute_type is in dependency graph
-    if attribute_type not in dependency_graph:
-        return False
-    
-    # Check if current_class is in the dependency chain of attribute_type
-    # Use depth-first search to detect cycles
-    visited = set()
-    to_visit = [attribute_type]
-    
-    while to_visit:
-        node = to_visit.pop()
-        if node == current_class:
-            return True
-        if node in visited:
-            continue
-        visited.add(node)
-        
-        # Add dependencies of this node
-        if node in dependency_graph:
-            to_visit.extend(dependency_graph[node] - visited)
-    
-    return False
-
-
-def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
-    """Load all package JSON files.
-
-    Args:
-        packages_dir: Directory containing package JSON files
-
-    Returns:
-        Dictionary mapping package paths to package data
-    """
-    package_data = {}
-
-    # Load all .classes.json files
-    for class_file in packages_dir.rglob("*.classes.json"):
-        try:
-            with open(class_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                package_path = data.get("package", "")
-                if package_path:
-                    package_data[package_path] = data
-        except Exception:
-            pass
-
-    # Load all .primitives.json files
-    for primitive_file in packages_dir.rglob("*.primitives.json"):
-        try:
-            with open(primitive_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                package_path = data.get("package", "")
-                if package_path:
-                    # Add primitives to existing package data or create new entry
-                    if package_path in package_data:
-                        package_data[package_path]["primitives"] = data.get("primitives", [])
-                    else:
-                        package_data[package_path] = {"primitives": data.get("primitives", [])}
-        except Exception:
-            pass
-
-    # Load all .enums.json files
-    for enum_file in packages_dir.rglob("*.enums.json"):
-        try:
-            with open(enum_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                package_path = data.get("package", "")
-                if package_path:
-                    # Add enumerations to existing package data or create new entry
-                    if package_path in package_data:
-                        package_data[package_path]["enumerations"] = data.get("enumerations", [])
-                    else:
-                        package_data[package_path] = {"enumerations": data.get("enumerations", [])}
-        except Exception:
-            pass
-
-    return package_data
-
-
-def generate_all_models(
-    mapping_file: Path,
-    hierarchy_file: Path,
-    output_dir: Path,
-    generate_classes: bool = True,
-    generate_enums: bool = True,
-    generate_primitives: bool = True,
-    include_members: bool = False,
-    skip_list_file: Path = None,
-) -> None:
-    """Generate all model classes, enums, and primitives from JSON definitions.
-
-    Args:
-        mapping_file: Path to mapping.json
-        hierarchy_file: Path to hierarchy.json
-        output_dir: Output directory for generated files
-        generate_classes: Whether to generate class files
-        generate_enums: Whether to generate enum files
-        generate_primitives: Whether to generate primitive files
-        include_members: Whether to include member lists from package definitions
-        skip_list_file: Path to skip_classes.yaml (optional, defaults to tools/skip_classes.yaml)
-    """
-    total_generated = 0
-
-    # Load skip list and force_type_checking_imports from YAML configuration
-    if skip_list_file is None:
-        # Default to the skip_classes.yaml in the tools directory
-        skip_list_file = Path(__file__).parent / "skip_classes.yaml"
-    skip_list, force_type_checking_imports = load_skip_list(skip_list_file)
-
-    # Parse hierarchy.json for parent and abstract information
-    hierarchy_info = parse_hierarchy_json(hierarchy_file)
-
-    # Load all package data for member generation
-    packages_dir = mapping_file.parent / "packages"
-    package_data = load_all_package_data(packages_dir) if include_members else {}
-
-    if generate_classes:
-        # Generate classes from mapping.json
-        data = parse_mapping_json(mapping_file)
-        types = data.get("types", [])
-
-        # Create directory structure
-        create_directory_structure(types, output_dir, package_data)
-
-        # Build complete dependency graph for circular import detection
-        dependency_graph = build_complete_dependency_graph(package_data) if include_members else {}
-
-        # Create a mapping of class names to their JSON file paths
-        class_json_file_map = {}
-        for package_path, package_info in package_data.items():
-            if "classes" in package_info:
-                json_file_path = str(packages_dir / f"{package_path.replace('::', '_')}.classes.json")
-                for cls in package_info["classes"]:
-                    class_json_file_map[cls["name"]] = json_file_path
-
-        # Generate each class
-        for type_def in types:
-            if type_def.get("type") != "Class":
-                continue
-
-            class_name = type_def["name"]
-            package_path = type_def.get("package_path", "")
-
-            # Skip classes that are in the skip list (manually maintained)
-            if class_name in skip_list:
-                print(f"Skipping {class_name} - manually maintained special class")
-                continue
-
-            # Get the JSON file path for this class
-            json_file_path = class_json_file_map.get(class_name, "")
-
-            # Convert package path to file path
-            dir_path = output_dir / package_path.replace("::", "/")
-            filename = dir_path / f"{to_snake_case(class_name)}.py"
-
-            # Generate class code
-            class_code = generate_class_code(
-                type_def, hierarchy_info, package_data, include_members, json_file_path, dependency_graph, force_type_checking_imports
-            )
-            builder_code = generate_builder_code(type_def)
-
-            # Write to file
-            full_code = class_code + "\n\n" + builder_code
-            filename.write_text(full_code)
-            total_generated += 1
-
-        print(f"Generated {len([t for t in types if t.get('type') == 'Class'])} model classes")
-
-    if generate_enums:
-        # Generate enums from enum JSON files in packages directory
-        enum_files = list(packages_dir.rglob("*.enums.json"))
-        total_enums = 0
-        for enum_file in enum_files:
-            enum_data = parse_enum_json(enum_file)
-            package_path = enum_data.get("package", "")
-
-            # Convert package path to file path
-            dir_path = output_dir / package_path.replace("::", "/")
-            dir_path.mkdir(parents=True, exist_ok=True)
-
-            # Generate each enum
-            for enum_def in enum_data.get("enumerations", []):
-                enum_name = enum_def["name"]
-                filename = dir_path / f"{to_snake_case(enum_name)}.py"
-
-                # Generate enum code with JSON file path
-                json_file_path = f"packages/{enum_file.name}"
-                enum_code = generate_enum_code(enum_def, json_file_path)
-
-                # Write to file
-                filename.write_text(enum_code)
-                total_generated += 1
-                total_enums += 1
-
-        print(f"Generated {len(enum_files)} enum files with {total_enums} enums")
-
-    if generate_primitives:
-        # Generate primitives from primitive JSON files in packages directory
-        primitive_files = list(packages_dir.rglob("*.primitives.json"))
-        total_primitives = 0
-        for primitive_file in primitive_files:
-            primitive_data = parse_primitive_json(primitive_file)
-            package_path = primitive_data.get("package", "")
-
-            # Convert package path to file path
-            dir_path = output_dir / package_path.replace("::", "/")
-            dir_path.mkdir(parents=True, exist_ok=True)
-
-            # Generate each primitive
-            for primitive_def in primitive_data.get("primitives", []):
-                primitive_name = primitive_def["name"]
-                filename = dir_path / f"{to_snake_case(primitive_name)}.py"
-
-                # Generate primitive code with JSON file path
-                json_file_path = f"packages/{primitive_file.name}"
-                primitive_code = generate_primitive_code(primitive_def, json_file_path)
-
-                # Write to file
-                filename.write_text(primitive_code)
-                total_generated += 1
-                total_primitives += 1
-
-        print(
-            f"Generated {len(primitive_files)} primitive files with {total_primitives} primitives"
-        )
-
-    print(f"Total generated files: {total_generated} in {output_dir}")
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Generate AUTOSAR model classes, enums, and primitives from JSON definitions"
-    )
-    parser.add_argument("mapping_file", type=Path, help="Path to mapping.json file")
-    parser.add_argument("hierarchy_file", type=Path, help="Path to hierarchy.json file")
-    parser.add_argument("output_dir", type=Path, help="Output directory for generated files")
-    parser.add_argument(
-        "--classes", action="store_true", default=True, help="Generate class files (default: True)"
-    )
-    parser.add_argument(
-        "--no-classes", action="store_false", dest="classes", help="Skip class file generation"
-    )
-    parser.add_argument(
-        "--enums", action="store_true", default=True, help="Generate enum files (default: True)"
-    )
-    parser.add_argument(
-        "--no-enums", action="store_false", dest="enums", help="Skip enum file generation"
-    )
-    parser.add_argument(
-        "--primitives",
-        action="store_true",
-        default=True,
-        help="Generate primitive files (default: True)",
-    )
-    parser.add_argument(
-        "--no-primitives",
-        action="store_false",
-        dest="primitives",
-        help="Skip primitive file generation",
-    )
-    parser.add_argument(
-        "--members",
-        action="store_true",
-        default=False,
-        help="Include member lists from package definitions",
-    )
-    parser.add_argument(
-        "--no-members", action="store_false", dest="members", help="Skip member list generation"
-    )
-    parser.add_argument(
-        "--skip-list",
-        type=Path,
-        default=None,
-        help="Path to skip_classes.yaml file (default: tools/skip_classes.yaml)",
-    )
-
-    args = parser.parse_args()
-
-    # Generate models
-    generate_all_models(
-        mapping_file=args.mapping_file,
-        hierarchy_file=args.hierarchy_file,
-        output_dir=args.output_dir,
-        generate_classes=args.classes,
-        generate_enums=args.enums,
-        generate_primitives=args.primitives,
-        include_members=args.members,
-        skip_list_file=args.skip_list,
-    )
