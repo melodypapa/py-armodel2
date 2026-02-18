@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
     AutosarParameterRef,
 )
@@ -36,15 +37,15 @@ class InstantiationDataDefProps(ARObject):
         """
         return False
 
-    parameter: Optional[AutosarParameterRef]
+    parameter_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
-    variable_instance: Optional[AutosarVariableRef]
+    variable_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize InstantiationDataDefProps."""
         super().__init__()
-        self.parameter: Optional[AutosarParameterRef] = None
+        self.parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
-        self.variable_instance: Optional[AutosarVariableRef] = None
+        self.variable_instance_ref: Optional[ARRef] = None
 
 
 class InstantiationDataDefPropsBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -34,16 +35,16 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
         return False
 
     base: Optional[CompositionSwComponentType]
-    context_port: Optional[PortPrototype]
+    context_port_ref: Optional[ARRef]
     context_sws: list[Any]
-    target_variable: Optional[VariableDataPrototype]
+    target_variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VariableDataPrototypeInCompositionInstanceRef."""
         super().__init__()
         self.base: Optional[CompositionSwComponentType] = None
-        self.context_port: Optional[PortPrototype] = None
+        self.context_port_ref: Optional[ARRef] = None
         self.context_sws: list[Any] = []
-        self.target_variable: Optional[VariableDataPrototype] = None
+        self.target_variable_ref: Optional[ARRef] = None
 
 
 class VariableDataPrototypeInCompositionInstanceRefBuilder:

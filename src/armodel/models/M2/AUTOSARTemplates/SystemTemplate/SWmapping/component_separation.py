@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constraint import (
     MappingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
     MappingScopeEnum,
 )
@@ -29,11 +30,11 @@ class ComponentSeparation(MappingConstraint):
         """
         return False
 
-    mapping_scope_enum: Optional[MappingScopeEnum]
+    mapping_scope_enum_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""
         super().__init__()
-        self.mapping_scope_enum: Optional[MappingScopeEnum] = None
+        self.mapping_scope_enum_ref: Optional[ARRef] = None
 
 
 class ComponentSeparationBuilder:

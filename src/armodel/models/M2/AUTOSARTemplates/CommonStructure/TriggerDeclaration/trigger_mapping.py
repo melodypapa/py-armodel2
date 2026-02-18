@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -27,13 +28,13 @@ class TriggerMapping(ARObject):
         """
         return False
 
-    first_trigger: Optional[Trigger]
-    second_trigger: Optional[Trigger]
+    first_trigger_ref: Optional[ARRef]
+    second_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TriggerMapping."""
         super().__init__()
-        self.first_trigger: Optional[Trigger] = None
-        self.second_trigger: Optional[Trigger] = None
+        self.first_trigger_ref: Optional[ARRef] = None
+        self.second_trigger_ref: Optional[ARRef] = None
 
 
 class TriggerMappingBuilder:

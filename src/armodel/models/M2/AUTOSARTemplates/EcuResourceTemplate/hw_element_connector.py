@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_connector import (
     HwPinConnector,
 )
@@ -40,13 +41,13 @@ class HwElementConnector(Describable):
 
     hw_elements: list[HwElement]
     hw_pins: list[HwPinConnector]
-    hw_pin_groups: list[HwPinGroupConnector]
+    hw_pin_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwElementConnector."""
         super().__init__()
         self.hw_elements: list[HwElement] = []
         self.hw_pins: list[HwPinConnector] = []
-        self.hw_pin_groups: list[HwPinGroupConnector] = []
+        self.hw_pin_group_refs: list[ARRef] = []
 
 
 class HwElementConnectorBuilder:

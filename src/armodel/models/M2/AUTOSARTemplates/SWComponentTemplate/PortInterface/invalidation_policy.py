@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
     HandleInvalidEnum,
 )
@@ -30,12 +31,12 @@ class InvalidationPolicy(ARObject):
         """
         return False
 
-    data_element: Optional[VariableDataPrototype]
+    data_element_ref: Optional[ARRef]
     handle_invalid_enum: Optional[HandleInvalidEnum]
     def __init__(self) -> None:
         """Initialize InvalidationPolicy."""
         super().__init__()
-        self.data_element: Optional[VariableDataPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
 
 

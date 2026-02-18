@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     ProgramminglanguageEnum,
 )
@@ -68,15 +69,15 @@ class Implementation(ARElement, ABC):
     build_action_manifest: Optional[BuildActionManifest]
     code_descriptors: list[Code]
     compilers: list[Compiler]
-    generateds: list[DependencyOnArtifact]
+    generated_refs: list[ARRef]
     hw_elements: list[HwElement]
     linkers: list[Linker]
     mc_support: Optional[McSupportData]
     programming: Optional[ProgramminglanguageEnum]
-    required_artifacts: list[DependencyOnArtifact]
-    requireds: list[DependencyOnArtifact]
+    required_artifact_refs: list[ARRef]
+    required_refs: list[ARRef]
     resource: Optional[ResourceConsumption]
-    swc_bsw: Optional[SwcBswMapping]
+    swc_bsw_ref: Optional[ARRef]
     sw_version: Optional[RevisionLabelString]
     used_code_generator: Optional[String]
     vendor_id: Optional[PositiveInteger]
@@ -86,15 +87,15 @@ class Implementation(ARElement, ABC):
         self.build_action_manifest: Optional[BuildActionManifest] = None
         self.code_descriptors: list[Code] = []
         self.compilers: list[Compiler] = []
-        self.generateds: list[DependencyOnArtifact] = []
+        self.generated_refs: list[ARRef] = []
         self.hw_elements: list[HwElement] = []
         self.linkers: list[Linker] = []
         self.mc_support: Optional[McSupportData] = None
         self.programming: Optional[ProgramminglanguageEnum] = None
-        self.required_artifacts: list[DependencyOnArtifact] = []
-        self.requireds: list[DependencyOnArtifact] = []
+        self.required_artifact_refs: list[ARRef] = []
+        self.required_refs: list[ARRef] = []
         self.resource: Optional[ResourceConsumption] = None
-        self.swc_bsw: Optional[SwcBswMapping] = None
+        self.swc_bsw_ref: Optional[ARRef] = None
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -38,14 +39,14 @@ class ECUMapping(Identifiable):
     comm_controllers: list[Any]
     ecu: Optional[HwElement]
     ecu_instance: Optional[EcuInstance]
-    hw_port_mapping: HwPortMapping
+    hw_port_mapping_ref: ARRef
     def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()
         self.comm_controllers: list[Any] = []
         self.ecu: Optional[HwElement] = None
         self.ecu_instance: Optional[EcuInstance] = None
-        self.hw_port_mapping: HwPortMapping = None
+        self.hw_port_mapping_ref: ARRef = None
 
 
 class ECUMappingBuilder:

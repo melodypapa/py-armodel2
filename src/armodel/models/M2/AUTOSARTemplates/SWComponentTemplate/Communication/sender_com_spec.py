@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -47,7 +48,7 @@ class SenderComSpec(PPortComSpec, ABC):
         return True
 
     composite_networks: list[CompositeNetworkRepresentation]
-    data_element: Optional[AutosarDataPrototype]
+    data_element_ref: Optional[ARRef]
     handle_out_of_range: Optional[Any]
     network: Optional[SwDataDefProps]
     transmission: Optional[Any]
@@ -57,7 +58,7 @@ class SenderComSpec(PPortComSpec, ABC):
         """Initialize SenderComSpec."""
         super().__init__()
         self.composite_networks: list[CompositeNetworkRepresentation] = []
-        self.data_element: Optional[AutosarDataPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.handle_out_of_range: Optional[Any] = None
         self.network: Optional[SwDataDefProps] = None
         self.transmission: Optional[Any] = None

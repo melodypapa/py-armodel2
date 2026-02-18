@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_reference_value import (
     EcucAbstractReferenceValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
@@ -30,11 +31,11 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         """
         return False
 
-    value: Optional[Referrable]
+    value_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucReferenceValue."""
         super().__init__()
-        self.value: Optional[Referrable] = None
+        self.value_ref: Optional[ARRef] = None
 
 
 class EcucReferenceValueBuilder:

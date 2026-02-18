@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
     TimingExtension,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_value_collection import (
     EcucValueCollection,
 )
@@ -29,11 +30,11 @@ class EcuTiming(TimingExtension):
         """
         return False
 
-    ecu: Optional[EcucValueCollection]
+    ecu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcuTiming."""
         super().__init__()
-        self.ecu: Optional[EcucValueCollection] = None
+        self.ecu_ref: Optional[ARRef] = None
 
 
 class EcuTimingBuilder:

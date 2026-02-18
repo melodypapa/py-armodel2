@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -33,13 +34,13 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         return False
 
     enhanced_mode: Optional[Boolean]
-    mode_group: Optional[ModeDeclarationGroup]
+    mode_group_ref: Optional[ARRef]
     supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize ModeSwitchReceiverComSpec."""
         super().__init__()
         self.enhanced_mode: Optional[Boolean] = None
-        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.mode_group_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
 
 

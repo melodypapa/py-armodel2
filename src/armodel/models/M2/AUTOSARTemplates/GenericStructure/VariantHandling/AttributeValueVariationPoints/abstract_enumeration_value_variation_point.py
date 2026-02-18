@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     Ref,
@@ -30,12 +31,12 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         return True
 
     base: Optional[Identifier]
-    enum_table: Optional[Ref]
+    enum_table_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()
         self.base: Optional[Identifier] = None
-        self.enum_table: Optional[Ref] = None
+        self.enum_table_ref: Optional[ARRef] = None
 
 
 class AbstractEnumerationValueVariationPointBuilder:

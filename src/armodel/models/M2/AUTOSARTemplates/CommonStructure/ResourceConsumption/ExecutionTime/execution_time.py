@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
     DependencyOnArtifact,
 )
@@ -53,7 +54,7 @@ class ExecutionTime(Identifiable, ABC):
     executable_entity: Optional[ExecutableEntity]
     hardware: Optional[HardwareConfiguration]
     hw_element: Optional[HwElement]
-    included_libraries: list[DependencyOnArtifact]
+    included_librarie_refs: list[ARRef]
     memory_section_locations: list[MemorySectionLocation]
     software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
@@ -63,7 +64,7 @@ class ExecutionTime(Identifiable, ABC):
         self.executable_entity: Optional[ExecutableEntity] = None
         self.hardware: Optional[HardwareConfiguration] = None
         self.hw_element: Optional[HwElement] = None
-        self.included_libraries: list[DependencyOnArtifact] = []
+        self.included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
 

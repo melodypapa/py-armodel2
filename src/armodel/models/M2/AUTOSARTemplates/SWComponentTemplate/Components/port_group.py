@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
@@ -30,13 +31,13 @@ class PortGroup(Identifiable):
         """
         return False
 
-    inner_groups: list[PortGroup]
-    outer_ports: list[PortPrototype]
+    inner_group_refs: list[ARRef]
+    outer_port_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
-        self.inner_groups: list[PortGroup] = []
-        self.outer_ports: list[PortPrototype] = []
+        self.inner_group_refs: list[ARRef] = []
+        self.outer_port_refs: list[ARRef] = []
 
 
 class PortGroupBuilder:

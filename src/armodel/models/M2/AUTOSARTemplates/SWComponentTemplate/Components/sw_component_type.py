@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.consistency_needs import (
     ConsistencyNeeds,
 )
@@ -49,20 +50,20 @@ class SwComponentType(ARElement, ABC):
         return True
 
     consistency_needses: list[ConsistencyNeeds]
-    ports: list[PortPrototype]
-    port_groups: list[PortGroup]
-    swc_mappings: list[Any]
+    port_refs: list[ARRef]
+    port_group_refs: list[ARRef]
+    swc_mapping_refs: list[ARRef]
     sw_component_documentation: Optional[SwComponentDocumentation]
-    unit_groups: list[UnitGroup]
+    unit_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SwComponentType."""
         super().__init__()
         self.consistency_needses: list[ConsistencyNeeds] = []
-        self.ports: list[PortPrototype] = []
-        self.port_groups: list[PortGroup] = []
-        self.swc_mappings: list[Any] = []
+        self.port_refs: list[ARRef] = []
+        self.port_group_refs: list[ARRef] = []
+        self.swc_mapping_refs: list[ARRef] = []
         self.sw_component_documentation: Optional[SwComponentDocumentation] = None
-        self.unit_groups: list[UnitGroup] = []
+        self.unit_group_refs: list[ARRef] = []
 
 
 class SwComponentTypeBuilder:

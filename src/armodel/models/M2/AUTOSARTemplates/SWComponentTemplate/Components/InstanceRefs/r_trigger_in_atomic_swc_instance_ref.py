@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.trigger_in_atomic_swc_instance_ref import (
     TriggerInAtomicSwcInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -33,12 +34,12 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         return False
 
     context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
-    target_trigger: Optional[Trigger]
+    target_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTriggerInAtomicSwcInstanceRef."""
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
-        self.target_trigger: Optional[Trigger] = None
+        self.target_trigger_ref: Optional[ARRef] = None
 
 
 class RTriggerInAtomicSwcInstanceRefBuilder:

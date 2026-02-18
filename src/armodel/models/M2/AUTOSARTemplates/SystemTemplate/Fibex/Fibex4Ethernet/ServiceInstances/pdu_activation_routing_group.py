@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     EventGroupControlTypeEnum,
 )
@@ -32,12 +33,12 @@ class PduActivationRoutingGroup(Identifiable):
         """
         return False
 
-    event_group: Optional[EventGroupControlTypeEnum]
+    event_group_ref: Optional[ARRef]
     i_pdu_identifiers: list[SoConIPduIdentifier]
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
-        self.event_group: Optional[EventGroupControlTypeEnum] = None
+        self.event_group_ref: Optional[ARRef] = None
         self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
 
 

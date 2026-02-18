@@ -19,6 +19,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -42,13 +43,13 @@ class ClientServerOperation(Identifiable):
         """
         return False
 
-    arguments: list[ArgumentDataPrototype]
+    argument_refs: list[ARRef]
     diag_arg_integrity: Optional[Boolean]
     possible_errors: list[ApplicationError]
     def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()
-        self.arguments: list[ArgumentDataPrototype] = []
+        self.argument_refs: list[ARRef] = []
         self.diag_arg_integrity: Optional[Boolean] = None
         self.possible_errors: list[ApplicationError] = []
 

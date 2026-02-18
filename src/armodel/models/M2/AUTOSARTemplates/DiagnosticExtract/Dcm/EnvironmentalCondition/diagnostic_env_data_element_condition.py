@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_compare_condition import (
     DiagnosticEnvCompareCondition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -39,13 +40,13 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
         return False
 
     compare_value: Optional[ValueSpecification]
-    data_prototype: Optional[DataPrototype]
+    data_prototype_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvDataElementCondition."""
         super().__init__()
         self.compare_value: Optional[ValueSpecification] = None
-        self.data_prototype: Optional[DataPrototype] = None
+        self.data_prototype_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
 
 

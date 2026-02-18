@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
     PositiveInteger,
@@ -36,7 +37,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
     destination_mac: Optional[MacAddressString]
     mac_address_string: Optional[MacAddressString]
-    pdu: Optional[PduTriggering]
+    pdu_ref: Optional[ARRef]
     unique_stream_id: Optional[PositiveInteger]
     version: Optional[PositiveInteger]
     vlan_priority: Optional[PositiveInteger]
@@ -45,7 +46,7 @@ class IEEE1722TpConnection(ARElement, ABC):
         super().__init__()
         self.destination_mac: Optional[MacAddressString] = None
         self.mac_address_string: Optional[MacAddressString] = None
-        self.pdu: Optional[PduTriggering] = None
+        self.pdu_ref: Optional[ARRef] = None
         self.unique_stream_id: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None

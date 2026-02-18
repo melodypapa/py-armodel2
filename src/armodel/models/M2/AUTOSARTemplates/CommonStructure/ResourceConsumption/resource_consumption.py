@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.access_count_set import (
     AccessCountSet,
 )
@@ -46,7 +47,7 @@ class ResourceConsumption(Identifiable):
         """
         return False
 
-    access_count_sets: list[AccessCountSet]
+    access_count_set_refs: list[ARRef]
     execution_times: list[ExecutionTime]
     heap_usages: list[HeapUsage]
     memory_sections: list[MemorySection]
@@ -55,7 +56,7 @@ class ResourceConsumption(Identifiable):
     def __init__(self) -> None:
         """Initialize ResourceConsumption."""
         super().__init__()
-        self.access_count_sets: list[AccessCountSet] = []
+        self.access_count_set_refs: list[ARRef] = []
         self.execution_times: list[ExecutionTime] = []
         self.heap_usages: list[HeapUsage] = []
         self.memory_sections: list[MemorySection] = []

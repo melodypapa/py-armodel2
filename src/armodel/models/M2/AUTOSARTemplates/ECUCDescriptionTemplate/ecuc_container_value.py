@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
@@ -37,14 +38,14 @@ class EcucContainerValue(Identifiable):
 
     definition: Optional[EcucContainerDef]
     parameter_values: list[EcucParameterValue]
-    reference_values: list[Any]
+    reference_value_refs: list[ARRef]
     sub_containers: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize EcucContainerValue."""
         super().__init__()
         self.definition: Optional[EcucContainerDef] = None
         self.parameter_values: list[EcucParameterValue] = []
-        self.reference_values: list[Any] = []
+        self.reference_value_refs: list[ARRef] = []
         self.sub_containers: list[EcucContainerValue] = []
 
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -38,14 +39,14 @@ class OperationInSystemInstanceRef(ARObject):
 
     base: Optional[System]
     context: Optional[RootSwCompositionPrototype]
-    context_port: PortPrototype
+    context_port_ref: ARRef
     target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInSystemInstanceRef."""
         super().__init__()
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
-        self.context_port: PortPrototype = None
+        self.context_port_ref: ARRef = None
         self.target_operation: Optional[ClientServerOperation] = None
 
 

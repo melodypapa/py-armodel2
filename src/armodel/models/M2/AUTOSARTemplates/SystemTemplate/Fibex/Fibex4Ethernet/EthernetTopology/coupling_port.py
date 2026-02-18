@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     CouplingPortRoleEnum,
     EthernetConnectionNegotiationEnum,
@@ -55,11 +56,11 @@ class CouplingPort(Identifiable):
     coupling_port_role_enum: Optional[CouplingPortRoleEnum]
     default_vlan: Optional[Any]
     mac_layer_type_enum: Optional[EthernetMacLayerTypeEnum]
-    mac_multicast_groups: list[MacMulticastGroup]
+    mac_multicast_group_refs: list[ARRef]
     mac_sec_propses: list[MacSecProps]
     physical_layer: Optional[EthernetPhysicalLayerTypeEnum]
     plca_props: Optional[PlcaProps]
-    pnc_mapping_idents: list[PncMappingIdent]
+    pnc_mapping_ident_refs: list[ARRef]
     receive_activity: Optional[Any]
     vlans: list[VlanMembership]
     vlan_modifier: Optional[Any]
@@ -72,11 +73,11 @@ class CouplingPort(Identifiable):
         self.coupling_port_role_enum: Optional[CouplingPortRoleEnum] = None
         self.default_vlan: Optional[Any] = None
         self.mac_layer_type_enum: Optional[EthernetMacLayerTypeEnum] = None
-        self.mac_multicast_groups: list[MacMulticastGroup] = []
+        self.mac_multicast_group_refs: list[ARRef] = []
         self.mac_sec_propses: list[MacSecProps] = []
         self.physical_layer: Optional[EthernetPhysicalLayerTypeEnum] = None
         self.plca_props: Optional[PlcaProps] = None
-        self.pnc_mapping_idents: list[PncMappingIdent] = []
+        self.pnc_mapping_ident_refs: list[ARRef] = []
         self.receive_activity: Optional[Any] = None
         self.vlans: list[VlanMembership] = []
         self.vlan_modifier: Optional[Any] = None

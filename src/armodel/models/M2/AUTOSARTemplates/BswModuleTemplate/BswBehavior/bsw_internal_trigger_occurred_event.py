@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
     BswInternalTriggeringPoint,
 )
@@ -29,11 +30,11 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
         """
         return False
 
-    event_source_point: Optional[BswInternalTriggeringPoint]
+    event_source_point_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswInternalTriggerOccurredEvent."""
         super().__init__()
-        self.event_source_point: Optional[BswInternalTriggeringPoint] = None
+        self.event_source_point_ref: Optional[ARRef] = None
 
 
 class BswInternalTriggerOccurredEventBuilder:

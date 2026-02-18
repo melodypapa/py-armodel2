@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
@@ -29,11 +30,11 @@ class SwcModeManagerErrorEvent(RTEEvent):
         """
         return False
 
-    mode_group: Optional[ModeDeclarationGroup]
+    mode_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcModeManagerErrorEvent."""
         super().__init__()
-        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.mode_group_ref: Optional[ARRef] = None
 
 
 class SwcModeManagerErrorEventBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ImplicitCommunicationBehavior.data_prototype_group import (
     DataPrototypeGroup,
 )
@@ -33,17 +34,17 @@ class ConsistencyNeeds(Identifiable):
         """
         return False
 
-    dpg_does_nots: list[DataPrototypeGroup]
-    dpg_requireses: list[DataPrototypeGroup]
-    reg_does_nots: list[RunnableEntityGroup]
-    reg_requireses: list[RunnableEntityGroup]
+    dpg_does_not_refs: list[ARRef]
+    dpg_requirese_refs: list[ARRef]
+    reg_does_not_refs: list[ARRef]
+    reg_requirese_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ConsistencyNeeds."""
         super().__init__()
-        self.dpg_does_nots: list[DataPrototypeGroup] = []
-        self.dpg_requireses: list[DataPrototypeGroup] = []
-        self.reg_does_nots: list[RunnableEntityGroup] = []
-        self.reg_requireses: list[RunnableEntityGroup] = []
+        self.dpg_does_not_refs: list[ARRef] = []
+        self.dpg_requirese_refs: list[ARRef] = []
+        self.reg_does_not_refs: list[ARRef] = []
+        self.reg_requirese_refs: list[ARRef] = []
 
 
 class ConsistencyNeedsBuilder:

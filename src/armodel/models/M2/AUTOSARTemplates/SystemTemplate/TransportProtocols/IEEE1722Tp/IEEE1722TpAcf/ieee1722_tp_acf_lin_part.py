@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
     IEEE1722TpAcfBusPart,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,12 +34,12 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         return False
 
     lin_identifier: Optional[PositiveInteger]
-    sdu: Optional[PduTriggering]
+    sdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfLinPart."""
         super().__init__()
         self.lin_identifier: Optional[PositiveInteger] = None
-        self.sdu: Optional[PduTriggering] = None
+        self.sdu_ref: Optional[ARRef] = None
 
 
 class IEEE1722TpAcfLinPartBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -37,14 +38,14 @@ class TlvDataIdDefinition(ARObject):
         return False
 
     id: Optional[PositiveInteger]
-    tlv_argument: Optional[ArgumentDataPrototype]
+    tlv_argument_ref: Optional[ARRef]
     tlv: Optional[AbstractImplementationDataType]
     tlv_record: Optional[Any]
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinition."""
         super().__init__()
         self.id: Optional[PositiveInteger] = None
-        self.tlv_argument: Optional[ArgumentDataPrototype] = None
+        self.tlv_argument_ref: Optional[ARRef] = None
         self.tlv: Optional[AbstractImplementationDataType] = None
         self.tlv_record: Optional[Any] = None
 

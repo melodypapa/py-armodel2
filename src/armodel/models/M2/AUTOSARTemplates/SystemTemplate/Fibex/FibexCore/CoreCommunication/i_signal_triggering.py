@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal import (
     ISignal,
 )
@@ -37,13 +38,13 @@ class ISignalTriggering(Identifiable):
         return False
 
     i_signal: Optional[ISignal]
-    i_signal_group: Optional[ISignalGroup]
+    i_signal_group_ref: Optional[ARRef]
     i_signal_ports: list[ISignalPort]
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
         self.i_signal: Optional[ISignal] = None
-        self.i_signal_group: Optional[ISignalGroup] = None
+        self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_ports: list[ISignalPort] = []
 
 

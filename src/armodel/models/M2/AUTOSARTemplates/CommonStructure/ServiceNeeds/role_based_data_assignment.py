@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -38,15 +39,15 @@ class RoleBasedDataAssignment(ARObject):
         return False
 
     role: Optional[Identifier]
-    used_data: Optional[AutosarVariableRef]
-    used_parameter: Optional[AutosarParameterRef]
+    used_data_ref: Optional[ARRef]
+    used_parameter_ref: Optional[ARRef]
     used_pim: Optional[PerInstanceMemory]
     def __init__(self) -> None:
         """Initialize RoleBasedDataAssignment."""
         super().__init__()
         self.role: Optional[Identifier] = None
-        self.used_data: Optional[AutosarVariableRef] = None
-        self.used_parameter: Optional[AutosarParameterRef] = None
+        self.used_data_ref: Optional[ARRef] = None
+        self.used_parameter_ref: Optional[ARRef] = None
         self.used_pim: Optional[PerInstanceMemory] = None
 
 

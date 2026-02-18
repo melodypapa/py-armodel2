@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -67,12 +68,12 @@ class SwcInternalBehavior(InternalBehavior):
         """
         return False
 
-    ar_typed_pers: list[VariableDataPrototype]
+    ar_typed_per_refs: list[ARRef]
     events: list[RTEEvent]
     exclusive_areas: list[SwcExclusiveAreaPolicy]
-    explicit_inters: list[VariableDataPrototype]
-    implicit_inters: list[VariableDataPrototype]
-    included_data_type_sets: list[IncludedDataTypeSet]
+    explicit_inter_refs: list[ARRef]
+    implicit_inter_refs: list[ARRef]
+    included_data_type_set_refs: list[ARRef]
     included_modes: list[IncludedModeDeclarationGroupSet]
     instantiation_data_defs: list[InstantiationDataDefProps]
     per_instance_memories: list[PerInstanceMemory]
@@ -86,12 +87,12 @@ class SwcInternalBehavior(InternalBehavior):
     def __init__(self) -> None:
         """Initialize SwcInternalBehavior."""
         super().__init__()
-        self.ar_typed_pers: list[VariableDataPrototype] = []
+        self.ar_typed_per_refs: list[ARRef] = []
         self.events: list[RTEEvent] = []
         self.exclusive_areas: list[SwcExclusiveAreaPolicy] = []
-        self.explicit_inters: list[VariableDataPrototype] = []
-        self.implicit_inters: list[VariableDataPrototype] = []
-        self.included_data_type_sets: list[IncludedDataTypeSet] = []
+        self.explicit_inter_refs: list[ARRef] = []
+        self.implicit_inter_refs: list[ARRef] = []
+        self.included_data_type_set_refs: list[ARRef] = []
         self.included_modes: list[IncludedModeDeclarationGroupSet] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
         self.per_instance_memories: list[PerInstanceMemory] = []

@@ -1710,6 +1710,7 @@ class_import_paths:
   AbstractVariationRestriction: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ModelRestrictionTypes.abstract_variation_restriction
   AbstractMultiplicityRestriction: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ModelRestrictionTypes.abstract_multiplicity_restriction
   ARObject: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object
+  ARRef: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref
   BuildActionManifest: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_manifest
   BuildAction: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action
   BuildActionIoElement: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_io_element

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
     IEEE1722TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -34,12 +35,12 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         return True
 
     max_transit_time: Optional[TimeValue]
-    sdus: list[PduTriggering]
+    sdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAvConnection."""
         super().__init__()
         self.max_transit_time: Optional[TimeValue] = None
-        self.sdus: list[PduTriggering] = []
+        self.sdu_refs: list[ARRef] = []
 
 
 class IEEE1722TpAvConnectionBuilder:

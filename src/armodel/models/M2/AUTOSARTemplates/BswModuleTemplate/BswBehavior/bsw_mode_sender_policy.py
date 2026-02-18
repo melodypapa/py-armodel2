@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -36,14 +37,14 @@ class BswModeSenderPolicy(ARObject):
 
     ack_request_request: Optional[BswModeSwitchAckRequest]
     enhanced_mode: Optional[Boolean]
-    provided_mode: Optional[ModeDeclarationGroup]
+    provided_mode_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize BswModeSenderPolicy."""
         super().__init__()
         self.ack_request_request: Optional[BswModeSwitchAckRequest] = None
         self.enhanced_mode: Optional[Boolean] = None
-        self.provided_mode: Optional[ModeDeclarationGroup] = None
+        self.provided_mode_ref: Optional[ARRef] = None
         self.queue_length: Optional[PositiveInteger] = None
 
 

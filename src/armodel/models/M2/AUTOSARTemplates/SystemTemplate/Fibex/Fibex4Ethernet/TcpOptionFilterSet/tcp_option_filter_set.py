@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.TcpOptionFilterSet.tcp_option_filter_list import (
     TcpOptionFilterList,
 )
@@ -29,11 +30,11 @@ class TcpOptionFilterSet(ARElement):
         """
         return False
 
-    tcp_option_filter_lists: list[TcpOptionFilterList]
+    tcp_option_filter_list_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize TcpOptionFilterSet."""
         super().__init__()
-        self.tcp_option_filter_lists: list[TcpOptionFilterList] = []
+        self.tcp_option_filter_list_refs: list[ARRef] = []
 
 
 class TcpOptionFilterSetBuilder:

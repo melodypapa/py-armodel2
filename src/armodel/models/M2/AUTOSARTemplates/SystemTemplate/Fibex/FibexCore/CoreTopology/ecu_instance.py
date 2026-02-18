@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -66,9 +67,9 @@ class EcuInstance(FibexElement):
         """
         return False
 
-    associated_coms: list[ISignalIPduGroup]
+    associated_com_refs: list[ARRef]
     associateds: list[ConsumedProvidedServiceInstanceGroup]
-    associated_pdurs: list[PdurIPduGroup]
+    associated_pdur_refs: list[ARRef]
     channel: Optional[Boolean]
     client_id_range: Optional[ClientIdRange]
     com: Optional[TimeValue]
@@ -93,9 +94,9 @@ class EcuInstance(FibexElement):
     def __init__(self) -> None:
         """Initialize EcuInstance."""
         super().__init__()
-        self.associated_coms: list[ISignalIPduGroup] = []
+        self.associated_com_refs: list[ARRef] = []
         self.associateds: list[ConsumedProvidedServiceInstanceGroup] = []
-        self.associated_pdurs: list[PdurIPduGroup] = []
+        self.associated_pdur_refs: list[ARRef] = []
         self.channel: Optional[Boolean] = None
         self.client_id_range: Optional[ClientIdRange] = None
         self.com: Optional[TimeValue] = None

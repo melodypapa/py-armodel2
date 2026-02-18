@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.mode_group_in_atomic_swc_instance_ref import (
     ModeGroupInAtomicSwcInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -33,12 +34,12 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         return False
 
     context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
-    target_mode: Optional[ModeDeclarationGroup]
+    target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RModeGroupInAtomicSWCInstanceRef."""
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
-        self.target_mode: Optional[ModeDeclarationGroup] = None
+        self.target_mode_ref: Optional[ARRef] = None
 
 
 class RModeGroupInAtomicSWCInstanceRefBuilder:

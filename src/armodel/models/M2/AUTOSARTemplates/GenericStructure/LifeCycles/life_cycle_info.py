@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -37,21 +38,21 @@ class LifeCycleInfo(ARObject):
         """
         return False
 
-    lc_object: Referrable
+    lc_object_ref: ARRef
     lc_state: Optional[LifeCycleState]
     period_begin: Optional[LifeCyclePeriod]
     period_end: Optional[LifeCyclePeriod]
     remark: Optional[DocumentationBlock]
-    use_insteads: list[Referrable]
+    use_instead_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize LifeCycleInfo."""
         super().__init__()
-        self.lc_object: Referrable = None
+        self.lc_object_ref: ARRef = None
         self.lc_state: Optional[LifeCycleState] = None
         self.period_begin: Optional[LifeCyclePeriod] = None
         self.period_end: Optional[LifeCyclePeriod] = None
         self.remark: Optional[DocumentationBlock] = None
-        self.use_insteads: list[Referrable] = []
+        self.use_instead_refs: list[ARRef] = []
 
 
 class LifeCycleInfoBuilder:

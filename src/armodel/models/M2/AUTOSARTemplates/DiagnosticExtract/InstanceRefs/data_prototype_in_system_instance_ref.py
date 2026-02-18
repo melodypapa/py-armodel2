@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -42,20 +43,20 @@ class DataPrototypeInSystemInstanceRef(ARObject):
     base: Optional[System]
     contexts: list[Any]
     context_datas: list[Any]
-    context_port: Optional[PortPrototype]
+    context_port_ref: Optional[ARRef]
     context_root: Optional[RootSwCompositionPrototype]
-    root_data_prototype: Optional[AutosarDataPrototype]
-    target_data: Optional[DataPrototype]
+    root_data_prototype_ref: Optional[ARRef]
+    target_data_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
         super().__init__()
         self.base: Optional[System] = None
         self.contexts: list[Any] = []
         self.context_datas: list[Any] = []
-        self.context_port: Optional[PortPrototype] = None
+        self.context_port_ref: Optional[ARRef] = None
         self.context_root: Optional[RootSwCompositionPrototype] = None
-        self.root_data_prototype: Optional[AutosarDataPrototype] = None
-        self.target_data: Optional[DataPrototype] = None
+        self.root_data_prototype_ref: Optional[ARRef] = None
+        self.target_data_ref: Optional[ARRef] = None
 
 
 class DataPrototypeInSystemInstanceRefBuilder:

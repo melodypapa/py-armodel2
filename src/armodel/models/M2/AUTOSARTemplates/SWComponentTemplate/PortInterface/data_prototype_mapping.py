@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -37,21 +38,21 @@ class DataPrototypeMapping(ARObject):
         """
         return False
 
-    first_data: Optional[AutosarDataPrototype]
+    first_data_ref: Optional[ARRef]
     first_to_second: Optional[DataTransformation]
-    second_data: Optional[AutosarDataPrototype]
+    second_data_ref: Optional[ARRef]
     second_to_first: Optional[DataTransformation]
-    sub_elements: list[SubElementMapping]
-    text_table: TextTableMapping
+    sub_element_refs: list[ARRef]
+    text_table_ref: ARRef
     def __init__(self) -> None:
         """Initialize DataPrototypeMapping."""
         super().__init__()
-        self.first_data: Optional[AutosarDataPrototype] = None
+        self.first_data_ref: Optional[ARRef] = None
         self.first_to_second: Optional[DataTransformation] = None
-        self.second_data: Optional[AutosarDataPrototype] = None
+        self.second_data_ref: Optional[ARRef] = None
         self.second_to_first: Optional[DataTransformation] = None
-        self.sub_elements: list[SubElementMapping] = []
-        self.text_table: TextTableMapping = None
+        self.sub_element_refs: list[ARRef] = []
+        self.text_table_ref: ARRef = None
 
 
 class DataPrototypeMappingBuilder:

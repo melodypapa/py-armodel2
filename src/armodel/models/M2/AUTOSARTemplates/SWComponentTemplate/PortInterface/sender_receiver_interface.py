@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.invalidation_policy import (
     InvalidationPolicy,
 )
@@ -40,15 +41,15 @@ class SenderReceiverInterface(DataInterface):
         """
         return False
 
-    data_elements: list[VariableDataPrototype]
+    data_element_refs: list[ARRef]
     invalidation_policy_policies: list[InvalidationPolicy]
-    meta_data_item_sets: list[MetaDataItemSet]
+    meta_data_item_set_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SenderReceiverInterface."""
         super().__init__()
-        self.data_elements: list[VariableDataPrototype] = []
+        self.data_element_refs: list[ARRef] = []
         self.invalidation_policy_policies: list[InvalidationPolicy] = []
-        self.meta_data_item_sets: list[MetaDataItemSet] = []
+        self.meta_data_item_set_refs: list[ARRef] = []
 
 
 class SenderReceiverInterfaceBuilder:

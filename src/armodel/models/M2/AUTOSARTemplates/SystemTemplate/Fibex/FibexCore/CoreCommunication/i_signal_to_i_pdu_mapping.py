@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
 )
@@ -42,7 +43,7 @@ class ISignalToIPduMapping(Identifiable):
         return False
 
     i_signal: Optional[ISignal]
-    i_signal_group: Optional[ISignalGroup]
+    i_signal_group_ref: Optional[ARRef]
     packing_byte: Optional[ByteOrderEnum]
     start_position: Optional[UnlimitedInteger]
     transfer_property_enum: Optional[TransferPropertyEnum]
@@ -51,7 +52,7 @@ class ISignalToIPduMapping(Identifiable):
         """Initialize ISignalToIPduMapping."""
         super().__init__()
         self.i_signal: Optional[ISignal] = None
-        self.i_signal_group: Optional[ISignalGroup] = None
+        self.i_signal_group_ref: Optional[ARRef] = None
         self.packing_byte: Optional[ByteOrderEnum] = None
         self.start_position: Optional[UnlimitedInteger] = None
         self.transfer_property_enum: Optional[TransferPropertyEnum] = None

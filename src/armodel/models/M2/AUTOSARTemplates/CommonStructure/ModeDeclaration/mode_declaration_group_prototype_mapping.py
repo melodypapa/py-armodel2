@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -30,15 +31,15 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         """
         return False
 
-    first_mode_group_prototype: Optional[ModeDeclarationGroup]
+    first_mode_group_prototype_ref: Optional[ARRef]
     mode: Optional[ModeDeclaration]
-    second_mode: Optional[ModeDeclarationGroup]
+    second_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()
-        self.first_mode_group_prototype: Optional[ModeDeclarationGroup] = None
+        self.first_mode_group_prototype_ref: Optional[ARRef] = None
         self.mode: Optional[ModeDeclaration] = None
-        self.second_mode: Optional[ModeDeclarationGroup] = None
+        self.second_mode_ref: Optional[ARRef] = None
 
 
 class ModeDeclarationGroupPrototypeMappingBuilder:

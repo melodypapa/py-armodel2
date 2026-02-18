@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -37,14 +38,14 @@ class ISignalIPduGroup(FibexElement):
         return False
 
     communication: Optional[String]
-    containeds: list[ISignalIPduGroup]
+    contained_refs: list[ARRef]
     i_signal_i_pdus: list[ISignalIPdu]
     nm_pdus: list[NmPdu]
     def __init__(self) -> None:
         """Initialize ISignalIPduGroup."""
         super().__init__()
         self.communication: Optional[String] = None
-        self.containeds: list[ISignalIPduGroup] = []
+        self.contained_refs: list[ARRef] = []
         self.i_signal_i_pdus: list[ISignalIPdu] = []
         self.nm_pdus: list[NmPdu] = []
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -27,11 +28,11 @@ class SwcToSwcSignal(ARObject):
         """
         return False
 
-    data_elements: list[VariableDataPrototype]
+    data_element_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToSwcSignal."""
         super().__init__()
-        self.data_elements: list[VariableDataPrototype] = []
+        self.data_element_refs: list[ARRef] = []
 
 
 class SwcToSwcSignalBuilder:

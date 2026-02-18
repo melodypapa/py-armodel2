@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     RevisionLabelString,
@@ -60,13 +61,13 @@ class System(ARElement):
         """
         return False
 
-    client_ids: list[ClientIdDefinitionSet]
+    client_id_refs: list[ARRef]
     container_i_pdu_header_byte: Optional[Any]
     ecu_extract_version: Optional[RevisionLabelString]
     fibex_elements: list[FibexElement]
     interpolation_routines: list[InterpolationRoutine]
     j1939_shared_addresses: list[J1939SharedAddressCluster]
-    mappings: list[SystemMapping]
+    mapping_refs: list[ARRef]
     pnc_vector: Optional[PositiveInteger]
     pnc_vector_offset: Optional[PositiveInteger]
     root_software: Optional[RootSwCompositionPrototype]
@@ -76,13 +77,13 @@ class System(ARElement):
     def __init__(self) -> None:
         """Initialize System."""
         super().__init__()
-        self.client_ids: list[ClientIdDefinitionSet] = []
+        self.client_id_refs: list[ARRef] = []
         self.container_i_pdu_header_byte: Optional[Any] = None
         self.ecu_extract_version: Optional[RevisionLabelString] = None
         self.fibex_elements: list[FibexElement] = []
         self.interpolation_routines: list[InterpolationRoutine] = []
         self.j1939_shared_addresses: list[J1939SharedAddressCluster] = []
-        self.mappings: list[SystemMapping] = []
+        self.mapping_refs: list[ARRef] = []
         self.pnc_vector: Optional[PositiveInteger] = None
         self.pnc_vector_offset: Optional[PositiveInteger] = None
         self.root_software: Optional[RootSwCompositionPrototype] = None

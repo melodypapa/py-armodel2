@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
 )
@@ -34,12 +35,12 @@ class HwPinGroupContent(ARObject):
         return False
 
     hw_pin: Optional[HwPin]
-    hw_pin_group: Optional[HwPinGroup]
+    hw_pin_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize HwPinGroupContent."""
         super().__init__()
         self.hw_pin: Optional[HwPin] = None
-        self.hw_pin_group: Optional[HwPinGroup] = None
+        self.hw_pin_group_ref: Optional[ARRef] = None
 
 
 class HwPinGroupContentBuilder:

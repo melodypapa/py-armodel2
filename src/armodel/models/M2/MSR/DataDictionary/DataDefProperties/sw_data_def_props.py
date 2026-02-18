@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
     DisplayPresentationEnum,
     SwCalibrationAccessEnum,
@@ -114,10 +115,10 @@ class SwDataDefProps(ARObject):
     sw_alignment: Optional[AlignmentType]
     sw_bit_representation: Optional[SwBitRepresentation]
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
-    sw_calprm_axis_set: Optional[SwCalprmAxisSet]
-    sw_comparison_variables: list[SwVariableRefProxy]
-    sw_data_dependency: Optional[SwDataDependency]
-    sw_host_variable: Optional[SwVariableRefProxy]
+    sw_calprm_axis_set_ref: Optional[ARRef]
+    sw_comparison_variable_refs: list[ARRef]
+    sw_data_dependency_ref: Optional[ARRef]
+    sw_host_variable_ref: Optional[ARRef]
     sw_impl_policy_enum: Optional[SwImplPolicyEnum]
     sw_intended_resolution: Optional[Numerical]
     sw_interpolation_method: Optional[Identifier]
@@ -147,10 +148,10 @@ class SwDataDefProps(ARObject):
         self.sw_alignment: Optional[AlignmentType] = None
         self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
-        self.sw_calprm_axis_set: Optional[SwCalprmAxisSet] = None
-        self.sw_comparison_variables: list[SwVariableRefProxy] = []
-        self.sw_data_dependency: Optional[SwDataDependency] = None
-        self.sw_host_variable: Optional[SwVariableRefProxy] = None
+        self.sw_calprm_axis_set_ref: Optional[ARRef] = None
+        self.sw_comparison_variable_refs: list[ARRef] = []
+        self.sw_data_dependency_ref: Optional[ARRef] = None
+        self.sw_host_variable_ref: Optional[ARRef] = None
         self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
         self.sw_intended_resolution: Optional[Numerical] = None
         self.sw_interpolation_method: Optional[Identifier] = None

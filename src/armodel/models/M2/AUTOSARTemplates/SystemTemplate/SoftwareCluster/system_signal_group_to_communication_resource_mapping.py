@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -33,12 +34,12 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         return False
 
     software_cluster: Optional[CpSoftwareCluster]
-    system_signal_group: Optional[SystemSignalGroup]
+    system_signal_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SystemSignalGroupToCommunicationResourceMapping."""
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
-        self.system_signal_group: Optional[SystemSignalGroup] = None
+        self.system_signal_group_ref: Optional[ARRef] = None
 
 
 class SystemSignalGroupToCommunicationResourceMappingBuilder:

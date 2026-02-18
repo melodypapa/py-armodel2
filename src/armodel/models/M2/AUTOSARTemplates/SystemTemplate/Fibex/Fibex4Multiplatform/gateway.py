@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -39,16 +40,16 @@ class Gateway(FibexElement):
         return False
 
     ecu: Optional[EcuInstance]
-    frame_mappings: list[FrameMapping]
-    i_pdu_mappings: list[IPduMapping]
-    signal_mappings: list[ISignalMapping]
+    frame_mapping_refs: list[ARRef]
+    i_pdu_mapping_refs: list[ARRef]
+    signal_mapping_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
         self.ecu: Optional[EcuInstance] = None
-        self.frame_mappings: list[FrameMapping] = []
-        self.i_pdu_mappings: list[IPduMapping] = []
-        self.signal_mappings: list[ISignalMapping] = []
+        self.frame_mapping_refs: list[ARRef] = []
+        self.i_pdu_mapping_refs: list[ARRef] = []
+        self.signal_mapping_refs: list[ARRef] = []
 
 
 class GatewayBuilder:

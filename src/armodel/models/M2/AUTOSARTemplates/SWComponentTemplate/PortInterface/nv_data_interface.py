@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -32,11 +33,11 @@ class NvDataInterface(DataInterface):
         """
         return False
 
-    nv_datas: list[VariableDataPrototype]
+    nv_data_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize NvDataInterface."""
         super().__init__()
-        self.nv_datas: list[VariableDataPrototype] = []
+        self.nv_data_refs: list[ARRef] = []
 
 
 class NvDataInterfaceBuilder:

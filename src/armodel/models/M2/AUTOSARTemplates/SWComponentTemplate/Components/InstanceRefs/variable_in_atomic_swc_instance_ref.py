@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
@@ -34,15 +35,15 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         """
         return True
 
-    abstract_target: Optional[VariableDataPrototype]
+    abstract_target_ref: Optional[ARRef]
     base: Optional[AtomicSwComponentType]
-    context_port: Optional[PortPrototype]
+    context_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VariableInAtomicSwcInstanceRef."""
         super().__init__()
-        self.abstract_target: Optional[VariableDataPrototype] = None
+        self.abstract_target_ref: Optional[ARRef] = None
         self.base: Optional[AtomicSwComponentType] = None
-        self.context_port: Optional[PortPrototype] = None
+        self.context_port_ref: Optional[ARRef] = None
 
 
 class VariableInAtomicSwcInstanceRefBuilder:

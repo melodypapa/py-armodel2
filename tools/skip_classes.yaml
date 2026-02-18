@@ -15,6 +15,9 @@ skip_classes:
   # Base ARObject class - implements reflection-based serialization framework
   - "ARObject"
 
+  # ARRef class - represents AUTOSAR references with DEST attribute
+  - "ARRef"
+
   # Abstract base class for SwBaseType - requires custom handling
   - "BaseType"
 
@@ -22,6 +25,7 @@ skip_classes:
   - "CompuMethod"
   - "Compu"
   - "CompuScales"
+  - "CompuScale"
   - "CompuConst"
   - "CompuConstTextContent"
 

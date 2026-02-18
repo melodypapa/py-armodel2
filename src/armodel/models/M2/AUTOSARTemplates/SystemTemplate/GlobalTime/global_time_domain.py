@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -57,7 +58,7 @@ class GlobalTimeDomain(FibexElement):
     global_time_subs: list[GlobalTimeDomain]
     network: Optional[NetworkSegmentIdentification]
     offset_time: Optional[GlobalTimeDomain]
-    pdu_triggering: Optional[PduTriggering]
+    pdu_triggering_ref: Optional[ARRef]
     slaves: list[GlobalTimeSlave]
     sync_loss: Optional[TimeValue]
     def __init__(self) -> None:
@@ -71,7 +72,7 @@ class GlobalTimeDomain(FibexElement):
         self.global_time_subs: list[GlobalTimeDomain] = []
         self.network: Optional[NetworkSegmentIdentification] = None
         self.offset_time: Optional[GlobalTimeDomain] = None
-        self.pdu_triggering: Optional[PduTriggering] = None
+        self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
 

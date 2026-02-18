@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
     LinFrameTriggering,
 )
@@ -29,11 +30,11 @@ class AssignFrameId(LinConfigurationEntry):
         """
         return False
 
-    assigned_frame: Optional[LinFrameTriggering]
+    assigned_frame_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AssignFrameId."""
         super().__init__()
-        self.assigned_frame: Optional[LinFrameTriggering] = None
+        self.assigned_frame_ref: Optional[ARRef] = None
 
 
 class AssignFrameIdBuilder:

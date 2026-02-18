@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
 )
@@ -36,16 +37,16 @@ class SenderReceiverToSignalMapping(DataMapping):
         """
         return False
 
-    data_element_system_instance_ref: Optional[VariableDataPrototype]
-    sender_to_signal: Optional[TextTableMapping]
-    signal_to: Optional[TextTableMapping]
+    data_element_system_instance_ref: Optional[ARRef]
+    sender_to_signal_ref: Optional[ARRef]
+    signal_to_ref: Optional[ARRef]
     system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
-        self.data_element_system_instance_ref: Optional[VariableDataPrototype] = None
-        self.sender_to_signal: Optional[TextTableMapping] = None
-        self.signal_to: Optional[TextTableMapping] = None
+        self.data_element_system_instance_ref: Optional[ARRef] = None
+        self.sender_to_signal_ref: Optional[ARRef] = None
+        self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
 
 

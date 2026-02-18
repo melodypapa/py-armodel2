@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights import (
     AclScopeEnum,
 )
@@ -42,17 +43,17 @@ class AclObjectSet(ARElement):
         """
         return False
 
-    acl_object_classes: list[ReferrableSubtypesEnum]
+    acl_object_classe_refs: list[ARRef]
     acl_scope: AclScopeEnum
-    collection: Optional[Collection]
+    collection_ref: Optional[ARRef]
     derived_froms: list[AtpBlueprint]
     engineerings: list[AutosarEngineeringObject]
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
-        self.acl_object_classes: list[ReferrableSubtypesEnum] = []
+        self.acl_object_classe_refs: list[ARRef] = []
         self.acl_scope: AclScopeEnum = None
-        self.collection: Optional[Collection] = None
+        self.collection_ref: Optional[ARRef] = None
         self.derived_froms: list[AtpBlueprint] = []
         self.engineerings: list[AutosarEngineeringObject] = []
 

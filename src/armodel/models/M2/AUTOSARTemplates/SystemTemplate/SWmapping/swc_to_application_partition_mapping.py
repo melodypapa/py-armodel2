@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
     ApplicationPartition,
 )
@@ -33,12 +34,12 @@ class SwcToApplicationPartitionMapping(Identifiable):
         return False
 
     application: Optional[ApplicationPartition]
-    sw_component_prototype: Optional[SwComponentPrototype]
+    sw_component_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToApplicationPartitionMapping."""
         super().__init__()
         self.application: Optional[ApplicationPartition] = None
-        self.sw_component_prototype: Optional[SwComponentPrototype] = None
+        self.sw_component_prototype_ref: Optional[ARRef] = None
 
 
 class SwcToApplicationPartitionMappingBuilder:

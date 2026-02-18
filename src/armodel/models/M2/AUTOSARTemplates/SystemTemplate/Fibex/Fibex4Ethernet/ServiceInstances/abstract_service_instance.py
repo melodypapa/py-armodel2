@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,14 +43,14 @@ class AbstractServiceInstance(Identifiable, ABC):
     capabilities: list[TagWithOptionalValue]
     major_version: Optional[PositiveInteger]
     method: Optional[PduActivationRoutingGroup]
-    routing_groups: list[SoAdRoutingGroup]
+    routing_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize AbstractServiceInstance."""
         super().__init__()
         self.capabilities: list[TagWithOptionalValue] = []
         self.major_version: Optional[PositiveInteger] = None
         self.method: Optional[PduActivationRoutingGroup] = None
-        self.routing_groups: list[SoAdRoutingGroup] = []
+        self.routing_group_refs: list[ARRef] = []
 
 
 class AbstractServiceInstanceBuilder:

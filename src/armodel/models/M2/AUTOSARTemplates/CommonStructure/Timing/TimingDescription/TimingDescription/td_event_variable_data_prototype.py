@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
     TDEventVfbPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -29,12 +30,12 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         """
         return False
 
-    data_element: Optional[VariableDataPrototype]
+    data_element_ref: Optional[ARRef]
     td_event_variable_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventVariableDataPrototype."""
         super().__init__()
-        self.data_element: Optional[VariableDataPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.td_event_variable_type: Optional[Any] = None
 
 

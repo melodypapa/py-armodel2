@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -31,13 +32,13 @@ class BswModeReceiverPolicy(ARObject):
         return False
 
     enhanced_mode: Optional[Boolean]
-    required_mode: Optional[ModeDeclarationGroup]
+    required_mode_ref: Optional[ARRef]
     supports: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()
         self.enhanced_mode: Optional[Boolean] = None
-        self.required_mode: Optional[ModeDeclarationGroup] = None
+        self.required_mode_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
 
 

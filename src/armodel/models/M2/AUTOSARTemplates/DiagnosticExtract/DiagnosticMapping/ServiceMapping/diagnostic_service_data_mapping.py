@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -37,14 +38,14 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
 
     diagnostic_data: Optional[DiagnosticDataElement]
     diagnostic: Optional[DiagnosticParameter]
-    mapped_data: Optional[DataPrototype]
+    mapped_data_ref: Optional[ARRef]
     parameter: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()
         self.diagnostic_data: Optional[DiagnosticDataElement] = None
         self.diagnostic: Optional[DiagnosticParameter] = None
-        self.mapped_data: Optional[DataPrototype] = None
+        self.mapped_data_ref: Optional[ARRef] = None
         self.parameter: Optional[DiagnosticParameter] = None
 
 

@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -31,14 +32,14 @@ class EndToEndProtectionVariablePrototype(ARObject):
         """
         return False
 
-    receivers: list[VariableDataPrototype]
-    sender: Optional[VariableDataPrototype]
+    receiver_refs: list[ARRef]
+    sender_ref: Optional[ARRef]
     short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionVariablePrototype."""
         super().__init__()
-        self.receivers: list[VariableDataPrototype] = []
-        self.sender: Optional[VariableDataPrototype] = None
+        self.receiver_refs: list[ARRef] = []
+        self.sender_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
 
 

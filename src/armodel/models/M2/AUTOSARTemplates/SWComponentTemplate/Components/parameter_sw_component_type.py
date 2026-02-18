@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
 )
@@ -37,13 +38,13 @@ class ParameterSwComponentType(SwComponentType):
         return False
 
     constants: list[ConstantSpecification]
-    data_types: list[DataTypeMappingSet]
+    data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
         self.constants: list[ConstantSpecification] = []
-        self.data_types: list[DataTypeMappingSet] = []
+        self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
 
 

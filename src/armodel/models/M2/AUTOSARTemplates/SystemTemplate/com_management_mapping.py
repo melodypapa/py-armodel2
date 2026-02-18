@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
@@ -32,12 +33,12 @@ class ComManagementMapping(Identifiable):
         """
         return False
 
-    coms: list[PortGroup]
+    com_refs: list[ARRef]
     physical_channels: list[PhysicalChannel]
     def __init__(self) -> None:
         """Initialize ComManagementMapping."""
         super().__init__()
-        self.coms: list[PortGroup] = []
+        self.com_refs: list[ARRef] = []
         self.physical_channels: list[PhysicalChannel] = []
 
 

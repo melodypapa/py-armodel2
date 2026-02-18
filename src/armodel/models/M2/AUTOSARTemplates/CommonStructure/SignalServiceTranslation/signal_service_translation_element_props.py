@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -35,13 +36,13 @@ class SignalServiceTranslationElementProps(Identifiable):
         """
         return False
 
-    element: Optional[DataPrototype]
+    element_ref: Optional[ARRef]
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SignalServiceTranslationElementProps."""
         super().__init__()
-        self.element: Optional[DataPrototype] = None
+        self.element_ref: Optional[ARRef] = None
         self.filter: Optional[DataFilter] = None
         self.transmission: Optional[Boolean] = None
 

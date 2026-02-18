@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_unit_names import (
     SingleLanguageUnitNames,
 )
@@ -36,14 +37,14 @@ class SwValueCont(ARObject):
         """
         return False
 
-    sw_arraysize: Optional[ValueList]
+    sw_arraysize_ref: Optional[ARRef]
     sw_values_phys: Optional[SwValues]
     unit: Optional[Unit]
     unit_display: Optional[SingleLanguageUnitNames]
     def __init__(self) -> None:
         """Initialize SwValueCont."""
         super().__init__()
-        self.sw_arraysize: Optional[ValueList] = None
+        self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_values_phys: Optional[SwValues] = None
         self.unit: Optional[Unit] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None

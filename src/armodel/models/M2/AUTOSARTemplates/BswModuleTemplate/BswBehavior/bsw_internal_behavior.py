@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_data_reception_policy import (
     BswDataReceptionPolicy,
 )
@@ -75,50 +76,50 @@ class BswInternalBehavior(InternalBehavior):
         """
         return False
 
-    ar_typed_pers: list[VariableDataPrototype]
+    ar_typed_per_refs: list[ARRef]
     bsw_per_instances: list[Any]
     client_policies: list[Any]
     distinguisheds: list[BswDistinguishedPartition]
     entities: list[BswModuleEntity]
     events: list[BswEvent]
     exclusive_areas: list[BswExclusiveAreaPolicy]
-    included_data_type_sets: list[IncludedDataTypeSet]
+    included_data_type_set_refs: list[ARRef]
     included_modes: list[IncludedModeDeclarationGroupSet]
-    internals: list[BswInternalTriggeringPoint]
+    internal_refs: list[ARRef]
     mode_receivers: list[BswModeReceiverPolicy]
     mode_senders: list[BswModeSenderPolicy]
     parameter_policies: list[Any]
     per_instances: list[ParameterDataPrototype]
     reception_policies: list[BswDataReceptionPolicy]
-    released_triggers: list[Any]
+    released_trigger_refs: list[ARRef]
     scheduler_names: list[BswSchedulerNamePrefix]
     send_policies: list[Any]
     services: list[Any]
-    trigger_directs: list[BswTriggerDirectImplementation]
+    trigger_direct_refs: list[ARRef]
     variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()
-        self.ar_typed_pers: list[VariableDataPrototype] = []
+        self.ar_typed_per_refs: list[ARRef] = []
         self.bsw_per_instances: list[Any] = []
         self.client_policies: list[Any] = []
         self.distinguisheds: list[BswDistinguishedPartition] = []
         self.entities: list[BswModuleEntity] = []
         self.events: list[BswEvent] = []
         self.exclusive_areas: list[BswExclusiveAreaPolicy] = []
-        self.included_data_type_sets: list[IncludedDataTypeSet] = []
+        self.included_data_type_set_refs: list[ARRef] = []
         self.included_modes: list[IncludedModeDeclarationGroupSet] = []
-        self.internals: list[BswInternalTriggeringPoint] = []
+        self.internal_refs: list[ARRef] = []
         self.mode_receivers: list[BswModeReceiverPolicy] = []
         self.mode_senders: list[BswModeSenderPolicy] = []
         self.parameter_policies: list[Any] = []
         self.per_instances: list[ParameterDataPrototype] = []
         self.reception_policies: list[BswDataReceptionPolicy] = []
-        self.released_triggers: list[Any] = []
+        self.released_trigger_refs: list[ARRef] = []
         self.scheduler_names: list[BswSchedulerNamePrefix] = []
         self.send_policies: list[Any] = []
         self.services: list[Any] = []
-        self.trigger_directs: list[BswTriggerDirectImplementation] = []
+        self.trigger_direct_refs: list[ARRef] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
 
 

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
     AxisIndexType,
 )
@@ -40,13 +41,13 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
 
     shared_axis_type: Optional[ApplicationPrimitiveDataType]
     sw_axis_index: Optional[AxisIndexType]
-    sw_calprm_ref_proxy: SwCalprmRefProxy
+    sw_calprm_ref_proxy_ref: ARRef
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
         self.shared_axis_type: Optional[ApplicationPrimitiveDataType] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
-        self.sw_calprm_ref_proxy: SwCalprmRefProxy = None
+        self.sw_calprm_ref_proxy_ref: ARRef = None
 
 
 class SwAxisGroupedBuilder:

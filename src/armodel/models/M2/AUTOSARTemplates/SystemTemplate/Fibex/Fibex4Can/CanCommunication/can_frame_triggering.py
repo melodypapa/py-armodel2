@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
     CanAddressingModeType,
     CanFrameRxBehaviorEnum,
@@ -49,7 +50,7 @@ class CanFrameTriggering(FrameTriggering):
     can_addressing: Optional[CanAddressingModeType]
     can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
-    can_xl_frame: Optional[CanXlFrameTriggeringProps]
+    can_xl_frame_ref: Optional[ARRef]
     identifier: Optional[Integer]
     j1939requestable: Optional[Boolean]
     rx_identifier_range_range: Optional[RxIdentifierRange]
@@ -62,7 +63,7 @@ class CanFrameTriggering(FrameTriggering):
         self.can_addressing: Optional[CanAddressingModeType] = None
         self.can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum] = None
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
-        self.can_xl_frame: Optional[CanXlFrameTriggeringProps] = None
+        self.can_xl_frame_ref: Optional[ARRef] = None
         self.identifier: Optional[Integer] = None
         self.j1939requestable: Optional[Boolean] = None
         self.rx_identifier_range_range: Optional[RxIdentifierRange] = None

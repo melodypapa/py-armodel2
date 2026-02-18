@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Identifier,
@@ -55,33 +56,33 @@ class PncMapping(Describable):
         """
         return False
 
-    dynamic_pncs: list[ISignalIPduGroup]
-    ident: Optional[PncMappingIdent]
+    dynamic_pnc_refs: list[ARRef]
+    ident_ref: Optional[ARRef]
     physical_channels: list[PhysicalChannel]
     pnc_consumeds: list[ConsumedProvidedServiceInstanceGroup]
-    pnc_groups: list[ISignalIPduGroup]
+    pnc_group_refs: list[ARRef]
     pnc_identifier: Optional[PositiveInteger]
-    pnc_pdur_groups: list[PdurIPduGroup]
+    pnc_pdur_group_refs: list[ARRef]
     pnc_wakeup: Optional[Boolean]
     relevant_fors: list[EcuInstance]
     short_label: Optional[Identifier]
-    vfcs: list[PortGroup]
-    wakeup_frames: list[FrameTriggering]
+    vfc_refs: list[ARRef]
+    wakeup_frame_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PncMapping."""
         super().__init__()
-        self.dynamic_pncs: list[ISignalIPduGroup] = []
-        self.ident: Optional[PncMappingIdent] = None
+        self.dynamic_pnc_refs: list[ARRef] = []
+        self.ident_ref: Optional[ARRef] = None
         self.physical_channels: list[PhysicalChannel] = []
         self.pnc_consumeds: list[ConsumedProvidedServiceInstanceGroup] = []
-        self.pnc_groups: list[ISignalIPduGroup] = []
+        self.pnc_group_refs: list[ARRef] = []
         self.pnc_identifier: Optional[PositiveInteger] = None
-        self.pnc_pdur_groups: list[PdurIPduGroup] = []
+        self.pnc_pdur_group_refs: list[ARRef] = []
         self.pnc_wakeup: Optional[Boolean] = None
         self.relevant_fors: list[EcuInstance] = []
         self.short_label: Optional[Identifier] = None
-        self.vfcs: list[PortGroup] = []
-        self.wakeup_frames: list[FrameTriggering] = []
+        self.vfc_refs: list[ARRef] = []
+        self.wakeup_frame_refs: list[ARRef] = []
 
 
 class PncMappingBuilder:

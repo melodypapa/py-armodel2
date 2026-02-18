@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,12 +34,12 @@ class J1939ControllerApplication(ARElement):
         return False
 
     function_id: Optional[PositiveInteger]
-    sw_component_prototype: Optional[SwComponentPrototype]
+    sw_component_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize J1939ControllerApplication."""
         super().__init__()
         self.function_id: Optional[PositiveInteger] = None
-        self.sw_component_prototype: Optional[SwComponentPrototype] = None
+        self.sw_component_prototype_ref: Optional[ARRef] = None
 
 
 class J1939ControllerApplicationBuilder:

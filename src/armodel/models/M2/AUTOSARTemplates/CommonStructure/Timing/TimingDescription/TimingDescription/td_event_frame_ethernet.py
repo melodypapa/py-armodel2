@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_com import (
     TDEventCom,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -38,14 +39,14 @@ class TDEventFrameEthernet(TDEventCom):
     static_socket: Optional[StaticSocketConnection]
     td_event_type: Optional[TDEventFrameEthernet]
     td_header_id_filters: list[TDHeaderIdRange]
-    td_pdu_triggerings: list[PduTriggering]
+    td_pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventFrameEthernet."""
         super().__init__()
         self.static_socket: Optional[StaticSocketConnection] = None
         self.td_event_type: Optional[TDEventFrameEthernet] = None
         self.td_header_id_filters: list[TDHeaderIdRange] = []
-        self.td_pdu_triggerings: list[PduTriggering] = []
+        self.td_pdu_triggering_refs: list[ARRef] = []
 
 
 class TDEventFrameEthernetBuilder:

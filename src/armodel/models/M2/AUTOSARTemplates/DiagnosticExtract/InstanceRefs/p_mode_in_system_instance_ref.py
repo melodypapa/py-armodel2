@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -41,7 +42,7 @@ class PModeInSystemInstanceRef(ARObject):
 
     base: Optional[System]
     context: Optional[RootSwCompositionPrototype]
-    context_mode_group: Optional[ModeDeclarationGroup]
+    context_mode_group_ref: Optional[ARRef]
     context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
     target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
@@ -49,7 +50,7 @@ class PModeInSystemInstanceRef(ARObject):
         super().__init__()
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
-        self.context_mode_group: Optional[ModeDeclarationGroup] = None
+        self.context_mode_group_ref: Optional[ARRef] = None
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_mode: Optional[ModeDeclaration] = None
 

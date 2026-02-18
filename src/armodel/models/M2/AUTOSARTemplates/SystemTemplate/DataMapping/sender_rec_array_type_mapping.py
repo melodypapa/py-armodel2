@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_table_mapping import (
     TextTableMapping,
 )
@@ -30,14 +31,14 @@ class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
         return False
 
     array_elements: list[Any]
-    sender_to_signal: Optional[TextTableMapping]
-    signal_to: Optional[TextTableMapping]
+    sender_to_signal_ref: Optional[ARRef]
+    signal_to_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderRecArrayTypeMapping."""
         super().__init__()
         self.array_elements: list[Any] = []
-        self.sender_to_signal: Optional[TextTableMapping] = None
-        self.signal_to: Optional[TextTableMapping] = None
+        self.sender_to_signal_ref: Optional[ARRef] = None
+        self.signal_to_ref: Optional[ARRef] = None
 
 
 class SenderRecArrayTypeMappingBuilder:

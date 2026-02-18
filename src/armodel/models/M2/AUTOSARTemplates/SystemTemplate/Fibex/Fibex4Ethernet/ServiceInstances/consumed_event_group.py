@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -49,7 +50,7 @@ class ConsumedEventGroup(Identifiable):
     event_multicasts: list[ApplicationEndpoint]
     pdu_activation_routings: list[PduActivationRoutingGroup]
     priority: Optional[PositiveInteger]
-    routing_groups: list[SoAdRoutingGroup]
+    routing_group_refs: list[ARRef]
     sd_client_config: Optional[Any]
     sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig]
     def __init__(self) -> None:
@@ -61,7 +62,7 @@ class ConsumedEventGroup(Identifiable):
         self.event_multicasts: list[ApplicationEndpoint] = []
         self.pdu_activation_routings: list[PduActivationRoutingGroup] = []
         self.priority: Optional[PositiveInteger] = None
-        self.routing_groups: list[SoAdRoutingGroup] = []
+        self.routing_group_refs: list[ARRef] = []
         self.sd_client_config: Optional[Any] = None
         self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
 

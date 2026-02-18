@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     CSTransformerErrorReactionEnum,
 )
@@ -32,13 +33,13 @@ class TransformationISignalProps(ARObject, ABC):
         return True
 
     cs_error_reaction: Optional[CSTransformerErrorReactionEnum]
-    data_prototypes: list[DataPrototype]
+    data_prototype_refs: list[ARRef]
     transformer: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransformationISignalProps."""
         super().__init__()
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
-        self.data_prototypes: list[DataPrototype] = []
+        self.data_prototype_refs: list[ARRef] = []
         self.transformer: Optional[Any] = None
 
 

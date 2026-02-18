@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -31,12 +32,12 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         return False
 
     remapped_can_id: Optional[PositiveInteger]
-    source_lin_pid: Optional[LinFrameTriggering]
+    source_lin_pid_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BusMirrorLinPidToCanIdMapping."""
         super().__init__()
         self.remapped_can_id: Optional[PositiveInteger] = None
-        self.source_lin_pid: Optional[LinFrameTriggering] = None
+        self.source_lin_pid_ref: Optional[ARRef] = None
 
 
 class BusMirrorLinPidToCanIdMappingBuilder:

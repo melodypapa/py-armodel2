@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (
     DataFilter,
 )
@@ -31,12 +32,12 @@ class TransmissionModeCondition(ARObject):
         return False
 
     data_filter: Optional[DataFilter]
-    i_signal_in_i_pdu: Optional[ISignalToIPduMapping]
+    i_signal_in_i_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TransmissionModeCondition."""
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
-        self.i_signal_in_i_pdu: Optional[ISignalToIPduMapping] = None
+        self.i_signal_in_i_pdu_ref: Optional[ARRef] = None
 
 
 class TransmissionModeConditionBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
     AutosarParameterRef,
 )
@@ -30,12 +31,12 @@ class SwCalprmRefProxy(ARObject):
         """
         return False
 
-    ar_parameter: Optional[AutosarParameterRef]
+    ar_parameter_ref: Optional[ARRef]
     mc_data_instance: Optional[McDataInstance]
     def __init__(self) -> None:
         """Initialize SwCalprmRefProxy."""
         super().__init__()
-        self.ar_parameter: Optional[AutosarParameterRef] = None
+        self.ar_parameter_ref: Optional[ARRef] = None
         self.mc_data_instance: Optional[McDataInstance] = None
 
 

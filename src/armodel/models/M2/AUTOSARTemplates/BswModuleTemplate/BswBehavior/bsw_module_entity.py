@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
     BswInternalTriggeringPoint,
 )
@@ -50,26 +51,26 @@ class BswModuleEntity(ExecutableEntity, ABC):
         """
         return True
 
-    accessed_modes: list[ModeDeclarationGroup]
-    activation_points: list[BswInternalTriggeringPoint]
+    accessed_mode_refs: list[ARRef]
+    activation_point_refs: list[ARRef]
     call_points: list[BswModuleCallPoint]
     data_receives: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
     implemented: Optional[BswModuleEntry]
-    issued_triggers: list[Trigger]
-    managed_modes: list[ModeDeclarationGroup]
+    issued_trigger_refs: list[ARRef]
+    managed_mode_refs: list[ARRef]
     scheduler_name: Optional[BswSchedulerNamePrefix]
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()
-        self.accessed_modes: list[ModeDeclarationGroup] = []
-        self.activation_points: list[BswInternalTriggeringPoint] = []
+        self.accessed_mode_refs: list[ARRef] = []
+        self.activation_point_refs: list[ARRef] = []
         self.call_points: list[BswModuleCallPoint] = []
         self.data_receives: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
         self.implemented: Optional[BswModuleEntry] = None
-        self.issued_triggers: list[Trigger] = []
-        self.managed_modes: list[ModeDeclarationGroup] = []
+        self.issued_trigger_refs: list[ARRef] = []
+        self.managed_mode_refs: list[ARRef] = []
         self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
 
 

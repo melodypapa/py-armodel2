@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -31,13 +32,13 @@ class BswTriggerDirectImplementation(ARObject):
         return False
 
     cat2_isr: Optional[Identifier]
-    mastered_trigger: Optional[Trigger]
+    mastered_trigger_ref: Optional[ARRef]
     task: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize BswTriggerDirectImplementation."""
         super().__init__()
         self.cat2_isr: Optional[Identifier] = None
-        self.mastered_trigger: Optional[Trigger] = None
+        self.mastered_trigger_ref: Optional[ARRef] = None
         self.task: Optional[Identifier] = None
 
 

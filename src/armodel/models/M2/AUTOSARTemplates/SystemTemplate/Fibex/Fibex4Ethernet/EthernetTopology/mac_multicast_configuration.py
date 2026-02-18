@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint_address import (
     NetworkEndpointAddress,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.mac_multicast_group import (
     MacMulticastGroup,
 )
@@ -29,11 +30,11 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         """
         return False
 
-    mac_multicast_group_group: Optional[MacMulticastGroup]
+    mac_multicast_group_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize MacMulticastConfiguration."""
         super().__init__()
-        self.mac_multicast_group_group: Optional[MacMulticastGroup] = None
+        self.mac_multicast_group_group_ref: Optional[ARRef] = None
 
 
 class MacMulticastConfigurationBuilder:

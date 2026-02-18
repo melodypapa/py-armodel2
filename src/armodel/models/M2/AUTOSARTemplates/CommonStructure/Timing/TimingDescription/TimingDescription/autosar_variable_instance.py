@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -29,11 +30,11 @@ class AutosarVariableInstance(Identifiable):
         """
         return False
 
-    variable_instance_instance_ref: Optional[DataPrototype]
+    variable_instance_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AutosarVariableInstance."""
         super().__init__()
-        self.variable_instance_instance_ref: Optional[DataPrototype] = None
+        self.variable_instance_instance_ref: Optional[ARRef] = None
 
 
 class AutosarVariableInstanceBuilder:

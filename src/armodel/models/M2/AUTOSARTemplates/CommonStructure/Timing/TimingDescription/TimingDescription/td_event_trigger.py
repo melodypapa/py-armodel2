@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
     TDEventVfbPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventTriggerTypeEnum,
 )
@@ -32,13 +33,13 @@ class TDEventTrigger(TDEventVfbPort):
         """
         return False
 
-    td_event_trigger: Optional[TDEventTriggerTypeEnum]
-    trigger: Optional[Trigger]
+    td_event_trigger_ref: Optional[ARRef]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
-        self.td_event_trigger: Optional[TDEventTriggerTypeEnum] = None
-        self.trigger: Optional[Trigger] = None
+        self.td_event_trigger_ref: Optional[ARRef] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class TDEventTriggerBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
     ImplementationProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
     DependencyOnArtifact,
 )
@@ -30,11 +31,11 @@ class SectionNamePrefix(ImplementationProps):
         """
         return False
 
-    implemented_in: Optional[DependencyOnArtifact]
+    implemented_in_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SectionNamePrefix."""
         super().__init__()
-        self.implemented_in: Optional[DependencyOnArtifact] = None
+        self.implemented_in_ref: Optional[ARRef] = None
 
 
 class SectionNamePrefixBuilder:

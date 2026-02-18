@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     SecuredPduHeaderEnum,
 )
@@ -38,7 +39,7 @@ class SecuredIPdu(IPdu):
     authentication: Optional[Any]
     dynamic: Optional[Boolean]
     freshness_props: Optional[Any]
-    payload: Optional[PduTriggering]
+    payload_ref: Optional[ARRef]
     secure: Optional[Any]
     use_as: Optional[Boolean]
     use_secured_pdu: Optional[SecuredPduHeaderEnum]
@@ -48,7 +49,7 @@ class SecuredIPdu(IPdu):
         self.authentication: Optional[Any] = None
         self.dynamic: Optional[Boolean] = None
         self.freshness_props: Optional[Any] = None
-        self.payload: Optional[PduTriggering] = None
+        self.payload_ref: Optional[ARRef] = None
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None

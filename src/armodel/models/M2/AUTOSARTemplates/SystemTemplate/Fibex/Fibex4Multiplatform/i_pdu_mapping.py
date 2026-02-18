@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -39,16 +40,16 @@ class IPduMapping(ARObject):
     introduction: Optional[DocumentationBlock]
     pdu_max_length: Optional[PositiveInteger]
     pdur_tp_chunk: Optional[PositiveInteger]
-    source_i_pdu: Optional[PduTriggering]
-    target_i_pdu: Optional[TargetIPduRef]
+    source_i_pdu_ref: Optional[ARRef]
+    target_i_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IPduMapping."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
         self.pdu_max_length: Optional[PositiveInteger] = None
         self.pdur_tp_chunk: Optional[PositiveInteger] = None
-        self.source_i_pdu: Optional[PduTriggering] = None
-        self.target_i_pdu: Optional[TargetIPduRef] = None
+        self.source_i_pdu_ref: Optional[ARRef] = None
+        self.target_i_pdu_ref: Optional[ARRef] = None
 
 
 class IPduMappingBuilder:

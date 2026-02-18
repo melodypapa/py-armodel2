@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
 )
@@ -30,13 +31,13 @@ class EcucParamConfContainerDef(EcucContainerDef):
         return False
 
     parameters: list[EcucParameterDef]
-    references: list[Any]
+    reference_refs: list[ARRef]
     sub_containers: list[EcucContainerDef]
     def __init__(self) -> None:
         """Initialize EcucParamConfContainerDef."""
         super().__init__()
         self.parameters: list[EcucParameterDef] = []
-        self.references: list[Any] = []
+        self.reference_refs: list[ARRef] = []
         self.sub_containers: list[EcucContainerDef] = []
 
 

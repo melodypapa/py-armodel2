@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -33,12 +34,12 @@ class RoleBasedPortAssignment(ARObject):
         """
         return False
 
-    port_prototype: Optional[PortPrototype]
+    port_prototype_ref: Optional[ARRef]
     role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedPortAssignment."""
         super().__init__()
-        self.port_prototype: Optional[PortPrototype] = None
+        self.port_prototype_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
 
 

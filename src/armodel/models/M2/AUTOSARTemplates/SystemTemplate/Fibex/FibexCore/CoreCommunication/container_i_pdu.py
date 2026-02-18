@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     ContainerIPduHeaderTypeEnum,
     ContainerIPduTriggerEnum,
@@ -42,9 +43,9 @@ class ContainerIPdu(IPdu):
         return False
 
     contained_i_pdu_propses: list[ContainedIPduProps]
-    contained_pdus: list[PduTriggering]
+    contained_pdu_refs: list[ARRef]
     container: Optional[TimeValue]
-    container_trigger: Optional[ContainerIPduTriggerEnum]
+    container_trigger_ref: Optional[ARRef]
     header_type: Optional[ContainerIPduHeaderTypeEnum]
     minimum_rx: Optional[PositiveInteger]
     minimum_tx: Optional[PositiveInteger]
@@ -55,9 +56,9 @@ class ContainerIPdu(IPdu):
         """Initialize ContainerIPdu."""
         super().__init__()
         self.contained_i_pdu_propses: list[ContainedIPduProps] = []
-        self.contained_pdus: list[PduTriggering] = []
+        self.contained_pdu_refs: list[ARRef] = []
         self.container: Optional[TimeValue] = None
-        self.container_trigger: Optional[ContainerIPduTriggerEnum] = None
+        self.container_trigger_ref: Optional[ARRef] = None
         self.header_type: Optional[ContainerIPduHeaderTypeEnum] = None
         self.minimum_rx: Optional[PositiveInteger] = None
         self.minimum_tx: Optional[PositiveInteger] = None

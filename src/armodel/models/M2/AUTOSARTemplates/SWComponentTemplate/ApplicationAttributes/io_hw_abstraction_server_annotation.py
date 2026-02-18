@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     FilterDebouncingEnum,
     PulseTestEnum,
@@ -52,24 +53,24 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         return False
 
     age: Optional[MultidimensionalTime]
-    argument: Optional[ArgumentDataPrototype]
+    argument_ref: Optional[ARRef]
     bsw_resolution: Optional[Float]
-    data_element: Optional[VariableDataPrototype]
-    failure: Optional[PortPrototype]
+    data_element_ref: Optional[ARRef]
+    failure_ref: Optional[ARRef]
     filtering: Optional[FilterDebouncingEnum]
     pulse_test: Optional[PulseTestEnum]
-    trigger: Optional[Trigger]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IoHwAbstractionServerAnnotation."""
         super().__init__()
         self.age: Optional[MultidimensionalTime] = None
-        self.argument: Optional[ArgumentDataPrototype] = None
+        self.argument_ref: Optional[ARRef] = None
         self.bsw_resolution: Optional[Float] = None
-        self.data_element: Optional[VariableDataPrototype] = None
-        self.failure: Optional[PortPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
+        self.failure_ref: Optional[ARRef] = None
         self.filtering: Optional[FilterDebouncingEnum] = None
         self.pulse_test: Optional[PulseTestEnum] = None
-        self.trigger: Optional[Trigger] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class IoHwAbstractionServerAnnotationBuilder:

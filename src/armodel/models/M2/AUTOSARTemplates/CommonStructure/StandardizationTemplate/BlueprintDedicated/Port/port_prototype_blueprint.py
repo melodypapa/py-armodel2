@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
@@ -37,14 +38,14 @@ class PortPrototypeBlueprint(ARElement):
         """
         return False
 
-    init_values: list[PortPrototypeBlueprint]
+    init_value_refs: list[ARRef]
     interface: PortInterface
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
-        self.init_values: list[PortPrototypeBlueprint] = []
+        self.init_value_refs: list[ARRef] = []
         self.interface: PortInterface = None
         self.provided_coms: list[PPortComSpec] = []
         self.required_coms: list[RPortComSpec] = []

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -28,11 +29,11 @@ class BswDataReceptionPolicy(ARObject, ABC):
         """
         return True
 
-    received_data: Optional[VariableDataPrototype]
+    received_data_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswDataReceptionPolicy."""
         super().__init__()
-        self.received_data: Optional[VariableDataPrototype] = None
+        self.received_data_ref: Optional[ARRef] = None
 
 
 class BswDataReceptionPolicyBuilder:

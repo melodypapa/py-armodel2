@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
@@ -31,12 +32,12 @@ class HwPortMapping(ARObject):
         return False
 
     communication_connector: Optional[CommunicationConnector]
-    hw_pin_group: Optional[HwPinGroup]
+    hw_pin_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize HwPortMapping."""
         super().__init__()
         self.communication_connector: Optional[CommunicationConnector] = None
-        self.hw_pin_group: Optional[HwPinGroup] = None
+        self.hw_pin_group_ref: Optional[ARRef] = None
 
 
 class HwPortMappingBuilder:

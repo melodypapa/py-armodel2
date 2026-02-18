@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class PortAPIOption(ARObject):
     enable_take: Optional[Boolean]
     error_handling: Optional[DataTransformation]
     indirect_api: Optional[Boolean]
-    port: Optional[PortPrototype]
+    port_ref: Optional[ARRef]
     port_arg_values: list[PortDefinedArgumentValue]
     supporteds: list[SwcSupportedFeature]
     transformer: Optional[DataTransformation]
@@ -53,7 +54,7 @@ class PortAPIOption(ARObject):
         self.enable_take: Optional[Boolean] = None
         self.error_handling: Optional[DataTransformation] = None
         self.indirect_api: Optional[Boolean] = None
-        self.port: Optional[PortPrototype] = None
+        self.port_ref: Optional[ARRef] = None
         self.port_arg_values: list[PortDefinedArgumentValue] = []
         self.supporteds: list[SwcSupportedFeature] = []
         self.transformer: Optional[DataTransformation] = None

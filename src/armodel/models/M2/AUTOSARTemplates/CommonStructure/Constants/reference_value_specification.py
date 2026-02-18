@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -29,11 +30,11 @@ class ReferenceValueSpecification(ValueSpecification):
         """
         return False
 
-    reference_value: Optional[DataPrototype]
+    reference_value_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ReferenceValueSpecification."""
         super().__init__()
-        self.reference_value: Optional[DataPrototype] = None
+        self.reference_value_ref: Optional[ARRef] = None
 
 
 class ReferenceValueSpecificationBuilder:

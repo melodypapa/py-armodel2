@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
@@ -31,15 +32,15 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         return False
 
     context_datas: list[Any]
-    port_prototype: Optional[PortPrototype]
-    root_variable: Optional[VariableDataPrototype]
+    port_prototype_ref: Optional[ARRef]
+    root_variable_ref: Optional[ARRef]
     target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ArVariableInImplementationDataInstanceRef."""
         super().__init__()
         self.context_datas: list[Any] = []
-        self.port_prototype: Optional[PortPrototype] = None
-        self.root_variable: Optional[VariableDataPrototype] = None
+        self.port_prototype_ref: Optional[ARRef] = None
+        self.root_variable_ref: Optional[ARRef] = None
         self.target_data: Optional[Any] = None
 
 

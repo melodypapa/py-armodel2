@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
@@ -27,13 +28,13 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         """
         return False
 
-    bsw_mode_group_prototype: Optional[ModeDeclarationGroup]
-    swc_mode_group_swc_instance_ref: Optional[ModeDeclarationGroup]
+    bsw_mode_group_prototype_ref: Optional[ARRef]
+    swc_mode_group_swc_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcBswSynchronizedModeGroupPrototype."""
         super().__init__()
-        self.bsw_mode_group_prototype: Optional[ModeDeclarationGroup] = None
-        self.swc_mode_group_swc_instance_ref: Optional[ModeDeclarationGroup] = None
+        self.bsw_mode_group_prototype_ref: Optional[ARRef] = None
+        self.swc_mode_group_swc_instance_ref: Optional[ARRef] = None
 
 
 class SwcBswSynchronizedModeGroupPrototypeBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.mode_group_in_atomic_swc_instance_ref import (
     ModeGroupInAtomicSwcInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -33,12 +34,12 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         return False
 
     context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
-    target_mode: Optional[ModeDeclarationGroup]
+    target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
-        self.target_mode: Optional[ModeDeclarationGroup] = None
+        self.target_mode_ref: Optional[ARRef] = None
 
 
 class PModeGroupInAtomicSwcInstanceRefBuilder:

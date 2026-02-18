@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.internal_triggering_point import (
     InternalTriggeringPoint,
 )
@@ -29,11 +30,11 @@ class InternalTriggerOccurredEvent(RTEEvent):
         """
         return False
 
-    event_source: Optional[InternalTriggeringPoint]
+    event_source_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
-        self.event_source: Optional[InternalTriggeringPoint] = None
+        self.event_source_ref: Optional[ARRef] = None
 
 
 class InternalTriggerOccurredEventBuilder:

@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.meta_data_item import (
     MetaDataItem,
 )
@@ -31,12 +32,12 @@ class MetaDataItemSet(ARObject):
         """
         return False
 
-    data_elements: list[VariableDataPrototype]
+    data_element_refs: list[ARRef]
     meta_data_items: list[MetaDataItem]
     def __init__(self) -> None:
         """Initialize MetaDataItemSet."""
         super().__init__()
-        self.data_elements: list[VariableDataPrototype] = []
+        self.data_element_refs: list[ARRef] = []
         self.meta_data_items: list[MetaDataItem] = []
 
 

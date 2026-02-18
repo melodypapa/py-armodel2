@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -56,7 +57,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
     sw_axis_generic: Optional[SwAxisGeneric]
     sw_max_axis: Optional[Integer]
     sw_min_axis: Optional[Integer]
-    sw_variable_ref_proxies: list[SwVariableRefProxy]
+    sw_variable_ref_proxie_refs: list[ARRef]
     unit: Optional[Unit]
     def __init__(self) -> None:
         """Initialize SwAxisIndividual."""
@@ -67,7 +68,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_axis_generic: Optional[SwAxisGeneric] = None
         self.sw_max_axis: Optional[Integer] = None
         self.sw_min_axis: Optional[Integer] = None
-        self.sw_variable_ref_proxies: list[SwVariableRefProxy] = []
+        self.sw_variable_ref_proxie_refs: list[ARRef] = []
         self.unit: Optional[Unit] = None
 
 

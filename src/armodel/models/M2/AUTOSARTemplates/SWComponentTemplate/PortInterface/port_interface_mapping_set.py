@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
@@ -30,11 +31,11 @@ class PortInterfaceMappingSet(ARElement):
         """
         return False
 
-    port_interfaces: list[PortInterfaceMapping]
+    port_interface_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PortInterfaceMappingSet."""
         super().__init__()
-        self.port_interfaces: list[PortInterfaceMapping] = []
+        self.port_interface_refs: list[ARRef] = []
 
 
 class PortInterfaceMappingSetBuilder:

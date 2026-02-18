@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -33,14 +34,14 @@ class ClientServerOperationMapping(ARObject):
         """
         return False
 
-    arguments: list[DataPrototypeMapping]
+    argument_refs: list[ARRef]
     first_operation: Optional[ClientServerOperation]
     first_to_second: Optional[DataTransformation]
     second: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize ClientServerOperationMapping."""
         super().__init__()
-        self.arguments: list[DataPrototypeMapping] = []
+        self.argument_refs: list[ARRef] = []
         self.first_operation: Optional[ClientServerOperation] = None
         self.first_to_second: Optional[DataTransformation] = None
         self.second: Optional[ClientServerOperation] = None

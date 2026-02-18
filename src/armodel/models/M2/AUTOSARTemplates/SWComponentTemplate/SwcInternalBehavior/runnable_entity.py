@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     CIdentifier,
@@ -69,8 +70,8 @@ class RunnableEntity(ExecutableEntity):
     data_receives: list[VariableAccess]
     data_send_points: list[VariableAccess]
     data_writes: list[VariableAccess]
-    externals: list[ExternalTriggeringPoint]
-    internals: list[InternalTriggeringPoint]
+    external_refs: list[ARRef]
+    internal_refs: list[ARRef]
     mode_access_points: list[ModeAccessPoint]
     mode_switch_points: list[ModeSwitchPoint]
     parameter_accesses: list[ParameterAccess]
@@ -89,8 +90,8 @@ class RunnableEntity(ExecutableEntity):
         self.data_receives: list[VariableAccess] = []
         self.data_send_points: list[VariableAccess] = []
         self.data_writes: list[VariableAccess] = []
-        self.externals: list[ExternalTriggeringPoint] = []
-        self.internals: list[InternalTriggeringPoint] = []
+        self.external_refs: list[ARRef] = []
+        self.internal_refs: list[ARRef] = []
         self.mode_access_points: list[ModeAccessPoint] = []
         self.mode_switch_points: list[ModeSwitchPoint] = []
         self.parameter_accesses: list[ParameterAccess] = []

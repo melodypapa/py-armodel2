@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -58,13 +59,13 @@ class NvBlockDescriptor(Identifiable):
 
     client_server_ports: list[RoleBasedPortAssignment]
     constant_values: list[ConstantSpecification]
-    data_types: list[DataTypeMappingSet]
+    data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
     mode_switch_events: list[Any]
-    nv_block_datas: list[NvBlockDataMapping]
+    nv_block_data_refs: list[ARRef]
     nv_block_needs: Optional[NvBlockNeeds]
-    ram_block: Optional[VariableDataPrototype]
-    rom_block: Optional[ParameterDataPrototype]
+    ram_block_ref: Optional[ARRef]
+    rom_block_ref: Optional[ARRef]
     support_dirty: Optional[Boolean]
     timing_event: Optional[TimingEvent]
     writing_strategies: list[Any]
@@ -73,13 +74,13 @@ class NvBlockDescriptor(Identifiable):
         super().__init__()
         self.client_server_ports: list[RoleBasedPortAssignment] = []
         self.constant_values: list[ConstantSpecification] = []
-        self.data_types: list[DataTypeMappingSet] = []
+        self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
         self.mode_switch_events: list[Any] = []
-        self.nv_block_datas: list[NvBlockDataMapping] = []
+        self.nv_block_data_refs: list[ARRef] = []
         self.nv_block_needs: Optional[NvBlockNeeds] = None
-        self.ram_block: Optional[VariableDataPrototype] = None
-        self.rom_block: Optional[ParameterDataPrototype] = None
+        self.ram_block_ref: Optional[ARRef] = None
+        self.rom_block_ref: Optional[ARRef] = None
         self.support_dirty: Optional[Boolean] = None
         self.timing_event: Optional[TimingEvent] = None
         self.writing_strategies: list[Any] = []

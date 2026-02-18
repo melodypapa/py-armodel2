@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
 )
@@ -43,13 +44,13 @@ class SwServiceArg(Identifiable):
         return False
 
     direction: Optional[ArgumentDirectionEnum]
-    sw_arraysize: Optional[ValueList]
+    sw_arraysize_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize SwServiceArg."""
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
-        self.sw_arraysize: Optional[ValueList] = None
+        self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
 
 

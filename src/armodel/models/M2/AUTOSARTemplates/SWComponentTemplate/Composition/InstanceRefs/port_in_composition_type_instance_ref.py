@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -33,13 +34,13 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
 
     abstract_context: Optional[Any]
     base: Optional[CompositionSwComponentType]
-    target_port: Optional[PortPrototype]
+    target_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PortInCompositionTypeInstanceRef."""
         super().__init__()
         self.abstract_context: Optional[Any] = None
         self.base: Optional[CompositionSwComponentType] = None
-        self.target_port: Optional[PortPrototype] = None
+        self.target_port_ref: Optional[ARRef] = None
 
 
 class PortInCompositionTypeInstanceRefBuilder:

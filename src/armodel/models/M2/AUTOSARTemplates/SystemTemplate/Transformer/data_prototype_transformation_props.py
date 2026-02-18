@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -36,13 +37,13 @@ class DataPrototypeTransformationProps(ARObject):
         """
         return False
 
-    data_prototype_in: Optional[DataPrototype]
+    data_prototype_in_ref: Optional[ARRef]
     network: Optional[SwDataDefProps]
     transformation_props: Optional[TransformationProps]
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()
-        self.data_prototype_in: Optional[DataPrototype] = None
+        self.data_prototype_in_ref: Optional[ARRef] = None
         self.network: Optional[SwDataDefProps] = None
         self.transformation_props: Optional[TransformationProps] = None
 

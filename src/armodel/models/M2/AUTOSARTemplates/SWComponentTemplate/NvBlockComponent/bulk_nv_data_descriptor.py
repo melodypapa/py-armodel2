@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.nv_block_data_mapping import (
     NvBlockDataMapping,
 )
@@ -32,13 +33,13 @@ class BulkNvDataDescriptor(Identifiable):
         """
         return False
 
-    bulk_nv_block: Optional[VariableDataPrototype]
-    nv_block_datas: list[NvBlockDataMapping]
+    bulk_nv_block_ref: Optional[ARRef]
+    nv_block_data_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize BulkNvDataDescriptor."""
         super().__init__()
-        self.bulk_nv_block: Optional[VariableDataPrototype] = None
-        self.nv_block_datas: list[NvBlockDataMapping] = []
+        self.bulk_nv_block_ref: Optional[ARRef] = None
+        self.nv_block_data_refs: list[ARRef] = []
 
 
 class BulkNvDataDescriptorBuilder:

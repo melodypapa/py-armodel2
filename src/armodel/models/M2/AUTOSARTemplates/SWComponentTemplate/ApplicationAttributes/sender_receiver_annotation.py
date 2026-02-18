@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     DataLimitKindEnum,
     ProcessingKindEnum,
@@ -38,14 +39,14 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         return True
 
     computed: Optional[Boolean]
-    data_element: Optional[VariableDataPrototype]
+    data_element_ref: Optional[ARRef]
     limit_kind: Optional[DataLimitKindEnum]
     processing_kind_enum: Optional[ProcessingKindEnum]
     def __init__(self) -> None:
         """Initialize SenderReceiverAnnotation."""
         super().__init__()
         self.computed: Optional[Boolean] = None
-        self.data_element: Optional[VariableDataPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.limit_kind: Optional[DataLimitKindEnum] = None
         self.processing_kind_enum: Optional[ProcessingKindEnum] = None
 

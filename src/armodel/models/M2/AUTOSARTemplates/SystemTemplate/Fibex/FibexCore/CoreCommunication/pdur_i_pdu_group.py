@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -33,12 +34,12 @@ class PdurIPduGroup(FibexElement):
         return False
 
     communication: Optional[String]
-    i_pdus: list[PduTriggering]
+    i_pdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PdurIPduGroup."""
         super().__init__()
         self.communication: Optional[String] = None
-        self.i_pdus: list[PduTriggering] = []
+        self.i_pdu_refs: list[ARRef] = []
 
 
 class PdurIPduGroupBuilder:

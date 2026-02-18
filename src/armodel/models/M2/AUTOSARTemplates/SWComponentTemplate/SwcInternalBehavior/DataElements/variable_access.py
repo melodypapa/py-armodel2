@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements import (
     VariableAccessScopeEnum,
 )
@@ -35,12 +36,12 @@ class VariableAccess(AbstractAccessPoint):
         """
         return False
 
-    accessed_variable: Optional[AutosarVariableRef]
+    accessed_variable_ref: Optional[ARRef]
     scope: Optional[VariableAccessScopeEnum]
     def __init__(self) -> None:
         """Initialize VariableAccess."""
         super().__init__()
-        self.accessed_variable: Optional[AutosarVariableRef] = None
+        self.accessed_variable_ref: Optional[ARRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
 
 

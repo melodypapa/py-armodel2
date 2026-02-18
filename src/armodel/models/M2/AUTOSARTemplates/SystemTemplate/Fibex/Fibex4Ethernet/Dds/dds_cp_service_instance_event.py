@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_qos_profile import (
     DdsCpQosProfile,
 )
@@ -33,13 +34,13 @@ class DdsCpServiceInstanceEvent(ARObject):
         """
         return False
 
-    dds_event: Optional[PduTriggering]
+    dds_event_ref: Optional[ARRef]
     dds_event_qos: Optional[DdsCpQosProfile]
     dds_event_topic: Optional[DdsCpTopic]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceEvent."""
         super().__init__()
-        self.dds_event: Optional[PduTriggering] = None
+        self.dds_event_ref: Optional[ARRef] = None
         self.dds_event_qos: Optional[DdsCpQosProfile] = None
         self.dds_event_topic: Optional[DdsCpTopic] = None
 

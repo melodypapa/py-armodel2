@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -39,7 +40,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         return True
 
     composite_networks: list[CompositeNetworkRepresentation]
-    data_element: Optional[AutosarDataPrototype]
+    data_element_ref: Optional[ARRef]
     handle_out_of_range: Optional[Any]
     max_delta: Optional[PositiveInteger]
     sync_counter_init: Optional[PositiveInteger]
@@ -49,7 +50,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         """Initialize ReceiverComSpec."""
         super().__init__()
         self.composite_networks: list[CompositeNetworkRepresentation] = []
-        self.data_element: Optional[AutosarDataPrototype] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.handle_out_of_range: Optional[Any] = None
         self.max_delta: Optional[PositiveInteger] = None
         self.sync_counter_init: Optional[PositiveInteger] = None

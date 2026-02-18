@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -33,14 +34,14 @@ class McParameterElementGroup(ARObject):
         """
         return False
 
-    ram_location: Optional[VariableDataPrototype]
-    rom_location: Optional[ParameterDataPrototype]
+    ram_location_ref: Optional[ARRef]
+    rom_location_ref: Optional[ARRef]
     short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize McParameterElementGroup."""
         super().__init__()
-        self.ram_location: Optional[VariableDataPrototype] = None
-        self.rom_location: Optional[ParameterDataPrototype] = None
+        self.ram_location_ref: Optional[ARRef] = None
+        self.rom_location_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
 
 

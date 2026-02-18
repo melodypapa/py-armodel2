@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
@@ -35,12 +36,12 @@ class ModeRequestTypeMap(ARObject):
         return False
 
     implementation: Optional[AbstractImplementationDataType]
-    mode_group: Optional[ModeDeclarationGroup]
+    mode_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
         self.implementation: Optional[AbstractImplementationDataType] = None
-        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.mode_group_ref: Optional[ARRef] = None
 
 
 class ModeRequestTypeMapBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanCommunication import (
     TtcanTriggerType,
 )
@@ -35,13 +36,13 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
 
     communication_cycle_cycle: Optional[CommunicationCycle]
     time_mark: Optional[Integer]
-    trigger: Optional[TtcanTriggerType]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TtcanAbsolutelyScheduledTiming."""
         super().__init__()
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.time_mark: Optional[Integer] = None
-        self.trigger: Optional[TtcanTriggerType] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class TtcanAbsolutelyScheduledTimingBuilder:

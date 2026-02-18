@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
     ServiceDependency,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
 )
@@ -38,14 +39,14 @@ class SwcServiceDependency(ServiceDependency):
 
     assigned_datas: list[Any]
     assigned_ports: list[RoleBasedPortAssignment]
-    represented_port: Optional[PortGroup]
+    represented_port_ref: Optional[ARRef]
     service_needs: Optional[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize SwcServiceDependency."""
         super().__init__()
         self.assigned_datas: list[Any] = []
         self.assigned_ports: list[RoleBasedPortAssignment] = []
-        self.represented_port: Optional[PortGroup] = None
+        self.represented_port_ref: Optional[ARRef] = None
         self.service_needs: Optional[ServiceNeeds] = None
 
 
