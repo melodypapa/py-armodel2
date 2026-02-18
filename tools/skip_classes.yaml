@@ -18,6 +18,9 @@ skip_classes:
   # Abstract base class for SwBaseType - requires custom handling
   - "BaseType"
 
+  # CompuMethod is a complex class with custom serialization logic with compuInternalToPhys
+  - "CompuMethod"
+
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.
 # This is needed when the automatic circular import detection doesn't catch all cases,

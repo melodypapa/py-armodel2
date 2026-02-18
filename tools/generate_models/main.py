@@ -157,9 +157,9 @@ def generate_all_models(
                 primitive_name = primitive_def["name"]
                 filename = dir_path / f"{to_snake_case(primitive_name)}.py"
 
-                # Generate primitive code with JSON file path
+                # Generate primitive code with JSON file path and package data
                 json_file_path = f"packages/{primitive_file.name}"
-                primitive_code = generate_primitive_code(primitive_def, json_file_path)
+                primitive_code = generate_primitive_code(primitive_def, package_data, json_file_path)
 
                 # Write to file
                 filename.write_text(primitive_code)

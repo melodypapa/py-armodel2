@@ -1114,19 +1114,24 @@ class AREnum(ARObject):
     return code
 
 
-def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> str:
+def generate_primitive_code(primitive_def: dict, package_data: Dict[str, Dict[str, Any]] = None, json_file_path: str = "") -> str:
     """Generate Python primitive type definition from primitive definition.
 
     Args:
         primitive_def: Primitive definition from primitive JSON file
+        package_data: Package data dictionary for type resolution
         json_file_path: Path to the JSON file containing the primitive definition
 
     Returns:
         Generated Python code as string
     """
+    if package_data is None:
+        package_data = {}
+
     primitive_name = primitive_def["name"]
     note = primitive_def.get("note", "")
     sources = primitive_def.get("sources", [])
+    attributes = primitive_def.get("attributes", {})
 
     # Build docstring with PDF references and JSON file path
     docstring_lines = [f"{primitive_name} AUTOSAR primitive type."]
@@ -1168,15 +1173,67 @@ def generate_primitive_code(primitive_def: dict, json_file_path: str = "") -> st
 
     python_type = primitive_type_map.get(primitive_name, "str")
 
+    # Collect imports needed for attributes
+    enum_imports = set()
+    primitive_imports = set()
+
+    # Process attributes to determine types and imports
+    attribute_types = {}
+    for attr_name, attr_info in attributes.items():
+        attr_type = attr_info["type"]
+        multiplicity = attr_info["multiplicity"]
+
+        # Determine Python type for the attribute
+        if is_primitive_type(attr_type, package_data):
+            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+            primitive_imports.add(attr_type)
+        elif is_enum_type(attr_type, package_data):
+            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+            enum_imports.add(attr_type)
+        else:
+            # Class type
+            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+
+        attribute_types[attr_name] = {
+            "type": attribute_type,
+            "multiplicity": multiplicity,
+            "original_type": attr_type,
+            "kind": attr_info.get("kind", "attribute")
+        }
+
+    # Build imports section
+    import_statements = []
+    import_statements.append("from __future__ import annotations")
+    import_statements.append("from typing import TYPE_CHECKING, Optional")
+    import_statements.append("import xml.etree.ElementTree as ET")
+    import_statements.append("")
+    import_statements.append("from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive")
+
+    # Add enum imports
+    if enum_imports:
+        import_statements.append("")
+        # Import each enum from its specific module file to avoid circular imports
+        for enum_name in sorted(enum_imports):
+            enum_snake_name = to_snake_case(enum_name)
+            import_statements.append(f"from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{enum_snake_name} import (")
+            import_statements.append(f"    {enum_name},")
+            import_statements.append(")")
+
+    # Add primitive imports
+    if primitive_imports:
+        import_statements.append("")
+        # Import each primitive from its specific module file to avoid circular imports
+        for prim_name in sorted(primitive_imports):
+            prim_snake_name = to_snake_case(prim_name)
+            import_statements.append(f"from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.{prim_snake_name} import (")
+            import_statements.append(f"    {prim_name},")
+            import_statements.append(")")
+
     # Generate primitive type code as a class inheriting from ARPrimitive
     # Note: deserialize() is inherited from ARPrimitive base class
     code = f'''"""{docstring}"""
 
-from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
-import xml.etree.ElementTree as ET
-
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+{chr(10).join(import_statements)}
 
 # {note}
 class {primitive_name}(ARPrimitive):
@@ -1189,14 +1246,42 @@ class {primitive_name}(ARPrimitive):
     python_type: type = {python_type}
     """The underlying Python type for this primitive."""
 
-    def __init__(self, value: Optional[{python_type}] = None) -> None:
+'''
+
+    # Add class-level type annotations for attributes
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            python_name, _ = get_python_identifier(attr_name)
+            code += f"    {python_name}: {attr_info['type']}\n"
+        code += "\n"
+
+    # Build __init__ signature
+    init_params = [f"value: Optional[{python_type}] = None"]
+    for attr_name, attr_info in attribute_types.items():
+        python_name, _ = get_python_identifier(attr_name)
+        init_params.append(f"{python_name}: {attr_info['type']} = None")
+
+    code += f'''    def __init__(self, {', '.join(init_params)}) -> None:
         """Initialize {primitive_name}.
 
         Args:
             value: The primitive value
-        """
-        super().__init__()
-        self.value: Optional[{python_type}] = value
 '''
+
+    # Add docstring for attribute parameters
+    for attr_name, attr_info in attribute_types.items():
+        python_name, _ = get_python_identifier(attr_name)
+        code += f"            {python_name}: {attr_name}\n"
+
+    code += '''        """
+        super().__init__()
+        self.value: Optional[{}] = value
+'''.format(python_type)
+
+    # Initialize attributes
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            python_name, _ = get_python_identifier(attr_name)
+            code += f"        self.{python_name}: {attr_info['type']} = {python_name}\n"
 
     return code

@@ -13,6 +13,10 @@ import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.string import (
+    String,
+)
+
 # This primitive represents a string in which white-space needs to be preserved. Tags: xml.xsd.customType=VERBATIM-STRING xml.xsd.type=string xml.xsd.whiteSpace=preserve
 class VerbatimString(ARPrimitive):
     """AUTOSAR VerbatimString primitive type.
@@ -24,11 +28,18 @@ class VerbatimString(ARPrimitive):
     python_type: type = str
     """The underlying Python type for this primitive."""
 
-    def __init__(self, value: Optional[str] = None) -> None:
+    blueprint_value: Optional[String]
+    xml_space: Optional[XmlSpaceEnum]
+
+    def __init__(self, value: Optional[str] = None, blueprint_value: Optional[String] = None, xml_space: Optional[XmlSpaceEnum] = None) -> None:
         """Initialize VerbatimString.
 
         Args:
             value: The primitive value
+            blueprint_value: blueprintValue
+            xml_space: xmlSpace
         """
         super().__init__()
         self.value: Optional[str] = value
+        self.blueprint_value: Optional[String] = blueprint_value
+        self.xml_space: Optional[XmlSpaceEnum] = xml_space

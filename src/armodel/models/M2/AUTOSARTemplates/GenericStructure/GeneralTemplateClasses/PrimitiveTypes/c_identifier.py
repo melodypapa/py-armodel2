@@ -13,6 +13,10 @@ import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.string import (
+    String,
+)
+
 # This datatype represents a string, that follows the rules of C-identifiers. Tags: xml.xsd.customType=C-IDENTIFIER xml.xsd.pattern=[a-zA-Z_][a-zA-Z0-9_]* xml.xsd.type=string
 class CIdentifier(ARPrimitive):
     """AUTOSAR CIdentifier primitive type.
@@ -24,11 +28,18 @@ class CIdentifier(ARPrimitive):
     python_type: type = str
     """The underlying Python type for this primitive."""
 
-    def __init__(self, value: Optional[str] = None) -> None:
+    blueprint_value: String
+    name_pattern: Optional[String]
+
+    def __init__(self, value: Optional[str] = None, blueprint_value: String = None, name_pattern: Optional[String] = None) -> None:
         """Initialize CIdentifier.
 
         Args:
             value: The primitive value
+            blueprint_value: blueprintValue
+            name_pattern: namePattern
         """
         super().__init__()
         self.value: Optional[str] = value
+        self.blueprint_value: String = blueprint_value
+        self.name_pattern: Optional[String] = name_pattern

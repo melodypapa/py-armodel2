@@ -14,6 +14,10 @@ import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import (
+    IntervalTypeEnum,
+)
+
 # This class represents the ability to express a numerical limit. Note that this is in fact a NumericalVariation Point but has the additional attribute intervalType. Tags: xml.xsd.customType=LIMIT-VALUE xml.xsd.pattern=(0[xX][0-9a-fA-F]+)|(0[0-7]+)|(0[bB][0-1]+)|(([+\-]?[1-9] [0-9]+(\.[0-9]+)?|[+\-]?[0-9](\.[0-9]+)?)([eE]([+\-]?)[0-9]+)?)|\.0|INF|-INF|NaN xml.xsd.type=string
 class Limit(ARPrimitive):
     """AUTOSAR Limit primitive type.
@@ -25,11 +29,15 @@ class Limit(ARPrimitive):
     python_type: type = str
     """The underlying Python type for this primitive."""
 
-    def __init__(self, value: Optional[str] = None) -> None:
+    interval_type: Optional[IntervalTypeEnum]
+
+    def __init__(self, value: Optional[str] = None, interval_type: Optional[IntervalTypeEnum] = None) -> None:
         """Initialize Limit.
 
         Args:
             value: The primitive value
+            interval_type: intervalType
         """
         super().__init__()
         self.value: Optional[str] = value
+        self.interval_type: Optional[IntervalTypeEnum] = interval_type
