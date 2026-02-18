@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
+from abc import ABC, abstractmethod
 
 
-class TracedFailure(Identifiable):
+class TracedFailure(Identifiable, ABC):
     """AUTOSAR TracedFailure."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     id: Optional[PositiveInteger]
     def __init__(self) -> None:

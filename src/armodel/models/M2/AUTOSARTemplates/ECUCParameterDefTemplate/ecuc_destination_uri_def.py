@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucDestinationUriDef(Identifiable):
     """AUTOSAR EcucDestinationUriDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     destination_uri: Optional[Any]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriDef."""

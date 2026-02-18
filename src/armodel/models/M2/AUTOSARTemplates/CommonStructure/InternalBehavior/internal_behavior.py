@@ -35,11 +35,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class InternalBehavior(Identifiable):
+class InternalBehavior(Identifiable, ABC):
     """AUTOSAR InternalBehavior."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     constants: list[ParameterDataPrototype]
     constant_values: list[ConstantSpecification]

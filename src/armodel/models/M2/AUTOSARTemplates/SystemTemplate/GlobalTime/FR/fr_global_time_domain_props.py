@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     """AUTOSAR FrGlobalTimeDomainProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ofs_data_id_list: PositiveInteger
     sync_data_id_list: PositiveInteger
     def __init__(self) -> None:

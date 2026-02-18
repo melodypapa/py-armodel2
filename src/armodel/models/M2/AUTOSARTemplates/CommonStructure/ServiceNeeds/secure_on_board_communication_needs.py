@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class SecureOnBoardCommunicationNeeds(ServiceNeeds):
     """AUTOSAR SecureOnBoardCommunicationNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     verification: Optional[VerificationStatusIndicationModeEnum]
     def __init__(self) -> None:
         """Initialize SecureOnBoardCommunicationNeeds."""

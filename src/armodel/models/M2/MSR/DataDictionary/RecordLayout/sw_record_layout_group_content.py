@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_v import
 class SwRecordLayoutGroupContent(ARObject):
     """AUTOSAR SwRecordLayoutGroupContent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_record: Optional[SwRecordLayoutGroup]
     sw_record_layout_v: Optional[SwRecordLayoutV]
     def __init__(self) -> None:

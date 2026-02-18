@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SocketConnectionIpduIdentifierSet(FibexElement):
     """AUTOSAR SocketConnectionIpduIdentifierSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_pdu_identifiers: list[SoConIPduIdentifier]
     def __init__(self) -> None:
         """Initialize SocketConnectionIpduIdentifierSet."""

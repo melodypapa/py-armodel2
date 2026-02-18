@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transfor
 class ClientServerOperationMapping(ARObject):
     """AUTOSAR ClientServerOperationMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arguments: list[DataPrototypeMapping]
     first_operation: Optional[ClientServerOperation]
     first_to_second: Optional[DataTransformation]

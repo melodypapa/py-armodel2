@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4ArpProps(ARObject):
     """AUTOSAR Ipv4ArpProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_ip_arp_num: Optional[PositiveInteger]
     tcp_ip_arp_packet: Optional[Boolean]
     tcp_ip_arp: Optional[TimeValue]

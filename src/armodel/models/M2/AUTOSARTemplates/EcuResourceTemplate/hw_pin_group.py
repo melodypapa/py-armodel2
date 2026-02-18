@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class HwPinGroup(Identifiable):
     """AUTOSAR HwPinGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hw_pin_group_content: Optional[HwPinGroupContent]
     def __init__(self) -> None:
         """Initialize HwPinGroup."""

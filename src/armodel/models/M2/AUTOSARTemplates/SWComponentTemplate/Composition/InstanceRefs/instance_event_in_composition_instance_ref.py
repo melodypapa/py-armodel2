@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class InstanceEventInCompositionInstanceRef(ARObject):
     """AUTOSAR InstanceEventInCompositionInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[CompositionSwComponentType]
     context_prototypes: list[Any]
     target_event: Optional[RTEEvent]

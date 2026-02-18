@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDEventSwcInternalBehaviorReference(TDEventSwc):
     """AUTOSAR TDEventSwcInternalBehaviorReference."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     referenced_td_event_swc: Optional[TDEventSwc]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehaviorReference."""

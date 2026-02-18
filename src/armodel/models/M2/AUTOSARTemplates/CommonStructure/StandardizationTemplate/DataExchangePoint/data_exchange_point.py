@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class DataExchangePoint(ARElement):
     """AUTOSAR DataExchangePoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_format: Optional[DataFormatTailoring]
     kind: DataExchangePoint
     referenced: Baseline

@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.e2_e_profile_
 class EndToEndTransformationComSpecProps(TransformationComSpecProps):
     """AUTOSAR EndToEndTransformationComSpecProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     clear_from_valid: Optional[Boolean]
     disable_end_to: Optional[Boolean]
     e2e_profile: Optional[E2EProfileCompatibilityProps]

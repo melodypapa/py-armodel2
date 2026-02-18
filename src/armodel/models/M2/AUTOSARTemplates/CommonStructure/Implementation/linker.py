@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Linker(Identifiable):
     """AUTOSAR Linker."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     name: Optional[String]
     options: Optional[String]
     vendor: Optional[String]

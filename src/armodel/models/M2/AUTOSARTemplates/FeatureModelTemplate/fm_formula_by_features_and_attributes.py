@@ -16,10 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_attribute_def im
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
 )
+from abc import ABC, abstractmethod
 
 
-class FMFormulaByFeaturesAndAttributes(ARObject):
+class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
     """AUTOSAR FMFormulaByFeaturesAndAttributes."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     attribute: Optional[FMAttributeDef]
     feature: Optional[FMFeature]

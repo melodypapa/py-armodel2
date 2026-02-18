@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.predefi
 class EvaluatedVariantSet(ARElement):
     """AUTOSAR EvaluatedVariantSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     approval_status: NameToken
     evaluateds: list[PredefinedVariant]
     def __init__(self) -> None:

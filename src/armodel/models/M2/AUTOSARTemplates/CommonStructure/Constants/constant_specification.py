@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class ConstantSpecification(ARElement):
     """AUTOSAR ConstantSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     value_spec: Optional[ValueSpecification]
     def __init__(self) -> None:
         """Initialize ConstantSpecification."""

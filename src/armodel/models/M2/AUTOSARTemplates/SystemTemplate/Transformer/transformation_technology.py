@@ -31,6 +31,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class TransformationTechnology(Identifiable):
     """AUTOSAR TransformationTechnology."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     buffer_properties: Optional[BufferProperties]
     has_internal: Optional[Boolean]
     needs_original: Optional[Boolean]

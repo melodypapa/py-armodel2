@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
+from abc import ABC, abstractmethod
 
 
-class DataPrototypeInPortInterfaceInstanceRef(ARObject):
+class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
     """AUTOSAR DataPrototypeInPortInterfaceInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     abstract_base: Optional[PortInterface]
     context_datas: list[Any]

@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class McDataAccessDetails(ARObject):
     """AUTOSAR McDataAccessDetails."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rte_event_refs: list[RTEEvent]
     variable_accesses: list[VariableAccess]
     def __init__(self) -> None:

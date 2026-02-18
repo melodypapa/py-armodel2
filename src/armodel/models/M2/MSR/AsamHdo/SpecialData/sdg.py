@@ -30,6 +30,15 @@ if TYPE_CHECKING:
 class Sdg(ARObject):
     """AUTOSAR Sdg."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     gid: NameToken
     sdg_caption: Optional[SdgCaption]
     sdg_contents: Optional[SdgContents]

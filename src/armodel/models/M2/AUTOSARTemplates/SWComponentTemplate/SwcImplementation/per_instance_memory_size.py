@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class PerInstanceMemorySize(ARObject):
     """AUTOSAR PerInstanceMemorySize."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     alignment: Optional[PositiveInteger]
     per_instance_memory_memory: Optional[PerInstanceMemory]
     size: Optional[PositiveInteger]

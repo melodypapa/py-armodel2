@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
 class DiagnosticEventToTroubleCodeUdsMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticEventToTroubleCodeUdsMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostic_event: Optional[DiagnosticEvent]
     trouble_code_uds: Optional[DiagnosticTroubleCode]
     def __init__(self) -> None:

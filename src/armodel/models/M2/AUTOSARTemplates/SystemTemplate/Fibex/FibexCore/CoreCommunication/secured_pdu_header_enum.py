@@ -5,14 +5,29 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreCommunication.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class SecuredPduHeaderEnum(Enum):
-    """AUTOSAR SecuredPduHeaderEnum enumeration."""
+class SecuredPduHeaderEnum(AREnum):
+    """AUTOSAR SecuredPduHeaderEnum enumeration.
 
-    NOHEADER = "noHeader"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    NO_HEADER = "noHeader"
     SYSTEM = "System"
-    AUTOSARSECUREDPDUHEADER08BIT = "AUTOSARsecuredPduHeader08Bit"
-    SECUREDPDUHEADER16BIT = "securedPduHeader16Bit"
-    SECUREDPDUHEADER32BIT = "securedPduHeader32Bit"
+    AUTOSA_RSECURED_PDU_HEADER08_BIT = "AUTOSARsecuredPduHeader08Bit"
+    SECURED_PDU_HEADER16_BIT = "securedPduHeader16Bit"
+    SECURED_PDU_HEADER32_BIT = "securedPduHeader32Bit"

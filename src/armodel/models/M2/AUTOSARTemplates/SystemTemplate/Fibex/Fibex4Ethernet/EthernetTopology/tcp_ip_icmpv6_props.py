@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpIpIcmpv6Props(ARObject):
     """AUTOSAR TcpIpIcmpv6Props."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_ip_icmp: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TcpIpIcmpv6Props."""

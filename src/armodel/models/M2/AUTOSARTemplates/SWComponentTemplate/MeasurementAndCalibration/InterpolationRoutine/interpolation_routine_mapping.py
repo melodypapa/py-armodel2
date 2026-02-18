@@ -22,6 +22,15 @@ from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout import (
 class InterpolationRoutineMapping(ARObject):
     """AUTOSAR InterpolationRoutineMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     interpolation_routines: list[InterpolationRoutine]
     sw_record: Optional[SwRecordLayout]
     def __init__(self) -> None:

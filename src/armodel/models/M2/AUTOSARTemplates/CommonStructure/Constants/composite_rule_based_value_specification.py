@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_valu
 class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     """AUTOSAR CompositeRuleBasedValueSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     arguments: list[CompositeValueSpecification]
     compounds: list[Any]
     max_size_to_fill: Optional[PositiveInteger]

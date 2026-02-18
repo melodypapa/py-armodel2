@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ISignalTriggering(Identifiable):
     """AUTOSAR ISignalTriggering."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_signal: Optional[ISignal]
     i_signal_group: Optional[ISignalGroup]
     i_signal_ports: list[ISignalPort]

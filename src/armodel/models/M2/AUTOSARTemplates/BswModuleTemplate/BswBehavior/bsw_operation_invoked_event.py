@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswOperationInvokedEvent(BswEvent):
     """AUTOSAR BswOperationInvokedEvent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     entry: Optional[BswModuleClientServerEntry]
     def __init__(self) -> None:
         """Initialize BswOperationInvokedEvent."""

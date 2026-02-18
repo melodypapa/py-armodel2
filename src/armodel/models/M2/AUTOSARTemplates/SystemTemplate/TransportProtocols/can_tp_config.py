@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.can_tp
 class CanTpConfig(TpConfig):
     """AUTOSAR CanTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_addresses: list[CanTpAddress]
     tp_channels: list[CanTpChannel]
     tp_connections: list[CanTpConnection]

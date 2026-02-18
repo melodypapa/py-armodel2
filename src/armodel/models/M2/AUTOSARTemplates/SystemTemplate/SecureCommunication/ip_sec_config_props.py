@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IPSecConfigProps(ARElement):
     """AUTOSAR IPSecConfigProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ah_cipher_suites: list[String]
     dpd_action: Optional[IPsecDpdActionEnum]
     dpd_delay: Optional[TimeValue]

@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_mapping impo
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_instance import (
     IdsmInstance,
 )
+from abc import ABC, abstractmethod
 
 
-class SecurityEventContextMapping(IdsMapping):
+class SecurityEventContextMapping(IdsMapping, ABC):
     """AUTOSAR SecurityEventContextMapping."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     filter_chain: Optional[Any]
     idsm_instance: Optional[IdsmInstance]

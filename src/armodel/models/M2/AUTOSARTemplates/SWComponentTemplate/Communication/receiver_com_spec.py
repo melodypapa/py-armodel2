@@ -23,11 +23,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.composite_network_representation import (
     CompositeNetworkRepresentation,
 )
+from abc import ABC, abstractmethod
 
 
-class ReceiverComSpec(RPortComSpec):
+class ReceiverComSpec(RPortComSpec, ABC):
     """AUTOSAR ReceiverComSpec."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     composite_networks: list[CompositeNetworkRepresentation]
     data_element: Optional[AutosarDataPrototype]

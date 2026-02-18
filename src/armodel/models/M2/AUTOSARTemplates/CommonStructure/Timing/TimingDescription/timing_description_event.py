@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
+from abc import ABC, abstractmethod
 
 
-class TimingDescriptionEvent(TimingDescription):
+class TimingDescriptionEvent(TimingDescription, ABC):
     """AUTOSAR TimingDescriptionEvent."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     clock_reference: Optional[TimingClock]
     occurrence: Optional[Any]

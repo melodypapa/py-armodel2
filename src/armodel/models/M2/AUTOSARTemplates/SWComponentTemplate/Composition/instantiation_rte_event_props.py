@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from abc import ABC, abstractmethod
 
 
-class InstantiationRTEEventProps(ARObject):
+class InstantiationRTEEventProps(ARObject, ABC):
     """AUTOSAR InstantiationRTEEventProps."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     refined_event: Optional[RTEEvent]
     short_label: Optional[Identifier]

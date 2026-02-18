@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpIpIcmpv4Props(ARObject):
     """AUTOSAR TcpIpIcmpv4Props."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_ip_icmp: Optional[Boolean]
     tcp_ip_icmp_v4_ttl: Optional[PositiveInteger]
     def __init__(self) -> None:

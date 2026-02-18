@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class ValueList(ARObject):
     """AUTOSAR ValueList."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     v: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize ValueList."""

@@ -22,6 +22,15 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class RuleBasedValueCont(ARObject):
     """AUTOSAR RuleBasedValueCont."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rule_based: Optional[Any]
     sw_arraysize: Optional[ValueList]
     unit: Optional[Unit]

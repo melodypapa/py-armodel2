@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucIntegerParamDef(EcucParameterDef):
     """AUTOSAR EcucIntegerParamDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_value: Optional[UnlimitedInteger]
     max: Optional[UnlimitedInteger]
     min: Optional[UnlimitedInteger]

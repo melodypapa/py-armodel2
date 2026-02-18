@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt.dlt_log_channel impor
 class DltConfig(ARObject):
     """AUTOSAR DltConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dlt_ecu: Optional[DltEcu]
     dlt_log_channels: list[DltLogChannel]
     session_id: Optional[Boolean]

@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class VariationPointProxy(Identifiable):
     """AUTOSAR VariationPointProxy."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     condition_access: Optional[ConditionByFormula]
     implementation: Optional[AbstractImplementationDataType]
     post_build_value: Optional[Any]

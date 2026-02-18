@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class BuildActionEnvironment(Identifiable):
     """AUTOSAR BuildActionEnvironment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionEnvironment."""

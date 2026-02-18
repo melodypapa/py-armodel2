@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticTransferExit(DiagnosticMemoryByAddress):
     """AUTOSAR DiagnosticTransferExit."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     transfer_exit: Optional[DiagnosticTransferExit]
     def __init__(self) -> None:
         """Initialize DiagnosticTransferExit."""

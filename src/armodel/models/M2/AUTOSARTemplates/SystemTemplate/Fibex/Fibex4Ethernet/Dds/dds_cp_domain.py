@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 class DdsCpDomain(Identifiable):
     """AUTOSAR DdsCpDomain."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dds_partitions: list[DdsCpPartition]
     dds_topics: list[DdsCpTopic]
     domain_id: Optional[PositiveInteger]

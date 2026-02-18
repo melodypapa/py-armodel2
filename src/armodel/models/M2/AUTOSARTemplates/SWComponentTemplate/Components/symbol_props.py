@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
 class SymbolProps(ImplementationProps):
     """AUTOSAR SymbolProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize SymbolProps."""
         super().__init__()

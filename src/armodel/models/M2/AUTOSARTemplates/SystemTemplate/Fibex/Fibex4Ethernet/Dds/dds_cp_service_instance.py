@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_topic import (
     DdsCpTopic,
 )
+from abc import ABC, abstractmethod
 
 
-class DdsCpServiceInstance(AbstractServiceInstance):
+class DdsCpServiceInstance(AbstractServiceInstance, ABC):
     """AUTOSAR DdsCpServiceInstance."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     dds_field_reply: Optional[DdsCpTopic]
     dds_field: Optional[DdsCpTopic]

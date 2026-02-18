@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
 class ComponentSeparation(MappingConstraint):
     """AUTOSAR ComponentSeparation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mapping_scope_enum: Optional[MappingScopeEnum]
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""

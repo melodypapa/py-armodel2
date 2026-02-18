@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.privacy_level import 
 class DltMessage(Identifiable):
     """AUTOSAR DltMessage."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dlt_arguments: list[DltArgument]
     message_id: Optional[PositiveInteger]
     message_line: Optional[PositiveInteger]

@@ -28,6 +28,15 @@ if TYPE_CHECKING:
 class SwValues(ARObject):
     """AUTOSAR SwValues."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     v: Optional[Numerical]
     vf: Optional[Numerical]
     vg: Optional[ValueGroup]

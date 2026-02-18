@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv4FragmentationProps(ARObject):
     """AUTOSAR Ipv4FragmentationProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_ip_ip: Optional[Boolean]
     tcp_ip_ip_num: Optional[PositiveInteger]
     tcp_ip_ip_reass: Optional[TimeValue]

@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class LabeledList(Paginateable):
     """AUTOSAR LabeledList."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     indent_sample: Optional[IndentSample]
     labeled_item_label: LabeledItem
     def __init__(self) -> None:

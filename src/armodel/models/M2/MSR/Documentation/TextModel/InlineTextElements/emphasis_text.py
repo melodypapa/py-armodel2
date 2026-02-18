@@ -28,6 +28,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import 
 class EmphasisText(ARObject):
     """AUTOSAR EmphasisText."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     color: Optional[String]
     font: Optional[EEnumFont]
     sub: Superscript

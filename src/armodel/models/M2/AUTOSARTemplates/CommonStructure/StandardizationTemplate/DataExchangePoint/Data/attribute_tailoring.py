@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (
     VariationRestrictionWithSeverity,
 )
+from abc import ABC, abstractmethod
 
 
-class AttributeTailoring(DataFormatElementScope):
+class AttributeTailoring(DataFormatElementScope, ABC):
     """AUTOSAR AttributeTailoring."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticTestRoutineIdentifier."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     id: Optional[PositiveInteger]
     request_data: Optional[PositiveInteger]
     response_data: Optional[PositiveInteger]

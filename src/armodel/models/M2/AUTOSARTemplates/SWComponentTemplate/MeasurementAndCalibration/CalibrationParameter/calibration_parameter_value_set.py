@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CalibrationParameterValueSet(ARElement):
     """AUTOSAR CalibrationParameterValueSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     calibrations: list[Any]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValueSet."""

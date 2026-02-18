@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticPeriodicRate(ARObject):
     """AUTOSAR DiagnosticPeriodicRate."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     period: Optional[TimeValue]
     periodic_rate: Optional[DiagnosticPeriodicRate]
     def __init__(self) -> None:

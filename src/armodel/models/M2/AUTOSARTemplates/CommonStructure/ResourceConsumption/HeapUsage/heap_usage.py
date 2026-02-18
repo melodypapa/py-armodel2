@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.software_context import (
     SoftwareContext,
 )
+from abc import ABC, abstractmethod
 
 
-class HeapUsage(Identifiable):
+class HeapUsage(Identifiable, ABC):
     """AUTOSAR HeapUsage."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     hardware: Optional[HardwareConfiguration]
     hw_element: Optional[HwElement]

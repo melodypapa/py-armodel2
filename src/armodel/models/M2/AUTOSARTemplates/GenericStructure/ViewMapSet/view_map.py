@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_f
 class ViewMap(Identifiable):
     """AUTOSAR ViewMap."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     first_elements: list[AtpFeature]
     role: Optional[Identifier]
     second_elements: list[AtpFeature]

@@ -33,6 +33,15 @@ from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import
 class MemorySection(Identifiable):
     """AUTOSAR MemorySection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     alignment: Optional[AlignmentType]
     executable_entities: list[ExecutableEntity]
     options: list[Identifier]

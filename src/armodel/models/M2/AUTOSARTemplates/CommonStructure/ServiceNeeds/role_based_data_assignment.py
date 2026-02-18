@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class RoleBasedDataAssignment(ARObject):
     """AUTOSAR RoleBasedDataAssignment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     role: Optional[Identifier]
     used_data: Optional[AutosarVariableRef]
     used_parameter: Optional[AutosarParameterRef]

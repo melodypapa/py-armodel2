@@ -29,11 +29,20 @@ if TYPE_CHECKING:
         NmEcu,
     )
 
+from abc import ABC, abstractmethod
 
 
-class NmNode(Identifiable):
+class NmNode(Identifiable, ABC):
     """AUTOSAR NmNode."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     controller: Optional[Any]
     nm_coord_cluster: Optional[PositiveInteger]

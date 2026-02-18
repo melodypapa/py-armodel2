@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class SwitchStreamFilterEntry(Identifiable):
     """AUTOSAR SwitchStreamFilterEntry."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     asynchronous: Optional[CouplingPort]
     filter_priority: Optional[PositiveInteger]
     flow_metering: Optional[SwitchFlowMeteringEntry]

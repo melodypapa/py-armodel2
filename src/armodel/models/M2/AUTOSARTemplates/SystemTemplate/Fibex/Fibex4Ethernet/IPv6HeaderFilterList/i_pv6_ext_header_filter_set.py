@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6
 class IPv6ExtHeaderFilterSet(ARElement):
     """AUTOSAR IPv6ExtHeaderFilterSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ext_header_filters: list[IPv6ExtHeaderFilterList]
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterSet."""

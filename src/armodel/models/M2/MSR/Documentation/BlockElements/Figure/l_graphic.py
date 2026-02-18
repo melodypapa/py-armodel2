@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.map import (
 class LGraphic(LanguageSpecific):
     """AUTOSAR LGraphic."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     graphic: Graphic
     map: Optional[Map]
     def __init__(self) -> None:

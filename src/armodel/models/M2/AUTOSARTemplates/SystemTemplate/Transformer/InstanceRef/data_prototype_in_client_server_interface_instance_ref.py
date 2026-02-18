@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfaceInstanceRef):
     """AUTOSAR DataPrototypeInClientServerInterfaceInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[ClientServerInterface]
     context_datas: list[Any]
     root_data_prototype_in_cs: Optional[AutosarDataPrototype]

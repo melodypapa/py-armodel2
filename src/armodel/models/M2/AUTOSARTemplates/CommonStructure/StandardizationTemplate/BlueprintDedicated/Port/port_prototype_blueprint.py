@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
 class PortPrototypeBlueprint(ARElement):
     """AUTOSAR PortPrototypeBlueprint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     init_values: list[PortPrototypeBlueprint]
     interface: PortInterface
     provided_coms: list[PPortComSpec]

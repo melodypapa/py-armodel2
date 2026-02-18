@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class DhcpServerConfiguration(ARObject):
     """AUTOSAR DhcpServerConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration]
     ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration]
     def __init__(self) -> None:

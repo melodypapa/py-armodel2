@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpRvfConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rvf_active_pixels: Optional[PositiveInteger]
     rvf_color_space: Optional[IEEE1722TpRvfColorSpaceEnum]
     rvf_event_default: Optional[PositiveInteger]

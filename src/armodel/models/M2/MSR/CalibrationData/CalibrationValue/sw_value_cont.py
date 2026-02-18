@@ -27,6 +27,15 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
 class SwValueCont(ARObject):
     """AUTOSAR SwValueCont."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_arraysize: Optional[ValueList]
     sw_values_phys: Optional[SwValues]
     unit: Optional[Unit]

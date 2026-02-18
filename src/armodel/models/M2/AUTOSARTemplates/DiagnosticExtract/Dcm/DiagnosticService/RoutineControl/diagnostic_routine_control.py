@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRoutineControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRoutineControl."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     routine: Optional[DiagnosticRoutine]
     routine_control: Optional[DiagnosticRoutine]
     def __init__(self) -> None:

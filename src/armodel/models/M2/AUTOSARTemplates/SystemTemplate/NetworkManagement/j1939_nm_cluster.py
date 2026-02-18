@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class J1939NmCluster(NmCluster):
     """AUTOSAR J1939NmCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     address_claim: Optional[Boolean]
     uses_dynamic: Optional[Boolean]
     def __init__(self) -> None:

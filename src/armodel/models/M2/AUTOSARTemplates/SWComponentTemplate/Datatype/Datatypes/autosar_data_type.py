@@ -22,11 +22,20 @@ if TYPE_CHECKING:
         SwDataDefProps,
     )
 
+from abc import ABC, abstractmethod
 
 
-class AutosarDataType(ARElement):
+class AutosarDataType(ARElement, ABC):
     """AUTOSAR AutosarDataType."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:

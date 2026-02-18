@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthTcpIpIcmpProps(ARElement):
     """AUTOSAR EthTcpIpIcmpProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     icmp_v4_props: Optional[TcpIpIcmpv4Props]
     icmp_v6_props: Optional[TcpIpIcmpv6Props]
     def __init__(self) -> None:

@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
 class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticStorageConditionPortMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostic_storage: Optional[Any]
     swc_flat_service: Optional[Any]
     swc_service: Optional[Any]

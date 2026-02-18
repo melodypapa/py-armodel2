@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class BusMirrorChannel(ARObject):
     """AUTOSAR BusMirrorChannel."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bus_mirror: Optional[PositiveInteger]
     channel: Optional[PhysicalChannel]
     def __init__(self) -> None:

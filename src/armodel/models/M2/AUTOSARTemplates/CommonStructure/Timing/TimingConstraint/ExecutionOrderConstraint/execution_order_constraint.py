@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composit
 class ExecutionOrderConstraint(TimingConstraint):
     """AUTOSAR ExecutionOrderConstraint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[CompositionSwComponentType]
     execution_order: Optional[Any]
     ignore_order: Optional[Boolean]

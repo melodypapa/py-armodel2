@@ -24,6 +24,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 class ClientServerOperationBlueprintMapping(ARObject):
     """AUTOSAR ClientServerOperationBlueprintMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     blueprint: Optional[DocumentationBlock]
     bsw_module_entry: BswModuleEntry
     client_server: ClientServerOperation

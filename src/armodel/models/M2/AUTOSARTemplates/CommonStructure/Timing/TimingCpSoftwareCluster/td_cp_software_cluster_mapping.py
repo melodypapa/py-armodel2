@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TDCpSoftwareClusterMapping(Identifiable):
     """AUTOSAR TDCpSoftwareClusterMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     provider: Optional[CpSoftwareCluster]
     requestors: list[CpSoftwareCluster]
     timing: Optional[TimingDescription]

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import 
 class HwPinGroupConnector(Describable):
     """AUTOSAR HwPinGroupConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hw_pins: list[HwPinConnector]
     hw_pin_groups: list[HwPinGroup]
     def __init__(self) -> None:

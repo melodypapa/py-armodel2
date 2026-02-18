@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class ExclusiveAreaNestingOrder(Referrable):
     """AUTOSAR ExclusiveAreaNestingOrder."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     exclusive_areas: list[ExclusiveArea]
     def __init__(self) -> None:
         """Initialize ExclusiveAreaNestingOrder."""

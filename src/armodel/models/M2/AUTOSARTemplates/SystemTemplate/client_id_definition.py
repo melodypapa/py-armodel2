@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientIdDefinition(Identifiable):
     """AUTOSAR ClientIdDefinition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_id: Optional[Numerical]
     client_server_instance_ref: Optional[ClientServerOperation]
     def __init__(self) -> None:

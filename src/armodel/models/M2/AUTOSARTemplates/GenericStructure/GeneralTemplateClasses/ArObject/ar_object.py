@@ -14,22 +14,29 @@ from armodel.core.global_settings import GlobalSettingsManager
 from armodel.serialization.name_converter import NameConverter
 from armodel.serialization.model_factory import ModelFactory
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    DateTime,
-    String,
-)
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+        DateTime,
+        String,
+    )
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
+        ARPrimitive,
+    )
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import (
+        AREnum,
+    )
 
 
 class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
 
-    checksum: Optional[String]
-    timestamp: Optional[DateTime]
+    checksum: Optional["String"]
+    timestamp: Optional["DateTime"]
     def __init__(self) -> None:
         """Initialize ARObject."""
-        self.checksum: Optional[String] = None
-        self.timestamp: Optional[DateTime] = None
+        self.checksum: Optional["String"] = None
+        self.timestamp: Optional["DateTime"] = None
 
     def serialize(self) -> ET.Element:
         """Serialize object to XML element using reflection.
@@ -317,7 +324,7 @@ class ARObject:
                 module = importlib.import_module(module_path)
                 if hasattr(module, class_name):
                     return getattr(module, class_name)
-            except (ImportError, ModuleError):
+            except (ImportError, ModuleNotFoundError):
                 continue
 
         # Fallback: try searching through all M2 modules
@@ -334,7 +341,7 @@ class ARObject:
                             cls = getattr(module, class_name)
                             if isinstance(cls, type):
                                 return cls
-                    except (ImportError, ModuleError):
+                    except (ImportError, ModuleNotFoundError):
                         continue
         except Exception:
             pass
@@ -404,6 +411,30 @@ class ARObject:
         return text if text else None
 
     @staticmethod
+    def _unwrap_primitive(result):
+        """Unwrap ARPrimitive instances to their underlying Python types.
+
+        ARPrimitive wrappers are transparently unwrapped to maintain
+        backward compatibility with code expecting plain primitive values.
+
+        AREnum instances are kept as-is but have transparent equality.
+
+        Args:
+            result: The deserialized value to potentially unwrap
+
+        Returns:
+            Unwrapped primitive value, or original result if not a primitive wrapper
+        """
+        # Dynamically import to avoid circular import
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
+            ARPrimitive,
+        )
+        # Unwrap ARPrimitive instances (but not AREnum)
+        if isinstance(result, ARPrimitive):
+            return result.value
+        return result
+
+    @staticmethod
     def _extract_value(element: ET.Element, attr_type):
         """Extract value from XML element based on type.
 
@@ -467,13 +498,13 @@ class ARObject:
                             # Check if concrete class is a subclass of base_class
                             if concrete_class and issubclass(concrete_class, base_class):
                                 # Use concrete class for deserialization
-                                item = concrete_class.deserialize(child)
+                                item = ARObject._unwrap_primitive(concrete_class.deserialize(child))
                                 result.append(item)
                                 continue
 
                         # Fallback to base class deserialization
                         if hasattr(base_class, 'deserialize'):
-                            item = base_class.deserialize(child)
+                            item = ARObject._unwrap_primitive(base_class.deserialize(child))
                             result.append(item)
                         else:
                             result.append(child.text if child.text else None)
@@ -481,7 +512,7 @@ class ARObject:
                         # For non-polymorphic types, try to deserialize using the class name directly
                         item_class = ARObject._import_class_by_name(inner_type_str)
                         if item_class and hasattr(item_class, 'deserialize'):
-                            item = item_class.deserialize(child)
+                            item = ARObject._unwrap_primitive(item_class.deserialize(child))
                             result.append(item)
                         else:
                             # Fallback to text content
@@ -496,7 +527,7 @@ class ARObject:
                 # Try to import and deserialize
                 item_class = ARObject._import_class_by_name(inner_type_str)
                 if item_class and hasattr(item_class, 'deserialize'):
-                    return item_class.deserialize(element)
+                    return ARObject._unwrap_primitive(item_class.deserialize(element))
 
                 # Fallback to text content
                 return element.text if element.text else None
@@ -504,7 +535,7 @@ class ARObject:
             # For simple class names, try to import and deserialize
             item_class = ARObject._import_class_by_name(attr_type)
             if item_class and hasattr(item_class, 'deserialize'):
-                return item_class.deserialize(element)
+                return ARObject._unwrap_primitive(item_class.deserialize(element))
 
             # For simple string types, just return text
             return element.text if element.text else None
@@ -538,19 +569,19 @@ class ARObject:
                             # Check if concrete class is a subclass of item_type
                             if concrete_class and issubclass(concrete_class, item_type):
                                 # Use concrete class for deserialization
-                                item = concrete_class.deserialize(child)
+                                item = ARObject._unwrap_primitive(concrete_class.deserialize(child))
                                 result.append(item)
                                 continue
 
                         # Fallback to base class deserialization
                         if hasattr(item_type, 'deserialize'):
-                            item = item_type.deserialize(child)
+                            item = ARObject._unwrap_primitive(item_type.deserialize(child))
                             result.append(item)
                         else:
                             result.append(child.text if child.text else None)
                     elif hasattr(item_type, 'deserialize'):
                         # For non-ARObject types with deserialize method
-                        item = item_type.deserialize(child)
+                        item = ARObject._unwrap_primitive(item_type.deserialize(child))
                         result.append(item)
                     else:
                         # For primitives, get text content
@@ -570,7 +601,7 @@ class ARObject:
         # For object types with deserialize method, recursively deserialize
         # Check if attr_type is a class (not a primitive type like str, int, etc.)
         if isinstance(attr_type, type) and hasattr(attr_type, 'deserialize'):
-            return attr_type.deserialize(element)
+            return ARObject._unwrap_primitive(attr_type.deserialize(element))
 
         # For primitive types, return text content
         text = element.text

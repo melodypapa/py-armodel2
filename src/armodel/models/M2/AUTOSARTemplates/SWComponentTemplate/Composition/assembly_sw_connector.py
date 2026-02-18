@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
 class AssemblySwConnector(SwConnector):
     """AUTOSAR AssemblySwConnector."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     provider_instance_ref: Optional[AbstractProvidedPortPrototype]
     requester_instance_ref: Optional[AbstractRequiredPortPrototype]
     def __init__(self) -> None:

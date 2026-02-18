@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class FirewallRuleProps(ARObject):
     """AUTOSAR FirewallRuleProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     action: Optional[Any]
     matching_egresses: list[FirewallRule]
     matchings: list[FirewallRule]

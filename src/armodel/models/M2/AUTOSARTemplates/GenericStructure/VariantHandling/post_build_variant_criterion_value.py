@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.Documentation.Annotation.annotation import (
 class PostBuildVariantCriterionValue(ARObject):
     """AUTOSAR PostBuildVariantCriterionValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     annotations: list[Annotation]
     value: Integer
     variant_criterion: Any

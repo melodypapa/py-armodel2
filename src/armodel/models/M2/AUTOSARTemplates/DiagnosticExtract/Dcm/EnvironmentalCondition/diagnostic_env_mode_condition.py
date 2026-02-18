@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
 class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
     """AUTOSAR DiagnosticEnvModeCondition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mode_element: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvModeCondition."""

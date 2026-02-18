@@ -28,6 +28,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangua
 class AliasNameAssignment(ARObject):
     """AUTOSAR AliasNameAssignment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     flat_instance: Optional[FlatInstanceDescriptor]
     identifiable: Optional[Identifiable]
     label: Optional[MultilanguageLongName]

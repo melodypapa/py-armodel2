@@ -5,14 +5,29 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_CommonStructure_SignalServiceTranslation.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class SignalServiceTranslationControlEnum(Enum):
-    """AUTOSAR SignalServiceTranslationControlEnum enumeration."""
+class SignalServiceTranslationControlEnum(AREnum):
+    """AUTOSAR SignalServiceTranslationControlEnum enumeration.
 
-    ALLPARTIALNETWORKSACTIVE = "allPartialNetworksActive"
-    ANYPARTIALNETWORKACTIVE = "anyPartialNetworkActive"
-    PARTIALNETWORK = "partialNetwork"
-    SERVICEDISCOVERY = "serviceDiscovery"
-    TRANSLATIONSTART = "translationStart"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    ALL_PARTIAL_NETWORKS_ACTIVE = "allPartialNetworksActive"
+    ANY_PARTIAL_NETWORK_ACTIVE = "anyPartialNetworkActive"
+    PARTIAL_NETWORK = "partialNetwork"
+    SERVICE_DISCOVERY = "serviceDiscovery"
+    TRANSLATION_START = "translationStart"

@@ -5,13 +5,28 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_DiagnosticExtract_DiagnosticContribution.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class DiagnosticObdSupportEnum(Enum):
-    """AUTOSAR DiagnosticObdSupportEnum enumeration."""
+class DiagnosticObdSupportEnum(AREnum):
+    """AUTOSAR DiagnosticObdSupportEnum enumeration.
 
-    MASTERECU = "masterEcu"
-    NOOBDSUPPORT = "noObdSupport"
-    PRIMARYECU = "primaryEcu"
-    SECONDARYECU = "secondaryEcu"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    MASTER_ECU = "masterEcu"
+    NO_OBD_SUPPORT = "noObdSupport"
+    PRIMARY_ECU = "primaryEcu"
+    SECONDARY_ECU = "secondaryEcu"

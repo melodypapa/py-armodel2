@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticAging(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAging."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     aging_cycle: Optional[Any]
     threshold: Optional[PositiveInteger]
     def __init__(self) -> None:

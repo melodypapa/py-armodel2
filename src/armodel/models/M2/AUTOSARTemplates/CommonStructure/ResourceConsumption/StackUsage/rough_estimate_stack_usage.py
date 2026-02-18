@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RoughEstimateStackUsage(StackUsage):
     """AUTOSAR RoughEstimateStackUsage."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     memory_consumption: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize RoughEstimateStackUsage."""

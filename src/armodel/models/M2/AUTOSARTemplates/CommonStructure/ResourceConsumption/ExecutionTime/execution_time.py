@@ -34,11 +34,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Exec
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.software_context import (
     SoftwareContext,
 )
+from abc import ABC, abstractmethod
 
 
-class ExecutionTime(Identifiable):
+class ExecutionTime(Identifiable, ABC):
     """AUTOSAR ExecutionTime."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     exclusive_area: Optional[ExclusiveArea]
     executable_entity: Optional[ExecutableEntity]

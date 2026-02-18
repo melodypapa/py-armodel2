@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class SwcToApplicationPartitionMapping(Identifiable):
     """AUTOSAR SwcToApplicationPartitionMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application: Optional[ApplicationPartition]
     sw_component_prototype: Optional[SwComponentPrototype]
     def __init__(self) -> None:

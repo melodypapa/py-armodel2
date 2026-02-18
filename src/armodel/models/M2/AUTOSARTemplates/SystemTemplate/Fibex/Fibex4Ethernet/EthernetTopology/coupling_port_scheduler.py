@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortScheduler(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortScheduler."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum]
     predecessors: list[CouplingPortStructuralElement]
     def __init__(self) -> None:

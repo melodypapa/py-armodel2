@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
 class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticIoControlNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     current_value: Optional[DiagnosticValueNeeds]
     freeze_current: Optional[Boolean]
     reset_to_default: Optional[Boolean]

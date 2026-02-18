@@ -35,6 +35,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptContainer(Identifiable):
     """AUTOSAR RptContainer."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     by_pass_points: list[AtpFeature]
     explicit_rpts: list[RptProfile]
     rpt_containers: list[RptContainer]

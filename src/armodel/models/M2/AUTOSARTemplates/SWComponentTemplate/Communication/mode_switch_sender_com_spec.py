@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchSenderComSpec(PPortComSpec):
     """AUTOSAR ModeSwitchSenderComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     enhanced_mode: Optional[Boolean]
     mode_group: Optional[ModeDeclarationGroup]
     mode_switched_ack: Optional[Any]

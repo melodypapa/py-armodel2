@@ -13,11 +13,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
+from abc import ABC, abstractmethod
 
 
-class DataInterface(PortInterface):
+class DataInterface(PortInterface, ABC):
     """AUTOSAR DataInterface."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize DataInterface."""

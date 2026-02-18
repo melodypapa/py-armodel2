@@ -37,6 +37,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Stac
 class ResourceConsumption(Identifiable):
     """AUTOSAR ResourceConsumption."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     access_count_sets: list[AccessCountSet]
     execution_times: list[ExecutionTime]
     heap_usages: list[HeapUsage]

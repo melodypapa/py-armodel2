@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class EndToEndProtectionVariablePrototype(ARObject):
     """AUTOSAR EndToEndProtectionVariablePrototype."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     receivers: list[VariableDataPrototype]
     sender: Optional[VariableDataPrototype]
     short_label: Optional[Identifier]

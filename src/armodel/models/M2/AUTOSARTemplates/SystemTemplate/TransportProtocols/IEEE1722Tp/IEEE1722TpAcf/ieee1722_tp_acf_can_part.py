@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommun
 class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
     """AUTOSAR IEEE1722TpAcfCanPart."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     can_addressing: Optional[CanAddressingModeType]
     can_bit_rate_switch: Optional[Boolean]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]

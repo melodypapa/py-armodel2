@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_si
 class ForbiddenSignalPath(SignalPathConstraint):
     """AUTOSAR ForbiddenSignalPath."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     operations: list[Any]
     physical_channels: list[PhysicalChannel]
     signals: list[SwcToSwcSignal]

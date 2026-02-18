@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
 class DiagnosticIumpr(DiagnosticCommonElement):
     """AUTOSAR DiagnosticIumpr."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     event: Optional[DiagnosticEvent]
     ratio_kind: Optional[DiagnosticIumprKindEnum]
     def __init__(self) -> None:

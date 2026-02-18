@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class TDEventBswModeDeclaration(TDEventBsw):
     """AUTOSAR TDEventBswModeDeclaration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     entry_mode: Optional[ModeDeclaration]
     exit_mode: Optional[ModeDeclaration]
     mode: Optional[ModeDeclarationGroup]

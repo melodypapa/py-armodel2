@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entit
 class EcuAbstractionSwComponentType(AtomicSwComponentType):
     """AUTOSAR EcuAbstractionSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     hardwares: list[HwDescriptionEntity]
     def __init__(self) -> None:
         """Initialize EcuAbstractionSwComponentType."""

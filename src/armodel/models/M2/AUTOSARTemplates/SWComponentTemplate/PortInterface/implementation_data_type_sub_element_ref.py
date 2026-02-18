@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ImplementationDataTypeSubElementRef(SubElementRef):
     """AUTOSAR ImplementationDataTypeSubElementRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     implementation: Optional[Any]
     parameter: Optional[ArParameterInImplementationDataInstanceRef]
     def __init__(self) -> None:

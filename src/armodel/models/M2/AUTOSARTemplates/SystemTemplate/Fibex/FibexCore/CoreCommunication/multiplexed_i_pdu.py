@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class MultiplexedIPdu(IPdu):
     """AUTOSAR MultiplexedIPdu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dynamic_part: Optional[DynamicPart]
     selector_field: Optional[Integer]
     unused_bit: Optional[Integer]

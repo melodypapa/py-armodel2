@@ -36,6 +36,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_p
 class TlsCryptoCipherSuite(Identifiable):
     """AUTOSAR TlsCryptoCipherSuite."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     authentication: Optional[CryptoServicePrimitive]
     certificate: Optional[Any]
     cipher_suite_id: Optional[PositiveInteger]

@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
 class SymbolicNameProps(ImplementationProps):
     """AUTOSAR SymbolicNameProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize SymbolicNameProps."""
         super().__init__()

@@ -15,6 +15,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CompositeNetworkRepresentation(ARObject):
     """AUTOSAR CompositeNetworkRepresentation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     leaf_element_element_in_port_interface_instance_ref: Optional[Any]
     network_representation: Optional[Any]
     def __init__(self) -> None:

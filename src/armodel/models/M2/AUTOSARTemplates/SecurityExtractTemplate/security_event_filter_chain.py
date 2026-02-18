@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_t
 class SecurityEventFilterChain(IdsCommonElement):
     """AUTOSAR SecurityEventFilterChain."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     aggregation: Optional[Any]
     one_every_n: Optional[SecurityEventOneEveryNFilter]
     state: Optional[SecurityEventStateFilter]

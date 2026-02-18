@@ -24,6 +24,15 @@ if TYPE_CHECKING:
 class ValueGroup(ARObject):
     """AUTOSAR ValueGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     label: Optional[MultilanguageLongName]
     vg_contents: Optional[SwValues]
     def __init__(self) -> None:

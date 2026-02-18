@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class E2EProfileCompatibilityProps(ARElement):
     """AUTOSAR E2EProfileCompatibilityProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     transit_to_invalid: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize E2EProfileCompatibilityProps."""

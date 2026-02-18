@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class NvProvideComSpec(PPortComSpec):
     """AUTOSAR NvProvideComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ram_block_init: Optional[ValueSpecification]
     rom_block_init: Optional[ValueSpecification]
     variable: Optional[VariableDataPrototype]

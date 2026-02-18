@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AclRole(ARElement):
     """AUTOSAR AclRole."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ldap_url: Optional[UriString]
     def __init__(self) -> None:
         """Initialize AclRole."""

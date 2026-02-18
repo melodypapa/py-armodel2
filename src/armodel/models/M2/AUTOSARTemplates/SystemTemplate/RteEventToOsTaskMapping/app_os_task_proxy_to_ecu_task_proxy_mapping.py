@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.o
 class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
     """AUTOSAR AppOsTaskProxyToEcuTaskProxyMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     app_task_proxy: Optional[OsTaskProxy]
     ecu_task_proxy: Optional[OsTaskProxy]
     offset: Optional[Integer]

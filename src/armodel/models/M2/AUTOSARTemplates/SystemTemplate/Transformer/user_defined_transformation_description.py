@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
 class UserDefinedTransformationDescription(TransformationDescription):
     """AUTOSAR UserDefinedTransformationDescription."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationDescription."""
         super().__init__()

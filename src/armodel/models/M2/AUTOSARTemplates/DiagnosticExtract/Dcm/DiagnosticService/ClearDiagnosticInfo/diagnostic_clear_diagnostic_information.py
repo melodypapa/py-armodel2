@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticClearDiagnosticInformation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     clear_diagnostic: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticClearDiagnosticInformation."""

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class AggregationTailoring(AttributeTailoring):
     """AUTOSAR AggregationTailoring."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     type_tailorings: list[ClassTailoring]
     def __init__(self) -> None:
         """Initialize AggregationTailoring."""

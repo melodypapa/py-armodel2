@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimingCondition(Identifiable):
     """AUTOSAR TimingCondition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     timing_condition: Optional[TimingCondition]
     def __init__(self) -> None:
         """Initialize TimingCondition."""

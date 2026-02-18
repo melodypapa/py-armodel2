@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IdsmRateLimitation(Identifiable):
     """AUTOSAR IdsmRateLimitation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_events_in: PositiveInteger
     time_interval: Float
     def __init__(self) -> None:

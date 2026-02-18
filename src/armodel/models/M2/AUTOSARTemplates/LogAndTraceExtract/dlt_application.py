@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_context import (
 class DltApplication(Identifiable):
     """AUTOSAR DltApplication."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application: Optional[String]
     application_id: Optional[String]
     contexts: list[DltContext]

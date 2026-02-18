@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
 )
+from abc import ABC, abstractmethod
 
 
-class BswModuleCallPoint(Referrable):
+class BswModuleCallPoint(Referrable, ABC):
     """AUTOSAR BswModuleCallPoint."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:

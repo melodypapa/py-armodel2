@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class StreamFilterRuleIpTp(ARObject):
     """AUTOSAR StreamFilterRuleIpTp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     destination: Optional[StreamFilterIpv6Address]
     destination_ports: list[StreamFilterPortRange]
     source: Optional[StreamFilterIpv6Address]

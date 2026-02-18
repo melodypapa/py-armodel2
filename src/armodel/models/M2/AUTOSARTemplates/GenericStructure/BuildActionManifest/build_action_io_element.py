@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class BuildActionIoElement(ARObject):
     """AUTOSAR BuildActionIoElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category: NameToken
     ecuc_definition: Optional[EcucDefinitionElement]
     role: Optional[Identifier]

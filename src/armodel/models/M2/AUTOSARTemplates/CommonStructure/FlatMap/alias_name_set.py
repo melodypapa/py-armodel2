@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.alias_name_assig
 class AliasNameSet(ARElement):
     """AUTOSAR AliasNameSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     alias_names: list[AliasNameAssignment]
     def __init__(self) -> None:
         """Initialize AliasNameSet."""

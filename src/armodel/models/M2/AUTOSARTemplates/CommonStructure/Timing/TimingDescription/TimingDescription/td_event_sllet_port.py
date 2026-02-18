@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 class TDEventSLLETPort(TDEventSLLET):
     """AUTOSAR TDEventSLLETPort."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     port: Optional[PortPrototype]
     def __init__(self) -> None:
         """Initialize TDEventSLLETPort."""

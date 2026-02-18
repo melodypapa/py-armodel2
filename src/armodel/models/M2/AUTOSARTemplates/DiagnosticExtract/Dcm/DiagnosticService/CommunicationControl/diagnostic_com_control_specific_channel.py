@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticComControlSpecificChannel(ARObject):
     """AUTOSAR DiagnosticComControlSpecificChannel."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     specific_channel: Optional[CommunicationCluster]
     specific_physical: Optional[Any]
     subnet_number: Optional[PositiveInteger]

@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class BlueprintFormula(ARObject):
     """AUTOSAR BlueprintFormula."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ecuc: EcucDefinitionElement
     verbatim: MultiLanguageVerbatim
     def __init__(self) -> None:

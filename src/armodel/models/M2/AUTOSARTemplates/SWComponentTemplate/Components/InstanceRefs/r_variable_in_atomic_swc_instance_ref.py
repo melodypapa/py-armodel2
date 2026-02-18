@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
     """AUTOSAR RVariableInAtomicSwcInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
     target_data_element: Optional[VariableDataPrototype]
     def __init__(self) -> None:

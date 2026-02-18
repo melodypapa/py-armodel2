@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwAddrMethod(ARElement):
     """AUTOSAR SwAddrMethod."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     memory: Optional[MemoryAllocationKeywordPolicyType]
     options: list[Identifier]
     section: Optional[SectionInitializationPolicyType]

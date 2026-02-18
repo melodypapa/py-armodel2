@@ -22,10 +22,20 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.index_entr
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import (
     Tt,
 )
+from abc import ABC, abstractmethod
 
 
-class MixedContentForLongName(ARObject):
+class MixedContentForLongName(ARObject, ABC):
     """AUTOSAR MixedContentForLongName."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     e: EmphasisText
     ie: IndexEntry

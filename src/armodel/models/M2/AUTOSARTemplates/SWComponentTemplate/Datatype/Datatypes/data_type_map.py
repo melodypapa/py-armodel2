@@ -25,6 +25,15 @@ if TYPE_CHECKING:
 class DataTypeMap(ARObject):
     """AUTOSAR DataTypeMap."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application_data_type: Optional[ApplicationDataType]
     implementation: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:

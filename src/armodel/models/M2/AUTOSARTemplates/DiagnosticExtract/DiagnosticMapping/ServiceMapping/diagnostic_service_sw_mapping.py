@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticServiceSwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticServiceSwMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     accessed_data: Optional[DataPrototype]
     diagnostic_data: Optional[DiagnosticDataElement]
     diagnostic: Optional[DiagnosticParameter]

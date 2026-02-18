@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayNmEcu(BusspecificNmEcu):
     """AUTOSAR FlexrayNmEcu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     nm_hw_vote: Optional[Boolean]
     nm_main: Optional[Boolean]
     def __init__(self) -> None:

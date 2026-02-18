@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSecurityLevel(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSecurityLevel."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     access_data: Optional[PositiveInteger]
     key_size: Optional[PositiveInteger]
     num_failed: Optional[PositiveInteger]

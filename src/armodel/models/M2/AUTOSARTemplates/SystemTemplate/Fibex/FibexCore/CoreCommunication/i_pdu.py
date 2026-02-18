@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.contained_i_pdu_props import (
     ContainedIPduProps,
 )
+from abc import ABC, abstractmethod
 
 
-class IPdu(Pdu):
+class IPdu(Pdu, ABC):
     """AUTOSAR IPdu."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     contained_i_pdu_props: Optional[ContainedIPduProps]
     def __init__(self) -> None:

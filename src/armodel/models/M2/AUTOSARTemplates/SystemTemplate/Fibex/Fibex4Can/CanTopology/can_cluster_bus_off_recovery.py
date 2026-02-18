@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class CanClusterBusOffRecovery(ARObject):
     """AUTOSAR CanClusterBusOffRecovery."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bor_counter_l1_to: Optional[PositiveInteger]
     bor_time_l1: Optional[TimeValue]
     bor_time_l2: Optional[TimeValue]

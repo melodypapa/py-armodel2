@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSession(DiagnosticCommonElement):
     """AUTOSAR DiagnosticSession."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     id: Optional[PositiveInteger]
     jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum]
     p2_server_max: Optional[TimeValue]

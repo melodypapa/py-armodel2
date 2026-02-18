@@ -15,6 +15,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IntegerValueVariationPoint(ARObject):
     """AUTOSAR IntegerValueVariationPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize IntegerValueVariationPoint."""
         super().__init__()

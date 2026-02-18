@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DefaultValueElement(ARObject):
     """AUTOSAR DefaultValueElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     element_byte_value: Optional[Integer]
     element_position: Optional[Integer]
     def __init__(self) -> None:

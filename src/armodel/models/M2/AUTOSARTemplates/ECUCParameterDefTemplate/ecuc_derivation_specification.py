@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import
 class EcucDerivationSpecification(ARObject):
     """AUTOSAR EcucDerivationSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     calculation: Optional[Any]
     ecuc_queries: list[EcucQuery]
     informal_formula: Optional[MlFormula]

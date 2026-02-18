@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
     """AUTOSAR CpSwClusterToDiagRoutineSubfunctionMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cp_software_cluster: Optional[CpSoftwareCluster]
     routine: Optional[DiagnosticRoutine]
     def __init__(self) -> None:

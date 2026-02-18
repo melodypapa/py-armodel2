@@ -30,11 +30,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
     SwAddrMethod,
 )
+from abc import ABC, abstractmethod
 
 
-class ExecutableEntity(Identifiable):
+class ExecutableEntity(Identifiable, ABC):
     """AUTOSAR ExecutableEntity."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     activations: list[ExecutableEntity]
     can_enters: list[ExclusiveArea]

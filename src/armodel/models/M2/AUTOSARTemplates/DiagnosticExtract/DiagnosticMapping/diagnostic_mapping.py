@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticMapping(DiagnosticCommonElement):
+class DiagnosticMapping(DiagnosticCommonElement, ABC):
     """AUTOSAR DiagnosticMapping."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     provider: Optional[CpSoftwareCluster]
     requester: Optional[CpSoftwareCluster]

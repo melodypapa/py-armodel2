@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MultidimensionalTime(ARObject):
     """AUTOSAR MultidimensionalTime."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cse_code: Optional[CseCodeType]
     cse_code_factor: Optional[Integer]
     def __init__(self) -> None:

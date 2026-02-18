@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from abc import ABC, abstractmethod
 
 
-class TDEventVfb(TimingDescriptionEvent):
+class TDEventVfb(TimingDescriptionEvent, ABC):
     """AUTOSAR TDEventVfb."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     component: Optional[Any]
     def __init__(self) -> None:

@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entit
 class SensorActuatorSwComponentType(AtomicSwComponentType):
     """AUTOSAR SensorActuatorSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sensor_actuator: Optional[HwDescriptionEntity]
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""

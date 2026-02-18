@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class MeasuredExecutionTime(ExecutionTime):
     """AUTOSAR MeasuredExecutionTime."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     maximum_execution_time: Optional[MultidimensionalTime]
     minimum_execution_time: Optional[MultidimensionalTime]
     nominal_execution_time: Optional[MultidimensionalTime]

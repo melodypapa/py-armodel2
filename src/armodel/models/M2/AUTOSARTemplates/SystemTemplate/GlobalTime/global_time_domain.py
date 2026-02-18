@@ -40,6 +40,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class GlobalTimeDomain(FibexElement):
     """AUTOSAR GlobalTimeDomain."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     debounce_time: Optional[TimeValue]
     domain_id: Optional[PositiveInteger]
     gateways: list[GlobalTimeGateway]

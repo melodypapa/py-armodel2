@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class ModeSwitchInterface(PortInterface):
     """AUTOSAR ModeSwitchInterface."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mode_group: Optional[ModeDeclarationGroup]
     def __init__(self) -> None:
         """Initialize ModeSwitchInterface."""

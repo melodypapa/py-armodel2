@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw
 class HwAttributeValue(ARObject):
     """AUTOSAR HwAttributeValue."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     annotation: Optional[Annotation]
     hw_attribute_def: Optional[HwAttributeDef]
     v: Optional[Numerical]

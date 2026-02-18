@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.Documentation.Chapters.topic_content import (
 class TopicContentOrMsrQuery(ARObject):
     """AUTOSAR TopicContentOrMsrQuery."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     msr_query_p1: MsrQueryP1
     topic_content: TopicContent
     def __init__(self) -> None:

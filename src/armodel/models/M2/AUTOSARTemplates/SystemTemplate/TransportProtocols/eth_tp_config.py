@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.eth_tp
 class EthTpConfig(TpConfig):
     """AUTOSAR EthTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_connections: list[EthTpConnection]
     def __init__(self) -> None:
         """Initialize EthTpConfig."""

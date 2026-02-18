@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortShaper(CouplingPortStructuralElement):
     """AUTOSAR CouplingPortShaper."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     idle_slope: Optional[PositiveInteger]
     predecessor_fifo: CouplingPortFifo
     def __init__(self) -> None:

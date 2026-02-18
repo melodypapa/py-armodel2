@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ServerComSpec(PPortComSpec):
     """AUTOSAR ServerComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     operation: Optional[ClientServerOperation]
     queue_length: Optional[PositiveInteger]
     transformation_coms: list[Any]

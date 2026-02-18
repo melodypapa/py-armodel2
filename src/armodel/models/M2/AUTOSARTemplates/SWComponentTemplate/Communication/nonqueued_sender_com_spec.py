@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class NonqueuedSenderComSpec(SenderComSpec):
     """AUTOSAR NonqueuedSenderComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_filter: Optional[DataFilter]
     init_value: Optional[ValueSpecification]
     def __init__(self) -> None:

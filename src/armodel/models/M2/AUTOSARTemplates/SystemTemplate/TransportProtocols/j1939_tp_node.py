@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class J1939TpNode(Identifiable):
     """AUTOSAR J1939TpNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connector: Optional[Any]
     tp_address: Optional[TpAddress]
     def __init__(self) -> None:

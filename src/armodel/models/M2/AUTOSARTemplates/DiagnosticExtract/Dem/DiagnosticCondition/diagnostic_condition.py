@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticCondition(DiagnosticCommonElement):
+class DiagnosticCondition(DiagnosticCommonElement, ABC):
     """AUTOSAR DiagnosticCondition."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     init_value: Optional[Boolean]
     def __init__(self) -> None:

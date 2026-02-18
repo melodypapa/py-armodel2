@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class KeywordSet(ARElement):
     """AUTOSAR KeywordSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     keywords: list[Keyword]
     def __init__(self) -> None:
         """Initialize KeywordSet."""

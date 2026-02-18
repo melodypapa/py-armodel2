@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
     """AUTOSAR IEEE1722TpAcfLinPart."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     lin_identifier: Optional[PositiveInteger]
     sdu: Optional[PduTriggering]
     def __init__(self) -> None:

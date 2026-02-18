@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x
 class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestPowertrainFreezeFrameData."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame]
     request: Optional[Any]
     def __init__(self) -> None:

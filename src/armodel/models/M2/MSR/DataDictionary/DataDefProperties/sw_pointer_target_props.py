@@ -30,6 +30,15 @@ if TYPE_CHECKING:
 class SwPointerTargetProps(ARObject):
     """AUTOSAR SwPointerTargetProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     function_pointer: Optional[BswModuleEntry]
     sw_data_def: Optional[SwDataDefProps]
     target_category: Optional[Identifier]

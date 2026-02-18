@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.tlv_data_id_d
 class SOMEIPTransformationISignalProps(ARObject):
     """AUTOSAR SOMEIPTransformationISignalProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     implements: Optional[Boolean]
     interface_version: Optional[PositiveInteger]
     is_dynamic: Optional[Boolean]

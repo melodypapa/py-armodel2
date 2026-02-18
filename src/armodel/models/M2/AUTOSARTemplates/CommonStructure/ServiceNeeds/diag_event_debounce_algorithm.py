@@ -14,11 +14,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagEventDebounceAlgorithm(Identifiable):
+class DiagEventDebounceAlgorithm(Identifiable, ABC):
     """AUTOSAR DiagEventDebounceAlgorithm."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize DiagEventDebounceAlgorithm."""

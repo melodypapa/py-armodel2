@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class SenderRecArrayElementMapping(ARObject):
     """AUTOSAR SenderRecArrayElementMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     complex_type: Optional[SenderRecCompositeTypeMapping]
     indexed_array: Optional[IndexedArrayElement]
     system_signal: Optional[SystemSignal]

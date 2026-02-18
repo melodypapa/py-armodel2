@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class DataFormatTailoring(ARObject):
     """AUTOSAR DataFormatTailoring."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     class_tailorings: list[ClassTailoring]
     constraints: list[ConstraintTailoring]
     def __init__(self) -> None:

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
     """AUTOSAR DiagnosticJ1939SwMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     node: Optional[DiagnosticJ1939Node]
     sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype]
     def __init__(self) -> None:

@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     PduCollectionTriggerEnum,
 )
+from abc import ABC, abstractmethod
 
 
-class IEEE1722TpAcfBusPart(Identifiable):
+class IEEE1722TpAcfBusPart(Identifiable, ABC):
     """AUTOSAR IEEE1722TpAcfBusPart."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     collection_trigger: Optional[PduCollectionTriggerEnum]
     def __init__(self) -> None:

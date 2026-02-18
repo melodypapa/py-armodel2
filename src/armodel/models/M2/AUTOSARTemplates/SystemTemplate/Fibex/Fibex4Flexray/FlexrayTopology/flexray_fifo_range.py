@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayFifoRange(ARObject):
     """AUTOSAR FlexrayFifoRange."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     range_max: Optional[Integer]
     range_min: Optional[Integer]
     def __init__(self) -> None:

@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
     """AUTOSAR CpSoftwareClusterBinaryManifestDescriptor."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     cp_software_cluster: Optional[CpSoftwareCluster]
     meta_data_fields: list[BinaryManifestMetaDataField]
     provides: list[BinaryManifestProvideResource]

@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class AutosarVariableRef(ARObject):
     """AUTOSAR AutosarVariableRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     autosar_variable: Optional[Any]
     local_variable: Optional[VariableDataPrototype]
     def __init__(self) -> None:

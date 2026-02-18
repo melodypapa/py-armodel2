@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_entr
 class BswEntryRelationshipSet(ARElement):
     """AUTOSAR BswEntryRelationshipSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_entry_relationships: list[BswEntryRelationship]
     def __init__(self) -> None:
         """Initialize BswEntryRelationshipSet."""

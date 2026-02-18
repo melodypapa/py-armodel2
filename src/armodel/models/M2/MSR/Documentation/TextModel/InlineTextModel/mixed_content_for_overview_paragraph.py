@@ -37,10 +37,20 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref impor
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref_target import (
     XrefTarget,
 )
+from abc import ABC, abstractmethod
 
 
-class MixedContentForOverviewParagraph(ARObject):
+class MixedContentForOverviewParagraph(ARObject, ABC):
     """AUTOSAR MixedContentForOverviewParagraph."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     br: Br
     e: EmphasisText

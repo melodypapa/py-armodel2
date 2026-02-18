@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PositiveInteger,
     String,
 )
+from abc import ABC, abstractmethod
 
 
-class BinaryManifestResource(Identifiable):
+class BinaryManifestResource(Identifiable, ABC):
     """AUTOSAR BinaryManifestResource."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     global_resource: Optional[PositiveInteger]
     resource: Optional[Any]

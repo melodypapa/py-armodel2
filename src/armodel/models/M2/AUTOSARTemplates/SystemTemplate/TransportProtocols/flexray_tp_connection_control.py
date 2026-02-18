@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayTpConnectionControl(Identifiable):
     """AUTOSAR FlexrayTpConnectionControl."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ack_type: Optional[FrArTpAckType]
     max_fc_wait: Optional[Integer]
     max_number_of: Optional[Integer]

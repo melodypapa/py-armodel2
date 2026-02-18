@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node
 class FlexrayNmNode(NmNode):
     """AUTOSAR FlexrayNmNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize FlexrayNmNode."""
         super().__init__()

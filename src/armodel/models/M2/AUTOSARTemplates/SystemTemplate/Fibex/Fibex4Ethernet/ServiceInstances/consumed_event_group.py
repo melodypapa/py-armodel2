@@ -34,6 +34,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class ConsumedEventGroup(Identifiable):
     """AUTOSAR ConsumedEventGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application_endpoint: Optional[ApplicationEndpoint]
     auto_require: Optional[Boolean]
     event_group: Optional[PositiveInteger]

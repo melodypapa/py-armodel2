@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class TlsPskIdentity(ARObject):
     """AUTOSAR TlsPskIdentity."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     pre_shared_key: Optional[CryptoServiceKey]
     psk_identity: Optional[String]
     psk_identity_hint: Optional[String]

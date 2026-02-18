@@ -21,6 +21,15 @@ if TYPE_CHECKING:
 class EcucQueryExpression(ARObject):
     """AUTOSAR EcucQueryExpression."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     config_element: Optional[EcucDefinitionElement]
     def __init__(self) -> None:
         """Initialize EcucQueryExpression."""

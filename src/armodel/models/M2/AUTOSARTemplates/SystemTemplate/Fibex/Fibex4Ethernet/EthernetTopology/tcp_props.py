@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpProps(ARObject):
     """AUTOSAR TcpProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tcp_congestion: Optional[Boolean]
     tcp_delayed_ack: Optional[TimeValue]
     tcp_fast_recovery: Optional[Any]

@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticAuthentication(DiagnosticServiceInstance):
+class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
     """AUTOSAR DiagnosticAuthentication."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     authentication: Optional[Any]
     def __init__(self) -> None:

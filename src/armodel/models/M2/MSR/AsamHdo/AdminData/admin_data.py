@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class AdminData(ARObject):
     """AUTOSAR AdminData."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     doc_revisions: list[DocRevision]
     used_languages: Optional[MultiLanguagePlainText]
     def __init__(self) -> None:

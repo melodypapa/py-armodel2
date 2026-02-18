@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimeSyncServerConfiguration(Referrable):
     """AUTOSAR TimeSyncServerConfiguration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     priority: Optional[PositiveInteger]
     sync_interval: Optional[TimeValue]
     time_sync_server_identifier: Optional[String]

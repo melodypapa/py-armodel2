@@ -21,6 +21,15 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class UnitGroup(ARElement):
     """AUTOSAR UnitGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     units: list[Unit]
     def __init__(self) -> None:
         """Initialize UnitGroup."""

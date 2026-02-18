@@ -30,6 +30,15 @@ if TYPE_CHECKING:
 class DiagnosticDataElement(Identifiable):
     """AUTOSAR DiagnosticDataElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     array_size: Optional[ArraySizeSemanticsEnum]
     max_number_of: Optional[PositiveInteger]
     scaling_info_size: Optional[PositiveInteger]

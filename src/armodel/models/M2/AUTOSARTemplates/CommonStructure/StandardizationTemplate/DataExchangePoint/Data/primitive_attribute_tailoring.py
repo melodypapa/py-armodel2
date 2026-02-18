@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class PrimitiveAttributeTailoring(AttributeTailoring):
     """AUTOSAR PrimitiveAttributeTailoring."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_value: Optional[DefaultValueApplicationStrategyEnum]
     sub_attributes: list[Any]
     value_restriction_with_severity: Optional[ValueRestrictionWithSeverity]

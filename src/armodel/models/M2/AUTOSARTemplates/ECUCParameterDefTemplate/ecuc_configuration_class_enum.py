@@ -5,13 +5,28 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class EcucConfigurationClassEnum(Enum):
-    """AUTOSAR EcucConfigurationClassEnum enumeration."""
+class EcucConfigurationClassEnum(AREnum):
+    """AUTOSAR EcucConfigurationClassEnum enumeration.
+
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
 
     LINK = "Link"
-    POSTBUILD = "PostBuild"
-    PRECOMPILE = "PreCompile"
-    PUBLISHEDINFORMATION = "PublishedInformation"
+    POST_BUILD = "PostBuild"
+    PRE_COMPILE = "PreCompile"
+    PUBLISHED_INFORMATION = "PublishedInformation"

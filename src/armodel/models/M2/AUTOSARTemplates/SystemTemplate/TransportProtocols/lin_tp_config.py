@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class LinTpConfig(TpConfig):
     """AUTOSAR LinTpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_addresses: list[TpAddress]
     tp_connections: list[LinTpConnection]
     tp_nodes: list[LinTpNode]

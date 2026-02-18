@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_val
 class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
     """AUTOSAR ApplicationRuleBasedValueSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category_specification: Optional[Identifier]
     sw_axis_conts: list[RuleBasedAxisCont]
     sw_value_cont: Optional[RuleBasedValueCont]

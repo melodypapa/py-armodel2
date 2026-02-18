@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
     """AUTOSAR DiagEventDebounceTimeBased."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     time_based_fdc: Optional[TimeValue]
     time_failed: Optional[TimeValue]
     time_passed: Optional[TimeValue]

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class CouplingPortAsynchronousTrafficShaper(Identifiable):
     """AUTOSAR CouplingPortAsynchronousTrafficShaper."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     committed_burst: Optional[PositiveInteger]
     committed: Optional[PositiveInteger]
     traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry]

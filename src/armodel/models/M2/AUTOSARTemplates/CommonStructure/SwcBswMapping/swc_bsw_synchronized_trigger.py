@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
 class SwcBswSynchronizedTrigger(ARObject):
     """AUTOSAR SwcBswSynchronizedTrigger."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_trigger: Optional[Trigger]
     swc_trigger: Optional[Trigger]
     def __init__(self) -> None:

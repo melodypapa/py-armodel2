@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Area(ARObject):
     """AUTOSAR Area."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     accesskey: Optional[String]
     alt: Optional[String]
     class_: Optional[String]

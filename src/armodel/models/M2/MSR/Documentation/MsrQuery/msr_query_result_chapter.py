@@ -21,6 +21,15 @@ if TYPE_CHECKING:
 class MsrQueryResultChapter(ARObject):
     """AUTOSAR MsrQueryResultChapter."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     chapters: list[Chapter]
     def __init__(self) -> None:
         """Initialize MsrQueryResultChapter."""

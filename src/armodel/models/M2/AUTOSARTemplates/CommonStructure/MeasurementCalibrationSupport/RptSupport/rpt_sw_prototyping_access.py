@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSu
 class RptSwPrototypingAccess(ARObject):
     """AUTOSAR RptSwPrototypingAccess."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rpt_hook_access: Optional[RptAccessEnum]
     rpt_read_access: Optional[RptAccessEnum]
     rpt_write_access: Optional[RptAccessEnum]

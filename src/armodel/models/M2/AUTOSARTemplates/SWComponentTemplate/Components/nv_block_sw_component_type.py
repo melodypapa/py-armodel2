@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.nv_
 class NvBlockSwComponentType(AtomicSwComponentType):
     """AUTOSAR NvBlockSwComponentType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bulk_nv_datas: list[BulkNvDataDescriptor]
     nv_blocks: list[NvBlockDescriptor]
     def __init__(self) -> None:

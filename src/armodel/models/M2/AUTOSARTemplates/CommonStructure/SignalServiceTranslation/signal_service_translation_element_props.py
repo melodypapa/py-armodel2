@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SignalServiceTranslationElementProps(Identifiable):
     """AUTOSAR SignalServiceTranslationElementProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     element: Optional[DataPrototype]
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]

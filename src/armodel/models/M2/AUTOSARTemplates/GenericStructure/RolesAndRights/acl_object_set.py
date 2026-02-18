@@ -33,6 +33,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class AclObjectSet(ARElement):
     """AUTOSAR AclObjectSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     acl_object_classes: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection: Optional[Collection]

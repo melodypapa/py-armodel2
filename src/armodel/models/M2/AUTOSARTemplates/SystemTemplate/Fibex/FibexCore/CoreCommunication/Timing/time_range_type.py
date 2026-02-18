@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TimeRangeType(ARObject):
     """AUTOSAR TimeRangeType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tolerance_tolerance: Optional[TimeRangeType]
     value: Optional[TimeValue]
     def __init__(self) -> None:

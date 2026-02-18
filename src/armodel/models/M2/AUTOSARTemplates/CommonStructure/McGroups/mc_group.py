@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.McGroups.mc_group_data_r
 class McGroup(ARElement):
     """AUTOSAR McGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mc_functions: list[McFunction]
     ref_calprm_set: Optional[McGroupDataRefSet]
     ref: Optional[McGroupDataRefSet]

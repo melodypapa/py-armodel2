@@ -35,11 +35,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
+from abc import ABC, abstractmethod
 
 
-class BswModuleEntity(ExecutableEntity):
+class BswModuleEntity(ExecutableEntity, ABC):
     """AUTOSAR BswModuleEntity."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     accessed_modes: list[ModeDeclarationGroup]
     activation_points: list[BswInternalTriggeringPoint]

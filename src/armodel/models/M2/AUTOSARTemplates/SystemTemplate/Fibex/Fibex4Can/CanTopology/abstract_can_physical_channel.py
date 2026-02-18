@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractCanPhysicalChannel(PhysicalChannel):
+class AbstractCanPhysicalChannel(PhysicalChannel, ABC):
     """AUTOSAR AbstractCanPhysicalChannel."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize AbstractCanPhysicalChannel."""

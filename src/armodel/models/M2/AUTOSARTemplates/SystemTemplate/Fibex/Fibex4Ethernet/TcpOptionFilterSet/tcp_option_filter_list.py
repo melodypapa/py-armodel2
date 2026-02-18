@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class TcpOptionFilterList(Identifiable):
     """AUTOSAR TcpOptionFilterList."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     allowed_tcp_options: list[PositiveInteger]
     def __init__(self) -> None:
         """Initialize TcpOptionFilterList."""

@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class EthernetPhysicalChannel(PhysicalChannel):
     """AUTOSAR EthernetPhysicalChannel."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     network_endpoints: list[NetworkEndpoint]
     so_ad_config: Optional[SoAdConfig]
     vlan: Optional[VlanConfig]

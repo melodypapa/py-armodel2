@@ -20,11 +20,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_to_frame_mapping import (
     PduToFrameMapping,
 )
+from abc import ABC, abstractmethod
 
 
-class Frame(FibexElement):
+class Frame(FibexElement, ABC):
     """AUTOSAR Frame."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     frame_length: Optional[Integer]
     pdu_to_frames: list[PduToFrameMapping]

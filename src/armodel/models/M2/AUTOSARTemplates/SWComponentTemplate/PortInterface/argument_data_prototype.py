@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import
 class ArgumentDataPrototype(AutosarDataPrototype):
     """AUTOSAR ArgumentDataPrototype."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     direction: Optional[ArgumentDirectionEnum]
     server_argument_impl: Optional[ServerArgumentImplPolicyEnum]
     def __init__(self) -> None:

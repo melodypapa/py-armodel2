@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticServiceInstance(DiagnosticCommonElement):
+class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
     """AUTOSAR DiagnosticServiceInstance."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     access: Optional[DiagnosticAccessPermission]
     service_class: Optional[DiagnosticServiceClass]

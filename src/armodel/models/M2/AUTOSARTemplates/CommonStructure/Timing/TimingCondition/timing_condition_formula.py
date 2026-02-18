@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.t
 class TimingConditionFormula(ARObject):
     """AUTOSAR TimingConditionFormula."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance]
     timing_condition: Optional[TimingCondition]
     timing_event: Optional[TimingDescriptionEvent]

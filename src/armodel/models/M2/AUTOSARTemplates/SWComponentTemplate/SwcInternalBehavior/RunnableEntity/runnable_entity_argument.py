@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class RunnableEntityArgument(ARObject):
     """AUTOSAR RunnableEntityArgument."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     symbol: Optional[CIdentifier]
     def __init__(self) -> None:
         """Initialize RunnableEntityArgument."""

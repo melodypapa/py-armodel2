@@ -16,11 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount import (
     RteApiReturnValueProvisionEnum,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractAccessPoint(Identifiable):
+class AbstractAccessPoint(Identifiable, ABC):
     """AUTOSAR AbstractAccessPoint."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     return_value: Optional[RteApiReturnValueProvisionEnum]
     def __init__(self) -> None:

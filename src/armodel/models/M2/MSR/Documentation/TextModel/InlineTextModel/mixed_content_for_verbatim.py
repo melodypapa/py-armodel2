@@ -22,10 +22,20 @@ from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.tt import 
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.xref import (
     Xref,
 )
+from abc import ABC, abstractmethod
 
 
-class MixedContentForVerbatim(ARObject):
+class MixedContentForVerbatim(ARObject, ABC):
     """AUTOSAR MixedContentForVerbatim."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     br: Br
     e: EmphasisText

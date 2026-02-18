@@ -29,6 +29,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class ApplicationEndpoint(Identifiable):
     """AUTOSAR ApplicationEndpoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     consumed_services: list[Any]
     max_number_of: Optional[PositiveInteger]
     network_endpoint_endpoint: Optional[NetworkEndpoint]

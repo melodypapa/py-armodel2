@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_el
 class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
     """AUTOSAR ApplicationCompositeDataTypeSubElementRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeDataTypeSubElementRef."""

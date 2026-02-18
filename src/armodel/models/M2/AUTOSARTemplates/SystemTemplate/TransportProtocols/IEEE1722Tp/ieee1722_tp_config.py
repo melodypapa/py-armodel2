@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
 class IEEE1722TpConfig(TpConfig):
     """AUTOSAR IEEE1722TpConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     tp_connections: list[IEEE1722TpConnection]
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""

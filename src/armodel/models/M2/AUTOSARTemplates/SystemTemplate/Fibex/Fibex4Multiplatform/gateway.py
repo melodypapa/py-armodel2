@@ -29,6 +29,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform
 class Gateway(FibexElement):
     """AUTOSAR Gateway."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ecu: Optional[EcuInstance]
     frame_mappings: list[FrameMapping]
     i_pdu_mappings: list[IPduMapping]

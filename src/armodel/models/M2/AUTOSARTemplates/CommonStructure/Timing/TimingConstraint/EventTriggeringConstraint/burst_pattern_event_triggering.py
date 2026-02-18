@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class BurstPatternEventTriggering(EventTriggeringConstraint):
     """AUTOSAR BurstPatternEventTriggering."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     max_number_of: Optional[PositiveInteger]
     minimum_inter: Optional[MultidimensionalTime]
     min_number_of: Optional[PositiveInteger]

@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class TDEventOperation(TDEventVfbPort):
     """AUTOSAR TDEventOperation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     operation: Optional[ClientServerOperation]
     td_event: Optional[TDEventOperationTypeEnum]
     def __init__(self) -> None:

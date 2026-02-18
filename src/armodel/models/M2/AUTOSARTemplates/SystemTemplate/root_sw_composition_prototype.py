@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_map import 
 class RootSwCompositionPrototype(Identifiable):
     """AUTOSAR RootSwCompositionPrototype."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     calibrations: list[Any]
     flat_map: Optional[FlatMap]
     software: Optional[CompositionSwComponentType]

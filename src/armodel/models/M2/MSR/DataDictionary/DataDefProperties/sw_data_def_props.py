@@ -91,6 +91,15 @@ if TYPE_CHECKING:
 class SwDataDefProps(ARObject):
     """AUTOSAR SwDataDefProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     additional_native: Optional[NativeDeclarationString]
     annotations: list[Annotation]
     base_type: Optional[SwBaseType]

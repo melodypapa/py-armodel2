@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class TDEventVariableDataPrototype(TDEventVfbPort):
     """AUTOSAR TDEventVariableDataPrototype."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_element: Optional[VariableDataPrototype]
     td_event_variable_type: Optional[Any]
     def __init__(self) -> None:

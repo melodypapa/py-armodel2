@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
 class BswInternalTriggeringPoint(Identifiable):
     """AUTOSAR BswInternalTriggeringPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sw_impl_policy_enum: Optional[SwImplPolicyEnum]
     def __init__(self) -> None:
         """Initialize BswInternalTriggeringPoint."""

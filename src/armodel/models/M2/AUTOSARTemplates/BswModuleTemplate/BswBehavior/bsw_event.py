@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
+from abc import ABC, abstractmethod
 
 
-class BswEvent(AbstractEvent):
+class BswEvent(AbstractEvent, ABC):
     """AUTOSAR BswEvent."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     contexts: list[BswDistinguishedPartition]
     disabled_in_mode_description_instance_refs: list[ModeDeclaration]

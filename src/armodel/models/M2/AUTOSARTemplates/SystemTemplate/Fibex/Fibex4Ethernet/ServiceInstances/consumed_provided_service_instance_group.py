@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 class ConsumedProvidedServiceInstanceGroup(FibexElement):
     """AUTOSAR ConsumedProvidedServiceInstanceGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     consumed_services: list[Any]
     provided_services: list[Any]
     def __init__(self) -> None:

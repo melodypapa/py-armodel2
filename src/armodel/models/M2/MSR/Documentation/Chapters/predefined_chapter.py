@@ -18,6 +18,15 @@ from armodel.models.M2.MSR.Documentation.Chapters.chapter_model import (
 class PredefinedChapter(ARObject):
     """AUTOSAR PredefinedChapter."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     chapter_model: ChapterModel
     def __init__(self) -> None:
         """Initialize PredefinedChapter."""

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_application impor
 class DltEcu(ARElement):
     """AUTOSAR DltEcu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     applications: list[DltApplication]
     ecu_id: Optional[String]
     def __init__(self) -> None:

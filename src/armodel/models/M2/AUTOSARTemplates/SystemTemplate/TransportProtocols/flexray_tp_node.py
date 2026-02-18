@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_add
 class FlexrayTpNode(Identifiable):
     """AUTOSAR FlexrayTpNode."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connectors: list[Any]
     tp_address: Optional[TpAddress]
     def __init__(self) -> None:

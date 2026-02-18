@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticRequestFileTransferClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticRequestFileTransferClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransferClass."""
         super().__init__()

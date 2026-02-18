@@ -31,6 +31,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
 class Table(Paginateable):
     """AUTOSAR Table."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     colsep: Optional[TableSeparatorString]
     float: FloatEnum
     frame: Optional[FrameEnum]

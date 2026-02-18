@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client
 class ClientServerInterfaceMapping(PortInterfaceMapping):
     """AUTOSAR ClientServerInterfaceMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     error_mappings: list[ClientServerApplicationErrorMapping]
     operations: list[ClientServerOperation]
     def __init__(self) -> None:

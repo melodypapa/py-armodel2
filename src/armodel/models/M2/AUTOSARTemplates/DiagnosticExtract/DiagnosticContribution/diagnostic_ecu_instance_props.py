@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
     """AUTOSAR DiagnosticEcuInstanceProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ecu_instances: list[EcuInstance]
     obd_support: Optional[DiagnosticObdSupportEnum]
     def __init__(self) -> None:

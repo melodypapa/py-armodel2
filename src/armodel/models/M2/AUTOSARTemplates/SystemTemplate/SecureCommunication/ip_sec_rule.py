@@ -36,6 +36,15 @@ if TYPE_CHECKING:
 class IPSecRule(Identifiable):
     """AUTOSAR IPSecRule."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     direction: Optional[Any]
     header_type: Optional[IPsecHeaderTypeEnum]
     ip_protocol: Optional[IPsecIpProtocolEnum]

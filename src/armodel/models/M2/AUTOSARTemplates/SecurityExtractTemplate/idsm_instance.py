@@ -36,6 +36,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_traffic_lim
 class IdsmInstance(IdsCommonElement):
     """AUTOSAR IdsmInstance."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     block_states: list[BlockState]
     ecu_instance: Optional[EcuInstance]
     idsm_instance_id: Optional[PositiveInteger]

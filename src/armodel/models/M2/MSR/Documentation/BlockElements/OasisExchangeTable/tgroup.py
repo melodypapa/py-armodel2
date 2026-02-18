@@ -30,6 +30,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.tbody 
 class Tgroup(ARObject):
     """AUTOSAR Tgroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     align: Optional[AlignEnum]
     cols: Integer
     colsep: Optional[TableSeparatorString]

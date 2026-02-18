@@ -58,6 +58,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcInternalBehavior(InternalBehavior):
     """AUTOSAR SwcInternalBehavior."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ar_typed_pers: list[VariableDataPrototype]
     events: list[RTEEvent]
     exclusive_areas: list[SwcExclusiveAreaPolicy]

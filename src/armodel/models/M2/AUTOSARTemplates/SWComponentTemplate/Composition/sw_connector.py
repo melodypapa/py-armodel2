@@ -17,11 +17,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
+from abc import ABC, abstractmethod
 
 
-class SwConnector(Identifiable):
+class SwConnector(Identifiable, ABC):
     """AUTOSAR SwConnector."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     mapping: Optional[PortInterfaceMapping]
     def __init__(self) -> None:

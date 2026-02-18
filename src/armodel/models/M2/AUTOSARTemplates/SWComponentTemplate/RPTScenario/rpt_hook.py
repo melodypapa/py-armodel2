@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class RptHook(ARObject):
     """AUTOSAR RptHook."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     code_label: Optional[CIdentifier]
     mcd_identifier: Optional[NameToken]
     rpt_ar_hook: Optional[AtpFeature]

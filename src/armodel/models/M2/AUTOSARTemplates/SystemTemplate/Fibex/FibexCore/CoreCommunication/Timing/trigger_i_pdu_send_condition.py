@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class TriggerIPduSendCondition(ARObject):
     """AUTOSAR TriggerIPduSendCondition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     modes: list[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize TriggerIPduSendCondition."""

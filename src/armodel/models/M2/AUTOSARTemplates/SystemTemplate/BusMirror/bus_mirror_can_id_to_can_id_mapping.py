@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommun
 class BusMirrorCanIdToCanIdMapping(ARObject):
     """AUTOSAR BusMirrorCanIdToCanIdMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     remapped_can_id: Optional[PositiveInteger]
     souce_can_id: Optional[CanFrameTriggering]
     def __init__(self) -> None:

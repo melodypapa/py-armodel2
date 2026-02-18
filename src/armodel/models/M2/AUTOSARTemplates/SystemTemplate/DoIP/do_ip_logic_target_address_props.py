@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.abstract_do_ip_logic
 class DoIpLogicTargetAddressProps(AbstractDoIpLogicAddressProps):
     """AUTOSAR DoIpLogicTargetAddressProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize DoIpLogicTargetAddressProps."""
         super().__init__()

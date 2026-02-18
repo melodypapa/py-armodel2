@@ -31,6 +31,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_pr
 class ImplementationDataType(AbstractImplementationDataType):
     """AUTOSAR ImplementationDataType."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     dynamic_array: Optional[String]
     sub_elements: list[Any]
     symbol_props: Optional[SymbolProps]

@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class SwcBswMapping(ARElement):
     """AUTOSAR SwcBswMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_behavior: Optional[BswInternalBehavior]
     runnable_mappings: list[SwcBswRunnableMapping]
     swc_behavior: Optional[SwcInternalBehavior]

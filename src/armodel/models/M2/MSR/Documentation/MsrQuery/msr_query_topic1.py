@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_result_topic1 import
 class MsrQueryTopic1(Paginateable):
     """AUTOSAR MsrQueryTopic1."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     msr_query_props: MsrQueryProps
     msr_query_result_topic1: Optional[MsrQueryResultTopic1]
     def __init__(self) -> None:

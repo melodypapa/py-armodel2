@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpAafConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     aaf_aes3_data: Optional[IEEE1722TpAafAes3DataTypeEnum]
     aaf_format_enum: Optional[IEEE1722TpAafFormatEnum]
     aaf_nominal_rate: Optional[Any]

@@ -36,6 +36,15 @@ if TYPE_CHECKING:
 class StructuredReq(Paginateable):
     """AUTOSAR StructuredReq."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     applies_tos: list[StandardNameEnum]
     conflicts: Optional[DocumentationBlock]
     date: DateTime

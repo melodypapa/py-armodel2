@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_by_address import (
     DiagnosticMemoryByAddress,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress):
+class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
     """AUTOSAR DiagnosticMemoryAddressableRangeAccess."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     memory_ranges: list[Any]
     def __init__(self) -> None:

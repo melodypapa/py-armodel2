@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class TimingDescriptionEventChain(TimingDescription):
     """AUTOSAR TimingDescriptionEventChain."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     is_pipelining: Optional[Boolean]
     response: Optional[TimingDescriptionEvent]
     segments: list[TimingDescriptionEvent]

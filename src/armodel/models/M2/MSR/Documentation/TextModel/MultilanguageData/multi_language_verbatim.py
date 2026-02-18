@@ -28,6 +28,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_verbatim 
 class MultiLanguageVerbatim(Paginateable):
     """AUTOSAR MultiLanguageVerbatim."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     allow_break: Optional[NameToken]
     float: Optional[FloatEnum]
     help_entry: Optional[String]

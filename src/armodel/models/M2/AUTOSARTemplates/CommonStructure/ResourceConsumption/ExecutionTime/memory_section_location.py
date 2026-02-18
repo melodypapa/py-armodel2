@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Memo
 class MemorySectionLocation(ARObject):
     """AUTOSAR MemorySectionLocation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     provided_memory: Optional[HwElement]
     software: Optional[MemorySection]
     def __init__(self) -> None:

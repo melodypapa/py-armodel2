@@ -29,6 +29,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
 class ClassContentConditional(Identifiable):
     """AUTOSAR ClassContentConditional."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     attributes: list[AttributeTailoring]
     condition: Optional[AbstractCondition]
     constraints: list[ConstraintTailoring]

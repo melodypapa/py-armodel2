@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class HwPin(Identifiable):
     """AUTOSAR HwPin."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     function_names: list[String]
     packaging_pin: Optional[String]
     pin_number: Optional[Integer]

@@ -22,11 +22,20 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_type import (
     HwType,
 )
+from abc import ABC, abstractmethod
 
 
-class HwDescriptionEntity(Referrable):
+class HwDescriptionEntity(Referrable, ABC):
     """AUTOSAR HwDescriptionEntity."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     hw_attributes: list[HwAttributeValue]
     hw_categories: list[HwCategory]

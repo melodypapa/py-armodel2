@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class SubElementMapping(ARObject):
     """AUTOSAR SubElementMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     first_element: Optional[SubElementRef]
     second_element: Optional[SubElementRef]
     text_table: TextTableMapping

@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class SynchronousServerCallPoint(ServerCallPoint):
     """AUTOSAR SynchronousServerCallPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""

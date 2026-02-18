@@ -47,6 +47,15 @@ if TYPE_CHECKING:
 class ISignal(FibexElement):
     """AUTOSAR ISignal."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data: Optional[DataTransformation]
     data_type_policy_enum: Optional[DataTypePolicyEnum]
     init_value: Optional[ValueSpecification]

@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TDEventIPdu(TDEventCom):
     """AUTOSAR TDEventIPdu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     i_pdu: Optional[IPdu]
     physical_channel: Optional[PhysicalChannel]
     td_event_type: Optional[TDEventIPduTypeEnum]

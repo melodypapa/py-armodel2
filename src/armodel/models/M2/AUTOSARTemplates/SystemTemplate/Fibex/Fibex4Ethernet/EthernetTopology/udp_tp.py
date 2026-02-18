@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class UdpTp(TcpUdpConfig):
     """AUTOSAR UdpTp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     udp_tp_port: Optional[TpPort]
     def __init__(self) -> None:
         """Initialize UdpTp."""

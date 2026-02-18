@@ -32,6 +32,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_lan
 class Xref(ARObject):
     """AUTOSAR Xref."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     label1: Optional[SingleLanguageLongName]
     referrable: Optional[Referrable]
     resolution_policy_enum: Optional[ResolutionPolicyEnum]

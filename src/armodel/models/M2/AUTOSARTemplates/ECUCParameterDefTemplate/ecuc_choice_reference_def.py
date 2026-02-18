@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
 class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
     """AUTOSAR EcucChoiceReferenceDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     destinations: list[EcucContainerDef]
     def __init__(self) -> None:
         """Initialize EcucChoiceReferenceDef."""

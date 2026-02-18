@@ -20,11 +20,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.symbolic_name_props import (
     SymbolicNameProps,
 )
+from abc import ABC, abstractmethod
 
 
-class ServiceDependency(ARObject):
+class ServiceDependency(ARObject, ABC):
     """AUTOSAR ServiceDependency."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     assigned_data: Optional[RoleBasedDataTypeAssignment]
     diagnostic: Optional[ServiceDiagnosticRelevanceEnum]

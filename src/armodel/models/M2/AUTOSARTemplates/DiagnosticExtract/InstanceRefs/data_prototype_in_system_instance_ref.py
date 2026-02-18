@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
 class DataPrototypeInSystemInstanceRef(ARObject):
     """AUTOSAR DataPrototypeInSystemInstanceRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base: Optional[System]
     contexts: list[Any]
     context_datas: list[Any]

@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_impl
 class RptComponent(Identifiable):
     """AUTOSAR RptComponent."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     mc_datas: list[RoleBasedMcDataAssignment]
     rp_impl_policy: Optional[RptImplPolicy]
     rpt_executable_entities: list[RptExecutableEntity]

@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
     """AUTOSAR DiagnosticDataIdentifier."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_elements: list[DiagnosticParameter]
     did_size: Optional[PositiveInteger]
     represents_vin: Optional[Boolean]

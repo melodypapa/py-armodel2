@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswEntryRelationship(ARObject):
     """AUTOSAR BswEntryRelationship."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_entry: Optional[BswEntryRelationship]
     from_: Optional[BswModuleEntry]
     to: Optional[BswModuleEntry]

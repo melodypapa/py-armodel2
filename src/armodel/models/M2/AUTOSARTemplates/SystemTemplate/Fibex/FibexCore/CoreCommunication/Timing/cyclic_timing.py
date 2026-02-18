@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class CyclicTiming(Describable):
     """AUTOSAR CyclicTiming."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     time_offset: Optional[TimeRangeType]
     time_period: Optional[TimeRangeType]
     def __init__(self) -> None:

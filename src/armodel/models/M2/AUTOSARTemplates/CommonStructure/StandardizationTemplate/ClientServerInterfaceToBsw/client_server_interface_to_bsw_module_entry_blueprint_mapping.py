@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
     """AUTOSAR ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_server: ClientServerInterface
     operation: ClientServerOperation
     port_defined_arguments: list[PortDefinedArgumentValue]

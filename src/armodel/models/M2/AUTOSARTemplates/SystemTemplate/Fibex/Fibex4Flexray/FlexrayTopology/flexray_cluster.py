@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayCluster(ARObject):
     """AUTOSAR FlexrayCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     action_point_offset: Optional[Integer]
     bit: Optional[TimeValue]
     cas_rx_low_max: Optional[Integer]

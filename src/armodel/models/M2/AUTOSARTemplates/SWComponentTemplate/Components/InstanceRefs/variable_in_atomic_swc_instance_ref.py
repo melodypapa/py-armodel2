@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prot
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class VariableInAtomicSwcInstanceRef(ARObject):
+class VariableInAtomicSwcInstanceRef(ARObject, ABC):
     """AUTOSAR VariableInAtomicSwcInstanceRef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     abstract_target: Optional[VariableDataPrototype]
     base: Optional[AtomicSwComponentType]

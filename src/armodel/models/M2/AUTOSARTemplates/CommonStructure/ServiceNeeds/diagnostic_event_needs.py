@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_in
 class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticEventNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     deferring_fids: list[FunctionInhibitionNeeds]
     diag_event_debounce: Optional[Any]
     inhibiting_fid: Optional[FunctionInhibitionNeeds]

@@ -28,6 +28,15 @@ if TYPE_CHECKING:
 class CryptoServiceKey(ARElement):
     """AUTOSAR CryptoServiceKey."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     algorithm_family: Optional[String]
     development: Optional[ValueSpecification]
     key_generation: Optional[CryptoServiceKey]

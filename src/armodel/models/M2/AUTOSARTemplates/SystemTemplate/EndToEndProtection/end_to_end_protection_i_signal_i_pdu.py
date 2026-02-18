@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class EndToEndProtectionISignalIPdu(ARObject):
     """AUTOSAR EndToEndProtectionISignalIPdu."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_offset: Optional[Integer]
     i_signal_group: Optional[ISignalGroup]
     i_signal_i_pdu: Optional[ISignalIPdu]

@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class LatencyTimingConstraint(TimingConstraint):
     """AUTOSAR LatencyTimingConstraint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     latency: Optional[LatencyConstraintTypeEnum]
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]

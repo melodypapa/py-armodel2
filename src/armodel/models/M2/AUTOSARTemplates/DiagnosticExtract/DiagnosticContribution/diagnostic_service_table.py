@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class DiagnosticServiceTable(DiagnosticCommonElement):
     """AUTOSAR DiagnosticServiceTable."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostics: list[DiagnosticConnection]
     ecu_instance: Optional[EcuInstance]
     protocol_kind: Optional[NameToken]

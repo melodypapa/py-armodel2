@@ -31,6 +31,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SenderReceiverInterface(DataInterface):
     """AUTOSAR SenderReceiverInterface."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_elements: list[VariableDataPrototype]
     invalidation_policy_policies: list[InvalidationPolicy]
     meta_data_item_sets: list[MetaDataItemSet]

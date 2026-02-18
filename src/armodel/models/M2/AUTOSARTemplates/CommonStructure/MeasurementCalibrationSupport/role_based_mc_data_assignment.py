@@ -27,6 +27,15 @@ if TYPE_CHECKING:
 class RoleBasedMcDataAssignment(ARObject):
     """AUTOSAR RoleBasedMcDataAssignment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     executions: list[RptExecutionContext]
     mc_data_instances: list[McDataInstance]
     role: Optional[Identifier]

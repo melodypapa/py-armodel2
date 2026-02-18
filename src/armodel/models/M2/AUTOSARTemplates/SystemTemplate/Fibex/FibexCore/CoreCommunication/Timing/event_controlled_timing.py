@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class EventControlledTiming(Describable):
     """AUTOSAR EventControlledTiming."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     number_of: Optional[Integer]
     repetition_period: Optional[TimeRangeType]
     def __init__(self) -> None:

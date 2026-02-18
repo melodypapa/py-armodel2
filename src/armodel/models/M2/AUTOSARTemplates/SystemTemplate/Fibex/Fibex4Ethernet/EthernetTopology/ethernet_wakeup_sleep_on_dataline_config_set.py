@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
 class EthernetWakeupSleepOnDatalineConfigSet(FibexElement):
     """AUTOSAR EthernetWakeupSleepOnDatalineConfigSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ethernets: list[Any]
     def __init__(self) -> None:
         """Initialize EthernetWakeupSleepOnDatalineConfigSet."""

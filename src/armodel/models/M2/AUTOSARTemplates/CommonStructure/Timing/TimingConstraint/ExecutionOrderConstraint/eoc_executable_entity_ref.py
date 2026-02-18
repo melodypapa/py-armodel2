@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executa
 class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
     """AUTOSAR EOCExecutableEntityRef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bsw_module: Optional[BswImplementation]
     component: Optional[Any]
     executable_entity: Optional[ExecutableEntity]

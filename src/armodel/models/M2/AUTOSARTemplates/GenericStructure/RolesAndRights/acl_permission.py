@@ -33,6 +33,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights.acl_role
 class AclPermission(ARElement):
     """AUTOSAR AclPermission."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     acl_contexts: list[NameToken]
     acl_object_sets: list[AclObjectSet]
     acl_operations: list[AclOperation]

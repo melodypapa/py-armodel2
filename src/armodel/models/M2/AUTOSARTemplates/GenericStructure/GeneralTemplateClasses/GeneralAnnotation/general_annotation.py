@@ -20,11 +20,20 @@ from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block impor
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
+from abc import ABC, abstractmethod
 
 
-class GeneralAnnotation(ARObject):
+class GeneralAnnotation(ARObject, ABC):
     """AUTOSAR GeneralAnnotation."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     annotation: String
     annotation_text: DocumentationBlock

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
 class TtcanAbsolutelyScheduledTiming(ARObject):
     """AUTOSAR TtcanAbsolutelyScheduledTiming."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     communication_cycle_cycle: Optional[CommunicationCycle]
     time_mark: Optional[Integer]
     trigger: Optional[TtcanTriggerType]

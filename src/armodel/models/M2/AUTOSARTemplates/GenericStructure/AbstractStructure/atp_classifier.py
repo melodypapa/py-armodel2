@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
+from abc import ABC, abstractmethod
 
 
-class AtpClassifier(Identifiable):
+class AtpClassifier(Identifiable, ABC):
     """AUTOSAR AtpClassifier."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     atp_features: list[AtpFeature]
     def __init__(self) -> None:

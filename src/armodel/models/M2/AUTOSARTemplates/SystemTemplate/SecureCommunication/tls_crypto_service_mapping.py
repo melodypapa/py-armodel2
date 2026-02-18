@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.tls_c
 class TlsCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR TlsCryptoServiceMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     key_exchanges: list[CryptoServicePrimitive]
     tls_cipher_suites: list[TlsCryptoCipherSuite]
     use_client: Optional[Boolean]

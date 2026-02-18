@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class VlanMembership(ARObject):
     """AUTOSAR VlanMembership."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_priority: Optional[PositiveInteger]
     dhcp_address: Optional[Any]
     send_activity: Optional[Any]

@@ -19,10 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     PrimitiveIdentifier,
     String,
 )
+from abc import ABC, abstractmethod
 
 
-class AttributeValueVariationPoint(ARObject):
+class AttributeValueVariationPoint(ARObject, ABC):
     """AUTOSAR AttributeValueVariationPoint."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     binding_time_enum: Optional[BindingTimeEnum]
     blueprint_value: Optional[String]

@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Obso
 class SoAdConfig(ARObject):
     """AUTOSAR SoAdConfig."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     connections: list[SocketConnection]
     socket_addresses: list[SocketAddress]
     def __init__(self) -> None:

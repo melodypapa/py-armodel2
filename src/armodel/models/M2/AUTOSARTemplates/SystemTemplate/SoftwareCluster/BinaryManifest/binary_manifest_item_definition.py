@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
 class BinaryManifestItemDefinition(Identifiable):
     """AUTOSAR BinaryManifestItemDefinition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     auxiliary_fields: list[BinaryManifestItem]
     is_optional: Optional[Boolean]
     size: Optional[PositiveInteger]

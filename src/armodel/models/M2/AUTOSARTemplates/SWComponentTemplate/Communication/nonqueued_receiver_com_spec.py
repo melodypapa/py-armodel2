@@ -35,6 +35,15 @@ if TYPE_CHECKING:
 class NonqueuedReceiverComSpec(ReceiverComSpec):
     """AUTOSAR NonqueuedReceiverComSpec."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     alive_timeout: Optional[TimeValue]
     enable_update: Optional[Boolean]
     filter: Optional[DataFilter]

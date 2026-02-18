@@ -20,6 +20,15 @@ from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
 class SwComponentDocumentation(ARObject):
     """AUTOSAR SwComponentDocumentation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     chapters: list[Chapter]
     sw_calibration: Optional[Chapter]
     sw_carb_doc: Optional[Chapter]

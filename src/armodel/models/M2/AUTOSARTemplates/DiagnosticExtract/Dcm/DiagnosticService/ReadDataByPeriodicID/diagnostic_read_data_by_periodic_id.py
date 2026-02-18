@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticReadDataByPeriodicID."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     read_data_class: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDataByPeriodicID."""

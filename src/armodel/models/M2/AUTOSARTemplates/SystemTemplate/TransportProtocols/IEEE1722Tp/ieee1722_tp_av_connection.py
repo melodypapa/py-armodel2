@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
+from abc import ABC, abstractmethod
 
 
-class IEEE1722TpAvConnection(IEEE1722TpConnection):
+class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
     """AUTOSAR IEEE1722TpAvConnection."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     max_transit_time: Optional[TimeValue]
     sdus: list[PduTriggering]

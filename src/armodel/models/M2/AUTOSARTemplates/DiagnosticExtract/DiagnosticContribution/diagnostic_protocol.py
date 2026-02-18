@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticContribution
 class DiagnosticProtocol(DiagnosticCommonElement):
     """AUTOSAR DiagnosticProtocol."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diagnostics: list[DiagnosticConnection]
     priority: Optional[PositiveInteger]
     protocol_kind: Optional[NameToken]

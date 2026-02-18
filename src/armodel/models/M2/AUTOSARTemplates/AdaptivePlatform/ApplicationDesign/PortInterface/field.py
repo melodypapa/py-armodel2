@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Field(AutosarDataPrototype):
     """AUTOSAR Field."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     has_getter: Optional[Boolean]
     has_notifier: Optional[Boolean]
     has_setter: Optional[Boolean]

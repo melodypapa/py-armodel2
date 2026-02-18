@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.EndToEndProtection.e
 class EndToEndProtectionSet(ARElement):
     """AUTOSAR EndToEndProtectionSet."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     end_to_ends: list[EndToEndProtection]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionSet."""

@@ -17,9 +17,7 @@ from .generators import (
     generate_builder_code,
     generate_class_code,
     generate_enum_code,
-    generate_enumeration_type_base,
     generate_primitive_code,
-    generate_primitive_type_base,
 )
 from .utils import (
     create_directory_structure,
@@ -41,9 +39,7 @@ __all__ = [
     "generate_builder_code",
     "generate_class_code",
     "generate_enum_code",
-    "generate_enumeration_type_base",
     "generate_primitive_code",
-    "generate_primitive_type_base",
     # Utils
     "create_directory_structure",
     "to_snake_case",

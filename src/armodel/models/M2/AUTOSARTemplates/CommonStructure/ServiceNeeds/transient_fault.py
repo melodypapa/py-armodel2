@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_fail
 class TransientFault(TracedFailure):
     """AUTOSAR TransientFault."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     possible_error_reactions: list[Any]
     def __init__(self) -> None:
         """Initialize TransientFault."""

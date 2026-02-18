@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
 class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticRoutineNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     diag_routine: Optional[DiagnosticRoutineTypeEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineNeeds."""

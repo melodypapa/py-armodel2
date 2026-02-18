@@ -47,6 +47,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class NvBlockDescriptor(Identifiable):
     """AUTOSAR NvBlockDescriptor."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_server_ports: list[RoleBasedPortAssignment]
     constant_values: list[ConstantSpecification]
     data_types: list[DataTypeMappingSet]

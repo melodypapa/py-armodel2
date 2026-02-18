@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Ipv6Configuration(NetworkEndpointAddress):
     """AUTOSAR Ipv6Configuration."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     assignment: Optional[PositiveInteger]
     default_router: Optional[Ip6AddressString]
     dns_servers: list[Ip6AddressString]

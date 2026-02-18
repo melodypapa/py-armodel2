@@ -34,6 +34,15 @@ if TYPE_CHECKING:
 class FlatInstanceDescriptor(Identifiable):
     """AUTOSAR FlatInstanceDescriptor."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ecu_extract: Optional[AtpFeature]
     role: Optional[Identifier]
     rte_plugin_props: Optional[RtePluginProps]

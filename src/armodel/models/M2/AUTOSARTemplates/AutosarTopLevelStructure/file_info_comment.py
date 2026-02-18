@@ -18,6 +18,15 @@ from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
 class FileInfoComment(ARObject):
     """AUTOSAR FileInfoComment."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize FileInfoComment."""

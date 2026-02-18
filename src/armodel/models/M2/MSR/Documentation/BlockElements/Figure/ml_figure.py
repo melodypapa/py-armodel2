@@ -33,6 +33,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class MlFigure(Paginateable):
     """AUTOSAR MlFigure."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     figure_caption: Optional[Caption]
     frame: Optional[FrameEnum]
     help_entry: Optional[String]

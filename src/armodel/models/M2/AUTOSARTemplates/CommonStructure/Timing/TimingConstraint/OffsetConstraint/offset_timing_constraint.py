@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 class OffsetTimingConstraint(TimingConstraint):
     """AUTOSAR OffsetTimingConstraint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     source: Optional[TimingDescriptionEvent]

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_n
 class DiagnosticJ1939Node(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939Node."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     nm_node: Optional[J1939NmNode]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939Node."""

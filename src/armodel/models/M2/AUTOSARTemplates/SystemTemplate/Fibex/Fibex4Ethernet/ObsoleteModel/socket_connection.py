@@ -28,6 +28,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
 class SocketConnection(Describable):
     """AUTOSAR SocketConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_ip_addr: Optional[Boolean]
     client_port: Optional[SocketAddress]
     client_port_from: Optional[Boolean]

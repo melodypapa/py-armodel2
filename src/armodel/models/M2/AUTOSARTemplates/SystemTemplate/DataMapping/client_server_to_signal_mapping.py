@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class ClientServerToSignalMapping(DataMapping):
     """AUTOSAR ClientServerToSignalMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     call_signal: Optional[SystemSignal]
     client_server: Optional[ClientServerOperation]
     return_signal: Optional[SystemSignal]

@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
 class TcpTp(TcpUdpConfig):
     """AUTOSAR TcpTp."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     keep_alive: Optional[PositiveInteger]
     keep_alives: Optional[Boolean]
     keep_alive_time: Optional[TimeValue]

@@ -32,6 +32,15 @@ from armodel.models.M2.MSR.AsamHdo.Units.unit import (
 class CompuMethod(ARElement):
     """AUTOSAR CompuMethod."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     compu_internal_to_phys: Optional[Compu]
     compu_phys_to_internal: Optional[Compu]
     display_format: Optional[DisplayFormatString]

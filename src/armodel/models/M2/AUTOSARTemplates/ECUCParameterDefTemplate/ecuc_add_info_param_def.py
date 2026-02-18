@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
 class EcucAddInfoParamDef(EcucParameterDef):
     """AUTOSAR EcucAddInfoParamDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize EcucAddInfoParamDef."""
         super().__init__()

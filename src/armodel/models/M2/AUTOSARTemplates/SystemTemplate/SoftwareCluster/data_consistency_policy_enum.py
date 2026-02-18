@@ -5,11 +5,26 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SystemTemplate_SoftwareCluster.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class DataConsistencyPolicyEnum(Enum):
-    """AUTOSAR DataConsistencyPolicyEnum enumeration."""
+class DataConsistencyPolicyEnum(AREnum):
+    """AUTOSAR DataConsistencyPolicyEnum enumeration.
 
-    CONSISTENCYMECHANISM = "consistencyMechanism"
-    NOCONSISTENCY = "noConsistency"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    CONSISTENCY_MECHANISM = "consistencyMechanism"
+    NO_CONSISTENCY = "noConsistency"

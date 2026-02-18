@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_compo
 class J1939ControllerApplication(ARElement):
     """AUTOSAR J1939ControllerApplication."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     function_id: Optional[PositiveInteger]
     sw_component_prototype: Optional[SwComponentPrototype]
     def __init__(self) -> None:

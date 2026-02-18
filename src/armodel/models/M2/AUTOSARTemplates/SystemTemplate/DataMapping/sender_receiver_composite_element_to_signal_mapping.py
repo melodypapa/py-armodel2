@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class SenderReceiverCompositeElementToSignalMapping(DataMapping):
     """AUTOSAR SenderReceiverCompositeElementToSignalMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_element: Optional[VariableDataPrototype]
     system_signal: Optional[SystemSignal]
     type_mapping: Optional[SenderRecCompositeTypeMapping]

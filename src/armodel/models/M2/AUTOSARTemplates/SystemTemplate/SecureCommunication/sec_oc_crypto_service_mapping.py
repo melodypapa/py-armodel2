@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
 class SecOcCryptoServiceMapping(CryptoServiceMapping):
     """AUTOSAR SecOcCryptoServiceMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     authentication: Optional[CryptoServicePrimitive]
     crypto_service_key: Optional[CryptoServiceKey]
     crypto_service_queue: Optional[CryptoServiceQueue]

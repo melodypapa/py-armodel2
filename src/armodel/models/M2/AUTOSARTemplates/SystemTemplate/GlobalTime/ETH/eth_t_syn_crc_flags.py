@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EthTSynCrcFlags(ARObject):
     """AUTOSAR EthTSynCrcFlags."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crc_correction: Optional[Boolean]
     crc_domain: Optional[Boolean]
     crc_message: Optional[Boolean]

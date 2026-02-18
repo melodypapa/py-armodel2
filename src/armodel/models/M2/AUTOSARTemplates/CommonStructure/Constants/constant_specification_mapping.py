@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_speci
 class ConstantSpecificationMapping(ARObject):
     """AUTOSAR ConstantSpecificationMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     appl_constant: Optional[ConstantSpecification]
     impl_constant: Optional[ConstantSpecification]
     def __init__(self) -> None:

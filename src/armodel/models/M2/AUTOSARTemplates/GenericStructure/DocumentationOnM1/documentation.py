@@ -25,6 +25,15 @@ from armodel.models.M2.MSR.Documentation.Chapters.predefined_chapter import (
 class Documentation(ARElement):
     """AUTOSAR Documentation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     contexts: list[DocumentationContext]
     documentation: Optional[PredefinedChapter]
     def __init__(self) -> None:

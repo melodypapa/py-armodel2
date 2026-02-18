@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_syst
 class PredefinedVariant(ARElement):
     """AUTOSAR PredefinedVariant."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     included_variants: list[PredefinedVariant]
     post_build_variants: list[Any]
     sws: list[SwSystemconstantValueSet]

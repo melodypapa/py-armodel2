@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.text_t
 class SenderRecRecordElementMapping(ARObject):
     """AUTOSAR SenderRecRecordElementMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     application_record: Optional[Any]
     complex_type: Optional[SenderRecCompositeTypeMapping]
     implementation: Optional[Any]

@@ -24,11 +24,20 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destinatio
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_multiplicity_configuration_class import (
     EcucMultiplicityConfigurationClass,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucContainerDef(EcucDefinitionElement):
+class EcucContainerDef(EcucDefinitionElement, ABC):
     """AUTOSAR EcucContainerDef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     destination_uris: list[EcucDestinationUriDef]
     multiplicities: list[EcucMultiplicityConfigurationClass]

@@ -30,6 +30,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class J1939TpConnection(TpConnection):
     """AUTOSAR J1939TpConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     broadcast: Optional[Boolean]
     buffer_ratio: Optional[PositiveInteger]
     cancellation: Optional[Boolean]

@@ -30,6 +30,15 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes import (
 class BaseTypeDirectDefinition(BaseTypeDefinition):
     """AUTOSAR BaseTypeDirectDefinition."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base_type_encoding: Optional[BaseTypeEncodingString]
     base_type_size: Optional[PositiveInteger]
     byte_order: Optional[ByteOrderEnum]

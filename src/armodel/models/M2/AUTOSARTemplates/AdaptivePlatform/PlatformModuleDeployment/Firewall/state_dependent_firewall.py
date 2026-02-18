@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_dec
 class StateDependentFirewall(ARElement):
     """AUTOSAR StateDependentFirewall."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_action: Optional[Any]
     firewall_rule_propses: list[FirewallRuleProps]
     firewall_states: list[ModeDeclaration]

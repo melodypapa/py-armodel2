@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
+from abc import ABC, abstractmethod
 
 
-class TDEventCycleStart(TDEventCom):
+class TDEventCycleStart(TDEventCom, ABC):
     """AUTOSAR TDEventCycleStart."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     cycle_repetition: Optional[Integer]
     def __init__(self) -> None:

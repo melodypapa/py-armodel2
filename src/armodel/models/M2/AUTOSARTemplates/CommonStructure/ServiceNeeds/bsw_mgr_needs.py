@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
 class BswMgrNeeds(ServiceNeeds):
     """AUTOSAR BswMgrNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def __init__(self) -> None:
         """Initialize BswMgrNeeds."""
         super().__init__()

@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939
 class DiagnosticJ1939ExpandedFreezeFrame(DiagnosticCommonElement):
     """AUTOSAR DiagnosticJ1939ExpandedFreezeFrame."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     node: Optional[DiagnosticJ1939Node]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939ExpandedFreezeFrame."""

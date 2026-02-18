@@ -40,6 +40,15 @@ if TYPE_CHECKING:
 class SocketAddress(Identifiable):
     """AUTOSAR SocketAddress."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     allowed_i_pv6_ext: Optional[IPv6ExtHeaderFilterList]
     allowed_tcp: Optional[TcpOptionFilterList]
     application_endpoint_endpoint: Optional[ApplicationEndpoint]

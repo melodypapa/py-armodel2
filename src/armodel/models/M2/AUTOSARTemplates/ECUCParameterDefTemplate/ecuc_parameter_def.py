@@ -19,11 +19,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_derivation_specification import (
     EcucDerivationSpecification,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucParameterDef(EcucCommonAttributes):
+class EcucParameterDef(EcucCommonAttributes, ABC):
     """AUTOSAR EcucParameterDef."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     derivation: Optional[EcucDerivationSpecification]
     symbolic_name: Optional[Boolean]

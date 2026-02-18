@@ -50,11 +50,20 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.reso
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_mapping import (
     SwcBswMapping,
 )
+from abc import ABC, abstractmethod
 
 
-class Implementation(ARElement):
+class Implementation(ARElement, ABC):
     """AUTOSAR Implementation."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     build_action_manifest: Optional[BuildActionManifest]
     code_descriptors: list[Code]

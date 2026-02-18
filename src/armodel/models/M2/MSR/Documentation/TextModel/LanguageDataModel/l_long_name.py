@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class LLongName(ARObject):
     """AUTOSAR LLongName."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     blueprint_value: Optional[String]
     def __init__(self) -> None:
         """Initialize LLongName."""

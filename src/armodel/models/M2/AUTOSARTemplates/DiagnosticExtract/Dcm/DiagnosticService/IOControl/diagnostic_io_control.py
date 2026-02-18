@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticIOControl(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticIOControl."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     control_enables: list[Any]
     data_identifier_identifier: Optional[DiagnosticDataIdentifier]
     freeze_current: Optional[Boolean]

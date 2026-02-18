@@ -35,6 +35,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class PortElementToCommunicationResourceMapping(Identifiable):
     """AUTOSAR PortElementToCommunicationResourceMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     client_server_instance_ref: Optional[ClientServerOperation]
     communication: Optional[CpSoftwareCluster]
     mode: Optional[ModeDeclarationGroup]

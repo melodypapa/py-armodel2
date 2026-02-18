@@ -5,13 +5,28 @@ References:
 
 JSON Source: packages/M2_AUTOSARTemplates_SWComponentTemplate_Datatype_Datatypes.enums.json"""
 
-from enum import Enum
+from __future__ import annotations
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
 
-class ArraySizeHandlingEnum(Enum):
-    """AUTOSAR ArraySizeHandlingEnum enumeration."""
+class ArraySizeHandlingEnum(AREnum):
+    """AUTOSAR ArraySizeHandlingEnum enumeration.
 
-    ALLINDICESDIFFERENTARRAYSIZE = "allIndicesDifferentArraySize"
-    ALLINDICESSAMEARRAYSIZE = "allIndicesSameArraySize"
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    ALL_INDICES_DIFFERENT_ARRAY_SIZE = "allIndicesDifferentArraySize"
+    ALL_INDICES_SAME_ARRAY_SIZE = "allIndicesSameArraySize"
     SOFTWARE = "Software"
-    AUTOSARINHERITEDFROMARRAY = "AUTOSARinheritedFromArray"
+    AUTOSA_RINHERITED_FROM_ARRAY = "AUTOSARinheritedFromArray"

@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
     """AUTOSAR IEEE1722TpCrfConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     base_frequency: Optional[PositiveInteger]
     crf_pull_enum: Optional[IEEE1722TpCrfPullEnum]
     crf_type_enum: Optional[IEEE1722TpCrfTypeEnum]

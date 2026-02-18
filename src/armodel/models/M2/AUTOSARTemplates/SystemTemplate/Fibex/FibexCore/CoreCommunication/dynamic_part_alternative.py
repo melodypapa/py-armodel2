@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
 class DynamicPartAlternative(ARObject):
     """AUTOSAR DynamicPartAlternative."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     initial_dynamic: Optional[Boolean]
     i_pdu: Optional[ISignalIPdu]
     selector_field: Optional[Integer]

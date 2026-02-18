@@ -33,6 +33,15 @@ if TYPE_CHECKING:
 class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
     """AUTOSAR ApplicationArrayElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     array_size_handling: Optional[ArraySizeHandlingEnum]
     array_size: Optional[ArraySizeSemanticsEnum]
     index_data_type: Optional[ApplicationPrimitiveDataType]

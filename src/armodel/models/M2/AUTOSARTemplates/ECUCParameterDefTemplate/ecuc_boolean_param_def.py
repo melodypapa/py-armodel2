@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class EcucBooleanParamDef(EcucParameterDef):
     """AUTOSAR EcucBooleanParamDef."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     default_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucBooleanParamDef."""

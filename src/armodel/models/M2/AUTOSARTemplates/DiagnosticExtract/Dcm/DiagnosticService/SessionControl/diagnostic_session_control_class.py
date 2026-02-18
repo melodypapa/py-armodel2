@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticSessionControlClass(DiagnosticServiceClass):
     """AUTOSAR DiagnosticSessionControlClass."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     s3_server: Optional[TimeValue]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControlClass."""

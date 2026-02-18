@@ -23,6 +23,15 @@ from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import
 class Row(Paginateable):
     """AUTOSAR Row."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     rowsep: Optional[TableSeparatorString]
     valign: Optional[ValignEnum]
     def __init__(self) -> None:

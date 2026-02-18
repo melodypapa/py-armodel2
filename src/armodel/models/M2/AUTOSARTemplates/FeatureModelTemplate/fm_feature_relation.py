@@ -23,6 +23,15 @@ if TYPE_CHECKING:
 class FMFeatureRelation(Identifiable):
     """AUTOSAR FMFeatureRelation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     features: list[FMFeature]
     restriction: Optional[Any]
     def __init__(self) -> None:

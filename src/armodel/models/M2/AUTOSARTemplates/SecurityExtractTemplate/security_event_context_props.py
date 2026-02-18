@@ -25,6 +25,15 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_d
 class SecurityEventContextProps(Identifiable):
     """AUTOSAR SecurityEventContextProps."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     context_data: Optional[Any]
     default: Optional[Any]
     persistent: Optional[Boolean]

@@ -22,6 +22,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class FlexrayNmCluster(NmCluster):
     """AUTOSAR FlexrayNmCluster."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     nm_car_wake_up: Optional[Boolean]
     nm_data_cycle: Optional[Integer]
     nm_main: Optional[TimeValue]

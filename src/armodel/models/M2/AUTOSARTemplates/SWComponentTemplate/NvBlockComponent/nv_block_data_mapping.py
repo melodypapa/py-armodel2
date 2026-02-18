@@ -21,6 +21,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
 class NvBlockDataMapping(ARObject):
     """AUTOSAR NvBlockDataMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bitfield_text_table: Optional[PositiveInteger]
     nv_ram_block: Optional[AutosarVariableRef]
     read_nv_data: Optional[AutosarVariableRef]

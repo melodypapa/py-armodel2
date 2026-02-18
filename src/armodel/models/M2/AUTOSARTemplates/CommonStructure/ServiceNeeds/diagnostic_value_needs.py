@@ -27,6 +27,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class DiagnosticValueNeeds(DiagnosticCapabilityElement):
     """AUTOSAR DiagnosticValueNeeds."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_length: Optional[PositiveInteger]
     diagnostic_value_access: Optional[DiagnosticValueAccessEnum]
     fixed_length: Optional[Boolean]

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_securit
 class DiagnosticSecurityAccess(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticSecurityAccess."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     request_seed_id: Optional[PositiveInteger]
     security_access: Optional[Any]
     security_delay: Optional[TimeValue]

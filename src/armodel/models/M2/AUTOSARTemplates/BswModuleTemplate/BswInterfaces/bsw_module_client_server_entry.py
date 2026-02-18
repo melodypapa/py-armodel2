@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_modu
 class BswModuleClientServerEntry(Referrable):
     """AUTOSAR BswModuleClientServerEntry."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     encapsulated: Optional[BswModuleEntry]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]

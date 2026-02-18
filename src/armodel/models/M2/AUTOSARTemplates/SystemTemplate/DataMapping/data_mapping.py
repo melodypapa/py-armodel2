@@ -14,11 +14,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
+from abc import ABC, abstractmethod
 
 
-class DataMapping(ARObject):
+class DataMapping(ARObject, ABC):
     """AUTOSAR DataMapping."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:

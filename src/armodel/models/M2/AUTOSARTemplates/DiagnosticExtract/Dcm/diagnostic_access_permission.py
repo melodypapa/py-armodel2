@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session
 class DiagnosticAccessPermission(DiagnosticCommonElement):
     """AUTOSAR DiagnosticAccessPermission."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     authentication: Optional[DiagnosticAuthRole]
     diagnostic_sessions: list[DiagnosticSession]
     environmental: Optional[Any]

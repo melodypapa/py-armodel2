@@ -48,6 +48,15 @@ if TYPE_CHECKING:
 class McDataInstance(Identifiable):
     """AUTOSAR McDataInstance."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     array_size: Optional[PositiveInteger]
     display_identifier: Optional[McdIdentifier]
     flat_map_entry: Optional[FlatInstanceDescriptor]

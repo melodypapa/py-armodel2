@@ -23,6 +23,15 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 class BswDirectCallPoint(BswModuleCallPoint):
     """AUTOSAR BswDirectCallPoint."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     called_entry: Optional[BswModuleEntry]
     called_from: Optional[ExclusiveAreaNestingOrder]
     def __init__(self) -> None:

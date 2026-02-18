@@ -13,11 +13,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
     EcucConfigurationClassEnum,
 )
+from abc import ABC, abstractmethod
 
 
-class EcucAbstractConfigurationClass(ARObject):
+class EcucAbstractConfigurationClass(ARObject, ABC):
     """AUTOSAR EcucAbstractConfigurationClass."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     config_class: Optional[EcucConfigurationClassEnum]
     config_variant: Optional[Any]

@@ -16,10 +16,20 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
+from abc import ABC, abstractmethod
 
 
-class TransformationISignalProps(ARObject):
+class TransformationISignalProps(ARObject, ABC):
     """AUTOSAR TransformationISignalProps."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     cs_error_reaction: Optional[CSTransformerErrorReactionEnum]
     data_prototypes: list[DataPrototype]

@@ -27,6 +27,15 @@ from armodel.models.M2.MSR.CalibrationData.CalibrationValue.sw_value_cont import
 class ApplicationValueSpecification(ValueSpecification):
     """AUTOSAR ApplicationValueSpecification."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     category: Optional[Identifier]
     sw_axis_conts: list[SwAxisCont]
     sw_value_cont: Optional[SwValueCont]

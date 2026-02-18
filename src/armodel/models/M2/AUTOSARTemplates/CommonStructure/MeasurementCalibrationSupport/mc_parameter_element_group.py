@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 class McParameterElementGroup(ARObject):
     """AUTOSAR McParameterElementGroup."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     ram_location: Optional[VariableDataPrototype]
     rom_location: Optional[ParameterDataPrototype]
     short_label: Optional[Identifier]

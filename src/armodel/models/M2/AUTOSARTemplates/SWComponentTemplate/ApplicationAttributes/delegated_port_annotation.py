@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttribute
 class DelegatedPortAnnotation(GeneralAnnotation):
     """AUTOSAR DelegatedPortAnnotation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     signal_fan: Optional[SignalFanEnum]
     def __init__(self) -> None:
         """Initialize DelegatedPortAnnotation."""

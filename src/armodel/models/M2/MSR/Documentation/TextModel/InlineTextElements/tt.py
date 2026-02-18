@@ -19,6 +19,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class Tt(ARObject):
     """AUTOSAR Tt."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     term: String
     tex_render: Optional[String]
     type: NameToken

@@ -15,11 +15,20 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
     DiagnosticAbstractDataIdentifier,
 )
+from abc import ABC, abstractmethod
 
 
-class DiagnosticDataByIdentifier(DiagnosticServiceInstance):
+class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
     """AUTOSAR DiagnosticDataByIdentifier."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     data_identifier: Optional[DiagnosticAbstractDataIdentifier]
     def __init__(self) -> None:

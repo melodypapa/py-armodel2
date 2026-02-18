@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
 class GlobalTimeEthSlave(GlobalTimeSlave):
     """AUTOSAR GlobalTimeEthSlave."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crc_validated: Optional[Any]
     def __init__(self) -> None:
         """Initialize GlobalTimeEthSlave."""

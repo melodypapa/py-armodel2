@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
     """AUTOSAR DiagnosticRequestCurrentPowertrainData."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     pid: Optional[DiagnosticParameter]
     request_current: Optional[Any]
     def __init__(self) -> None:

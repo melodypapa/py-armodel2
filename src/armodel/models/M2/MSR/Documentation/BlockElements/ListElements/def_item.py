@@ -26,6 +26,15 @@ if TYPE_CHECKING:
 class DefItem(Paginateable):
     """AUTOSAR DefItem."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     def_: DocumentationBlock
     help_entry: Optional[String]
     def __init__(self) -> None:

@@ -26,6 +26,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
 class DiagnosticParameterIdentifier(DiagnosticCommonElement):
     """AUTOSAR DiagnosticParameterIdentifier."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     data_elements: list[DiagnosticParameter]
     id: Optional[PositiveInteger]
     pid_size: Optional[PositiveInteger]

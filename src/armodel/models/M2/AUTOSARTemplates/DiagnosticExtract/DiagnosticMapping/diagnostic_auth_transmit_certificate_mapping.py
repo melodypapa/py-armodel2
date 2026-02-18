@@ -17,6 +17,15 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
 class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
     """AUTOSAR DiagnosticAuthTransmitCertificateMapping."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     crypto_services: list[Any]
     service_instance: Optional[Any]
     def __init__(self) -> None:

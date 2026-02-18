@@ -18,6 +18,15 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 class SwBitRepresentation(ARObject):
     """AUTOSAR SwBitRepresentation."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     bit_position: Optional[Integer]
     number_of_bits: Optional[Integer]
     def __init__(self) -> None:

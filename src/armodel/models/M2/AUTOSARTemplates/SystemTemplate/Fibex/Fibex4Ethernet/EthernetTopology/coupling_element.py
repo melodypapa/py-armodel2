@@ -32,6 +32,15 @@ from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeploymen
 class CouplingElement(FibexElement):
     """AUTOSAR CouplingElement."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     communication: Optional[EthernetCluster]
     coupling: Optional[CouplingElement]
     coupling_ports: list[CouplingPort]

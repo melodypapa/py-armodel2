@@ -20,6 +20,15 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_
 class BswCompositionTiming(TimingExtension):
     """AUTOSAR BswCompositionTiming."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     implementations: list[BswImplementation]
     def __init__(self) -> None:
         """Initialize BswCompositionTiming."""

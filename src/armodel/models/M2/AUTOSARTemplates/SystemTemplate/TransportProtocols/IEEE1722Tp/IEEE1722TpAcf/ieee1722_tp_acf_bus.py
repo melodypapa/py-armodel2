@@ -18,11 +18,20 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
     IEEE1722TpAcfBusPart,
 )
+from abc import ABC, abstractmethod
 
 
-class IEEE1722TpAcfBus(Identifiable):
+class IEEE1722TpAcfBus(Identifiable, ABC):
     """AUTOSAR IEEE1722TpAcfBus."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     acf_parts: list[IEEE1722TpAcfBusPart]
     bus_id: Optional[PositiveInteger]

@@ -24,6 +24,15 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
 class DiagnosticConnection(ARElement):
     """AUTOSAR DiagnosticConnection."""
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     functional_requests: list[TpConnectionIdent]
     periodic_response_uudts: list[PduTriggering]
     physical_request: Optional[TpConnectionIdent]

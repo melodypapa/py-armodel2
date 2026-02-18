@@ -12,11 +12,20 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.data_format_element_reference import (
     DataFormatElementReference,
 )
+from abc import ABC, abstractmethod
 
 
-class AbstractClassTailoring(DataFormatElementReference):
+class AbstractClassTailoring(DataFormatElementReference, ABC):
     """AUTOSAR AbstractClassTailoring."""
-    """Abstract base class - do not instantiate directly."""
+
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            True for abstract classes
+        """
+        return True
 
     def __init__(self) -> None:
         """Initialize AbstractClassTailoring."""
