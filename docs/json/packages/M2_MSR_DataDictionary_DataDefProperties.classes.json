@@ -162,7 +162,7 @@
         }
       ],
       "attributes": {
-        "additionalNative": {
+        "additionalNativeTypeQualifier": {
           "type": "NativeDeclarationString",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -197,21 +197,21 @@
           "is_ref": false,
           "note": "Data constraint for this data object."
         },
-        "displayFormatString": {
+        "displayFormat": {
           "type": "DisplayFormatString",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This property describes how a number is to be rendered documents or in a measurement and calibration"
         },
-        "display": {
+        "displayPresentation": {
           "type": "DisplayPresentationEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute controls the presentation of the related data for measurement and calibration tools."
         },
-        "implementation": {
+        "implementationDataType": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
           "kind": "reference",
@@ -246,7 +246,7 @@
           "is_ref": false,
           "note": "The attribute describes the intended typical alignment of If the attribute is not defined the determined by the swBaseType size and the the referenced Sw"
         },
-        "swBit": {
+        "swBitRepresentation": {
           "type": "SwBitRepresentation",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -267,14 +267,14 @@
           "is_ref": true,
           "note": "This specifies the properties of the axes in case of a or map etc. This is mainly applicable to calibration"
         },
-        "swComparisons": {
+        "swComparisonVariables": {
           "type": "SwVariableRefProxy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Variables used for comparison in an MCD process. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "swData": {
+        "swDataDependency": {
           "type": "SwDataDependency",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -295,14 +295,14 @@
           "is_ref": false,
           "note": "Implementation policy for this data object."
         },
-        "swIntended": {
+        "swIntendedResolution": {
           "type": "Numerical",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "The purpose of this element is to describe the requested"
         },
-        "swInterpolation": {
+        "swInterpolationMethod": {
           "type": "Identifier",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -323,14 +323,14 @@
           "is_ref": false,
           "note": "Specifies that the containing data object is a pointer to data object. atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
-        "swRecord": {
+        "swRecordLayout": {
           "type": "SwRecordLayout",
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
           "note": "Record layout for this data object."
         },
-        "swRefresh": {
+        "swRefreshTiming": {
           "type": "MultidimensionalTime",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -344,7 +344,14 @@
           "is_ref": false,
           "note": "the specific properties if the data object is a text object."
         },
-        "swValueBlocks": {
+        "swValueBlockSize": {
+          "type": "Numerical",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents the size of a Value Block"
+        },
+        "swValueBlockSizeMults": {
           "type": "Numerical",
           "multiplicity": "*",
           "kind": "attribute",
@@ -358,7 +365,7 @@
           "is_ref": false,
           "note": "Physical unit associated with the semantics of this data"
         },
-        "valueAxisData": {
+        "valueAxisDataType": {
           "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
           "kind": "reference",

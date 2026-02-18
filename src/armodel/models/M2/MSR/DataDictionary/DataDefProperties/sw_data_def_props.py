@@ -100,67 +100,69 @@ class SwDataDefProps(ARObject):
         """
         return False
 
-    additional_native: Optional[NativeDeclarationString]
+    additional_native_type_qualifier: Optional[NativeDeclarationString]
     annotations: list[Annotation]
     base_type: Optional[SwBaseType]
     compu_method: Optional[CompuMethod]
     data_constr: Optional[DataConstr]
-    display_format_string: Optional[DisplayFormatString]
-    display: Optional[DisplayPresentationEnum]
-    implementation: Optional[AbstractImplementationDataType]
+    display_format: Optional[DisplayFormatString]
+    display_presentation: Optional[DisplayPresentationEnum]
+    implementation_data_type: Optional[AbstractImplementationDataType]
     invalid_value: Optional[ValueSpecification]
     step_size: Optional[Float]
     sw_addr_method: Optional[SwAddrMethod]
     sw_alignment: Optional[AlignmentType]
-    sw_bit: Optional[SwBitRepresentation]
+    sw_bit_representation: Optional[SwBitRepresentation]
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
     sw_calprm_axis_set: Optional[SwCalprmAxisSet]
-    sw_comparisons: list[SwVariableRefProxy]
-    sw_data: Optional[SwDataDependency]
+    sw_comparison_variables: list[SwVariableRefProxy]
+    sw_data_dependency: Optional[SwDataDependency]
     sw_host_variable: Optional[SwVariableRefProxy]
     sw_impl_policy_enum: Optional[SwImplPolicyEnum]
-    sw_intended: Optional[Numerical]
-    sw_interpolation: Optional[Identifier]
+    sw_intended_resolution: Optional[Numerical]
+    sw_interpolation_method: Optional[Identifier]
     sw_is_virtual: Optional[Boolean]
     sw_pointer_target_props: Optional[SwPointerTargetProps]
-    sw_record: Optional[SwRecordLayout]
-    sw_refresh: Optional[MultidimensionalTime]
+    sw_record_layout: Optional[SwRecordLayout]
+    sw_refresh_timing: Optional[MultidimensionalTime]
     sw_text_props: Optional[SwTextProps]
-    sw_value_blocks: list[Numerical]
+    sw_value_block_size: Optional[Numerical]
+    sw_value_block_size_mults: list[Numerical]
     unit: Optional[Unit]
-    value_axis_data: Optional[ApplicationPrimitiveDataType]
+    value_axis_data_type: Optional[ApplicationPrimitiveDataType]
     def __init__(self) -> None:
         """Initialize SwDataDefProps."""
         super().__init__()
-        self.additional_native: Optional[NativeDeclarationString] = None
+        self.additional_native_type_qualifier: Optional[NativeDeclarationString] = None
         self.annotations: list[Annotation] = []
         self.base_type: Optional[SwBaseType] = None
         self.compu_method: Optional[CompuMethod] = None
         self.data_constr: Optional[DataConstr] = None
-        self.display_format_string: Optional[DisplayFormatString] = None
-        self.display: Optional[DisplayPresentationEnum] = None
-        self.implementation: Optional[AbstractImplementationDataType] = None
+        self.display_format: Optional[DisplayFormatString] = None
+        self.display_presentation: Optional[DisplayPresentationEnum] = None
+        self.implementation_data_type: Optional[AbstractImplementationDataType] = None
         self.invalid_value: Optional[ValueSpecification] = None
         self.step_size: Optional[Float] = None
         self.sw_addr_method: Optional[SwAddrMethod] = None
         self.sw_alignment: Optional[AlignmentType] = None
-        self.sw_bit: Optional[SwBitRepresentation] = None
+        self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
         self.sw_calprm_axis_set: Optional[SwCalprmAxisSet] = None
-        self.sw_comparisons: list[SwVariableRefProxy] = []
-        self.sw_data: Optional[SwDataDependency] = None
+        self.sw_comparison_variables: list[SwVariableRefProxy] = []
+        self.sw_data_dependency: Optional[SwDataDependency] = None
         self.sw_host_variable: Optional[SwVariableRefProxy] = None
         self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
-        self.sw_intended: Optional[Numerical] = None
-        self.sw_interpolation: Optional[Identifier] = None
+        self.sw_intended_resolution: Optional[Numerical] = None
+        self.sw_interpolation_method: Optional[Identifier] = None
         self.sw_is_virtual: Optional[Boolean] = None
         self.sw_pointer_target_props: Optional[SwPointerTargetProps] = None
-        self.sw_record: Optional[SwRecordLayout] = None
-        self.sw_refresh: Optional[MultidimensionalTime] = None
+        self.sw_record_layout: Optional[SwRecordLayout] = None
+        self.sw_refresh_timing: Optional[MultidimensionalTime] = None
         self.sw_text_props: Optional[SwTextProps] = None
-        self.sw_value_blocks: list[Numerical] = []
+        self.sw_value_block_size: Optional[Numerical] = None
+        self.sw_value_block_size_mults: list[Numerical] = []
         self.unit: Optional[Unit] = None
-        self.value_axis_data: Optional[ApplicationPrimitiveDataType] = None
+        self.value_axis_data_type: Optional[ApplicationPrimitiveDataType] = None
 
 
 class SwDataDefPropsBuilder:

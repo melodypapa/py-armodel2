@@ -78,34 +78,8 @@ class ARObject:
                 elem.set(xml_tag, str(value))
             elif hasattr(value, 'serialize'):
                 # Recursively serialize child objects
-                # For ARPrimitive types, wrap with the correct tag name from parent context
-                # to avoid using the class name (e.g., LIMIT instead of LOWER-LIMIT)
-                from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
-                from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
-                if isinstance(value, ARPrimitive):
-                    # Serialize the primitive but wrap it with the correct tag
-                    serialized = value.serialize()
-                    # Create a wrapper element with the correct tag
-                    wrapper = ET.Element(xml_tag)
-                    # Copy attributes
-                    for attr_name, attr_value in serialized.attrib.items():
-                        wrapper.set(attr_name, attr_value)
-                    # Copy text content
-                    wrapper.text = serialized.text
-                    # Copy children (if any)
-                    for child in list(serialized):
-                        wrapper.append(child)
-                    elem.append(wrapper)
-                elif isinstance(value, AREnum):
-                    # For AREnum types, serialize the value using the parent attribute's tag
-                    # to use the correct XML element name (e.g., MONOTONY instead of MONOTONY-ENUM)
-                    child = ET.Element(xml_tag)
-                    child.text = str(value.value).upper()  # AREnum always uppercase
-                    elem.append(child)
-                else:
-                    # For complex objects, serialize directly
-                    child = value.serialize()
-                    elem.append(child)
+                child = self._serialize_with_correct_tag(value, xml_tag)
+                elem.append(child)
             elif isinstance(value, list):
                 # Serialize list items - create wrapper element
                 wrapper = ET.Element(xml_tag)
@@ -136,28 +110,115 @@ class ARObject:
                 if value is None:
                     continue
 
-                # Get the custom XML tag
-                xml_tag = obj.fget._xml_element_tag
+                # Get the custom XML tag path
+                xml_tag_path = obj.fget._xml_element_tag
 
                 # Serialize the value
                 if hasattr(value, 'serialize'):
-                    # Create wrapper element with custom tag
-                    wrapper = ET.Element(xml_tag)
-                    # Serialize the value and append its children to the wrapper
                     serialized_value = value.serialize()
-                    # Copy all children from the serialized value to the wrapper
-                    for child in list(serialized_value):
-                        wrapper.append(child)
-                    # Copy all attributes from the serialized value to the wrapper
-                    for attr_name, attr_value in serialized_value.attrib.items():
-                        wrapper.set(attr_name, attr_value)
-                    elem.append(wrapper)
+
+                    # Handle multi-level paths
+                    if isinstance(xml_tag_path, list) and len(xml_tag_path) > 1:
+                        # Create nested wrapper elements
+                        current = elem
+                        for i, tag in enumerate(xml_tag_path):
+                            if i == len(xml_tag_path) - 1:
+                                # Last level - this is where we put the serialized content
+                                wrapper = ET.Element(tag)
+                                # Copy all children from the serialized value to the wrapper
+                                for child in list(serialized_value):
+                                    wrapper.append(child)
+                                # Copy all attributes from the serialized value to the wrapper
+                                for attr_name, attr_value in serialized_value.attrib.items():
+                                    wrapper.set(attr_name, attr_value)
+                                current.append(wrapper)
+                            else:
+                                # Intermediate level - find or create wrapper element
+                                existing_wrapper = None
+                                for child in current:
+                                    if ARObject._strip_namespace(child.tag) == tag:
+                                        existing_wrapper = child
+                                        break
+                                if existing_wrapper is None:
+                                    existing_wrapper = ET.Element(tag)
+                                    current.append(existing_wrapper)
+                                current = existing_wrapper
+                    else:
+                        # Single-level path - use the tag directly
+                        tag = xml_tag_path[-1] if isinstance(xml_tag_path, list) else xml_tag_path
+                        wrapper = ET.Element(tag)
+                        # Copy all children from the serialized value to the wrapper
+                        for child in list(serialized_value):
+                            wrapper.append(child)
+                        # Copy all attributes from the serialized value to the wrapper
+                        for attr_name, attr_value in serialized_value.attrib.items():
+                            wrapper.set(attr_name, attr_value)
+                        elem.append(wrapper)
                 else:
-                    child = ET.Element(xml_tag)
-                    child.text = str(value)
-                    elem.append(child)
+                    # Primitive value
+                    tag = xml_tag_path[-1] if isinstance(xml_tag_path, list) else xml_tag_path
+                    if isinstance(xml_tag_path, list) and len(xml_tag_path) > 1:
+                        # Create nested wrapper elements for primitive
+                        current = elem
+                        for i, level_tag in enumerate(xml_tag_path):
+                            if i == len(xml_tag_path) - 1:
+                                # Last level - create element with text
+                                child = ET.Element(level_tag)
+                                child.text = str(value)
+                                current.append(child)
+                            else:
+                                # Intermediate level - find or create wrapper element
+                                existing_wrapper = None
+                                for existing_child in current:
+                                    if ARObject._strip_namespace(existing_child.tag) == level_tag:
+                                        existing_wrapper = existing_child
+                                        break
+                                if existing_wrapper is None:
+                                    existing_wrapper = ET.Element(level_tag)
+                                    current.append(existing_wrapper)
+                                current = existing_wrapper
+                    else:
+                        child = ET.Element(tag)
+                        child.text = str(value)
+                        elem.append(child)
 
         return elem
+
+    def _serialize_with_correct_tag(self, value, xml_tag: str) -> ET.Element:
+        """Serialize a value with the correct XML tag from parent context.
+
+        For ARPrimitive and AREnum types, uses the parent attribute's tag instead of
+        the class name to ensure correct XML element names (e.g., LIMIT instead of
+        the class name that might differ).
+
+        Args:
+            value: The value to serialize
+            xml_tag: The XML tag name from the parent attribute context
+
+        Returns:
+            Serialized XML element
+        """
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+
+        if isinstance(value, ARPrimitive):
+            # Serialize the primitive but wrap it with the correct tag
+            serialized = value.serialize()
+            wrapper = ET.Element(xml_tag)
+            # Copy all attributes, text, and children
+            wrapper.attrib.update(serialized.attrib)
+            wrapper.text = serialized.text
+            for child in list(serialized):
+                wrapper.append(child)
+            return wrapper
+        elif isinstance(value, AREnum):
+            # For AREnum types, use the parent attribute's tag
+            child = ET.Element(xml_tag)
+            child.text = str(value.value).upper()
+            return child
+        else:
+            # For complex objects, serialize directly
+            return value.serialize()
 
     def _get_xml_tag(self) -> str:
         """Get XML tag name for this class.
@@ -202,13 +263,31 @@ class ARObject:
         """Get XML tag name for a class attribute/element.
 
         Checks for @xml_element_tag decorator override, otherwise auto-generates
+        from Python attribute name. For multi-level paths, returns the last element.
+
+        Args:
+            attr_name: Name of the Python attribute
+
+        Returns:
+            XML tag name to use for this element (last element of multi-level path)
+        """
+        tag_or_path = self._get_element_tag_path(attr_name)
+        # If it's a multi-level path, return the last element
+        if isinstance(tag_or_path, list):
+            return tag_or_path[-1]
+        return tag_or_path
+
+    def _get_element_tag_path(self, attr_name: str) -> Union[str, list[str]]:
+        """Get full XML tag path for a class attribute/element.
+
+        Checks for @xml_element_tag decorator override, otherwise auto-generates
         from Python attribute name.
 
         Args:
             attr_name: Name of the Python attribute
 
         Returns:
-            XML tag name to use for this element
+            XML tag path as a list for multi-level paths, or a string for single-level paths
         """
         # Check for decorator override on the class attribute
         attr = getattr(self.__class__, attr_name, None)
@@ -222,6 +301,239 @@ class ARObject:
 
         # Auto-generate from Python name
         return NameConverter.to_xml_tag(attr_name)
+
+    @staticmethod
+    def _get_element_class(cls, attr_name: str) -> Optional[str]:
+        """Get explicit Python class name from @xml_element_tag decorator.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            Python class name if specified in decorator, None otherwise
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_class'):
+            return prop.fget._xml_element_class
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_xml_element_class'):
+            return attr._xml_element_class
+
+        return None
+
+    @staticmethod
+    def _get_element_tag_path_static(cls, attr_name: str) -> Union[str, list[str]]:
+        """Get full XML tag path for a class attribute/element (static version).
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            XML tag path as a list for multi-level paths, or a string for single-level paths
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_tag'):
+            return prop.fget._xml_element_tag
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_xml_element_tag'):
+            return attr._xml_element_tag
+
+        # Auto-generate from Python name
+        return NameConverter.to_xml_tag(attr_name)
+
+    @staticmethod
+    def _has_xml_element_tag(cls, attr_name: str) -> bool:
+        """Check if an attribute has @xml_element_tag decorator.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            True if attribute has @xml_element_tag decorator
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_tag'):
+            return True
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_xml_element_tag'):
+            return True
+
+        return False
+
+    @staticmethod
+    def _extract_value_with_children(element: ET.Element, attr_type, explicit_class_name: Optional[str] = None):
+        """Extract value from XML element's children based on type.
+
+        This is used for @xml_element_tag decorated attributes, where the
+        element acts as a wrapper and its children should be deserialized
+        directly to the target type.
+
+        Args:
+            element: XML element containing children to deserialize
+            attr_type: Expected type (from type hints)
+            explicit_class_name: Optional explicit Python class name to use for deserialization
+
+        Returns:
+            Extracted value
+        """
+        if element is None or len(list(element)) == 0:
+            return None
+
+        # Get the first child element
+        child = list(element)[0]
+
+        # Get the child's XML tag name (strip namespace if present)
+        child_tag = ARObject._strip_namespace(child.tag)
+
+        # Use ModelFactory to resolve polymorphic types
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
+
+        # Get concrete class from factory based on child tag
+        concrete_class = factory.get_class(child_tag)
+        
+        # If explicit class name is provided, it's the parent/wrapper type
+        wrapper_class = None
+        if explicit_class_name:
+            wrapper_class = ARObject._import_class_by_name(explicit_class_name)
+
+        # Handle string type annotations
+        if isinstance(attr_type, str):
+            import re
+            optional_match = re.match(r'Optional\[(.+?)\]', attr_type)
+            if optional_match:
+                inner_type_str = optional_match.group(1)
+                item_class = ARObject._import_class_by_name(inner_type_str)
+
+                # Check if concrete class is a subclass of the expected type
+                if concrete_class and item_class:
+                    if isinstance(concrete_class, type) and issubclass(concrete_class, item_class):
+                        # Direct subclass match - deserialize directly
+                        return ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                
+                # Check if we need to create a wrapper object
+                if wrapper_class and hasattr(wrapper_class, '__annotations__'):
+                    for attr_name, attr_type_hint in wrapper_class.__annotations__.items():
+                        if attr_name.startswith('_'):
+                            continue
+                        
+                        type_str = str(attr_type_hint)
+                        optional_match = re.match(r'Optional\[(.+?)\]', type_str)
+                        if optional_match:
+                            inner_type_str = optional_match.group(1)
+                            content_class = ARObject._import_class_by_name(inner_type_str)
+                        else:
+                            content_class = ARObject._import_class_by_name(type_str)
+                        
+                        if content_class and concrete_class:
+                            if isinstance(concrete_class, type) and issubclass(concrete_class, content_class):
+                                # Create wrapper object and set its content attribute
+                                parent_obj = wrapper_class()
+                                deserialized_child = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                                setattr(parent_obj, attr_name, deserialized_child)
+                                return parent_obj
+
+                # Fallback to base class deserialization
+                if item_class and hasattr(item_class, 'deserialize'):
+                    return ARObject._unwrap_primitive(item_class.deserialize(child))
+
+                return child.text if child.text else None
+
+            # For simple class names, try to import and deserialize
+            item_class = ARObject._import_class_by_name(attr_type)
+            if item_class and hasattr(item_class, 'deserialize'):
+                return ARObject._unwrap_primitive(item_class.deserialize(child))
+
+            return child.text if child.text else None
+
+        # Check if it's an Optional type
+        from typing import get_origin, get_args
+        if get_origin(attr_type) is Union:
+            type_args = get_args(attr_type)
+            for arg in type_args:
+                if arg is not type(None):
+                    attr_type = arg
+                    break
+
+        # For object types with deserialize method, recursively deserialize
+        if isinstance(attr_type, type) and hasattr(attr_type, 'deserialize'):
+            # Determine the target type for wrapper object creation
+            # Use wrapper_class if provided, otherwise use attr_type
+            target_type = wrapper_class if wrapper_class else attr_type
+            
+            # Check if concrete class is a subclass of the expected type
+            if concrete_class and isinstance(concrete_class, type) and issubclass(concrete_class, attr_type):
+                return ARObject._unwrap_primitive(concrete_class.deserialize(child))
+            else:
+                # Check if this is a case where we need to create a parent wrapper object
+                # For example: COMPU-SCALES should be wrapped in a Compu object
+                # Check if the target type has attributes that could hold the concrete class
+                if hasattr(target_type, '__annotations__'):
+                    # Look for attributes that could hold the concrete class
+                    for attr_name, attr_type_hint in target_type.__annotations__.items():
+                        # Skip private attributes and the one we're deserializing
+                        if attr_name.startswith('_'):
+                            continue
+
+                        # Try to resolve the type hint
+                        import re
+                        type_str = str(attr_type_hint)
+
+                        # Handle Optional[T]
+                        optional_match = re.match(r'Optional\[(.+?)\]', type_str)
+                        if optional_match:
+                            inner_type_str = optional_match.group(1)
+                            content_class = ARObject._import_class_by_name(inner_type_str)
+                        else:
+                            content_class = ARObject._import_class_by_name(type_str)
+
+                        # Check if concrete class can be stored in this attribute
+                        if content_class and concrete_class:
+                            if isinstance(concrete_class, type) and issubclass(concrete_class, content_class):
+                                # Create parent object and set its content attribute
+                                parent_obj = target_type()
+                                deserialized_child = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                                setattr(parent_obj, attr_name, deserialized_child)
+                                return parent_obj
+
+                # Fallback to standard deserialization
+                return ARObject._unwrap_primitive(target_type.deserialize(child))
+
+        # For primitive types, return text content
+        text = child.text
+        if text is None:
+            return None
+
+        # Simple type conversions for primitives
+        if attr_type is str:
+            return text
+        elif attr_type is int:
+            try:
+                return int(text)
+            except ValueError:
+                return text
+        elif attr_type is float:
+            try:
+                return float(text)
+            except ValueError:
+                return text
+        elif attr_type is bool:
+            return text.lower() in ('true', '1', 'yes')
+        else:
+            return text
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> ARObject:
@@ -258,20 +570,6 @@ class ARObject:
                             # Keep as string - _extract_value will handle it
                             type_hints[attr_name] = attr_type_str
 
-        # Helper function to strip namespace from tag
-        def strip_namespace(tag: str) -> str:
-            """Strip namespace from XML tag.
-
-            Args:
-                tag: XML tag with optional namespace
-
-            Returns:
-                Tag without namespace
-            """
-            if '}' in tag:
-                return tag.split('}')[1]
-            return tag
-
         # Process each attribute from type hints
         for attr_name, attr_type in type_hints.items():
             # Convert Python name to XML tag
@@ -281,18 +579,45 @@ class ARObject:
             if ARObject._is_xml_attribute_static(cls, attr_name):
                 value = element.get(xml_tag)
             else:
-                # Find child element - try both with and without namespace
-                child = element.find(xml_tag)
-                if child is None:
-                    # Try to find by matching stripped tag names
-                    for elem in element:
-                        if strip_namespace(elem.tag) == xml_tag:
-                            child = elem
+                # Check if this attribute has @xml_element_tag with multi-level path
+                element_path = ARObject._get_element_tag_path_static(cls, attr_name)
+
+                if isinstance(element_path, list) and len(element_path) > 1:
+                    # Multi-level path - navigate through hierarchy
+                    child = element
+                    for tag in element_path:
+                        # Find child at current level
+                        found = False
+                        for elem in child:
+                            if ARObject._strip_namespace(elem.tag) == tag:
+                                child = elem
+                                found = True
+                                break
+                        if not found:
+                            child = None
                             break
+                else:
+                    # Single-level path - standard lookup
+                    # Get the tag name (handle both string and list)
+                    target_tag = element_path[-1] if isinstance(element_path, list) else element_path
+                    child = element.find(target_tag)
+                    if child is None:
+                        # Try to find by matching stripped tag names
+                        for elem in element:
+                            if ARObject._strip_namespace(elem.tag) == target_tag:
+                                child = elem
+                                break
 
                 if child is not None:
-                    # Get value based on type
-                    value = ARObject._extract_value(child, attr_type)
+                    # Check if this attribute has @xml_element_tag decorator
+                    has_xml_element_tag = ARObject._has_xml_element_tag(cls, attr_name)
+                    if has_xml_element_tag:
+                        # Get explicit class name if provided
+                        explicit_class_name = ARObject._get_element_class(cls, attr_name)
+                        value = ARObject._extract_value_with_children(child, attr_type, explicit_class_name)
+                    else:
+                        # Get value based on type
+                        value = ARObject._extract_value(child, attr_type)
                 else:
                     value = None
 
@@ -501,36 +826,30 @@ class ARObject:
 
         ARPrimitive wrappers are transparently unwrapped to maintain
         backward compatibility with code expecting plain primitive values.
-
-        AREnum instances are kept as-is but have transparent equality.
+        Primitives with additional attributes (e.g., Limit with interval_type)
+        are kept as-is to preserve metadata.
 
         Args:
             result: The deserialized value to potentially unwrap
 
         Returns:
-            Unwrapped primitive value, or original result if not a primitive wrapper
+            Unwrapped primitive value, or original result if not unwrapable
         """
-        # Dynamically import to avoid circular import
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
             ARPrimitive,
         )
-        # Unwrap ARPrimitive instances (but not AREnum)
-        if isinstance(result, ARPrimitive):
-            # Check if the primitive has additional attributes besides 'value'
-            # If so, don't unwrap it (e.g., Limit has interval_type attribute)
-            has_additional_attrs = False
-            for attr_name, attr_value in vars(result).items():
-                if not attr_name.startswith('_') and attr_name != 'value' and attr_value is not None:
-                    has_additional_attrs = True
-                    break
-            
-            if has_additional_attrs:
-                # Don't unwrap primitives with additional attributes
-                return result
-            else:
-                # Unwrap simple primitives
-                return result.value
-        return result
+
+        if not isinstance(result, ARPrimitive):
+            return result
+
+        # Check if primitive has additional non-None attributes besides 'value'
+        has_metadata = any(
+            not name.startswith('_') and name != 'value' and value is not None
+            for name, value in vars(result).items()
+        )
+
+        # Only unwrap simple primitives without metadata
+        return result if has_metadata else result.value
 
     @staticmethod
     def _extract_value(element: ET.Element, attr_type):
@@ -550,17 +869,6 @@ class ARObject:
         factory = ModelFactory()
         if not factory.is_initialized():
             factory.load_mappings()
-        """Extract value from XML element based on type.
-
-        Args:
-            element: XML element
-            attr_type: Expected type (from type hints) - can be type object or string
-
-        Returns:
-            Extracted value
-        """
-        if element is None:
-            return None
 
         # Handle string type annotations (from __annotations__ with future import)
         if isinstance(attr_type, str):

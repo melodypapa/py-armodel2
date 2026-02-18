@@ -16,6 +16,10 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     VerbatimString,
 )
+from armodel.serialization.name_converter import NameConverter
+
+if TYPE_CHECKING:
+    from typing import Self
 
 
 class CompuConstTextContent(CompuConstContent):
@@ -35,6 +39,45 @@ class CompuConstTextContent(CompuConstContent):
         """Initialize CompuConstTextContent."""
         super().__init__()
         self.vt: Optional[VerbatimString] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize CompuConstTextContent to XML element.
+
+        The VT element is serialized as a child element with text content.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this CompuConstTextContent
+        """
+        # Use VT as the XML tag name (as specified in AUTOSAR schema)
+        tag = "VT"
+        elem = ET.Element(tag)
+
+        # Serialize vt value as text content
+        if self.vt is not None:
+            elem.text = str(self.vt.value) if hasattr(self.vt, 'value') else str(self.vt)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> Self:
+        """Deserialize XML element to CompuConstTextContent.
+
+        The VT element's text content is deserialized to the vt attribute.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompuConstTextContent instance
+        """
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Deserialize text content to vt attribute
+        if element.text:
+            obj.vt = VerbatimString(value=element.text)
+
+        return obj
 
 
 class CompuConstTextContentBuilder:

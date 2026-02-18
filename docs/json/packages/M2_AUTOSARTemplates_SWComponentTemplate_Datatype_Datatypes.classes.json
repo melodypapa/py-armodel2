@@ -142,7 +142,7 @@
         }
       ],
       "attributes": {
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
           "kind": "attribute",
