@@ -13,15 +13,19 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
     AbstractImplementationDataType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
     NameToken,
     String,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.implementation_data_type_element import (
+    ImplementationDataTypeElement,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_props import (
     SymbolProps,
@@ -40,15 +44,17 @@ class ImplementationDataType(AbstractImplementationDataType):
         """
         return False
 
-    dynamic_array: Optional[String]
-    sub_elements: list[Any]
+    dynamic_array_size_profile: Optional[String]
+    is_struct_with_optional_element: Optional[Boolean]
+    sub_elements: list[ImplementationDataTypeElement]
     symbol_props: Optional[SymbolProps]
     type_emitter: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize ImplementationDataType."""
         super().__init__()
-        self.dynamic_array: Optional[String] = None
-        self.sub_elements: list[Any] = []
+        self.dynamic_array_size_profile: Optional[String] = None
+        self.is_struct_with_optional_element: Optional[Boolean] = None
+        self.sub_elements: list[ImplementationDataTypeElement] = []
         self.symbol_props: Optional[SymbolProps] = None
         self.type_emitter: Optional[NameToken] = None
 

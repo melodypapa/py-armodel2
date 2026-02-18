@@ -36,6 +36,21 @@ py-armodel2 uses a **reflection-based serialization framework** that automatical
              │
              ▼
 ┌─────────────────────────────────────────┐
+│   ARPrimitive (Primitive Types)         │
+│  - Wraps primitive values               │
+│  - Supports additional attributes       │
+│  - Enum attributes always uppercase     │
+└────────────┬────────────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────────────┐
+│      AREnum (Enumeration Types)         │
+│  - Case-insensitive deserialization     │
+│  - Uppercase serialization              │
+└────────────┬────────────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────────────┐
 │      Decorators (edge cases)            │
 │  @xml_attribute  @xml_tag()             │
 └─────────────────────────────────────────┘
@@ -44,6 +59,8 @@ py-armodel2 uses a **reflection-based serialization framework** that automatical
 ### File Locations
 
 - **Base class**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- **Primitive types**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_primitive.py`
+- **Enum types**: `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
 - **Decorators**: `src/armodel/serialization/decorators.py`
 - **Name converter**: `src/armodel/serialization/name_converter.py`
 
@@ -285,6 +302,32 @@ class ARPackage(ARObject):
 # </AR-PACKAGE>
 ```
 
+### Pattern 2: Primitive Type with Attributes
+
+Some primitive types have additional attributes beyond just a value:
+
+```python
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
+
+class Limit(ARPrimitive):
+    """Primitive type with value and interval_type attribute."""
+    
+    python_type: type = str
+    interval_type: Optional[IntervalTypeEnum] = None
+
+    def __init__(self, value: Optional[str] = None, interval_type: Optional[IntervalTypeEnum] = None) -> None:
+        super().__init__()
+        self.value = value
+        self.interval_type = interval_type
+
+# Serializes to:
+# <LOWER-LIMIT INTERVAL-TYPE="CLOSED">100</LOWER-LIMIT>
+
+# Note: Enum attributes are always serialized as uppercase
+# The interval_type value "closed" is serialized as "CLOSED"
+```
+
 ### Pattern 2: XML Attribute
 
 ```python
@@ -471,6 +514,17 @@ class ARPackage(ARObject):
 2. Check value is not `None`
 3. Verify attribute is in `vars(self)`
 4. Check if `@xml_attribute` decorator is applied correctly
+5. For `ARPrimitive` objects with attributes: Verify they are wrapped with correct tag name in parent serialization
+
+### Issue: Enum Values Not Uppercase
+
+**Symptom**: Enum values are serialized as lowercase instead of uppercase
+
+**Solutions**:
+1. Verify enum class inherits from `AREnum`
+2. Check that `ARPrimitive.serialize()` is using the uppercase conversion for enum attributes
+3. Ensure enum values are defined with uppercase names (e.g., `CLOSED = "closed"`)
+4. The serialization framework automatically converts enum values to uppercase in XML
 
 ### Issue: Wrong XML Tag Name
 

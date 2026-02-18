@@ -82,15 +82,22 @@
         }
       ],
       "attributes": {
-        "dynamicArray": {
+        "dynamicArraySizeProfile": {
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Specifies the profile which the array will follow in case this"
+          "note": "Specifies the profile which the array will follow in case this data type is a variable size array."
+        },
+        "isStructWithOptionalElement": {
+          "type": "Boolean",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute is only valid if the attribute category is set toSTRUCTURE."
         },
         "subElements": {
-          "type": "any (ImplementationData)",
+          "type": "ImplementationDataTypeElement",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

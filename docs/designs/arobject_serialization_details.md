@@ -17,6 +17,16 @@ ARObject (Base)
     │   ├── CompuMethod
     │   └── ... (1200+ other classes)
     └── ... (other base classes)
+
+ARPrimitive (Primitive Type Wrapper)
+    ├── Limit
+    ├── Numerical
+    └── ... (other primitive types with attributes)
+
+AREnum (Enumeration Type)
+    ├── IntervalTypeEnum
+    ├── MonotonyEnum
+    └── ... (other enum types)
 ```
 
 ## The serialize() Method
@@ -85,6 +95,9 @@ def serialize(self, namespace: str = "") -> ET.Element:
 │     │ └────────────────────┘                                           │   │
 │     │ ┌────────────────────┐                                           │   │
 │     │ │ Primitive (str, int)│ → convert to string, create subelement  │   │
+│     │ └────────────────────┘                                           │   │
+│     │ ┌────────────────────┐                                           │   │
+│     │ │ ARPrimitive        │ → wrap with parent tag name, serialize    │   │
 │     │ └────────────────────┘                                           │   │
 │     └──────────────────────────────────────────────────────────────────┘   │
 │                                    ↓                                        │
@@ -264,40 +277,115 @@ def _extract_value(element: ET.Element, attr_type: type) -> Any:
     Returns:
         Extracted value of the appropriate type
     """
-    # Handle Optional[Type]
-    if hasattr(attr_type, '__origin__') and attr_type.__origin__ is Union:
-        # Extract the actual type from Optional[Type]
-        args = attr_type.__args__
-        if type(None) in args:
-            # Optional[Type] - get the non-None type
-            base_type = next(t for t in args if t is not type(None))
-            return ARObject._unwrap_primitive(base_type.deserialize(element))
+    # Handle string type annotations (from __annotations__ with future import)
+    if isinstance(attr_type, str):
+        # Parse string type annotations like "list[ARPackage]" or "Optional[SomeType]"
+        import re
+        
+        # Extract list type
+        list_match = re.match(r'list\[(.+?)\]', attr_type)
+        if list_match:
+            inner_type_str = list_match.group(1)
+            # Deserialize list items...
+            
+        # Handle optional types
+        optional_match = re.match(r'Optional\[(.+?)\]', attr_type)
+        if optional_match:
+            inner_type_str = optional_match.group(1)
+            # Deserialize optional item...
+            
+        # For simple class names, try to import and deserialize
+        item_class = ARObject._import_class_by_name(attr_type)
+        if item_class and hasattr(item_class, 'deserialize'):
+            return ARObject._unwrap_primitive(item_class.deserialize(element))
+        
+        # For simple string types, just return text
+        return element.text if element.text else None
     
     # Handle list[Type]
-    elif hasattr(attr_type, '__origin__') and attr_type.__origin__ is list:
-        item_type = attr_type.__args__[0]
+    if get_origin(attr_type) is list:
+        item_type = get_args(attr_type)[0]
         items = []
         for child in element:
             items.append(ARObject._unwrap_primitive(item_type.deserialize(child)))
         return items
     
-    # Handle ARObject subclass
-    elif issubclass(attr_type, ARObject):
+    # Handle Optional[Type]
+    if get_origin(attr_type) is Union:
+        type_args = get_args(attr_type)
+        # Get the first non-None type
+        for arg in type_args:
+            if arg is not type(None):
+                attr_type = arg
+                break
+    
+    # For object types with deserialize method, recursively deserialize
+    if isinstance(attr_type, type) and hasattr(attr_type, 'deserialize'):
         return ARObject._unwrap_primitive(attr_type.deserialize(element))
     
-    # Handle primitive types
-    else:
-        text = element.text
-        if text is None:
-            return None
-        # Parse based on type
-        if attr_type is str:
-            return text
-        elif attr_type is int:
+    # For primitive types, return text content
+    text = element.text
+    if text is None:
+        return None
+    
+    # Simple type conversions for primitives
+    if attr_type is str:
+        return text
+    elif attr_type is int:
+        try:
             return int(text)
-        elif attr_type is bool:
-            return text.lower() == 'true'
-        # ... other primitive types
+        except ValueError:
+            return text
+    elif attr_type is float:
+        try:
+            return float(text)
+        except ValueError:
+            return text
+    elif attr_type is bool:
+        return text.lower() in ('true', '1', 'yes')
+    else:
+        # Default to string
+        return text
+```
+
+### _unwrap_primitive() Helper Method
+
+The `_unwrap_primitive()` method unwraps `ARPrimitive` instances to their underlying Python types, **except** when the primitive has additional attributes that need to be preserved:
+
+```python
+@staticmethod
+def _unwrap_primitive(result):
+    """Unwrap ARPrimitive instances to their underlying Python types.
+    
+    ARPrimitive wrappers are transparently unwrapped to maintain
+    backward compatibility with code expecting plain primitive values.
+    AREnum instances are kept as-is but have transparent equality.
+    
+    Args:
+        result: The deserialized value to potentially unwrap
+        
+    Returns:
+        Unwrapped primitive value, or original result if not a primitive wrapper
+    """
+    from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+    
+    # Unwrap ARPrimitive instances (but not AREnum)
+    if isinstance(result, ARPrimitive):
+        # Check if the primitive has additional attributes besides 'value'
+        # If so, don't unwrap it (e.g., Limit has interval_type attribute)
+        has_additional_attrs = False
+        for attr_name, attr_value in vars(result).items():
+            if not attr_name.startswith('_') and attr_name != 'value' and attr_value is not None:
+                has_additional_attrs = True
+                break
+        
+        if has_additional_attrs:
+            # Don't unwrap primitives with additional attributes
+            return result
+        else:
+            # Unwrap simple primitives
+            return result.value
+    return result
 ```
 
 ## Overriding serialize() and deserialize()
@@ -718,9 +806,160 @@ def serialize(self, namespace: str = "") -> ET.Element:
         elem.text = self.name.upper()
 ```
 
+## ARPrimitive: Primitive Types with Attributes
+
+### Overview
+
+`ARPrimitive` is a base class for AUTOSAR primitive types that may have additional attributes beyond just a value. Examples include `Limit` (which has an `interval_type` attribute) and `Numerical`.
+
+**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_primitive.py`
+
+### Key Features
+
+1. **Value wrapping**: Wraps primitive values (strings, integers, floats) in an object
+2. **Additional attributes**: Supports extra attributes (e.g., `interval_type` for `Limit`)
+3. **Transparent unwrapping**: Simple primitives are unwrapped to their Python types for backward compatibility
+4. **Attribute preservation**: Primitives with additional attributes are kept as objects
+
+### Example: Limit Type
+
+```python
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import ARPrimitive
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import IntervalTypeEnum
+
+class Limit(ARPrimitive):
+    """AUTOSAR Limit primitive type with interval_type attribute."""
+    
+    python_type: type = str
+    interval_type: Optional[IntervalTypeEnum] = None
+
+    def __init__(self, value: Optional[str] = None, interval_type: Optional[IntervalTypeEnum] = None) -> None:
+        super().__init__()
+        self.value = value
+        self.interval_type = interval_type
+```
+
+### Serialization Behavior
+
+```python
+# Create a Limit object
+limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
+
+# Serialize to XML
+elem = limit.serialize()
+# Results in: <LIMIT INTERVAL-TYPE="CLOSED">100</LIMIT>
+
+# Note: The enum value "closed" is serialized as uppercase "CLOSED"
+```
+
+### Deserialization Behavior
+
+```python
+# Deserialize from XML
+xml_str = '<LOWER-LIMIT INTERVAL-TYPE="CLOSED">100</LOWER-LIMIT>'
+elem = ET.fromstring(xml_str)
+limit = Limit.deserialize(elem)
+
+# Result:
+# limit.value = "100"
+# limit.interval_type = IntervalTypeEnum.CLOSED (with value "closed")
+```
+
+### Special Handling in ARObject
+
+When an `ARObject` has an `ARPrimitive` attribute, the serialization framework:
+
+1. **Wraps with parent tag name**: The primitive is wrapped with the correct tag name from the parent context, not the class name
+2. **Preserves attributes**: All attributes (including enum attributes) are serialized as XML attributes
+3. **Uppercase enum values**: Enum attributes are always serialized as uppercase
+
+Example:
+```python
+class InternalConstrs(ARObject):
+    lower_limit: Optional[Limit] = None
+    upper_limit: Optional[Limit] = None
+
+# Serializes to:
+# <INTERNAL-CONSTRS>
+#     <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-32768</LOWER-LIMIT>
+#     <UPPER-LIMIT INTERVAL-TYPE="CLOSED">32767</UPPER-LIMIT>
+# </INTERNAL-CONSTRS>
+```
+
+## AREnum: Enumeration Types
+
+### Overview
+
+`AREnum` is a base class for all AUTOSAR enumeration types. It provides case-insensitive deserialization and uppercase serialization.
+
+**Location:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
+
+### Key Features
+
+1. **Case-insensitive deserialization**: Matches XML values to enum members regardless of case
+2. **Uppercase serialization**: Always serializes enum values as uppercase
+3. **Transparent equality**: Supports comparison with both enum instances and string values
+
+### Example: IntervalTypeEnum
+
+```python
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+
+class IntervalTypeEnum(AREnum):
+    """AUTOSAR IntervalTypeEnum enumeration."""
+    
+    CLOSED = "closed"
+    OPEN = "open"
+```
+
+### Serialization Behavior
+
+```python
+# Create enum instance
+interval = IntervalTypeEnum.CLOSED
+
+# Serialize to XML
+elem = interval.serialize()
+# Results in: <INTERVAL-TYPE>CLOSED</INTERVAL-TYPE>
+
+# Note: The value "closed" is serialized as uppercase "CLOSED"
+```
+
+### Deserialization Behavior
+
+```python
+# Deserialize from XML (uppercase)
+xml_str_upper = '<INTERVAL-TYPE>CLOSED</INTERVAL-TYPE>'
+elem_upper = ET.fromstring(xml_str_upper)
+interval_upper = IntervalTypeEnum.deserialize(elem_upper)
+# Result: IntervalTypeEnum.CLOSED
+
+# Deserialize from XML (lowercase)
+xml_str_lower = '<INTERVAL-TYPE>closed</INTERVAL-TYPE>'
+elem_lower = ET.fromstring(xml_str_lower)
+interval_lower = IntervalTypeEnum.deserialize(elem_lower)
+# Result: IntervalTypeEnum.CLOSED (case-insensitive matching)
+```
+
+### Equality Comparison
+
+```python
+interval = IntervalTypeEnum.CLOSED
+
+# Compare with enum instance
+assert interval == IntervalTypeEnum.CLOSED  # True
+
+# Compare with string (case-insensitive)
+assert interval == "closed"  # True
+assert interval == "CLOSED"  # True
+assert interval == "Closed"  # True
+```
+
 ## References
 
 - **ARObject Implementation:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject/ar_object.py`
+- **ARPrimitive Implementation:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_primitive.py`
+- **AREnum Implementation:** `src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes/ar_enum.py`
 - **NameConverter:** `src/armodel/serialization/name_converter.py`
 - **Serialization Framework:** `docs/designs/serialization.md`
 - **Reader/Writer Guide:** `docs/designs/arxml_reader_writer_guide.md`
