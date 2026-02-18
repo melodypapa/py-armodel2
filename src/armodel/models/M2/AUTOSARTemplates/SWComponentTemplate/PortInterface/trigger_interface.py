@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -30,11 +31,11 @@ class TriggerInterface(PortInterface):
         """
         return False
 
-    triggers: list[Trigger]
+    trigger_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize TriggerInterface."""
         super().__init__()
-        self.triggers: list[Trigger] = []
+        self.trigger_refs: list[ARRef] = []
 
 
 class TriggerInterfaceBuilder:

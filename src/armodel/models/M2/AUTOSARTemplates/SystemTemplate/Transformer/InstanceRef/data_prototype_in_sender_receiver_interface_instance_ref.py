@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.InstanceRef.data_prototype_in_port_interface_instance_ref import (
     DataPrototypeInPortInterfaceInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -34,15 +35,15 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
 
     base_interface: Optional[Any]
     context_datas: list[Any]
-    root_data_prototype_in_sr: Optional[AutosarDataPrototype]
-    target_data_prototype_in_sr: Optional[DataPrototype]
+    root_data_prototype_in_sr_ref: Optional[ARRef]
+    target_data_prototype_in_sr_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSenderReceiverInterfaceInstanceRef."""
         super().__init__()
         self.base_interface: Optional[Any] = None
         self.context_datas: list[Any] = []
-        self.root_data_prototype_in_sr: Optional[AutosarDataPrototype] = None
-        self.target_data_prototype_in_sr: Optional[DataPrototype] = None
+        self.root_data_prototype_in_sr_ref: Optional[ARRef] = None
+        self.target_data_prototype_in_sr_ref: Optional[ARRef] = None
 
 
 class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder:

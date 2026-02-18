@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
 )
@@ -32,12 +33,12 @@ class BswVariableAccess(Referrable):
         """
         return False
 
-    accessed_variable: Optional[VariableDataPrototype]
+    accessed_variable_ref: Optional[ARRef]
     contexts: list[BswDistinguishedPartition]
     def __init__(self) -> None:
         """Initialize BswVariableAccess."""
         super().__init__()
-        self.accessed_variable: Optional[VariableDataPrototype] = None
+        self.accessed_variable_ref: Optional[ARRef] = None
         self.contexts: list[BswDistinguishedPartition] = []
 
 

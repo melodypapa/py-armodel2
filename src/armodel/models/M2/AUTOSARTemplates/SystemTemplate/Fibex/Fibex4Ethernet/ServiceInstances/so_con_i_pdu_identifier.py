@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     PduCollectionTriggerEnum,
 )
@@ -36,16 +37,16 @@ class SoConIPduIdentifier(Referrable):
         return False
 
     header_id: Optional[PositiveInteger]
-    pdu_collection: Optional[Any]
-    pdu_collection_trigger: Optional[PduCollectionTriggerEnum]
-    pdu_triggering: Optional[PduTriggering]
+    pdu_collection_ref: Optional[ARRef]
+    pdu_collection_trigger_ref: Optional[ARRef]
+    pdu_triggering_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SoConIPduIdentifier."""
         super().__init__()
         self.header_id: Optional[PositiveInteger] = None
-        self.pdu_collection: Optional[Any] = None
-        self.pdu_collection_trigger: Optional[PduCollectionTriggerEnum] = None
-        self.pdu_triggering: Optional[PduTriggering] = None
+        self.pdu_collection_ref: Optional[ARRef] = None
+        self.pdu_collection_trigger_ref: Optional[ARRef] = None
+        self.pdu_triggering_ref: Optional[ARRef] = None
 
 
 class SoConIPduIdentifierBuilder:

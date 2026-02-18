@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
     DiagnosticIumpr,
 )
@@ -30,12 +31,12 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         return False
 
     iumprs: list[DiagnosticIumpr]
-    iumpr_group: Optional[DiagnosticIumprGroup]
+    iumpr_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprGroup."""
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
-        self.iumpr_group: Optional[DiagnosticIumprGroup] = None
+        self.iumpr_group_ref: Optional[ARRef] = None
 
 
 class DiagnosticIumprGroupBuilder:

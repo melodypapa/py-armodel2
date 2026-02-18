@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -46,19 +47,19 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
     client_server_instance_ref: Optional[ClientServerOperation]
     communication: Optional[CpSoftwareCluster]
-    mode: Optional[ModeDeclarationGroup]
-    parameter_data_in_system_instance_ref: Optional[ParameterDataPrototype]
-    trigger: Optional[Trigger]
-    variable_data_system_instance_ref: Optional[VariableDataPrototype]
+    mode_ref: Optional[ARRef]
+    parameter_data_in_system_instance_ref: Optional[ARRef]
+    trigger_ref: Optional[ARRef]
+    variable_data_system_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
         self.communication: Optional[CpSoftwareCluster] = None
-        self.mode: Optional[ModeDeclarationGroup] = None
-        self.parameter_data_in_system_instance_ref: Optional[ParameterDataPrototype] = None
-        self.trigger: Optional[Trigger] = None
-        self.variable_data_system_instance_ref: Optional[VariableDataPrototype] = None
+        self.mode_ref: Optional[ARRef] = None
+        self.parameter_data_in_system_instance_ref: Optional[ARRef] = None
+        self.trigger_ref: Optional[ARRef] = None
+        self.variable_data_system_instance_ref: Optional[ARRef] = None
 
 
 class PortElementToCommunicationResourceMappingBuilder:

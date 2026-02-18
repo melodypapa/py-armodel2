@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
     CalprmAxisCategoryEnum,
 )
@@ -38,7 +39,7 @@ class RuleBasedAxisCont(ARObject):
 
     category: Optional[CalprmAxisCategoryEnum]
     rule_based: Optional[Any]
-    sw_arraysize: Optional[ValueList]
+    sw_arraysize_ref: Optional[ARRef]
     sw_axis_index: Optional[AxisIndexType]
     unit: Optional[Unit]
     def __init__(self) -> None:
@@ -46,7 +47,7 @@ class RuleBasedAxisCont(ARObject):
         super().__init__()
         self.category: Optional[CalprmAxisCategoryEnum] = None
         self.rule_based: Optional[Any] = None
-        self.sw_arraysize: Optional[ValueList] = None
+        self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit: Optional[Unit] = None
 

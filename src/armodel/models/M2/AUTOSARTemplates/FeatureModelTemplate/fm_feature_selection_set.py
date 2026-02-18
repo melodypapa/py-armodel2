@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_model import (
     FMFeatureModel,
 )
@@ -33,13 +34,13 @@ class FMFeatureSelectionSet(ARElement):
         return False
 
     feature_models: list[FMFeatureModel]
-    includes: list[FMFeatureSelectionSet]
+    include_refs: list[ARRef]
     selections: list[FMFeatureSelection]
     def __init__(self) -> None:
         """Initialize FMFeatureSelectionSet."""
         super().__init__()
         self.feature_models: list[FMFeatureModel] = []
-        self.includes: list[FMFeatureSelectionSet] = []
+        self.include_refs: list[ARRef] = []
         self.selections: list[FMFeatureSelection] = []
 
 

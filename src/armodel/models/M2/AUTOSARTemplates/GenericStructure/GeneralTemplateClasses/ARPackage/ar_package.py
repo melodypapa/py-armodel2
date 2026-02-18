@@ -21,6 +21,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collectable_element import (
     CollectableElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
@@ -46,13 +47,13 @@ class ARPackage(CollectableElement):
 
     ar_packages: list[ARPackage]
     elements: list[PackageableElement]
-    reference_bases: list[ReferenceBase]
+    reference_base_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
         self.ar_packages: list[ARPackage] = []
         self.elements: list[PackageableElement] = []
-        self.reference_bases: list[ReferenceBase] = []
+        self.reference_base_refs: list[ARRef] = []
 
 
 class ARPackageBuilder:

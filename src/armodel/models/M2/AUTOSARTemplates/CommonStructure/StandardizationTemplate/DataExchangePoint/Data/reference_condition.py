@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_condition import (
     AttributeCondition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.reference_tailoring import (
     ReferenceTailoring,
 )
@@ -29,11 +30,11 @@ class ReferenceCondition(AttributeCondition):
         """
         return False
 
-    reference: ReferenceTailoring
+    reference_ref: ARRef
     def __init__(self) -> None:
         """Initialize ReferenceCondition."""
         super().__init__()
-        self.reference: ReferenceTailoring = None
+        self.reference_ref: ARRef = None
 
 
 class ReferenceConditionBuilder:

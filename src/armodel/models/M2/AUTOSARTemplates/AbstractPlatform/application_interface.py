@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -37,13 +38,13 @@ class ApplicationInterface(PortInterface):
 
     attributes: list[Field]
     commands: list[ClientServerOperation]
-    indications: list[VariableDataPrototype]
+    indication_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ApplicationInterface."""
         super().__init__()
         self.attributes: list[Field] = []
         self.commands: list[ClientServerOperation] = []
-        self.indications: list[VariableDataPrototype] = []
+        self.indication_refs: list[ARRef] = []
 
 
 class ApplicationInterfaceBuilder:

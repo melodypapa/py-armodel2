@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -33,12 +34,12 @@ class PortPrototypeBlueprintInitValue(ARObject):
         """
         return False
 
-    data_prototype: AutosarDataPrototype
+    data_prototype_ref: ARRef
     value: ValueSpecification
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprintInitValue."""
         super().__init__()
-        self.data_prototype: AutosarDataPrototype = None
+        self.data_prototype_ref: ARRef = None
         self.value: ValueSpecification = None
 
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
 )
@@ -31,14 +32,14 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         return False
 
     context_datas: list[Any]
-    port_prototype: Optional[PortPrototype]
+    port_prototype_ref: Optional[ARRef]
     root_parameter: Optional[ParameterDataPrototype]
     target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ArParameterInImplementationDataInstanceRef."""
         super().__init__()
         self.context_datas: list[Any] = []
-        self.port_prototype: Optional[PortPrototype] = None
+        self.port_prototype_ref: Optional[ARRef] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
 

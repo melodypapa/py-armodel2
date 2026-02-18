@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -36,12 +37,12 @@ class NvRequireComSpec(RPortComSpec):
         return False
 
     init_value: Optional[ValueSpecification]
-    variable: Optional[VariableDataPrototype]
+    variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize NvRequireComSpec."""
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
-        self.variable: Optional[VariableDataPrototype] = None
+        self.variable_ref: Optional[ARRef] = None
 
 
 class NvRequireComSpecBuilder:

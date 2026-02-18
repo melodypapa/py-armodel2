@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -31,12 +32,12 @@ class EthernetCluster(ARObject):
         return False
 
     coupling_port: Optional[TimeValue]
-    mac_multicast_groups: list[MacMulticastGroup]
+    mac_multicast_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EthernetCluster."""
         super().__init__()
         self.coupling_port: Optional[TimeValue] = None
-        self.mac_multicast_groups: list[MacMulticastGroup] = []
+        self.mac_multicast_group_refs: list[ARRef] = []
 
 
 class EthernetClusterBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -37,14 +38,14 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         return False
 
     base: Optional[AtomicSwComponentType]
-    context_mode_group_prototype: Optional[ModeDeclarationGroup]
+    context_mode_group_prototype_ref: Optional[ARRef]
     context_port_prototype: Optional[AbstractRequiredPortPrototype]
     target_mode_declaration: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()
         self.base: Optional[AtomicSwComponentType] = None
-        self.context_mode_group_prototype: Optional[ModeDeclarationGroup] = None
+        self.context_mode_group_prototype_ref: Optional[ARRef] = None
         self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_mode_declaration: Optional[ModeDeclaration] = None
 

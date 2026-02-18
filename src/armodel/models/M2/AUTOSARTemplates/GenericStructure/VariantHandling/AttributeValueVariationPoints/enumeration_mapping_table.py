@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class EnumerationMappingTable(PackageableElement):
@@ -26,11 +27,11 @@ class EnumerationMappingTable(PackageableElement):
         """
         return False
 
-    entries: list[Any]
+    entrie_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EnumerationMappingTable."""
         super().__init__()
-        self.entries: list[Any] = []
+        self.entrie_refs: list[ARRef] = []
 
 
 class EnumerationMappingTableBuilder:

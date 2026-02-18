@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
@@ -36,12 +37,12 @@ class ParameterAccess(AbstractAccessPoint):
         """
         return False
 
-    accessed_parameter: Optional[AutosarParameterRef]
+    accessed_parameter_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()
-        self.accessed_parameter: Optional[AutosarParameterRef] = None
+        self.accessed_parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
 
 

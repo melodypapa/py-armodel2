@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
     BswImplementation,
 )
@@ -34,13 +35,13 @@ class ModeInBswInstanceRef(ARObject):
         return False
 
     context_bsw: Optional[BswImplementation]
-    context_mode: Optional[ModeDeclarationGroup]
+    context_mode_ref: Optional[ARRef]
     target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInBswInstanceRef."""
         super().__init__()
         self.context_bsw: Optional[BswImplementation] = None
-        self.context_mode: Optional[ModeDeclarationGroup] = None
+        self.context_mode_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
 
 

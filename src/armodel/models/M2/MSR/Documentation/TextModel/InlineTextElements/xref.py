@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.InlineAttributeEnums import (
     ResolutionPolicyEnum,
     ShowContentEnum,
@@ -42,7 +43,7 @@ class Xref(ARObject):
         return False
 
     label1: Optional[SingleLanguageLongName]
-    referrable: Optional[Referrable]
+    referrable_ref: Optional[ARRef]
     resolution_policy_enum: Optional[ResolutionPolicyEnum]
     show_content_enum: Optional[ShowContentEnum]
     show_resource_alias: Optional[ShowResourceAliasNameEnum]
@@ -56,7 +57,7 @@ class Xref(ARObject):
         """Initialize Xref."""
         super().__init__()
         self.label1: Optional[SingleLanguageLongName] = None
-        self.referrable: Optional[Referrable] = None
+        self.referrable_ref: Optional[ARRef] = None
         self.resolution_policy_enum: Optional[ResolutionPolicyEnum] = None
         self.show_content_enum: Optional[ShowContentEnum] = None
         self.show_resource_alias: Optional[ShowResourceAliasNameEnum] = None

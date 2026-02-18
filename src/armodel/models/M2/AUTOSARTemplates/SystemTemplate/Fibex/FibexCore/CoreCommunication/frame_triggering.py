@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame import (
     Frame,
 )
@@ -40,13 +41,13 @@ class FrameTriggering(Identifiable, ABC):
 
     frame: Optional[Frame]
     frame_ports: list[FramePort]
-    pdu_triggerings: list[PduTriggering]
+    pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
         self.frame: Optional[Frame] = None
         self.frame_ports: list[FramePort] = []
-        self.pdu_triggerings: list[PduTriggering] = []
+        self.pdu_triggering_refs: list[ARRef] = []
 
 
 class FrameTriggeringBuilder:

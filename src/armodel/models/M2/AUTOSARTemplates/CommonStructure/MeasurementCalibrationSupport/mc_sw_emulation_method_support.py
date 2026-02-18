@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -33,18 +34,18 @@ class McSwEmulationMethodSupport(ARObject):
         """
         return False
 
-    base_reference: Optional[VariableDataPrototype]
+    base_reference_ref: Optional[ARRef]
     category: Optional[Identifier]
     element_groups: list[McParameterElementGroup]
-    reference_table: Optional[VariableDataPrototype]
+    reference_table_ref: Optional[ARRef]
     short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize McSwEmulationMethodSupport."""
         super().__init__()
-        self.base_reference: Optional[VariableDataPrototype] = None
+        self.base_reference_ref: Optional[ARRef] = None
         self.category: Optional[Identifier] = None
         self.element_groups: list[McParameterElementGroup] = []
-        self.reference_table: Optional[VariableDataPrototype] = None
+        self.reference_table_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
 
 

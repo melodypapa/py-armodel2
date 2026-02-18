@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -30,13 +31,13 @@ class DataPrototypeGroup(Identifiable):
         """
         return False
 
-    data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup]
-    implicit_datas: list[VariableDataPrototype]
+    data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef]
+    implicit_data_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeGroup."""
         super().__init__()
-        self.data_prototype_group_group_in_composition_instance_refs: list[DataPrototypeGroup] = []
-        self.implicit_datas: list[VariableDataPrototype] = []
+        self.data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef] = []
+        self.implicit_data_refs: list[ARRef] = []
 
 
 class DataPrototypeGroupBuilder:

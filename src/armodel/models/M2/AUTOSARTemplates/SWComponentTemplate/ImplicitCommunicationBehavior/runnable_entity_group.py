@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
     RunnableEntity,
 )
@@ -31,12 +32,12 @@ class RunnableEntityGroup(Identifiable):
         return False
 
     runnable_entities: list[RunnableEntity]
-    runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup]
+    runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
         self.runnable_entities: list[RunnableEntity] = []
-        self.runnable_entity_group_group_in_composition_instance_refs: list[RunnableEntityGroup] = []
+        self.runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef] = []
 
 
 class RunnableEntityGroupBuilder:

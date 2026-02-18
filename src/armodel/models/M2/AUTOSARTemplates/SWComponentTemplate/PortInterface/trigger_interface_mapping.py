@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger_mapping import (
     TriggerMapping,
 )
@@ -29,11 +30,11 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         """
         return False
 
-    trigger_mappings: list[TriggerMapping]
+    trigger_mapping_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize TriggerInterfaceMapping."""
         super().__init__()
-        self.trigger_mappings: list[TriggerMapping] = []
+        self.trigger_mapping_refs: list[ARRef] = []
 
 
 class TriggerInterfaceMappingBuilder:

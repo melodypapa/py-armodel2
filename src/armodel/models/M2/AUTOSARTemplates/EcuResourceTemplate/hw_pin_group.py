@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group_content import (
@@ -33,11 +34,11 @@ class HwPinGroup(Identifiable):
         """
         return False
 
-    hw_pin_group_content: Optional[HwPinGroupContent]
+    hw_pin_group_content_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize HwPinGroup."""
         super().__init__()
-        self.hw_pin_group_content: Optional[HwPinGroupContent] = None
+        self.hw_pin_group_content_ref: Optional[ARRef] = None
 
 
 class HwPinGroupBuilder:

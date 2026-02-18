@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -34,7 +35,7 @@ class DiagnosticConnection(ARElement):
         return False
 
     functional_requests: list[TpConnectionIdent]
-    periodic_response_uudts: list[PduTriggering]
+    periodic_response_uudt_refs: list[ARRef]
     physical_request: Optional[TpConnectionIdent]
     response: Optional[TpConnectionIdent]
     response_on: Optional[TpConnectionIdent]
@@ -42,7 +43,7 @@ class DiagnosticConnection(ARElement):
         """Initialize DiagnosticConnection."""
         super().__init__()
         self.functional_requests: list[TpConnectionIdent] = []
-        self.periodic_response_uudts: list[PduTriggering] = []
+        self.periodic_response_uudt_refs: list[ARRef] = []
         self.physical_request: Optional[TpConnectionIdent] = None
         self.response: Optional[TpConnectionIdent] = None
         self.response_on: Optional[TpConnectionIdent] = None

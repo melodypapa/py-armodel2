@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
     SubElementRef,
 )
@@ -30,15 +31,15 @@ class SubElementMapping(ARObject):
         """
         return False
 
-    first_element: Optional[SubElementRef]
-    second_element: Optional[SubElementRef]
-    text_table: TextTableMapping
+    first_element_ref: Optional[ARRef]
+    second_element_ref: Optional[ARRef]
+    text_table_ref: ARRef
     def __init__(self) -> None:
         """Initialize SubElementMapping."""
         super().__init__()
-        self.first_element: Optional[SubElementRef] = None
-        self.second_element: Optional[SubElementRef] = None
-        self.text_table: TextTableMapping = None
+        self.first_element_ref: Optional[ARRef] = None
+        self.second_element_ref: Optional[ARRef] = None
+        self.text_table_ref: ARRef = None
 
 
 class SubElementMappingBuilder:

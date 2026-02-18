@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_logic_address import (
     DoIpLogicAddress,
 )
@@ -34,13 +35,13 @@ class DoIpTpConnection(TpConnection):
 
     do_ip_source: Optional[DoIpLogicAddress]
     do_ip_target: Optional[DoIpLogicAddress]
-    tp_sdu: Optional[PduTriggering]
+    tp_sdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DoIpTpConnection."""
         super().__init__()
         self.do_ip_source: Optional[DoIpLogicAddress] = None
         self.do_ip_target: Optional[DoIpLogicAddress] = None
-        self.tp_sdu: Optional[PduTriggering] = None
+        self.tp_sdu_ref: Optional[ARRef] = None
 
 
 class DoIpTpConnectionBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -33,12 +34,12 @@ class TransformerHardErrorEvent(RTEEvent):
         return False
 
     operation: Optional[ClientServerOperation]
-    required_trigger: Optional[Trigger]
+    required_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
-        self.required_trigger: Optional[Trigger] = None
+        self.required_trigger_ref: Optional[ARRef] = None
 
 
 class TransformerHardErrorEventBuilder:

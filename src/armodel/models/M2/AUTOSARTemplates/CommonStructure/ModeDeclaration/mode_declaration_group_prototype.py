@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
     SwCalibrationAccessEnum,
 )
@@ -37,12 +38,12 @@ class ModeDeclarationGroupPrototype(Identifiable):
         return False
 
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
-    type: Optional[ModeDeclarationGroup]
+    type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototype."""
         super().__init__()
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
-        self.type: Optional[ModeDeclarationGroup] = None
+        self.type_ref: Optional[ARRef] = None
 
 
 class ModeDeclarationGroupPrototypeBuilder:

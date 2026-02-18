@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -37,13 +38,13 @@ class ISignalIPdu(IPdu):
         return False
 
     i_pdu_timing: Optional[IPduTiming]
-    i_signal_to_pdus: list[ISignalToIPduMapping]
+    i_signal_to_pdu_refs: list[ARRef]
     unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize ISignalIPdu."""
         super().__init__()
         self.i_pdu_timing: Optional[IPduTiming] = None
-        self.i_signal_to_pdus: list[ISignalToIPduMapping] = []
+        self.i_signal_to_pdu_refs: list[ARRef] = []
         self.unused_bit: Optional[Integer] = None
 
 

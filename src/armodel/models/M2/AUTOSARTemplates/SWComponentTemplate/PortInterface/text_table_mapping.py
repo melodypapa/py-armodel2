@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import (
     MappingDirectionEnum,
 )
@@ -37,14 +38,14 @@ class TextTableMapping(ARObject):
 
     bitfield_text_table: Optional[PositiveInteger]
     identical: Optional[Boolean]
-    mapping: Optional[MappingDirectionEnum]
+    mapping_ref: Optional[ARRef]
     value_pairs: list[TextTableValuePair]
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
         self.bitfield_text_table: Optional[PositiveInteger] = None
         self.identical: Optional[Boolean] = None
-        self.mapping: Optional[MappingDirectionEnum] = None
+        self.mapping_ref: Optional[ARRef] = None
         self.value_pairs: list[TextTableValuePair] = []
 
 

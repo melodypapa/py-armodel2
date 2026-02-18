@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -31,14 +32,14 @@ class SomeipTpConnection(ARObject):
         return False
 
     tp_channel: Optional[SomeipTpChannel]
-    tp_sdu: Optional[PduTriggering]
-    transport_pdu: Optional[PduTriggering]
+    tp_sdu_ref: Optional[ARRef]
+    transport_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()
         self.tp_channel: Optional[SomeipTpChannel] = None
-        self.tp_sdu: Optional[PduTriggering] = None
-        self.transport_pdu: Optional[PduTriggering] = None
+        self.tp_sdu_ref: Optional[ARRef] = None
+        self.transport_pdu_ref: Optional[ARRef] = None
 
 
 class SomeipTpConnectionBuilder:

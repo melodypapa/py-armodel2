@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_transformation import (
     DataTransformation,
 )
@@ -38,14 +39,14 @@ class ISignalGroup(FibexElement):
 
     com_based: Optional[DataTransformation]
     i_signals: list[ISignal]
-    system_signal_group: Optional[SystemSignalGroup]
+    system_signal_group_ref: Optional[ARRef]
     transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignalGroup."""
         super().__init__()
         self.com_based: Optional[DataTransformation] = None
         self.i_signals: list[ISignal] = []
-        self.system_signal_group: Optional[SystemSignalGroup] = None
+        self.system_signal_group_ref: Optional[ARRef] = None
         self.transformation_i_signals: list[Any] = []
 
 

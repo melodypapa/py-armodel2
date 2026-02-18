@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     UdpChecksumCalculationEnum,
 )
@@ -49,8 +50,8 @@ class SocketAddress(Identifiable):
         """
         return False
 
-    allowed_i_pv6_ext: Optional[IPv6ExtHeaderFilterList]
-    allowed_tcp: Optional[TcpOptionFilterList]
+    allowed_i_pv6_ext_ref: Optional[ARRef]
+    allowed_tcp_ref: Optional[ARRef]
     application_endpoint_endpoint: Optional[ApplicationEndpoint]
     connector: Optional[Any]
     differentiated: Optional[PositiveInteger]
@@ -63,8 +64,8 @@ class SocketAddress(Identifiable):
     def __init__(self) -> None:
         """Initialize SocketAddress."""
         super().__init__()
-        self.allowed_i_pv6_ext: Optional[IPv6ExtHeaderFilterList] = None
-        self.allowed_tcp: Optional[TcpOptionFilterList] = None
+        self.allowed_i_pv6_ext_ref: Optional[ARRef] = None
+        self.allowed_tcp_ref: Optional[ARRef] = None
         self.application_endpoint_endpoint: Optional[ApplicationEndpoint] = None
         self.connector: Optional[Any] = None
         self.differentiated: Optional[PositiveInteger] = None

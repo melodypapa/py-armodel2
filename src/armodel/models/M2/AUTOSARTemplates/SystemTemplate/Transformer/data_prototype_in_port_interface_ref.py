@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
     DataPrototypeReference,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
@@ -29,11 +30,11 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         """
         return False
 
-    data_prototype_in: Optional[DataPrototype]
+    data_prototype_in_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
-        self.data_prototype_in: Optional[DataPrototype] = None
+        self.data_prototype_in_ref: Optional[ARRef] = None
 
 
 class DataPrototypeInPortInterfaceRefBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
 )
@@ -35,14 +36,14 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         """
         return False
 
-    data_element: Optional[VariableDataPrototype]
-    signal_group: Optional[SystemSignalGroup]
+    data_element_ref: Optional[ARRef]
+    signal_group_ref: Optional[ARRef]
     type_mapping: Optional[SenderRecCompositeTypeMapping]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalGroupMapping."""
         super().__init__()
-        self.data_element: Optional[VariableDataPrototype] = None
-        self.signal_group: Optional[SystemSignalGroup] = None
+        self.data_element_ref: Optional[ARRef] = None
+        self.signal_group_ref: Optional[ARRef] = None
         self.type_mapping: Optional[SenderRecCompositeTypeMapping] = None
 
 

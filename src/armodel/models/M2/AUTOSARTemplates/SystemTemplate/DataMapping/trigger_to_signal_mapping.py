@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
 )
@@ -33,12 +34,12 @@ class TriggerToSignalMapping(DataMapping):
         return False
 
     system_signal: Optional[SystemSignal]
-    trigger: Optional[Trigger]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TriggerToSignalMapping."""
         super().__init__()
         self.system_signal: Optional[SystemSignal] = None
-        self.trigger: Optional[Trigger] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class TriggerToSignalMappingBuilder:

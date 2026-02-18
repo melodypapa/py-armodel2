@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
 )
@@ -30,11 +31,11 @@ class ParameterInterface(DataInterface):
         """
         return False
 
-    parameters: list[ParameterDataPrototype]
+    parameter_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ParameterInterface."""
         super().__init__()
-        self.parameters: list[ParameterDataPrototype] = []
+        self.parameter_refs: list[ARRef] = []
 
 
 class ParameterInterfaceBuilder:

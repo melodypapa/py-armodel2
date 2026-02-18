@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_behavior import (
     BswInternalBehavior,
 )
@@ -38,14 +39,14 @@ class SwcBswMapping(ARElement):
         return False
 
     bsw_behavior: Optional[BswInternalBehavior]
-    runnable_mappings: list[SwcBswRunnableMapping]
+    runnable_mapping_refs: list[ARRef]
     swc_behavior: Optional[SwcInternalBehavior]
     synchronizeds: list[Any]
     def __init__(self) -> None:
         """Initialize SwcBswMapping."""
         super().__init__()
         self.bsw_behavior: Optional[BswInternalBehavior] = None
-        self.runnable_mappings: list[SwcBswRunnableMapping] = []
+        self.runnable_mapping_refs: list[ARRef] = []
         self.swc_behavior: Optional[SwcInternalBehavior] = None
         self.synchronizeds: list[Any] = []
 

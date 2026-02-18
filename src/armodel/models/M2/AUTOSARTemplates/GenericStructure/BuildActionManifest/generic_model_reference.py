@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     Ref,
@@ -30,13 +31,13 @@ class GenericModelReference(ARObject):
 
     base: NameToken
     dest: NameToken
-    ref: Ref
+    ref_ref: ARRef
     def __init__(self) -> None:
         """Initialize GenericModelReference."""
         super().__init__()
         self.base: NameToken = None
         self.dest: NameToken = None
-        self.ref: Ref = None
+        self.ref_ref: ARRef = None
 
 
 class GenericModelReferenceBuilder:

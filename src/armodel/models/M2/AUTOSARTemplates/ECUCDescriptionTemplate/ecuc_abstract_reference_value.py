@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_value import (
     EcucIndexableValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -34,13 +35,13 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
         return True
 
     annotations: list[Annotation]
-    definition: Optional[Any]
+    definition_ref: Optional[ARRef]
     is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""
         super().__init__()
         self.annotations: list[Annotation] = []
-        self.definition: Optional[Any] = None
+        self.definition_ref: Optional[ARRef] = None
         self.is_auto_value: Optional[Boolean] = None
 
 

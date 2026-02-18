@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
     VerbatimString,
@@ -39,7 +40,7 @@ class SwValues(ARObject):
 
     v: Optional[Numerical]
     vf: Optional[Numerical]
-    vg: Optional[ValueGroup]
+    vg_ref: Optional[ARRef]
     vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
     def __init__(self) -> None:
@@ -47,7 +48,7 @@ class SwValues(ARObject):
         super().__init__()
         self.v: Optional[Numerical] = None
         self.vf: Optional[Numerical] = None
-        self.vg: Optional[ValueGroup] = None
+        self.vg_ref: Optional[ARRef] = None
         self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
 

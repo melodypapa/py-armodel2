@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ListEnum,
 )
@@ -36,12 +37,12 @@ class List(Paginateable):
         return False
 
     item: Item
-    type: Optional[ListEnum]
+    type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize List."""
         super().__init__()
         self.item: Item = None
-        self.type: Optional[ListEnum] = None
+        self.type_ref: Optional[ARRef] = None
 
 
 class ListBuilder:

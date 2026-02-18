@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -31,14 +32,14 @@ class ISignalMapping(ARObject):
         return False
 
     introduction: Optional[DocumentationBlock]
-    source_signal: Optional[ISignalTriggering]
-    target_signal: Optional[ISignalTriggering]
+    source_signal_ref: Optional[ARRef]
+    target_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ISignalMapping."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
-        self.source_signal: Optional[ISignalTriggering] = None
-        self.target_signal: Optional[ISignalTriggering] = None
+        self.source_signal_ref: Optional[ARRef] = None
+        self.target_signal_ref: Optional[ARRef] = None
 
 
 class ISignalMappingBuilder:

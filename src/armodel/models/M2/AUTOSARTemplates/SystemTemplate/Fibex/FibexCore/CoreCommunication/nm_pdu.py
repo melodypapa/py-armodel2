@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
     Pdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -34,14 +35,14 @@ class NmPdu(Pdu):
         """
         return False
 
-    i_signal_to_i_pdus: list[ISignalToIPduMapping]
+    i_signal_to_i_pdu_refs: list[ARRef]
     nm_data: Optional[Boolean]
     nm_vote_information: Optional[Boolean]
     unused_bit: Optional[Integer]
     def __init__(self) -> None:
         """Initialize NmPdu."""
         super().__init__()
-        self.i_signal_to_i_pdus: list[ISignalToIPduMapping] = []
+        self.i_signal_to_i_pdu_refs: list[ARRef] = []
         self.nm_data: Optional[Boolean] = None
         self.nm_vote_information: Optional[Boolean] = None
         self.unused_bit: Optional[Integer] = None

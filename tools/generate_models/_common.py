@@ -84,3 +84,56 @@ def get_python_identifier(name: str) -> tuple[str, str]:
     else:
         # Not a keyword, use as-is
         return snake_name, None
+
+
+def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity: str = "1") -> str:
+    """Convert AUTOSAR identifier to Python identifier, handling reference suffix.
+
+    Args:
+        name: AUTOSAR identifier (e.g., "SHORT-NAME" or "SW-ADDR-METHOD")
+        is_ref: Whether this is a reference type (adds '_ref' suffix if not present)
+        multiplicity: Multiplicity of the attribute (e.g., "*", "0..1", "1")
+
+    Returns:
+        Python identifier (e.g., "short_name" or "sw_addr_method_ref")
+
+    Examples:
+        >>> get_python_identifier_with_ref("SHORT-NAME", False)
+        "short_name"
+        >>> get_python_identifier_with_ref("SW-ADDR-METHOD", True)
+        "sw_addr_method_ref"
+        >>> get_python_identifier_with_ref("indications", True, "*")
+        "indication_refs"  # Singularize, then add plural s and _ref
+    """
+    # Convert to snake_case first
+    identifier = to_snake_case(name)
+
+    # If it's a reference, handle the suffix
+    if is_ref:
+        if not identifier.endswith('_ref'):
+            # For list types (multiplicity "*"), singularize first
+            # This ensures "indications" becomes "indication" before adding "s" + "_ref"
+            if multiplicity in ["*", "0..*"]:
+                # Remove trailing 's' to singularize (simple heuristic)
+                if identifier.endswith('s'):
+                    identifier = identifier[:-1]
+                # Add plural 's' and '_ref' suffix (combined as '_refs')
+                identifier = f"{identifier}_refs"
+            else:
+                # For single items, just add '_ref'
+                identifier = f"{identifier}_ref"
+
+    # Check if the resulting identifier is a Python keyword
+    python_keywords = {
+        "False", "None", "True", "and", "as", "assert", "async", "await",
+        "break", "class", "continue", "def", "del", "elif", "else", "except",
+        "finally", "for", "from", "global", "if", "import", "in", "is",
+        "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try",
+        "while", "with", "yield",
+    }
+
+    # If it's a keyword, append underscore
+    if identifier in python_keywords:
+        identifier = f"{identifier}_"
+
+    return identifier

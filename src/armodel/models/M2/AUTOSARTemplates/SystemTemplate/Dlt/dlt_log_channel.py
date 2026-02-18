@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt import (
     DltDefaultTraceStateEnum,
     LogTraceDefaultLogLevelEnum,
@@ -49,9 +50,9 @@ class DltLogChannel(Identifiable):
     log_channel_id: Optional[String]
     log_trace_default_log: Optional[LogTraceDefaultLogLevelEnum]
     non_verbose: Optional[Boolean]
-    rx_pdu_triggering_channel: Optional[PduTriggering]
+    rx_pdu_triggering_channel_ref: Optional[ARRef]
     segmentation: Optional[Boolean]
-    tx_pdu_triggering: Optional[PduTriggering]
+    tx_pdu_triggering_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DltLogChannel."""
         super().__init__()
@@ -61,9 +62,9 @@ class DltLogChannel(Identifiable):
         self.log_channel_id: Optional[String] = None
         self.log_trace_default_log: Optional[LogTraceDefaultLogLevelEnum] = None
         self.non_verbose: Optional[Boolean] = None
-        self.rx_pdu_triggering_channel: Optional[PduTriggering] = None
+        self.rx_pdu_triggering_channel_ref: Optional[ARRef] = None
         self.segmentation: Optional[Boolean] = None
-        self.tx_pdu_triggering: Optional[PduTriggering] = None
+        self.tx_pdu_triggering_ref: Optional[ARRef] = None
 
 
 class DltLogChannelBuilder:

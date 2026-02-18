@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -28,13 +29,13 @@ class ExternalTriggeringPoint(ARObject):
         """
         return False
 
-    ident: Optional[ExternalTriggeringPoint]
-    trigger: Optional[Trigger]
+    ident_ref: Optional[ARRef]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ExternalTriggeringPoint."""
         super().__init__()
-        self.ident: Optional[ExternalTriggeringPoint] = None
-        self.trigger: Optional[Trigger] = None
+        self.ident_ref: Optional[ARRef] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class ExternalTriggeringPointBuilder:

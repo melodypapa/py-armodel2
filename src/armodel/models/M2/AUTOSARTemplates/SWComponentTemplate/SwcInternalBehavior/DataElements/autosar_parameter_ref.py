@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
@@ -31,13 +32,13 @@ class AutosarParameterRef(ARObject):
         """
         return False
 
-    autosar: Optional[DataPrototype]
-    local_parameter: Optional[DataPrototype]
+    autosar_ref: Optional[ARRef]
+    local_parameter_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()
-        self.autosar: Optional[DataPrototype] = None
-        self.local_parameter: Optional[DataPrototype] = None
+        self.autosar_ref: Optional[ARRef] = None
+        self.local_parameter_ref: Optional[ARRef] = None
 
 
 class AutosarParameterRefBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
     AbstractServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     AnyServiceInstanceId,
     AnyVersionString,
@@ -51,7 +52,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
     allowed_services: list[NetworkEndpoint]
     auto_require: Optional[Boolean]
     blocklisteds: list[SomeipServiceVersion]
-    consumed_event_groups: list[ConsumedEventGroup]
+    consumed_event_group_refs: list[ARRef]
     event_multicast: Optional[ApplicationEndpoint]
     instance: Optional[AnyServiceInstanceId]
     local_unicast: ApplicationEndpoint
@@ -68,7 +69,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         self.allowed_services: list[NetworkEndpoint] = []
         self.auto_require: Optional[Boolean] = None
         self.blocklisteds: list[SomeipServiceVersion] = []
-        self.consumed_event_groups: list[ConsumedEventGroup] = []
+        self.consumed_event_group_refs: list[ARRef] = []
         self.event_multicast: Optional[ApplicationEndpoint] = None
         self.instance: Optional[AnyServiceInstanceId] = None
         self.local_unicast: ApplicationEndpoint = None

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
@@ -29,11 +30,11 @@ class ModeInterfaceMapping(PortInterfaceMapping):
         """
         return False
 
-    mode_mapping: Optional[ModeDeclarationGroup]
+    mode_mapping_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeInterfaceMapping."""
         super().__init__()
-        self.mode_mapping: Optional[ModeDeclarationGroup] = None
+        self.mode_mapping_ref: Optional[ARRef] = None
 
 
 class ModeInterfaceMappingBuilder:

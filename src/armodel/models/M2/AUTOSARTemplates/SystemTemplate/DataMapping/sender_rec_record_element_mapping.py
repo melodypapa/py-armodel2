@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
 )
@@ -36,8 +37,8 @@ class SenderRecRecordElementMapping(ARObject):
     application_record: Optional[Any]
     complex_type: Optional[SenderRecCompositeTypeMapping]
     implementation: Optional[Any]
-    sender_to_signal: Optional[TextTableMapping]
-    signal_to: Optional[TextTableMapping]
+    sender_to_signal_ref: Optional[ARRef]
+    signal_to_ref: Optional[ARRef]
     system_signal: Optional[SystemSignal]
     def __init__(self) -> None:
         """Initialize SenderRecRecordElementMapping."""
@@ -45,8 +46,8 @@ class SenderRecRecordElementMapping(ARObject):
         self.application_record: Optional[Any] = None
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
         self.implementation: Optional[Any] = None
-        self.sender_to_signal: Optional[TextTableMapping] = None
-        self.signal_to: Optional[TextTableMapping] = None
+        self.sender_to_signal_ref: Optional[ARRef] = None
+        self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
 
 

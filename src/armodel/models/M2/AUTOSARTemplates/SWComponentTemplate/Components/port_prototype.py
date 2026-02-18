@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.client_server_annotation import (
     ClientServerAnnotation,
 )
@@ -71,7 +72,7 @@ class PortPrototype(Identifiable, ABC):
     nv_data_port_annotations: list[NvDataPortAnnotation]
     parameter_ports: list[ParameterPortAnnotation]
     sender_receivers: list[Any]
-    trigger_port_annotations: list[TriggerPortAnnotation]
+    trigger_port_annotation_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PortPrototype."""
         super().__init__()
@@ -82,7 +83,7 @@ class PortPrototype(Identifiable, ABC):
         self.nv_data_port_annotations: list[NvDataPortAnnotation] = []
         self.parameter_ports: list[ParameterPortAnnotation] = []
         self.sender_receivers: list[Any] = []
-        self.trigger_port_annotations: list[TriggerPortAnnotation] = []
+        self.trigger_port_annotation_refs: list[ARRef] = []
 
 
 class PortPrototypeBuilder:

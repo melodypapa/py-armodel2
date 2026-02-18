@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -32,14 +33,14 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
 
     base: Optional[DataInterface]
     context_datas: list[Any]
-    root_data: Optional[AutosarDataPrototype]
+    root_data_ref: Optional[ARRef]
     target_data: Optional[Any]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeElementInPortInterfaceInstanceRef."""
         super().__init__()
         self.base: Optional[DataInterface] = None
         self.context_datas: list[Any] = []
-        self.root_data: Optional[AutosarDataPrototype] = None
+        self.root_data_ref: Optional[ARRef] = None
         self.target_data: Optional[Any] = None
 
 

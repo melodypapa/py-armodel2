@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_classifier import (
     AtpClassifier,
 )
@@ -39,13 +40,13 @@ class AtpInstanceRef(ARObject, ABC):
         return True
 
     atp_base: AtpClassifier
-    atp_contexts: list[AtpPrototype]
+    atp_context_refs: list[ARRef]
     atp_target: AtpFeature
     def __init__(self) -> None:
         """Initialize AtpInstanceRef."""
         super().__init__()
         self.atp_base: AtpClassifier = None
-        self.atp_contexts: list[AtpPrototype] = []
+        self.atp_context_refs: list[ARRef] = []
         self.atp_target: AtpFeature = None
 
 

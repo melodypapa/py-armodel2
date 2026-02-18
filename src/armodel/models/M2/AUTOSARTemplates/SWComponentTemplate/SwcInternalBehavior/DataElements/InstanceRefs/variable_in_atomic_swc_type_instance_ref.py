@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
@@ -38,17 +39,17 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
 
     base: Optional[AtomicSwComponentType]
     context_datas: list[Any]
-    port_prototype: Optional[PortPrototype]
-    root_variable_data_prototype: Optional[VariableDataPrototype]
-    target_data: Optional[DataPrototype]
+    port_prototype_ref: Optional[ARRef]
+    root_variable_data_prototype_ref: Optional[ARRef]
+    target_data_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VariableInAtomicSWCTypeInstanceRef."""
         super().__init__()
         self.base: Optional[AtomicSwComponentType] = None
         self.context_datas: list[Any] = []
-        self.port_prototype: Optional[PortPrototype] = None
-        self.root_variable_data_prototype: Optional[VariableDataPrototype] = None
-        self.target_data: Optional[DataPrototype] = None
+        self.port_prototype_ref: Optional[ARRef] = None
+        self.root_variable_data_prototype_ref: Optional[ARRef] = None
+        self.target_data_ref: Optional[ARRef] = None
 
 
 class VariableInAtomicSWCTypeInstanceRefBuilder:

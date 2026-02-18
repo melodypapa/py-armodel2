@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -29,11 +30,11 @@ class EthTpConnection(TpConnection):
         """
         return False
 
-    tp_sdus: list[PduTriggering]
+    tp_sdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EthTpConnection."""
         super().__init__()
-        self.tp_sdus: list[PduTriggering] = []
+        self.tp_sdu_refs: list[ARRef] = []
 
 
 class EthTpConnectionBuilder:

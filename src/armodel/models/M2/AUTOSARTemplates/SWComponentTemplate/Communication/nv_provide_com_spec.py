@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -37,13 +38,13 @@ class NvProvideComSpec(PPortComSpec):
 
     ram_block_init: Optional[ValueSpecification]
     rom_block_init: Optional[ValueSpecification]
-    variable: Optional[VariableDataPrototype]
+    variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize NvProvideComSpec."""
         super().__init__()
         self.ram_block_init: Optional[ValueSpecification] = None
         self.rom_block_init: Optional[ValueSpecification] = None
-        self.variable: Optional[VariableDataPrototype] = None
+        self.variable_ref: Optional[ARRef] = None
 
 
 class NvProvideComSpecBuilder:

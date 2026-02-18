@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
@@ -42,16 +43,16 @@ class SdgContents(ARObject):
     sd: Optional[Sd]
     sdf: Optional[Sdf]
     sdg: Optional[Sdg]
-    sdx: Optional[Referrable]
-    sdxf: Optional[Referrable]
+    sdx_ref: Optional[ARRef]
+    sdxf_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SdgContents."""
         super().__init__()
         self.sd: Optional[Sd] = None
         self.sdf: Optional[Sdf] = None
         self.sdg: Optional[Sdg] = None
-        self.sdx: Optional[Referrable] = None
-        self.sdxf: Optional[Referrable] = None
+        self.sdx_ref: Optional[ARRef] = None
+        self.sdxf_ref: Optional[ARRef] = None
 
 
 class SdgContentsBuilder:

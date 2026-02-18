@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -27,13 +28,13 @@ class SwcBswSynchronizedTrigger(ARObject):
         """
         return False
 
-    bsw_trigger: Optional[Trigger]
-    swc_trigger: Optional[Trigger]
+    bsw_trigger_ref: Optional[ARRef]
+    swc_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcBswSynchronizedTrigger."""
         super().__init__()
-        self.bsw_trigger: Optional[Trigger] = None
-        self.swc_trigger: Optional[Trigger] = None
+        self.bsw_trigger_ref: Optional[ARRef] = None
+        self.swc_trigger_ref: Optional[ARRef] = None
 
 
 class SwcBswSynchronizedTriggerBuilder:

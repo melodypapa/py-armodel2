@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
@@ -30,13 +31,13 @@ class DelegationSwConnector(SwConnector):
         """
         return False
 
-    inner_port_instance_ref: Optional[PortPrototype]
-    outer_port: Optional[PortPrototype]
+    inner_port_instance_ref: Optional[ARRef]
+    outer_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DelegationSwConnector."""
         super().__init__()
-        self.inner_port_instance_ref: Optional[PortPrototype] = None
-        self.outer_port: Optional[PortPrototype] = None
+        self.inner_port_instance_ref: Optional[ARRef] = None
+        self.outer_port_ref: Optional[ARRef] = None
 
 
 class DelegationSwConnectorBuilder:

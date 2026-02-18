@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -27,11 +28,11 @@ class DdsCpServiceInstanceOperation(ARObject):
         """
         return False
 
-    dds_operation: Optional[PduTriggering]
+    dds_operation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstanceOperation."""
         super().__init__()
-        self.dds_operation: Optional[PduTriggering] = None
+        self.dds_operation_ref: Optional[ARRef] = None
 
 
 class DdsCpServiceInstanceOperationBuilder:

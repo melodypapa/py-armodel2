@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
 )
@@ -50,7 +51,7 @@ class CompositionSwComponentType(SwComponentType):
     components: list[Any]
     connectors: list[SwConnector]
     constant_values: list[ConstantSpecification]
-    data_types: list[DataTypeMappingSet]
+    data_type_refs: list[ARRef]
     instantiation_rte_events: list[InstantiationRTEEventProps]
     physical: Optional[PhysicalDimension]
     def __init__(self) -> None:
@@ -59,7 +60,7 @@ class CompositionSwComponentType(SwComponentType):
         self.components: list[Any] = []
         self.connectors: list[SwConnector] = []
         self.constant_values: list[ConstantSpecification] = []
-        self.data_types: list[DataTypeMappingSet] = []
+        self.data_type_refs: list[ARRef] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
         self.physical: Optional[PhysicalDimension] = None
 

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb import (
     TDEventVfb,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -38,14 +39,14 @@ class TDEventVfbPort(TDEventVfb, ABC):
         return True
 
     is_external: Optional[Boolean]
-    port: Optional[PortPrototype]
-    port_prototype: Optional[PortPrototypeBlueprint]
+    port_ref: Optional[ARRef]
+    port_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventVfbPort."""
         super().__init__()
         self.is_external: Optional[Boolean] = None
-        self.port: Optional[PortPrototype] = None
-        self.port_prototype: Optional[PortPrototypeBlueprint] = None
+        self.port_ref: Optional[ARRef] = None
+        self.port_prototype_ref: Optional[ARRef] = None
 
 
 class TDEventVfbPortBuilder:

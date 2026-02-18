@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
 )
@@ -29,11 +30,11 @@ class GeneralPurposeConnection(ARElement):
         """
         return False
 
-    pdu_triggerings: list[PduTriggering]
+    pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize GeneralPurposeConnection."""
         super().__init__()
-        self.pdu_triggerings: list[PduTriggering] = []
+        self.pdu_triggering_refs: list[ARRef] = []
 
 
 class GeneralPurposeConnectionBuilder:

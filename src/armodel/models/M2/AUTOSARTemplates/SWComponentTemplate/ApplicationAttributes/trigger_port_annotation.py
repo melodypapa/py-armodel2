@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -29,11 +30,11 @@ class TriggerPortAnnotation(GeneralAnnotation):
         """
         return False
 
-    trigger: Optional[Trigger]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TriggerPortAnnotation."""
         super().__init__()
-        self.trigger: Optional[Trigger] = None
+        self.trigger_ref: Optional[ARRef] = None
 
 
 class TriggerPortAnnotationBuilder:

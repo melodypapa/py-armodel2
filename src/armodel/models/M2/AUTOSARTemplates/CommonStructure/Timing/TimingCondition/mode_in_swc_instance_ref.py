@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -38,16 +39,16 @@ class ModeInSwcInstanceRef(ARObject):
 
     base: Optional[SwComponentType]
     contexts: list[Any]
-    context_mode: Optional[ModeDeclarationGroup]
-    context_port: Optional[PortPrototype]
+    context_mode_ref: Optional[ARRef]
+    context_port_ref: Optional[ARRef]
     target_mode: Optional[ModeDeclaration]
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()
         self.base: Optional[SwComponentType] = None
         self.contexts: list[Any] = []
-        self.context_mode: Optional[ModeDeclarationGroup] = None
-        self.context_port: Optional[PortPrototype] = None
+        self.context_mode_ref: Optional[ARRef] = None
+        self.context_port_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
 
 

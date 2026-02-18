@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.mode_access_point_ident import (
     ModeAccessPointIdent,
 )
@@ -32,12 +33,12 @@ class ModeAccessPoint(ARObject):
         return False
 
     ident: Optional[ModeAccessPointIdent]
-    mode_group_instance_ref: Optional[ModeDeclarationGroup]
+    mode_group_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeAccessPoint."""
         super().__init__()
         self.ident: Optional[ModeAccessPointIdent] = None
-        self.mode_group_instance_ref: Optional[ModeDeclarationGroup] = None
+        self.mode_group_instance_ref: Optional[ARRef] = None
 
 
 class ModeAccessPointBuilder:

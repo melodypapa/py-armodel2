@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     EventGroupControlTypeEnum,
 )
@@ -29,11 +30,11 @@ class SoAdRoutingGroup(FibexElement):
         """
         return False
 
-    event_group: Optional[EventGroupControlTypeEnum]
+    event_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SoAdRoutingGroup."""
         super().__init__()
-        self.event_group: Optional[EventGroupControlTypeEnum] = None
+        self.event_group_ref: Optional[ARRef] = None
 
 
 class SoAdRoutingGroupBuilder:

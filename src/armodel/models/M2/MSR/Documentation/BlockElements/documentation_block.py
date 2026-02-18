@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.Figure.ml_figure import (
     MlFigure,
 )
@@ -60,11 +61,11 @@ class DocumentationBlock(ARObject):
         """
         return False
 
-    def_list: Optional[DefList]
+    def_list_ref: Optional[ARRef]
     figure: Optional[MlFigure]
     formula: Optional[MlFormula]
-    labeled_list_label: Optional[LabeledList]
-    list: Optional[List]
+    labeled_list_label_ref: Optional[ARRef]
+    list_ref: Optional[ARRef]
     msr_query_p2: Optional[MsrQueryP2]
     note: Optional[Note]
     p: Optional[Any]
@@ -74,11 +75,11 @@ class DocumentationBlock(ARObject):
     def __init__(self) -> None:
         """Initialize DocumentationBlock."""
         super().__init__()
-        self.def_list: Optional[DefList] = None
+        self.def_list_ref: Optional[ARRef] = None
         self.figure: Optional[MlFigure] = None
         self.formula: Optional[MlFormula] = None
-        self.labeled_list_label: Optional[LabeledList] = None
-        self.list: Optional[List] = None
+        self.labeled_list_label_ref: Optional[ARRef] = None
+        self.list_ref: Optional[ARRef] = None
         self.msr_query_p2: Optional[MsrQueryP2] = None
         self.note: Optional[Note] = None
         self.p: Optional[Any] = None

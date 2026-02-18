@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -31,14 +32,14 @@ class FrameMapping(ARObject):
         return False
 
     introduction: Optional[DocumentationBlock]
-    source_frame: Optional[FrameTriggering]
-    target_frame: Optional[FrameTriggering]
+    source_frame_ref: Optional[ARRef]
+    target_frame_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize FrameMapping."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
-        self.source_frame: Optional[FrameTriggering] = None
-        self.target_frame: Optional[FrameTriggering] = None
+        self.source_frame_ref: Optional[ARRef] = None
+        self.target_frame_ref: Optional[ARRef] = None
 
 
 class FrameMappingBuilder:

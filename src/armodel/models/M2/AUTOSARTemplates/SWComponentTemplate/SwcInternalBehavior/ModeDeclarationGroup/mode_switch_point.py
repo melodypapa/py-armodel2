@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
@@ -30,11 +31,11 @@ class ModeSwitchPoint(AbstractAccessPoint):
         """
         return False
 
-    mode_group_swc_instance_ref: Optional[ModeDeclarationGroup]
+    mode_group_swc_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeSwitchPoint."""
         super().__init__()
-        self.mode_group_swc_instance_ref: Optional[ModeDeclarationGroup] = None
+        self.mode_group_swc_instance_ref: Optional[ARRef] = None
 
 
 class ModeSwitchPointBuilder:

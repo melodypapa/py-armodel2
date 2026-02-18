@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
 )
@@ -52,19 +53,19 @@ class InternalBehavior(Identifiable, ABC):
 
     constants: list[ParameterDataPrototype]
     constant_values: list[ConstantSpecification]
-    data_types: list[DataTypeMappingSet]
+    data_type_refs: list[ARRef]
     exclusive_areas: list[ExclusiveArea]
     exclusive_area_nestings: list[ExclusiveAreaNestingOrder]
-    static_memories: list[VariableDataPrototype]
+    static_memorie_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()
         self.constants: list[ParameterDataPrototype] = []
         self.constant_values: list[ConstantSpecification] = []
-        self.data_types: list[DataTypeMappingSet] = []
+        self.data_type_refs: list[ARRef] = []
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
-        self.static_memories: list[VariableDataPrototype] = []
+        self.static_memorie_refs: list[ARRef] = []
 
 
 class InternalBehaviorBuilder:

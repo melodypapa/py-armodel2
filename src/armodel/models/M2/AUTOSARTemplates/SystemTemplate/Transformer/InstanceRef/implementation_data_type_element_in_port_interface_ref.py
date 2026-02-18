@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
     DataPrototypeReference,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
@@ -36,13 +37,13 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
         return False
 
     contexts: list[Any]
-    root_data: Optional[AutosarDataPrototype]
+    root_data_ref: Optional[ARRef]
     target: Optional[AbstractImplementationDataType]
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElementInPortInterfaceRef."""
         super().__init__()
         self.contexts: list[Any] = []
-        self.root_data: Optional[AutosarDataPrototype] = None
+        self.root_data_ref: Optional[ARRef] = None
         self.target: Optional[AbstractImplementationDataType] = None
 
 

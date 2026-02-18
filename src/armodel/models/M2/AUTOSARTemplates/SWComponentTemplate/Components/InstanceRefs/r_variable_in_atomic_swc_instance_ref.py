@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.variable_in_atomic_swc_instance_ref import (
     VariableInAtomicSwcInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -33,12 +34,12 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
         return False
 
     context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
-    target_data_element: Optional[VariableDataPrototype]
+    target_data_element_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RVariableInAtomicSwcInstanceRef."""
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
-        self.target_data_element: Optional[VariableDataPrototype] = None
+        self.target_data_element_ref: Optional[ARRef] = None
 
 
 class RVariableInAtomicSwcInstanceRefBuilder:

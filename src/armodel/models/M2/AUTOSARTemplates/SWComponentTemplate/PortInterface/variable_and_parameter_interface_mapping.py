@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_prototype_mapping import (
     DataPrototypeMapping,
 )
@@ -30,11 +31,11 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
         """
         return False
 
-    data_mappings: list[DataPrototypeMapping]
+    data_mapping_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize VariableAndParameterInterfaceMapping."""
         super().__init__()
-        self.data_mappings: list[DataPrototypeMapping] = []
+        self.data_mapping_refs: list[ARRef] = []
 
 
 class VariableAndParameterInterfaceMappingBuilder:

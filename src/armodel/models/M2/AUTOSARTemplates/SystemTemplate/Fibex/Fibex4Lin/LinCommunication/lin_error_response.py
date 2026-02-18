@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_triggering import (
     ISignalTriggering,
 )
@@ -27,11 +28,11 @@ class LinErrorResponse(ARObject):
         """
         return False
 
-    response_error: Optional[ISignalTriggering]
+    response_error_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize LinErrorResponse."""
         super().__init__()
-        self.response_error: Optional[ISignalTriggering] = None
+        self.response_error_ref: Optional[ARRef] = None
 
 
 class LinErrorResponseBuilder:

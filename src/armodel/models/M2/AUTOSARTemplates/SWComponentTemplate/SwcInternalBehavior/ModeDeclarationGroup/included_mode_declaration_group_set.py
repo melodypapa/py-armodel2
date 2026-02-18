@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -30,12 +31,12 @@ class IncludedModeDeclarationGroupSet(ARObject):
         """
         return False
 
-    modes: list[ModeDeclarationGroup]
+    mode_refs: list[ARRef]
     prefix: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize IncludedModeDeclarationGroupSet."""
         super().__init__()
-        self.modes: list[ModeDeclarationGroup] = []
+        self.mode_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
 
 

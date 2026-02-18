@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     SOMEIPMessageTypeEnum,
 )
@@ -42,7 +43,7 @@ class SOMEIPTransformationISignalProps(ARObject):
     size_of_string: Optional[PositiveInteger]
     size_of_struct: Optional[PositiveInteger]
     size_of_union: Optional[PositiveInteger]
-    tlv_data_ids: list[TlvDataIdDefinitionSet]
+    tlv_data_id_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SOMEIPTransformationISignalProps."""
         super().__init__()
@@ -54,7 +55,7 @@ class SOMEIPTransformationISignalProps(ARObject):
         self.size_of_string: Optional[PositiveInteger] = None
         self.size_of_struct: Optional[PositiveInteger] = None
         self.size_of_union: Optional[PositiveInteger] = None
-        self.tlv_data_ids: list[TlvDataIdDefinitionSet] = []
+        self.tlv_data_id_refs: list[ARRef] = []
 
 
 class SOMEIPTransformationISignalPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.app_os_task_proxy_to_ecu_task_proxy_mapping import (
     AppOsTaskProxyToEcuTaskProxyMapping,
 )
@@ -86,13 +87,13 @@ class SystemMapping(Identifiable):
     applications: list[ApplicationPartitionToEcuPartitionMapping]
     app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping]
     coms: list[ComManagementMapping]
-    crypto_services: list[CryptoServiceMapping]
-    data_mappings: list[DataMapping]
+    crypto_service_refs: list[ARRef]
+    data_mapping_refs: list[ARRef]
     dds_i_signal_tos: list[DdsCpISignalToDdsTopicMapping]
-    ecu_resources: list[ECUMapping]
+    ecu_resource_refs: list[ARRef]
     j1939_controllers: list[Any]
-    mappings: list[MappingConstraint]
-    pnc_mappings: list[PncMapping]
+    mapping_refs: list[ARRef]
+    pnc_mapping_refs: list[ARRef]
     port_element_tos: list[PortElementToCommunicationResourceMapping]
     resources: list[EcuResourceEstimation]
     resource_tos: list[CpSoftwareCluster]
@@ -102,9 +103,9 @@ class SystemMapping(Identifiable):
     software_clusters: list[Any]
     sw_clusters: list[Any]
     swc_tos: list[SwcToApplicationPartitionMapping]
-    sw_impl_mappings: list[SwcToImplMapping]
-    sw_mappings: list[SwcToEcuMapping]
-    system_signal_group_tos: list[SystemSignalGroupToCommunicationResourceMapping]
+    sw_impl_mapping_refs: list[ARRef]
+    sw_mapping_refs: list[ARRef]
+    system_signal_group_to_refs: list[ARRef]
     system_signal_tos: list[SystemSignalToCommunicationResourceMapping]
     def __init__(self) -> None:
         """Initialize SystemMapping."""
@@ -112,13 +113,13 @@ class SystemMapping(Identifiable):
         self.applications: list[ApplicationPartitionToEcuPartitionMapping] = []
         self.app_os_tasks: list[AppOsTaskProxyToEcuTaskProxyMapping] = []
         self.coms: list[ComManagementMapping] = []
-        self.crypto_services: list[CryptoServiceMapping] = []
-        self.data_mappings: list[DataMapping] = []
+        self.crypto_service_refs: list[ARRef] = []
+        self.data_mapping_refs: list[ARRef] = []
         self.dds_i_signal_tos: list[DdsCpISignalToDdsTopicMapping] = []
-        self.ecu_resources: list[ECUMapping] = []
+        self.ecu_resource_refs: list[ARRef] = []
         self.j1939_controllers: list[Any] = []
-        self.mappings: list[MappingConstraint] = []
-        self.pnc_mappings: list[PncMapping] = []
+        self.mapping_refs: list[ARRef] = []
+        self.pnc_mapping_refs: list[ARRef] = []
         self.port_element_tos: list[PortElementToCommunicationResourceMapping] = []
         self.resources: list[EcuResourceEstimation] = []
         self.resource_tos: list[CpSoftwareCluster] = []
@@ -128,9 +129,9 @@ class SystemMapping(Identifiable):
         self.software_clusters: list[Any] = []
         self.sw_clusters: list[Any] = []
         self.swc_tos: list[SwcToApplicationPartitionMapping] = []
-        self.sw_impl_mappings: list[SwcToImplMapping] = []
-        self.sw_mappings: list[SwcToEcuMapping] = []
-        self.system_signal_group_tos: list[SystemSignalGroupToCommunicationResourceMapping] = []
+        self.sw_impl_mapping_refs: list[ARRef] = []
+        self.sw_mapping_refs: list[ARRef] = []
+        self.system_signal_group_to_refs: list[ARRef] = []
         self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
 
 

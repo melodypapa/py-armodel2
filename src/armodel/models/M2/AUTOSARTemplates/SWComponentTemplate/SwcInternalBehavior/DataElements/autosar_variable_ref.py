@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -29,12 +30,12 @@ class AutosarVariableRef(ARObject):
         return False
 
     autosar_variable: Optional[Any]
-    local_variable: Optional[VariableDataPrototype]
+    local_variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AutosarVariableRef."""
         super().__init__()
         self.autosar_variable: Optional[Any] = None
-        self.local_variable: Optional[VariableDataPrototype] = None
+        self.local_variable_ref: Optional[ARRef] = None
 
 
 class AutosarVariableRefBuilder:

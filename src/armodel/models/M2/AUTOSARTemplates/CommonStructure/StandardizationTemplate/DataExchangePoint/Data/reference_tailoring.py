@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
     ClassTailoring,
 )
@@ -33,12 +34,12 @@ class ReferenceTailoring(AttributeTailoring):
         return False
 
     type_tailorings: list[ClassTailoring]
-    unresolved_restriction: Optional[UnresolvedReferenceRestrictionWithSeverity]
+    unresolved_restriction_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ReferenceTailoring."""
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
-        self.unresolved_restriction: Optional[UnresolvedReferenceRestrictionWithSeverity] = None
+        self.unresolved_restriction_ref: Optional[ARRef] = None
 
 
 class ReferenceTailoringBuilder:

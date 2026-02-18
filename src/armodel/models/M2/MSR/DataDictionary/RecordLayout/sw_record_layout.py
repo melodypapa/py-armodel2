@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
     SwRecordLayoutGroup,
 )
@@ -30,11 +31,11 @@ class SwRecordLayout(ARElement):
         """
         return False
 
-    sw_record: Optional[SwRecordLayoutGroup]
+    sw_record_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwRecordLayout."""
         super().__init__()
-        self.sw_record: Optional[SwRecordLayoutGroup] = None
+        self.sw_record_ref: Optional[ARRef] = None
 
 
 class SwRecordLayoutBuilder:

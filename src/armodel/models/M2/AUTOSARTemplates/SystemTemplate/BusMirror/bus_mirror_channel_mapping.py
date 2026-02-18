@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror import (
     MirroringProtocolEnum,
 )
@@ -39,14 +40,14 @@ class BusMirrorChannelMapping(FibexElement, ABC):
     mirroring: Optional[MirroringProtocolEnum]
     source_channel: Optional[BusMirrorChannel]
     target_channel: Optional[BusMirrorChannel]
-    target_pdus: list[PduTriggering]
+    target_pdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize BusMirrorChannelMapping."""
         super().__init__()
         self.mirroring: Optional[MirroringProtocolEnum] = None
         self.source_channel: Optional[BusMirrorChannel] = None
         self.target_channel: Optional[BusMirrorChannel] = None
-        self.target_pdus: list[PduTriggering] = []
+        self.target_pdu_refs: list[ARRef] = []
 
 
 class BusMirrorChannelMappingBuilder:

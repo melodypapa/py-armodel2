@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
 )
@@ -36,12 +37,12 @@ class ParameterProvideComSpec(PPortComSpec):
         return False
 
     init_value: Optional[ValueSpecification]
-    parameter: Optional[ParameterDataPrototype]
+    parameter_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ParameterProvideComSpec."""
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
-        self.parameter: Optional[ParameterDataPrototype] = None
+        self.parameter_ref: Optional[ARRef] = None
 
 
 class ParameterProvideComSpecBuilder:

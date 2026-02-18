@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
     ScheduleTableEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
     LinFrameTriggering,
 )
@@ -29,11 +30,11 @@ class ApplicationEntry(ScheduleTableEntry):
         """
         return False
 
-    frame_triggering: Optional[LinFrameTriggering]
+    frame_triggering_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ApplicationEntry."""
         super().__init__()
-        self.frame_triggering: Optional[LinFrameTriggering] = None
+        self.frame_triggering_ref: Optional[ARRef] = None
 
 
 class ApplicationEntryBuilder:

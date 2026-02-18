@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_bsw import (
     TDEventBsw,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -34,14 +35,14 @@ class TDEventBswModeDeclaration(TDEventBsw):
 
     entry_mode: Optional[ModeDeclaration]
     exit_mode: Optional[ModeDeclaration]
-    mode: Optional[ModeDeclarationGroup]
+    mode_ref: Optional[ARRef]
     td_event_bsw_declaration_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswModeDeclaration."""
         super().__init__()
         self.entry_mode: Optional[ModeDeclaration] = None
         self.exit_mode: Optional[ModeDeclaration] = None
-        self.mode: Optional[ModeDeclarationGroup] = None
+        self.mode_ref: Optional[ARRef] = None
         self.td_event_bsw_declaration_type: Optional[Any] = None
 
 

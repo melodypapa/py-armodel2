@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List
 
-from ._common import get_python_identifier, to_snake_case
+from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case
 from .type_utils import (
     detect_circular_import,
     get_python_type,
@@ -128,7 +128,8 @@ def generate_class_code(
                     for attr_name, attr_info in cls["attributes"].items():
                         attr_type = attr_info["type"]
                         multiplicity = attr_info["multiplicity"]
-                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
+                        is_ref = attr_info.get("is_ref", False)
+                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity, "is_ref": is_ref}
                     break
 
         # Check if we need Any type
@@ -165,6 +166,10 @@ def generate_class_code(
         # Add ARObject import for classes that inherit from ARObject
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
+    # Add ARRef import if any attribute has is_ref=True
+    if attribute_types and any(attr_info.get("is_ref", False) for attr_info in attribute_types.values()):
+        code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef\n"
+
     # Collect attribute types for imports (if not already collected for non-ARObject classes)
     if class_name == "ARObject":
         attribute_types = {}
@@ -175,7 +180,8 @@ def generate_class_code(
                     for attr_name, attr_info in cls["attributes"].items():
                         attr_type = attr_info["type"]
                         multiplicity = attr_info["multiplicity"]
-                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity}
+                        is_ref = attr_info.get("is_ref", False)
+                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity, "is_ref": is_ref}
                     break
 
     # Add type imports if needed
@@ -366,12 +372,13 @@ class {class_name}:
         for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
 
             # Determine Python type
-            python_type = get_python_type(attr_type, multiplicity, package_data)
+            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
 
-            # Get Python identifier
-            python_name, _ = get_python_identifier(attr_name)
+            # Get Python identifier with Ref suffix if needed
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
 
             # Add class-level annotation
             code += f"    {python_name}: {python_type}\n"
@@ -389,9 +396,10 @@ class {class_name}:
         for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
 
             # Determine Python type
-            python_type = get_python_type(attr_type, multiplicity, package_data)
+            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
 
             # Determine initial value based on type
             # Optional types initialize with None
@@ -404,8 +412,8 @@ class {class_name}:
             else:
                 initial_value = "None"
 
-            # Get Python identifier (handles Python keywords)
-            python_name, _ = get_python_identifier(attr_name)
+            # Get Python identifier with Ref suffix if needed
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
             attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
             code += attr_code
 

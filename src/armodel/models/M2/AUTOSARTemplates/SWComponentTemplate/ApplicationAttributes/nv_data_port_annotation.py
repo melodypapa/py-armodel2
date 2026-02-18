@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -29,11 +30,11 @@ class NvDataPortAnnotation(GeneralAnnotation):
         """
         return False
 
-    variable: Optional[VariableDataPrototype]
+    variable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize NvDataPortAnnotation."""
         super().__init__()
-        self.variable: Optional[VariableDataPrototype] = None
+        self.variable_ref: Optional[ARRef] = None
 
 
 class NvDataPortAnnotationBuilder:

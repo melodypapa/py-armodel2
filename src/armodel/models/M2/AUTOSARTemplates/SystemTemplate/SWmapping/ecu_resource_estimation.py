@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -40,7 +41,7 @@ class EcuResourceEstimation(ARObject):
     ecu_instance: Optional[EcuInstance]
     introduction: Optional[DocumentationBlock]
     rte_resource: Optional[ResourceConsumption]
-    sw_comp_to_ecus: list[SwcToEcuMapping]
+    sw_comp_to_ecu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EcuResourceEstimation."""
         super().__init__()
@@ -48,7 +49,7 @@ class EcuResourceEstimation(ARObject):
         self.ecu_instance: Optional[EcuInstance] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
-        self.sw_comp_to_ecus: list[SwcToEcuMapping] = []
+        self.sw_comp_to_ecu_refs: list[ARRef] = []
 
 
 class EcuResourceEstimationBuilder:

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -31,18 +32,18 @@ class NvBlockDataMapping(ARObject):
         return False
 
     bitfield_text_table: Optional[PositiveInteger]
-    nv_ram_block: Optional[AutosarVariableRef]
-    read_nv_data: Optional[AutosarVariableRef]
-    written_nv_data: Optional[AutosarVariableRef]
-    written_read_nv: Optional[AutosarVariableRef]
+    nv_ram_block_ref: Optional[ARRef]
+    read_nv_data_ref: Optional[ARRef]
+    written_nv_data_ref: Optional[ARRef]
+    written_read_nv_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize NvBlockDataMapping."""
         super().__init__()
         self.bitfield_text_table: Optional[PositiveInteger] = None
-        self.nv_ram_block: Optional[AutosarVariableRef] = None
-        self.read_nv_data: Optional[AutosarVariableRef] = None
-        self.written_nv_data: Optional[AutosarVariableRef] = None
-        self.written_read_nv: Optional[AutosarVariableRef] = None
+        self.nv_ram_block_ref: Optional[ARRef] = None
+        self.read_nv_data_ref: Optional[ARRef] = None
+        self.written_nv_data_ref: Optional[ARRef] = None
+        self.written_read_nv_ref: Optional[ARRef] = None
 
 
 class NvBlockDataMappingBuilder:

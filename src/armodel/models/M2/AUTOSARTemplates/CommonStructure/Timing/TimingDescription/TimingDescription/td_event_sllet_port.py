@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_sllet import (
     TDEventSLLET,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
@@ -29,11 +30,11 @@ class TDEventSLLETPort(TDEventSLLET):
         """
         return False
 
-    port: Optional[PortPrototype]
+    port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventSLLETPort."""
         super().__init__()
-        self.port: Optional[PortPrototype] = None
+        self.port_ref: Optional[ARRef] = None
 
 
 class TDEventSLLETPortBuilder:

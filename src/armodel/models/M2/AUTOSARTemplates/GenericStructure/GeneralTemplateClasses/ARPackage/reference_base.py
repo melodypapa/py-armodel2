@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Identifier,
@@ -35,7 +36,7 @@ class ReferenceBase(ARObject):
         """
         return False
 
-    global_elements: list[ReferrableSubtypesEnum]
+    global_element_refs: list[ARRef]
     global_ins: list[ARPackage]
     is_default: Boolean
     package: Optional[ARPackage]
@@ -43,7 +44,7 @@ class ReferenceBase(ARObject):
     def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()
-        self.global_elements: list[ReferrableSubtypesEnum] = []
+        self.global_element_refs: list[ARRef] = []
         self.global_ins: list[ARPackage] = []
         self.is_default: Boolean = None
         self.package: Optional[ARPackage] = None

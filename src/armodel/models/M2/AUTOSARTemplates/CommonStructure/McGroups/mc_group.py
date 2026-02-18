@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_function import (
     McFunction,
 )
@@ -34,16 +35,16 @@ class McGroup(ARElement):
         return False
 
     mc_functions: list[McFunction]
-    ref_calprm_set: Optional[McGroupDataRefSet]
-    ref: Optional[McGroupDataRefSet]
-    sub_groups: list[McGroup]
+    ref_calprm_set_ref: Optional[ARRef]
+    ref_ref: Optional[ARRef]
+    sub_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize McGroup."""
         super().__init__()
         self.mc_functions: list[McFunction] = []
-        self.ref_calprm_set: Optional[McGroupDataRefSet] = None
-        self.ref: Optional[McGroupDataRefSet] = None
-        self.sub_groups: list[McGroup] = []
+        self.ref_calprm_set_ref: Optional[ARRef] = None
+        self.ref_ref: Optional[ARRef] = None
+        self.sub_group_refs: list[ARRef] = []
 
 
 class McGroupBuilder:

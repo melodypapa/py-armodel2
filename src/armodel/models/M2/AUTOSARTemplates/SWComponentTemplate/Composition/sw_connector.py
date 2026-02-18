@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
@@ -32,11 +33,11 @@ class SwConnector(Identifiable, ABC):
         """
         return True
 
-    mapping: Optional[PortInterfaceMapping]
+    mapping_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwConnector."""
         super().__init__()
-        self.mapping: Optional[PortInterfaceMapping] = None
+        self.mapping_ref: Optional[ARRef] = None
 
 
 class SwConnectorBuilder:

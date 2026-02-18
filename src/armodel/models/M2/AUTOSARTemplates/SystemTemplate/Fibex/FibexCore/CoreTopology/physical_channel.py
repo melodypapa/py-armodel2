@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
@@ -42,18 +43,18 @@ class PhysicalChannel(Identifiable, ABC):
         return True
 
     comm_connectors: list[CommunicationConnector]
-    frame_triggerings: list[FrameTriggering]
-    i_signals: list[ISignalTriggering]
+    frame_triggering_refs: list[ARRef]
+    i_signal_refs: list[ARRef]
     manageds: list[PhysicalChannel]
-    pdu_triggerings: list[PduTriggering]
+    pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
         self.comm_connectors: list[CommunicationConnector] = []
-        self.frame_triggerings: list[FrameTriggering] = []
-        self.i_signals: list[ISignalTriggering] = []
+        self.frame_triggering_refs: list[ARRef] = []
+        self.i_signal_refs: list[ARRef] = []
         self.manageds: list[PhysicalChannel] = []
-        self.pdu_triggerings: list[PduTriggering] = []
+        self.pdu_triggering_refs: list[ARRef] = []
 
 
 class PhysicalChannelBuilder:

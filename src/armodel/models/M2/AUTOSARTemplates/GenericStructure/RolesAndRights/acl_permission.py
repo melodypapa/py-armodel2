@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights import (
     AclScopeEnum,
 )
@@ -43,7 +44,7 @@ class AclPermission(ARElement):
         return False
 
     acl_contexts: list[NameToken]
-    acl_object_sets: list[AclObjectSet]
+    acl_object_set_refs: list[ARRef]
     acl_operations: list[AclOperation]
     acl_roles: list[AclRole]
     acl_scope: AclScopeEnum
@@ -51,7 +52,7 @@ class AclPermission(ARElement):
         """Initialize AclPermission."""
         super().__init__()
         self.acl_contexts: list[NameToken] = []
-        self.acl_object_sets: list[AclObjectSet] = []
+        self.acl_object_set_refs: list[ARRef] = []
         self.acl_operations: list[AclOperation] = []
         self.acl_roles: list[AclRole] = []
         self.acl_scope: AclScopeEnum = None

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
     DiagnosticJ1939Node,
 )
@@ -33,12 +34,12 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         return False
 
     node: Optional[DiagnosticJ1939Node]
-    sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype]
+    sw_component_prototype_composition_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
         self.node: Optional[DiagnosticJ1939Node] = None
-        self.sw_component_prototype_composition_instance_ref: Optional[SwComponentPrototype] = None
+        self.sw_component_prototype_composition_instance_ref: Optional[ARRef] = None
 
 
 class DiagnosticJ1939SwMappingBuilder:

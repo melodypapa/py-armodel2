@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
@@ -33,14 +34,14 @@ class EcucDestinationUriPolicy(ARObject):
     containers: list[EcucContainerDef]
     destination_uri: Optional[Any]
     parameters: list[EcucParameterDef]
-    references: list[Any]
+    reference_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriPolicy."""
         super().__init__()
         self.containers: list[EcucContainerDef] = []
         self.destination_uri: Optional[Any] = None
         self.parameters: list[EcucParameterDef] = []
-        self.references: list[Any] = []
+        self.reference_refs: list[ARRef] = []
 
 
 class EcucDestinationUriPolicyBuilder:

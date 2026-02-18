@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -34,14 +35,14 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         return False
 
     enhanced_mode: Optional[Boolean]
-    mode_group: Optional[ModeDeclarationGroup]
+    mode_group_ref: Optional[ARRef]
     mode_switched_ack: Optional[Any]
     queue_length: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeSwitchSenderComSpec."""
         super().__init__()
         self.enhanced_mode: Optional[Boolean] = None
-        self.mode_group: Optional[ModeDeclarationGroup] = None
+        self.mode_group_ref: Optional[ARRef] = None
         self.mode_switched_ack: Optional[Any] = None
         self.queue_length: Optional[PositiveInteger] = None
 

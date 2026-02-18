@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -35,13 +36,13 @@ class EndToEndProtectionISignalIPdu(ARObject):
         return False
 
     data_offset: Optional[Integer]
-    i_signal_group: Optional[ISignalGroup]
+    i_signal_group_ref: Optional[ARRef]
     i_signal_i_pdu: Optional[ISignalIPdu]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
         self.data_offset: Optional[Integer] = None
-        self.i_signal_group: Optional[ISignalGroup] = None
+        self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_i_pdu: Optional[ISignalIPdu] = None
 
 

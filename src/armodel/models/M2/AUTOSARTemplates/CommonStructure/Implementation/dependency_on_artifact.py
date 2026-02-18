@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     DependencyUsageEnum,
 )
@@ -34,12 +35,12 @@ class DependencyOnArtifact(Identifiable):
         return False
 
     artifact: Optional[AutosarEngineeringObject]
-    usages: list[DependencyUsageEnum]
+    usage_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
-        self.usages: list[DependencyUsageEnum] = []
+        self.usage_refs: list[ARRef] = []
 
 
 class DependencyOnArtifactBuilder:

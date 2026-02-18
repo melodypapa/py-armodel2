@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -44,23 +45,23 @@ class EventHandler(Identifiable):
         """
         return False
 
-    consumed_event_groups: list[ConsumedEventGroup]
+    consumed_event_group_refs: list[ARRef]
     event_group: Optional[PositiveInteger]
     event_multicast: Optional[ApplicationEndpoint]
     multicast: Optional[PositiveInteger]
     pdu_activation_routings: list[PduActivationRoutingGroup]
-    routing_groups: list[SoAdRoutingGroup]
+    routing_group_refs: list[ARRef]
     sd_server_config: Optional[Any]
     sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig]
     def __init__(self) -> None:
         """Initialize EventHandler."""
         super().__init__()
-        self.consumed_event_groups: list[ConsumedEventGroup] = []
+        self.consumed_event_group_refs: list[ARRef] = []
         self.event_group: Optional[PositiveInteger] = None
         self.event_multicast: Optional[ApplicationEndpoint] = None
         self.multicast: Optional[PositiveInteger] = None
         self.pdu_activation_routings: list[PduActivationRoutingGroup] = []
-        self.routing_groups: list[SoAdRoutingGroup] = []
+        self.routing_group_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
         self.sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig] = None
 

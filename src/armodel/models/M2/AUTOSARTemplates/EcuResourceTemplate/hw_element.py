@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
     HwPinGroup,
 )
@@ -39,13 +40,13 @@ class HwElement(HwDescriptionEntity):
         return False
 
     hw_elements: list[HwElementConnector]
-    hw_pin_groups: list[HwPinGroup]
+    hw_pin_group_refs: list[ARRef]
     nested_elements: list[HwElement]
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()
         self.hw_elements: list[HwElementConnector] = []
-        self.hw_pin_groups: list[HwPinGroup] = []
+        self.hw_pin_group_refs: list[ARRef] = []
         self.nested_elements: list[HwElement] = []
 
 

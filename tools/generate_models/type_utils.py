@@ -44,7 +44,7 @@ def is_enum_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> boo
 
 
 def get_python_type(
-    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]]
+    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]], is_ref: bool = False
 ) -> str:
     """Get Python type annotation for AUTOSAR type.
 
@@ -52,6 +52,7 @@ def get_python_type(
         type_name: AUTOSAR type name
         multiplicity: Multiplicity (e.g., "0..1", "*", "1")
         package_data: Package data dictionary
+        is_ref: Whether this is a reference type (wraps in ARRef)
 
     Returns:
         Python type annotation string
@@ -62,49 +63,38 @@ def get_python_type(
         # Convert to Any in Python
         type_name = "Any"
 
+    # Determine the base type before multiplicity
+    base_type: str
+
     # Check if it's a primitive type
     if is_primitive_type(type_name, package_data):
         # Use AUTOSAR primitive type names directly instead of Python types
         # The primitive types are imported from PrimitiveTypes module
-
-        # Apply multiplicity
-        # For primitive types:
-        # - multiplicity 0..1: Use Optional[PrimitiveType] and initialize with None
-        # - multiplicity *: Use list[PrimitiveType] and initialize with []
-        # - multiplicity 1: Use PrimitiveType and initialize with None (primitive types are nullable)
-        if multiplicity == "0..1":
-            return f"Optional[{type_name}]"
-        elif multiplicity == "*":
-            return f"list[{type_name}]"
-        elif multiplicity == "1":
-            return type_name
-        else:
-            return type_name
+        base_type = type_name
     elif type_name == "Any":
         # Handle the Any type specifically
-        if multiplicity == "0..1":
-            return "Optional[Any]"
-        elif multiplicity == "*":
-            return "list[Any]"
-        elif multiplicity == "1":
-            return "Any"
-        else:
-            return "Any"
+        base_type = "Any"
     else:
         # It's a class type
-        # Apply multiplicity
-        # For class types:
-        # - multiplicity 0..1: Use Optional[type_name] and initialize with None
-        # - multiplicity *: Use list[type_name] and initialize with []
-        # - multiplicity 1: Use type_name and initialize with None (class types can be nullable)
-        if multiplicity == "0..1":
-            return f"Optional[{type_name}]"
-        elif multiplicity == "*":
-            return f"list[{type_name}]"
-        elif multiplicity == "1":
-            return type_name
-        else:
-            return type_name
+        base_type = type_name
+
+    # Handle reference types - wrap in ARRef
+    if is_ref:
+        base_type = "ARRef"
+
+    # Apply multiplicity
+    # For all types:
+    # - multiplicity 0..1: Use Optional[Type] and initialize with None
+    # - multiplicity *: Use list[Type] and initialize with []
+    # - multiplicity 1: Use Type and initialize with None
+    if multiplicity == "0..1":
+        return f"Optional[{base_type}]"
+    elif multiplicity == "*":
+        return f"list[{base_type}]"
+    elif multiplicity == "1":
+        return base_type
+    else:
+        return f"Optional[{base_type}]"
 
 
 def get_type_import_path(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> str:

@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu_port import (
     IPduPort,
 )
@@ -45,17 +46,17 @@ class PduTriggering(Identifiable):
 
     i_pdu: Optional[Pdu]
     i_pdu_ports: list[IPduPort]
-    i_signals: list[ISignalTriggering]
+    i_signal_refs: list[ARRef]
     sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping]
-    trigger_i_pdu_sends: list[TriggerIPduSendCondition]
+    trigger_i_pdu_send_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
         self.i_pdu: Optional[Pdu] = None
         self.i_pdu_ports: list[IPduPort] = []
-        self.i_signals: list[ISignalTriggering] = []
+        self.i_signal_refs: list[ARRef] = []
         self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
-        self.trigger_i_pdu_sends: list[TriggerIPduSendCondition] = []
+        self.trigger_i_pdu_send_refs: list[ARRef] = []
 
 
 class PduTriggeringBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     PduCollectionTriggerEnum,
 )
@@ -30,11 +31,11 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         """
         return True
 
-    collection_trigger: Optional[PduCollectionTriggerEnum]
+    collection_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
-        self.collection_trigger: Optional[PduCollectionTriggerEnum] = None
+        self.collection_trigger_ref: Optional[ARRef] = None
 
 
 class IEEE1722TpAcfBusPartBuilder:

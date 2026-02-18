@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6HeaderFilterList.i_pv6_ext_header_filter_list import (
     IPv6ExtHeaderFilterList,
 )
@@ -29,11 +30,11 @@ class IPv6ExtHeaderFilterSet(ARElement):
         """
         return False
 
-    ext_header_filters: list[IPv6ExtHeaderFilterList]
+    ext_header_filter_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize IPv6ExtHeaderFilterSet."""
         super().__init__()
-        self.ext_header_filters: list[IPv6ExtHeaderFilterList] = []
+        self.ext_header_filter_refs: list[ARRef] = []
 
 
 class IPv6ExtHeaderFilterSetBuilder:

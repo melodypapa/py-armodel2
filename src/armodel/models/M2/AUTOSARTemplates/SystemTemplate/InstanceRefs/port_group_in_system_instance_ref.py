@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
 )
@@ -35,13 +36,13 @@ class PortGroupInSystemInstanceRef(ARObject):
 
     base: Optional[System]
     context: Optional[RootSwCompositionPrototype]
-    target: PortGroup
+    target_ref: ARRef
     def __init__(self) -> None:
         """Initialize PortGroupInSystemInstanceRef."""
         super().__init__()
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
-        self.target: PortGroup = None
+        self.target_ref: ARRef = None
 
 
 class PortGroupInSystemInstanceRefBuilder:

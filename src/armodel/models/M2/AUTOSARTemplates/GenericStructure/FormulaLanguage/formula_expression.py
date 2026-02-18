@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
@@ -30,13 +31,13 @@ class FormulaExpression(ARObject, ABC):
         """
         return True
 
-    atp_references: list[Referrable]
-    atp_strings: list[Referrable]
+    atp_reference_refs: list[ARRef]
+    atp_string_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FormulaExpression."""
         super().__init__()
-        self.atp_references: list[Referrable] = []
-        self.atp_strings: list[Referrable] = []
+        self.atp_reference_refs: list[ARRef] = []
+        self.atp_string_refs: list[ARRef] = []
 
 
 class FormulaExpressionBuilder:

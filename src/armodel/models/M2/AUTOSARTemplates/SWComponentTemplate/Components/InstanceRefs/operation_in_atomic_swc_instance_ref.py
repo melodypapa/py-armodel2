@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
@@ -35,13 +36,13 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         return True
 
     base: Optional[AtomicSwComponentType]
-    context_port: Optional[PortPrototype]
+    context_port_ref: Optional[ARRef]
     target_operation: Optional[ClientServerOperation]
     def __init__(self) -> None:
         """Initialize OperationInAtomicSwcInstanceRef."""
         super().__init__()
         self.base: Optional[AtomicSwComponentType] = None
-        self.context_port: Optional[PortPrototype] = None
+        self.context_port_ref: Optional[ARRef] = None
         self.target_operation: Optional[ClientServerOperation] = None
 
 
