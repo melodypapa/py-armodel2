@@ -54,11 +54,8 @@ class ARObject:
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Add AUTOSAR namespace attributes if this is an AUTOSAR instance (root element only)
-        if self.__class__.__name__ == 'AUTOSAR':
-            elem.set("xmlns", "http://autosar.org/schema/r4.0")
-            elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-            elem.set("xsi:schemaLocation", "http://autosar.org/schema/r4.0 AUTOSAR_4-0-3.xsd")
+        # Note: AUTOSAR namespace attributes are now handled in AUTOSAR.serialize()
+        # This base class no longer hardcodes schema location
 
         # Get all instance attributes
         for name, value in vars(self).items():

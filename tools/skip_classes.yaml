@@ -44,6 +44,11 @@ skip_classes:
 
   # LanguageSpecific requires custom handling - L should be an attribute, not a child element
   - "LanguageSpecific"
+  - "LLongName"
+  - "LPlainText"
+  - "LParagraph"
+  - "LOverviewParagraph"
+  - "LVerbatim"
 
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.

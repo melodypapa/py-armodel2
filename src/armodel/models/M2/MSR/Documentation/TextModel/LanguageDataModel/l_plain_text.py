@@ -9,10 +9,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_specific import (
+    LanguageSpecific,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
-class LPlainText(ARObject):
+class LPlainText(LanguageSpecific):
     """AUTOSAR LPlainText."""
 
     @property
@@ -27,6 +30,7 @@ class LPlainText(ARObject):
     def __init__(self) -> None:
         """Initialize LPlainText."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize LPlainText to XML element.
 
@@ -36,6 +40,20 @@ class LPlainText(ARObject):
         # Get XML tag name for this class
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes (L attribute and text)
+        parent_elem = super(LPlainText, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text is not None:
+            elem.text = parent_elem.text
 
         return elem
 
@@ -49,11 +67,8 @@ class LPlainText(ARObject):
         Returns:
             Deserialized LPlainText object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # First, call parent's deserialize to handle inherited attributes (L attribute and text)
+        return super(LPlainText, cls).deserialize(element)
 
 
 

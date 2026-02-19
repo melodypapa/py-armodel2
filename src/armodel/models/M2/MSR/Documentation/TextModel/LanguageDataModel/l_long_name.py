@@ -14,9 +14,6 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_sp
     LanguageSpecific,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
-    String,
-)
 
 
 class LLongName(LanguageSpecific):
@@ -31,11 +28,10 @@ class LLongName(LanguageSpecific):
         """
         return False
 
-    blueprint_value: Optional[String]
     def __init__(self) -> None:
         """Initialize LLongName."""
         super().__init__()
-        self.blueprint_value: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LLongName to XML element.
 
@@ -46,7 +42,7 @@ class LLongName(LanguageSpecific):
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
 
-        # First, call parent's serialize to handle inherited attributes
+        # First, call parent's serialize to handle inherited attributes (L attribute and text)
         parent_elem = super(LLongName, self).serialize()
 
         # Copy all attributes from parent element
@@ -56,19 +52,9 @@ class LLongName(LanguageSpecific):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize blueprint_value
-        if self.blueprint_value is not None:
-            serialized = ARObject._serialize_item(self.blueprint_value, "String")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Copy text from parent element (the blueprint_value content)
+        if parent_elem.text is not None:
+            elem.text = parent_elem.text
 
         return elem
 
@@ -82,16 +68,25 @@ class LLongName(LanguageSpecific):
         Returns:
             Deserialized LLongName object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(LLongName, cls).deserialize(element)
+        # First, call parent's deserialize to handle inherited attributes (L attribute and text)
+        return super(LLongName, cls).deserialize(element)
 
-        # Parse blueprint_value
-        child = ARObject._find_child_element(element, "BLUEPRINT-VALUE")
-        if child is not None:
-            blueprint_value_value = child.text
-            obj.blueprint_value = blueprint_value_value
 
-        return obj
+class LLongNameBuilder:
+    """Builder for LLongName."""
+
+    def __init__(self) -> None:
+        """Initialize builder."""
+        self._obj: LLongName = LLongName()
+
+    def build(self) -> LLongName:
+        """Build and return LLongName object.
+
+        Returns:
+            LLongName instance
+        """
+        # TODO: Add validation
+        return self._obj
 
 
 
