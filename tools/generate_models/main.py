@@ -2,6 +2,7 @@
 
 import argparse
 from pathlib import Path
+from typing import Optional
 
 from .parsers import (
     load_all_package_data,
@@ -29,7 +30,7 @@ def generate_all_models(
     generate_enums: bool = True,
     generate_primitives: bool = True,
     include_members: bool = False,
-    skip_list_file: Path = None,
+    skip_list_file: Optional[Path] = None,
 ) -> None:
     """Generate all model classes, enums, and primitives from JSON definitions.
 

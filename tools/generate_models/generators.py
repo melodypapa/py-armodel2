@@ -1,6 +1,6 @@
 """Code generation functions for AUTOSAR models."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set, Union
 
 from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case
 from .type_utils import (
@@ -19,13 +19,13 @@ ENUM_BASE_CLASS = "AREnum"
 
 
 def generate_class_code(
-    type_def: dict,
+    type_def: Dict[str, Any],
     hierarchy_info: Dict[str, Dict[str, Any]],
     package_data: Dict[str, Dict[str, Any]],
     include_members: bool = False,
     json_file_path: str = "",
-    dependency_graph: Dict[str, set] = None,
-    force_type_checking_imports: Dict[str, List[str]] = None,
+    dependency_graph: Optional[Dict[str, Set[str]]] = None,
+    force_type_checking_imports: Optional[Dict[str, Union[List[str], str]]] = None,
 ) -> str:
     """Generate Python class code from type definition.
 
@@ -227,7 +227,7 @@ def generate_class_code(
         # Add import statements for enum types
         if enum_imports:
             # Find package path for each enum
-            enums_by_package = {}
+            enums_by_package: Dict[str, List[str]] = {}
             for enum_name in enum_imports:
                 for package_path, data in package_data.items():
                     if "enumerations" in data:
@@ -253,7 +253,7 @@ def generate_class_code(
 
         # Add import statements for primitive types
         # Group primitives by package path
-        primitives_by_package = {}
+        primitives_by_package: Dict[str, List[str]] = {}
         for prim_name, pkg_path in primitive_imports.items():
             if pkg_path not in primitives_by_package:
                 primitives_by_package[pkg_path] = []
@@ -1033,7 +1033,7 @@ def _generate_ar_object_methods() -> str:
 '''
 
 
-def generate_builder_code(type_def: dict) -> str:
+def generate_builder_code(type_def: Dict[str, Any]) -> str:
     """Generate builder class code from type definition.
 
     Args:
@@ -1071,7 +1071,7 @@ def generate_builder_code(type_def: dict) -> str:
     return code
 
 
-def generate_enum_code(enum_def: dict, json_file_path: str = "") -> str:
+def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> str:
     """Generate Python Enum code from enum definition.
 
     Args:
@@ -1468,7 +1468,7 @@ def _generate_serialize_method(
 
 
 def generate_primitive_code(
-    primitive_def: dict, package_data: Dict[str, Dict[str, Any]] = None, json_file_path: str = ""
+    primitive_def: Dict[str, Any], package_data: Optional[Dict[str, Dict[str, Any]]] = None, json_file_path: str = ""
 ) -> str:
     """Generate Python primitive type definition from primitive definition.
 

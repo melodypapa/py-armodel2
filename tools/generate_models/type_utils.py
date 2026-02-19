@@ -1,6 +1,6 @@
 """Type-related functions for code generation."""
 
-from typing import Any, Dict
+from typing import Any, Dict, Set, List, cast
 
 from ._common import to_snake_case
 
@@ -150,12 +150,12 @@ def get_type_package_path(type_name: str, package_data: Dict[str, Dict[str, Any]
         if "classes" in data:
             for cls in data["classes"]:
                 if cls["name"] == type_name:
-                    class_package_path = cls.get("package", package_path)
+                    class_package_path = cast(str, cls.get("package", package_path))
                     return class_package_path
     return ""
 
 
-def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> Dict[str, set]:
+def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> Dict[str, Set[str]]:
     """Build a complete dependency graph for all classes.
 
     Args:
@@ -164,7 +164,7 @@ def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> 
     Returns:
         Dictionary mapping class names to their dependencies
     """
-    dependency_graph = {}
+    dependency_graph: Dict[str, Set[str]] = {}
 
     # Initialize all classes with empty dependency sets
     for package_path, data in package_data.items():
@@ -197,7 +197,7 @@ def detect_circular_import(
     current_class: str,
     attribute_type: str,
     package_data: Dict[str, Dict[str, Any]],
-    dependency_graph: Dict[str, set],
+    dependency_graph: Dict[str, Set[str]],
 ) -> bool:
     """Detect if importing attribute_type would cause a circular import.
 
@@ -220,8 +220,8 @@ def detect_circular_import(
 
     # Check if current_class is in the dependency chain of attribute_type
     # Use depth-first search to detect cycles
-    visited = set()
-    to_visit = [attribute_type]
+    visited: Set[str] = set()
+    to_visit: List[str] = [attribute_type]
 
     while to_visit:
         node = to_visit.pop()

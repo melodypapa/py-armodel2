@@ -87,21 +87,3 @@ class LLongNameBuilder:
         """
         # TODO: Add validation
         return self._obj
-
-
-
-class LLongNameBuilder:
-    """Builder for LLongName."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: LLongName = LLongName()
-
-    def build(self) -> LLongName:
-        """Build and return LLongName object.
-
-        Returns:
-            LLongName instance
-        """
-        # TODO: Add validation
-        return self._obj

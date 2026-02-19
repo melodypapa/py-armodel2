@@ -2,12 +2,13 @@
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union, Optional, cast
 
 try:
     import yaml
+    _yaml: Optional[Any] = yaml
 except ImportError:
-    yaml = None
+    _yaml = None
 
 
 def parse_mapping_json(mapping_file: Path) -> Dict[str, Any]:
@@ -20,7 +21,8 @@ def parse_mapping_json(mapping_file: Path) -> Dict[str, Any]:
         Parsed JSON data as dictionary
     """
     with open(mapping_file, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+        return cast(Dict[str, Any], data)
 
 
 def parse_enum_json(enum_file: Path) -> Dict[str, Any]:
@@ -33,7 +35,8 @@ def parse_enum_json(enum_file: Path) -> Dict[str, Any]:
         Parsed JSON data as dictionary
     """
     with open(enum_file, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+        return cast(Dict[str, Any], data)
 
 
 def parse_primitive_json(primitive_file: Path) -> Dict[str, Any]:
@@ -46,7 +49,8 @@ def parse_primitive_json(primitive_file: Path) -> Dict[str, Any]:
         Parsed JSON data as dictionary
     """
     with open(primitive_file, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+        return cast(Dict[str, Any], data)
 
 
 def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
@@ -66,7 +70,7 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
 
     # Find classes and their parent/abstract status
     class_info: Dict[str, Dict[str, Any]] = {}
-    indent_stack = []
+    indent_stack: List[tuple[int, str]] = []
 
     for line in lines:
         if line.startswith("## Class Hierarchy"):
@@ -101,7 +105,9 @@ def parse_hierarchy_json(hierarchy_file: Path) -> Dict[str, Dict[str, Any]]:
     return class_info
 
 
-def load_skip_list(skip_list_file: Path) -> tuple[List[str], Dict[str, List[str]]]:
+def load_skip_list(
+    skip_list_file: Path,
+) -> tuple[List[str], Dict[str, Union[List[str], str]]]:
     """Parse skip_classes.yaml file to get list of classes to skip during generation.
 
     Args:
@@ -110,12 +116,12 @@ def load_skip_list(skip_list_file: Path) -> tuple[List[str], Dict[str, List[str]
     Returns:
         Tuple of (skip_classes_list, force_type_checking_imports)
         - skip_classes_list: List of class names to skip
-        - force_type_checking_imports: Dict mapping class names to list of types to force into TYPE_CHECKING
+        - force_type_checking_imports: Dict mapping class names to list of types or "*" to force into TYPE_CHECKING
           (empty dicts if file doesn't exist or yaml not available)
     """
-    empty_result = ([], {})
+    empty_result: tuple[List[str], Dict[str, Union[List[str], str]]] = ([], {})
 
-    if yaml is None:
+    if _yaml is None:
         # YAML module not available, return empty result
         return empty_result
 
@@ -125,7 +131,7 @@ def load_skip_list(skip_list_file: Path) -> tuple[List[str], Dict[str, List[str]
 
     try:
         with open(skip_list_file, "r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
+            data = _yaml.safe_load(f) if _yaml else {}
             skip_classes = data.get("skip_classes", [])
             force_type_checking = data.get("force_type_checking_imports", {})
             return skip_classes, force_type_checking

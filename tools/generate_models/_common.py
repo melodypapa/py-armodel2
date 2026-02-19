@@ -5,6 +5,7 @@ by other modules without causing circular import issues.
 """
 
 import re
+from typing import Optional, Tuple
 
 
 def to_snake_case(name: str) -> str:
@@ -20,7 +21,7 @@ def to_snake_case(name: str) -> str:
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
-def get_python_identifier(name: str) -> tuple[str, str]:
+def get_python_identifier(name: str) -> Tuple[str, Optional[str]]:
     """Convert a name to a valid Python identifier, handling keywords.
 
     Args:
