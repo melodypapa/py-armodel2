@@ -20,7 +20,7 @@ Usage:
 """
 
 from pathlib import Path
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, cast
 import yaml
 
 
@@ -35,7 +35,7 @@ class XSDBasedSchemaManager:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the schema manager."""
         if not self._initialized:
             self._metadata_dir = Path(__file__).parent.parent / "cfg" / "xsd_metadata"
@@ -69,7 +69,7 @@ class XSDBasedSchemaManager:
             )
 
         with open(yaml_path, "r") as f:
-            metadata = yaml.safe_load(f)
+            metadata = cast(Dict[str, Any], yaml.safe_load(f))
 
         # Cache it
         self._cache[version] = metadata
@@ -88,7 +88,10 @@ class XSDBasedSchemaManager:
             Dictionary with type information or None if not found
         """
         metadata = self.get_metadata(version)
-        return metadata.get("complex_types", {}).get(type_name)
+        complex_types = metadata.get("complex_types", {})
+        if not isinstance(complex_types, dict):
+            return None
+        return cast(Optional[Dict[str, Any]], complex_types.get(type_name))
 
     def get_simple_type_info(self, type_name: str, version: str) -> Optional[Dict[str, Any]]:
         """
@@ -102,7 +105,10 @@ class XSDBasedSchemaManager:
             Dictionary with simple type information or None if not found
         """
         metadata = self.get_metadata(version)
-        return metadata.get("simple_types", {}).get(type_name)
+        simple_types = metadata.get("simple_types", {})
+        if not isinstance(simple_types, dict):
+            return None
+        return cast(Optional[Dict[str, Any]], simple_types.get(type_name))
 
     def get_elements_for_type(self, type_name: str, version: str) -> List[Dict[str, Any]]:
         """
@@ -117,8 +123,15 @@ class XSDBasedSchemaManager:
         """
         metadata = self.get_metadata(version)
         indexes = metadata.get("indexes", {})
+        if not isinstance(indexes, dict):
+            return []
         type_to_elements = indexes.get("type_to_elements", {})
-        return type_to_elements.get(type_name, [])
+        if not isinstance(type_to_elements, dict):
+            return []
+        result = type_to_elements.get(type_name, [])
+        if not isinstance(result, list):
+            return []
+        return cast(List[Dict[str, Any]], result)
 
     def get_attributes_for_type(self, type_name: str, version: str) -> List[Dict[str, Any]]:
         """
@@ -133,7 +146,10 @@ class XSDBasedSchemaManager:
         """
         type_info = self.get_type_info(type_name, version)
         if type_info:
-            return type_info.get("attributes", [])
+            attrs = type_info.get("attributes", [])
+            if not isinstance(attrs, list):
+                return []
+            return cast(List[Dict[str, Any]], attrs)
         return []
 
     def get_element_types(self, element_name: str, version: str) -> List[str]:
@@ -149,8 +165,15 @@ class XSDBasedSchemaManager:
         """
         metadata = self.get_metadata(version)
         indexes = metadata.get("indexes", {})
+        if not isinstance(indexes, dict):
+            return []
         element_to_types = indexes.get("element_to_types", {})
-        return element_to_types.get(element_name, [])
+        if not isinstance(element_to_types, dict):
+            return []
+        result = element_to_types.get(element_name, [])
+        if not isinstance(result, list):
+            return []
+        return cast(List[str], result)
 
     def get_inheritance_chain(self, type_name: str, version: str) -> List[str]:
         """
@@ -164,14 +187,18 @@ class XSDBasedSchemaManager:
             List of type names from base to derived
         """
         chain = []
-        current_type = type_name
+        current_type: Optional[str] = type_name
 
         while current_type:
             chain.append(current_type)
             type_info = self.get_type_info(current_type, version)
             if not type_info:
                 break
-            current_type = type_info.get("base_type")
+            base_type = type_info.get("base_type")
+            if isinstance(base_type, str):
+                current_type = base_type
+            else:
+                break
 
         return chain
 

@@ -214,7 +214,9 @@ class XSDParser:
             # Check for restriction
             restriction = simple_type.find(f"./{{{self.XSD_NS}}}restriction")
             if restriction is not None:
-                type_info.base_type = restriction.get("base")  # type: ignore[assignment]
+                base = restriction.get("base")
+                if base:
+                    type_info.base_type = base
 
                 # Parse enum values
                 enum_values = []
@@ -234,11 +236,15 @@ class XSDParser:
                 # Parse length constraints
                 min_length_elem = restriction.find(f"./{{{self.XSD_NS}}}minLength")
                 if min_length_elem is not None:
-                    type_info.min_length = int(min_length_elem.get("value"))
+                    min_len_value = min_length_elem.get("value")
+                    if min_len_value:
+                        type_info.min_length = int(min_len_value)
 
                 max_length_elem = restriction.find(f"./{{{self.XSD_NS}}}maxLength")
                 if max_length_elem is not None:
-                    type_info.max_length = int(max_length_elem.get("value") or "0")  # type: ignore[assignment]
+                    max_len_value = max_length_elem.get("value")
+                    if max_len_value:
+                        type_info.max_length = int(max_len_value)
 
             self.simple_types[name] = type_info
 
@@ -278,7 +284,11 @@ class XSDParser:
             elements.extend(type_info.elements)
 
             # Move to base type
-            current_type = type_info.base_type
+            base_type = type_info.base_type
+            if base_type:
+                current_type = base_type
+            else:
+                break
 
         return elements
 
@@ -304,7 +314,11 @@ class XSDParser:
             attributes.extend(type_info.attributes)
 
             # Move to base type
-            current_type = type_info.base_type
+            base_type = type_info.base_type
+            if base_type:
+                current_type = base_type
+            else:
+                break
 
         return attributes
 
@@ -315,16 +329,15 @@ class XSDParser:
         Returns:
             Dictionary representation of all metadata
         """
-        result = {
+        result: Dict[str, Any] = {
             "version": self.schema_version,
-            "complex_types": {},
-            "simple_types": {},
             "inheritance": self.inheritance_map,
         }
 
         # Convert complex types
+        complex_types_dict: Dict[str, Dict[str, Any]] = {}
         for name, type_info in self.complex_types.items():
-            result["complex_types"][name] = {
+            complex_types_dict[name] = {
                 "base_type": type_info.base_type,
                 "abstract": type_info.abstract,
                 "elements": [
@@ -347,15 +360,18 @@ class XSDParser:
                     for attr in type_info.attributes
                 ],
             }
+        result["complex_types"] = complex_types_dict
 
         # Convert simple types
-        for name, type_info in self.simple_types.items():
-            result["simple_types"][name] = {
-                "base_type": type_info.base_type,
-                "enum_values": type_info.enum_values,
-                "pattern": type_info.pattern,
-                "max_length": type_info.max_length,
-                "min_length": type_info.min_length,
+        simple_types_dict: Dict[str, Dict[str, Any]] = {}
+        for name, simple_info in self.simple_types.items():
+            simple_types_dict[name] = {
+                "base_type": simple_info.base_type,
+                "enum_values": simple_info.enum_values,
+                "pattern": simple_info.pattern,
+                "max_length": simple_info.max_length,
+                "min_length": simple_info.min_length,
             }
+        result["simple_types"] = simple_types_dict
 
         return result
