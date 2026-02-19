@@ -26,5 +26,5 @@ class RteApiReturnValueProvisionEnum(AREnum):
         """
         self._value_ = value
 
-    NO_RETURN_VALUE_PROVIDED = "noReturnValueProvided"
-    RETURN_VALUE_PROVIDED = "returnValueProvided"
+    NO_RETURN_VALUE_PROVIDED = "NO-RETURN-VALUE-PROVIDED"
+    RETURN_VALUE_PROVIDED = "RETURN-VALUE-PROVIDED"

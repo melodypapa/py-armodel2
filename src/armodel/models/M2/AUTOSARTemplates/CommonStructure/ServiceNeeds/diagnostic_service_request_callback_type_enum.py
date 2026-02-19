@@ -27,4 +27,4 @@ class DiagnosticServiceRequestCallbackTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: requestCallback
-    REQUEST_CALLBACK = "requestCallback"
+    REQUEST_CALLBACK = "REQUEST-CALLBACK"

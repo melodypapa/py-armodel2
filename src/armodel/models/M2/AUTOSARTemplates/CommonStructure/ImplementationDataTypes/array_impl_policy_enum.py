@@ -26,5 +26,5 @@ class ArrayImplPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    PAYLOAD_AS_ARRAY = "payloadAsArray"
-    PAYLOAD_AS_POINTER_TO_ARRAY = "payloadAsPointerToArray"
+    PAYLOAD_AS_ARRAY = "PAYLOAD-AS-ARRAY"
+    PAYLOAD_AS_POINTER_TO_ARRAY = "PAYLOAD-AS-POINTER-TO-ARRAY"

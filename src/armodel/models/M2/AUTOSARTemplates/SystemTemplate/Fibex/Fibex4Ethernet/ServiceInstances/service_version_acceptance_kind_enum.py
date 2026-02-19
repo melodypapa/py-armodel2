@@ -26,7 +26,7 @@ class ServiceVersionAcceptanceKindEnum(AREnum):
         """
         self._value_ = value
 
-    EXACT_OR_ANY_MINOR = "exactOrAnyMinor"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    MINIMUM_MINOR = "minimumMinor"
+    EXACT_OR_ANY_MINOR = "EXACT-OR-ANY-MINOR"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    MINIMUM_MINOR = "MINIMUM-MINOR"

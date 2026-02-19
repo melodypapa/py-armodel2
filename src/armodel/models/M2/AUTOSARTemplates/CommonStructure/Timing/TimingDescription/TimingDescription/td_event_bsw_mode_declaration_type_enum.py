@@ -27,5 +27,5 @@ class TDEventBswModeDeclarationTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: modeDeclaration
-    MODE_DECLARATION_REQUESTED = "modeDeclarationRequested"
-    MODE_DECLARATION = "modeDeclaration"
+    MODE_DECLARATION_REQUESTED = "MODE-DECLARATION-REQUESTED"
+    MODE_DECLARATION = "MODE-DECLARATION"

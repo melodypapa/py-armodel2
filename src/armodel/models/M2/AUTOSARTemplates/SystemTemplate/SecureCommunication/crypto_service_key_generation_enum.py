@@ -26,5 +26,5 @@ class CryptoServiceKeyGenerationEnum(AREnum):
         """
         self._value_ = value
 
-    KEY_DERIVATION = "keyDerivation"
-    KEY_STORAGE = "keyStorage"
+    KEY_DERIVATION = "KEY-DERIVATION"
+    KEY_STORAGE = "KEY-STORAGE"

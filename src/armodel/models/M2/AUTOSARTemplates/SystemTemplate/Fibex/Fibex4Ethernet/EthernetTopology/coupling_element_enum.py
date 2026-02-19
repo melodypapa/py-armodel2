@@ -26,6 +26,6 @@ class CouplingElementEnum(AREnum):
         """
         self._value_ = value
 
-    HUB = "hub"
-    ROUTER = "router"
-    SWITCH = "switch"
+    HUB = "HUB"
+    ROUTER = "ROUTER"
+    SWITCH = "SWITCH"

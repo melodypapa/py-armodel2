@@ -27,5 +27,5 @@ class RptServicePointEnum(AREnum):
         """
         self._value_ = value
 
-    ENABLED = "enabled"
-    NONE = "none"
+    ENABLED = "ENABLED"
+    NONE = "NONE"

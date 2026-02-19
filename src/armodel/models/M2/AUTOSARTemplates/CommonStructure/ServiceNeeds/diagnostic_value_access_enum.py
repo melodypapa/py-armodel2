@@ -28,6 +28,6 @@ class DiagnosticValueAccessEnum(AREnum):
         """
         self._value_ = value
 
-    INFORMATION = "information"
-    READ_WRITE = "readWrite"
-    WRITE_ONLY = "writeOnly"
+    INFORMATION = "INFORMATION"
+    READ_WRITE = "READ-WRITE"
+    WRITE_ONLY = "WRITE-ONLY"

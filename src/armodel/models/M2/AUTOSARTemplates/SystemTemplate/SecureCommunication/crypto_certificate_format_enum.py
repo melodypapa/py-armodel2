@@ -26,5 +26,5 @@ class CryptoCertificateFormatEnum(AREnum):
         """
         self._value_ = value
 
-    CVC = "cvc"
-    X509 = "x509"
+    CVC = "CVC"
+    X509 = "X509"

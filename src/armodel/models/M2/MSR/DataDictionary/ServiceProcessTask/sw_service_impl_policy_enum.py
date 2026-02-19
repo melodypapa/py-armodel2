@@ -26,5 +26,5 @@ class SwServiceImplPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    INLINEINLINE_CONDITIONALINLINE_IN = "inlineinlineConditionalinlineIn"
-    STANDARD = "standard"
+    INLINEINLINE_CONDITIONALINLINE_IN = "INLINEINLINE-CONDITIONALINLINE-IN"
+    STANDARD = "STANDARD"

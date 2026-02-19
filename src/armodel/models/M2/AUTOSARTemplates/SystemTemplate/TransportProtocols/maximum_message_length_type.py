@@ -26,7 +26,7 @@ class MaximumMessageLengthType(AREnum):
         """
         self._value_ = value
 
-    I4GLENGTH = "I4glength"
-    ISO = "iso"
-    ISO6 = "iso6"
-    ROUTE = "route"
+    I4GLENGTH = "I4GLENGTH"
+    ISO = "ISO"
+    ISO6 = "ISO6"
+    ROUTE = "ROUTE"

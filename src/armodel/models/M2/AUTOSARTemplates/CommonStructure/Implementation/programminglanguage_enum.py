@@ -26,6 +26,6 @@ class ProgramminglanguageEnum(AREnum):
         """
         self._value_ = value
 
-    C = "c"
-    CPP = "cpp"
-    JAVA = "java"
+    C = "C"
+    CPP = "CPP"
+    JAVA = "JAVA"

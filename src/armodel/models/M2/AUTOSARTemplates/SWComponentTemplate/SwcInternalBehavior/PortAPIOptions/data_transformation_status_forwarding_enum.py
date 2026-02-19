@@ -27,5 +27,5 @@ class DataTransformationStatusForwardingEnum(AREnum):
         """
         self._value_ = value
 
-    NO_TRANSFORMER_STATUS_FORWARDING = "noTransformerStatusForwarding"
-    TRANSFORMER_STATUS_FORWARDING = "transformerStatusForwarding"
+    NO_TRANSFORMER_STATUS_FORWARDING = "NO-TRANSFORMER-STATUS-FORWARDING"
+    TRANSFORMER_STATUS_FORWARDING = "TRANSFORMER-STATUS-FORWARDING"

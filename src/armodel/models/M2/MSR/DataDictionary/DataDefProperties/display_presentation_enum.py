@@ -26,5 +26,5 @@ class DisplayPresentationEnum(AREnum):
         """
         self._value_ = value
 
-    PRESENTATION_CONTINUOUS = "presentationContinuous"
-    PRESENTATION_DISCRETE = "presentationDiscrete"
+    PRESENTATION_CONTINUOUS = "PRESENTATION-CONTINUOUS"
+    PRESENTATION_DISCRETE = "PRESENTATION-DISCRETE"

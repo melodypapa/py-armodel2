@@ -28,6 +28,6 @@ class ArgumentDirectionEnum(AREnum):
         """
         self._value_ = value
 
-    IN = "in"
-    INOUT = "inout"
-    OUT = "out"
+    IN = "IN"
+    INOUT = "INOUT"
+    OUT = "OUT"

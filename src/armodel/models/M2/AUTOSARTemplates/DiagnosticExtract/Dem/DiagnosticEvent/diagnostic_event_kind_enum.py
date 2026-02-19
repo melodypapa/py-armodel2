@@ -26,5 +26,5 @@ class DiagnosticEventKindEnum(AREnum):
         """
         self._value_ = value
 
-    BSW = "bsw"
-    SWC = "swc"
+    BSW = "BSW"
+    SWC = "SWC"

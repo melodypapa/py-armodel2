@@ -26,7 +26,7 @@ class Ipv4AddressSourceEnum(AREnum):
         """
         self._value_ = value
 
-    AUTO_IP = "autoIp"
-    AUTO_IP_DOIP = "autoIp_doip"
-    DHCPV4 = "dhcpv4"
-    FIXED = "fixed"
+    AUTO_IP = "AUTO-IP"
+    AUTO_IP_DOIP = "AUTO-IP_DOIP"
+    DHCPV4 = "DHCPV4"
+    FIXED = "FIXED"

@@ -27,5 +27,5 @@ class TDEventBswInternalBehaviorTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: bswModuleEntity
-    BSW_MODULE_ENTITY = "bswModuleEntity"
-    BSW_MODULE_ENTITY_TERMINATED = "bswModuleEntityTerminated"
+    BSW_MODULE_ENTITY = "BSW-MODULE-ENTITY"
+    BSW_MODULE_ENTITY_TERMINATED = "BSW-MODULE-ENTITY-TERMINATED"

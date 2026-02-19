@@ -27,7 +27,7 @@ class HandleInvalidEnum(AREnum):
         """
         self._value_ = value
 
-    DONT_INVALIDATE = "dontInvalidate"
-    EXTERNAL = "external"
-    KEEP = "keep"
-    REPLACE = "replace"
+    DONT_INVALIDATE = "DONT-INVALIDATE"
+    EXTERNAL = "EXTERNAL"
+    KEEP = "KEEP"
+    REPLACE = "REPLACE"

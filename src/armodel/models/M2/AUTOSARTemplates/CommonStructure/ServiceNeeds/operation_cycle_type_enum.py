@@ -26,9 +26,9 @@ class OperationCycleTypeEnum(AREnum):
         """
         self._value_ = value
 
-    IGNITION = "ignition"
-    OBD_DCY = "obdDcy"
-    OTHER = "other"
-    POWER = "power"
-    TIME = "time"
-    WARMUP = "warmup"
+    IGNITION = "IGNITION"
+    OBD_DCY = "OBD-DCY"
+    OTHER = "OTHER"
+    POWER = "POWER"
+    TIME = "TIME"
+    WARMUP = "WARMUP"

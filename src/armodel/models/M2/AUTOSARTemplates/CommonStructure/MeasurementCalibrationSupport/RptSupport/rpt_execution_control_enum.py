@@ -27,5 +27,5 @@ class RptExecutionControlEnum(AREnum):
         """
         self._value_ = value
 
-    CONDITIONAL = "conditional"
-    NONE = "none"
+    CONDITIONAL = "CONDITIONAL"
+    NONE = "NONE"

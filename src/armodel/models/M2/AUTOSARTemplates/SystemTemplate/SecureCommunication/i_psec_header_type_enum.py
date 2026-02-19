@@ -26,6 +26,6 @@ class IPsecHeaderTypeEnum(AREnum):
         """
         self._value_ = value
 
-    AH = "ah"
-    ESP = "esp"
-    NONE = "none"
+    AH = "AH"
+    ESP = "ESP"
+    NONE = "NONE"

@@ -26,4 +26,4 @@ class DiagnosticCompareTypeEnum(AREnum):
         """
         self._value_ = value
 
-    IS_EQUAL = "isEqual"
+    IS_EQUAL = "IS-EQUAL"

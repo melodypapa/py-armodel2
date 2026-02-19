@@ -26,4 +26,4 @@ class EthernetSwitchVlanEgressTaggingEnum(AREnum):
         """
         self._value_ = value
 
-    NOT_SENT = "notSent"
+    NOT_SENT = "NOT-SENT"

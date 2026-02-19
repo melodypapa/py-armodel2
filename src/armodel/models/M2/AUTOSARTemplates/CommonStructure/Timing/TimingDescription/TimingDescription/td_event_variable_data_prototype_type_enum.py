@@ -27,4 +27,4 @@ class TDEventVariableDataPrototypeTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: variableData
-    VARIABLE_DATA = "variableData"
+    VARIABLE_DATA = "VARIABLE-DATA"

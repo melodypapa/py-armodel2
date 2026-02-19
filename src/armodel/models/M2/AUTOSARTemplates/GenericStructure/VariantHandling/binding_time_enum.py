@@ -28,7 +28,7 @@ class BindingTimeEnum(AREnum):
         """
         self._value_ = value
 
-    CODE_GENERATION_TIME = "codeGenerationTime"
-    LINK_TIME = "linkTime"
-    PRE_COMPILE_TIME = "preCompileTime"
-    SYSTEM_DESIGN_TIME = "systemDesignTime"
+    CODE_GENERATION_TIME = "CODE-GENERATION-TIME"
+    LINK_TIME = "LINK-TIME"
+    PRE_COMPILE_TIME = "PRE-COMPILE-TIME"
+    SYSTEM_DESIGN_TIME = "SYSTEM-DESIGN-TIME"

@@ -26,5 +26,5 @@ class FloatEnum(AREnum):
         """
         self._value_ = value
 
-    FLOAT = "float"
-    NO_FLOAT = "noFloat"
+    FLOAT = "FLOAT"
+    NO_FLOAT = "NO-FLOAT"

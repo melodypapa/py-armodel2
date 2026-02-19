@@ -26,7 +26,7 @@ class EcucConfigurationClassEnum(AREnum):
         """
         self._value_ = value
 
-    LINK = "Link"
-    POST_BUILD = "PostBuild"
-    PRE_COMPILE = "PreCompile"
-    PUBLISHED_INFORMATION = "PublishedInformation"
+    LINK = "LINK"
+    POST_BUILD = "POST-BUILD"
+    PRE_COMPILE = "PRE-COMPILE"
+    PUBLISHED_INFORMATION = "PUBLISHED-INFORMATION"

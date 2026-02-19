@@ -26,5 +26,5 @@ class ResumePosition(AREnum):
         """
         self._value_ = value
 
-    CONTINUE_AT_IT_POSITION = "continueAtItPosition"
-    START_FROM_BEGINNING = "startFromBeginning"
+    CONTINUE_AT_IT_POSITION = "CONTINUE-AT-IT-POSITION"
+    START_FROM_BEGINNING = "START-FROM-BEGINNING"

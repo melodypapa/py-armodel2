@@ -26,9 +26,9 @@ class EthernetPhysicalLayerTypeEnum(AREnum):
         """
         self._value_ = value
 
-    _1000_BASE_T = "_1000BASE_T"
-    _1000_BASE_T1 = "_1000BASE_T1"
-    _100_BASE_T1 = "_100BASE_T1"
-    _100_BASE_TX = "_100BASE_TX"
-    _10_BASE_T1_S = "_10BASE_T1S"
-    I_EEE802_11_P = "iEEE802_11P"
+    _1000_BASE_T = "_1000-B-A-S-E_-T"
+    _1000_BASE_T1 = "_1000-B-A-S-E_-T1"
+    _100_BASE_T1 = "_100-B-A-S-E_-T1"
+    _100_BASE_TX = "_100-B-A-S-E_-T-X"
+    _10_BASE_T1_S = "_10-B-A-S-E_-T1-S"
+    I_EEE802_11_P = "I-E-E-E802_11-P"

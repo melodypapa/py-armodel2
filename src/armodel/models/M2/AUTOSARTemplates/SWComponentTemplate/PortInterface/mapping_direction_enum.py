@@ -26,5 +26,5 @@ class MappingDirectionEnum(AREnum):
         """
         self._value_ = value
 
-    BIDIRECTIONALFIRST_TO_SECOND = "bidirectionalfirstToSecond"
-    SECOND_TO_FIRST = "secondToFirst"
+    BIDIRECTIONALFIRST_TO_SECOND = "BIDIRECTIONALFIRST-TO-SECOND"
+    SECOND_TO_FIRST = "SECOND-TO-FIRST"

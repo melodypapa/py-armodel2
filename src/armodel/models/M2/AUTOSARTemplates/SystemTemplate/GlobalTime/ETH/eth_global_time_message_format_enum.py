@@ -26,5 +26,5 @@ class EthGlobalTimeMessageFormatEnum(AREnum):
         """
         self._value_ = value
 
-    IEEE802_1_AS = "IEEE802_1AS"
-    IEEE802_1_AS_AUTOSAR = "IEEE802_1AS_AUTOSAR"
+    IEEE802_1_AS = "I-E-E-E802_1-A-S"
+    IEEE802_1_AS_AUTOSAR = "I-E-E-E802_1-A-S_-A-U-T-O-S-A-R"

@@ -26,10 +26,10 @@ class LogTraceDefaultLogLevelEnum(AREnum):
         """
         self._value_ = value
 
-    DEBUG = "debug"
-    ERROR = "error"
-    FATALINFO = "fatalinfo"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    VERBOSE = "verbose"
-    WARN = "warn"
+    DEBUG = "DEBUG"
+    ERROR = "ERROR"
+    FATALINFO = "FATALINFO"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    VERBOSE = "VERBOSE"
+    WARN = "WARN"

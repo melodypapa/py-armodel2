@@ -26,7 +26,7 @@ class TimeSyncTechnologyEnum(AREnum):
         """
         self._value_ = value
 
-    AVB_IEEE802_1_AS = "avb_ieee802_1AS"
-    NTP_RFC958 = "ntp_rfc958"
-    PTP_IEEE1588_2002 = "ptp_ieee1588_2002"
-    PTP_IEEE1588_2008 = "ptp_ieee1588_2008"
+    AVB_IEEE802_1_AS = "AVB_IEEE802_1-A-S"
+    NTP_RFC958 = "NTP_RFC958"
+    PTP_IEEE1588_2002 = "PTP_IEEE1588_2002"
+    PTP_IEEE1588_2008 = "PTP_IEEE1588_2008"

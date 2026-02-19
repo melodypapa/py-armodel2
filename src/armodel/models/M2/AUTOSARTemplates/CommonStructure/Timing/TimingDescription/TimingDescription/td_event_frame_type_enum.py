@@ -26,6 +26,6 @@ class TDEventFrameTypeEnum(AREnum):
         """
         self._value_ = value
 
-    FRAME_QUEUED_FOR = "frameQueuedFor"
-    FRAME_RECEIVED_BY_IFCORRESPONDING = "frameReceivedByIfcorresponding"
-    FRAME_TRANSMITTED_ON_BUS = "frameTransmittedOnBus"
+    FRAME_QUEUED_FOR = "FRAME-QUEUED-FOR"
+    FRAME_RECEIVED_BY_IFCORRESPONDING = "FRAME-RECEIVED-BY-IFCORRESPONDING"
+    FRAME_TRANSMITTED_ON_BUS = "FRAME-TRANSMITTED-ON-BUS"

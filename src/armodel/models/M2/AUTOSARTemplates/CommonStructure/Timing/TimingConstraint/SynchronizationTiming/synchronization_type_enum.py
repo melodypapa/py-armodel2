@@ -26,5 +26,5 @@ class SynchronizationTypeEnum(AREnum):
         """
         self._value_ = value
 
-    RESPONSE_IN = "responseIn"
-    STIMULUS_IN = "stimulusIn"
+    RESPONSE_IN = "RESPONSE-IN"
+    STIMULUS_IN = "STIMULUS-IN"

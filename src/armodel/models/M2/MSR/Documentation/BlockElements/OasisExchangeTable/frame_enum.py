@@ -26,9 +26,9 @@ class FrameEnum(AREnum):
         """
         self._value_ = value
 
-    ALL = "all"
-    BOTTOM = "bottom"
-    NONE = "none"
-    SIDES = "sides"
-    TOP = "top"
-    TOPBOT = "topbot"
+    ALL = "ALL"
+    BOTTOM = "BOTTOM"
+    NONE = "NONE"
+    SIDES = "SIDES"
+    TOP = "TOP"
+    TOPBOT = "TOPBOT"

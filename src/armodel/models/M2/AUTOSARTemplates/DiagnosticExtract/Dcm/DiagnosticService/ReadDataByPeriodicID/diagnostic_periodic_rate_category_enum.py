@@ -26,6 +26,6 @@ class DiagnosticPeriodicRateCategoryEnum(AREnum):
         """
         self._value_ = value
 
-    PERIODIC_RATE_FAST = "periodicRateFast"
-    PERIODIC_RATE_MEDIUM = "periodicRateMedium"
-    PERIODIC_RATE_SLOW = "periodicRateSlow"
+    PERIODIC_RATE_FAST = "PERIODIC-RATE-FAST"
+    PERIODIC_RATE_MEDIUM = "PERIODIC-RATE-MEDIUM"
+    PERIODIC_RATE_SLOW = "PERIODIC-RATE-SLOW"

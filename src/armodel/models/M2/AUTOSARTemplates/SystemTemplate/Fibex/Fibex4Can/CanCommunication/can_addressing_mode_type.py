@@ -26,5 +26,5 @@ class CanAddressingModeType(AREnum):
         """
         self._value_ = value
 
-    EXTENDED = "extended"
-    STANDARD = "standard"
+    EXTENDED = "EXTENDED"
+    STANDARD = "STANDARD"

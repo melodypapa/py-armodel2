@@ -26,6 +26,6 @@ class EthernetConnectionNegotiationEnum(AREnum):
         """
         self._value_ = value
 
-    AUTO = "auto"
-    MASTER = "master"
-    SLAVE = "slave"
+    AUTO = "AUTO"
+    MASTER = "MASTER"
+    SLAVE = "SLAVE"

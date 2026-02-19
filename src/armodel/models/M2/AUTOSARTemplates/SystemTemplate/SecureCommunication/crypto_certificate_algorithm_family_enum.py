@@ -26,5 +26,5 @@ class CryptoCertificateAlgorithmFamilyEnum(AREnum):
         """
         self._value_ = value
 
-    ECC = "ecc"
-    RSA = "rsa"
+    ECC = "ECC"
+    RSA = "RSA"

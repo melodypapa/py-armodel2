@@ -26,5 +26,5 @@ class DiagnosticOccurrenceCounterProcessingEnum(AREnum):
         """
         self._value_ = value
 
-    CONFIRMED_DTC_BIT = "confirmedDtcBit"
-    TEST_FAILED_BIT = "testFailedBit"
+    CONFIRMED_DTC_BIT = "CONFIRMED-DTC-BIT"
+    TEST_FAILED_BIT = "TEST-FAILED-BIT"

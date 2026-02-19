@@ -26,6 +26,6 @@ class DataTransformationKindEnum(AREnum):
         """
         self._value_ = value
 
-    ASYMMETRIC_FROM = "asymmetricFrom"
-    ASYMMETRIC_TO_BYTE_ARRAY = "asymmetricToByteArray"
-    SYMMETRIC = "symmetric"
+    ASYMMETRIC_FROM = "ASYMMETRIC-FROM"
+    ASYMMETRIC_TO_BYTE_ARRAY = "ASYMMETRIC-TO-BYTE-ARRAY"
+    SYMMETRIC = "SYMMETRIC"

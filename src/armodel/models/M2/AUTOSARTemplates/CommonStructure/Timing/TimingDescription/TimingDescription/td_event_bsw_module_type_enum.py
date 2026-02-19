@@ -26,5 +26,5 @@ class TDEventBswModuleTypeEnum(AREnum):
         """
         self._value_ = value
 
-    BSW_M_ENTRY_CALLED = "bswMEntryCalled"
-    BSW_M_ENTRY_CALL_RETURNED = "bswMEntryCallReturned"
+    BSW_M_ENTRY_CALLED = "BSW-M-ENTRY-CALLED"
+    BSW_M_ENTRY_CALL_RETURNED = "BSW-M-ENTRY-CALL-RETURNED"

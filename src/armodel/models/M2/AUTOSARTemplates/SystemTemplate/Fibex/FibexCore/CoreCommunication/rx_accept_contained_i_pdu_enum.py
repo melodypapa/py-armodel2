@@ -26,5 +26,5 @@ class RxAcceptContainedIPduEnum(AREnum):
         """
         self._value_ = value
 
-    ACCEPT_ALL = "acceptAll"
-    ACCEPT_CONFIGURED = "acceptConfigured"
+    ACCEPT_ALL = "ACCEPT-ALL"
+    ACCEPT_CONFIGURED = "ACCEPT-CONFIGURED"

@@ -26,7 +26,7 @@ class TriggerMode(AREnum):
         """
         self._value_ = value
 
-    DYNAMIC_PART_TRIGGER = "dynamicPartTrigger"
-    NONE = "none"
-    STATIC_OR_DYNAMIC_PART_TRIGGER = "staticOrDynamicPartTrigger"
-    STATIC_PART_TRIGGER = "staticPartTrigger"
+    DYNAMIC_PART_TRIGGER = "DYNAMIC-PART-TRIGGER"
+    NONE = "NONE"
+    STATIC_OR_DYNAMIC_PART_TRIGGER = "STATIC-OR-DYNAMIC-PART-TRIGGER"
+    STATIC_PART_TRIGGER = "STATIC-PART-TRIGGER"

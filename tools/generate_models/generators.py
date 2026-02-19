@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional, Set, Union
 
-from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case
+from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case, to_autosar_xml_format
 from .type_utils import (
     detect_circular_import,
     get_python_type,
@@ -1160,9 +1160,12 @@ class {enum_name}(AREnum):
     # Generate enum members from unique literals
     for literal in unique_literals:
         literal_value = literal["name"]
+        # Convert enum literal name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS)
+        # This ensures compatibility with AUTOSAR XML files that use this format
+        autosar_xml_value = to_autosar_xml_format(literal_value)
         # Convert enum member name to UPPER_SNAKE_CASE with underscores between words
         literal_name = to_snake_case(literal_value).upper()
-        code += f'    {literal_name} = "{literal_value}"\n'
+        code += f'    {literal_name} = "{autosar_xml_value}"\n'
 
     return code
 

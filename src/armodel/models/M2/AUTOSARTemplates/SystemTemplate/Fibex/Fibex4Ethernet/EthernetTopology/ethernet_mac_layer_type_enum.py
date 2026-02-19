@@ -26,6 +26,6 @@ class EthernetMacLayerTypeEnum(AREnum):
         """
         self._value_ = value
 
-    X_GMII = "xGMII"
-    X_MII = "xMII"
-    X_XGMII = "xXGMII"
+    X_GMII = "X-G-M-I-I"
+    X_MII = "X-M-I-I"
+    X_XGMII = "X-X-G-M-I-I"

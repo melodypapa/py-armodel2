@@ -26,5 +26,5 @@ class SeverityEnum(AREnum):
         """
         self._value_ = value
 
-    ERRORINFO = "errorinfo"
-    WARNING = "warning"
+    ERRORINFO = "ERRORINFO"
+    WARNING = "WARNING"

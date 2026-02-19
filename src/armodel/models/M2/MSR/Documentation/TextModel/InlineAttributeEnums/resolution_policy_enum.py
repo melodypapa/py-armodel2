@@ -26,5 +26,5 @@ class ResolutionPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SLOPPY = "noSloppy"
-    SLOPPY = "sloppy"
+    NO_SLOPPY = "NO-SLOPPY"
+    SLOPPY = "SLOPPY"

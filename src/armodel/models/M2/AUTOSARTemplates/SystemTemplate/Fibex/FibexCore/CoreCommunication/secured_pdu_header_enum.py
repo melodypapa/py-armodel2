@@ -26,8 +26,8 @@ class SecuredPduHeaderEnum(AREnum):
         """
         self._value_ = value
 
-    NO_HEADER = "noHeader"
-    SYSTEM = "System"
-    AUTOSA_RSECURED_PDU_HEADER08_BIT = "AUTOSARsecuredPduHeader08Bit"
-    SECURED_PDU_HEADER16_BIT = "securedPduHeader16Bit"
-    SECURED_PDU_HEADER32_BIT = "securedPduHeader32Bit"
+    NO_HEADER = "NO-HEADER"
+    SYSTEM = "SYSTEM"
+    AUTOSA_RSECURED_PDU_HEADER08_BIT = "A-U-T-O-S-A-RSECURED-PDU-HEADER08-BIT"
+    SECURED_PDU_HEADER16_BIT = "SECURED-PDU-HEADER16-BIT"
+    SECURED_PDU_HEADER32_BIT = "SECURED-PDU-HEADER32-BIT"

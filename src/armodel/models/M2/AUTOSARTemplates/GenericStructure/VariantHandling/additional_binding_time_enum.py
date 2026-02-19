@@ -28,5 +28,5 @@ class AdditionalBindingTimeEnum(AREnum):
         """
         self._value_ = value
 
-    BLUEPRINT_DERIVATION_TIME = "blueprintDerivationTime"
-    POST_BUILD = "postBuild"
+    BLUEPRINT_DERIVATION_TIME = "BLUEPRINT-DERIVATION-TIME"
+    POST_BUILD = "POST-BUILD"

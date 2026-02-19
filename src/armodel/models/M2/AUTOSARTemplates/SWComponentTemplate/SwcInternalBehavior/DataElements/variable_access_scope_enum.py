@@ -26,5 +26,5 @@ class VariableAccessScopeEnum(AREnum):
         """
         self._value_ = value
 
-    COMMUNICATION_INTER = "communicationInter"
-    COMMUNICATION_INTRAINTER_PARTITION_INTRA = "communicationIntrainterPartitionIntra"
+    COMMUNICATION_INTER = "COMMUNICATION-INTER"
+    COMMUNICATION_INTRAINTER_PARTITION_INTRA = "COMMUNICATION-INTRAINTER-PARTITION-INTRA"

@@ -26,5 +26,5 @@ class DiagnosticHandleDDDIConfigurationEnum(AREnum):
         """
         self._value_ = value
 
-    NON_VOLATILE = "nonVolatile"
-    VOLATILE = "volatile"
+    NON_VOLATILE = "NON-VOLATILE"
+    VOLATILE = "VOLATILE"

@@ -230,9 +230,10 @@ class ARObject:
                 wrapper.append(child)
             return wrapper
         elif isinstance(value, AREnum):
-            # For AREnum types, use the parent attribute's tag
+            # For AREnum types, use the parent attribute's tag instead of class name
+            # This ensures elements like <SW-CALIBRATION-ACCESS> instead of <SW-CALIBRATION-ACCESS-ENUM>
             child = ET.Element(xml_tag)
-            child.text = str(value.value).upper()
+            child.text = str(value.value)
             return child
         elif isinstance(value, ARRef):
             # For ARRef types, serialize and wrap with the correct tag

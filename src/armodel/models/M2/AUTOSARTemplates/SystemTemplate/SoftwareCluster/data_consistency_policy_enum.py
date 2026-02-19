@@ -26,5 +26,5 @@ class DataConsistencyPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    CONSISTENCY_MECHANISM = "consistencyMechanism"
-    NO_CONSISTENCY = "noConsistency"
+    CONSISTENCY_MECHANISM = "CONSISTENCY-MECHANISM"
+    NO_CONSISTENCY = "NO-CONSISTENCY"

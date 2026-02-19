@@ -26,5 +26,5 @@ class GlobalTimeIcvSupportEnum(AREnum):
         """
         self._value_ = value
 
-    ICV_NOT_SUPPORTED = "icvNotSupported"
-    ICV_SUPPORTED = "icvSupported"
+    ICV_NOT_SUPPORTED = "ICV-NOT-SUPPORTED"
+    ICV_SUPPORTED = "ICV-SUPPORTED"

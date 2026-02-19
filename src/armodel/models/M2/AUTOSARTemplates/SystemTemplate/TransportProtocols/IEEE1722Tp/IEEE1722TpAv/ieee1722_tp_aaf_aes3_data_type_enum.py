@@ -26,8 +26,8 @@ class IEEE1722TpAafAes3DataTypeEnum(AREnum):
         """
         self._value_ = value
 
-    IEC61937 = "iec61937"
-    PCM = "pcm"
-    SMPTE338 = "smpte338"
-    UNSPECIFIED = "unspecified"
-    VENDOR = "vendor"
+    IEC61937 = "IEC61937"
+    PCM = "PCM"
+    SMPTE338 = "SMPTE338"
+    UNSPECIFIED = "UNSPECIFIED"
+    VENDOR = "VENDOR"

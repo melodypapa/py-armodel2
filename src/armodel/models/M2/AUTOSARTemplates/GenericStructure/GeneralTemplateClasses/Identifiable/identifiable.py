@@ -58,8 +58,8 @@ class Identifiable(MultilanguageReferrable, ABC):
 
     admin_data: Optional[AdminData]
     annotations: list[Annotation]
-    category: Optional[CategoryString]
     desc: Optional[MultiLanguageOverviewParagraph]
+    category: Optional[CategoryString]
     introduction: Optional[DocumentationBlock]
     uuid: Optional[String]
     def __init__(self) -> None:
@@ -67,8 +67,8 @@ class Identifiable(MultilanguageReferrable, ABC):
         super().__init__()
         self.admin_data: Optional[AdminData] = None
         self.annotations: list[Annotation] = []
-        self.category: Optional[CategoryString] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
+        self.category: Optional[CategoryString] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.uuid: Optional[String] = None
 
@@ -116,12 +116,12 @@ class Identifiable(MultilanguageReferrable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize category
-        if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "CategoryString")
+        # Serialize desc
+        if self.desc is not None:
+            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
+                wrapped = ET.Element("DESC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,12 +130,12 @@ class Identifiable(MultilanguageReferrable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize desc
-        if self.desc is not None:
-            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+        # Serialize category
+        if self.category is not None:
+            serialized = ARObject._serialize_item(self.category, "CategoryString")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DESC")
+                wrapped = ET.Element("CATEGORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -203,17 +203,17 @@ class Identifiable(MultilanguageReferrable, ABC):
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
-        # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
             desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
 
         # Parse introduction
         child = ARObject._find_child_element(element, "INTRODUCTION")

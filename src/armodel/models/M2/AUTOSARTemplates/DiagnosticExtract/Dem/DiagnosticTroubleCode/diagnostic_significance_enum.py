@@ -26,5 +26,5 @@ class DiagnosticSignificanceEnum(AREnum):
         """
         self._value_ = value
 
-    FAULT = "fault"
-    OCCURENCE = "occurence"
+    FAULT = "FAULT"
+    OCCURENCE = "OCCURENCE"

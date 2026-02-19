@@ -26,5 +26,5 @@ class RunMode(AREnum):
         """
         self._value_ = value
 
-    RUN_CONTINUOUS = "RunContinuous"
-    RUN_ONCE = "runOnce"
+    RUN_CONTINUOUS = "RUN-CONTINUOUS"
+    RUN_ONCE = "RUN-ONCE"

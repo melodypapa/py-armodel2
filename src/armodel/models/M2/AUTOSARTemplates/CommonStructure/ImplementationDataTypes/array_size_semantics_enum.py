@@ -27,5 +27,5 @@ class ArraySizeSemanticsEnum(AREnum):
         """
         self._value_ = value
 
-    FIXED_SIZE = "fixedSize"
-    VARIABLE_SIZE = "variableSize"
+    FIXED_SIZE = "FIXED-SIZE"
+    VARIABLE_SIZE = "VARIABLE-SIZE"

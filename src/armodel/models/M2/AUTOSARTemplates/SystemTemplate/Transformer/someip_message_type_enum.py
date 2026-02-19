@@ -26,7 +26,7 @@ class SOMEIPMessageTypeEnum(AREnum):
         """
         self._value_ = value
 
-    NOTIFICATION = "notification"
-    REQUEST = "request"
-    REQUEST_NO_RETURN = "requestNoReturn"
-    RESPONSE = "response"
+    NOTIFICATION = "NOTIFICATION"
+    REQUEST = "REQUEST"
+    REQUEST_NO_RETURN = "REQUEST-NO-RETURN"
+    RESPONSE = "RESPONSE"

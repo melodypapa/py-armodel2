@@ -27,7 +27,7 @@ class RptEnablerImplTypeEnum(AREnum):
         """
         self._value_ = value
 
-    NONE = "none"
-    RPT_ENABLER_RAM = "rptEnablerRam"
-    RPT_ENABLER_RAM_AND_ROM = "rptEnablerRamAndRom"
-    RPT_ENABLER_ROM = "rptEnablerRom"
+    NONE = "NONE"
+    RPT_ENABLER_RAM = "RPT-ENABLER-RAM"
+    RPT_ENABLER_RAM_AND_ROM = "RPT-ENABLER-RAM-AND-ROM"
+    RPT_ENABLER_ROM = "RPT-ENABLER-ROM"

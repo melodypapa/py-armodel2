@@ -26,5 +26,5 @@ class DltDefaultTraceStateEnum(AREnum):
         """
         self._value_ = value
 
-    DEFAULT_TRACE_STATE_DISABLED = "DefaultTraceStateDisabled"
-    DEFAULT_TRACE_STATE_ENABLED = "DefaultTraceStateEnabled"
+    DEFAULT_TRACE_STATE_DISABLED = "DEFAULT-TRACE-STATE-DISABLED"
+    DEFAULT_TRACE_STATE_ENABLED = "DEFAULT-TRACE-STATE-ENABLED"

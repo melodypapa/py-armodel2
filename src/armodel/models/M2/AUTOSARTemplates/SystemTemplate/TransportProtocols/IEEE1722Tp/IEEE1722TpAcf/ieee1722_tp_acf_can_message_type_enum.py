@@ -26,5 +26,5 @@ class IEEE1722TpAcfCanMessageTypeEnum(AREnum):
         """
         self._value_ = value
 
-    CAN = "can"
-    CAN_BRIEF = "canBrief"
+    CAN = "CAN"
+    CAN_BRIEF = "CAN-BRIEF"

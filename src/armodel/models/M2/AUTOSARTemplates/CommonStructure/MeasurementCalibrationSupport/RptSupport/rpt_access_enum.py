@@ -27,6 +27,6 @@ class RptAccessEnum(AREnum):
         """
         self._value_ = value
 
-    ENABLED = "enabled"
-    NONE = "none"
-    PROTECTED = "protected"
+    ENABLED = "ENABLED"
+    NONE = "NONE"
+    PROTECTED = "PROTECTED"

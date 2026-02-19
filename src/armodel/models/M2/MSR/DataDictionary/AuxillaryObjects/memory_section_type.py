@@ -27,10 +27,10 @@ class MemorySectionType(AREnum):
         """
         self._value_ = value
 
-    CALIBRATION_VARIABLES = "calibrationVariables"
-    CALPRM = "calprm"
-    CODE = "code"
-    CONFIG_DATA = "configData"
-    CONST = "const"
-    EXCLUDE_FROM_FLASHTIMEIN = "excludeFromFlashtimein"
-    VAR = "var"
+    CALIBRATION_VARIABLES = "CALIBRATION-VARIABLES"
+    CALPRM = "CALPRM"
+    CODE = "CODE"
+    CONFIG_DATA = "CONFIG-DATA"
+    CONST = "CONST"
+    EXCLUDE_FROM_FLASHTIMEIN = "EXCLUDE-FROM-FLASHTIMEIN"
+    VAR = "VAR"

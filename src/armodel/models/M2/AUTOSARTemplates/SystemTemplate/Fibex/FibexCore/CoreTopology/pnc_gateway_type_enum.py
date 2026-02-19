@@ -26,6 +26,6 @@ class PncGatewayTypeEnum(AREnum):
         """
         self._value_ = value
 
-    ACTIVE = "active"
-    NONE = "none"
-    PASSIVE = "passive"
+    ACTIVE = "ACTIVE"
+    NONE = "NONE"
+    PASSIVE = "PASSIVE"

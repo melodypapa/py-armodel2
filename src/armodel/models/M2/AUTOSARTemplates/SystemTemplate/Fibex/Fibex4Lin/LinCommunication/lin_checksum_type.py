@@ -26,5 +26,5 @@ class LinChecksumType(AREnum):
         """
         self._value_ = value
 
-    CLASSIC = "classic"
-    ENHANCED = "enhanced"
+    CLASSIC = "CLASSIC"
+    ENHANCED = "ENHANCED"

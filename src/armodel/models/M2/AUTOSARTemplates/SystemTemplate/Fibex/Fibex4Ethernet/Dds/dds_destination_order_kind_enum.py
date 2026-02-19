@@ -26,4 +26,4 @@ class DdsDestinationOrderKindEnum(AREnum):
         """
         self._value_ = value
 
-    BY_RECEPTION_TIMESTAMPBY_SOURCE_TIMESTAMP = "byReceptionTimestampbySourceTimestamp"
+    BY_RECEPTION_TIMESTAMPBY_SOURCE_TIMESTAMP = "BY-RECEPTION-TIMESTAMPBY-SOURCE-TIMESTAMP"

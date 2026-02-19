@@ -26,6 +26,6 @@ class DiagnosticMemoryEntryStorageTriggerEnum(AREnum):
         """
         self._value_ = value
 
-    CONFIRMED = "confirmed"
-    FDC_THRESHOLD = "fdcThreshold"
-    TEST_FAILED = "testFailed"
+    CONFIRMED = "CONFIRMED"
+    FDC_THRESHOLD = "FDC-THRESHOLD"
+    TEST_FAILED = "TEST-FAILED"

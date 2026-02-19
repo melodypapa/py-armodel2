@@ -26,5 +26,5 @@ class DiagnosticIumprKindEnum(AREnum):
         """
         self._value_ = value
 
-    API_BASED = "apiBased"
-    OBSERVER_BASED = "observerBased"
+    API_BASED = "API-BASED"
+    OBSERVER_BASED = "OBSERVER-BASED"

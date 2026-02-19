@@ -26,6 +26,6 @@ class DiagnosticOperationCycleTypeEnum(AREnum):
         """
         self._value_ = value
 
-    IGNITION = "ignition"
-    OBD_DRIVING_CYCLE = "obdDrivingCycle"
-    WARMUP = "warmup"
+    IGNITION = "IGNITION"
+    OBD_DRIVING_CYCLE = "OBD-DRIVING-CYCLE"
+    WARMUP = "WARMUP"

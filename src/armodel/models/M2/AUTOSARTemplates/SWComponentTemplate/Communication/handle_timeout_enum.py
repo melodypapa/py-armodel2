@@ -26,6 +26,6 @@ class HandleTimeoutEnum(AREnum):
         """
         self._value_ = value
 
-    NONE = "none"
-    REPLACE = "replace"
-    REPLACE_BY_TIMEOUT_SUBSTITUTION_VALUE = "replaceByTimeoutSubstitutionValue"
+    NONE = "NONE"
+    REPLACE = "REPLACE"
+    REPLACE_BY_TIMEOUT_SUBSTITUTION_VALUE = "REPLACE-BY-TIMEOUT-SUBSTITUTION-VALUE"

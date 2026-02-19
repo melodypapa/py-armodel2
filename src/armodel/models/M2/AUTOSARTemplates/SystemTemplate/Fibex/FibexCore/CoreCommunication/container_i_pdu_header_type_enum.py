@@ -26,6 +26,6 @@ class ContainerIPduHeaderTypeEnum(AREnum):
         """
         self._value_ = value
 
-    LONG_HEADER = "longHeader"
-    NO_HEADER = "noHeader"
-    SHORT_HEADER = "shortHeader"
+    LONG_HEADER = "LONG-HEADER"
+    NO_HEADER = "NO-HEADER"
+    SHORT_HEADER = "SHORT-HEADER"

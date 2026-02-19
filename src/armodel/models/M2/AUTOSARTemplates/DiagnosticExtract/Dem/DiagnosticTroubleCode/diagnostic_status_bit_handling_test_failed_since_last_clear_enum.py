@@ -26,5 +26,5 @@ class DiagnosticStatusBitHandlingTestFailedSinceLastClearEnum(AREnum):
         """
         self._value_ = value
 
-    STATUS_BIT_AGING_AND_DISPLACEMENT = "statusBitAgingAndDisplacement"
-    STATUS_BIT_NORMAL = "statusBitNormal"
+    STATUS_BIT_AGING_AND_DISPLACEMENT = "STATUS-BIT-AGING-AND-DISPLACEMENT"
+    STATUS_BIT_NORMAL = "STATUS-BIT-NORMAL"

@@ -215,15 +215,10 @@ class SwDataDefProps(ARObject):
             child = self._serialize_with_correct_tag(self.unit_ref, "UNIT-REF")
             conditional_elem.append(child)
 
-        # Add conditional to variants
-        variants_elem.append(conditional_elem)
-
-        # Add variants to main element
-        elem.append(variants_elem)
-
-        # Serialize other attributes using reflection-based approach
+        # Serialize all other attributes inside SW-DATA-DEF-PROPS-CONDITIONAL
+        # This includes primitive types like sw_calibration_access, enums, etc.
         for name, value in vars(self).items():
-            # Skip private attributes and already handled ones
+            # Skip private attributes and already handled reference attributes
             if name.startswith('_') or name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
                 continue
 
@@ -236,27 +231,36 @@ class SwDataDefProps(ARObject):
 
             # Check if this should be an XML attribute
             if ARObject._is_xml_attribute_static(self.__class__, name):
+                # XML attributes should be on the main element
                 elem.set(xml_tag, str(value))
             elif hasattr(value, 'serialize'):
-                # Recursively serialize child objects
-                child = value.serialize(namespace)
-                elem.append(child)
+                # Use _serialize_with_correct_tag to ensure proper tag name for enums and primitives
+                child = self._serialize_with_correct_tag(value, xml_tag)
+                conditional_elem.append(child)
             elif isinstance(value, list):
                 # Serialize list items
-                wrapper = ET.Element(xml_tag)
-                for item in value:
-                    if hasattr(item, 'serialize'):
-                        wrapper.append(item.serialize(namespace))
-                    else:
-                        child = ET.Element(xml_tag)
-                        child.text = str(item)
-                        wrapper.append(child)
-                elem.append(wrapper)
+                if value:  # Only add if list is not empty
+                    wrapper = ET.Element(xml_tag)
+                    for item in value:
+                        if hasattr(item, 'serialize'):
+                            child = self._serialize_with_correct_tag(item, xml_tag)
+                            wrapper.append(child)
+                        else:
+                            child = ET.Element(xml_tag)
+                            child.text = str(item)
+                            wrapper.append(child)
+                    conditional_elem.append(wrapper)
             else:
-                # Primitive value
+                # Primitive value - add to conditional
                 child = ET.Element(xml_tag)
                 child.text = str(value)
-                elem.append(child)
+                conditional_elem.append(child)
+
+        # Add conditional to variants
+        variants_elem.append(conditional_elem)
+
+        # Add variants to main element
+        elem.append(variants_elem)
 
         return elem
 
@@ -314,7 +318,7 @@ class SwDataDefProps(ARObject):
                     conditional_elem = child
                     break
 
-        # Process reference elements inside SW-DATA-DEF-PROPS-CONDITIONAL
+        # Process reference elements and other attributes inside SW-DATA-DEF-PROPS-CONDITIONAL
         if conditional_elem is not None:
             for child in conditional_elem:
                 child_tag = strip_namespace(child.tag)
@@ -329,9 +333,10 @@ class SwDataDefProps(ARObject):
                 elif child_tag == "UNIT-REF":
                     obj.unit_ref = ARRef.deserialize(child)
 
-        # Process other attributes using standard reflection-based approach
+        # Process other attributes - look for them in SW-DATA-DEF-PROPS-CONDITIONAL first,
+        # then fall back to main element for XML attributes
         for attr_name, attr_type in type_hints.items():
-            # Skip already handled attributes
+            # Skip already handled reference attributes
             if attr_name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
                 continue
 
@@ -340,25 +345,36 @@ class SwDataDefProps(ARObject):
 
             # Check if this should be an XML attribute
             if ARObject._is_xml_attribute_static(cls, attr_name):
+                # XML attributes are on the main element
                 value = element.get(xml_tag)
+                if value is not None:
+                    setattr(obj, attr_name, value)
             else:
-                # Find child element
-                child = element.find(xml_tag)
+                # For child elements, first look in SW-DATA-DEF-PROPS-CONDITIONAL
+                child = None
+                if conditional_elem is not None:
+                    child = conditional_elem.find(xml_tag)
+                    if child is None:
+                        # Try to find by matching stripped tag names
+                        for elem in conditional_elem:
+                            if strip_namespace(elem.tag) == xml_tag:
+                                child = elem
+                                break
+
+                # If not found in conditional, check main element
                 if child is None:
-                    # Try to find by matching stripped tag names
-                    for elem in element:
-                        if strip_namespace(elem.tag) == xml_tag:
-                            child = elem
-                            break
+                    child = element.find(xml_tag)
+                    if child is None:
+                        # Try to find by matching stripped tag names
+                        for elem in element:
+                            if strip_namespace(elem.tag) == xml_tag:
+                                child = elem
+                                break
 
                 if child is not None:
                     # Get value based on type
                     value = ARObject._extract_value(child, attr_type)
-                else:
-                    value = None
-
-            # Set attribute
-            setattr(obj, attr_name, value)
+                    setattr(obj, attr_name, value)
 
         return obj
 

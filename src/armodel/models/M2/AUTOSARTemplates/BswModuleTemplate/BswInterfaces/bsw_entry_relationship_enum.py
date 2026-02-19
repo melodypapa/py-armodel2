@@ -27,4 +27,4 @@ class BswEntryRelationshipEnum(AREnum):
         """
         self._value_ = value
 
-    DERIVED_FROM = "derivedFrom"
+    DERIVED_FROM = "DERIVED-FROM"

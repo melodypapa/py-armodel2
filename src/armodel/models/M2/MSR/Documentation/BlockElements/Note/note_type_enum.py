@@ -26,9 +26,9 @@ class NoteTypeEnum(AREnum):
         """
         self._value_ = value
 
-    CAUTION = "caution"
-    EXAMPLE = "example"
-    EXERCISE = "exercise"
-    HINTINSTRUCTION = "hintinstruction"
-    OTHERIN = "otherin"
-    TIP = "tip"
+    CAUTION = "CAUTION"
+    EXAMPLE = "EXAMPLE"
+    EXERCISE = "EXERCISE"
+    HINTINSTRUCTION = "HINTINSTRUCTION"
+    OTHERIN = "OTHERIN"
+    TIP = "TIP"

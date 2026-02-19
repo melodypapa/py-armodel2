@@ -26,5 +26,5 @@ class ShowResourceNumberEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_NUMBER = "noShowNumber"
-    SHOW_NUMBER = "showNumber"
+    NO_SHOW_NUMBER = "NO-SHOW-NUMBER"
+    SHOW_NUMBER = "SHOW-NUMBER"

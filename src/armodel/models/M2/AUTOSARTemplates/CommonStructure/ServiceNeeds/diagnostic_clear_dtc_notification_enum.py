@@ -26,5 +26,5 @@ class DiagnosticClearDtcNotificationEnum(AREnum):
         """
         self._value_ = value
 
-    FINISH = "finish"
-    START = "start"
+    FINISH = "FINISH"
+    START = "START"

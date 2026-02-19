@@ -26,6 +26,6 @@ class AutoCollectEnum(AREnum):
         """
         self._value_ = value
 
-    REF_ALL = "refAll"
-    REF_NONE = "refNone"
-    REF_NON_STANDARD = "refNonStandard"
+    REF_ALL = "REF-ALL"
+    REF_NONE = "REF-NONE"
+    REF_NON_STANDARD = "REF-NON-STANDARD"

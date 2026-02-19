@@ -26,5 +26,5 @@ class EventAcceptanceStatusEnum(AREnum):
         """
         self._value_ = value
 
-    DISABLED = "Disabled"
-    EVENT_ACCEPTANCE_ENABLED = "eventAcceptanceEnabled"
+    DISABLED = "DISABLED"
+    EVENT_ACCEPTANCE_ENABLED = "EVENT-ACCEPTANCE-ENABLED"

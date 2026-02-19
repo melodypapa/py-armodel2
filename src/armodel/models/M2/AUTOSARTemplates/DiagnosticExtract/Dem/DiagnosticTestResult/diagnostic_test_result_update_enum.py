@@ -26,5 +26,5 @@ class DiagnosticTestResultUpdateEnum(AREnum):
         """
         self._value_ = value
 
-    ALWAYS = "always"
-    STEADY = "steady"
+    ALWAYS = "ALWAYS"
+    STEADY = "STEADY"

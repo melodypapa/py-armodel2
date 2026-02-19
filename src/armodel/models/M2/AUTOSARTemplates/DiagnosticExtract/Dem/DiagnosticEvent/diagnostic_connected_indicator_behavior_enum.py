@@ -26,8 +26,8 @@ class DiagnosticConnectedIndicatorBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    BLINK_MODE = "blinkMode"
-    BLINK_OR_CONTINUOUS_ON_MODE = "blinkOrContinuousOnMode"
-    CONTINUOUS_ON_MODE = "continuousOnMode"
-    FAST_FLASHING_MODE = "fastFlashingMode"
-    SLOW_FLASHING_MODE = "slowFlashingMode"
+    BLINK_MODE = "BLINK-MODE"
+    BLINK_OR_CONTINUOUS_ON_MODE = "BLINK-OR-CONTINUOUS-ON-MODE"
+    CONTINUOUS_ON_MODE = "CONTINUOUS-ON-MODE"
+    FAST_FLASHING_MODE = "FAST-FLASHING-MODE"
+    SLOW_FLASHING_MODE = "SLOW-FLASHING-MODE"

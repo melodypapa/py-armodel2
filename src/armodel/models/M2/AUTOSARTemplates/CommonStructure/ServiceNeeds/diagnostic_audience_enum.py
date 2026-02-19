@@ -26,8 +26,8 @@ class DiagnosticAudienceEnum(AREnum):
         """
         self._value_ = value
 
-    AFTERMARKET = "aftermarket"
-    AFTER_SALES = "afterSales"
-    DEVELOPMENT = "development"
-    MANUFACTURING = "manufacturing"
-    SUPPLIER = "supplier"
+    AFTERMARKET = "AFTERMARKET"
+    AFTER_SALES = "AFTER-SALES"
+    DEVELOPMENT = "DEVELOPMENT"
+    MANUFACTURING = "MANUFACTURING"
+    SUPPLIER = "SUPPLIER"

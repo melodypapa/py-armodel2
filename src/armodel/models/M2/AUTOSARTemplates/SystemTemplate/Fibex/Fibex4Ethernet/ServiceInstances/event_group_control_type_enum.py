@@ -26,7 +26,7 @@ class EventGroupControlTypeEnum(AREnum):
         """
         self._value_ = value
 
-    ACTIVATION_AND = "activationAnd"
-    ACTIVATION_MULTICAST = "activationMulticast"
-    ACTIVATION_UNICAST = "activationUnicast"
-    TRIGGER_UNICAST = "triggerUnicast"
+    ACTIVATION_AND = "ACTIVATION-AND"
+    ACTIVATION_MULTICAST = "ACTIVATION-MULTICAST"
+    ACTIVATION_UNICAST = "ACTIVATION-UNICAST"
+    TRIGGER_UNICAST = "TRIGGER-UNICAST"

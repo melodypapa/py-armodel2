@@ -26,5 +26,5 @@ class DiagnosticResponseToEcuResetEnum(AREnum):
         """
         self._value_ = value
 
-    RESPOND_AFTER_RESET = "respondAfterReset"
-    RESPOND_BEFORE_RESET = "respondBeforeReset"
+    RESPOND_AFTER_RESET = "RESPOND-AFTER-RESET"
+    RESPOND_BEFORE_RESET = "RESPOND-BEFORE-RESET"

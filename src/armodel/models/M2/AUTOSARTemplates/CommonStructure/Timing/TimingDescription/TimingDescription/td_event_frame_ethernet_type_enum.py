@@ -27,6 +27,6 @@ class TDEventFrameEthernetTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: frameEthernet
-    FRAME_ETHERNET_TRANSMISSION = "frameEthernetTransmission"
-    FRAME_ETHERNET = "frameEthernet"
-    FRAME_ETHERNET_SENT_ON_BUS = "frameEthernetSentOnBus"
+    FRAME_ETHERNET_TRANSMISSION = "FRAME-ETHERNET-TRANSMISSION"
+    FRAME_ETHERNET = "FRAME-ETHERNET"
+    FRAME_ETHERNET_SENT_ON_BUS = "FRAME-ETHERNET-SENT-ON-BUS"

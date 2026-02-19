@@ -26,5 +26,5 @@ class DiagnosticEventCombinationBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    EVENT_COMBINATION_ON_RETRIEVAL = "eventCombinationOnRetrieval"
-    EVENT_COMBINATION_ON_STORAGE = "eventCombinationOnStorage"
+    EVENT_COMBINATION_ON_RETRIEVAL = "EVENT-COMBINATION-ON-RETRIEVAL"
+    EVENT_COMBINATION_ON_STORAGE = "EVENT-COMBINATION-ON-STORAGE"

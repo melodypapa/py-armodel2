@@ -27,5 +27,5 @@ class ApiPrincipleEnum(AREnum):
         """
         self._value_ = value
 
-    COMMON = "common"
-    PER_EXECUTABLE_MODULE = "perExecutableModule"
+    COMMON = "COMMON"
+    PER_EXECUTABLE_MODULE = "PER-EXECUTABLE-MODULE"

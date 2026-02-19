@@ -26,5 +26,5 @@ class DiagnosticEventWindowTimeEnum(AREnum):
         """
         self._value_ = value
 
-    INFINITE_TIME_TO = "infiniteTimeTo"
-    POWER_WINDOW_TIMEDOWN = "powerWindowTimedown"
+    INFINITE_TIME_TO = "INFINITE-TIME-TO"
+    POWER_WINDOW_TIMEDOWN = "POWER-WINDOW-TIMEDOWN"

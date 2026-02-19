@@ -26,5 +26,5 @@ class PduCollectionSemanticsEnum(AREnum):
         """
         self._value_ = value
 
-    LAST_IS_BEST = "lastIsBest"
-    QUEUED = "queued"
+    LAST_IS_BEST = "LAST-IS-BEST"
+    QUEUED = "QUEUED"

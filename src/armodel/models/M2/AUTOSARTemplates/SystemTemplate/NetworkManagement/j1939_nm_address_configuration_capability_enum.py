@@ -26,8 +26,8 @@ class J1939NmAddressConfigurationCapabilityEnum(AREnum):
         """
         self._value_ = value
 
-    J1939_NM_AAC = "J1939NM_AAC"
-    J1939_NM_CCA = "J1939NM_CCA"
-    J1939_NM_NCA = "J1939NM_NCA"
-    J1939_NM_SCA = "J1939NM_SCA"
-    J1939_NM_SVCA = "J1939NM_SVCA"
+    J1939_NM_AAC = "J1939-N-M_-A-A-C"
+    J1939_NM_CCA = "J1939-N-M_-C-C-A"
+    J1939_NM_NCA = "J1939-N-M_-N-C-A"
+    J1939_NM_SCA = "J1939-N-M_-S-C-A"
+    J1939_NM_SVCA = "J1939-N-M_-S-V-C-A"

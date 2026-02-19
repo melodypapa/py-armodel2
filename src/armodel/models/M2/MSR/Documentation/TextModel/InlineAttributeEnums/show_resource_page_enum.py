@@ -26,5 +26,5 @@ class ShowResourcePageEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_PAGE = "noShowPage"
-    SHOW_PAGE = "showPage"
+    NO_SHOW_PAGE = "NO-SHOW-PAGE"
+    SHOW_PAGE = "SHOW-PAGE"

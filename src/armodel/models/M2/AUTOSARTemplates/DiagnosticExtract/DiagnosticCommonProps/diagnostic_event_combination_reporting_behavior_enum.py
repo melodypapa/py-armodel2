@@ -26,4 +26,4 @@ class DiagnosticEventCombinationReportingBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    REPORTING_IN_CHRONLOGICAL_ORDER_OLDEST_FIRST = "reportingInChronlogicalOrderOldestFirst"
+    REPORTING_IN_CHRONLOGICAL_ORDER_OLDEST_FIRST = "REPORTING-IN-CHRONLOGICAL-ORDER-OLDEST-FIRST"

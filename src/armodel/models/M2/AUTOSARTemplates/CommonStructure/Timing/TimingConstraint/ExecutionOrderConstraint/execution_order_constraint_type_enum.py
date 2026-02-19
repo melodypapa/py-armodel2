@@ -26,6 +26,6 @@ class ExecutionOrderConstraintTypeEnum(AREnum):
         """
         self._value_ = value
 
-    HIERARCHICAL_EOC = "hierarchicalEOC"
-    ORDINARY_EOC = "ordinaryEOC"
-    REPETITIVE_EOC = "repetitiveEOC"
+    HIERARCHICAL_EOC = "HIERARCHICAL-E-O-C"
+    ORDINARY_EOC = "ORDINARY-E-O-C"
+    REPETITIVE_EOC = "REPETITIVE-E-O-C"

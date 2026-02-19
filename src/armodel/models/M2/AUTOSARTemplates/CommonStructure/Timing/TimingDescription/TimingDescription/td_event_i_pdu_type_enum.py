@@ -26,6 +26,6 @@ class TDEventIPduTypeEnum(AREnum):
         """
         self._value_ = value
 
-    I_PDU_RECEIVED_BY = "iPduReceivedBy"
-    COM = "COM"
-    I_PDU_SENT_TO_IFSPECIFIC = "iPduSentToIfspecific"
+    I_PDU_RECEIVED_BY = "I-PDU-RECEIVED-BY"
+    COM = "C-O-M"
+    I_PDU_SENT_TO_IFSPECIFIC = "I-PDU-SENT-TO-IFSPECIFIC"

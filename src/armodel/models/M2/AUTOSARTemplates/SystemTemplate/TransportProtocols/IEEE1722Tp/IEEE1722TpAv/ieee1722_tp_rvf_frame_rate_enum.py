@@ -28,5 +28,5 @@ class IEEE1722TpRvfFrameRateEnum(AREnum):
 
     # Note: 2 duplicate literal(s) found and removed: AUTOSAR, System
     _1 = "_1"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"

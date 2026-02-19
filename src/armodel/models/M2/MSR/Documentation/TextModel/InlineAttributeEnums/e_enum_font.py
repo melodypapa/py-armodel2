@@ -26,5 +26,5 @@ class EEnumFont(AREnum):
         """
         self._value_ = value
 
-    DEFAULT = "default"
-    MONO = "mono"
+    DEFAULT = "DEFAULT"
+    MONO = "MONO"

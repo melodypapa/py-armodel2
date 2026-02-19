@@ -26,10 +26,10 @@ class CanTpAddressingFormatType(AREnum):
         """
         self._value_ = value
 
-    EXTENDED = "extended"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    MIXED = "mixed"
-    MIXED29BIT = "mixed29bit"
-    NORMALFIXED = "normalfixed"
-    STANDARD = "standard"
+    EXTENDED = "EXTENDED"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    MIXED = "MIXED"
+    MIXED29BIT = "MIXED29BIT"
+    NORMALFIXED = "NORMALFIXED"
+    STANDARD = "STANDARD"

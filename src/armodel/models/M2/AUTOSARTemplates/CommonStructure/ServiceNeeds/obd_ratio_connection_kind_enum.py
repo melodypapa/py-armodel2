@@ -26,5 +26,5 @@ class ObdRatioConnectionKindEnum(AREnum):
         """
         self._value_ = value
 
-    API_USE = "apiUse"
-    OBSERVER = "observer"
+    API_USE = "API-USE"
+    OBSERVER = "OBSERVER"

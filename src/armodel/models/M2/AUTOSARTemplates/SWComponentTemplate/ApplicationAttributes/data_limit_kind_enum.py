@@ -26,8 +26,8 @@ class DataLimitKindEnum(AREnum):
         """
         self._value_ = value
 
-    MAX = "max"
-    SOFTWARE = "Software"
-    AUTOSAR = "AUTOSAR"
-    MIN = "min"
-    NONE = "none"
+    MAX = "MAX"
+    SOFTWARE = "SOFTWARE"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    MIN = "MIN"
+    NONE = "NONE"

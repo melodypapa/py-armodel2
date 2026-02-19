@@ -26,6 +26,6 @@ class FilterDebouncingEnum(AREnum):
         """
         self._value_ = value
 
-    DEBOUNCE_DATA = "debounceData"
-    RAW_DATA = "rawData"
-    WAIT_TIME_DATE = "waitTimeDate"
+    DEBOUNCE_DATA = "DEBOUNCE-DATA"
+    RAW_DATA = "RAW-DATA"
+    WAIT_TIME_DATE = "WAIT-TIME-DATE"

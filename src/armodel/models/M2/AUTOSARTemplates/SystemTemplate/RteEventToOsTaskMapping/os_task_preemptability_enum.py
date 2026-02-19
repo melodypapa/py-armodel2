@@ -26,5 +26,5 @@ class OsTaskPreemptabilityEnum(AREnum):
         """
         self._value_ = value
 
-    FULL = "full"
-    NONE = "none"
+    FULL = "FULL"
+    NONE = "NONE"

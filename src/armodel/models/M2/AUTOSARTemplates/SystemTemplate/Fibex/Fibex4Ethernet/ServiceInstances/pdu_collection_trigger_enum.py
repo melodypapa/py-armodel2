@@ -26,5 +26,5 @@ class PduCollectionTriggerEnum(AREnum):
         """
         self._value_ = value
 
-    ALWAYS = "always"
-    NEVER = "never"
+    ALWAYS = "ALWAYS"
+    NEVER = "NEVER"

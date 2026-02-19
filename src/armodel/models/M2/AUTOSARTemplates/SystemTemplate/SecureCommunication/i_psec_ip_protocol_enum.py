@@ -26,7 +26,7 @@ class IPsecIpProtocolEnum(AREnum):
         """
         self._value_ = value
 
-    ANY = "any"
-    ICMP = "icmp"
-    TCP = "tcp"
-    UDP = "udp"
+    ANY = "ANY"
+    ICMP = "ICMP"
+    TCP = "TCP"
+    UDP = "UDP"

@@ -26,5 +26,5 @@ class GlobalTimeCrcSupportEnum(AREnum):
         """
         self._value_ = value
 
-    CRC_NOT_SUPPORTED = "crcNotSupported"
-    CRC_SUPPORTED = "crcSupported"
+    CRC_NOT_SUPPORTED = "CRC-NOT-SUPPORTED"
+    CRC_SUPPORTED = "CRC-SUPPORTED"

@@ -26,6 +26,6 @@ class DiagnosticRecordTriggerEnum(AREnum):
         """
         self._value_ = value
 
-    CONFIRMED = "confirmed"
-    TEST_FAILED_THIS_OPERATION_CYCLE = "testFailedThisOperationCycle"
-    TEST_PASSED = "testPassed"
+    CONFIRMED = "CONFIRMED"
+    TEST_FAILED_THIS_OPERATION_CYCLE = "TEST-FAILED-THIS-OPERATION-CYCLE"
+    TEST_PASSED = "TEST-PASSED"

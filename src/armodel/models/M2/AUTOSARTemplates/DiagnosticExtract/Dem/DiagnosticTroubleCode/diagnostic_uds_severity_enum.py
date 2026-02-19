@@ -26,7 +26,7 @@ class DiagnosticUdsSeverityEnum(AREnum):
         """
         self._value_ = value
 
-    CHECK_AT_NEXT_HALT = "checkAtNextHalt"
-    IMMEDIATELY = "immediately"
-    MAINTENANCE_ONLY = "maintenanceOnly"
-    NO_SEVERITY = "noSeverity"
+    CHECK_AT_NEXT_HALT = "CHECK-AT-NEXT-HALT"
+    IMMEDIATELY = "IMMEDIATELY"
+    MAINTENANCE_ONLY = "MAINTENANCE-ONLY"
+    NO_SEVERITY = "NO-SEVERITY"

@@ -168,3 +168,34 @@ def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity
         identifier = f"{identifier}_"
 
     return identifier
+
+
+def to_autosar_xml_format(name: str) -> str:
+    """Convert camelCase name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS).
+
+    This function converts camelCase enum literal names to the AUTOSAR XML format
+    which uses uppercase letters with hyphens between words.
+
+    Args:
+        name: camelCase string (e.g., "readOnly", "notAccessible", "readWrite")
+
+    Returns:
+        UPPER-CASE-WITH-HYPHENS string (e.g., "READ-ONLY", "NOT-ACCESSIBLE", "READ-WRITE")
+
+    Examples:
+        >>> to_autosar_xml_format("readOnly")
+        "READ-ONLY"
+        >>> to_autosar_xml_format("notAccessible")
+        "NOT-ACCESSIBLE"
+        >>> to_autosar_xml_format("readWrite")
+        "READ-WRITE"
+        >>> to_autosar_xml_format("presentationContinuous")
+        "PRESENTATION-CONTINUOUS"
+    """
+    # Insert hyphens before uppercase letters and convert to uppercase
+    result = ""
+    for i, char in enumerate(name):
+        if char.isupper() and i > 0:
+            result += "-"
+        result += char.upper()
+    return result

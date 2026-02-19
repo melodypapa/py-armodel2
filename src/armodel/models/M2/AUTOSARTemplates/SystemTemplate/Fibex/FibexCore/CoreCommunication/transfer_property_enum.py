@@ -27,8 +27,8 @@ class TransferPropertyEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: triggeredOnChange
-    PENDING = "pending"
-    TRIGGERED = "triggered"
-    TRIGGERED_ON_CHANGE = "triggeredOnChange"
-    TRIGGERED_WITHOUT = "triggeredWithout"
-    REPETITION = "Repetition"
+    PENDING = "PENDING"
+    TRIGGERED = "TRIGGERED"
+    TRIGGERED_ON_CHANGE = "TRIGGERED-ON-CHANGE"
+    TRIGGERED_WITHOUT = "TRIGGERED-WITHOUT"
+    REPETITION = "REPETITION"

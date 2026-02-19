@@ -26,5 +26,5 @@ class DefaultValueApplicationStrategyEnum(AREnum):
         """
         self._value_ = value
 
-    FURTHER = "further"
-    DEFAULT_IF_UNDEFINED = "defaultIfUndefined"
+    FURTHER = "FURTHER"
+    DEFAULT_IF_UNDEFINED = "DEFAULT-IF-UNDEFINED"

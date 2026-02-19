@@ -26,4 +26,4 @@ class ExecutionTimeTypeEnum(AREnum):
         """
         self._value_ = value
 
-    GROSSINTERRUPTIONNETINTERRUPTION = "grossinterruptionnetinterruption"
+    GROSSINTERRUPTIONNETINTERRUPTION = "GROSSINTERRUPTIONNETINTERRUPTION"

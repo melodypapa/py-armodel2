@@ -26,9 +26,9 @@ class MonotonyEnum(AREnum):
         """
         self._value_ = value
 
-    DECREASINGINCREASING = "decreasingincreasing"
-    MONOTONOUS = "monotonous"
-    NO_MONOTONY = "noMonotony"
-    STRICTLY_DECREASING = "strictlyDecreasing"
-    STRICTLY_INCREASING = "strictlyIncreasing"
-    STRICT_MONOTONOUS = "strictMonotonous"
+    DECREASINGINCREASING = "DECREASINGINCREASING"
+    MONOTONOUS = "MONOTONOUS"
+    NO_MONOTONY = "NO-MONOTONY"
+    STRICTLY_DECREASING = "STRICTLY-DECREASING"
+    STRICTLY_INCREASING = "STRICTLY-INCREASING"
+    STRICT_MONOTONOUS = "STRICT-MONOTONOUS"

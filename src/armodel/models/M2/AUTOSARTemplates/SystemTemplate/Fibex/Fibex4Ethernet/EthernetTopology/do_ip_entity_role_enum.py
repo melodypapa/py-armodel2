@@ -26,6 +26,6 @@ class DoIpEntityRoleEnum(AREnum):
         """
         self._value_ = value
 
-    EDGE_NODE = "edgeNode"
-    GATEWAY = "gateway"
-    NODE = "node"
+    EDGE_NODE = "EDGE-NODE"
+    GATEWAY = "GATEWAY"
+    NODE = "NODE"

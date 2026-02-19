@@ -26,5 +26,5 @@ class FlexrayChannelName(AREnum):
         """
         self._value_ = value
 
-    CHANNEL_A = "channelA"
-    CHANNEL_B = "channelB"
+    CHANNEL_A = "CHANNEL-A"
+    CHANNEL_B = "CHANNEL-B"

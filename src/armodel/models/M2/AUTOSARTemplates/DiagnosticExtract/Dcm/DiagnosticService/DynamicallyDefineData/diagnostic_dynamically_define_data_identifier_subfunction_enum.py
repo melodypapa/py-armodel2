@@ -26,6 +26,6 @@ class DiagnosticDynamicallyDefineDataIdentifierSubfunctionEnum(AREnum):
         """
         self._value_ = value
 
-    CLEAR_DYNAMICALLY_DEFINE_DATA_IDENTIFIER = "clearDynamicallyDefineDataIdentifier"
-    DEFINE_BY_IDENTIFIER = "defineByIdentifier"
-    DEFINE_BY_MEMORY_ADDRESS = "defineByMemoryAddress"
+    CLEAR_DYNAMICALLY_DEFINE_DATA_IDENTIFIER = "CLEAR-DYNAMICALLY-DEFINE-DATA-IDENTIFIER"
+    DEFINE_BY_IDENTIFIER = "DEFINE-BY-IDENTIFIER"
+    DEFINE_BY_MEMORY_ADDRESS = "DEFINE-BY-MEMORY-ADDRESS"

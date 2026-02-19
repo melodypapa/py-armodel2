@@ -30,18 +30,21 @@ class ARRef(ARObject):
     Attributes:
         dest: The target type (e.g., "SW-ADDR-METHOD")
         value: The target path reference
+        base: The base package/type for the reference (e.g., "DataTypes")
     """
 
-    def __init__(self, dest: Optional[str] = None, value: Optional[str] = None) -> None:
+    def __init__(self, dest: Optional[str] = None, value: Optional[str] = None, base: Optional[str] = None) -> None:
         """Initialize an ARRef with target type and path.
 
         Args:
             dest: The DEST attribute value (target type)
             value: The reference target path
+            base: The base package/type for the reference
         """
         super().__init__()
         self._dest: Optional[str] = dest
         self._value: Optional[str] = value
+        self._base: Optional[str] = base
 
     @property
     def dest(self) -> Optional[str]:
@@ -63,11 +66,32 @@ class ARRef(ARObject):
         """Set the reference path value."""
         self._value = value
 
+    @property
+    def base(self) -> Optional[str]:
+        """Get the base package/type for the reference."""
+        return self._base
+
+    @base.setter
+    def base(self, value: Optional[str]) -> None:
+        """Set the base package/type for the reference."""
+        self._base = value
+
     @xml_attribute
     @property
     def DEST(self) -> Optional[str]:
         """XML attribute for DEST (serializes as DEST attribute)."""
         return self._dest
+
+    @xml_attribute
+    @property
+    def BASE(self) -> Optional[str]:
+        """XML attribute for BASE (serializes as BASE attribute)."""
+        return self._base
+
+    @BASE.setter
+    def BASE(self, value: Optional[str]) -> None:
+        """Set the BASE attribute."""
+        self._base = value
 
     @DEST.setter
     def DEST(self, value: Optional[str]) -> None:
@@ -93,6 +117,10 @@ class ARRef(ARObject):
         # Create element - the tag name will be set by parent via _serialize_with_correct_tag
         # We use a temporary tag that will be replaced by parent
         elem = ET.Element("ARREF")
+
+        # Set BASE attribute if present
+        if self._base is not None:
+            elem.set("BASE", self._base)
 
         # Set DEST attribute if present
         if self._dest is not None:
@@ -124,6 +152,9 @@ class ARRef(ARObject):
         """
         ref = cls()
 
+        # Get BASE attribute
+        ref.base = element.get("BASE")
+
         # Get DEST attribute
         ref.dest = element.get("DEST")
 
@@ -140,7 +171,8 @@ class ARRef(ARObject):
         """String representation of the reference."""
         dest_str = self._dest or "Unknown"
         value_str = self._value or "None"
-        return f"ARRef(dest={dest_str}, value={value_str})"
+        base_str = self._base or "None"
+        return f"ARRef(dest={dest_str}, value={value_str}, base={base_str})"
 
     def __repr__(self) -> str:
         """Detailed representation of the reference."""

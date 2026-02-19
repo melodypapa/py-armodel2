@@ -26,5 +26,5 @@ class ISignalTypeEnum(AREnum):
         """
         self._value_ = value
 
-    ARRAY = "array"
-    PRIMITIVE = "primitive"
+    ARRAY = "ARRAY"
+    PRIMITIVE = "PRIMITIVE"

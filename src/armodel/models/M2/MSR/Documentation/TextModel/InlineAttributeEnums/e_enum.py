@@ -26,7 +26,7 @@ class EEnum(AREnum):
         """
         self._value_ = value
 
-    BOLD = "bold"
-    BOLDITALIC = "bolditalic"
-    ITALIC = "italic"
-    PLAIN = "plain"
+    BOLD = "BOLD"
+    BOLDITALIC = "BOLDITALIC"
+    ITALIC = "ITALIC"
+    PLAIN = "PLAIN"
