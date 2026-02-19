@@ -86,7 +86,7 @@ class TestARPrimitiveTransparentEquality:
         boolean = Boolean(True)
 
         # Act & Assert
-        assert boolean is True, "Boolean(True) should equal True bool"
+        assert boolean == True, "Boolean(True) should equal True bool"
 
     def test_identifier_hash_compatible_with_string(self) -> None:
         """Identifier hash should be compatible with string for dict/set usage."""
@@ -119,14 +119,14 @@ class TestAREnumTransparentEquality:
     """Tests for AREnum transparent equality with string values."""
 
     def test_enum_equals_string(self) -> None:
-        """AREnum should equal its underlying string value."""
+        """AREnum should equal its underlying string value (uppercase with hyphens)."""
         # Arrange
         enum_val = ByteOrderEnum(ByteOrderEnum.MOST_SIGNIFICANT_BYTE_FIRST)
 
         # Act & Assert
         # This SHOULD work - comparing enum with string
-        assert enum_val == "mostSignificantByteFirst", (
-            "ByteOrderEnum should equal its string value"
+        assert enum_val == "MOST-SIGNIFICANT-BYTE-FIRST", (
+            "ByteOrderEnum should equal its string value (uppercase with hyphens)"
         )
 
     def test_enum_equals_enum(self) -> None:
@@ -144,20 +144,20 @@ class TestAREnumTransparentEquality:
         enum_val = ByteOrderEnum(ByteOrderEnum.MOST_SIGNIFICANT_BYTE_FIRST)
 
         # Act & Assert
-        assert enum_val != "mostSignificantByteLast", (
+        assert enum_val != "MOST-SIGNIFICANT-BYTE-LAST", (
             "Enum should not equal different string"
         )
 
     def test_enum_hash_compatible_with_string(self) -> None:
-        """AREnum hash should be compatible with string."""
+        """AREnum hash should be compatible with string (uppercase with hyphens)."""
         # Arrange
         enum_val = ByteOrderEnum(ByteOrderEnum.MOST_SIGNIFICANT_BYTE_FIRST)
 
         # Act & Assert
         # Enum might not be in set of strings directly, but let's verify
         # the hash is based on value
-        assert hash(enum_val) == hash("mostSignificantByteFirst"), (
-            "Enum hash should match string value hash"
+        assert hash(enum_val) == hash("MOST-SIGNIFICANT-BYTE-FIRST"), (
+            "Enum hash should match string value hash (uppercase with hyphens)"
         )
 
 
@@ -207,14 +207,14 @@ class TestARObjectExtractValueUnwrapping:
     def test_extract_value_enum_keeps_wrapper_with_transparent_equality(
         self,
     ) -> None:
-        """_extract_value should keep AREnum wrapper but have transparent equality."""
+        """_extract_value should keep AREnum wrapper but have transparent equality (uppercase with hyphens)."""
         # Arrange
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
             ARObject,
         )
 
         element = ET.Element("BYTE-ORDER")
-        element.text = "mostSignificantByteFirst"
+        element.text = "MOST-SIGNIFICANT-BYTE-FIRST"
 
         # Act
         result = ARObject._extract_value(element, "ByteOrderEnum")
@@ -224,9 +224,9 @@ class TestARObjectExtractValueUnwrapping:
         assert isinstance(result, ByteOrderEnum), (
             f"Expected ByteOrderEnum, got {type(result).__name__}"
         )
-        # But compare transparently with strings
-        assert result == "mostSignificantByteFirst", (
-            "Enum should equal its string value"
+        # But compare transparently with strings (uppercase with hyphens)
+        assert result == "MOST-SIGNIFICANT-BYTE-FIRST", (
+            "Enum should equal its string value (uppercase with hyphens)"
         )
 
 
@@ -299,12 +299,12 @@ class TestAREnumUppercaseSerialization:
         assert elem.text == "OPEN"
 
     def test_monotony_enum_serializes_uppercase(self) -> None:
-        """Test MonotonyEnum values serialize as uppercase."""
+        """Test MonotonyEnum values serialize as uppercase with hyphens (AUTOSAR format)."""
         test_cases = [
-            (MonotonyEnum.STRICTLY_INCREASING, "STRICTLYINCREASING"),
-            (MonotonyEnum.STRICTLY_DECREASING, "STRICTLYDECREASING"),
+            (MonotonyEnum.STRICTLY_INCREASING, "STRICTLY-INCREASING"),
+            (MonotonyEnum.STRICTLY_DECREASING, "STRICTLY-DECREASING"),
             (MonotonyEnum.MONOTONOUS, "MONOTONOUS"),
-            (MonotonyEnum.NO_MONOTONY, "NOMONOTONY"),
+            (MonotonyEnum.NO_MONOTONY, "NO-MONOTONY"),
         ]
 
         for enum_val, expected_upper in test_cases:
@@ -322,16 +322,16 @@ class TestAREnumCaseInsensitiveDeserialization:
         enum_val = IntervalTypeEnum.deserialize(elem)
 
         assert enum_val == IntervalTypeEnum.CLOSED
-        assert enum_val.value == "closed"
+        assert enum_val.value == "CLOSED"
 
     def test_interval_type_enum_deserialize_lowercase(self) -> None:
-        """Test IntervalTypeEnum deserialization with lowercase value."""
+        """Test IntervalTypeEnum deserialization with lowercase value (case-insensitive)."""
         xml = '<INTERVAL-TYPE>closed</INTERVAL-TYPE>'
         elem = ET.fromstring(xml)
         enum_val = IntervalTypeEnum.deserialize(elem)
 
         assert enum_val == IntervalTypeEnum.CLOSED
-        assert enum_val.value == "closed"
+        assert enum_val.value == "CLOSED"
 
     def test_interval_type_enum_deserialize_mixed_case(self) -> None:
         """Test IntervalTypeEnum deserialization with mixed case value."""
@@ -342,13 +342,13 @@ class TestAREnumCaseInsensitiveDeserialization:
         assert enum_val == IntervalTypeEnum.CLOSED
 
     def test_monotony_enum_deserialize_case_insensitive(self) -> None:
-        """Test MonotonyEnum deserialization is case-insensitive."""
+        """Test MonotonyEnum deserialization is case-insensitive with hyphens (AUTOSAR format)."""
         test_cases = [
-            ('STRICTLYINCREASING', MonotonyEnum.STRICTLY_INCREASING),
-            ('strictlyincreasing', MonotonyEnum.STRICTLY_INCREASING),
-            ('StrictlyIncreasing', MonotonyEnum.STRICTLY_INCREASING),
-            ('noMonotony', MonotonyEnum.NO_MONOTONY),
-            ('NOMONOTONY', MonotonyEnum.NO_MONOTONY),
+            ('STRICTLY-INCREASING', MonotonyEnum.STRICTLY_INCREASING),
+            ('strictly-increasing', MonotonyEnum.STRICTLY_INCREASING),
+            ('Strictly-Increasing', MonotonyEnum.STRICTLY_INCREASING),
+            ('no-monotony', MonotonyEnum.NO_MONOTONY),
+            ('NO-MONOTONY', MonotonyEnum.NO_MONOTONY),
         ]
 
         for xml_value, expected_enum in test_cases:

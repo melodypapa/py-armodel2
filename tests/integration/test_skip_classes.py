@@ -345,10 +345,10 @@ class TestArgumentDirectionEnum:
         assert hasattr(ArgumentDirectionEnum, 'INOUT'), "Missing INOUT enum value"
         assert hasattr(ArgumentDirectionEnum, 'OUT'), "Missing OUT enum value"
 
-        # Check values (should be lowercase)
-        assert ArgumentDirectionEnum.IN == "in", "IN value should be lowercase 'in'"
-        assert ArgumentDirectionEnum.INOUT == "inout", "INOUT value should be 'inout'"
-        assert ArgumentDirectionEnum.OUT == "out", "OUT value should be 'out'"
+        # Check values (should be uppercase - AUTOSAR format)
+        assert ArgumentDirectionEnum.IN == "IN", "IN value should be uppercase 'IN'"
+        assert ArgumentDirectionEnum.INOUT == "INOUT", "INOUT value should be 'INOUT'"
+        assert ArgumentDirectionEnum.OUT == "OUT", "OUT value should be 'OUT'"
 
         print("\n✅ ArgumentDirectionEnum values correct")
         print(f"   IN: {ArgumentDirectionEnum.IN}")
@@ -373,20 +373,19 @@ class TestArgumentDirectionEnum:
         # Serialize to XML
         elem = enum_in.serialize()
         assert elem is not None, "Serialization failed"
-        # NOTE: AREnum serializes with uppercase value (this is a known issue)
-        # The enum value is "in" but serialization produces "IN"
+        # AREnum serializes with uppercase value (AUTOSAR format)
         assert elem.text is not None, "Serialized text should not be None"
 
-        # Deserialize from XML - AREnum normalizes to lowercase
-        elem.text = "in"
-        deserialized = ArgumentDirectionEnum.deserialize(elem)
-        assert deserialized._value_ == "in", f"Expected 'in', got '{deserialized._value_}'"
-
-        # Also test uppercase - should normalize to lowercase
+        # Deserialize from XML - AREnum handles case-insensitive matching
         elem.text = "IN"
+        deserialized = ArgumentDirectionEnum.deserialize(elem)
+        assert deserialized._value_ == "IN", f"Expected 'IN', got '{deserialized._value_}'"
+
+        # Also test lowercase - should normalize to uppercase member value
+        elem.text = "in"
         deserialized2 = ArgumentDirectionEnum.deserialize(elem)
-        # AREnum.deserialize() normalizes to member value (lowercase)
-        assert deserialized2._value_ == "in", f"Expected 'in' (normalized), got '{deserialized2._value_}'"
+        # AREnum.deserialize() normalizes to member value (uppercase)
+        assert deserialized2._value_ == "IN", f"Expected 'IN' (normalized), got '{deserialized2._value_}'"
 
         print("\n✅ ArgumentDirectionEnum serialization/deserialization works")
         print(f"   Serialized: {elem.text}")

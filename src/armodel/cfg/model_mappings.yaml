@@ -6,6 +6,7 @@ metadata:
   total_packages: 637
   total_polymorphic_types: 233
 xml_tag_mappings:
+  VT: CompuConstTextContent
   BSW-MODULE-DESCRIPTION: BswModuleDescription
   MODE-IN-BSW-MODULE-DESCRIPTION-INSTANCE-REF: ModeInBswModuleDescriptionInstanceRef
   BSW-MODULE-ENTRY: BswModuleEntry

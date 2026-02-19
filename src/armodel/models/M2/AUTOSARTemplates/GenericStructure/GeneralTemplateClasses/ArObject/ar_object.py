@@ -32,6 +32,9 @@ class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
 
+    checksum: Optional["String"] = None
+    timestamp: Optional["DateTime"] = None
+
     def __init__(self) -> None:
         """Initialize ARObject."""
         self._checksum: Optional["String"] = None
@@ -198,6 +201,60 @@ class ARObject:
                         child = ET.Element(tag)
                         child.text = str(value)
                         elem.append(child)
+
+        # Also serialize properties that don't have decorators but have getters
+        # This handles properties like 'checksum' that are simple property getters
+        for name, obj in self.__class__.__dict__.items():
+            if isinstance(obj, property) and not hasattr(obj.fget, '_xml_element_tag'):
+                # Skip properties that have @xml_element_tag (already handled above)
+                # Handle properties that have @xml_attribute
+                if self._is_xml_attribute(name):
+                    try:
+                        value = getattr(self, name)
+                    except AttributeError:
+                        continue
+                    
+                    # Skip None values
+                    if value is None:
+                        continue
+                    
+                    # Convert property name to XML tag
+                    xml_tag = NameConverter.to_xml_tag(name)
+                    
+                    # Serialize as XML attribute
+                    elem.set(xml_tag, str(value))
+                    continue
+
+                try:
+                    value = getattr(self, name)
+                except AttributeError:
+                    continue
+
+                # Skip None values
+                if value is None:
+                    continue
+
+                # Convert property name to XML tag
+                xml_tag = NameConverter.to_xml_tag(name)
+
+                # Serialize the value
+                if hasattr(value, 'serialize'):
+                    child = self._serialize_with_correct_tag(value, xml_tag)
+                    elem.append(child)
+                elif isinstance(value, list):
+                    wrapper = ET.Element(xml_tag)
+                    for item in value:
+                        if hasattr(item, 'serialize'):
+                            wrapper.append(item.serialize())
+                        else:
+                            child = ET.Element(xml_tag)
+                            child.text = str(item)
+                            wrapper.append(child)
+                    elem.append(wrapper)
+                else:
+                    child = ET.Element(xml_tag)
+                    child.text = str(value)
+                    elem.append(child)
 
         return elem
 
