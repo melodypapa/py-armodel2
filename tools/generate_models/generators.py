@@ -1,6 +1,6 @@
 """Code generation functions for AUTOSAR models."""
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from ._common import get_python_identifier, get_python_identifier_with_ref, to_snake_case
 from .type_utils import (
@@ -162,27 +162,28 @@ def generate_class_code(
         else:
             # Fallback to ARObject import
             code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
-    elif class_name != "ARObject":
-        # Add ARObject import for classes that inherit from ARObject
+    
+    # Add ARObject import for all classes that use it in the deserialize method
+    # The generated deserialize method uses ARObject._find_child_element and ARObject._find_all_child_elements
+    if class_name != "ARObject":
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+
+    # Collect attribute types for all classes
+    attribute_types = {}
+    if include_members and package_path in package_data:
+        class_info = package_data[package_path].get("classes", [])
+        for cls in class_info:
+            if cls["name"] == class_name and "attributes" in cls:
+                for attr_name, attr_info in cls["attributes"].items():
+                    attr_type = attr_info["type"]
+                    multiplicity = attr_info["multiplicity"]
+                    is_ref = attr_info.get("is_ref", False)
+                    attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity, "is_ref": is_ref}
+                break
 
     # Add ARRef import if any attribute has is_ref=True
     if attribute_types and any(attr_info.get("is_ref", False) for attr_info in attribute_types.values()):
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef\n"
-
-    # Collect attribute types for imports (if not already collected for non-ARObject classes)
-    if class_name == "ARObject":
-        attribute_types = {}
-        if include_members and package_path in package_data:
-            class_info = package_data[package_path].get("classes", [])
-            for cls in class_info:
-                if cls["name"] == class_name and "attributes" in cls:
-                    for attr_name, attr_info in cls["attributes"].items():
-                        attr_type = attr_info["type"]
-                        multiplicity = attr_info["multiplicity"]
-                        is_ref = attr_info.get("is_ref", False)
-                        attribute_types[attr_name] = {"type": attr_type, "multiplicity": multiplicity, "is_ref": is_ref}
-                    break
 
     # Add type imports if needed
     if attribute_types:
@@ -424,8 +425,127 @@ class {class_name}:
         # ARObject uses reflection-based serialization framework
         # Add serialize(), deserialize(), and helper methods
         code += _generate_ar_object_methods()
+    else:
+        # For other classes, generate optimized deserialize() method
+        # This method parses XML directly without reflection
+        deserialize_code = _generate_deserialize_method(
+            class_name,
+            attribute_types,
+            parent_class,
+            package_data
+        )
+        code += deserialize_code
 
     return code
+
+
+def _generate_deserialize_method(
+    class_name: str,
+    attribute_types: Dict[str, Dict[str, Any]],
+    parent_class: Optional[str],
+    package_data: Dict[str, Dict[str, Any]]
+) -> str:
+    """Generate optimized deserialize() method for a class.
+
+    Args:
+        class_name: Name of the class
+        attribute_types: Dictionary of attribute information
+        parent_class: Name of parent class (if any)
+        package_data: Package data dictionary
+
+    Returns:
+        Generated deserialize() method code
+    """
+    code = f'''    @classmethod
+    def deserialize(cls, element: ET.Element) -> "{class_name}":
+        """Deserialize XML element to {class_name} object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized {class_name} object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+'''
+
+    # Generate code to parse each attribute
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+
+            # Get Python identifier
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace('_', '-')
+
+            # Generate parsing code based on type and multiplicity
+            if multiplicity == "*":
+                # List type
+                code += f'''        # Parse {python_name} (list)
+        obj.{python_name} = []
+        for child in ARObject._find_all_child_elements(element, "{xml_tag}"):
+            {_generate_value_extraction_code(attr_type, "child", package_data, python_name)}
+            obj.{python_name}.append({python_name}_value)
+
+'''
+            else:
+                # Single value type
+                code += f'''        # Parse {python_name}
+        child = ARObject._find_child_element(element, "{xml_tag}")
+        if child is not None:
+            {_generate_value_extraction_code(attr_type, "child", package_data, python_name)}
+            obj.{python_name} = {python_name}_value
+
+'''
+
+    code += '''        return obj
+
+'''
+    return code
+
+
+def _generate_value_extraction_code(
+    attr_type: str,
+    element_var: str,
+    package_data: Dict[str, Dict[str, Any]],
+    var_name: str
+) -> str:
+    """Generate code to extract value from XML element.
+
+    Args:
+        attr_type: AUTOSAR type name
+        element_var: Variable name for the XML element
+        package_data: Package data dictionary
+        var_name: Variable name to store the result
+
+    Returns:
+        Generated code for value extraction
+    """
+    value_var = f"{var_name}_value"
+    
+    # Handle primitive types
+    if is_primitive_type(attr_type, package_data):
+        return f'''{value_var} = {element_var}.text'''
+    
+    # Handle enum types
+    elif is_enum_type(attr_type, package_data):
+        return f'''{value_var} = {element_var}.text'''
+    
+    # Handle Any type (polymorphic)
+    elif attr_type == "Any":
+        return f'''{value_var} = {element_var}.text'''
+    
+    # Handle class types
+    else:
+        # Import the class and call its deserialize method
+        return f'''{value_var} = {attr_type}.deserialize({element_var})'''
 
 
 def _generate_ar_object_methods() -> str:

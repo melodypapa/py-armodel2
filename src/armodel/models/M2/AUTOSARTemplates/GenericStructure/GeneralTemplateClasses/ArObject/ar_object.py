@@ -1061,6 +1061,61 @@ class ARObject:
             # Default to string
             return text
 
+    @staticmethod
+    def _find_child_element(parent: ET.Element, tag: str) -> Optional[ET.Element]:
+        """Find child element by tag name (with namespace handling).
+
+        Args:
+            parent: Parent XML element
+            tag: Tag name to search for
+
+        Returns:
+            Child element if found, None otherwise
+        """
+        # Direct find without namespace
+        child = parent.find(tag)
+        if child is not None:
+            return child
+
+        # Try with namespace handling
+        for elem in parent:
+            if elem.tag.endswith(tag):
+                return elem
+        return None
+
+    @staticmethod
+    def _find_all_child_elements(parent: ET.Element, tag: str) -> list[ET.Element]:
+        """Find all child elements by tag name (with namespace handling).
+
+        Args:
+            parent: Parent XML element
+            tag: Tag name to search for
+
+        Returns:
+            List of child elements
+        """
+        # Direct findall without namespace
+        children = parent.findall(tag)
+        if children:
+            return children
+
+        # Try with namespace handling
+        return [elem for elem in parent if elem.tag.endswith(tag)]
+
+    @staticmethod
+    def _strip_namespace(tag: str) -> str:
+        """Strip namespace from XML tag.
+
+        Args:
+            tag: XML tag with optional namespace
+
+        Returns:
+            Tag without namespace
+        """
+        if '}' in tag:
+            return tag.split('}')[1]
+        return tag
+
 
 class ARObjectBuilder:
     """Builder for ARObject."""
