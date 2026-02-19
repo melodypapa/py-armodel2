@@ -27,7 +27,17 @@
       ],
       "literals": [
         {
-          "name": "ininoutout",
+          "name": "in",
+          "index": 0,
+          "description": "The argument value is passed to the callee.<br>Tags: atp.EnumerationLiteralIndex=2"
+        },
+        {
+          "name": "inout",
+          "index": 1,
+          "description": "The argument value is passed to the callee.<br>Tags: atp.EnumerationLiteralIndex=2"
+        },
+        {
+          "name": "out",
           "index": 2,
           "description": "The argument value is passed to the callee.<br>Tags: atp.EnumerationLiteralIndex=2"
         }
