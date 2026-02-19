@@ -7,15 +7,8 @@ compatibility with existing code that expects plain values.
 
 from __future__ import annotations
 
-import pytest
 import xml.etree.ElementTree as ET
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
-    ARPrimitive,
-)
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import (
-    AREnum,
-)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.identifier import (
     Identifier,
 )
@@ -93,7 +86,7 @@ class TestARPrimitiveTransparentEquality:
         boolean = Boolean(True)
 
         # Act & Assert
-        assert boolean == True, "Boolean(True) should equal True bool"
+        assert boolean is True, "Boolean(True) should equal True bool"
 
     def test_identifier_hash_compatible_with_string(self) -> None:
         """Identifier hash should be compatible with string for dict/set usage."""
@@ -161,7 +154,6 @@ class TestAREnumTransparentEquality:
         enum_val = ByteOrderEnum(ByteOrderEnum.MOST_SIGNIFICANT_BYTE_FIRST)
 
         # Act & Assert
-        value_set = {"mostSignificantByteFirst", "other"}
         # Enum might not be in set of strings directly, but let's verify
         # the hash is based on value
         assert hash(enum_val) == hash("mostSignificantByteFirst"), (

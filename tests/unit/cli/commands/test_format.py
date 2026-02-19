@@ -4,7 +4,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-import pytest
 
 from armodel.cli.common import EXIT_SUCCESS, EXIT_FILE_NOT_FOUND
 

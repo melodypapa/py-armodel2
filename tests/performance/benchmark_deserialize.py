@@ -35,7 +35,7 @@ def benchmark_deserialize(cls, element, iterations=100):
     """Benchmark deserialize() call for a class."""
     start_time = time.time()
     for _ in range(iterations):
-        obj = cls.deserialize(element)
+        cls.deserialize(element)
     elapsed = time.time() - start_time
     return elapsed
 

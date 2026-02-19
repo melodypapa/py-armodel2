@@ -1,7 +1,6 @@
 """Unit tests for ARObject serialization."""
 
 import pytest
-import xml.etree.ElementTree as ET
 from typing import Optional
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject

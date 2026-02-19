@@ -1,6 +1,5 @@
 """Unit tests for ARObjectBuilder."""
 
-import pytest
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import (
     ARObject,

@@ -128,7 +128,7 @@ class TestCompuMethodClasses:
         assert len(reloaded_methods) == len(compu_methods), \
             f"CompuMethod count mismatch: {len(reloaded_methods)} != {len(compu_methods)}"
 
-        print(f"\n✅ CompuMethod serialization successful")
+        print("\n✅ CompuMethod serialization successful")
         print(f"   Original: {len(compu_methods)} methods")
         print(f"   Reloaded: {len(reloaded_methods)} methods")
 
@@ -195,8 +195,8 @@ class TestLanguageSpecificClasses:
         has_l2 = '<L-2' in content or '<L-2>' in content
 
         if has_l2:
-            print(f"\n✅ ARXML file contains L-2 language-specific elements")
-            print(f"   These should be handled by MultiLanguagePlainText class")
+            print("\n✅ ARXML file contains L-2 language-specific elements")
+            print("   These should be handled by MultiLanguagePlainText class")
         else:
             pytest.skip("No L-2 elements found in file")
 
@@ -227,7 +227,7 @@ class TestLanguageSpecificClasses:
         orig_l2_count = orig_content.count('<L-2')
         out_l2_count = out_content.count('<L-2')
 
-        print(f"\n✅ Language-specific element round-trip")
+        print("\n✅ Language-specific element round-trip")
         print(f"   Original L-2 elements: {orig_l2_count}")
         print(f"   Serialized L-2 elements: {out_l2_count}")
 
@@ -281,7 +281,7 @@ class TestARPackageClass:
             print(f"\n✅ ARPackage in {arxml_file.name}")
             print(f"   Short name: {pkg.short_name}")
             if hasattr(pkg, 'long_name') and pkg.long_name:
-                print(f"   Has long_name: Yes")
+                print("   Has long_name: Yes")
 
     def test_ar_package_serialization(self, reader, tmp_path):
         """Test ARPackage serializes correctly.
@@ -316,7 +316,7 @@ class TestARPackageClass:
         assert '<AR-PACKAGE>' in content, "Missing AR-PACKAGE element"
 
         pkg_count = content.count('<AR-PACKAGE>')
-        print(f"\n✅ ARPackage serialization successful")
+        print("\n✅ ARPackage serialization successful")
         print(f"   Packages in output: {pkg_count}")
 
 
@@ -350,7 +350,7 @@ class TestArgumentDirectionEnum:
         assert ArgumentDirectionEnum.INOUT == "inout", "INOUT value should be 'inout'"
         assert ArgumentDirectionEnum.OUT == "out", "OUT value should be 'out'"
 
-        print(f"\n✅ ArgumentDirectionEnum values correct")
+        print("\n✅ ArgumentDirectionEnum values correct")
         print(f"   IN: {ArgumentDirectionEnum.IN}")
         print(f"   INOUT: {ArgumentDirectionEnum.INOUT}")
         print(f"   OUT: {ArgumentDirectionEnum.OUT}")
@@ -388,7 +388,7 @@ class TestArgumentDirectionEnum:
         # AREnum.deserialize() normalizes to member value (lowercase)
         assert deserialized2._value_ == "in", f"Expected 'in' (normalized), got '{deserialized2._value_}'"
 
-        print(f"\n✅ ArgumentDirectionEnum serialization/deserialization works")
+        print("\n✅ ArgumentDirectionEnum serialization/deserialization works")
         print(f"   Serialized: {elem.text}")
         print(f"   Deserialized: {deserialized._value_}")
 
@@ -418,7 +418,7 @@ class TestARRefClass:
         # Basic validation
         assert hasattr(ar_ref, 'dest'), "ARRef missing dest attribute"
 
-        print(f"\n✅ ARRef basic usage works")
+        print("\n✅ ARRef basic usage works")
         print(f"   DEST: {ar_ref.dest}")
 
 
@@ -514,8 +514,8 @@ class TestSwDataDefPropsClass:
         has_props = 'SW-DATA-DEF-PROPS' in content
 
         if has_props:
-            print(f"\n✅ ARXML file contains SW-DATA-DEF-PROPS elements")
-            print(f"   File loaded successfully")
+            print("\n✅ ARXML file contains SW-DATA-DEF-PROPS elements")
+            print("   File loaded successfully")
         else:
             print(f"\n⚠️  No SW-DATA-DEF-PROPS in {arxml_file.name}")
 
@@ -542,7 +542,6 @@ class TestARObjectClass:
         - _strip_namespace() works
         """
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-        import xml.etree.ElementTree as ET
 
         # Create test element
         parent = ET.Element("PARENT")
@@ -557,7 +556,7 @@ class TestARObjectClass:
         # Test _find_child_element
         found = ARObject._find_child_element(parent, "CHILD-1")
         assert found is not None, "Failed to find CHILD-1"
-        print(f"   _find_child_element: ✅")
+        print("   _find_child_element: ✅")
 
         # Test _find_all_child_elements
         all_children = ARObject._find_all_child_elements(parent, "CHILD-1")
@@ -568,9 +567,9 @@ class TestARObjectClass:
         tag = "{http://autosar.org}CHILD-2"
         stripped = ARObject._strip_namespace(tag)
         assert stripped == "CHILD-2", f"Expected 'CHILD-2', got '{stripped}'"
-        print(f"   _strip_namespace: ✅")
+        print("   _strip_namespace: ✅")
 
-        print(f"\n✅ ARObject helper methods work correctly")
+        print("\n✅ ARObject helper methods work correctly")
 
     def test_ar_object_inheritance_chain(self, reader):
         """Test that ARObject inheritance works in deserialization.
@@ -594,5 +593,5 @@ class TestARObjectClass:
         # If we got here without errors, inheritance chain worked
         assert len(autosar.ar_packages) > 0, "No packages loaded"
 
-        print(f"\n✅ ARObject inheritance chain works")
+        print("\n✅ ARObject inheritance chain works")
         print(f"   Loaded {len(autosar.ar_packages)} packages")

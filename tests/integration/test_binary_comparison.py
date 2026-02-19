@@ -18,7 +18,6 @@ Traceability:
 """
 import pytest
 from pathlib import Path
-import xml.etree.ElementTree as ET
 from typing import List, Tuple
 import difflib
 
@@ -97,7 +96,7 @@ class TestBinaryComparison:
                 original_lines = arxml_file.read_text(encoding='UTF-8').splitlines(keepends=True)
 
                 # Deserialize to Python objects
-                print(f"   📖 Reading...")
+                print("   📖 Reading...")
                 from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
                 autosar = AUTOSAR()
                 reader.load_arxml(autosar, str(arxml_file))
@@ -105,7 +104,7 @@ class TestBinaryComparison:
 
                 # Serialize back to XML
                 output_file = tmp_path / f"{arxml_file.stem}_output.arxml"
-                print(f"   ✍️  Writing...")
+                print("   ✍️  Writing...")
                 writer.save_arxml(autosar, str(output_file))
 
                 # Read serialized content
@@ -114,10 +113,10 @@ class TestBinaryComparison:
 
                 # Binary comparison
                 if original_content == serialized_content:
-                    print(f"   ✅ PASS: Binary comparison successful")
+                    print("   ✅ PASS: Binary comparison successful")
                     passed_files.append(arxml_file)
                 else:
-                    print(f"   ❌ FAIL: Binary comparison failed")
+                    print("   ❌ FAIL: Binary comparison failed")
                     print(f"      Original size:    {len(original_content):,} bytes")
                     print(f"      Serialized size:  {len(serialized_content):,} bytes")
                     print(f"      Size difference:  {len(serialized_content) - len(original_content):+,d} bytes")
@@ -133,7 +132,7 @@ class TestBinaryComparison:
 
         # Print summary
         print(f"\n{'='*70}")
-        print(f"SUMMARY")
+        print("SUMMARY")
         print(f"{'='*70}")
         print(f"Total files:  {len(arxml_files)}")
         print(f"✅ Passed:     {len(passed_files)}")
@@ -180,7 +179,7 @@ class TestBinaryComparison:
 
         # Load original file
         original_lines = arxml_file.read_text(encoding='UTF-8').splitlines(keepends=True)
-        print(f"Original file:")
+        print("Original file:")
         print(f"  Lines:      {len(original_lines):,}")
         print(f"  File size:  {arxml_file.stat().st_size:,} bytes")
 
@@ -188,7 +187,7 @@ class TestBinaryComparison:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
         autosar = AUTOSAR()
         reader.load_arxml(autosar, str(arxml_file))
-        print(f"\nDeserialized:")
+        print("\nDeserialized:")
         print(f"  AR packages: {len(autosar.ar_packages)}")
 
         # Count total elements
@@ -204,17 +203,17 @@ class TestBinaryComparison:
 
         # Compare
         serialized_lines = output_file.read_text(encoding='UTF-8').splitlines(keepends=True)
-        print(f"\nSerialized:")
+        print("\nSerialized:")
         print(f"  Lines:      {len(serialized_lines):,}")
         print(f"  File size:  {output_file.stat().st_size:,} bytes")
 
         # Detailed line-by-line comparison
-        print(f"\nLine-by-line comparison:")
+        print("\nLine-by-line comparison:")
         differences = self._compare_lines_detailed(original_lines, serialized_lines)
 
         if differences:
             print(f"  ❌ Found {len(differences)} differences")
-            print(f"\nFirst 10 differences:")
+            print("\nFirst 10 differences:")
             for i, (line_num, orig_line, ser_line, orig_marker, ser_marker) in enumerate(differences[:10], 1):
                 print(f"\n  Difference {i} at line {line_num}:")
                 print(f"    Original:  {orig_marker} {repr(orig_line)}")
@@ -223,7 +222,7 @@ class TestBinaryComparison:
             if len(differences) > 10:
                 print(f"\n  ... and {len(differences) - 10} more differences")
         else:
-            print(f"  ✅ No differences found")
+            print("  ✅ No differences found")
 
         # Binary comparison assertion
         original_bytes = arxml_file.read_bytes()
@@ -259,7 +258,7 @@ class TestBinaryComparison:
         ))
 
         if diff:
-            print(f"\n   Differences (showing first 20 lines):")
+            print("\n   Differences (showing first 20 lines):")
             for line in diff[:20]:
                 if line.startswith('+') and not line.startswith('+++'):
                     print(f"      {line}")

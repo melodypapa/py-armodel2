@@ -165,7 +165,6 @@ class TestARObjectOptionalDeserialization:
 
     def test_deserialize_optional_with_string_annotation(self):
         """Test deserializing Optional type from string annotation."""
-        from typing import get_type_hints
 
         class TestClass(ARObject):
             """Test class with Optional field."""
