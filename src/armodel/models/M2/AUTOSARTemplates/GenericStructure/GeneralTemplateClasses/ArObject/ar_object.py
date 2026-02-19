@@ -566,16 +566,20 @@ class ARObject:
 
         # Get type hints to know what attributes to expect
         try:
-            type_hints = get_type_hints(cls)
+            # Optimized: Bind get_type_hints locally for faster access
+            _get_type_hints = get_type_hints
+            type_hints = _get_type_hints(cls)
         except Exception:
             # Fallback: Use __annotations__ directly if get_type_hints fails
             # This can happen due to circular imports or missing types
             # Note: Annotations will be strings due to 'from __future__ import annotations'
             type_hints = {}
-            # Collect annotations from entire MRO
-            for base_cls in cls.__mro__:
-                if hasattr(base_cls, '__annotations__'):
-                    for attr_name, attr_type_str in base_cls.__annotations__.items():
+            # Optimized: Use local variables for faster MRO iteration
+            _mro = cls.__mro__
+            for base_cls in _mro:
+                if hasattr(base_cls, "__annotations__"):
+                    _annotations = base_cls.__annotations__
+                    for attr_name, attr_type_str in _annotations.items():
                         if attr_name not in type_hints:
                             # Keep as string - _extract_value will handle it
                             type_hints[attr_name] = attr_type_str
