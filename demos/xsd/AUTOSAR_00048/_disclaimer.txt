@@ -1,0 +1,10 @@
+DISCLAIMER
+
+All files in this directory are made available for download on the AUTOSAR 
+website (https://www.autosar.org) as released by AUTOSAR for the purpose 
+of INFORMATION ONLY.
+
+If you are interested in exploitation of released AUTOSAR Work, please apply 
+for an AUTOSAR partnership.
+
+See https://www.autosar.org for more information.

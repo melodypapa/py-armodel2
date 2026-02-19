@@ -60,6 +60,20 @@
           "is_ref": false,
           "note": "This allows to denote information about the current"
         },
+        "language": {
+          "type": "LEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the master language of the document or the document fragment. The master language is the one in which the document is maintained and from which the other languages are derived from. In particular in case of inconsistencies, the information in the master language is priority."
+        },
+        "sdg": {
+          "type": "Sdg",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This property allows to keep special data which is not represented by the standard model. It can be utilized to keep e.g. tool specific data."
+        },
         "usedLanguages": {
           "type": "MultiLanguagePlainText",
           "multiplicity": "0..1",

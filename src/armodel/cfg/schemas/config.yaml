@@ -2,26 +2,118 @@
 # This file defines how to handle different AUTOSAR XSD schema versions
 
 versions:
-  "00044":  # AUTOSAR Classic Platform 4.3.1 (2017)
+  # Legacy Schema Versions (separate platform releases)
+  "00042":  # AUTOSAR CP 4.3.0 / AP 17-03 (2017)
+    namespace: "http://autosar.org/3.0.4"
+    xsd_file: "AUTOSAR_00042.xsd"
+    description: "AUTOSAR Classic Platform 4.3.0, Adaptive Platform R1.1.0"
+    features:
+      validation_mode: "strict"
+
+  "00043":  # AUTOSAR CP 4.3.0 / AP 17-10 (2017)
+    namespace: "http://autosar.org/3.0.4"
+    xsd_file: "AUTOSAR_00043.xsd"
+    description: "AUTOSAR Classic Platform 4.3.0, Adaptive Platform R1.2.0"
+    features:
+      validation_mode: "strict"
+
+  "00044":  # AUTOSAR CP 4.3.1 / AP 17-10 (2017)
     namespace: "http://autosar.org/3.0.4"
     xsd_file: "AUTOSAR_00044.xsd"
+    description: "AUTOSAR Classic Platform 4.3.1, Adaptive Platform R1.3.0"
+    features:
+      validation_mode: "strict"
+
+  "00045":  # AUTOSAR CP 4.3.1 / AP 18-03 (2018)
+    namespace: "http://autosar.org/3.0.4"
+    xsd_file: "AUTOSAR_00045.xsd"
+    description: "AUTOSAR Classic Platform 4.3.1, Adaptive Platform R1.4.0"
     features:
       validation_mode: "strict"
 
   "00046":  # AUTOSAR CP 4.4.0 / AP 18-10 (2018)
     namespace: "http://autosar.org/schema/r4.0"
     xsd_file: "AUTOSAR_00046.xsd"
+    description: "AUTOSAR Classic Platform 4.4.0, Adaptive Platform R1.5.0"
     features:
       compact_schema: true
       validation_mode: "standard"
 
-  "00052":  # AUTOSAR CP/AP 23-11 (2023)
+  "00047":  # AUTOSAR CP 4.4.0 / AP 19-03 (2019)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00047.xsd"
+    description: "AUTOSAR Classic Platform 4.4.0, Adaptive Platform R1.5.1"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  # Unified Schema Versions (since R19-11)
+  "00048":  # AUTOSAR R19-11 (2019)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00048.xsd"
+    description: "AUTOSAR Unified Release R19-11, Platform R4.5.0"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  "00049":  # AUTOSAR R20-11 (2020)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00049.xsd"
+    description: "AUTOSAR Unified Release R20-11, Platform R4.6.0"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  "00050":  # AUTOSAR R21-11 (2021)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00050.xsd"
+    description: "AUTOSAR Unified Release R21-11, Platform R4.7.0"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  "00051":  # AUTOSAR R22-11 (2022)
+    namespace: "http://autosar.org/schema/r4.0"
+    xsd_file: "AUTOSAR_00051.xsd"
+    description: "AUTOSAR Unified Release R22-11, Platform R4.8.0"
+    features:
+      compact_schema: true
+      validation_mode: "standard"
+
+  "00052":  # AUTOSAR R23-11 (2023)
     namespace: "http://autosar.org/schema/r5.0"
     xsd_file: "AUTOSAR_00052.xsd"
+    description: "AUTOSAR Unified Release R23-11, Platform R4.9.0"
     features:
       compact_schema: true
       strict_compact: true
       validation_mode: "strict"
+
+  "00053":  # AUTOSAR R24-11 (2024)
+    namespace: "http://autosar.org/schema/r5.0"
+    xsd_file: "AUTOSAR_00053.xsd"
+    description: "AUTOSAR Unified Release R24-11, Platform R4.10.0"
+    features:
+      compact_schema: true
+      strict_compact: true
+      validation_mode: "strict"
+
+  "00054":  # AUTOSAR R25-11 (2025)
+    namespace: "http://autosar.org/schema/r5.0"
+    xsd_file: "AUTOSAR_00054.xsd"
+    description: "AUTOSAR Unified Release R25-11, Platform R4.11.0"
+    features:
+      compact_schema: true
+      strict_compact: true
+      validation_mode: "strict"
+
+  # Legacy Version
+  "3_2_3":  # AUTOSAR 3.2.3 (legacy)
+    namespace: "http://autosar.org/3.2.3"
+    xsd_file: "AUTOSAR_3_2_3.xsd"
+    description: "AUTOSAR Legacy Version 3.2.3"
+    features:
+      validation_mode: "legacy"
 
 # Default version if none specified
 default: "00046"

@@ -2,8 +2,7 @@
 
 from pathlib import Path
 from typing import Union, Optional, cast
-import xml.etree.ElementTree as ET
-from lxml import etree
+import xml.etree.cElementTree as ET
 
 from armodel.core import SchemaVersionManager
 from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
@@ -47,7 +46,7 @@ class ARXMLReader:
 
         Raises:
             FileNotFoundError: If file doesn't exist
-            etree.XMLSyntaxError: If XML is malformed
+            ET.ParseError: If XML is malformed
             Exception: If validation fails
 
         Example:
@@ -64,7 +63,7 @@ class ARXMLReader:
 
         return autosar
 
-    def _load_file(self, filepath: Union[str, Path]) -> etree._Element:
+    def _load_file(self, filepath: Union[str, Path]) -> ET.Element:
         """Load ARXML file and return root element.
 
         Args:
@@ -75,17 +74,17 @@ class ARXMLReader:
 
         Raises:
             FileNotFoundError: If file doesn't exist
-            etree.XMLSyntaxError: If XML is malformed
+            ET.ParseError: If XML is malformed
         """
         filepath = Path(filepath)
 
         if not filepath.exists():
             raise FileNotFoundError(f"ARXML file not found: {filepath}")
 
-        tree = etree.parse(str(filepath))
+        tree = ET.parse(str(filepath))
         return tree.getroot()
 
-    def _populate_autosar(self, autosar: AUTOSAR, root: etree._Element) -> AUTOSAR:
+    def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:
         """Populate AUTOSAR object from XML element.
 
         This method deserializes the XML element and merges its contents
@@ -98,12 +97,8 @@ class ARXMLReader:
         Returns:
             The populated AUTOSAR object
         """
-        # Convert lxml Element to ElementTree Element
-        xml_str = etree.tostring(root, encoding='unicode')
-        et_root = ET.fromstring(xml_str)
-
         # Deserialize to get a new AUTOSAR object
-        loaded_autosar = cast(AUTOSAR, AUTOSAR.deserialize(et_root))
+        loaded_autosar = cast(AUTOSAR, AUTOSAR.deserialize(root))
 
         # Merge the loaded data into the provided autosar object
         # Copy all attributes from loaded_autosar to autosar
@@ -115,45 +110,24 @@ class ARXMLReader:
 
         return autosar
 
-    def _validate_against_schema(self, root: etree._Element, autosar: AUTOSAR) -> None:
+    def _validate_against_schema(self, root: ET.Element, autosar: AUTOSAR) -> None:
         """Validate ARXML against XSD schema.
+
+        Note: CElementTree does not support XSD validation natively.
+        This method is kept for API compatibility but validation
+        must be performed using external tools.
 
         Args:
             root: Root XML element
             autosar: AUTOSAR object
 
         Raises:
-            Exception: If validation fails
+            NotImplementedError: XSD validation not supported with CElementTree
         """
-        # Convert lxml Element to ET.Element for version detection
-        xml_str = etree.tostring(root, encoding='unicode')
-        et_root = ET.fromstring(xml_str)
-
-        version = self._version_manager.detect_schema_version(et_root)
-        if not version:
-            raise ValueError("Cannot validate: unknown schema version")
-
-        config = self._version_manager.get_config(version)
-        xsd_file = config.get("xsd_file") if config else None
-
-        if not xsd_file:
-            raise ValueError(f"Cannot validate: no XSD file for version {version}")
-
-        # Construct XSD file path
-        from pathlib import Path
-
-        xsd_path = Path("demos/xsd/AUTOSAR_") / version / xsd_file
-
-        # Load XSD schema
-        try:
-            xsd_doc = etree.parse(str(xsd_path))
-            xsd_schema = etree.XMLSchema(xsd_doc)
-
-            # Validate
-            if not xsd_schema.validate(root):
-                raise ValueError(f"Validation failed: {xsd_schema.error_log}")
-        except Exception as e:
-            raise ValueError(f"Schema validation error: {e}")
+        raise NotImplementedError(
+            "XSD schema validation is not supported with CElementTree. "
+            "Please use external XSD validation tools if validation is required."
+        )
 
     def get_schema_version(self, filepath: Union[str, Path]) -> Optional[str]:
         """Get schema version of ARXML file without loading entire file.
@@ -165,7 +139,4 @@ class ARXMLReader:
             Schema version string or None if unknown
         """
         root = self._load_file(filepath)
-        # Convert lxml Element to ET.Element for version detection
-        xml_str = etree.tostring(root, encoding='unicode')
-        et_root = ET.fromstring(xml_str)
-        return self._version_manager.detect_schema_version(et_root)
+        return self._version_manager.detect_schema_version(root)

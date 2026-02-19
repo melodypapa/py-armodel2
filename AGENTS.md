@@ -9,7 +9,7 @@ This file provides guidance to AI agents working with the py-armodel2 codebase.
 **Key Architecture:**
 - **Reflection-based serialization** - Zero boilerplate, uses Python's `vars()` and `get_type_hints()`
 - **Code generation** - All model classes auto-generated from AUTOSAR schema mappings
-- **Multi-version support** - Handles AUTOSAR 00044, 00046, and 00052 schemas
+- **Multi-version support** - Handles AUTOSAR schemas 00042-00054 (all official releases) plus legacy 3.2.3
 - **Type-safe** - Strict type hints throughout with MyPy enforcement
 
 ## Development Commands
@@ -517,10 +517,39 @@ The following classes are **NOT** auto-generated and must be maintained manually
 - Always specify `PYTHONPATH=/Users/ray/Workspace/py-armodel2/src` when running pytest
 - Generated model files are excluded from MyPy strict checking
 - Use `lxml` for parsing XML, `xml.etree.ElementTree` for serialization
-- Schema versions: 00044, 00046 (default), 00052
+- Schema versions: 00042-00054 (all official releases) plus legacy 3.2.3
+  - Default: 00046
+  - Legacy versions (00042-00047): Separate Classic/Adaptive Platform releases
+  - Unified versions (00048-00054): Unified platform releases since R19-11
 - AUTOSAR namespace detection via XML parsing
 - The same AUTOSAR instance can be reused for multiple `load_arxml()` operations
 - Round-trip serialization tested with `AUTOSAR_Datatypes.arxml`
+
+### AUTOSAR XSD Schema Support
+
+The library supports all official AUTOSAR XSD schema versions:
+
+**Legacy Schema Versions (separate platform releases):**
+- `00042`: R4.3.0, R17-03, AP R1.1.0
+- `00043`: R4.3.0, R17-10, AP R1.2.0
+- `00044`: R4.3.1, R17-10, AP R1.3.0
+- `00045`: R4.3.1, R18-03, AP R1.4.0
+- `00046`: R4.4.0, R18-10, AP R1.5.0 (default)
+- `00047`: R4.4.0, R19-03, AP R1.5.1
+
+**Unified Schema Versions (since R19-11):**
+- `00048`: R19-11, R4.5.0
+- `00049`: R20-11, R4.6.0
+- `00050`: R21-11, R4.7.0
+- `00051`: R22-11, R4.8.0
+- `00052`: R23-11, R4.9.0
+- `00053`: R24-11, R4.10.0
+- `00054`: R25-11, R4.11.0
+
+**Legacy Version:**
+- `3_2_3`: AUTOSAR 3.2.3 (legacy)
+
+XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each version's configuration is defined in `src/armodel/cfg/schemas/config.yaml`.
 
 ## Documentation
 

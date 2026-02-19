@@ -11,7 +11,7 @@ Traceability:
 """
 import pytest
 from pathlib import Path
-from lxml import etree
+import xml.etree.cElementTree as ET
 
 from armodel.reader import ARXMLReader
 from armodel.writer import ARXMLWriter
@@ -221,9 +221,9 @@ class TestAUTOSARDatatypes:
 
         # Deserialize from string
         xml_bytes = xml_string.encode('utf-8')
-        lxml_element = etree.fromstring(xml_bytes)
+        et_element = ET.fromstring(xml_bytes)
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-        autosar_from_string = AUTOSAR.deserialize(lxml_element)
+        autosar_from_string = AUTOSAR.deserialize(et_element)
 
         # Verify structure is preserved
         root_pkg_from_string = autosar_from_string.ar_packages[0]
@@ -461,8 +461,8 @@ class TestAUTOSARDatatypes:
         writer.save_arxml(autosar_original, generated_file)
 
         # Parse both files as XML
-        original_tree = etree.parse(str(datatypes_file))
-        generated_tree = etree.parse(str(generated_file))
+        original_tree = ET.parse(str(datatypes_file))
+        generated_tree = ET.parse(str(generated_file))
 
         # Verify both are valid XML
         assert original_tree is not None, "Failed to parse original file"
@@ -484,17 +484,26 @@ class TestAUTOSARDatatypes:
             f"Namespace mismatch: original={original_ns}, generated={generated_ns}"
 
         # Verify package structure (not exact XML match, but semantic equivalence)
-        # Count AR-PACKAGE elements in both files
-        original_packages = original_tree.xpath(".//AR-PACKAGE")
-        generated_packages = generated_tree.xpath(".//ARPACKAGE")
-        assert len(generated_packages) == len(original_packages), \
-            f"Package count mismatch: original={len(original_packages)}, generated={len(generated_packages)}"
+        # Count AR-PACKAGE elements in both files using ElementTree iteration
+        def count_elements_by_tag(root, tag_name):
+            """Count elements with a specific tag in the XML tree."""
+            count = 0
+            for elem in root.iter():
+                # Handle namespace-prefixed tags: {namespace}tagname
+                if elem.tag.endswith(tag_name) or elem.tag == tag_name:
+                    count += 1
+            return count
+
+        original_packages = count_elements_by_tag(original_root, "AR-PACKAGE")
+        generated_packages = count_elements_by_tag(generated_root, "AR-PACKAGE")
+        assert generated_packages == original_packages, \
+            f"Package count mismatch: original={original_packages}, generated={generated_packages}"
 
         # Verify element structure by counting SHORT-NAME elements
-        original_short_names = original_tree.xpath(".//SHORT-NAME")
-        generated_short_names = generated_tree.xpath(".//SHORT-NAME")
-        assert len(generated_short_names) == len(original_short_names), \
-            f"SHORT-NAME count mismatch: original={len(original_short_names)}, generated={len(generated_short_names)}"
+        original_short_names = count_elements_by_tag(original_root, "SHORT-NAME")
+        generated_short_names = count_elements_by_tag(generated_root, "SHORT-NAME")
+        assert generated_short_names == original_short_names, \
+            f"SHORT-NAME count mismatch: original={original_short_names}, generated={generated_short_names}"
 
         # Verify that the generated file can be read back and preserves element counts
         autosar_reloaded = AUTOSAR()

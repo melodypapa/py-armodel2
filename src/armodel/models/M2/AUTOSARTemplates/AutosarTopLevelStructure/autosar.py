@@ -45,20 +45,26 @@ class AUTOSAR(ARObject):
     it handles namespace attributes that should appear only once in the document.
     """
 
+    @property
+    def is_abstract(self) -> bool:
+        """Check if this class is abstract.
+
+        Returns:
+            False for concrete classes
+        """
+        return False
+
     admin_data: Optional[AdminData]
     ar_packages: list[ARPackage]
-    file_info: Optional[FileInfoComment]
+    file_info_comment: Optional[FileInfoComment]
     introduction: Optional[DocumentationBlock]
     def __init__(self) -> None:
         """Initialize AUTOSAR."""
         super().__init__()
         self.admin_data: Optional[AdminData] = None
         self.ar_packages: list[ARPackage] = []
-        self.file_info: Optional[FileInfoComment] = None
+        self.file_info_comment: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
-
-    # Note: serialize() method is inherited from ARObject, which handles
-    # AUTOSAR namespace attributes when the object type is AUTOSAR
 
 
 class AUTOSARBuilder:
