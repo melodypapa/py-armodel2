@@ -36,6 +36,7 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         """Initialize EventTriggeringConstraint."""
         super().__init__()
         self.event: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventTriggeringConstraint to XML element.
 

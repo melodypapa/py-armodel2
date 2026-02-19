@@ -37,6 +37,7 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         super().__init__()
         self.dds_topic: Optional[DdsCpTopic] = None
         self.i_signal: Optional[ISignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpISignalToDdsTopicMapping to XML element.
 

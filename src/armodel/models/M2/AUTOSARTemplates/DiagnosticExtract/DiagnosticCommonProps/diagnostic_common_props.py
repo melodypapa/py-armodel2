@@ -63,6 +63,7 @@ class DiagnosticCommonProps(ARObject):
         self.response_on_all: Optional[Boolean] = None
         self.response_on: Optional[Boolean] = None
         self.type_of_event: Optional[DiagnosticEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCommonProps to XML element.
 

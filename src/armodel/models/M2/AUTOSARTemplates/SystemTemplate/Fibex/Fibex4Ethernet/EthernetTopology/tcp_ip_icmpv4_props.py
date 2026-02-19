@@ -35,6 +35,7 @@ class TcpIpIcmpv4Props(ARObject):
         super().__init__()
         self.tcp_ip_icmp: Optional[Boolean] = None
         self.tcp_ip_icmp_v4_ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TcpIpIcmpv4Props to XML element.
 

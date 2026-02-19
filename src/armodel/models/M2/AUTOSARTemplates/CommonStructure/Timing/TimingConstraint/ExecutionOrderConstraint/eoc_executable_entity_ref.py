@@ -44,6 +44,7 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         self.component: Optional[Any] = None
         self.executable_entity: Optional[ExecutableEntity] = None
         self.successors: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRef to XML element.
 

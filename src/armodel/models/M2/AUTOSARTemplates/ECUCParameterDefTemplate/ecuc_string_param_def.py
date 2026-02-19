@@ -27,6 +27,7 @@ class EcucStringParamDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucStringParamDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucStringParamDef to XML element.
 

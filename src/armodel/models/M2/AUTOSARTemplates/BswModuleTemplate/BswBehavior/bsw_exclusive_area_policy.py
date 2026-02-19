@@ -37,6 +37,7 @@ class BswExclusiveAreaPolicy(ARObject):
         super().__init__()
         self.api_principle_enum: Optional[ApiPrincipleEnum] = None
         self.exclusive_area: Optional[ExclusiveArea] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswExclusiveAreaPolicy to XML element.
 

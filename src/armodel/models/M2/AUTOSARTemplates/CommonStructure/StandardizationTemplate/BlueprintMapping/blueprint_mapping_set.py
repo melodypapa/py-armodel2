@@ -37,6 +37,7 @@ class BlueprintMappingSet(ARElement):
         """Initialize BlueprintMappingSet."""
         super().__init__()
         self.blueprint_map_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintMappingSet to XML element.
 

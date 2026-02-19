@@ -41,6 +41,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
         self.receiver_refs: list[ARRef] = []
         self.sender_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtectionVariablePrototype to XML element.
 
@@ -66,7 +67,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
             serialized = ARObject._serialize_item(self.sender_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SENDER")
+                wrapped = ET.Element("SENDER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,7 +117,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
                     obj.receiver_refs.append(child_value)
 
         # Parse sender_ref
-        child = ARObject._find_child_element(element, "SENDER")
+        child = ARObject._find_child_element(element, "SENDER-REF")
         if child is not None:
             sender_ref_value = ARRef.deserialize(child)
             obj.sender_ref = sender_ref_value

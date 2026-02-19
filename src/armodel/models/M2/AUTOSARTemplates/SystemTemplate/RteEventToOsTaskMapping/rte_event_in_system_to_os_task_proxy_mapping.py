@@ -45,6 +45,7 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
         self.offset: Optional[Integer] = None
         self.os_task_proxy: Optional[OsTaskProxy] = None
         self.rte_event_instance_ref: Optional[RTEEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RteEventInSystemToOsTaskProxyMapping to XML element.
 

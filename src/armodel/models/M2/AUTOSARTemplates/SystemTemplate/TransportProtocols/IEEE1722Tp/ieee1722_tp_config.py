@@ -35,6 +35,7 @@ class IEEE1722TpConfig(TpConfig):
         """Initialize IEEE1722TpConfig."""
         super().__init__()
         self.tp_connections: list[IEEE1722TpConnection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpConfig to XML element.
 

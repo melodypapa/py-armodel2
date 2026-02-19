@@ -43,6 +43,7 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         super().__init__()
         self.operation_instance_ref: Optional[ClientServerOperation] = None
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ServerCallPoint to XML element.
 

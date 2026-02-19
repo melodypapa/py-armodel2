@@ -33,6 +33,7 @@ class EndToEndProtection(Identifiable):
         """Initialize EndToEndProtection."""
         super().__init__()
         self.end_to_ends: list[EndToEndProtection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtection to XML element.
 

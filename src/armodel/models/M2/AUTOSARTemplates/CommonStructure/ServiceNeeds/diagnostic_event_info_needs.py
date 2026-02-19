@@ -38,6 +38,7 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         super().__init__()
         self.obd_dtc_number: Optional[PositiveInteger] = None
         self.uds_dtc_number: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventInfoNeeds to XML element.
 

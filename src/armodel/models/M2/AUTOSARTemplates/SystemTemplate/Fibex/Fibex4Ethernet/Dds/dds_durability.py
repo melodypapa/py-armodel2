@@ -32,6 +32,7 @@ class DdsDurability(ARObject):
         """Initialize DdsDurability."""
         super().__init__()
         self.durability_kind: Optional[DdsDurabilityKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsDurability to XML element.
 

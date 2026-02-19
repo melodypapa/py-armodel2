@@ -40,6 +40,7 @@ class ClientIdDefinition(Identifiable):
         super().__init__()
         self.client_id: Optional[Numerical] = None
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientIdDefinition to XML element.
 

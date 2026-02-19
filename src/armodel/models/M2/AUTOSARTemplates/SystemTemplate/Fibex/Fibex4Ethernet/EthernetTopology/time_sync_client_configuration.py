@@ -37,6 +37,7 @@ class TimeSyncClientConfiguration(ARObject):
         super().__init__()
         self.ordered_masters: list[OrderedMaster] = []
         self.time_sync: Optional[TimeSyncTechnologyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimeSyncClientConfiguration to XML element.
 

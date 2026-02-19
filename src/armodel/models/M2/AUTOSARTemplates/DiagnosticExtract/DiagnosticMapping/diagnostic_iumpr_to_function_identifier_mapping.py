@@ -37,6 +37,7 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         super().__init__()
         self.function: Optional[Any] = None
         self.iumpr: Optional[DiagnosticIumpr] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprToFunctionIdentifierMapping to XML element.
 

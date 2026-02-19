@@ -46,6 +46,7 @@ class BuildActionManifest(ARElement):
         self.dynamic_actions: list[BuildAction] = []
         self.start_actions: list[BuildAction] = []
         self.tear_down_actions: list[BuildAction] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BuildActionManifest to XML element.
 

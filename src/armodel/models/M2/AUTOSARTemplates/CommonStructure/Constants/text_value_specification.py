@@ -36,6 +36,7 @@ class TextValueSpecification(ValueSpecification):
         """Initialize TextValueSpecification."""
         super().__init__()
         self.value: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TextValueSpecification to XML element.
 

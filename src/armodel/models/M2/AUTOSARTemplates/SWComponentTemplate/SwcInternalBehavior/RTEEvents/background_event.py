@@ -30,6 +30,7 @@ class BackgroundEvent(RTEEvent):
     def __init__(self) -> None:
         """Initialize BackgroundEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BackgroundEvent to XML element.
 

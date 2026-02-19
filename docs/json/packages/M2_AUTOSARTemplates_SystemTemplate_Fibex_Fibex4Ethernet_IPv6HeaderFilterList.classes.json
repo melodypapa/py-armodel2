@@ -36,7 +36,7 @@
         "extHeaderFilters": {
           "type": "IPv6ExtHeaderFilterList",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "In order to permit or deny certain types of IPv6 extension a permitted list of IPv6 extension headers can be"
         }

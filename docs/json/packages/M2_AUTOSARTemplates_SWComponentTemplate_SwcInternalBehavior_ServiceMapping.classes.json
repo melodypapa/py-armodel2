@@ -97,7 +97,7 @@
         "portPrototype": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Service PortPrototype used in the assigned role. This either belong to the same AtomicSw the SwcInternalBehavior which owns or to the same NvBlockSw the NvBlockDescriptor."
         },
@@ -169,7 +169,7 @@
         "representedPort": {
           "type": "PortGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference specifies an association between the and a PortGroup, for example to request mode which applies for communication ports. The referred PortGroup shall be local to SWC, but via the links between the Port tool can evaluate this information such that all linked via this port group on the same ECU can"
         },

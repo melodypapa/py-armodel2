@@ -38,6 +38,7 @@ class InvalidationPolicy(ARObject):
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InvalidationPolicy to XML element.
 

@@ -36,7 +36,7 @@
         "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to PduTriggerings that are connected to each"
         }

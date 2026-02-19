@@ -45,6 +45,7 @@ class TDEventBswModeDeclaration(TDEventBsw):
         self.exit_mode: Optional[ModeDeclaration] = None
         self.mode_ref: Optional[ARRef] = None
         self.td_event_bsw_declaration_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventBswModeDeclaration to XML element.
 

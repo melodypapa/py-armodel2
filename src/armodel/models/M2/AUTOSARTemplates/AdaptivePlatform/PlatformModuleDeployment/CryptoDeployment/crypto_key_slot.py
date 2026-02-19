@@ -49,6 +49,7 @@ class CryptoKeySlot(Identifiable):
         self.key_slot_contents: list[Any] = []
         self.slot_capacity: Optional[PositiveInteger] = None
         self.slot_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoKeySlot to XML element.
 

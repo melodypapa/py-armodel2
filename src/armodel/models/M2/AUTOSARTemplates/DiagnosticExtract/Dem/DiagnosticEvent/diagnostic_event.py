@@ -57,6 +57,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
         self.prestorage: Optional[Boolean] = None
         self.prestored: Optional[Boolean] = None
         self.recoverable_in: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEvent to XML element.
 

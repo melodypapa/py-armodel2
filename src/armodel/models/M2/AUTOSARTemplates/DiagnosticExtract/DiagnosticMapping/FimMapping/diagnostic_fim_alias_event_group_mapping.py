@@ -37,6 +37,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         super().__init__()
         self.actual_event: Optional[DiagnosticFimEventGroup] = None
         self.alias_event: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroupMapping to XML element.
 

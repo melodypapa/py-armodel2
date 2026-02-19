@@ -27,6 +27,7 @@ class MsrQueryResultTopic1(ARObject):
     def __init__(self) -> None:
         """Initialize MsrQueryResultTopic1."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryResultTopic1 to XML element.
 

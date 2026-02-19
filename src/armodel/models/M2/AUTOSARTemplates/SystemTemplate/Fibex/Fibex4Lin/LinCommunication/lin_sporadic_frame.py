@@ -35,6 +35,7 @@ class LinSporadicFrame(LinFrame):
         """Initialize LinSporadicFrame."""
         super().__init__()
         self.substituteds: list[LinUnconditionalFrame] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinSporadicFrame to XML element.
 

@@ -50,6 +50,7 @@ class SynchronizationTimingConstraint(TimingConstraint):
         self.scope_events: list[TimingDescriptionEvent] = []
         self.synchronization: Optional[SynchronizationTypeEnum] = None
         self.tolerance: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SynchronizationTimingConstraint to XML element.
 

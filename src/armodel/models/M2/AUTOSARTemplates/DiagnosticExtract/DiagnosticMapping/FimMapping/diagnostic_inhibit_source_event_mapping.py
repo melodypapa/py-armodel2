@@ -42,6 +42,7 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.event_group_group: Optional[DiagnosticFimEventGroup] = None
         self.inhibition_source: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticInhibitSourceEventMapping to XML element.
 

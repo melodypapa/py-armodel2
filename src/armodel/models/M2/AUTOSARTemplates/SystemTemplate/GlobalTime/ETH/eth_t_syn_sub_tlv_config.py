@@ -38,6 +38,7 @@ class EthTSynSubTlvConfig(ARObject):
         self.status_sub_tlv: Optional[Boolean] = None
         self.time_sub_tlv: Optional[Boolean] = None
         self.user_data_sub_tlv: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTSynSubTlvConfig to XML element.
 

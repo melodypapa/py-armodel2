@@ -27,6 +27,7 @@ class IntegerValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize IntegerValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IntegerValueVariationPoint to XML element.
 

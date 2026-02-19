@@ -48,6 +48,7 @@ class SoConIPduIdentifier(Referrable):
         self.pdu_collection_ref: Optional[Any] = None
         self.pdu_collection_trigger_ref: Optional[PduCollectionTriggerEnum] = None
         self.pdu_triggering_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SoConIPduIdentifier to XML element.
 
@@ -87,7 +88,7 @@ class SoConIPduIdentifier(Referrable):
             serialized = ARObject._serialize_item(self.pdu_collection_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION")
+                wrapped = ET.Element("PDU-COLLECTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,7 +102,7 @@ class SoConIPduIdentifier(Referrable):
             serialized = ARObject._serialize_item(self.pdu_collection_trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION-TRIGGER")
+                wrapped = ET.Element("PDU-COLLECTION-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -146,13 +147,13 @@ class SoConIPduIdentifier(Referrable):
             obj.header_id = header_id_value
 
         # Parse pdu_collection_ref
-        child = ARObject._find_child_element(element, "PDU-COLLECTION")
+        child = ARObject._find_child_element(element, "PDU-COLLECTION-REF")
         if child is not None:
             pdu_collection_ref_value = ARRef.deserialize(child)
             obj.pdu_collection_ref = pdu_collection_ref_value
 
         # Parse pdu_collection_trigger_ref
-        child = ARObject._find_child_element(element, "PDU-COLLECTION-TRIGGER")
+        child = ARObject._find_child_element(element, "PDU-COLLECTION-TRIGGER-REF")
         if child is not None:
             pdu_collection_trigger_ref_value = ARRef.deserialize(child)
             obj.pdu_collection_trigger_ref = pdu_collection_trigger_ref_value

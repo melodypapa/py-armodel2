@@ -30,6 +30,7 @@ class FlexrayFrame(Frame):
     def __init__(self) -> None:
         """Initialize FlexrayFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFrame to XML element.
 

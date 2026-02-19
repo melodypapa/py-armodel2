@@ -35,6 +35,7 @@ class IdsDesign(ARElement):
         """Initialize IdsDesign."""
         super().__init__()
         self.elements: list[IdsCommonElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IdsDesign to XML element.
 

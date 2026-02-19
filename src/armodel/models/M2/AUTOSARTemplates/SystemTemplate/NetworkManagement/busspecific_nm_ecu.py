@@ -28,6 +28,7 @@ class BusspecificNmEcu(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize BusspecificNmEcu."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BusspecificNmEcu to XML element.
 

@@ -36,6 +36,7 @@ class E2EProfileCompatibilityProps(ARElement):
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
         self.transit_to_invalid: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize E2EProfileCompatibilityProps to XML element.
 

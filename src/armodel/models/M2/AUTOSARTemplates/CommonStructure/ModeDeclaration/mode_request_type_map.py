@@ -42,6 +42,7 @@ class ModeRequestTypeMap(ARObject):
         super().__init__()
         self.implementation: Optional[AbstractImplementationDataType] = None
         self.mode_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeRequestTypeMap to XML element.
 

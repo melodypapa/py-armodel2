@@ -39,6 +39,7 @@ class TlsPskIdentity(ARObject):
         self.pre_shared_key: Optional[CryptoServiceKey] = None
         self.psk_identity: Optional[String] = None
         self.psk_identity_hint: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlsPskIdentity to XML element.
 

@@ -38,6 +38,7 @@ class IdsmTrafficLimitation(Identifiable):
         super().__init__()
         self.max_bytes_in: Optional[PositiveInteger] = None
         self.time_interval: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmTrafficLimitation to XML element.
 

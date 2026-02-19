@@ -33,6 +33,7 @@ class BlueprintPolicy(ARObject, ABC):
         """Initialize BlueprintPolicy."""
         super().__init__()
         self.attribute_name: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintPolicy to XML element.
 

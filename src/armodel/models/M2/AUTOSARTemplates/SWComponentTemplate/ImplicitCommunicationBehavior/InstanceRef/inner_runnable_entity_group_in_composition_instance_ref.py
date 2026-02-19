@@ -40,6 +40,7 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize InnerRunnableEntityGroupInCompositionInstanceRef to XML element.
 

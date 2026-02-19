@@ -28,6 +28,7 @@ class CompuContent(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CompuContent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CompuContent to XML element.
 

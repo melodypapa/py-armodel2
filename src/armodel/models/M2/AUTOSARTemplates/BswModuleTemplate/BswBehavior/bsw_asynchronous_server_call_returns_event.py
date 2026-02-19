@@ -32,6 +32,7 @@ class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()
         self.event_source: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallReturnsEvent to XML element.
 

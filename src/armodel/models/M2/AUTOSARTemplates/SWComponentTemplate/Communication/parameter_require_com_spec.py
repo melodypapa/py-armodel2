@@ -44,6 +44,7 @@ class ParameterRequireComSpec(RPortComSpec):
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
         self.parameter_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterRequireComSpec to XML element.
 

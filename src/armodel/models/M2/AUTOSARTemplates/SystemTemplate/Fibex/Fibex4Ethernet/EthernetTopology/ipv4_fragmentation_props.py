@@ -38,6 +38,7 @@ class Ipv4FragmentationProps(ARObject):
         self.tcp_ip_ip: Optional[Boolean] = None
         self.tcp_ip_ip_num: Optional[PositiveInteger] = None
         self.tcp_ip_ip_reass: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4FragmentationProps to XML element.
 

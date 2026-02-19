@@ -37,6 +37,7 @@ class DoIpConfig(ARObject):
         super().__init__()
         self.doip_interfaces: list[DoIpInterface] = []
         self.logic_address: Optional[DoIpLogicAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpConfig to XML element.
 

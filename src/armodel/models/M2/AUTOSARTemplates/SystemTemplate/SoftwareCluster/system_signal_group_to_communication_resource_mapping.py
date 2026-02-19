@@ -41,6 +41,7 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
         self.system_signal_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalGroupToCommunicationResourceMapping to XML element.
 

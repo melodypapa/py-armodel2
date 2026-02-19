@@ -66,6 +66,7 @@ class ConsumedEventGroup(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_client_config: Optional[Any] = None
         self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConsumedEventGroup to XML element.
 

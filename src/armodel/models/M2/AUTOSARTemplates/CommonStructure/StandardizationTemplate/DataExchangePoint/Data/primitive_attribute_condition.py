@@ -32,6 +32,7 @@ class PrimitiveAttributeCondition(AttributeCondition):
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()
         self.attribute: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize PrimitiveAttributeCondition to XML element.
 

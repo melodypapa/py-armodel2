@@ -28,6 +28,7 @@ class DiagnosticEnvConditionFormulaPart(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormulaPart."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvConditionFormulaPart to XML element.
 

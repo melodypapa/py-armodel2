@@ -37,6 +37,7 @@ class TransmissionModeTiming(ARObject):
         super().__init__()
         self.cyclic_timing: Optional[CyclicTiming] = None
         self.event_controlled_timing_timing: Optional[EventControlledTiming] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransmissionModeTiming to XML element.
 

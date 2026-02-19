@@ -40,6 +40,7 @@ class CycleRepetition(CommunicationCycle):
         super().__init__()
         self.base_cycle: Optional[Integer] = None
         self.cycle_repetition: Optional[CycleRepetitionType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CycleRepetition to XML element.
 

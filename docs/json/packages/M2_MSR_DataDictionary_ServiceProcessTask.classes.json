@@ -65,7 +65,7 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This turns the argument of the service to an array."
         },

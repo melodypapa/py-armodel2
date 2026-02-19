@@ -34,6 +34,7 @@ class BswDataReceptionPolicy(ARObject, ABC):
         """Initialize BswDataReceptionPolicy."""
         super().__init__()
         self.received_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswDataReceptionPolicy to XML element.
 

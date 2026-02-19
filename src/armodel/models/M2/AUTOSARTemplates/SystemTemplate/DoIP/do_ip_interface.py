@@ -73,6 +73,7 @@ class DoIpInterface(Identifiable):
         self.use_mac_address: Optional[Boolean] = None
         self.use_vehicle: Optional[Boolean] = None
         self.vehicle: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpInterface to XML element.
 

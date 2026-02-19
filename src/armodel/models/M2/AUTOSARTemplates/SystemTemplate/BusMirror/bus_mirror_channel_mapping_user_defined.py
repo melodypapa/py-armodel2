@@ -35,6 +35,7 @@ class BusMirrorChannelMappingUserDefined(BusMirrorChannelMapping):
         """Initialize BusMirrorChannelMappingUserDefined."""
         super().__init__()
         self.transmission: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMappingUserDefined to XML element.
 

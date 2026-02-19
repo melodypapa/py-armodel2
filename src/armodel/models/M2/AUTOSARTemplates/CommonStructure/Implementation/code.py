@@ -41,6 +41,7 @@ class Code(Identifiable):
         super().__init__()
         self.artifacts: list[AutosarEngineeringObject] = []
         self.callback_headers: list[ServiceNeeds] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Code to XML element.
 

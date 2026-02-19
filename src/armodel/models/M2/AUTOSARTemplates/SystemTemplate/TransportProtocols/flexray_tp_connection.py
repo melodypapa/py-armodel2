@@ -63,6 +63,7 @@ class FlexrayTpConnection(TpConnection):
         self.tp_connection: Optional[FlexrayTpConnection] = None
         self.transmitter: Optional[FlexrayTpNode] = None
         self.tx_pdu_pool: Optional[FlexrayTpPduPool] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpConnection to XML element.
 

@@ -39,6 +39,7 @@ class SegmentPosition(ARObject):
         self.segment_byte: Optional[ByteOrderEnum] = None
         self.segment_length: Optional[Integer] = None
         self.segment: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SegmentPosition to XML element.
 

@@ -44,6 +44,7 @@ class TimingDescriptionEventChain(TimingDescription):
         self.response: Optional[TimingDescriptionEvent] = None
         self.segments: list[TimingDescriptionEvent] = []
         self.stimulus: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingDescriptionEventChain to XML element.
 

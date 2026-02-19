@@ -40,6 +40,7 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         super().__init__()
         self.event: Optional[DiagnosticEvent] = None
         self.ratio_kind: Optional[DiagnosticIumprKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumpr to XML element.
 

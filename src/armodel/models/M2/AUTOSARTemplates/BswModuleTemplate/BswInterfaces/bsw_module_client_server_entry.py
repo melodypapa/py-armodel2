@@ -42,6 +42,7 @@ class BswModuleClientServerEntry(Referrable):
         self.encapsulated: Optional[BswModuleEntry] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleClientServerEntry to XML element.
 

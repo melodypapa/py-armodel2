@@ -40,6 +40,7 @@ class McDataAccessDetails(ARObject):
         super().__init__()
         self.rte_event_refs: list[RTEEvent] = []
         self.variable_accesses: list[VariableAccess] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McDataAccessDetails to XML element.
 

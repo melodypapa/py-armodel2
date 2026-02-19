@@ -37,6 +37,7 @@ class MacSecGlobalKayProps(ARElement):
         super().__init__()
         self.bypass_ether: PositiveInteger = None
         self.bypass_vlan: PositiveInteger = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecGlobalKayProps to XML element.
 

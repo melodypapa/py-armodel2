@@ -38,6 +38,7 @@ class EndToEndTransformationISignalProps(ARObject):
         self.max_data_length: Optional[PositiveInteger] = None
         self.min_data_length: Optional[PositiveInteger] = None
         self.source_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndTransformationISignalProps to XML element.
 

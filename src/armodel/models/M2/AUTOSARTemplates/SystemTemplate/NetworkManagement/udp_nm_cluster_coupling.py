@@ -40,6 +40,7 @@ class UdpNmClusterCoupling(NmClusterCoupling):
         super().__init__()
         self.coupled_clusters: list[UdpNmCluster] = []
         self.nm_immediate: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpNmClusterCoupling to XML element.
 

@@ -32,6 +32,7 @@ class AbsoluteTolerance(ARObject):
         """Initialize AbsoluteTolerance."""
         super().__init__()
         self.absolute: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbsoluteTolerance to XML element.
 

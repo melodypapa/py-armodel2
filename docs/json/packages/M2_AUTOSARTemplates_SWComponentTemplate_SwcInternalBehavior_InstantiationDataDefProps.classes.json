@@ -31,7 +31,7 @@
         "parameter": {
           "type": "AutosarParameterRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the particular DataPrototype in the context of a composite ParameterData which the swDataDefProps shall be"
         },
@@ -45,7 +45,7 @@
         "variableInstance": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the particular DataPrototype the context of a composite VariableData which the swDataDefProps shall be"
         }

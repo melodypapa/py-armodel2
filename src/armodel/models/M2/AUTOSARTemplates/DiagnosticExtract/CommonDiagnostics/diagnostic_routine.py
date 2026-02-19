@@ -49,6 +49,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         self.routine_info: Optional[PositiveInteger] = None
         self.start: Optional[DiagnosticStartRoutine] = None
         self.stop: Optional[DiagnosticStopRoutine] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutine to XML element.
 

@@ -36,6 +36,7 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         """Initialize MacMulticastConfiguration."""
         super().__init__()
         self.mac_multicast_group_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacMulticastConfiguration to XML element.
 

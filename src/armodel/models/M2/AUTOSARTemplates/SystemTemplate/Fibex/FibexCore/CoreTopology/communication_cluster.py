@@ -44,6 +44,7 @@ class CommunicationCluster(ARObject, ABC):
         self.physical_channels: list[PhysicalChannel] = []
         self.protocol_name: Optional[String] = None
         self.protocol_version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationCluster to XML element.
 

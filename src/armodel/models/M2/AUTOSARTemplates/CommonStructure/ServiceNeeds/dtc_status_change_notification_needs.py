@@ -32,6 +32,7 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
         """Initialize DtcStatusChangeNotificationNeeds."""
         super().__init__()
         self.notification_time: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DtcStatusChangeNotificationNeeds to XML element.
 

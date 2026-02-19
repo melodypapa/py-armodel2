@@ -45,6 +45,7 @@ class RptHook(ARObject):
         self.mcd_identifier: Optional[NameToken] = None
         self.rpt_ar_hook: Optional[AtpFeature] = None
         self.sdgs: list[Sdg] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptHook to XML element.
 

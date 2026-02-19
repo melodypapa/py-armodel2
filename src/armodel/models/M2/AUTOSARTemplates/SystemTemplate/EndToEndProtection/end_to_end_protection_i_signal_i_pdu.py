@@ -44,6 +44,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
         self.data_offset: Optional[Integer] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_i_pdu: Optional[ISignalIPdu] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtectionISignalIPdu to XML element.
 

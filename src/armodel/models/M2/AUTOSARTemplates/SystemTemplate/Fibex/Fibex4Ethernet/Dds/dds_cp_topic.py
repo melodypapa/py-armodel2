@@ -40,6 +40,7 @@ class DdsCpTopic(Identifiable):
         super().__init__()
         self.dds_partition: Optional[DdsCpPartition] = None
         self.topic_name: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpTopic to XML element.
 

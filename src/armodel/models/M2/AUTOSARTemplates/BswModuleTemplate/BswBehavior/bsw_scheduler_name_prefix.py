@@ -30,6 +30,7 @@ class BswSchedulerNamePrefix(ImplementationProps):
     def __init__(self) -> None:
         """Initialize BswSchedulerNamePrefix."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswSchedulerNamePrefix to XML element.
 

@@ -37,6 +37,7 @@ class ModeDeclarationMapping(Identifiable):
         super().__init__()
         self.first_modes: list[ModeDeclaration] = []
         self.second_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationMapping to XML element.
 

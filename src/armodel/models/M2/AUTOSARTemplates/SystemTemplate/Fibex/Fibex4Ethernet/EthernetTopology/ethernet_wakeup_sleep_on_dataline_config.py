@@ -49,6 +49,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         self.wakeup_local: Optional[Boolean] = None
         self.wakeup_remote: Optional[Boolean] = None
         self.wakeup: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetWakeupSleepOnDatalineConfig to XML element.
 

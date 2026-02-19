@@ -36,6 +36,7 @@ class ApplicationDataType(AutosarDataType, ABC):
     def __init__(self) -> None:
         """Initialize ApplicationDataType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationDataType to XML element.
 

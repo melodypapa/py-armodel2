@@ -37,6 +37,7 @@ class SectionNamePrefix(ImplementationProps):
         """Initialize SectionNamePrefix."""
         super().__init__()
         self.implemented_in_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SectionNamePrefix to XML element.
 

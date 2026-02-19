@@ -35,6 +35,7 @@ class SdgReference(SdgAttribute):
         """Initialize SdgReference."""
         super().__init__()
         self.dest_sdg: Optional[SdgClass] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgReference to XML element.
 

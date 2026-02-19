@@ -37,6 +37,7 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         super().__init__()
         self.sysc: Optional[SwSystemconst] = None
         self.sysc_string: Optional[SwSystemconst] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwSystemconstDependentFormula to XML element.
 

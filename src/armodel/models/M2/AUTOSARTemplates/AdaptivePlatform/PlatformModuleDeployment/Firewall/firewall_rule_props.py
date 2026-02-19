@@ -36,6 +36,7 @@ class FirewallRuleProps(ARObject):
         self.action: Optional[Any] = None
         self.matching_egresses: list[FirewallRule] = []
         self.matchings: list[FirewallRule] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FirewallRuleProps to XML element.
 

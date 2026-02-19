@@ -33,6 +33,7 @@ class LinCommunicationController(ARObject, ABC):
         """Initialize LinCommunicationController."""
         super().__init__()
         self.protocol_version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinCommunicationController to XML element.
 

@@ -83,6 +83,7 @@ class CouplingPort(Identifiable):
         self.vlans: list[VlanMembership] = []
         self.vlan_modifier: Optional[Any] = None
         self.wakeup_sleep: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPort to XML element.
 

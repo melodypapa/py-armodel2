@@ -46,6 +46,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         self.mode_group_ref: Optional[ARRef] = None
         self.mode_switched_ack: Optional[Any] = None
         self.queue_length: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchSenderComSpec to XML element.
 

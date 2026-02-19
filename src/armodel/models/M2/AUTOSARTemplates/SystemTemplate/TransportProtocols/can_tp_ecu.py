@@ -37,6 +37,7 @@ class CanTpEcu(ARObject):
         super().__init__()
         self.cycle_time_main: Optional[TimeValue] = None
         self.ecu_instance: Optional[EcuInstance] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpEcu to XML element.
 

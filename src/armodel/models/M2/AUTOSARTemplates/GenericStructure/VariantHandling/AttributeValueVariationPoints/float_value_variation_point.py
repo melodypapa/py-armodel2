@@ -27,6 +27,7 @@ class FloatValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize FloatValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FloatValueVariationPoint to XML element.
 

@@ -55,6 +55,7 @@ class FlexrayTpConfig(TpConfig):
         self.tp_connections: list[FlexrayTpConnection] = []
         self.tp_ecus: list[FlexrayTpEcu] = []
         self.tp_nodes: list[FlexrayTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpConfig to XML element.
 

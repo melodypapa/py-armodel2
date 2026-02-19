@@ -44,6 +44,7 @@ class NonqueuedSenderComSpec(SenderComSpec):
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
         self.init_value: Optional[ValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedSenderComSpec to XML element.
 

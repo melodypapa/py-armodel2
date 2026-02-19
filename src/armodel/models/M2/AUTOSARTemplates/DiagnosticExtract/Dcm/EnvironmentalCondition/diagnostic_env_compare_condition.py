@@ -36,6 +36,7 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         """Initialize DiagnosticEnvCompareCondition."""
         super().__init__()
         self.compare_type: Optional[DiagnosticCompareTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvCompareCondition to XML element.
 

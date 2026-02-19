@@ -40,6 +40,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         self.filter_chain: Optional[Any] = None
         self.idsm_instance: Optional[IdsmInstance] = None
         self.mapped_securities: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMapping to XML element.
 

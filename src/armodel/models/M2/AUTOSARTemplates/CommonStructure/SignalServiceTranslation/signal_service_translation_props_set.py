@@ -32,6 +32,7 @@ class SignalServiceTranslationPropsSet(ARElement):
         """Initialize SignalServiceTranslationPropsSet."""
         super().__init__()
         self.signal_service_propses: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SignalServiceTranslationPropsSet to XML element.
 

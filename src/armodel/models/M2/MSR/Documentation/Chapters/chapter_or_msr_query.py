@@ -40,6 +40,7 @@ class ChapterOrMsrQuery(ARObject):
         super().__init__()
         self.chapter: Chapter = None
         self.msr_query_chapter: MsrQueryChapter = None
+
     def serialize(self) -> ET.Element:
         """Serialize ChapterOrMsrQuery to XML element.
 

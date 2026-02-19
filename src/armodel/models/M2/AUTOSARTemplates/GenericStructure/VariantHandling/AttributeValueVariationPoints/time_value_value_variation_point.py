@@ -27,6 +27,7 @@ class TimeValueValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize TimeValueValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TimeValueValueVariationPoint to XML element.
 

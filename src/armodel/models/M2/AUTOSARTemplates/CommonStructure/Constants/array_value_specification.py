@@ -45,6 +45,7 @@ class ArrayValueSpecification(CompositeValueSpecification):
         super().__init__()
         self.elements: list[ValueSpecification] = []
         self.intended_partial: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArrayValueSpecification to XML element.
 

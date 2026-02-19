@@ -37,6 +37,7 @@ class J1939NmCluster(NmCluster):
         super().__init__()
         self.address_claim: Optional[Boolean] = None
         self.uses_dynamic: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939NmCluster to XML element.
 

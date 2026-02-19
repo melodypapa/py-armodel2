@@ -245,7 +245,7 @@
         "lcObject": {
           "type": "Referrable",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Element(s) have the life cycle as described in lcState."
         },
@@ -280,7 +280,7 @@
         "useInsteads": {
           "type": "Referrable",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Element(s) that should be used instead of the one"
         }

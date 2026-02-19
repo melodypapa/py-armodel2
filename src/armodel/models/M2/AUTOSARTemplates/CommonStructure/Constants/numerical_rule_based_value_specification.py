@@ -32,6 +32,7 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
         self.rule_based: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NumericalRuleBasedValueSpecification to XML element.
 

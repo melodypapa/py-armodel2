@@ -40,6 +40,7 @@ class DiagnosticParameterElement(Identifiable):
         super().__init__()
         self.array_size: Optional[PositiveInteger] = None
         self.sub_elements: list[DiagnosticParameter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterElement to XML element.
 

@@ -40,6 +40,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         self.communication: Optional[Any] = None
         self.ipv4_multicast_ip: Optional[Ip4AddressString] = None
         self.ipv6_multicast_ip: Optional[Ip6AddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PlatformModuleEthernetEndpointConfiguration to XML element.
 

@@ -58,6 +58,7 @@ class Tgroup(ARObject):
         self.tbody: Tbody = None
         self.tfoot: Optional[Tbody] = None
         self.thead: Optional[Tbody] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Tgroup to XML element.
 

@@ -33,6 +33,7 @@ class PortInterfaceMapping(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize PortInterfaceMapping."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize PortInterfaceMapping to XML element.
 

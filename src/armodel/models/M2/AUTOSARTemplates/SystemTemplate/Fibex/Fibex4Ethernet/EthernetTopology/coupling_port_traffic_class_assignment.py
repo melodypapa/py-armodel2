@@ -37,6 +37,7 @@ class CouplingPortTrafficClassAssignment(Referrable):
         super().__init__()
         self.priority: PositiveInteger = None
         self.traffic_class: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortTrafficClassAssignment to XML element.
 

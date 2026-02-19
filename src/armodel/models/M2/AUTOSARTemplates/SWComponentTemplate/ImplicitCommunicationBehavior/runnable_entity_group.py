@@ -39,6 +39,7 @@ class RunnableEntityGroup(Identifiable):
         super().__init__()
         self.runnable_entities: list[RunnableEntity] = []
         self.runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityGroup to XML element.
 

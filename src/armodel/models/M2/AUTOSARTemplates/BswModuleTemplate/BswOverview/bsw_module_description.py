@@ -94,6 +94,7 @@ class BswModuleDescription(ARElement):
         self.required_data_refs: list[ARRef] = []
         self.required_mode_refs: list[ARRef] = []
         self.required_trigger_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDescription to XML element.
 

@@ -37,6 +37,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         super().__init__()
         self.diagnostic_test_results: list[DiagnosticTestResult] = []
         self.request_on: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestOnBoardMonitoringTestResults to XML element.
 

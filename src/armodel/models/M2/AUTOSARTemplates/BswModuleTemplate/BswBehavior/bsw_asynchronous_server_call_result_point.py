@@ -32,6 +32,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
         self.asynchronous: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallResultPoint to XML element.
 

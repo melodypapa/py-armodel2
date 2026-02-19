@@ -40,6 +40,7 @@ class HwPin(Identifiable):
         self.function_names: list[String] = []
         self.packaging_pin: Optional[String] = None
         self.pin_number: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwPin to XML element.
 

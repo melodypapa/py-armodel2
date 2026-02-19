@@ -34,6 +34,7 @@ class PlcaProps(ARObject):
         super().__init__()
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_max_burst: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PlcaProps to XML element.
 

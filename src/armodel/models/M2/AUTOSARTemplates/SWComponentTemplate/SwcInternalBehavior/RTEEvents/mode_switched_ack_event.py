@@ -35,6 +35,7 @@ class ModeSwitchedAckEvent(RTEEvent):
         """Initialize ModeSwitchedAckEvent."""
         super().__init__()
         self.event_source: Optional[ModeSwitchPoint] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchedAckEvent to XML element.
 

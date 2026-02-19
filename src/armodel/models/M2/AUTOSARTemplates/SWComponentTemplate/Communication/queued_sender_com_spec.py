@@ -30,6 +30,7 @@ class QueuedSenderComSpec(SenderComSpec):
     def __init__(self) -> None:
         """Initialize QueuedSenderComSpec."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize QueuedSenderComSpec to XML element.
 

@@ -41,6 +41,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
         self.maximum_inter: Optional[MultidimensionalTime] = None
         self.minimum_inter: Optional[MultidimensionalTime] = None
         self.period: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SporadicEventTriggering to XML element.
 

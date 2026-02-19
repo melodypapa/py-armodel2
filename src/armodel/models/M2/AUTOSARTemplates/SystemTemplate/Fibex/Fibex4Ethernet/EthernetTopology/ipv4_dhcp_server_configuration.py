@@ -44,6 +44,7 @@ class Ipv4DhcpServerConfiguration(Describable):
         self.default_lease: Optional[TimeValue] = None
         self.dns_servers: list[Ip4AddressString] = []
         self.network_mask: Optional[Ip4AddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4DhcpServerConfiguration to XML element.
 

@@ -28,6 +28,7 @@ class MixedContentForPlainText(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize MixedContentForPlainText."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForPlainText to XML element.
 

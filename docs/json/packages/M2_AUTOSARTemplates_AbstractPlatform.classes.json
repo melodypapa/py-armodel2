@@ -56,7 +56,7 @@
         "indications": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the collection of indication or events (with argument) defined in the context of an atpVariation"
         }

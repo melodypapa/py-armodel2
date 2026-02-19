@@ -32,6 +32,7 @@ class DdsLifespan(ARObject):
         """Initialize DdsLifespan."""
         super().__init__()
         self.lifespan_duration: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsLifespan to XML element.
 

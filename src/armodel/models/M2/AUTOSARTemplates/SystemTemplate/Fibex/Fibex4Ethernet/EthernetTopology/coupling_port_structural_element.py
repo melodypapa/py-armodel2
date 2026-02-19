@@ -31,6 +31,7 @@ class CouplingPortStructuralElement(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CouplingPortStructuralElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortStructuralElement to XML element.
 

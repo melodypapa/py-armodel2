@@ -44,6 +44,7 @@ class SwcToEcuMapping(Identifiable):
         self.controlled_hw: Optional[HwElement] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.processing_unit: Optional[HwElement] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcToEcuMapping to XML element.
 

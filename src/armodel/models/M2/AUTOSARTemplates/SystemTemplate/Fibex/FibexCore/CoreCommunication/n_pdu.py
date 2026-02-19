@@ -31,6 +31,7 @@ class NPdu(IPdu):
     def __init__(self) -> None:
         """Initialize NPdu."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize NPdu to XML element.
 

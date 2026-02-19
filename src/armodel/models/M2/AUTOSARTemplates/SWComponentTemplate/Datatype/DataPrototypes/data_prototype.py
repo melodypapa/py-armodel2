@@ -42,6 +42,7 @@ class DataPrototype(Identifiable, ABC):
         """Initialize DataPrototype."""
         super().__init__()
         self.sw_data_def: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototype to XML element.
 

@@ -45,6 +45,7 @@ class ClientServerOperationMapping(ARObject):
         self.first_operation: Optional[ClientServerOperation] = None
         self.first_to_second: Optional[DataTransformation] = None
         self.second: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationMapping to XML element.
 

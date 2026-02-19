@@ -30,6 +30,7 @@ class J1939RmIncomingRequestServiceNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize J1939RmIncomingRequestServiceNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize J1939RmIncomingRequestServiceNeeds to XML element.
 

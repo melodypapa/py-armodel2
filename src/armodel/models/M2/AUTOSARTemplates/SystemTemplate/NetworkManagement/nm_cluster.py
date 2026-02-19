@@ -54,6 +54,7 @@ class NmCluster(Identifiable, ABC):
         self.nm_repeat_msg_ind_enabled: Optional[Boolean] = None
         self.nm: Optional[Boolean] = None
         self.pnc_cluster: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NmCluster to XML element.
 

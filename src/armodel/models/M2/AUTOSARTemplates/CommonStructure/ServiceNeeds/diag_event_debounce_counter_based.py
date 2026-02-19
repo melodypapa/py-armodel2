@@ -47,6 +47,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         self.counter_jump: Optional[Integer] = None
         self.counter_jump_up: Optional[Integer] = None
         self.counter_passed: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceCounterBased to XML element.
 

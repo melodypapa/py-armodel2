@@ -48,6 +48,7 @@ class TlvDataIdDefinition(ARObject):
         self.tlv_argument_ref: Optional[ARRef] = None
         self.tlv: Optional[AbstractImplementationDataType] = None
         self.tlv_record: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlvDataIdDefinition to XML element.
 

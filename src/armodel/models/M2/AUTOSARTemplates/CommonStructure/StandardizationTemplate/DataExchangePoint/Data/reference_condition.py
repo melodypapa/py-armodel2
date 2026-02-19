@@ -36,6 +36,7 @@ class ReferenceCondition(AttributeCondition):
         """Initialize ReferenceCondition."""
         super().__init__()
         self.reference_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReferenceCondition to XML element.
 

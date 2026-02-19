@@ -47,6 +47,7 @@ class ISignalTriggering(Identifiable):
         self.i_signal: Optional[ISignal] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_ports: list[ISignalPort] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalTriggering to XML element.
 

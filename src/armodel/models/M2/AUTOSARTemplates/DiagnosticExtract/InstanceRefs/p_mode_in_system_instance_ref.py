@@ -53,6 +53,7 @@ class PModeInSystemInstanceRef(ARObject):
         self.context_mode_group_ref: Optional[ARRef] = None
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PModeInSystemInstanceRef to XML element.
 

@@ -31,6 +31,7 @@ class Annotation(GeneralAnnotation):
     def __init__(self) -> None:
         """Initialize Annotation."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize Annotation to XML element.
 

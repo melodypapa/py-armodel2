@@ -30,6 +30,7 @@ class EcucMultiplicityConfigurationClass(EcucAbstractConfigurationClass):
     def __init__(self) -> None:
         """Initialize EcucMultiplicityConfigurationClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucMultiplicityConfigurationClass to XML element.
 

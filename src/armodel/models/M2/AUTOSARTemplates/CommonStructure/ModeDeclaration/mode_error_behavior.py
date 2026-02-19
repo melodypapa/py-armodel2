@@ -38,6 +38,7 @@ class ModeErrorBehavior(ARObject):
         super().__init__()
         self.default_mode: Optional[ModeDeclaration] = None
         self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeErrorBehavior to XML element.
 

@@ -49,6 +49,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         self.shared_axis_type: Optional[ApplicationPrimitiveDataType] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_calprm_ref_proxy_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisGrouped to XML element.
 
@@ -102,7 +103,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
             serialized = ARObject._serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-CALPRM-REF-PROXY")
+                wrapped = ET.Element("SW-CALPRM-REF-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -139,7 +140,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
             obj.sw_axis_index = sw_axis_index_value
 
         # Parse sw_calprm_ref_proxy_ref
-        child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY")
+        child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
         if child is not None:
             sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
             obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value

@@ -32,6 +32,7 @@ class DiagnosticRequestDownload(DiagnosticMemoryAddressableRangeAccess):
         """Initialize DiagnosticRequestDownload."""
         super().__init__()
         self.request: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestDownload to XML element.
 

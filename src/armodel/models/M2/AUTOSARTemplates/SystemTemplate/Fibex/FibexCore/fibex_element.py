@@ -32,6 +32,7 @@ class FibexElement(PackageableElement, ABC):
     def __init__(self) -> None:
         """Initialize FibexElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FibexElement to XML element.
 

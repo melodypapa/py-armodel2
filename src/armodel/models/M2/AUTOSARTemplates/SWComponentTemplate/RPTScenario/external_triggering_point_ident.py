@@ -30,6 +30,7 @@ class ExternalTriggeringPointIdent(IdentCaption):
     def __init__(self) -> None:
         """Initialize ExternalTriggeringPointIdent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ExternalTriggeringPointIdent to XML element.
 

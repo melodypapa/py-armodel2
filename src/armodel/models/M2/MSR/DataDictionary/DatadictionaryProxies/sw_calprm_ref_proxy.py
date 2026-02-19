@@ -38,6 +38,7 @@ class SwCalprmRefProxy(ARObject):
         super().__init__()
         self.ar_parameter_ref: Optional[ARRef] = None
         self.mc_data_instance: Optional[McDataInstance] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwCalprmRefProxy to XML element.
 
@@ -53,7 +54,7 @@ class SwCalprmRefProxy(ARObject):
             serialized = ARObject._serialize_item(self.ar_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AR-PARAMETER")
+                wrapped = ET.Element("AR-PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,7 +94,7 @@ class SwCalprmRefProxy(ARObject):
         obj.__init__()
 
         # Parse ar_parameter_ref
-        child = ARObject._find_child_element(element, "AR-PARAMETER")
+        child = ARObject._find_child_element(element, "AR-PARAMETER-REF")
         if child is not None:
             ar_parameter_ref_value = ARRef.deserialize(child)
             obj.ar_parameter_ref = ar_parameter_ref_value

@@ -36,6 +36,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
         """Initialize NvDataPortAnnotation."""
         super().__init__()
         self.variable_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvDataPortAnnotation to XML element.
 

@@ -45,6 +45,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
         self.crypto_service_queue: Optional[CryptoServiceQueue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecOcCryptoServiceMapping to XML element.
 

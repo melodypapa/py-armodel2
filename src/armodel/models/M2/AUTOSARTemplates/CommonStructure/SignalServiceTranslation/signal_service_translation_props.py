@@ -52,6 +52,7 @@ class SignalServiceTranslationProps(Identifiable):
         self.control_provideds: list[EventHandler] = []
         self.service_control: Optional[Any] = None
         self.signal_service_event_propses: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SignalServiceTranslationProps to XML element.
 

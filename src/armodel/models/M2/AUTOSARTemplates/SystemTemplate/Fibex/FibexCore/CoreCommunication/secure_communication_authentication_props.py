@@ -35,6 +35,7 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         """Initialize SecureCommunicationAuthenticationProps."""
         super().__init__()
         self.auth_info_tx: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationAuthenticationProps to XML element.
 

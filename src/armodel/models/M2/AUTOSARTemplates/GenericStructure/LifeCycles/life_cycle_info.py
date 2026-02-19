@@ -53,6 +53,7 @@ class LifeCycleInfo(ARObject):
         self.period_end: Optional[LifeCyclePeriod] = None
         self.remark: Optional[DocumentationBlock] = None
         self.use_instead_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LifeCycleInfo to XML element.
 

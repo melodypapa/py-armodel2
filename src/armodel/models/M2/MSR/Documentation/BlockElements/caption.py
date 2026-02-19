@@ -35,6 +35,7 @@ class Caption(MultilanguageReferrable):
         """Initialize Caption."""
         super().__init__()
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Caption to XML element.
 

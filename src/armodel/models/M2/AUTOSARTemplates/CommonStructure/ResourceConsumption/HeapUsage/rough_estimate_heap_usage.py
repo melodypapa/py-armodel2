@@ -35,6 +35,7 @@ class RoughEstimateHeapUsage(HeapUsage):
         """Initialize RoughEstimateHeapUsage."""
         super().__init__()
         self.memory_consumption: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoughEstimateHeapUsage to XML element.
 

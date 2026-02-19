@@ -48,6 +48,7 @@ class SwAddrMethod(ARElement):
         self.options: list[Identifier] = []
         self.section: Optional[SectionInitializationPolicyType] = None
         self.section_type: Optional[MemorySectionType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwAddrMethod to XML element.
 

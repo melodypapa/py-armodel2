@@ -37,6 +37,7 @@ class EcucEnumerationLiteralDef(Identifiable):
         super().__init__()
         self.ecuc_cond: Optional[Any] = None
         self.origin: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucEnumerationLiteralDef to XML element.
 

@@ -32,6 +32,7 @@ class AbstractImplementationDataType(AutosarDataType, ABC):
     def __init__(self) -> None:
         """Initialize AbstractImplementationDataType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractImplementationDataType to XML element.
 

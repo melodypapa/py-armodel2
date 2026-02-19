@@ -37,6 +37,7 @@ class Sd(ARObject):
         self.gid: NameToken = None
         self.value: VerbatimStringPlain = None
         self.xml_space: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Sd to XML element.
 

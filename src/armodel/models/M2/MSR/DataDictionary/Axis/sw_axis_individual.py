@@ -71,6 +71,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_min_axis: Optional[Integer] = None
         self.sw_variable_ref_proxie_refs: list[ARRef] = []
         self.unit: Optional[Unit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisIndividual to XML element.
 

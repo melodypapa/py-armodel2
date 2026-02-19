@@ -34,6 +34,7 @@ class DiagnosticParameterElementAccess(ARObject):
         super().__init__()
         self.context_elements: list[DiagnosticParameter] = []
         self.target_element: Optional[DiagnosticParameter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterElementAccess to XML element.
 

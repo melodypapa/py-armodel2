@@ -35,6 +35,7 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         """Initialize TDEventTTCanCycleStart."""
         super().__init__()
         self.tt_can_cluster: Optional[TtcanCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventTTCanCycleStart to XML element.
 

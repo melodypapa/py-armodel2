@@ -47,6 +47,7 @@ class McSwEmulationMethodSupport(ARObject):
         self.element_groups: list[McParameterElementGroup] = []
         self.reference_table_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize McSwEmulationMethodSupport to XML element.
 

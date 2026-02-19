@@ -54,6 +54,7 @@ class SwitchStreamIdentification(Identifiable):
         self.filter_action_vlan: Optional[PositiveInteger] = None
         self.ingress_ports: list[CouplingPort] = []
         self.stream_filter: Optional[SwitchStreamFilterRule] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamIdentification to XML element.
 

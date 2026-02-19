@@ -38,6 +38,7 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         super().__init__()
         self.nm_ready_sleep: Optional[Float] = None
         self.wake_up: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayCommunicationConnector to XML element.
 

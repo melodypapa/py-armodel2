@@ -36,6 +36,7 @@ class ModePortAnnotation(GeneralAnnotation):
         """Initialize ModePortAnnotation."""
         super().__init__()
         self.mode_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModePortAnnotation to XML element.
 

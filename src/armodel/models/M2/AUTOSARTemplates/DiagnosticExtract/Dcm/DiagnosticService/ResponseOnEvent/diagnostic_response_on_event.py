@@ -37,6 +37,7 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         super().__init__()
         self.event_windows: list[DiagnosticEventWindow] = []
         self.response_on: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticResponseOnEvent to XML element.
 

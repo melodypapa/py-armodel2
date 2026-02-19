@@ -31,6 +31,7 @@ class BswSchedulableEntity(BswModuleEntity):
     def __init__(self) -> None:
         """Initialize BswSchedulableEntity."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswSchedulableEntity to XML element.
 

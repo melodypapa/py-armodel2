@@ -53,6 +53,7 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         self.dds_service_qos: Optional[DdsCpQosProfile] = None
         self.service_instance: Optional[PositiveInteger] = None
         self.service_interface: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpServiceInstance to XML element.
 

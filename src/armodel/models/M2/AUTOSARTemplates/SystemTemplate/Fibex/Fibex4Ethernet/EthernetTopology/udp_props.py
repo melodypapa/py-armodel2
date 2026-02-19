@@ -32,6 +32,7 @@ class UdpProps(ARObject):
         """Initialize UdpProps."""
         super().__init__()
         self.udp_ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpProps to XML element.
 

@@ -43,6 +43,7 @@ class SOMEIPTransformationProps(TransformationProps):
         self.size_of_string: Optional[PositiveInteger] = None
         self.size_of_struct: Optional[PositiveInteger] = None
         self.size_of_union: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SOMEIPTransformationProps to XML element.
 

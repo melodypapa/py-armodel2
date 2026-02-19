@@ -31,6 +31,7 @@ class AbstractClassTailoring(DataFormatElementReference, ABC):
     def __init__(self) -> None:
         """Initialize AbstractClassTailoring."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractClassTailoring to XML element.
 

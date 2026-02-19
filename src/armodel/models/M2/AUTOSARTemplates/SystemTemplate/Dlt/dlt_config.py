@@ -44,6 +44,7 @@ class DltConfig(ARObject):
         self.dlt_log_channels: list[DltLogChannel] = []
         self.session_id: Optional[Boolean] = None
         self.timestamp: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltConfig to XML element.
 

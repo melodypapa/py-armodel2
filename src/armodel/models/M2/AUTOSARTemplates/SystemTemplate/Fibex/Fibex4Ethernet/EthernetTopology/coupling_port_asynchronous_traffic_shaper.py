@@ -42,6 +42,7 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         self.committed_burst: Optional[PositiveInteger] = None
         self.committed: Optional[PositiveInteger] = None
         self.traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortAsynchronousTrafficShaper to XML element.
 

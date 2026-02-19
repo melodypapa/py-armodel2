@@ -38,6 +38,7 @@ class McGroupDataRefSet(ARObject):
         super().__init__()
         self.flat_map_entries: list[FlatInstanceDescriptor] = []
         self.mc_data_instances: list[McDataInstance] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McGroupDataRefSet to XML element.
 

@@ -63,6 +63,7 @@ class ResourceConsumption(Identifiable):
         self.memory_sections: list[MemorySection] = []
         self.section_name_prefixes: list[SectionNamePrefix] = []
         self.stack_usages: list[StackUsage] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ResourceConsumption to XML element.
 

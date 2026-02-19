@@ -30,6 +30,7 @@ class SenderAnnotation(SenderReceiverAnnotation):
     def __init__(self) -> None:
         """Initialize SenderAnnotation."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SenderAnnotation to XML element.
 

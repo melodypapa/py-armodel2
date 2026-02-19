@@ -36,6 +36,7 @@ class TriggerPortAnnotation(GeneralAnnotation):
         """Initialize TriggerPortAnnotation."""
         super().__init__()
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerPortAnnotation to XML element.
 

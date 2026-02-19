@@ -45,6 +45,7 @@ class SwitchStreamFilterRule(Identifiable):
         self.data_link_layer: Optional[StreamFilterRuleDataLinkLayer] = None
         self.ieee1722_tp: Optional[StreamFilterIEEE1722Tp] = None
         self.ip_tp_rule: Optional[StreamFilterRuleIpTp] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamFilterRule to XML element.
 

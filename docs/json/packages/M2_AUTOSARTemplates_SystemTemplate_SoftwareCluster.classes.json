@@ -470,7 +470,7 @@
         "systemSignalGroup": {
           "type": "SystemSignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "SystemSignalGroup to which the communication is assigned"
         }
@@ -769,7 +769,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta class maps a service resource to CP Software Clusters. By this mapping it’s specified whether the Software Cluster has to provide or to require the resource.",
+      "note": "This meta class maps a service resource to CP Software Clusters. By this mapping it\u2019s specified whether the Software Cluster has to provide or to require the resource.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",

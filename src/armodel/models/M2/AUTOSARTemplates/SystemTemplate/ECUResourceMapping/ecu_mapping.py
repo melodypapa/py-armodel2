@@ -48,6 +48,7 @@ class ECUMapping(Identifiable):
         self.ecu: Optional[HwElement] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.hw_port_mapping_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize ECUMapping to XML element.
 
@@ -111,7 +112,7 @@ class ECUMapping(Identifiable):
             serialized = ARObject._serialize_item(self.hw_port_mapping_ref, "HwPortMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-PORT-MAPPING")
+                wrapped = ET.Element("HW-PORT-MAPPING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -158,7 +159,7 @@ class ECUMapping(Identifiable):
             obj.ecu_instance = ecu_instance_value
 
         # Parse hw_port_mapping_ref
-        child = ARObject._find_child_element(element, "HW-PORT-MAPPING")
+        child = ARObject._find_child_element(element, "HW-PORT-MAPPING-REF")
         if child is not None:
             hw_port_mapping_ref_value = ARRef.deserialize(child)
             obj.hw_port_mapping_ref = hw_port_mapping_ref_value

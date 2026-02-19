@@ -35,6 +35,7 @@ class CompuConstFormulaContent(CompuConstContent):
         """Initialize CompuConstFormulaContent."""
         super().__init__()
         self.vf: Numerical = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuConstFormulaContent to XML element.
 

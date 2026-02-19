@@ -31,6 +31,7 @@ class AbstractRuleBasedValueSpecification(ValueSpecification, ABC):
     def __init__(self) -> None:
         """Initialize AbstractRuleBasedValueSpecification."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractRuleBasedValueSpecification to XML element.
 

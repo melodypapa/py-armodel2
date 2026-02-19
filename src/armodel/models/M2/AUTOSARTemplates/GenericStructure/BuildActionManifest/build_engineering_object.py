@@ -41,6 +41,7 @@ class BuildEngineeringObject(EngineeringObject):
         self.file_type: NameToken = None
         self.file_type_pattern: RegularExpression = None
         self.intended: Optional[UriString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BuildEngineeringObject to XML element.
 

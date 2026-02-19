@@ -43,6 +43,7 @@ class PortGroupInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortGroupInSystemInstanceRef to XML element.
 

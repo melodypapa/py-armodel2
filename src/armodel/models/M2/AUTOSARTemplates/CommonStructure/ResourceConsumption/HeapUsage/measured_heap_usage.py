@@ -42,6 +42,7 @@ class MeasuredHeapUsage(HeapUsage):
         self.maximum_memory_consumption: Optional[PositiveInteger] = None
         self.minimum_memory_consumption: Optional[PositiveInteger] = None
         self.test_pattern: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MeasuredHeapUsage to XML element.
 

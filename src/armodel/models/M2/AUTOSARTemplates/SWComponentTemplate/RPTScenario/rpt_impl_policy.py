@@ -36,6 +36,7 @@ class RptImplPolicy(ARObject):
         super().__init__()
         self.rpt_enabler_impl: Optional[RptEnablerImplTypeEnum] = None
         self.rpt_preparation_enum: Optional[RptPreparationEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptImplPolicy to XML element.
 

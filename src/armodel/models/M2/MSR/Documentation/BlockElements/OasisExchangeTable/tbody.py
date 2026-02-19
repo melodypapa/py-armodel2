@@ -32,6 +32,7 @@ class Tbody(ARObject):
         """Initialize Tbody."""
         super().__init__()
         self.valign: Optional[ValignEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Tbody to XML element.
 

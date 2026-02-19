@@ -80,6 +80,7 @@ class ISignal(FibexElement):
         self.system_signal: Optional[SystemSignal] = None
         self.timeout: Optional[ValueSpecification] = None
         self.transformation_i_signals: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignal to XML element.
 

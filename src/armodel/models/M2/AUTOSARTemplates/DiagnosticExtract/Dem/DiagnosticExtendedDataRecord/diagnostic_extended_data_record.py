@@ -51,6 +51,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         self.record_number: Optional[PositiveInteger] = None
         self.trigger: Optional[DiagnosticRecordTriggerEnum] = None
         self.update: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticExtendedDataRecord to XML element.
 

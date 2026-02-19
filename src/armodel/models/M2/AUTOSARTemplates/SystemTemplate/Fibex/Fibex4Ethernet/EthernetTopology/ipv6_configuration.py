@@ -57,6 +57,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
         self.ip_address_prefix: Optional[PositiveInteger] = None
         self.ipv6_address: Optional[Ip6AddressString] = None
         self.ipv6_address_source: Optional[Ipv6AddressSourceEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv6Configuration to XML element.
 

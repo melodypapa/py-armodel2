@@ -36,6 +36,7 @@ class BusMirrorCanIdRangeMapping(ARObject):
         self.destination_base: Optional[PositiveInteger] = None
         self.source_can_id_code: Optional[PositiveInteger] = None
         self.source_can_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorCanIdRangeMapping to XML element.
 

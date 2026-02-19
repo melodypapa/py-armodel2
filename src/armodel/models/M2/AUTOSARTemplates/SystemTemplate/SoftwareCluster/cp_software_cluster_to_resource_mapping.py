@@ -39,6 +39,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requesters: list[CpSoftwareCluster] = []
         self.service: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToResourceMapping to XML element.
 

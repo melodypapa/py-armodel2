@@ -35,6 +35,7 @@ class SdgTailoring(RestrictionWithSeverity):
         """Initialize SdgTailoring."""
         super().__init__()
         self.sdg_class: Optional[SdgClass] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgTailoring to XML element.
 

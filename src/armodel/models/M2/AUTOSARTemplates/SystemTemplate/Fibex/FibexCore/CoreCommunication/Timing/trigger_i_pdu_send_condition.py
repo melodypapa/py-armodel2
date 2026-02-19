@@ -32,6 +32,7 @@ class TriggerIPduSendCondition(ARObject):
         """Initialize TriggerIPduSendCondition."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerIPduSendCondition to XML element.
 

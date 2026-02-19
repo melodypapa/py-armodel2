@@ -41,6 +41,7 @@ class PdurIPduGroup(FibexElement):
         super().__init__()
         self.communication: Optional[String] = None
         self.i_pdu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PdurIPduGroup to XML element.
 

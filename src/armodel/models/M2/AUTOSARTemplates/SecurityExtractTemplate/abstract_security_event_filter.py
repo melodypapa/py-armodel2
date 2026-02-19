@@ -31,6 +31,7 @@ class AbstractSecurityEventFilter(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AbstractSecurityEventFilter."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractSecurityEventFilter to XML element.
 

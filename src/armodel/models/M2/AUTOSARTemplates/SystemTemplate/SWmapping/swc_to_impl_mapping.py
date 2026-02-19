@@ -35,6 +35,7 @@ class SwcToImplMapping(Identifiable):
         """Initialize SwcToImplMapping."""
         super().__init__()
         self.component: Optional[SwcImplementation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcToImplMapping to XML element.
 

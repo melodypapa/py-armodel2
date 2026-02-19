@@ -32,6 +32,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
         """Initialize GlobalTimeEthSlave."""
         super().__init__()
         self.crc_validated: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeEthSlave to XML element.
 

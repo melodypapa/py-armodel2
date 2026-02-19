@@ -50,6 +50,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         self.max_alive_cycle: Optional[TimeValue] = None
         self.min_alive_cycle: Optional[TimeValue] = None
         self.tolerated_failed: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SupervisedEntityNeeds to XML element.
 

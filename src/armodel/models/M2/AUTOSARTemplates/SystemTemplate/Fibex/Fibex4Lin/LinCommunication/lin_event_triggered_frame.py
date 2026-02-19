@@ -40,6 +40,7 @@ class LinEventTriggeredFrame(LinFrame):
         super().__init__()
         self.collision_schedule: Optional[LinScheduleTable] = None
         self.lin_unconditional_frames: list[LinUnconditionalFrame] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinEventTriggeredFrame to XML element.
 

@@ -38,6 +38,7 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         """Initialize PRPortPrototype."""
         super().__init__()
         self.provided: Optional[PortInterface] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PRPortPrototype to XML element.
 

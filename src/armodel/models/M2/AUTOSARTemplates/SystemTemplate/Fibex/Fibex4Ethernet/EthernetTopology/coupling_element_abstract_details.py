@@ -31,6 +31,7 @@ class CouplingElementAbstractDetails(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CouplingElementAbstractDetails."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingElementAbstractDetails to XML element.
 

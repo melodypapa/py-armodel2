@@ -40,6 +40,7 @@ class AssignFrameIdRange(LinConfigurationEntry):
         super().__init__()
         self.frame_pid: FramePid = None
         self.start_index: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AssignFrameIdRange to XML element.
 

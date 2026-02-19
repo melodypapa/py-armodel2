@@ -35,6 +35,7 @@ class IdsMgrNeeds(ServiceNeeds):
         """Initialize IdsMgrNeeds."""
         super().__init__()
         self.use_smart: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsMgrNeeds to XML element.
 

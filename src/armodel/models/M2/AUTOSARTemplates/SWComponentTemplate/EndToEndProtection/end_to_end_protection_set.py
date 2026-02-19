@@ -36,6 +36,7 @@ class EndToEndProtectionSet(ARElement):
         """Initialize EndToEndProtectionSet."""
         super().__init__()
         self.end_to_ends: list[EndToEndProtection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtectionSet to XML element.
 

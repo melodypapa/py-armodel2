@@ -44,6 +44,7 @@ class GeneralAnnotation(ARObject, ABC):
         self.annotation: String = None
         self.annotation_text: DocumentationBlock = None
         self.label: Optional[MultilanguageLongName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GeneralAnnotation to XML element.
 

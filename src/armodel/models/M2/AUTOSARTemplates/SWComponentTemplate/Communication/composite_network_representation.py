@@ -31,6 +31,7 @@ class CompositeNetworkRepresentation(ARObject):
         super().__init__()
         self.leaf_element_element_in_port_interface_instance_ref: Optional[Any] = None
         self.network_representation: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompositeNetworkRepresentation to XML element.
 

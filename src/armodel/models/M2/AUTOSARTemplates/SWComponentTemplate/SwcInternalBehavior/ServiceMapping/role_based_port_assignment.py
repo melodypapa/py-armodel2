@@ -41,6 +41,7 @@ class RoleBasedPortAssignment(ARObject):
         super().__init__()
         self.port_prototype_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedPortAssignment to XML element.
 

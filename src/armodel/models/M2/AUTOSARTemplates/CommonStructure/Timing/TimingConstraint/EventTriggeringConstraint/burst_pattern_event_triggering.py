@@ -48,6 +48,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         self.pattern_jitter: Optional[MultidimensionalTime] = None
         self.pattern_length: Optional[MultidimensionalTime] = None
         self.pattern_period: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BurstPatternEventTriggering to XML element.
 

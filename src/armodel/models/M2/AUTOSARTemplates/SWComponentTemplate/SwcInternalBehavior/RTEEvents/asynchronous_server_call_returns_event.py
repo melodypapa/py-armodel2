@@ -32,6 +32,7 @@ class AsynchronousServerCallReturnsEvent(RTEEvent):
         """Initialize AsynchronousServerCallReturnsEvent."""
         super().__init__()
         self.event_source: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AsynchronousServerCallReturnsEvent to XML element.
 

@@ -34,6 +34,7 @@ class StreamFilterPortRange(ARObject):
         super().__init__()
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterPortRange to XML element.
 

@@ -58,6 +58,7 @@ class PortAPIOption(ARObject):
         self.port_arg_values: list[PortDefinedArgumentValue] = []
         self.supporteds: list[SwcSupportedFeature] = []
         self.transformer: Optional[DataTransformation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortAPIOption to XML element.
 

@@ -38,6 +38,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         self.mapped_flat_swc: Optional[Any] = None
         self.mapped: Optional[Any] = None
         self.mapped_swc: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimFunctionMapping to XML element.
 

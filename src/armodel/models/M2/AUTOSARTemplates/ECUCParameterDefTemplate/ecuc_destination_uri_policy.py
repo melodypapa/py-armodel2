@@ -42,6 +42,7 @@ class EcucDestinationUriPolicy(ARObject):
         self.destination_uri: Optional[Any] = None
         self.parameters: list[EcucParameterDef] = []
         self.reference_refs: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDestinationUriPolicy to XML element.
 

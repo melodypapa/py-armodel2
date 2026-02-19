@@ -32,6 +32,7 @@ class DiagnosticRequestEmissionRelatedDTC(DiagnosticServiceInstance):
         """Initialize DiagnosticRequestEmissionRelatedDTC."""
         super().__init__()
         self.request: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestEmissionRelatedDTC to XML element.
 

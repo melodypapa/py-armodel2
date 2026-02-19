@@ -46,6 +46,7 @@ class PortInterface(ARElement, ABC):
         super().__init__()
         self.is_service: Optional[Boolean] = None
         self.service_kind: Optional[ServiceProviderEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortInterface to XML element.
 

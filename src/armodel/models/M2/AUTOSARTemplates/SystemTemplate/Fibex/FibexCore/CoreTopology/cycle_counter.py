@@ -35,6 +35,7 @@ class CycleCounter(CommunicationCycle):
         """Initialize CycleCounter."""
         super().__init__()
         self.cycle_counter: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CycleCounter to XML element.
 

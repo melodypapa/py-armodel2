@@ -42,6 +42,7 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         super().__init__()
         self.max_transit_time: Optional[TimeValue] = None
         self.sdu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAvConnection to XML element.
 

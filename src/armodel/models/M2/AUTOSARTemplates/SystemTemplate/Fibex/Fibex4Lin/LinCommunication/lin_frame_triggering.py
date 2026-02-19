@@ -40,6 +40,7 @@ class LinFrameTriggering(FrameTriggering):
         super().__init__()
         self.identifier: Optional[Integer] = None
         self.lin_checksum: Optional[LinChecksumType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinFrameTriggering to XML element.
 

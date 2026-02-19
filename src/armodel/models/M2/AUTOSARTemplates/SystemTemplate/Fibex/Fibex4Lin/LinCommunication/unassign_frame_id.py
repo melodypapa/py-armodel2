@@ -36,6 +36,7 @@ class UnassignFrameId(LinConfigurationEntry):
         """Initialize UnassignFrameId."""
         super().__init__()
         self.unassigned_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UnassignFrameId to XML element.
 

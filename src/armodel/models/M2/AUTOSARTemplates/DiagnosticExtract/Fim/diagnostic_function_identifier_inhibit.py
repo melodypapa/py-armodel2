@@ -39,6 +39,7 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         self.function: Optional[Any] = None
         self.inhibition_mask: Optional[DiagnosticInhibitionMaskEnum] = None
         self.inhibit_sources: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFunctionIdentifierInhibit to XML element.
 

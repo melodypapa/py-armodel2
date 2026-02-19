@@ -35,6 +35,7 @@ class ConditionByFormula(ARObject):
         """Initialize ConditionByFormula."""
         super().__init__()
         self.binding_time_enum: BindingTimeEnum = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConditionByFormula to XML element.
 

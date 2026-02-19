@@ -30,6 +30,7 @@ class BlueprintPolicySingle(BlueprintPolicy):
     def __init__(self) -> None:
         """Initialize BlueprintPolicySingle."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintPolicySingle to XML element.
 

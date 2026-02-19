@@ -49,6 +49,7 @@ class RoleBasedDataAssignment(ARObject):
         self.used_data_ref: Optional[ARRef] = None
         self.used_parameter_ref: Optional[ARRef] = None
         self.used_pim: Optional[PerInstanceMemory] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedDataAssignment to XML element.
 
@@ -78,7 +79,7 @@ class RoleBasedDataAssignment(ARObject):
             serialized = ARObject._serialize_item(self.used_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-DATA")
+                wrapped = ET.Element("USED-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,7 +93,7 @@ class RoleBasedDataAssignment(ARObject):
             serialized = ARObject._serialize_item(self.used_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-PARAMETER")
+                wrapped = ET.Element("USED-PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -138,13 +139,13 @@ class RoleBasedDataAssignment(ARObject):
             obj.role = role_value
 
         # Parse used_data_ref
-        child = ARObject._find_child_element(element, "USED-DATA")
+        child = ARObject._find_child_element(element, "USED-DATA-REF")
         if child is not None:
             used_data_ref_value = ARRef.deserialize(child)
             obj.used_data_ref = used_data_ref_value
 
         # Parse used_parameter_ref
-        child = ARObject._find_child_element(element, "USED-PARAMETER")
+        child = ARObject._find_child_element(element, "USED-PARAMETER-REF")
         if child is not None:
             used_parameter_ref_value = ARRef.deserialize(child)
             obj.used_parameter_ref = used_parameter_ref_value

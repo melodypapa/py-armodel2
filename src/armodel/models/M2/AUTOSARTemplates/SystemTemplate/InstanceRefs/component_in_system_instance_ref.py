@@ -39,6 +39,7 @@ class ComponentInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize ComponentInSystemInstanceRef to XML element.
 

@@ -33,6 +33,7 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         """Initialize DiagnosticAuthentication."""
         super().__init__()
         self.authentication: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthentication to XML element.
 

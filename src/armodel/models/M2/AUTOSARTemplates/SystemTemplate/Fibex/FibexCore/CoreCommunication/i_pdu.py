@@ -37,6 +37,7 @@ class IPdu(Pdu, ABC):
         """Initialize IPdu."""
         super().__init__()
         self.contained_i_pdu_props: Optional[ContainedIPduProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPdu to XML element.
 

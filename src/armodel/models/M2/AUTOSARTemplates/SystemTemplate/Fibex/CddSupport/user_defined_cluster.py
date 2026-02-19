@@ -27,6 +27,7 @@ class UserDefinedCluster(ARObject):
     def __init__(self) -> None:
         """Initialize UserDefinedCluster."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedCluster to XML element.
 

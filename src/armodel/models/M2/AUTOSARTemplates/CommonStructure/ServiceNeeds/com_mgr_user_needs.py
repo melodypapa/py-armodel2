@@ -36,6 +36,7 @@ class ComMgrUserNeeds(ServiceNeeds):
         """Initialize ComMgrUserNeeds."""
         super().__init__()
         self.max_comm_mode_enum: Optional[MaxCommModeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ComMgrUserNeeds to XML element.
 

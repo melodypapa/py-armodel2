@@ -40,6 +40,7 @@ class EthTcpIpIcmpProps(ARElement):
         super().__init__()
         self.icmp_v4_props: Optional[TcpIpIcmpv4Props] = None
         self.icmp_v6_props: Optional[TcpIpIcmpv6Props] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTcpIpIcmpProps to XML element.
 

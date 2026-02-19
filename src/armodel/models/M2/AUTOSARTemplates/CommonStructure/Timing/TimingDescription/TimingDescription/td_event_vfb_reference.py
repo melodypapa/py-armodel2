@@ -32,6 +32,7 @@ class TDEventVfbReference(TDEventVfb):
         """Initialize TDEventVfbReference."""
         super().__init__()
         self.referenced_td_event_vfb: Optional[TDEventVfb] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventVfbReference to XML element.
 

@@ -49,6 +49,7 @@ class FrameTriggering(Identifiable, ABC):
         self.frame: Optional[Frame] = None
         self.frame_ports: list[FramePort] = []
         self.pdu_triggering_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FrameTriggering to XML element.
 

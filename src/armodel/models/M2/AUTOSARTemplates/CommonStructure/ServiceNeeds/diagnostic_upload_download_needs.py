@@ -31,6 +31,7 @@ class DiagnosticUploadDownloadNeeds(DiagnosticCapabilityElement):
     def __init__(self) -> None:
         """Initialize DiagnosticUploadDownloadNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticUploadDownloadNeeds to XML element.
 

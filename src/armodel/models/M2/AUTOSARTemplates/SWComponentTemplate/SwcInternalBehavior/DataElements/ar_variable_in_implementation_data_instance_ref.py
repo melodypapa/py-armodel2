@@ -42,6 +42,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_variable_ref: Optional[ARRef] = None
         self.target_data: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArVariableInImplementationDataInstanceRef to XML element.
 

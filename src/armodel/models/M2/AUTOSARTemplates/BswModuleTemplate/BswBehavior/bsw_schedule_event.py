@@ -31,6 +31,7 @@ class BswScheduleEvent(BswEvent, ABC):
     def __init__(self) -> None:
         """Initialize BswScheduleEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswScheduleEvent to XML element.
 

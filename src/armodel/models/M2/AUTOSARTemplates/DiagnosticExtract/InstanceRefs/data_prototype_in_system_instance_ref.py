@@ -57,6 +57,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         self.context_root: Optional[RootSwCompositionPrototype] = None
         self.root_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInSystemInstanceRef to XML element.
 

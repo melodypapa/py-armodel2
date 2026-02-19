@@ -40,6 +40,7 @@ class TDEventOperation(TDEventVfbPort):
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
         self.td_event: Optional[TDEventOperationTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventOperation to XML element.
 

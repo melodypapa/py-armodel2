@@ -78,6 +78,7 @@ class Area(ARObject):
         self.style: Optional[String] = None
         self.tabindex: Optional[String] = None
         self.title: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Area to XML element.
 

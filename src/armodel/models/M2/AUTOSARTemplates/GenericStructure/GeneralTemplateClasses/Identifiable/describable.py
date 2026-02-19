@@ -53,6 +53,7 @@ class Describable(ARObject, ABC):
         self.category: Optional[CategoryString] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Describable to XML element.
 

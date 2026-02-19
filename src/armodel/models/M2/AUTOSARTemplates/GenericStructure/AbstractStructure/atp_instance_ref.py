@@ -48,6 +48,7 @@ class AtpInstanceRef(ARObject, ABC):
         self.atp_base: AtpClassifier = None
         self.atp_context_refs: list[ARRef] = []
         self.atp_target: AtpFeature = None
+
     def serialize(self) -> ET.Element:
         """Serialize AtpInstanceRef to XML element.
 

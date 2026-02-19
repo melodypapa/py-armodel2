@@ -54,6 +54,7 @@ class SecuredIPdu(IPdu):
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecuredIPdu to XML element.
 

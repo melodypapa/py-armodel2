@@ -36,6 +36,7 @@ class ErrorTracerNeeds(ServiceNeeds):
         """Initialize ErrorTracerNeeds."""
         super().__init__()
         self.traced_failures: list[TracedFailure] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ErrorTracerNeeds to XML element.
 

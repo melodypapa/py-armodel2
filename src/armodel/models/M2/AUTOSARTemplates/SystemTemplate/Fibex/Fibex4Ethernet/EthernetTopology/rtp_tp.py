@@ -40,6 +40,7 @@ class RtpTp(TransportProtocolConfiguration):
         super().__init__()
         self.ssrc: Optional[PositiveInteger] = None
         self.tcp_udp_config: Optional[TcpUdpConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RtpTp to XML element.
 

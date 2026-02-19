@@ -34,6 +34,7 @@ class PostBuildVariantCriterionValueSet(ARElement):
         """Initialize PostBuildVariantCriterionValueSet."""
         super().__init__()
         self.post_build_variants: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterionValueSet to XML element.
 

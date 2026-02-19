@@ -35,6 +35,7 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         """Initialize DiagnosticReadDataByIdentifierClass."""
         super().__init__()
         self.max_did_to_read: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDataByIdentifierClass to XML element.
 

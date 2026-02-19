@@ -40,6 +40,7 @@ class DataTransformationSet(ARElement):
         super().__init__()
         self.datas: list[DataTransformation] = []
         self.transformation_technologies: list[TransformationTechnology] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataTransformationSet to XML element.
 

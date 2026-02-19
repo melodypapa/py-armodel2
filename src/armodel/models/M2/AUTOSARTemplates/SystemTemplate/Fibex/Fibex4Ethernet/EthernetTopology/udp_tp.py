@@ -35,6 +35,7 @@ class UdpTp(TcpUdpConfig):
         """Initialize UdpTp."""
         super().__init__()
         self.udp_tp_port: Optional[TpPort] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpTp to XML element.
 

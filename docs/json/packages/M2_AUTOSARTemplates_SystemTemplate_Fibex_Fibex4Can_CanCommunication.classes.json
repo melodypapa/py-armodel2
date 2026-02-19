@@ -96,7 +96,7 @@
         "canXlFrame": {
           "type": "CanXlFrameTriggeringProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Definition of CAN XL specific attributes in case the frame is a CAN XL frame."
         },

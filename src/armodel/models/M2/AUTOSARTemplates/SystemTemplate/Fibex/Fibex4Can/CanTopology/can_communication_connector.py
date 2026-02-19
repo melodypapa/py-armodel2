@@ -40,6 +40,7 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         self.pnc_wakeup_can: Optional[PositiveInteger] = None
         self.pnc_wakeup: Optional[PositiveUnlimitedInteger] = None
         self.pnc_wakeup_dlc: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanCommunicationConnector to XML element.
 

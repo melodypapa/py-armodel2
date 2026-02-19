@@ -41,6 +41,7 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         self.ofns_data_id_list: PositiveInteger = None
         self.ofs_data_id_list: PositiveInteger = None
         self.sync_data_id_list: PositiveInteger = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanGlobalTimeDomainProps to XML element.
 

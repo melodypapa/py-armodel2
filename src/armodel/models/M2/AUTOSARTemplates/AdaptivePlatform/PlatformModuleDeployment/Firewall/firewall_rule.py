@@ -53,6 +53,7 @@ class FirewallRule(ARElement):
         self.someip_rule: Optional[Any] = None
         self.someip_sd_rule: Optional[Any] = None
         self.transport_layer_rule: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FirewallRule to XML element.
 

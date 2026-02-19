@@ -41,6 +41,7 @@ class StreamFilterRuleIpTp(ARObject):
         self.destination_ports: list[StreamFilterPortRange] = []
         self.source: Optional[StreamFilterIpv6Address] = None
         self.source_ports: list[StreamFilterPortRange] = []
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterRuleIpTp to XML element.
 

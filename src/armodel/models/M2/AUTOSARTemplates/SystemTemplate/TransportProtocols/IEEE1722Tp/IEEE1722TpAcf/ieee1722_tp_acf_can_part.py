@@ -54,6 +54,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
         self.can_identifier: Optional[RxIdentifierRange] = None
         self.sdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfCanPart to XML element.
 

@@ -50,6 +50,7 @@ class LinTpNode(Identifiable):
         self.p2_max: Optional[TimeValue] = None
         self.p2_timing: Optional[TimeValue] = None
         self.tp_address: Optional[TpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinTpNode to XML element.
 

@@ -49,6 +49,7 @@ class DataFilter(ARObject):
         self.offset: Optional[PositiveInteger] = None
         self.period: Optional[PositiveInteger] = None
         self.x: Optional[UnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataFilter to XML element.
 

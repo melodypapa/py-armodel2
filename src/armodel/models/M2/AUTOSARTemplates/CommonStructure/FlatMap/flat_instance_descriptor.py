@@ -57,6 +57,7 @@ class FlatInstanceDescriptor(Identifiable):
         self.rte_plugin_props: Optional[RtePluginProps] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.upstream: Optional[AtpFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlatInstanceDescriptor to XML element.
 

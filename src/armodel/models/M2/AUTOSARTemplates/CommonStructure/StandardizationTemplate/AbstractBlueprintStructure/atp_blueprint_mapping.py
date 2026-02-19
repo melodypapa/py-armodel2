@@ -38,6 +38,7 @@ class AtpBlueprintMapping(ARObject, ABC):
         super().__init__()
         self.atp_blueprint: AtpBlueprint = None
         self.atp_blueprinted: AtpBlueprintable = None
+
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprintMapping to XML element.
 

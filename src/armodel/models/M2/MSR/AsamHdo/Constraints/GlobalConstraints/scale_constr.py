@@ -44,6 +44,7 @@ class ScaleConstr(ARObject):
         self.short_label: Optional[Identifier] = None
         self.upper_limit: Optional[Limit] = None
         self.validity: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ScaleConstr to XML element.
 

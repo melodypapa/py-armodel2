@@ -42,6 +42,7 @@ class RptSupportData(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.rpt_components: list[RptComponent] = []
         self.rpt_service_points: list[RptServicePoint] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptSupportData to XML element.
 

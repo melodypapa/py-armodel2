@@ -96,7 +96,7 @@
         "atpContexts": {
           "type": "AtpPrototype",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is one particular step in the navigation path. atpAbstract (ordered)"
         },

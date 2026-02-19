@@ -35,6 +35,7 @@ class IndicatorStatusNeeds(ServiceNeeds):
         """Initialize IndicatorStatusNeeds."""
         super().__init__()
         self.type_enum: Optional[DiagnosticIndicatorTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IndicatorStatusNeeds to XML element.
 

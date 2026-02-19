@@ -37,6 +37,7 @@ class ParameterInterface(DataInterface):
         """Initialize ParameterInterface."""
         super().__init__()
         self.parameter_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterInterface to XML element.
 

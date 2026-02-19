@@ -46,6 +46,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         self.freeze_current: Optional[Boolean] = None
         self.reset_to_default: Optional[Boolean] = None
         self.short_term: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIoControlNeeds to XML element.
 

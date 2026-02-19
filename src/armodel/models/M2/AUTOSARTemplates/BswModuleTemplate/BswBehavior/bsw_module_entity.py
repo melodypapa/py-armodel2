@@ -73,6 +73,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.issued_trigger_refs: list[ARRef] = []
         self.managed_mode_refs: list[ARRef] = []
         self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntity to XML element.
 

@@ -42,6 +42,7 @@ class Baseline(ARObject):
         self.custom_sdg_defs: list[SdgDef] = []
         self.customs: list[Documentation] = []
         self.standards: list[String] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Baseline to XML element.
 

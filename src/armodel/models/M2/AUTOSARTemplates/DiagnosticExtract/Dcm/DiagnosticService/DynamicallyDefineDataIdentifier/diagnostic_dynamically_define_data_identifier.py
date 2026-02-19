@@ -42,6 +42,7 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         self.data_identifier: Optional[DiagnosticDynamicDataIdentifier] = None
         self.dynamically: Optional[Any] = None
         self.max_source: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDynamicallyDefineDataIdentifier to XML element.
 

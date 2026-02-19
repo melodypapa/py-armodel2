@@ -33,6 +33,7 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticCommunicationManagerNeeds."""
         super().__init__()
         self.service_request: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCommunicationManagerNeeds to XML element.
 

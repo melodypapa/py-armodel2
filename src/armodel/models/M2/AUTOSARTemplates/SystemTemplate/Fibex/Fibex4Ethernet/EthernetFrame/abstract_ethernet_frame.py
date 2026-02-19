@@ -31,6 +31,7 @@ class AbstractEthernetFrame(Frame, ABC):
     def __init__(self) -> None:
         """Initialize AbstractEthernetFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractEthernetFrame to XML element.
 

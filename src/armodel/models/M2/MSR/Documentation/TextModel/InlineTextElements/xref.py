@@ -67,6 +67,7 @@ class Xref(ARObject):
         self.show_resource_page: Optional[ShowResourcePageEnum] = None
         self.show_resource_short: Optional[ShowResourceShortNameEnum] = None
         self.show_see: Optional[ShowSeeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Xref to XML element.
 

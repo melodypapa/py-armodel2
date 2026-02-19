@@ -38,6 +38,7 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         super().__init__()
         self.multiplicity: Optional[Any] = None
         self.variation: Optional[VariationRestrictionWithSeverity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AttributeTailoring to XML element.
 

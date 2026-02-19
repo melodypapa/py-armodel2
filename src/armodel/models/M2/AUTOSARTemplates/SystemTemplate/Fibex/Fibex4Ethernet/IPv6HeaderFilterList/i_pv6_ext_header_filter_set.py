@@ -36,6 +36,7 @@ class IPv6ExtHeaderFilterSet(ARElement):
         """Initialize IPv6ExtHeaderFilterSet."""
         super().__init__()
         self.ext_header_filter_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IPv6ExtHeaderFilterSet to XML element.
 

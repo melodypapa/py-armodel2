@@ -37,6 +37,7 @@ class TDEventBswModule(TDEventBsw):
         super().__init__()
         self.bsw_module_entry_entry: Optional[BswModuleEntry] = None
         self.td_event_bsw: Optional[TDEventBswModule] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventBswModule to XML element.
 

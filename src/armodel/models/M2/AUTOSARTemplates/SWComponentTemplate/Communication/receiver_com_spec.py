@@ -57,6 +57,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         self.sync_counter_init: Optional[PositiveInteger] = None
         self.transformation_coms: list[Any] = []
         self.uses_end_to_end: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReceiverComSpec to XML element.
 

@@ -46,6 +46,7 @@ class ApplicationValueSpecification(ValueSpecification):
         self.category: Optional[Identifier] = None
         self.sw_axis_conts: list[SwAxisCont] = []
         self.sw_value_cont: Optional[SwValueCont] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationValueSpecification to XML element.
 

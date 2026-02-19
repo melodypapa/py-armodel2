@@ -36,6 +36,7 @@ class BswDataReceivedEvent(BswScheduleEvent):
         """Initialize BswDataReceivedEvent."""
         super().__init__()
         self.data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswDataReceivedEvent to XML element.
 

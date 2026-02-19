@@ -43,6 +43,7 @@ class DltApplication(Identifiable):
         self.application: Optional[String] = None
         self.application_id: Optional[String] = None
         self.contexts: list[DltContext] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DltApplication to XML element.
 

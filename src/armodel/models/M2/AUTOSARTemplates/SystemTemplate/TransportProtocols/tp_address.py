@@ -35,6 +35,7 @@ class TpAddress(Identifiable):
         """Initialize TpAddress."""
         super().__init__()
         self.tp_address: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TpAddress to XML element.
 

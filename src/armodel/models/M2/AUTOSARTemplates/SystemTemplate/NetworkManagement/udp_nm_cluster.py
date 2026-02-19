@@ -55,6 +55,7 @@ class UdpNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_wait_bus: Optional[TimeValue] = None
         self.vlan: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpNmCluster to XML element.
 

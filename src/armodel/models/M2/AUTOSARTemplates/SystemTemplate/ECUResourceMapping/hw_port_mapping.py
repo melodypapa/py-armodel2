@@ -38,6 +38,7 @@ class HwPortMapping(ARObject):
         super().__init__()
         self.communication_connector: Optional[CommunicationConnector] = None
         self.hw_pin_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwPortMapping to XML element.
 

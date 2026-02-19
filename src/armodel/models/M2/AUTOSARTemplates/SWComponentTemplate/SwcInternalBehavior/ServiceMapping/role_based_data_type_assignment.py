@@ -35,6 +35,7 @@ class RoleBasedDataTypeAssignment(ARObject):
         super().__init__()
         self.role: Optional[Identifier] = None
         self.used: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedDataTypeAssignment to XML element.
 

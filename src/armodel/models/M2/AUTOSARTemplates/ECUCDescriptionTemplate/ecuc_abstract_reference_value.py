@@ -44,6 +44,7 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
         self.annotations: list[Annotation] = []
         self.definition_ref: Optional[Any] = None
         self.is_auto_value: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractReferenceValue to XML element.
 

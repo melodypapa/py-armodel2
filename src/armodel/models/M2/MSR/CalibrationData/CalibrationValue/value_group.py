@@ -40,6 +40,7 @@ class ValueGroup(ARObject):
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
         self.vg_contents: Optional[SwValues] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ValueGroup to XML element.
 

@@ -35,6 +35,7 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()
         self.node: Optional[DiagnosticJ1939Node] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939FreezeFrame to XML element.
 

@@ -39,6 +39,7 @@ class PerInstanceMemorySize(ARObject):
         self.alignment: Optional[PositiveInteger] = None
         self.per_instance_memory_memory: Optional[PerInstanceMemory] = None
         self.size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PerInstanceMemorySize to XML element.
 

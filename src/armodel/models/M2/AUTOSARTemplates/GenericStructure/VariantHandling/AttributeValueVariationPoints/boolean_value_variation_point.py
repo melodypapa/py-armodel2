@@ -27,6 +27,7 @@ class BooleanValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize BooleanValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BooleanValueVariationPoint to XML element.
 

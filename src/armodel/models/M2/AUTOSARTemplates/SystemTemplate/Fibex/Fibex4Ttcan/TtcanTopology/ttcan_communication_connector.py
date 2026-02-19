@@ -30,6 +30,7 @@ class TtcanCommunicationConnector(AbstractCanCommunicationConnector):
     def __init__(self) -> None:
         """Initialize TtcanCommunicationConnector."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TtcanCommunicationConnector to XML element.
 

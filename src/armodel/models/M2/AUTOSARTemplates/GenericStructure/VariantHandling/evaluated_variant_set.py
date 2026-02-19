@@ -40,6 +40,7 @@ class EvaluatedVariantSet(ARElement):
         super().__init__()
         self.approval_status: NameToken = None
         self.evaluateds: list[PredefinedVariant] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EvaluatedVariantSet to XML element.
 

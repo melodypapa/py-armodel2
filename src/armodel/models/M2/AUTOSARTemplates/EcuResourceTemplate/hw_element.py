@@ -49,6 +49,7 @@ class HwElement(HwDescriptionEntity):
         self.hw_elements: list[HwElementConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
         self.nested_elements: list[HwElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize HwElement to XML element.
 

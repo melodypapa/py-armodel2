@@ -45,6 +45,7 @@ class RptProfile(Identifiable):
         self.min_service_point: Optional[PositiveInteger] = None
         self.service_point: Optional[CIdentifier] = None
         self.stim_enabler: Optional[RptEnablerImplTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptProfile to XML element.
 

@@ -31,6 +31,7 @@ class FreeFormatEntry(ScheduleTableEntry, ABC):
     def __init__(self) -> None:
         """Initialize FreeFormatEntry."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FreeFormatEntry to XML element.
 

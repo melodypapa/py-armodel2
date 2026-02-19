@@ -35,6 +35,7 @@ class CompuScaleRationalFormula(CompuScaleContents):
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
         self.compu_rational_coeffs: Optional[CompuRationalCoeffs] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuScaleRationalFormula to XML element.
 

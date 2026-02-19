@@ -45,6 +45,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
         self.exit_mode: Optional[ModeDeclaration] = None
         self.mode_ref: Optional[ARRef] = None
         self.td_event_mode: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventModeDeclaration to XML element.
 

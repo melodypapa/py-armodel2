@@ -50,6 +50,7 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         self.inhibitings: list[FunctionInhibitionNeeds] = []
         self.prestored: Optional[Boolean] = None
         self.uses_monitor: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventNeeds to XML element.
 

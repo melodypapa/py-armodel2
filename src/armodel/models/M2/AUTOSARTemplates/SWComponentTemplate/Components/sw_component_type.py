@@ -65,6 +65,7 @@ class SwComponentType(ARElement, ABC):
         self.swc_mapping_refs: list[Any] = []
         self.sw_component_documentation: Optional[SwComponentDocumentation] = None
         self.unit_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwComponentType to XML element.
 

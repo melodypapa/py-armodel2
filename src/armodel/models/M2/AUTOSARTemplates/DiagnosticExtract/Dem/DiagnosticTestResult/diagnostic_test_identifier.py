@@ -34,6 +34,7 @@ class DiagnosticTestIdentifier(ARObject):
         super().__init__()
         self.id: Optional[PositiveInteger] = None
         self.uas_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTestIdentifier to XML element.
 

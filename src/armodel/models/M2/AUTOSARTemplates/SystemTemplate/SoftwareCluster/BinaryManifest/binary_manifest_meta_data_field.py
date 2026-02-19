@@ -38,6 +38,7 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         super().__init__()
         self.size: Optional[PositiveInteger] = None
         self.value: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestMetaDataField to XML element.
 

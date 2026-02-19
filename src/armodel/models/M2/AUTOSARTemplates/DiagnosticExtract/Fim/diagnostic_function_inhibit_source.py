@@ -34,6 +34,7 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         super().__init__()
         self.event: Optional[Any] = None
         self.event_group: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFunctionInhibitSource to XML element.
 

@@ -37,6 +37,7 @@ class FlexrayNmEcu(BusspecificNmEcu):
         super().__init__()
         self.nm_hw_vote: Optional[Boolean] = None
         self.nm_main: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayNmEcu to XML element.
 

@@ -31,6 +31,7 @@ class DevelopmentError(TracedFailure):
     def __init__(self) -> None:
         """Initialize DevelopmentError."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DevelopmentError to XML element.
 

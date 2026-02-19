@@ -54,6 +54,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
         self.ipv4_address_source: Optional[Ipv4AddressSourceEnum] = None
         self.network_mask: Optional[Ip4AddressString] = None
         self.ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4Configuration to XML element.
 

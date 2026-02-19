@@ -30,6 +30,7 @@ class J1939NmEcu(BusspecificNmEcu):
     def __init__(self) -> None:
         """Initialize J1939NmEcu."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize J1939NmEcu to XML element.
 

@@ -35,6 +35,7 @@ class FlexrayTpPduPool(Identifiable):
         """Initialize FlexrayTpPduPool."""
         super().__init__()
         self.n_pdus: list[NPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpPduPool to XML element.
 

@@ -41,6 +41,7 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         super().__init__()
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_mode_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PModeGroupInAtomicSwcInstanceRef to XML element.
 

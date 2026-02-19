@@ -35,6 +35,7 @@ class BswModuleTiming(TimingExtension):
         """Initialize BswModuleTiming."""
         super().__init__()
         self.behavior: Optional[BswInternalBehavior] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleTiming to XML element.
 

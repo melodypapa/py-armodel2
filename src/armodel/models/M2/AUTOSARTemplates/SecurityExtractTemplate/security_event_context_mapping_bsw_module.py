@@ -35,6 +35,7 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         """Initialize SecurityEventContextMappingBswModule."""
         super().__init__()
         self.affected_bsw: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMappingBswModule to XML element.
 

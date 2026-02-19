@@ -39,6 +39,7 @@ class Xfile(SingleLanguageReferrable):
         self.tool: Optional[String] = None
         self.tool_version: Optional[String] = None
         self.url: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Xfile to XML element.
 

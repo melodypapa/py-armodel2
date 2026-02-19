@@ -36,6 +36,7 @@ class SynchronousServerCallPoint(ServerCallPoint):
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
         self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SynchronousServerCallPoint to XML element.
 

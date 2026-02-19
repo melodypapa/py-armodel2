@@ -40,6 +40,7 @@ class SecureCommunicationFreshnessProps(Identifiable):
         self.freshness: Optional[PositiveInteger] = None
         self.freshness_value: Optional[PositiveInteger] = None
         self.use_freshness: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationFreshnessProps to XML element.
 

@@ -41,6 +41,7 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         super().__init__()
         self.assigned: Optional[LinSlave] = None
         self.assigned_lin: Optional[LinSlaveConfigIdent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinConfigurationEntry to XML element.
 

@@ -37,6 +37,7 @@ class ModeSwitchInterface(PortInterface):
         """Initialize ModeSwitchInterface."""
         super().__init__()
         self.mode_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchInterface to XML element.
 
@@ -62,7 +63,7 @@ class ModeSwitchInterface(PortInterface):
             serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP")
+                wrapped = ET.Element("MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,7 +88,7 @@ class ModeSwitchInterface(PortInterface):
         obj = super(ModeSwitchInterface, cls).deserialize(element)
 
         # Parse mode_group_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP")
+        child = ARObject._find_child_element(element, "MODE-GROUP-REF")
         if child is not None:
             mode_group_ref_value = ARRef.deserialize(child)
             obj.mode_group_ref = mode_group_ref_value

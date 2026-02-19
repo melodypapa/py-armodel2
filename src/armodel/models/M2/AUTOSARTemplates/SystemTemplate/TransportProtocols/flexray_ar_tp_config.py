@@ -45,6 +45,7 @@ class FlexrayArTpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_channels: list[FlexrayArTpChannel] = []
         self.tp_nodes: list[FlexrayArTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayArTpConfig to XML element.
 

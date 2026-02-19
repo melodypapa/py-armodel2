@@ -35,6 +35,7 @@ class DdsCpPartition(Identifiable):
         """Initialize DdsCpPartition."""
         super().__init__()
         self.partition_name: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpPartition to XML element.
 

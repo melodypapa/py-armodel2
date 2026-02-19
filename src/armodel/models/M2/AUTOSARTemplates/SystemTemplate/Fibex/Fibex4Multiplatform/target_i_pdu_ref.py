@@ -38,6 +38,7 @@ class TargetIPduRef(ARObject):
         super().__init__()
         self.default_value_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TargetIPduRef to XML element.
 
@@ -53,7 +54,7 @@ class TargetIPduRef(ARObject):
             serialized = ARObject._serialize_item(self.default_value_ref, "PduMappingDefaultValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
+                wrapped = ET.Element("DEFAULT-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,7 +94,7 @@ class TargetIPduRef(ARObject):
         obj.__init__()
 
         # Parse default_value_ref
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = ARObject._find_child_element(element, "DEFAULT-VALUE-REF")
         if child is not None:
             default_value_ref_value = ARRef.deserialize(child)
             obj.default_value_ref = default_value_ref_value

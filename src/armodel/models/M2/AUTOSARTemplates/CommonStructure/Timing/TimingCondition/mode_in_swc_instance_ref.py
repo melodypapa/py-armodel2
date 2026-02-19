@@ -50,6 +50,7 @@ class ModeInSwcInstanceRef(ARObject):
         self.context_mode_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeInSwcInstanceRef to XML element.
 

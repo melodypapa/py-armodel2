@@ -30,6 +30,7 @@ class BlockState(Identifiable):
     def __init__(self) -> None:
         """Initialize BlockState."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BlockState to XML element.
 

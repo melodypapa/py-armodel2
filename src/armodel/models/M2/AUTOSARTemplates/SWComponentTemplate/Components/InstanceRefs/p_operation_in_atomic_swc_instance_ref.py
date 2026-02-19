@@ -40,6 +40,7 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         super().__init__()
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_provided_operation: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize POperationInAtomicSwcInstanceRef to XML element.
 

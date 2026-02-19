@@ -30,6 +30,7 @@ class OsTaskExecutionEvent(RTEEvent):
     def __init__(self) -> None:
         """Initialize OsTaskExecutionEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize OsTaskExecutionEvent to XML element.
 

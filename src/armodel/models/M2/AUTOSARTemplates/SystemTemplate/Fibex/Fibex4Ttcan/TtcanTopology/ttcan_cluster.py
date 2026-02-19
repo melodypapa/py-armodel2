@@ -38,6 +38,7 @@ class TtcanCluster(ARObject):
         self.basic_cycle_length: Optional[Integer] = None
         self.ntu: Optional[TimeValue] = None
         self.operation_mode: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TtcanCluster to XML element.
 

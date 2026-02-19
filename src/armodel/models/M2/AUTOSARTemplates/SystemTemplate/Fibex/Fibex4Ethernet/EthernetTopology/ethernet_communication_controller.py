@@ -53,6 +53,7 @@ class EthernetCommunicationController(ARObject):
         self.maximum: Optional[Integer] = None
         self.slave_act_as: Optional[Boolean] = None
         self.slave_qualified: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetCommunicationController to XML element.
 

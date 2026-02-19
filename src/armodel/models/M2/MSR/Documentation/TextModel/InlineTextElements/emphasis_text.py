@@ -52,6 +52,7 @@ class EmphasisText(ARObject):
         self.sup: Superscript = None
         self.tt: Optional[Tt] = None
         self.type: Optional[EEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EmphasisText to XML element.
 

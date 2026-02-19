@@ -53,6 +53,7 @@ class FlexrayFifoConfiguration(ARObject):
         self.fifo_ranges: list[FlexrayFifoRange] = []
         self.msg_id_mask: Optional[Integer] = None
         self.msg_id_match: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFifoConfiguration to XML element.
 

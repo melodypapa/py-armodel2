@@ -30,6 +30,7 @@ class UserDefinedTransformationDescription(TransformationDescription):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationDescription."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedTransformationDescription to XML element.
 

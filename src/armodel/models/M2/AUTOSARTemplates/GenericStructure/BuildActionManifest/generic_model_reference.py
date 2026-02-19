@@ -38,6 +38,7 @@ class GenericModelReference(ARObject):
         self.base: NameToken = None
         self.dest: NameToken = None
         self.ref_ref: Ref = None
+
     def serialize(self) -> ET.Element:
         """Serialize GenericModelReference to XML element.
 
@@ -81,7 +82,7 @@ class GenericModelReference(ARObject):
             serialized = ARObject._serialize_item(self.ref_ref, "Ref")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF")
+                wrapped = ET.Element("REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,7 +120,7 @@ class GenericModelReference(ARObject):
             obj.dest = dest_value
 
         # Parse ref_ref
-        child = ARObject._find_child_element(element, "REF")
+        child = ARObject._find_child_element(element, "REF-REF")
         if child is not None:
             ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value

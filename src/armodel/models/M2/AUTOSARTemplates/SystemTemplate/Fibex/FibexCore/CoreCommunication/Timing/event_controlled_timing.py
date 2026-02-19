@@ -40,6 +40,7 @@ class EventControlledTiming(Describable):
         super().__init__()
         self.number_of: Optional[Integer] = None
         self.repetition_period: Optional[TimeRangeType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventControlledTiming to XML element.
 

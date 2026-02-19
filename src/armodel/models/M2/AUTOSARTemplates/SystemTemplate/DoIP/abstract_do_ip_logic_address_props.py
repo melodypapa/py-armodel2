@@ -31,6 +31,7 @@ class AbstractDoIpLogicAddressProps(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AbstractDoIpLogicAddressProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractDoIpLogicAddressProps to XML element.
 

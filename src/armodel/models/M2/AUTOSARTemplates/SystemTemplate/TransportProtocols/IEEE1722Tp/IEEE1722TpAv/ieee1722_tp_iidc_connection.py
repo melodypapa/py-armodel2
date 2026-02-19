@@ -50,6 +50,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         self.iidc_sy: Optional[PositiveInteger] = None
         self.iidc_tag: Optional[PositiveInteger] = None
         self.iidc_t_code: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpIidcConnection to XML element.
 

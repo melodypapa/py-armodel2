@@ -37,6 +37,7 @@ class RptSwPrototypingAccess(ARObject):
         self.rpt_hook_access: Optional[RptAccessEnum] = None
         self.rpt_read_access: Optional[RptAccessEnum] = None
         self.rpt_write_access: Optional[RptAccessEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptSwPrototypingAccess to XML element.
 

@@ -85,6 +85,7 @@ class McDataInstance(Identifiable):
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.sub_elements: list[McDataInstance] = []
         self.symbol: Optional[SymbolString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize McDataInstance to XML element.
 

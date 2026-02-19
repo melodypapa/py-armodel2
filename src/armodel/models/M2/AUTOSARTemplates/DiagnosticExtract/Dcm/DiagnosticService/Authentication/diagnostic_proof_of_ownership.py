@@ -30,6 +30,7 @@ class DiagnosticProofOfOwnership(DiagnosticAuthentication):
     def __init__(self) -> None:
         """Initialize DiagnosticProofOfOwnership."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticProofOfOwnership to XML element.
 

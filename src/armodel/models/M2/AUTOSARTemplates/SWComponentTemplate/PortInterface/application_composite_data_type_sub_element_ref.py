@@ -32,6 +32,7 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         """Initialize ApplicationCompositeDataTypeSubElementRef."""
         super().__init__()
         self.application: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationCompositeDataTypeSubElementRef to XML element.
 

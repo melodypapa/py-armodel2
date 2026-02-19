@@ -35,6 +35,7 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
         """Initialize DiagnosticCustomServiceClass."""
         super().__init__()
         self.custom_service: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCustomServiceClass to XML element.
 

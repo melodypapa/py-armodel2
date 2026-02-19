@@ -33,6 +33,7 @@ class CommConnectorPort(Identifiable, ABC):
         """Initialize CommConnectorPort."""
         super().__init__()
         self.communication: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommConnectorPort to XML element.
 

@@ -44,6 +44,7 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         self.num_failed: Optional[PositiveInteger] = None
         self.security_delay: Optional[TimeValue] = None
         self.seed_size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecurityLevel to XML element.
 

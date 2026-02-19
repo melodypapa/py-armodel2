@@ -40,6 +40,7 @@ class IPSecConfig(ARObject):
         super().__init__()
         self.ip_sec_config: Optional[IPSecConfigProps] = None
         self.ip_sec_rules: list[IPSecRule] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IPSecConfig to XML element.
 

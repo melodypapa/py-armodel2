@@ -32,6 +32,7 @@ class DiagEventDebounceMonitorInternal(DiagEventDebounceAlgorithm):
     def __init__(self) -> None:
         """Initialize DiagEventDebounceMonitorInternal."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceMonitorInternal to XML element.
 

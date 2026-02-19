@@ -99,7 +99,7 @@
         "dataTypes": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMappingSet to be applied the used ApplicationDataTypes in developing subsystems it may happen are used on the surface In this case it reasonable to be able to also provide the to the ImplementationDataTypes. mapping shall be informal and not for the implementors mainly because generator is not concerned about the the mapping of ApplicationDataTypes delegated and inner PortPrototype matches mapping to ImplementationDataTypes is not"
         },
@@ -335,7 +335,7 @@
         "mapping": {
           "type": "PortInterfaceMapping",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a PortInterfaceMapping specifying the unequal named PortInterface elements of the PortInterfaces typing the two PortPrototypes referenced by the ConnectorPrototype."
         }
@@ -385,14 +385,14 @@
         "innerPortInstanceRef": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: PortInCompositionType"
         },
         "outerPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The port that is located on the outside of the Composition"
         }

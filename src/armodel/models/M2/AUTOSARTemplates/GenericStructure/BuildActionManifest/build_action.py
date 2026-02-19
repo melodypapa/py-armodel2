@@ -49,6 +49,7 @@ class BuildAction(BuildActionEntity):
         self.modified_datas: list[BuildActionIoElement] = []
         self.predecessors: list[BuildAction] = []
         self.required: BuildActionEnvironment = None
+
     def serialize(self) -> ET.Element:
         """Serialize BuildAction to XML element.
 

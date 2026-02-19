@@ -30,6 +30,7 @@ class DiagnosticRequestDownloadClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticRequestDownloadClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestDownloadClass to XML element.
 

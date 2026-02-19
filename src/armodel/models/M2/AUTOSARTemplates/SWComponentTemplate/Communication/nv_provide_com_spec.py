@@ -46,6 +46,7 @@ class NvProvideComSpec(PPortComSpec):
         self.ram_block_init: Optional[ValueSpecification] = None
         self.rom_block_init: Optional[ValueSpecification] = None
         self.variable_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvProvideComSpec to XML element.
 

@@ -48,6 +48,7 @@ class LabeledItem(Paginateable):
         self.help_entry: Optional[String] = None
         self.item_contents: Optional[DocumentationBlock] = None
         self.item_label: MultiLanguageOverviewParagraph = None
+
     def serialize(self) -> ET.Element:
         """Serialize LabeledItem to XML element.
 

@@ -31,6 +31,7 @@ class IdsCommonElement(ARElement, ABC):
     def __init__(self) -> None:
         """Initialize IdsCommonElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IdsCommonElement to XML element.
 

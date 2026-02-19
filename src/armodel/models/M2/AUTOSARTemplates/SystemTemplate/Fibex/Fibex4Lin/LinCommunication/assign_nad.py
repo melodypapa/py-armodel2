@@ -35,6 +35,7 @@ class AssignNad(LinConfigurationEntry):
         """Initialize AssignNad."""
         super().__init__()
         self.new_nad: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AssignNad to XML element.
 

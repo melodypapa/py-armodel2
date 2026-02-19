@@ -37,6 +37,7 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         super().__init__()
         self.com_control: Optional[DiagnosticComControl] = None
         self.custom_sub: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticComControl to XML element.
 

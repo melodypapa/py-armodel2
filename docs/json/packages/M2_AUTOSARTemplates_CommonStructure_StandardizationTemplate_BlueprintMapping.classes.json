@@ -42,7 +42,7 @@
         "blueprintMaps": {
           "type": "AtpBlueprintMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a particular blueprint map in the set."
         }

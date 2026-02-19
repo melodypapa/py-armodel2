@@ -40,6 +40,7 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
         super().__init__()
         self.error_mappings: list[ClientServerApplicationErrorMapping] = []
         self.operations: list[ClientServerOperation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerInterfaceMapping to XML element.
 

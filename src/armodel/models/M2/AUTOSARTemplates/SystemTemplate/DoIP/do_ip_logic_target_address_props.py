@@ -30,6 +30,7 @@ class DoIpLogicTargetAddressProps(AbstractDoIpLogicAddressProps):
     def __init__(self) -> None:
         """Initialize DoIpLogicTargetAddressProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpLogicTargetAddressProps to XML element.
 

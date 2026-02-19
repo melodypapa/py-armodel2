@@ -50,6 +50,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         self.data_element_ref: Optional[ARRef] = None
         self.limit_kind: Optional[DataLimitKindEnum] = None
         self.processing_kind_enum: Optional[ProcessingKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverAnnotation to XML element.
 

@@ -48,6 +48,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         self.annotations: list[Annotation] = []
         self.definition: Optional[EcucParameterDef] = None
         self.is_auto_value: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucParameterValue to XML element.
 

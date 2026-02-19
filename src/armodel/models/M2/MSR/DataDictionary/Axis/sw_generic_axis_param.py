@@ -29,6 +29,7 @@ class SwGenericAxisParam(ARObject):
         """Initialize SwGenericAxisParam."""
         super().__init__()
         self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwGenericAxisParam to XML element.
 

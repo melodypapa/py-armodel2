@@ -39,6 +39,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         self.assigned_traffic: PositiveInteger = None
         self.minimum_fifo: Optional[PositiveInteger] = None
         self.shaper: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortFifo to XML element.
 

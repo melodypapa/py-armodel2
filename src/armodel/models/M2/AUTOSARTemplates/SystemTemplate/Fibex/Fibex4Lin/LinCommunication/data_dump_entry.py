@@ -35,6 +35,7 @@ class DataDumpEntry(LinConfigurationEntry):
         """Initialize DataDumpEntry."""
         super().__init__()
         self.byte_values: list[Integer] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataDumpEntry to XML element.
 

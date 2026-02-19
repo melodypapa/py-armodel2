@@ -48,6 +48,7 @@ class TriggerInSystemInstanceRef(ARObject):
         self.context: Optional[RootSwCompositionPrototype] = None
         self.context_port_ref: ARRef = None
         self.target_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerInSystemInstanceRef to XML element.
 

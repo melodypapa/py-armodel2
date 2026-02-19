@@ -35,6 +35,7 @@ class TransformationPropsSet(ARElement):
         """Initialize TransformationPropsSet."""
         super().__init__()
         self.transformation_props_propses: list[TransformationProps] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationPropsSet to XML element.
 

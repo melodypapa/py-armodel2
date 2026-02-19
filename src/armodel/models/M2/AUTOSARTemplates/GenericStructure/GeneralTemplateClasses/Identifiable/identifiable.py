@@ -71,6 +71,7 @@ class Identifiable(MultilanguageReferrable, ABC):
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.uuid: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Identifiable to XML element.
 

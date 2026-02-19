@@ -42,6 +42,7 @@ class ClientComSpec(RPortComSpec):
         self.end_to_end_call: Optional[TimeValue] = None
         self.operation: Optional[ClientServerOperation] = None
         self.transformation_coms: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientComSpec to XML element.
 

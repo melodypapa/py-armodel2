@@ -38,6 +38,7 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         super().__init__()
         self.data: Optional[DataConsistencyPolicyEnum] = None
         self.send_indication_enum: Optional[SendIndicationEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataComProps to XML element.
 

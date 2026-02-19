@@ -36,6 +36,7 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()
         self.controlled_fid: Optional[FunctionInhibitionNeeds] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FunctionInhibitionAvailabilityNeeds to XML element.
 

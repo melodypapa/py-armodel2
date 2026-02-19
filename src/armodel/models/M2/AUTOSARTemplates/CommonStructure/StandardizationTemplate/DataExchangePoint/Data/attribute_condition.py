@@ -31,6 +31,7 @@ class AttributeCondition(AbstractMultiplicityRestriction, ABC):
     def __init__(self) -> None:
         """Initialize AttributeCondition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AttributeCondition to XML element.
 

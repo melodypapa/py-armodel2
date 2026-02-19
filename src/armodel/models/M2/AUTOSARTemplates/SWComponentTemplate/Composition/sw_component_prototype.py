@@ -43,6 +43,7 @@ class SwComponentPrototype(Identifiable):
         """Initialize SwComponentPrototype."""
         super().__init__()
         self.type: Optional[SwComponentType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwComponentPrototype to XML element.
 

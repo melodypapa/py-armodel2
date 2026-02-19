@@ -30,6 +30,7 @@ class FurtherActionByteNeeds(DoIpServiceNeeds):
     def __init__(self) -> None:
         """Initialize FurtherActionByteNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FurtherActionByteNeeds to XML element.
 

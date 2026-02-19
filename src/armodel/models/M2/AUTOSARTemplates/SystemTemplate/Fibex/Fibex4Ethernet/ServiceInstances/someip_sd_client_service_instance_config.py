@@ -42,6 +42,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         self.initial_find_behavior: Optional[InitialSdDelayConfig] = None
         self.priority: Optional[PositiveInteger] = None
         self.service_find: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdClientServiceInstanceConfig to XML element.
 

@@ -30,6 +30,7 @@ class DiagnosticRequestCurrentPowertrainDataClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainDataClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestCurrentPowertrainDataClass to XML element.
 

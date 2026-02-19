@@ -46,6 +46,7 @@ class DataPrototypeTransformationProps(ARObject):
         self.data_prototype_in_ref: Optional[ARRef] = None
         self.network: Optional[SwDataDefProps] = None
         self.transformation_props: Optional[TransformationProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeTransformationProps to XML element.
 
@@ -61,7 +62,7 @@ class DataPrototypeTransformationProps(ARObject):
             serialized = ARObject._serialize_item(self.data_prototype_in_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE-IN")
+                wrapped = ET.Element("DATA-PROTOTYPE-IN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,7 +116,7 @@ class DataPrototypeTransformationProps(ARObject):
         obj.__init__()
 
         # Parse data_prototype_in_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN")
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN-REF")
         if child is not None:
             data_prototype_in_ref_value = ARRef.deserialize(child)
             obj.data_prototype_in_ref = data_prototype_in_ref_value

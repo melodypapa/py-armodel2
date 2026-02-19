@@ -36,6 +36,7 @@ class TDEventSLLETPort(TDEventSLLET):
         """Initialize TDEventSLLETPort."""
         super().__init__()
         self.port_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventSLLETPort to XML element.
 

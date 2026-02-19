@@ -41,6 +41,7 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_data_element_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RVariableInAtomicSwcInstanceRef to XML element.
 

@@ -30,6 +30,7 @@ class ApplicationPartition(ARElement):
     def __init__(self) -> None:
         """Initialize ApplicationPartition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationPartition to XML element.
 

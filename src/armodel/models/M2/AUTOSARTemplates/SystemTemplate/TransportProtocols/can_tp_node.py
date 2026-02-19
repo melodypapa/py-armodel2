@@ -49,6 +49,7 @@ class CanTpNode(Identifiable):
         self.timeout_ar: Optional[TimeValue] = None
         self.timeout_as: Optional[TimeValue] = None
         self.tp_address: Optional[CanTpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpNode to XML element.
 

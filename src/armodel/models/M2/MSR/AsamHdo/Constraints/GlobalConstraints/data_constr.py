@@ -38,6 +38,7 @@ class DataConstr(ARElement):
         """Initialize DataConstr."""
         super().__init__()
         self.data_constr_rules: list[DataConstrRule] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataConstr to XML element.
 

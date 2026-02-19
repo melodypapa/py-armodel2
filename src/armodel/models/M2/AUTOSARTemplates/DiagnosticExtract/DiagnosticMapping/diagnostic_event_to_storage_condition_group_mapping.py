@@ -37,6 +37,7 @@ class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
         super().__init__()
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.storage: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToStorageConditionGroupMapping to XML element.
 

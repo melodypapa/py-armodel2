@@ -43,6 +43,7 @@ class OsTaskProxy(ARElement):
         self.period: Optional[TimeValue] = None
         self.preemptability: Optional[OsTaskPreemptabilityEnum] = None
         self.priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OsTaskProxy to XML element.
 

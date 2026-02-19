@@ -39,6 +39,7 @@ class SimulatedExecutionTime(ExecutionTime):
         self.maximum_execution_time: Optional[MultidimensionalTime] = None
         self.minimum_execution_time: Optional[MultidimensionalTime] = None
         self.nominal_execution_time: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SimulatedExecutionTime to XML element.
 

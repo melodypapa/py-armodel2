@@ -30,6 +30,7 @@ class FlexrayNmNode(NmNode):
     def __init__(self) -> None:
         """Initialize FlexrayNmNode."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayNmNode to XML element.
 

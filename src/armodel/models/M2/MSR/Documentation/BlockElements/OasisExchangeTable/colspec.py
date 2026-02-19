@@ -48,6 +48,7 @@ class Colspec(ARObject):
         self.colsep: Optional[TableSeparatorString] = None
         self.colwidth: Optional[String] = None
         self.rowsep: Optional[TableSeparatorString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Colspec to XML element.
 

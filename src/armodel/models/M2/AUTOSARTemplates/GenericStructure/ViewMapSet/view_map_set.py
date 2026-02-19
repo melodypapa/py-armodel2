@@ -36,6 +36,7 @@ class ViewMapSet(ARElement):
         """Initialize ViewMapSet."""
         super().__init__()
         self.view_maps: list[ViewMap] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ViewMapSet to XML element.
 

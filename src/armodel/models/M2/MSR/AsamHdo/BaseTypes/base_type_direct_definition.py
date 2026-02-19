@@ -53,6 +53,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         self.byte_order: Optional[ByteOrderEnum] = None
         self.mem_alignment: Optional[PositiveInteger] = None
         self.native: Optional[NativeDeclarationString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BaseTypeDirectDefinition to XML element.
 

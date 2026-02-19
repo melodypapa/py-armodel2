@@ -30,6 +30,7 @@ class DiagnosticStorageCondition(DiagnosticCondition):
     def __init__(self) -> None:
         """Initialize DiagnosticStorageCondition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStorageCondition to XML element.
 

@@ -41,6 +41,7 @@ class PredefinedVariant(ARElement):
         self.included_variants: list[PredefinedVariant] = []
         self.post_build_variants: list[Any] = []
         self.sws: list[SwSystemconstantValueSet] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PredefinedVariant to XML element.
 

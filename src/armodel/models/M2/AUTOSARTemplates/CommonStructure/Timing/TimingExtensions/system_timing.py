@@ -35,6 +35,7 @@ class SystemTiming(TimingExtension):
         """Initialize SystemTiming."""
         super().__init__()
         self.system: Optional[System] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemTiming to XML element.
 

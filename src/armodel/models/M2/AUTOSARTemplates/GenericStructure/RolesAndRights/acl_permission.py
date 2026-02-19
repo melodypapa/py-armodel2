@@ -57,6 +57,7 @@ class AclPermission(ARElement):
         self.acl_operations: list[AclOperation] = []
         self.acl_roles: list[AclRole] = []
         self.acl_scope: AclScopeEnum = None
+
     def serialize(self) -> ET.Element:
         """Serialize AclPermission to XML element.
 

@@ -32,6 +32,7 @@ class PduMappingDefaultValue(ARObject):
         """Initialize PduMappingDefaultValue."""
         super().__init__()
         self.default_values: list[DefaultValueElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PduMappingDefaultValue to XML element.
 

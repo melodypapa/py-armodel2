@@ -45,6 +45,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         self.audiences: list[DiagnosticAudienceEnum] = []
         self.diag: Optional[DiagRequirementIdString] = None
         self.security_access: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCapabilityElement to XML element.
 

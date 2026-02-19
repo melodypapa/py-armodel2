@@ -37,6 +37,7 @@ class PortInterfaceMappingSet(ARElement):
         """Initialize PortInterfaceMappingSet."""
         super().__init__()
         self.port_interface_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PortInterfaceMappingSet to XML element.
 

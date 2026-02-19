@@ -46,6 +46,7 @@ class SenderReceiverCompositeElementToSignalMapping(DataMapping):
         self.data_element_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
         self.type_mapping: Optional[SenderRecCompositeTypeMapping] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverCompositeElementToSignalMapping to XML element.
 
@@ -71,7 +72,7 @@ class SenderReceiverCompositeElementToSignalMapping(DataMapping):
             serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT")
+                wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,7 +125,7 @@ class SenderReceiverCompositeElementToSignalMapping(DataMapping):
         obj = super(SenderReceiverCompositeElementToSignalMapping, cls).deserialize(element)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value

@@ -32,6 +32,7 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         super().__init__()
         self.can_controller_fd: Optional[Any] = None
         self.can_controller_xl: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractCanCommunicationControllerAttributes to XML element.
 

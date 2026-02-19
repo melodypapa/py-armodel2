@@ -51,6 +51,7 @@ class GlobalTimeMaster(Identifiable, ABC):
         self.immediate: Optional[TimeValue] = None
         self.is_system_wide: Optional[Boolean] = None
         self.sync_period: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeMaster to XML element.
 

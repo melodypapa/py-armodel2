@@ -41,7 +41,7 @@
         "contextModeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },

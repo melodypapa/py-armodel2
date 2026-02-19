@@ -51,6 +51,7 @@ class CryptoServiceKey(ARElement):
         self.key_generation: Optional[CryptoServiceKey] = None
         self.key_storage_type: Optional[String] = None
         self.length: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceKey to XML element.
 

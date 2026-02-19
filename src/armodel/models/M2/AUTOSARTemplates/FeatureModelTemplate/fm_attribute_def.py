@@ -40,6 +40,7 @@ class FMAttributeDef(Identifiable):
         self.default_value: Optional[Numerical] = None
         self.max: Optional[Limit] = None
         self.min: Optional[Limit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMAttributeDef to XML element.
 

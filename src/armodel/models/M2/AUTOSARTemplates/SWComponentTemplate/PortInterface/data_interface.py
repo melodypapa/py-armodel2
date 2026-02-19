@@ -32,6 +32,7 @@ class DataInterface(PortInterface, ABC):
     def __init__(self) -> None:
         """Initialize DataInterface."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DataInterface to XML element.
 

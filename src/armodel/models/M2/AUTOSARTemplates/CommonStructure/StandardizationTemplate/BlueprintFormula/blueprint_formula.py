@@ -37,6 +37,7 @@ class BlueprintFormula(ARObject):
         super().__init__()
         self.ecuc: EcucDefinitionElement = None
         self.verbatim: MultiLanguageVerbatim = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintFormula to XML element.
 

@@ -31,7 +31,7 @@
         "responseError": {
           "type": "ISignalTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This ISignal shall be taken to transport the responseError"
         }
@@ -392,7 +392,7 @@
         "frameTriggering": {
           "type": "LinFrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the LinFrame that will be transmitted in this"
         }
@@ -520,7 +520,7 @@
         "assignedFrame": {
           "type": "LinFrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The frame whose identifier is set by this assignment."
         }
@@ -557,7 +557,7 @@
         "unassigned": {
           "type": "LinFrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The frame whose identifier is reset by this assignment."
         }

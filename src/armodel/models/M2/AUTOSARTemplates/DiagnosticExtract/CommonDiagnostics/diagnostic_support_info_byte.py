@@ -34,6 +34,7 @@ class DiagnosticSupportInfoByte(ARObject):
         super().__init__()
         self.position: Optional[PositiveInteger] = None
         self.size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSupportInfoByte to XML element.
 

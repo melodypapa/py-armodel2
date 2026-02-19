@@ -34,6 +34,7 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
         """Initialize ApplicationRecordDataType."""
         super().__init__()
         self.elements: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationRecordDataType to XML element.
 

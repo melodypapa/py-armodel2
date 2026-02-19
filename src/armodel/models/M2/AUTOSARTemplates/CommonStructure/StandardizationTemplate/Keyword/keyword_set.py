@@ -35,6 +35,7 @@ class KeywordSet(ARElement):
         """Initialize KeywordSet."""
         super().__init__()
         self.keywords: list[Keyword] = []
+
     def serialize(self) -> ET.Element:
         """Serialize KeywordSet to XML element.
 

@@ -31,6 +31,7 @@ class ExclusiveArea(Identifiable):
     def __init__(self) -> None:
         """Initialize ExclusiveArea."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ExclusiveArea to XML element.
 

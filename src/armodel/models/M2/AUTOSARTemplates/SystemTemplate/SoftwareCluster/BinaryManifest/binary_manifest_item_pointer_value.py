@@ -38,6 +38,7 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
         super().__init__()
         self.address: Optional[Address] = None
         self.symbol: Optional[SymbolString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItemPointerValue to XML element.
 

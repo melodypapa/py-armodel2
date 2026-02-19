@@ -36,6 +36,7 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         """Initialize AbstractProvidedPortPrototype."""
         super().__init__()
         self.provided_coms: list[PPortComSpec] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractProvidedPortPrototype to XML element.
 

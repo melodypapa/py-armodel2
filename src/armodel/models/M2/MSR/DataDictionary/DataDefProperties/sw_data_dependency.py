@@ -32,6 +32,7 @@ class SwDataDependency(ARObject):
         """Initialize SwDataDependency."""
         super().__init__()
         self.sw_data: Optional[CompuGenericMath] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwDataDependency to XML element.
 

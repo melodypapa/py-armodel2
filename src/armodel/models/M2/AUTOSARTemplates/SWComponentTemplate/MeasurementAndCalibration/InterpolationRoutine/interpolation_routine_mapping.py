@@ -38,6 +38,7 @@ class InterpolationRoutineMapping(ARObject):
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
         self.sw_record: Optional[SwRecordLayout] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InterpolationRoutineMapping to XML element.
 

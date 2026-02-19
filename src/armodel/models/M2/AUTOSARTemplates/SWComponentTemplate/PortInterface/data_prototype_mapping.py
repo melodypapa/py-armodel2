@@ -53,6 +53,7 @@ class DataPrototypeMapping(ARObject):
         self.second_to_first: Optional[DataTransformation] = None
         self.sub_element_refs: list[ARRef] = []
         self.text_table_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeMapping to XML element.
 
@@ -134,7 +135,7 @@ class DataPrototypeMapping(ARObject):
             serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TEXT-TABLE")
+                wrapped = ET.Element("TEXT-TABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -194,7 +195,7 @@ class DataPrototypeMapping(ARObject):
                     obj.sub_element_refs.append(child_value)
 
         # Parse text_table_ref
-        child = ARObject._find_child_element(element, "TEXT-TABLE")
+        child = ARObject._find_child_element(element, "TEXT-TABLE-REF")
         if child is not None:
             text_table_ref_value = ARRef.deserialize(child)
             obj.text_table_ref = text_table_ref_value

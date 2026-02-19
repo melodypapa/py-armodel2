@@ -40,6 +40,7 @@ class DiagnosticInfoType(DiagnosticCommonElement):
         super().__init__()
         self.data_elements: list[DiagnosticParameter] = []
         self.id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticInfoType to XML element.
 

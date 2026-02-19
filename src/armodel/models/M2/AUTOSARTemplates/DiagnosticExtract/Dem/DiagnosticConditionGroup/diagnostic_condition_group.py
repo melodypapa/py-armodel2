@@ -31,6 +31,7 @@ class DiagnosticConditionGroup(DiagnosticCommonElement, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticConditionGroup."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticConditionGroup to XML element.
 

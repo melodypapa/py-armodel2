@@ -35,6 +35,7 @@ class SwBaseType(BaseType):
     def __init__(self) -> None:
         """Initialize SwBaseType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SwBaseType to XML element.
 

@@ -67,6 +67,7 @@ class J1939TpConnection(TpConnection):
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
         self.transmitter: Optional[J1939TpNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpConnection to XML element.
 

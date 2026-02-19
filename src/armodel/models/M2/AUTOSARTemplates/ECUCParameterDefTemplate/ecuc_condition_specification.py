@@ -42,6 +42,7 @@ class EcucConditionSpecification(ARObject):
         self.condition: Optional[EcucConditionFormula] = None
         self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucConditionSpecification to XML element.
 

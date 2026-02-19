@@ -30,6 +30,7 @@ class SdgForeignReferenceWithVariation(SdgAbstractForeignReference):
     def __init__(self) -> None:
         """Initialize SdgForeignReferenceWithVariation."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SdgForeignReferenceWithVariation to XML element.
 

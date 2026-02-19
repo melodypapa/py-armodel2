@@ -50,6 +50,7 @@ class VariableInAtomicSWCTypeInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_variable_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariableInAtomicSWCTypeInstanceRef to XML element.
 

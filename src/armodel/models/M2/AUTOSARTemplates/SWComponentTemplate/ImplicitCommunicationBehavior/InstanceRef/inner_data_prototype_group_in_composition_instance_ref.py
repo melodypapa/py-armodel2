@@ -40,6 +40,7 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InnerDataPrototypeGroupInCompositionInstanceRef to XML element.
 

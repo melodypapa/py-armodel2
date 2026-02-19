@@ -40,6 +40,7 @@ class BswTriggerDirectImplementation(ARObject):
         self.cat2_isr: Optional[Identifier] = None
         self.mastered_trigger_ref: Optional[ARRef] = None
         self.task: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswTriggerDirectImplementation to XML element.
 

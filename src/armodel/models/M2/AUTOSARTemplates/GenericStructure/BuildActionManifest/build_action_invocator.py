@@ -32,6 +32,7 @@ class BuildActionInvocator(ARObject):
         """Initialize BuildActionInvocator."""
         super().__init__()
         self.command: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BuildActionInvocator to XML element.
 

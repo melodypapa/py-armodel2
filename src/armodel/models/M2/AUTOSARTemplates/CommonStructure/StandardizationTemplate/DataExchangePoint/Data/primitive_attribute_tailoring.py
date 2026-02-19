@@ -42,6 +42,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         self.default_value: Optional[DefaultValueApplicationStrategyEnum] = None
         self.sub_attributes: list[Any] = []
         self.value_restriction_with_severity: Optional[ValueRestrictionWithSeverity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PrimitiveAttributeTailoring to XML element.
 

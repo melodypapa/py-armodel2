@@ -40,6 +40,7 @@ class SomeipTpChannel(Identifiable):
         self.burst_size: Optional[PositiveInteger] = None
         self.rx_timeout_time: Optional[TimeValue] = None
         self.separation_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipTpChannel to XML element.
 

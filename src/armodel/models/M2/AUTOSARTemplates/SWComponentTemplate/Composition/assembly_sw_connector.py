@@ -43,6 +43,7 @@ class AssemblySwConnector(SwConnector):
         super().__init__()
         self.provider_instance_ref: Optional[AbstractProvidedPortPrototype] = None
         self.requester_instance_ref: Optional[AbstractRequiredPortPrototype] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AssemblySwConnector to XML element.
 

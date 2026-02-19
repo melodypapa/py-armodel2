@@ -141,7 +141,7 @@
         "dataElement": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Data element these attributes belong to."
         },
@@ -270,7 +270,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver’s value will be used."
+          "note": "Initial value to be used in case the sending component is initialized. If the sender also specifies an initial the receiver\u2019s value will be used."
         },
         "timeout": {
           "type": "ValueSpecification",
@@ -411,7 +411,7 @@
         "dataElement": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Data element these quality of service attributes apply to."
         },
@@ -699,7 +699,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute defines the maximum time interval in which application shall expect the servers’s response (time the sending of the call invocation until the arrival server’s response)."
+          "note": "This attribute defines the maximum time interval in which application shall expect the servers\u2019s response (time the sending of the call invocation until the arrival server\u2019s response)."
         },
         "operation": {
           "type": "ClientServerOperation",
@@ -806,7 +806,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "ModeDeclarationGroupPrototype (of the same Port to which these communication attributes apply."
         },
@@ -899,7 +899,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "ModeDeclarationGroupPrototype (of the same Port to which these communication attributes apply."
         },
@@ -950,7 +950,7 @@
         "parameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ParameterDataPrototype to which the Parameter"
         }
@@ -994,7 +994,7 @@
         "parameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ParameterDataPrototype to which the Parameter"
         }
@@ -1038,7 +1038,7 @@
         "variable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The VariableDataPrototype the ComSpec applies for."
         }
@@ -1089,7 +1089,7 @@
         "variable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the variable for which the ComSpec is"
         }

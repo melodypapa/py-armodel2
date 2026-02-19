@@ -32,6 +32,7 @@ class StreamFilterIEEE1722Tp(ARObject):
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
         self.stream_id: Optional[PositiveUnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterIEEE1722Tp to XML element.
 

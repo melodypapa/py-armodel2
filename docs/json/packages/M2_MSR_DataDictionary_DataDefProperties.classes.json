@@ -104,7 +104,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that not all of the attributes or associated elements are useful all of the time. Hence, the process definition (e.g. expressed with an OCL or a Document Control Instance MSR-DCI) has the task of implementing limitations. SwDataDefProps covers various aspects: • Structure of the data element for calibration use cases: is it a single value, a curve, or a map, but also the recordLayouts which specify how such elements are mapped/converted to the DataTypes in the programming language (or in AUTOSAR). This is mainly expressed by properties like swRecordLayout and swCalprmAxisSet • Implementation aspects, mainly expressed by swImplPolicy, swVariableAccessImplPolicy, swAddr Method, swPointerTagetProps, baseType, implementationDataType and additionalNativeTypeQualifier • Access policy for the MCD system, mainly expressed by swCalibrationAccess • Semantics of the data element, mainly expressed by compuMethod and/or unit, dataConstr, invalid Value • Code generation policy provided by swRecordLayout Tags: vh.latestBindingTime=codeGenerationTime",
+      "note": "that not all of the attributes or associated elements are useful all of the time. Hence, the process definition (e.g. expressed with an OCL or a Document Control Instance MSR-DCI) has the task of implementing limitations. SwDataDefProps covers various aspects: \u2022 Structure of the data element for calibration use cases: is it a single value, a curve, or a map, but also the recordLayouts which specify how such elements are mapped/converted to the DataTypes in the programming language (or in AUTOSAR). This is mainly expressed by properties like swRecordLayout and swCalprmAxisSet \u2022 Implementation aspects, mainly expressed by swImplPolicy, swVariableAccessImplPolicy, swAddr Method, swPointerTagetProps, baseType, implementationDataType and additionalNativeTypeQualifier \u2022 Access policy for the MCD system, mainly expressed by swCalibrationAccess \u2022 Semantics of the data element, mainly expressed by compuMethod and/or unit, dataConstr, invalid Value \u2022 Code generation policy provided by swRecordLayout Tags: vh.latestBindingTime=codeGenerationTime",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -263,28 +263,28 @@
         "swCalprmAxisSet": {
           "type": "SwCalprmAxisSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This specifies the properties of the axes in case of a or map etc. This is mainly applicable to calibration"
         },
         "swComparisonVariables": {
           "type": "SwVariableRefProxy",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Variables used for comparison in an MCD process. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "swDataDependency": {
           "type": "SwDataDependency",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Describes how the value of the data object has to be from the value of another data object (by the"
         },
         "swHostVariable": {
           "type": "SwVariableRefProxy",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Contains a reference to a variable which serves as a a bit variable. Only applicable to bit"
         },
@@ -563,7 +563,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This element describes the interdependencies of data objects, e.g. variables and parameters. Use cases: • Calculate the value of a calibration parameter (by the MCD system) from the value(s) of other calibration parameters. • Virtual data - that means the data object is not directly in the ecu and this property describes how the \"virtual variable\" can be computed from the real ones (by the MCD system).",
+      "note": "This element describes the interdependencies of data objects, e.g. variables and parameters. Use cases: \u2022 Calculate the value of a calibration parameter (by the MCD system) from the value(s) of other calibration parameters. \u2022 Virtual data - that means the data object is not directly in the ecu and this property describes how the \"virtual variable\" can be computed from the real ones (by the MCD system).",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -611,14 +611,14 @@
         "swCalprmRefProxy": {
           "type": "SwCalprmRefProxy",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies a calibration parameter as an input argument to"
         },
         "swVariableRefProxy": {
           "type": "SwVariableRefProxy",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies a variable as an input argument to the"
         }

@@ -49,6 +49,7 @@ class InternalConstrs(ARObject):
         self.monotony: Optional[MonotonyEnum] = None
         self.scale_constrs: list[ScaleConstr] = []
         self.upper_limit: Optional[Limit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InternalConstrs to XML element.
 

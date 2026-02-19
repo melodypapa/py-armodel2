@@ -29,6 +29,7 @@ class ISignalProps(ARObject):
         """Initialize ISignalProps."""
         super().__init__()
         self.handle_out_of_range: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalProps to XML element.
 

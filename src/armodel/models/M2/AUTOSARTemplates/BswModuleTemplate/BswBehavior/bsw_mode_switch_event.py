@@ -35,6 +35,7 @@ class BswModeSwitchEvent(BswScheduleEvent):
         """Initialize BswModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModeSwitchEvent to XML element.
 

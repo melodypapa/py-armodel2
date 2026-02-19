@@ -32,6 +32,7 @@ class DiagnosticIumprGroupIdentifier(ARObject):
         """Initialize DiagnosticIumprGroupIdentifier."""
         super().__init__()
         self.group_id: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprGroupIdentifier to XML element.
 

@@ -42,6 +42,7 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
         self.context_datas: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target_data: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationCompositeElementInPortInterfaceInstanceRef to XML element.
 

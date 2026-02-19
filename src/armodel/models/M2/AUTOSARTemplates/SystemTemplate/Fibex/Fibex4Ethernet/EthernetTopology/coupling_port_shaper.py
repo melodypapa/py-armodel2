@@ -40,6 +40,7 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         super().__init__()
         self.idle_slope: Optional[PositiveInteger] = None
         self.predecessor_fifo: CouplingPortFifo = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortShaper to XML element.
 

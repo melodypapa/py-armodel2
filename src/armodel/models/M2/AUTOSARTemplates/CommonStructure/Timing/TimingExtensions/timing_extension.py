@@ -53,6 +53,7 @@ class TimingExtension(ARElement, ABC):
         self.timing_conditions: list[TimingCondition] = []
         self.timings: list[TimingConstraint] = []
         self.timing_resource: Optional[TimingExtension] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingExtension to XML element.
 

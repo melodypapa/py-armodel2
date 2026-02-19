@@ -31,6 +31,7 @@ class EcucAbstractExternalReferenceDef(EcucAbstractReferenceDef, ABC):
     def __init__(self) -> None:
         """Initialize EcucAbstractExternalReferenceDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractExternalReferenceDef to XML element.
 

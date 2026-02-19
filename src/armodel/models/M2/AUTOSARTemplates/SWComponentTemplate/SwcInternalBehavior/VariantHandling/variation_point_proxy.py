@@ -46,6 +46,7 @@ class VariationPointProxy(Identifiable):
         self.condition_access: Optional[ConditionByFormula] = None
         self.implementation: Optional[AbstractImplementationDataType] = None
         self.post_build_value: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariationPointProxy to XML element.
 

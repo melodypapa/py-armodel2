@@ -31,6 +31,7 @@ class SdgAttribute(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize SdgAttribute."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SdgAttribute to XML element.
 

@@ -35,6 +35,7 @@ class PhysicalDimensionMappingSet(ARElement):
         """Initialize PhysicalDimensionMappingSet."""
         super().__init__()
         self.physicals: list[PhysicalDimension] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PhysicalDimensionMappingSet to XML element.
 

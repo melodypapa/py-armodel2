@@ -56,6 +56,7 @@ class BswImplementation(Implementation):
         self.recommendeds: list[Any] = []
         self.vendor_api_infix: Optional[Identifier] = None
         self.vendor_specifics: list[EcucModuleDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswImplementation to XML element.
 

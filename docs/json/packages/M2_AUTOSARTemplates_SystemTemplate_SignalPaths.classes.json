@@ -76,7 +76,7 @@
         "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "same data element on the RPortPrototype. by: VariableDataPrototypeIn"
         }
@@ -100,7 +100,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "The SwcToSwcOperationArguments describes the information (client server operation arguments, plus the operation identification, if required) that are exchanged between two SW Components from exactly one client to one server, or from one server back to one client. The direction attribute defines which direction is described. If direction == IN, all arguments sent from the client to the server are described by the SwcToSwcOperationArguments, in direction == OUT, it’s the arguments sent back from server to client.",
+      "note": "The SwcToSwcOperationArguments describes the information (client server operation arguments, plus the operation identification, if required) that are exchanged between two SW Components from exactly one client to one server, or from one server back to one client. The direction attribute defines which direction is described. If direction == IN, all arguments sent from the client to the server are described by the SwcToSwcOperationArguments, in direction == OUT, it\u2019s the arguments sent back from server to client.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",

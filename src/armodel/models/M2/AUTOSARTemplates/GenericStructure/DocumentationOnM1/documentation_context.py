@@ -40,6 +40,7 @@ class DocumentationContext(MultilanguageReferrable):
         super().__init__()
         self.feature: Optional[AtpFeature] = None
         self.identifiable: Optional[Identifiable] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DocumentationContext to XML element.
 

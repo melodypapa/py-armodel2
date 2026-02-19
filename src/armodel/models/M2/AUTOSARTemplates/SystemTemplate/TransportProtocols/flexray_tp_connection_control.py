@@ -61,6 +61,7 @@ class FlexrayTpConnectionControl(Identifiable):
         self.timeout_as: Optional[TimeValue] = None
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpConnectionControl to XML element.
 

@@ -34,6 +34,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         super().__init__()
         self.formula: Optional[Any] = None
         self.mode_elements: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvironmentalCondition to XML element.
 

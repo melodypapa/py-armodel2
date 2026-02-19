@@ -75,6 +75,7 @@ class TlsCryptoCipherSuite(Identifiable):
         self.remote: Optional[Any] = None
         self.signatures: list[CryptoSignatureScheme] = []
         self.version: Optional[TlsVersionEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlsCryptoCipherSuite to XML element.
 

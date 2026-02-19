@@ -37,6 +37,7 @@ class TracedFailure(Identifiable, ABC):
         """Initialize TracedFailure."""
         super().__init__()
         self.id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TracedFailure to XML element.
 

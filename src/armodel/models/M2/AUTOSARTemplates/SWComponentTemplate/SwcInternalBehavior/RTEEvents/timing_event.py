@@ -38,6 +38,7 @@ class TimingEvent(RTEEvent):
         super().__init__()
         self.offset: Optional[TimeValue] = None
         self.period: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingEvent to XML element.
 

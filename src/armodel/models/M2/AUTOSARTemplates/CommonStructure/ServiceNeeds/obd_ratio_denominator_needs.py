@@ -35,6 +35,7 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
         """Initialize ObdRatioDenominatorNeeds."""
         super().__init__()
         self.denominator: Optional[DiagnosticDenominatorConditionEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ObdRatioDenominatorNeeds to XML element.
 

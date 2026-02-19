@@ -38,6 +38,7 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         """Initialize ComplexDeviceDriverSwComponentType."""
         super().__init__()
         self.hardwares: list[HwDescriptionEntity] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ComplexDeviceDriverSwComponentType to XML element.
 

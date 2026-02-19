@@ -30,6 +30,7 @@ class LinSlaveConfigIdent(Referrable):
     def __init__(self) -> None:
         """Initialize LinSlaveConfigIdent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize LinSlaveConfigIdent to XML element.
 

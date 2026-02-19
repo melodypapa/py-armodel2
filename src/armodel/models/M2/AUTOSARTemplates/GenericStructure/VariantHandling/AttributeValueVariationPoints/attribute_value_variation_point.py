@@ -45,6 +45,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
         self.blueprint_value: Optional[String] = None
         self.sd: Optional[String] = None
         self.short_label: Optional[PrimitiveIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AttributeValueVariationPoint to XML element.
 

@@ -43,6 +43,7 @@ class CryptoServiceNeeds(ServiceNeeds):
         self.algorithm_mode: Optional[String] = None
         self.crypto_key: Optional[String] = None
         self.maximum_key: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceNeeds to XML element.
 

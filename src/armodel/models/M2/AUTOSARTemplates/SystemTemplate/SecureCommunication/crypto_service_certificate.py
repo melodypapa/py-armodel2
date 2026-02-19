@@ -48,6 +48,7 @@ class CryptoServiceCertificate(ARElement):
         self.maximum: Optional[PositiveInteger] = None
         self.next_higher: Optional[Any] = None
         self.server_name: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceCertificate to XML element.
 

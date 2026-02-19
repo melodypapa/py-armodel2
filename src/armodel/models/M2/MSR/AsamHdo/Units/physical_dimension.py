@@ -47,6 +47,7 @@ class PhysicalDimension(ARElement):
         self.molar_amount: Optional[Numerical] = None
         self.temperature_exp: Optional[Numerical] = None
         self.time_exp: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PhysicalDimension to XML element.
 

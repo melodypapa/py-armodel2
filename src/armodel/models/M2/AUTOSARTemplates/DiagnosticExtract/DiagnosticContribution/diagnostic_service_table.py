@@ -47,6 +47,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         self.ecu_instance: Optional[EcuInstance] = None
         self.protocol_kind: Optional[NameToken] = None
         self.service_instances: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticServiceTable to XML element.
 

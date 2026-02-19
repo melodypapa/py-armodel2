@@ -42,6 +42,7 @@ class FMFeatureDecomposition(ARObject):
         self.features: list[FMFeature] = []
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureDecomposition to XML element.
 

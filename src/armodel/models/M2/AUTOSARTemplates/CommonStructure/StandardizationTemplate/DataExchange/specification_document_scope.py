@@ -40,6 +40,7 @@ class SpecificationDocumentScope(SpecElementReference):
         super().__init__()
         self.custom_documentation: Optional[Documentation] = None
         self.documents: list[DocumentElementScope] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SpecificationDocumentScope to XML element.
 

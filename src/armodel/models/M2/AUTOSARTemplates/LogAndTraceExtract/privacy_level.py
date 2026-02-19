@@ -37,6 +37,7 @@ class PrivacyLevel(ARObject):
         super().__init__()
         self.compu_method: Optional[CompuMethod] = None
         self.privacy_level: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PrivacyLevel to XML element.
 

@@ -48,6 +48,7 @@ class SwComponentDocumentation(ARObject):
         self.sw_feature_desc: Optional[Chapter] = None
         self.sw_maintenance: Optional[Chapter] = None
         self.sw_test_desc: Optional[Chapter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwComponentDocumentation to XML element.
 

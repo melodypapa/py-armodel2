@@ -38,6 +38,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
         super().__init__()
         self.mode_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IncludedModeDeclarationGroupSet to XML element.
 

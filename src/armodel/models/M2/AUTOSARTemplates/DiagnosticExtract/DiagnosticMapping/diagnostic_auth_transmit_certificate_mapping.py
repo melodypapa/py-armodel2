@@ -34,6 +34,7 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         super().__init__()
         self.crypto_services: list[Any] = []
         self.service_instance: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthTransmitCertificateMapping to XML element.
 

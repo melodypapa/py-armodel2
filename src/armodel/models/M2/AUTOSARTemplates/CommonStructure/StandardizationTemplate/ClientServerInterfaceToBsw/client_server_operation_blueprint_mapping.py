@@ -42,6 +42,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
         self.blueprint: Optional[DocumentationBlock] = None
         self.bsw_module_entry: BswModuleEntry = None
         self.client_server: ClientServerOperation = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationBlueprintMapping to XML element.
 

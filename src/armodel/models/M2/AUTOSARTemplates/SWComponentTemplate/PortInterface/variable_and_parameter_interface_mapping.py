@@ -37,6 +37,7 @@ class VariableAndParameterInterfaceMapping(PortInterfaceMapping):
         """Initialize VariableAndParameterInterfaceMapping."""
         super().__init__()
         self.data_mapping_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize VariableAndParameterInterfaceMapping to XML element.
 

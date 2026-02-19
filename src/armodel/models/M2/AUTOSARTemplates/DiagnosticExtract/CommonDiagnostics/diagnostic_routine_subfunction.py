@@ -36,6 +36,7 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
         """Initialize DiagnosticRoutineSubfunction."""
         super().__init__()
         self.access: Optional[DiagnosticAccessPermission] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineSubfunction to XML element.
 

@@ -62,6 +62,7 @@ class IPSecConfigProps(ARElement):
         self.sa_over_time: Optional[PositiveInteger] = None
         self.sa_rand_time: Optional[TimeValue] = None
         self.sa_rekey_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPSecConfigProps to XML element.
 

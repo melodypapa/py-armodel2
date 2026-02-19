@@ -38,6 +38,7 @@ class Item(Paginateable):
         """Initialize Item."""
         super().__init__()
         self.item_contents: DocumentationBlock = None
+
     def serialize(self) -> ET.Element:
         """Serialize Item to XML element.
 

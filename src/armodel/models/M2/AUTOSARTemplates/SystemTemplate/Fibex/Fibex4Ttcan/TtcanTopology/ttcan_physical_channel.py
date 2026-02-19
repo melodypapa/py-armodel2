@@ -30,6 +30,7 @@ class TtcanPhysicalChannel(AbstractCanPhysicalChannel):
     def __init__(self) -> None:
         """Initialize TtcanPhysicalChannel."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TtcanPhysicalChannel to XML element.
 

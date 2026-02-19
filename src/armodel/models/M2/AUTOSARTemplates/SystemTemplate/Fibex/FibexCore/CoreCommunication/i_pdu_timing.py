@@ -37,6 +37,7 @@ class IPduTiming(Describable):
         super().__init__()
         self.minimum_delay: Optional[TimeValue] = None
         self.transmission: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPduTiming to XML element.
 

@@ -42,6 +42,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         self.stream_identifier: Optional[PositiveInteger] = None
         self.sub_type: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ieee1722Tp to XML element.
 

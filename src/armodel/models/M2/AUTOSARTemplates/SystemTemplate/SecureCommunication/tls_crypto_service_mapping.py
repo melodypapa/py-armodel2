@@ -47,6 +47,7 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         self.tls_cipher_suites: list[TlsCryptoCipherSuite] = []
         self.use_client: Optional[Boolean] = None
         self.use_security: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlsCryptoServiceMapping to XML element.
 

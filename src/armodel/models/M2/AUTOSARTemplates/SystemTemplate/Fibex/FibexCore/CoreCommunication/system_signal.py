@@ -45,6 +45,7 @@ class SystemSignal(ARElement):
         super().__init__()
         self.dynamic_length: Optional[Boolean] = None
         self.physical_props: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignal to XML element.
 

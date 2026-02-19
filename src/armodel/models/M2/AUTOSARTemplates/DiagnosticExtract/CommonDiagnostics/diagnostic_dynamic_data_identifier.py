@@ -30,6 +30,7 @@ class DiagnosticDynamicDataIdentifier(DiagnosticAbstractDataIdentifier):
     def __init__(self) -> None:
         """Initialize DiagnosticDynamicDataIdentifier."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDynamicDataIdentifier to XML element.
 

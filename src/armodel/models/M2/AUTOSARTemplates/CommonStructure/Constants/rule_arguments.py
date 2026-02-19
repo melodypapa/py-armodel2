@@ -43,6 +43,7 @@ class RuleArguments(ARObject):
         self.vf: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleArguments to XML element.
 

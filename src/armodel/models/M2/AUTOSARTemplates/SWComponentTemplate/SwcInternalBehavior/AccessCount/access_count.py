@@ -37,6 +37,7 @@ class AccessCount(ARObject):
         super().__init__()
         self.access_point: Optional[AbstractAccessPoint] = None
         self.value: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AccessCount to XML element.
 

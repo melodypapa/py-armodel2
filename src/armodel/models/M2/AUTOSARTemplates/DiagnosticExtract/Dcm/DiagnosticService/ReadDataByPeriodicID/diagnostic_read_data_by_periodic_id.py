@@ -32,6 +32,7 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         """Initialize DiagnosticReadDataByPeriodicID."""
         super().__init__()
         self.read_data_class: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDataByPeriodicID to XML element.
 

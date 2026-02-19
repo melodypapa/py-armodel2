@@ -37,6 +37,7 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         super().__init__()
         self.request_control: Optional[Any] = None
         self.test_id_identifier: Optional[DiagnosticTestRoutineIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestControlOfOnBoardDevice to XML element.
 

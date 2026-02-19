@@ -37,6 +37,7 @@ class J1939TpNode(Identifiable):
         super().__init__()
         self.connector: Optional[Any] = None
         self.tp_address: Optional[TpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpNode to XML element.
 

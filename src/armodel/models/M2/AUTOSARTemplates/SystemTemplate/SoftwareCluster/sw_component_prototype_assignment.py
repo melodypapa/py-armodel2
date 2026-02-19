@@ -29,6 +29,7 @@ class SwComponentPrototypeAssignment(ARObject):
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
         self.sw_component: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwComponentPrototypeAssignment to XML element.
 

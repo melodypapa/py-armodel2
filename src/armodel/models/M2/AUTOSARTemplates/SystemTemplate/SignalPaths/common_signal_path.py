@@ -37,6 +37,7 @@ class CommonSignalPath(SignalPathConstraint):
         super().__init__()
         self.operations: list[Any] = []
         self.signals: list[SwcToSwcSignal] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CommonSignalPath to XML element.
 

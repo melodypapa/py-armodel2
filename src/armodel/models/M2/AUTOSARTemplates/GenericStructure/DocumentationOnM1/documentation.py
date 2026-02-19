@@ -42,6 +42,7 @@ class Documentation(ARElement):
         super().__init__()
         self.contexts: list[DocumentationContext] = []
         self.documentation: Optional[PredefinedChapter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Documentation to XML element.
 

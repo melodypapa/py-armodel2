@@ -45,6 +45,7 @@ class MacSecCryptoAlgoConfig(ARObject):
         self.cipher_suite: MacSecCipherSuiteConfig = None
         self.confidentiality: Optional[MacSecConfidentialityOffsetEnum] = None
         self.replay_protection: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecCryptoAlgoConfig to XML element.
 

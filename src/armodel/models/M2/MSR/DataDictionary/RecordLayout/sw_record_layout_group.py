@@ -51,6 +51,7 @@ class SwRecordLayoutGroup(ARObject):
         self.short_label: Optional[Identifier] = None
         self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
         self.sw_record: Optional[RecordLayoutIteratorPoint] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayoutGroup to XML element.
 

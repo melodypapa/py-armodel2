@@ -51,6 +51,7 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         self.protocol_kind: Optional[NameToken] = None
         self.send_resp_pend: Optional[Boolean] = None
         self.service_table: Optional[DiagnosticServiceTable] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticProtocol to XML element.
 

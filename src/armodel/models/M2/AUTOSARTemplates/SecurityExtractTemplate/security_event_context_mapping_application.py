@@ -35,6 +35,7 @@ class SecurityEventContextMappingApplication(SecurityEventContextMapping):
         """Initialize SecurityEventContextMappingApplication."""
         super().__init__()
         self.affected: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMappingApplication to XML element.
 

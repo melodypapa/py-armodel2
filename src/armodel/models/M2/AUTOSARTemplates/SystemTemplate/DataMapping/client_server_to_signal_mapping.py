@@ -42,6 +42,7 @@ class ClientServerToSignalMapping(DataMapping):
         self.call_signal: Optional[SystemSignal] = None
         self.client_server: Optional[ClientServerOperation] = None
         self.return_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerToSignalMapping to XML element.
 

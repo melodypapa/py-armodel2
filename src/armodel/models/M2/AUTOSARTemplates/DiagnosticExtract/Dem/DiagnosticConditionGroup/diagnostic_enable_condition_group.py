@@ -32,6 +32,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         """Initialize DiagnosticEnableConditionGroup."""
         super().__init__()
         self.enable_conditions: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnableConditionGroup to XML element.
 

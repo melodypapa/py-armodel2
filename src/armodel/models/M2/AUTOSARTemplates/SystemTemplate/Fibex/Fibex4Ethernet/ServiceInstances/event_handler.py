@@ -65,6 +65,7 @@ class EventHandler(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
         self.sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventHandler to XML element.
 

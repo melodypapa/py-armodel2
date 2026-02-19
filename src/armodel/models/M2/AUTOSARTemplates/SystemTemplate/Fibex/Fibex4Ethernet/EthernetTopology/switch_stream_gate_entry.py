@@ -35,6 +35,7 @@ class SwitchStreamGateEntry(Identifiable):
         """Initialize SwitchStreamGateEntry."""
         super().__init__()
         self.internal_priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamGateEntry to XML element.
 

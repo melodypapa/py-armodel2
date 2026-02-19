@@ -40,6 +40,7 @@ class ISignalMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_signal_ref: Optional[ARRef] = None
         self.target_signal_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalMapping to XML element.
 

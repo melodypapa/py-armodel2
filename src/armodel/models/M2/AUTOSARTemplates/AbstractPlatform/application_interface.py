@@ -46,6 +46,7 @@ class ApplicationInterface(PortInterface):
         self.attributes: list[Field] = []
         self.commands: list[ClientServerOperation] = []
         self.indication_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationInterface to XML element.
 

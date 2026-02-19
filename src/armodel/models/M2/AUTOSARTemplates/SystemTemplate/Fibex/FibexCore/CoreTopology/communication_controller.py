@@ -33,6 +33,7 @@ class CommunicationController(ARObject, ABC):
         """Initialize CommunicationController."""
         super().__init__()
         self.wake_up_by: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationController to XML element.
 

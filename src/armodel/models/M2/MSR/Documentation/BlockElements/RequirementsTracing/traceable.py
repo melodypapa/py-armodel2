@@ -34,6 +34,7 @@ class Traceable(MultilanguageReferrable, ABC):
         """Initialize Traceable."""
         super().__init__()
         self.traces: list[Traceable] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Traceable to XML element.
 

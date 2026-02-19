@@ -48,6 +48,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         self.io_control_class: Optional[DiagnosticIOControl] = None
         self.reset_to_default: Optional[Boolean] = None
         self.short_term: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIOControl to XML element.
 

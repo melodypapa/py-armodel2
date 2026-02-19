@@ -30,6 +30,7 @@ class HwAttributeLiteralDef(Identifiable):
     def __init__(self) -> None:
         """Initialize HwAttributeLiteralDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize HwAttributeLiteralDef to XML element.
 

@@ -52,6 +52,7 @@ class TcpTp(TcpUdpConfig):
         self.receive_window_min: Optional[PositiveInteger] = None
         self.tcp: Optional[TimeValue] = None
         self.tcp_tp_port: Optional[TpPort] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TcpTp to XML element.
 

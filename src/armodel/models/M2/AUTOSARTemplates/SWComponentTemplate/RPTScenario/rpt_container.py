@@ -62,6 +62,7 @@ class RptContainer(Identifiable):
         self.rpt_hook: Optional[RptHook] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_sw: Optional[RptSwPrototypingAccess] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptContainer to XML element.
 

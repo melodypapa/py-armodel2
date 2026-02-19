@@ -58,6 +58,7 @@ class TransformationTechnology(Identifiable):
         self.transformation_description: Optional[TransformationDescription] = None
         self.transformer: Optional[TransformerClassEnum] = None
         self.version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationTechnology to XML element.
 

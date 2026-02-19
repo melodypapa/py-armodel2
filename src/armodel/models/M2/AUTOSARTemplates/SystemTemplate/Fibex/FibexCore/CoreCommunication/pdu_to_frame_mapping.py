@@ -44,6 +44,7 @@ class PduToFrameMapping(ARObject):
         self.pdu: Optional[Pdu] = None
         self.start_position: Optional[Integer] = None
         self.update: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PduToFrameMapping to XML element.
 

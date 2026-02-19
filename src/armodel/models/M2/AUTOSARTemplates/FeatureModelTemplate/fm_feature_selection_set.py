@@ -43,6 +43,7 @@ class FMFeatureSelectionSet(ARElement):
         self.feature_models: list[FMFeatureModel] = []
         self.include_refs: list[ARRef] = []
         self.selections: list[FMFeatureSelection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureSelectionSet to XML element.
 

@@ -40,6 +40,7 @@ class Row(Paginateable):
         super().__init__()
         self.rowsep: Optional[TableSeparatorString] = None
         self.valign: Optional[ValignEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Row to XML element.
 

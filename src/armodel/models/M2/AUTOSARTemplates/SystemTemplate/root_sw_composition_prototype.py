@@ -45,6 +45,7 @@ class RootSwCompositionPrototype(Identifiable):
         self.calibrations: list[Any] = []
         self.flat_map: Optional[FlatMap] = None
         self.software: Optional[CompositionSwComponentType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RootSwCompositionPrototype to XML element.
 

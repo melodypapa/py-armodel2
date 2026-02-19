@@ -35,6 +35,7 @@ class LogAndTraceMessageCollectionSet(ARElement):
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()
         self.dlt_messages: list[DltMessage] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LogAndTraceMessageCollectionSet to XML element.
 

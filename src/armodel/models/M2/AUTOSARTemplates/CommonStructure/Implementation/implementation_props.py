@@ -38,6 +38,7 @@ class ImplementationProps(Referrable, ABC):
         """Initialize ImplementationProps."""
         super().__init__()
         self.symbol: Optional[CIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationProps to XML element.
 

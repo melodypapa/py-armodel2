@@ -35,6 +35,7 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939Spn."""
         super().__init__()
         self.spn: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939Spn to XML element.
 

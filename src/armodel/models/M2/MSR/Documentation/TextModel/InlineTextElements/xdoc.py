@@ -46,6 +46,7 @@ class Xdoc(SingleLanguageReferrable):
         self.publisher: Optional[String] = None
         self.state: Optional[String] = None
         self.url: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Xdoc to XML element.
 

@@ -37,6 +37,7 @@ class NumericalValueSpecification(ValueSpecification):
         """Initialize NumericalValueSpecification."""
         super().__init__()
         self.value: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NumericalValueSpecification to XML element.
 

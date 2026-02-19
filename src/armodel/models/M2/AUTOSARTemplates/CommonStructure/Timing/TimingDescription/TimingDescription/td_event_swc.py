@@ -33,6 +33,7 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         """Initialize TDEventSwc."""
         super().__init__()
         self.component: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventSwc to XML element.
 

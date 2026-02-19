@@ -41,6 +41,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RTriggerInAtomicSwcInstanceRef to XML element.
 

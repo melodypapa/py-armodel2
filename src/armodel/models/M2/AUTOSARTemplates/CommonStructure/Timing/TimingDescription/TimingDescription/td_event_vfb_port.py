@@ -48,6 +48,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
         self.is_external: Optional[Boolean] = None
         self.port_ref: Optional[ARRef] = None
         self.port_prototype_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventVfbPort to XML element.
 

@@ -35,6 +35,7 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
         """Initialize DiagnosticFimEventGroup."""
         super().__init__()
         self.events: list[DiagnosticEvent] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimEventGroup to XML element.
 

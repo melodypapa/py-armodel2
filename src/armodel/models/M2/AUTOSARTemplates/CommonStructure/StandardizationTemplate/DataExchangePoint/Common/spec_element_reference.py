@@ -36,6 +36,7 @@ class SpecElementReference(Identifiable, ABC):
         """Initialize SpecElementReference."""
         super().__init__()
         self.alternative: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SpecElementReference to XML element.
 

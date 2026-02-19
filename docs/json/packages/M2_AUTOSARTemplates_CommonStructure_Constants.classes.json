@@ -520,7 +520,7 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute defines the size of each dimension for CURVE, MAP, CUBOID, CUBE_4, RES_AXIS, VAL_BLK. dimension one value has to be defined, e.g. one of COM_AXIS and two or more in case of MAP."
         },
@@ -973,7 +973,7 @@
         "referenceValue": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The referenced data prototype."
         }
@@ -1308,7 +1308,7 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "For multidimensional compound primitives (curve, map ...) necessary to know the dimensions.They are specified"
         },

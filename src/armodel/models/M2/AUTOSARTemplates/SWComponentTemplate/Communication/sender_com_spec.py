@@ -65,6 +65,7 @@ class SenderComSpec(PPortComSpec, ABC):
         self.transmission: Optional[Any] = None
         self.transmission_com_spec: Optional[TransmissionComSpecProps] = None
         self.uses_end_to_end: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderComSpec to XML element.
 

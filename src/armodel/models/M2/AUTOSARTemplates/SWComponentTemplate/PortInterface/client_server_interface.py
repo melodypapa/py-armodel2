@@ -44,6 +44,7 @@ class ClientServerInterface(PortInterface):
         super().__init__()
         self.operations: list[ClientServerOperation] = []
         self.possible_errors: list[ApplicationError] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerInterface to XML element.
 

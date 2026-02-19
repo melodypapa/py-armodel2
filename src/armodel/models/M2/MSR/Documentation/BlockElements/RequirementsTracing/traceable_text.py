@@ -40,6 +40,7 @@ class TraceableText(Paginateable):
         """Initialize TraceableText."""
         super().__init__()
         self.text: DocumentationBlock = None
+
     def serialize(self) -> ET.Element:
         """Serialize TraceableText to XML element.
 

@@ -53,6 +53,7 @@ class ClientServerOperation(Identifiable):
         self.argument_refs: list[ARRef] = []
         self.diag_arg_integrity: Optional[Boolean] = None
         self.possible_errors: list[ApplicationError] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperation to XML element.
 

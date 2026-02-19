@@ -32,6 +32,7 @@ class TransientFault(TracedFailure):
         """Initialize TransientFault."""
         super().__init__()
         self.possible_error_reactions: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TransientFault to XML element.
 

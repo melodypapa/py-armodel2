@@ -36,6 +36,7 @@ class EcuTiming(TimingExtension):
         """Initialize EcuTiming."""
         super().__init__()
         self.ecu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcuTiming to XML element.
 

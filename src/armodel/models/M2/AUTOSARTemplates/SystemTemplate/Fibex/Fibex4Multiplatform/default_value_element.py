@@ -34,6 +34,7 @@ class DefaultValueElement(ARObject):
         super().__init__()
         self.element_byte_value: Optional[Integer] = None
         self.element_position: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DefaultValueElement to XML element.
 

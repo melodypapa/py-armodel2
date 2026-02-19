@@ -54,6 +54,7 @@ class FlexrayArTpConnection(TpConnection):
         self.reversed_tp_sdu: Optional[IPdu] = None
         self.source: Optional[FlexrayArTpNode] = None
         self.targets: list[FlexrayArTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayArTpConnection to XML element.
 

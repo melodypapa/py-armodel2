@@ -47,6 +47,7 @@ class SwcImplementation(Implementation):
         self.behavior: Optional[SwcInternalBehavior] = None
         self.per_instance_memories: list[PerInstanceMemory] = []
         self.required: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcImplementation to XML element.
 

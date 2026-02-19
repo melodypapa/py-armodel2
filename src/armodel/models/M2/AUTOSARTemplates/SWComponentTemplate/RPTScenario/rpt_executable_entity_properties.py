@@ -45,6 +45,7 @@ class RptExecutableEntityProperties(ARObject):
         self.min_rpt_event_id: Optional[PositiveInteger] = None
         self.rpt_execution_control: Optional[RptExecutionControlEnum] = None
         self.rpt_service_point_enum: Optional[RptServicePointEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntityProperties to XML element.
 

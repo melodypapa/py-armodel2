@@ -48,6 +48,7 @@ class Unit(ARElement):
         self.factor_si_to_unit: Optional[Float] = None
         self.offset_si_to_unit: Optional[Float] = None
         self.physical_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Unit to XML element.
 

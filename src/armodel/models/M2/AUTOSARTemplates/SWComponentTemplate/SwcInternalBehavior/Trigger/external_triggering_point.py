@@ -36,6 +36,7 @@ class ExternalTriggeringPoint(ARObject):
         super().__init__()
         self.ident_ref: Optional[ARRef] = None
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExternalTriggeringPoint to XML element.
 
@@ -51,7 +52,7 @@ class ExternalTriggeringPoint(ARObject):
             serialized = ARObject._serialize_item(self.ident_ref, "ExternalTriggeringPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDENT")
+                wrapped = ET.Element("IDENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -65,7 +66,7 @@ class ExternalTriggeringPoint(ARObject):
             serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -91,13 +92,13 @@ class ExternalTriggeringPoint(ARObject):
         obj.__init__()
 
         # Parse ident_ref
-        child = ARObject._find_child_element(element, "IDENT")
+        child = ARObject._find_child_element(element, "IDENT-REF")
         if child is not None:
             ident_ref_value = ARRef.deserialize(child)
             obj.ident_ref = ident_ref_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

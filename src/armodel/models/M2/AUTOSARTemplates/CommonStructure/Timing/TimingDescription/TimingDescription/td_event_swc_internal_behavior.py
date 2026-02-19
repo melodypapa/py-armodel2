@@ -42,6 +42,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         self.runnable: Optional[RunnableEntity] = None
         self.td_event_swc_behavior_type: Optional[Any] = None
         self.variable_access: Optional[VariableAccess] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventSwcInternalBehavior to XML element.
 

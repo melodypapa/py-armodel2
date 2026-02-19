@@ -39,6 +39,7 @@ class ModeDeclaration(Identifiable):
         """Initialize ModeDeclaration."""
         super().__init__()
         self.value: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclaration to XML element.
 

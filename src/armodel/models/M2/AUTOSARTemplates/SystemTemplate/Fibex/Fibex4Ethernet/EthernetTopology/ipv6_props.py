@@ -42,6 +42,7 @@ class Ipv6Props(ARObject):
         self.dhcp_props: Optional[Dhcpv6Props] = None
         self.fragmentation: Optional[Ipv6FragmentationProps] = None
         self.ndp_props: Optional[Ipv6NdpProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv6Props to XML element.
 

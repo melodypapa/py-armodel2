@@ -40,6 +40,7 @@ class Pdu(FibexElement, ABC):
         super().__init__()
         self.has_dynamic: Optional[Boolean] = None
         self.length: Optional[UnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Pdu to XML element.
 

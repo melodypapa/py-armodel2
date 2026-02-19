@@ -30,6 +30,7 @@ class TDEventComplex(TimingDescriptionEvent):
     def __init__(self) -> None:
         """Initialize TDEventComplex."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventComplex to XML element.
 

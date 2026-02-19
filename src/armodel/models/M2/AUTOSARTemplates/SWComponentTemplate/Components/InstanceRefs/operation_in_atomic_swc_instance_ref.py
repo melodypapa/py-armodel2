@@ -44,6 +44,7 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_operation: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OperationInAtomicSwcInstanceRef to XML element.
 

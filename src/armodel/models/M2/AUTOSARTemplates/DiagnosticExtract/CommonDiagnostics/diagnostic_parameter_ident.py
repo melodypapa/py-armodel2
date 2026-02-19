@@ -35,6 +35,7 @@ class DiagnosticParameterIdent(IdentCaption):
         """Initialize DiagnosticParameterIdent."""
         super().__init__()
         self.sub_elements: list[DiagnosticParameter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterIdent to XML element.
 

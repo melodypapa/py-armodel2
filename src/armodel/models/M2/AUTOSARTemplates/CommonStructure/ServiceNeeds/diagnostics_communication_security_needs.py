@@ -31,6 +31,7 @@ class DiagnosticsCommunicationSecurityNeeds(DiagnosticCapabilityElement):
     def __init__(self) -> None:
         """Initialize DiagnosticsCommunicationSecurityNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticsCommunicationSecurityNeeds to XML element.
 

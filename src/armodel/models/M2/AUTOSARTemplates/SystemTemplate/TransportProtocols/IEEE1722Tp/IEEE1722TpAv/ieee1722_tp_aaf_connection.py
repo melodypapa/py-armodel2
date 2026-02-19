@@ -58,6 +58,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         self.pcm_bit_depth: Optional[PositiveInteger] = None
         self.sparse: Optional[Boolean] = None
         self.streams_per: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAafConnection to XML element.
 

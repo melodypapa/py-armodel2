@@ -49,6 +49,7 @@ class SwitchFlowMeteringEntry(Identifiable):
         self.coupling_flag: Optional[Boolean] = None
         self.excess_burst: Optional[PositiveInteger] = None
         self.excess: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchFlowMeteringEntry to XML element.
 

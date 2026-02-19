@@ -35,6 +35,7 @@ class CanTpAddress(Identifiable):
         """Initialize CanTpAddress."""
         super().__init__()
         self.tp_address: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpAddress to XML element.
 

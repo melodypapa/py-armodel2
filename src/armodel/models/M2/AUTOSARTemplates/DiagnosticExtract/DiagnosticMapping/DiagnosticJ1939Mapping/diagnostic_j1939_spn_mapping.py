@@ -45,6 +45,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         self.sending_nodes: list[DiagnosticJ1939Node] = []
         self.spn: Optional[DiagnosticJ1939Spn] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939SpnMapping to XML element.
 

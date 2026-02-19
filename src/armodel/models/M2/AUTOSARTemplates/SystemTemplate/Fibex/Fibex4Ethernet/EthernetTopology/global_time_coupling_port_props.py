@@ -32,6 +32,7 @@ class GlobalTimeCouplingPortProps(ARObject):
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()
         self.propagation: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeCouplingPortProps to XML element.
 

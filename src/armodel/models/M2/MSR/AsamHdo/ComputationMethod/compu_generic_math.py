@@ -32,6 +32,7 @@ class CompuGenericMath(ARObject):
         """Initialize CompuGenericMath."""
         super().__init__()
         self.level: Optional[PrimitiveIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuGenericMath to XML element.
 

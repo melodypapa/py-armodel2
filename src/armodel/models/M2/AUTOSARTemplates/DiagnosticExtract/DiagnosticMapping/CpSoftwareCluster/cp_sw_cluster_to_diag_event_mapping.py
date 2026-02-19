@@ -40,6 +40,7 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.diagnostic_event: Optional[DiagnosticEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterToDiagEventMapping to XML element.
 

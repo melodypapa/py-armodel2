@@ -35,6 +35,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         """Initialize SecurityEventStateFilter."""
         super().__init__()
         self.block_if_states: list[BlockState] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventStateFilter to XML element.
 

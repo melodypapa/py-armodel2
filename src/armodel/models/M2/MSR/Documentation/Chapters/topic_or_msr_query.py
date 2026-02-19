@@ -37,6 +37,7 @@ class TopicOrMsrQuery(ARObject):
         super().__init__()
         self.msr_query: MsrQueryTopic1 = None
         self.topic1: Topic1 = None
+
     def serialize(self) -> ET.Element:
         """Serialize TopicOrMsrQuery to XML element.
 

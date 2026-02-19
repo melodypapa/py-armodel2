@@ -41,6 +41,7 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         super().__init__()
         self.access: Optional[DiagnosticAccessPermission] = None
         self.service_class: Optional[DiagnosticServiceClass] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticServiceInstance to XML element.
 

@@ -99,6 +99,7 @@ class FlexrayCluster(ARObject):
         self.wakeup_rx: Optional[Integer] = None
         self.wakeup_tx_active: Optional[Integer] = None
         self.wakeup_tx_idle: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayCluster to XML element.
 

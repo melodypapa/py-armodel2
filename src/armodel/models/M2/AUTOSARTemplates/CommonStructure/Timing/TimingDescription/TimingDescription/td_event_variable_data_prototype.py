@@ -38,6 +38,7 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
         self.td_event_variable_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventVariableDataPrototype to XML element.
 

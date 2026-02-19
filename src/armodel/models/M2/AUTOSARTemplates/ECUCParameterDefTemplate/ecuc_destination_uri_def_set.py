@@ -35,6 +35,7 @@ class EcucDestinationUriDefSet(ARElement):
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()
         self.destination_uri_defs: list[EcucDestinationUriDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDestinationUriDefSet to XML element.
 

@@ -35,6 +35,7 @@ class TriggerMapping(ARObject):
         super().__init__()
         self.first_trigger_ref: Optional[ARRef] = None
         self.second_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerMapping to XML element.
 

@@ -32,6 +32,7 @@ class StreamFilterIpv6Address(ARObject):
         """Initialize StreamFilterIpv6Address."""
         super().__init__()
         self.ipv6_address: Optional[Ip6AddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterIpv6Address to XML element.
 

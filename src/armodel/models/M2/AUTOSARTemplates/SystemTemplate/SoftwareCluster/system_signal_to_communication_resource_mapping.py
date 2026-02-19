@@ -40,6 +40,7 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalToCommunicationResourceMapping to XML element.
 

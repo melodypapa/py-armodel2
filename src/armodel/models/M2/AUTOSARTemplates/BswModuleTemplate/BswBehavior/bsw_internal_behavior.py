@@ -122,6 +122,7 @@ class BswInternalBehavior(InternalBehavior):
         self.services: list[Any] = []
         self.trigger_direct_refs: list[ARRef] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswInternalBehavior to XML element.
 

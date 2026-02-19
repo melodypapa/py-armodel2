@@ -38,6 +38,7 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         super().__init__()
         self.max_gradient: Optional[Float] = None
         self.monotony: Optional[MonotonyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwCalprmAxisTypeProps to XML element.
 

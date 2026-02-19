@@ -38,6 +38,7 @@ class J1939DcmIPdu(IPdu):
         super().__init__()
         self.diagnostic: Optional[PositiveInteger] = None
         self.message_type: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939DcmIPdu to XML element.
 

@@ -45,6 +45,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         self.ecu_instance: Optional[EcuInstance] = None
         self.machine_id: Optional[PositiveInteger] = None
         self.sw_clusters: list[CpSoftwareCluster] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToEcuInstanceMapping to XML element.
 

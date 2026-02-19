@@ -41,6 +41,7 @@ class PTriggerInAtomicSwcTypeInstanceRef(TriggerInAtomicSwcInstanceRef):
         super().__init__()
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PTriggerInAtomicSwcTypeInstanceRef to XML element.
 

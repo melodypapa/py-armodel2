@@ -42,6 +42,7 @@ class PermissibleSignalPath(SignalPathConstraint):
         self.operations: list[Any] = []
         self.physical_channels: list[PhysicalChannel] = []
         self.signals: list[SwcToSwcSignal] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PermissibleSignalPath to XML element.
 

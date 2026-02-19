@@ -31,6 +31,7 @@ class DiagnosticSwMapping(DiagnosticMapping, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticSwMapping."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSwMapping to XML element.
 

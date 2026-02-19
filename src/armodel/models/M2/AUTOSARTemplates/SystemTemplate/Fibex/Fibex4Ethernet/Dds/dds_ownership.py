@@ -32,6 +32,7 @@ class DdsOwnership(ARObject):
         """Initialize DdsOwnership."""
         super().__init__()
         self.ownership_kind: Optional[DdsOwnershipKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsOwnership to XML element.
 

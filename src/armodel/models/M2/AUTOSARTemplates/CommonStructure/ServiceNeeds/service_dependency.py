@@ -44,6 +44,7 @@ class ServiceDependency(ARObject, ABC):
         self.assigned_data: Optional[RoleBasedDataTypeAssignment] = None
         self.diagnostic: Optional[ServiceDiagnosticRelevanceEnum] = None
         self.symbolic_name_props: Optional[SymbolicNameProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ServiceDependency to XML element.
 

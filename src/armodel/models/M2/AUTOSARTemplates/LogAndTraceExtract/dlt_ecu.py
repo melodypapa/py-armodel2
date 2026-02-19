@@ -41,6 +41,7 @@ class DltEcu(ARElement):
         super().__init__()
         self.applications: list[DltApplication] = []
         self.ecu_id: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltEcu to XML element.
 

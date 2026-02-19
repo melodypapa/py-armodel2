@@ -45,6 +45,7 @@ class BuildActionIoElement(ARObject):
         self.ecuc_definition: Optional[EcucDefinitionElement] = None
         self.role: Optional[Identifier] = None
         self.sdgs: list[Sdg] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BuildActionIoElement to XML element.
 

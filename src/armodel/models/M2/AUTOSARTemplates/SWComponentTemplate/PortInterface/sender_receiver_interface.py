@@ -51,6 +51,7 @@ class SenderReceiverInterface(DataInterface):
         self.data_element_refs: list[ARRef] = []
         self.invalidation_policy_policies: list[InvalidationPolicy] = []
         self.meta_data_item_set_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverInterface to XML element.
 

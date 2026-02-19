@@ -35,6 +35,7 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
         """Initialize BusMirrorChannelMappingFlexray."""
         super().__init__()
         self.transmission: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMappingFlexray to XML element.
 

@@ -52,6 +52,7 @@ class MacSecLocalKayProps(ARObject):
         self.mka_participants: list[MacSecKayParticipant] = []
         self.role: Optional[MacSecRoleEnum] = None
         self.source_mac: Optional[MacAddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecLocalKayProps to XML element.
 

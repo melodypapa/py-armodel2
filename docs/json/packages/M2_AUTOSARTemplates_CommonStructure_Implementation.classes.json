@@ -138,7 +138,7 @@
         "generateds": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Relates to an artifact that will be generated during the of this Implementation by an associated Note that this is an optional information might not always be in the scope of a single component to provide this information. atpVariation"
         },
@@ -173,14 +173,14 @@
         "requiredArtifacts": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies that this Implementation depends on the another artifact (e.g. a library). This DependencyOnArtifact is subject to the purpose to support variability in the algorithms in the cause different dependencies, e.g. of used libraries. atpVariation"
         },
         "requireds": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Relates this Implementation to a generator tool in order to additional artifacts during integration. atpVariation"
         },
@@ -194,7 +194,7 @@
         "swcBsw": {
           "type": "SwcBswMapping",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This allows a mapping between an SWC and a BSW to be attached to an implementation description Service, ECU Abstraction and Complex It is up to the methodology to define reference has to be set for the Swc- or Bsw for both."
         },
@@ -319,7 +319,7 @@
         "usages": {
           "type": "DependencyUsageEnum",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specification for which process step(s) this dependency is"
         }

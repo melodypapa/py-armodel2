@@ -44,6 +44,7 @@ class Std(SingleLanguageReferrable):
         self.state: Optional[String] = None
         self.subtitle: Optional[String] = None
         self.url: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Std to XML element.
 

@@ -30,6 +30,7 @@ class AsynchronousServerCallPoint(ServerCallPoint):
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AsynchronousServerCallPoint to XML element.
 

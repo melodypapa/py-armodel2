@@ -34,6 +34,7 @@ class DocumentElementScope(SpecElementReference):
         super().__init__()
         self.custom_document: Optional[Any] = None
         self.tailorings: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DocumentElementScope to XML element.
 

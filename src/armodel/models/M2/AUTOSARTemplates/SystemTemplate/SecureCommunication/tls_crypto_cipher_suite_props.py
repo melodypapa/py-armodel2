@@ -35,6 +35,7 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()
         self.tcp_ip_tls_use: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlsCryptoCipherSuiteProps to XML element.
 

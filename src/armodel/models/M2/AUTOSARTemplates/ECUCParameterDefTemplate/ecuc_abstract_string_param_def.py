@@ -42,6 +42,7 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         self.max_length: Optional[PositiveInteger] = None
         self.min_length: Optional[PositiveInteger] = None
         self.regular: Optional[RegularExpression] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractStringParamDef to XML element.
 

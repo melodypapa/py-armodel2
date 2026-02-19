@@ -37,6 +37,7 @@ class BlueprintGenerator(ARObject):
         super().__init__()
         self.expression: Optional[VerbatimString] = None
         self.introduction: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintGenerator to XML element.
 

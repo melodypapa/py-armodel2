@@ -35,6 +35,7 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         """Initialize SocketConnectionIpduIdentifierSet."""
         super().__init__()
         self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SocketConnectionIpduIdentifierSet to XML element.
 

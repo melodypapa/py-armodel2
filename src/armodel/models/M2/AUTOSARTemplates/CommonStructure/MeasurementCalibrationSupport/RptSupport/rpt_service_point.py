@@ -38,6 +38,7 @@ class RptServicePoint(Identifiable):
         super().__init__()
         self.service_id: Optional[PositiveInteger] = None
         self.symbol: Optional[CIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptServicePoint to XML element.
 

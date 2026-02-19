@@ -53,6 +53,7 @@ class SdgContents(ARObject):
         self.sdg: Optional[Sdg] = None
         self.sdx_ref: Optional[ARRef] = None
         self.sdxf_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgContents to XML element.
 

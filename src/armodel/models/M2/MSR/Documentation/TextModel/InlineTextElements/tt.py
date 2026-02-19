@@ -37,6 +37,7 @@ class Tt(ARObject):
         self.term: String = None
         self.tex_render: Optional[String] = None
         self.type: NameToken = None
+
     def serialize(self) -> ET.Element:
         """Serialize Tt to XML element.
 

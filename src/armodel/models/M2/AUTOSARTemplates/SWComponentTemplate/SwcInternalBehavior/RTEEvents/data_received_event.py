@@ -36,6 +36,7 @@ class DataReceivedEvent(RTEEvent):
         """Initialize DataReceivedEvent."""
         super().__init__()
         self.data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataReceivedEvent to XML element.
 
@@ -61,7 +62,7 @@ class DataReceivedEvent(RTEEvent):
             serialized = ARObject._serialize_item(self.data_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA")
+                wrapped = ET.Element("DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,7 +87,7 @@ class DataReceivedEvent(RTEEvent):
         obj = super(DataReceivedEvent, cls).deserialize(element)
 
         # Parse data_ref
-        child = ARObject._find_child_element(element, "DATA")
+        child = ARObject._find_child_element(element, "DATA-REF")
         if child is not None:
             data_ref_value = ARRef.deserialize(child)
             obj.data_ref = data_ref_value

@@ -38,6 +38,7 @@ class FormulaExpression(ARObject, ABC):
         super().__init__()
         self.atp_reference_refs: list[ARRef] = []
         self.atp_string_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FormulaExpression to XML element.
 

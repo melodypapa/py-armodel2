@@ -29,6 +29,7 @@ class PPortComSpec(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize PPortComSpec."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize PPortComSpec to XML element.
 

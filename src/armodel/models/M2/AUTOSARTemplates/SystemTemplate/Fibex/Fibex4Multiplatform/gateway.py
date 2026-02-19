@@ -51,6 +51,7 @@ class Gateway(FibexElement):
         self.frame_mapping_refs: list[ARRef] = []
         self.i_pdu_mapping_refs: list[ARRef] = []
         self.signal_mapping_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Gateway to XML element.
 

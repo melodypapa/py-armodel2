@@ -33,6 +33,7 @@ class DdsCpServiceInstanceOperation(ARObject):
         """Initialize DdsCpServiceInstanceOperation."""
         super().__init__()
         self.dds_operation_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpServiceInstanceOperation to XML element.
 

@@ -38,6 +38,7 @@ class FlatMap(ARElement):
         """Initialize FlatMap."""
         super().__init__()
         self.instances: list[FlatInstanceDescriptor] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlatMap to XML element.
 

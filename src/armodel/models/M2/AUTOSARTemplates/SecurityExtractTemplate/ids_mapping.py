@@ -31,6 +31,7 @@ class IdsMapping(IdsCommonElement, ABC):
     def __init__(self) -> None:
         """Initialize IdsMapping."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IdsMapping to XML element.
 

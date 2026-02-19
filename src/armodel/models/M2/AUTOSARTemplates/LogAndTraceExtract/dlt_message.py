@@ -53,6 +53,7 @@ class DltMessage(Identifiable):
         self.message_source: Optional[String] = None
         self.message_type_info: Optional[String] = None
         self.privacy_level: Optional[PrivacyLevel] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltMessage to XML element.
 

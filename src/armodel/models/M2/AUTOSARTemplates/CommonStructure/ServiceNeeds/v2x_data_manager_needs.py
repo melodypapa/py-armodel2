@@ -30,6 +30,7 @@ class V2xDataManagerNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize V2xDataManagerNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize V2xDataManagerNeeds to XML element.
 

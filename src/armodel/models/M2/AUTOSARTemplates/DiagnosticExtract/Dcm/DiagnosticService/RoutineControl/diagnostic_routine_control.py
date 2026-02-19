@@ -37,6 +37,7 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         super().__init__()
         self.routine: Optional[DiagnosticRoutine] = None
         self.routine_control: Optional[DiagnosticRoutine] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineControl to XML element.
 

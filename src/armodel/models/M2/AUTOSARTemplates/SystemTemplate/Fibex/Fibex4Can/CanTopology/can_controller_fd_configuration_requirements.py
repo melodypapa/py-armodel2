@@ -53,6 +53,7 @@ class CanControllerFdConfigurationRequirements(ARObject):
         self.min_trcv_delay: Optional[TimeValue] = None
         self.padding_value: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerFdConfigurationRequirements to XML element.
 

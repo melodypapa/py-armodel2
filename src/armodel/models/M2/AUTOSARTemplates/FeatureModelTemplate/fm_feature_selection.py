@@ -35,6 +35,7 @@ class FMFeatureSelection(Identifiable):
         """Initialize FMFeatureSelection."""
         super().__init__()
         self.attribute_values: list[FMAttributeValue] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureSelection to XML element.
 

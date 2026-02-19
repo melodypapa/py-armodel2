@@ -40,6 +40,7 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         super().__init__()
         self.dtcs: list[DiagnosticTroubleCode] = []
         self.group_number: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeGroup to XML element.
 

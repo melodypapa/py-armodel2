@@ -47,6 +47,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         self.diagnostic_sessions: list[DiagnosticSession] = []
         self.environmental: Optional[Any] = None
         self.security_levels: list[DiagnosticSecurityLevel] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAccessPermission to XML element.
 

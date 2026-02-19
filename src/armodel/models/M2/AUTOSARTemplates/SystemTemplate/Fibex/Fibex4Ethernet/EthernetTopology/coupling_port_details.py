@@ -57,6 +57,7 @@ class CouplingPortDetails(ARObject):
         self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
         self.last_egress: Optional[CouplingPortScheduler] = None
         self.rate_policies: list[CouplingPortRatePolicy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortDetails to XML element.
 

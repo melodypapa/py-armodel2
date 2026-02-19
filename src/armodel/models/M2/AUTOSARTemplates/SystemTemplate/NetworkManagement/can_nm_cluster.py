@@ -60,6 +60,7 @@ class CanNmCluster(NmCluster):
         self.nm_remote: Optional[TimeValue] = None
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_wait_bus: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanNmCluster to XML element.
 

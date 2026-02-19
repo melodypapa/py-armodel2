@@ -37,6 +37,7 @@ class GlobalTimeCanSlave(GlobalTimeSlave):
         super().__init__()
         self.crc_validated: Optional[Any] = None
         self.sequence: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeCanSlave to XML element.
 

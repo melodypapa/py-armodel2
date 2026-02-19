@@ -31,6 +31,7 @@ class DltUserNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize DltUserNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DltUserNeeds to XML element.
 

@@ -36,6 +36,7 @@ class TDEventCom(TimingDescriptionEvent, ABC):
         """Initialize TDEventCom."""
         super().__init__()
         self.ecu_instance: Optional[EcuInstance] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventCom to XML element.
 

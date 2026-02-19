@@ -32,6 +32,7 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         """Initialize DiagnosticClearDiagnosticInformation."""
         super().__init__()
         self.clear_diagnostic: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticClearDiagnosticInformation to XML element.
 

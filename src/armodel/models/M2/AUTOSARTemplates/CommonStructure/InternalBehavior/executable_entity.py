@@ -63,6 +63,7 @@ class ExecutableEntity(Identifiable, ABC):
         self.reentrancy_level_enum: Optional[ReentrancyLevelEnum] = None
         self.runs_insides: list[ExclusiveArea] = []
         self.sw_addr_method: Optional[SwAddrMethod] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutableEntity to XML element.
 

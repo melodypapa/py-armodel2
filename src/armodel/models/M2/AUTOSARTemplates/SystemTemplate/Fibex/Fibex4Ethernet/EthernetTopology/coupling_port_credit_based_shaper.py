@@ -39,6 +39,7 @@ class CouplingPortCreditBasedShaper(Identifiable):
         self.idle_slope: Optional[PositiveInteger] = None
         self.lower_boundary: Optional[PositiveInteger] = None
         self.upper_boundary: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortCreditBasedShaper to XML element.
 

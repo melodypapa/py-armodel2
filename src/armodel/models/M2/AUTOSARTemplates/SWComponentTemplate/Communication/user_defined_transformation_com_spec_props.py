@@ -30,6 +30,7 @@ class UserDefinedTransformationComSpecProps(TransformationComSpecProps):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationComSpecProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedTransformationComSpecProps to XML element.
 

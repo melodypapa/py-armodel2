@@ -47,6 +47,7 @@ class DiagnosticParameterIdentifier(DiagnosticCommonElement):
         self.id: Optional[PositiveInteger] = None
         self.pid_size: Optional[PositiveInteger] = None
         self.support_info_byte: Optional[DiagnosticSupportInfoByte] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterIdentifier to XML element.
 

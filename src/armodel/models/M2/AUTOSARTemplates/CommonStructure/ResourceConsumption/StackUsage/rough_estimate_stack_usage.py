@@ -35,6 +35,7 @@ class RoughEstimateStackUsage(StackUsage):
         """Initialize RoughEstimateStackUsage."""
         super().__init__()
         self.memory_consumption: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoughEstimateStackUsage to XML element.
 

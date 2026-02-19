@@ -52,6 +52,7 @@ class LinSlave(ARObject):
         self.nas_timeout: Optional[TimeValue] = None
         self.supplier_id: Optional[PositiveInteger] = None
         self.variant_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinSlave to XML element.
 

@@ -38,6 +38,7 @@ class AtpBlueprint(Identifiable, ABC):
         """Initialize AtpBlueprint."""
         super().__init__()
         self.blueprint_policies: list[BlueprintPolicy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprint to XML element.
 

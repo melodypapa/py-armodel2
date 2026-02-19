@@ -32,6 +32,7 @@ class EthernetWakeupSleepOnDatalineConfigSet(FibexElement):
         """Initialize EthernetWakeupSleepOnDatalineConfigSet."""
         super().__init__()
         self.ethernets: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetWakeupSleepOnDatalineConfigSet to XML element.
 

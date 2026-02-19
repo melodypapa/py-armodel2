@@ -43,6 +43,7 @@ class LinScheduleTable(Identifiable):
         self.resume_position: Optional[ResumePosition] = None
         self.run_mode: Optional[RunMode] = None
         self.table_entries: list[ScheduleTableEntry] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinScheduleTable to XML element.
 

@@ -36,6 +36,7 @@ class EcucBooleanParamDef(EcucParameterDef):
         """Initialize EcucBooleanParamDef."""
         super().__init__()
         self.default_value: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucBooleanParamDef to XML element.
 

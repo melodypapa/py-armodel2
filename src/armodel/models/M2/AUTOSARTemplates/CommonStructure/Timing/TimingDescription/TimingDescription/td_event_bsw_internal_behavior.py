@@ -37,6 +37,7 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         super().__init__()
         self.bsw_module_entity_entity: Optional[BswModuleEntity] = None
         self.td_event_bsw_behavior_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventBswInternalBehavior to XML element.
 

@@ -37,6 +37,7 @@ class DdsReliability(ARObject):
         super().__init__()
         self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
         self.reliability_max: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsReliability to XML element.
 

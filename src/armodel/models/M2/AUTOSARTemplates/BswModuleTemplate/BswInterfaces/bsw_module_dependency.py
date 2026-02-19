@@ -43,6 +43,7 @@ class BswModuleDependency(Identifiable):
         super().__init__()
         self.target_module_id: Optional[PositiveInteger] = None
         self.target_module: Optional[BswModuleDescription] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDependency to XML element.
 

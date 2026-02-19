@@ -32,6 +32,7 @@ class CalibrationParameterValueSet(ARElement):
         """Initialize CalibrationParameterValueSet."""
         super().__init__()
         self.calibrations: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CalibrationParameterValueSet to XML element.
 

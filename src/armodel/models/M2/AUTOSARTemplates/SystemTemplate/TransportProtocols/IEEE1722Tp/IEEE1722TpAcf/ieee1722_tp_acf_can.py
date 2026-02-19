@@ -32,6 +32,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()
         self.message_type_message_type_enum: Optional[IEEE1722TpAcfCan] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfCan to XML element.
 

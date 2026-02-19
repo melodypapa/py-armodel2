@@ -30,6 +30,7 @@ class DiagnosticReadDTCInformationClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticReadDTCInformationClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDTCInformationClass to XML element.
 

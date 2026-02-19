@@ -44,7 +44,7 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The instance of VariableDataPrototype annotated."
         },
@@ -82,7 +82,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Annotation of a sender port, specifying properties of data elements that don’t affect communication or generation of the RTE.",
+      "note": "Annotation of a sender port, specifying properties of data elements that don\u2019t affect communication or generation of the RTE.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -111,7 +111,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Annotation of a receiver port, specifying properties of data elements that don’t affect communication or generation of the RTE. The given attributes are requirements on the required data.",
+      "note": "Annotation of a receiver port, specifying properties of data elements that don\u2019t affect communication or generation of the RTE. The given attributes are requirements on the required data.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -203,7 +203,7 @@
         "argument": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the corresponding ArgumentDataPrototype."
         },
@@ -217,14 +217,14 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the corresponding VariableDataPrototype."
         },
         "failure": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is only applicable in SET operations. If it is enabled, IoHwAbstraction layer will monitor the result of the issue an diagnostic signal. This means an additional client-server port has to be can use this information to cross-check each data-element in a SET operation with an additional port is created port monitors a failure in the to be of the IoHwAbstraction referenced port has to be another port of the or Sensor Component. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
@@ -245,7 +245,7 @@
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the corresponding Trigger."
         }
@@ -281,7 +281,7 @@
         "parameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The instance of annotated ParameterDataPrototype."
         }
@@ -317,7 +317,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The instance of annotated ModeDeclarationGroup"
         }
@@ -353,7 +353,7 @@
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The instance of annotated trigger."
         }
@@ -389,7 +389,7 @@
         "variable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The instance of nv data annotated."
         }

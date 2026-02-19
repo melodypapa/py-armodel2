@@ -34,6 +34,7 @@ class CompuRationalCoeffs(ARObject):
         super().__init__()
         self.compu_denominator: Optional[CompuNominatorDenominator] = None
         self.compu: Optional[CompuNominatorDenominator] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuRationalCoeffs to XML element.
 

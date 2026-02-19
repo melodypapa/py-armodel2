@@ -40,6 +40,7 @@ class EthTcpIpProps(ARElement):
         super().__init__()
         self.tcp_props: Optional[TcpProps] = None
         self.udp_props: Optional[UdpProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTcpIpProps to XML element.
 

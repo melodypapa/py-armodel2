@@ -35,6 +35,7 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()
         self.verification: Optional[VerificationStatusIndicationModeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecureOnBoardCommunicationNeeds to XML element.
 

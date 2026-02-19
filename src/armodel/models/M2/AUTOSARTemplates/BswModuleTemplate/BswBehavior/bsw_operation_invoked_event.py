@@ -35,6 +35,7 @@ class BswOperationInvokedEvent(BswEvent):
         """Initialize BswOperationInvokedEvent."""
         super().__init__()
         self.entry: Optional[BswModuleClientServerEntry] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswOperationInvokedEvent to XML element.
 

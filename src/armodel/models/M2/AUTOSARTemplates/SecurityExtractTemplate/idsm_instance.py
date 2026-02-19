@@ -65,6 +65,7 @@ class IdsmInstance(IdsCommonElement):
         self.signature: Optional[Any] = None
         self.timestamp: Optional[String] = None
         self.traffic_limitation: Optional[IdsmTrafficLimitation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmInstance to XML element.
 

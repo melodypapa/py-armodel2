@@ -72,6 +72,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         self.filtering: Optional[FilterDebouncingEnum] = None
         self.pulse_test: Optional[PulseTestEnum] = None
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IoHwAbstractionServerAnnotation to XML element.
 

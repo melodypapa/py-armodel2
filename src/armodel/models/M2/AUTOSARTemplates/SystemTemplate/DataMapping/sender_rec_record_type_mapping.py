@@ -32,6 +32,7 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         """Initialize SenderRecRecordTypeMapping."""
         super().__init__()
         self.record_elements: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SenderRecRecordTypeMapping to XML element.
 

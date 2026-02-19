@@ -51,6 +51,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         self.event_needs: Optional[DiagnosticEventNeeds] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ObdMonitorServiceNeeds to XML element.
 

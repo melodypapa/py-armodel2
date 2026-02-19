@@ -36,6 +36,7 @@ class VfbTiming(TimingExtension):
         """Initialize VfbTiming."""
         super().__init__()
         self.component: Optional[SwComponentType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VfbTiming to XML element.
 

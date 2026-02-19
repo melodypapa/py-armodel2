@@ -30,6 +30,7 @@ class SdgForeignReference(SdgAbstractForeignReference):
     def __init__(self) -> None:
         """Initialize SdgForeignReference."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SdgForeignReference to XML element.
 

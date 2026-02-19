@@ -43,6 +43,7 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         self.base: Optional[BswModuleDescription] = None
         self.context_mode_group_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeInBswModuleDescriptionInstanceRef to XML element.
 

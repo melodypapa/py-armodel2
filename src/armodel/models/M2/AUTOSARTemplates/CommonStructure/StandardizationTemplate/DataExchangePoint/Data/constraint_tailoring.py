@@ -35,6 +35,7 @@ class ConstraintTailoring(RestrictionWithSeverity):
         """Initialize ConstraintTailoring."""
         super().__init__()
         self.constraint: Optional[TraceableText] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConstraintTailoring to XML element.
 

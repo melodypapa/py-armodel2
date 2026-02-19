@@ -49,6 +49,7 @@ class ISignalGroup(FibexElement):
         self.i_signals: list[ISignal] = []
         self.system_signal_group_ref: Optional[ARRef] = None
         self.transformation_i_signals: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalGroup to XML element.
 

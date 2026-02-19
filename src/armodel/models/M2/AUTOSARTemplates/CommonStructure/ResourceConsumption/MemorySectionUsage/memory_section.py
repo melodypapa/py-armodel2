@@ -60,6 +60,7 @@ class MemorySection(Identifiable):
         self.size: Optional[PositiveInteger] = None
         self.sw_addrmethod: Optional[SwAddrMethod] = None
         self.symbol: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MemorySection to XML element.
 

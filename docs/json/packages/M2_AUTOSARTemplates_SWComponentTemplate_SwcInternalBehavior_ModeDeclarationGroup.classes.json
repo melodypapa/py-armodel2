@@ -17,7 +17,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "A ModeAccessPoint is required by a RunnableEntity owned by a Mode Manager or Mode User. Its semantics implies the ability to access the current mode (provided by the RTE) of a ModeDeclaration GroupPrototype’s ModeDeclarationGroup.",
+      "note": "A ModeAccessPoint is required by a RunnableEntity owned by a Mode Manager or Mode User. Its semantics implies the ability to access the current mode (provided by the RTE) of a ModeDeclaration GroupPrototype\u2019s ModeDeclarationGroup.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -43,7 +43,7 @@
         "modeGroupInstanceRef": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: ModeGroupInAtomicSwc"
         }
@@ -93,7 +93,7 @@
         "modeGroupSwcInstanceRef": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: PModeGroupInAtomic"
         }
@@ -129,7 +129,7 @@
         "modes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the referenced ModeDeclarationGroup."
         },

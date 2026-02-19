@@ -86,6 +86,7 @@ class CanTpConnection(TpConnection):
         self.timeout_cs: Optional[TimeValue] = None
         self.tp_sdu: Optional[IPdu] = None
         self.transmitter: Optional[CanTpNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpConnection to XML element.
 

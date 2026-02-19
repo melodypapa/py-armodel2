@@ -81,6 +81,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         self.sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig] = None
         self.service_identifier: Optional[PositiveInteger] = None
         self.version_driven: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConsumedServiceInstance to XML element.
 

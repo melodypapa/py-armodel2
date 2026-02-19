@@ -101,14 +101,14 @@
         "firstTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A Trigger to be mapped."
         },
         "secondTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A Trigger to be mapped."
         }

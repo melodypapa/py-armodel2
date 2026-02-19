@@ -38,6 +38,7 @@ class SecurityEventDefinition(IdsCommonElement):
         super().__init__()
         self.event_symbol_name: Optional[Any] = None
         self.id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventDefinition to XML element.
 

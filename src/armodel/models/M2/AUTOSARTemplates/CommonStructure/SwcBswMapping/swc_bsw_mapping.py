@@ -50,6 +50,7 @@ class SwcBswMapping(ARElement):
         self.runnable_mapping_refs: list[ARRef] = []
         self.swc_behavior: Optional[SwcInternalBehavior] = None
         self.synchronizeds: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwcBswMapping to XML element.
 

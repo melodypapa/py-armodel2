@@ -46,6 +46,7 @@ class BswServiceDependency(ServiceDependency):
         self.assigned_entries: list[RoleBasedBswModuleEntryAssignment] = []
         self.ident: Optional[Any] = None
         self.service_needs: Optional[ServiceNeeds] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswServiceDependency to XML element.
 

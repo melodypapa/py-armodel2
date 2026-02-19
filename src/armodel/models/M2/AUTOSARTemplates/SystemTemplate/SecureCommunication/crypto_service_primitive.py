@@ -40,6 +40,7 @@ class CryptoServicePrimitive(ARElement):
         self.algorithm_family: Optional[String] = None
         self.algorithm_mode: Optional[String] = None
         self.algorithm: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServicePrimitive to XML element.
 

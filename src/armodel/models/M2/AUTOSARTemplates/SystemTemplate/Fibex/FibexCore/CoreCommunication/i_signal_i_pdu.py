@@ -47,6 +47,7 @@ class ISignalIPdu(IPdu):
         self.i_pdu_timing: Optional[IPduTiming] = None
         self.i_signal_to_pdu_refs: list[ARRef] = []
         self.unused_bit: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalIPdu to XML element.
 

@@ -463,8 +463,8 @@
         "type": {
           "type": "ApplicationDataType",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": ""
         }
       }

@@ -43,6 +43,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         self.enhanced_mode: Optional[Boolean] = None
         self.mode_group_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchReceiverComSpec to XML element.
 

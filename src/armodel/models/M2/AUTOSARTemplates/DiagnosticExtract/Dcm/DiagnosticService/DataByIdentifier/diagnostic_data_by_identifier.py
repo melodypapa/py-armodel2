@@ -36,6 +36,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()
         self.data_identifier: Optional[DiagnosticAbstractDataIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataByIdentifier to XML element.
 

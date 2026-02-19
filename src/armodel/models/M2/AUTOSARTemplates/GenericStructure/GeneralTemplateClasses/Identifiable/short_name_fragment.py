@@ -35,6 +35,7 @@ class ShortNameFragment(ARObject):
         super().__init__()
         self.fragment: Identifier = None
         self.role: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize ShortNameFragment to XML element.
 

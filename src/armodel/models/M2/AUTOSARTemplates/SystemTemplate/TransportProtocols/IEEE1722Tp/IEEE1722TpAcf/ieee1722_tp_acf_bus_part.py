@@ -37,6 +37,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
         self.collection_trigger_ref: Optional[PduCollectionTriggerEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfBusPart to XML element.
 
@@ -62,7 +63,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
             serialized = ARObject._serialize_item(self.collection_trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION-TRIGGER")
+                wrapped = ET.Element("COLLECTION-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,7 +88,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         obj = super(IEEE1722TpAcfBusPart, cls).deserialize(element)
 
         # Parse collection_trigger_ref
-        child = ARObject._find_child_element(element, "COLLECTION-TRIGGER")
+        child = ARObject._find_child_element(element, "COLLECTION-TRIGGER-REF")
         if child is not None:
             collection_trigger_ref_value = ARRef.deserialize(child)
             obj.collection_trigger_ref = collection_trigger_ref_value

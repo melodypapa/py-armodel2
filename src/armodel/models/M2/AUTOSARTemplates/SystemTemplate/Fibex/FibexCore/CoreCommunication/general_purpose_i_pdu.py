@@ -31,6 +31,7 @@ class GeneralPurposeIPdu(IPdu):
     def __init__(self) -> None:
         """Initialize GeneralPurposeIPdu."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize GeneralPurposeIPdu to XML element.
 

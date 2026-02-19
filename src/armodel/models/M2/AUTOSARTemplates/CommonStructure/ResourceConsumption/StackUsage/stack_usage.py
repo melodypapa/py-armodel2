@@ -52,6 +52,7 @@ class StackUsage(Identifiable, ABC):
         self.hardware: Optional[HardwareConfiguration] = None
         self.hw_element: Optional[HwElement] = None
         self.software_context: Optional[SoftwareContext] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StackUsage to XML element.
 

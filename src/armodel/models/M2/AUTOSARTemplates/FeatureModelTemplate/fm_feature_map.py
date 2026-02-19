@@ -38,6 +38,7 @@ class FMFeatureMap(ARElement):
         """Initialize FMFeatureMap."""
         super().__init__()
         self.mappings: list[FMFeatureMapElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMap to XML element.
 

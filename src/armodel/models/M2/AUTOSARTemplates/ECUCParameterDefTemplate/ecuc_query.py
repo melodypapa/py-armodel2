@@ -38,6 +38,7 @@ class EcucQuery(Identifiable):
         """Initialize EcucQuery."""
         super().__init__()
         self.ecuc_query: Optional[EcucQueryExpression] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucQuery to XML element.
 

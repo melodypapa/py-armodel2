@@ -38,6 +38,7 @@ class PostBuildVariantCriterion(ARElement):
         """Initialize PostBuildVariantCriterion."""
         super().__init__()
         self.compu_method: CompuMethod = None
+
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterion to XML element.
 

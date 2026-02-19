@@ -49,6 +49,7 @@ class SdgClass(SdgElementWithGid):
         self.caption: Optional[Boolean] = None
         self.extends_meta: Optional[MetaClassName] = None
         self.sdg_constraints: list[TraceableText] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SdgClass to XML element.
 

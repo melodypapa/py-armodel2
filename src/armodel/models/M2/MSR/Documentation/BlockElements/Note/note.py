@@ -48,6 +48,7 @@ class Note(Paginateable):
         self.label: Optional[MultilanguageLongName] = None
         self.note_text: DocumentationBlock = None
         self.note_type: Optional[NoteTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Note to XML element.
 

@@ -32,6 +32,7 @@ class FMFeatureMapCondition(Identifiable):
         """Initialize FMFeatureMapCondition."""
         super().__init__()
         self.fm_cond_and_attributes: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMapCondition to XML element.
 

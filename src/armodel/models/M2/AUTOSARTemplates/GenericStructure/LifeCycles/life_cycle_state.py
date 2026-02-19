@@ -31,6 +31,7 @@ class LifeCycleState(Identifiable):
     def __init__(self) -> None:
         """Initialize LifeCycleState."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize LifeCycleState to XML element.
 

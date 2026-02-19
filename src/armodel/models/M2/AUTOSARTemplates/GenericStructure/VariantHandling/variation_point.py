@@ -42,6 +42,7 @@ class VariationPoint(ARObject):
         super().__init__()
         self.blueprint: Optional[DocumentationBlock] = None
         self.sw_syscond: Optional[ConditionByFormula] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariationPoint to XML element.
 

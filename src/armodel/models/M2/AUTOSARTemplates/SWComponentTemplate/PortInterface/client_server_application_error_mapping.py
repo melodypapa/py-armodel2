@@ -34,6 +34,7 @@ class ClientServerApplicationErrorMapping(ARObject):
         super().__init__()
         self.first_application: Optional[ApplicationError] = None
         self.second: Optional[ApplicationError] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerApplicationErrorMapping to XML element.
 

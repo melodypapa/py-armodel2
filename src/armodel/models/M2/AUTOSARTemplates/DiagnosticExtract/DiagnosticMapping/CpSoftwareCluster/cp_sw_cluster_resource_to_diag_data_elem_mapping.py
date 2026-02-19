@@ -40,6 +40,7 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.diagnostic_data: Optional[DiagnosticDataElement] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterResourceToDiagDataElemMapping to XML element.
 

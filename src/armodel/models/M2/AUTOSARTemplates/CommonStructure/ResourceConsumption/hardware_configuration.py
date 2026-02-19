@@ -36,6 +36,7 @@ class HardwareConfiguration(ARObject):
         self.additional: Optional[String] = None
         self.processor_mode: Optional[String] = None
         self.processor_speed: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HardwareConfiguration to XML element.
 

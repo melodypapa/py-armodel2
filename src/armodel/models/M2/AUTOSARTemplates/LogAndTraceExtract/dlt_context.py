@@ -43,6 +43,7 @@ class DltContext(ARElement):
         self.context: Optional[String] = None
         self.context_id: Optional[String] = None
         self.dlt_messages: list[DltMessage] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DltContext to XML element.
 

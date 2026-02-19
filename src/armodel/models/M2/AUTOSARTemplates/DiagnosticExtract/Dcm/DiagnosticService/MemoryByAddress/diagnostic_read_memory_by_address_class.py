@@ -30,6 +30,7 @@ class DiagnosticReadMemoryByAddressClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticReadMemoryByAddressClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadMemoryByAddressClass to XML element.
 

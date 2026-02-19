@@ -49,6 +49,7 @@ class ISignalIPduGroup(FibexElement):
         self.contained_refs: list[ARRef] = []
         self.i_signal_i_pdus: list[ISignalIPdu] = []
         self.nm_pdus: list[NmPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalIPduGroup to XML element.
 

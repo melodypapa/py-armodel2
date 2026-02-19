@@ -53,6 +53,7 @@ class MlFormula(Paginateable):
         self.l_graphics: list[LGraphic] = []
         self.tex_math: Optional[MultiLanguagePlainText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MlFormula to XML element.
 

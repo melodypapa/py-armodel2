@@ -47,6 +47,7 @@ class CpSoftwareClusterMappingSet(ARElement):
         self.resource_tos: list[CpSoftwareCluster] = []
         self.software_clusters: list[Any] = []
         self.swc_tos: list[SwcToApplicationPartitionMapping] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterMappingSet to XML element.
 

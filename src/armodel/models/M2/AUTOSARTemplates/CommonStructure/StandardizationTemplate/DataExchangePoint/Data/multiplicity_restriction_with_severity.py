@@ -30,6 +30,7 @@ class MultiplicityRestrictionWithSeverity(RestrictionWithSeverity):
     def __init__(self) -> None:
         """Initialize MultiplicityRestrictionWithSeverity."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize MultiplicityRestrictionWithSeverity to XML element.
 

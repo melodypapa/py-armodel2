@@ -45,6 +45,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         self.client_server: ClientServerInterface = None
         self.operation: ClientServerOperation = None
         self.port_defined_arguments: list[PortDefinedArgumentValue] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerInterfaceToBswModuleEntryBlueprintMapping to XML element.
 

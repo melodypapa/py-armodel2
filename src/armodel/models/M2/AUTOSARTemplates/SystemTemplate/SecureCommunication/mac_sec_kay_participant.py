@@ -42,6 +42,7 @@ class MacSecKayParticipant(Identifiable):
         self.ckn: Optional[CryptoServiceKey] = None
         self.crypto_algo: Optional[MacSecCryptoAlgoConfig] = None
         self.sak: Optional[CryptoServiceKey] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecKayParticipant to XML element.
 

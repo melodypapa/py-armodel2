@@ -36,6 +36,7 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
         """Initialize TriggerInterfaceMapping."""
         super().__init__()
         self.trigger_mapping_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerInterfaceMapping to XML element.
 

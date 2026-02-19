@@ -35,6 +35,7 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         """Initialize DiagnosticEcuResetClass."""
         super().__init__()
         self.respond_to: Optional[DiagnosticResponseToEcuResetEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEcuResetClass to XML element.
 

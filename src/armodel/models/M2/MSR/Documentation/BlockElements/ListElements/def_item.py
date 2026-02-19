@@ -43,6 +43,7 @@ class DefItem(Paginateable):
         super().__init__()
         self.def_: DocumentationBlock = None
         self.help_entry: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DefItem to XML element.
 

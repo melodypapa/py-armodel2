@@ -436,6 +436,9 @@ class {class_name}:
             attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
             code += attr_code
 
+    # Add blank line between __init__ and serialize/deserialize methods
+    code += "\n"
+
     # Add serialize/deserialize methods
     # Special handling for ARObject which implements the reflection-based pattern
     # All other classes get optimized serialize() and deserialize() methods
@@ -527,10 +530,15 @@ def _generate_deserialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
-            # Add -REF suffix for reference attributes (kind: "reference") with multiplicity != "*"
+            # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
-            if is_ref and kind == "reference" and multiplicity != "*":
-                xml_tag = f"{xml_tag}-REF"
+            if is_ref and multiplicity != "*":
+                # Use the kind field from JSON to determine the suffix
+                # "tref" -> -TREF, "ref" -> -REF
+                if kind == "tref":
+                    xml_tag = f"{xml_tag}-TREF"
+                else:
+                    xml_tag = f"{xml_tag}-REF"
 
             # Convert "any (xxx)" types to "Any" for generation
             effective_type = attr_type
@@ -1398,10 +1406,15 @@ def _generate_serialize_method(
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
-            # Add -REF suffix for reference attributes (kind: "reference") with multiplicity != "*"
+            # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
-            if is_ref and kind == "reference" and multiplicity != "*":
-                xml_tag = f"{xml_tag}-REF"
+            if is_ref and multiplicity != "*":
+                # Use the kind field from JSON to determine the suffix
+                # "tref" -> -TREF, "ref" -> -REF
+                if kind == "tref":
+                    xml_tag = f"{xml_tag}-TREF"
+                else:
+                    xml_tag = f"{xml_tag}-REF"
 
             # Convert "any (xxx)" types to "Any" for generation
             effective_type = attr_type

@@ -51,6 +51,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         self.pdelay_request: Optional[TimeValue] = None
         self.pdelay_resp_and: Optional[TimeValue] = None
         self.pdelay: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthGlobalTimeManagedCouplingPort to XML element.
 

@@ -35,6 +35,7 @@ class ServiceNeeds(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize ServiceNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ServiceNeeds to XML element.
 

@@ -37,6 +37,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
         super().__init__()
         self.bit_number: Optional[PositiveInteger] = None
         self.controlled_datas: list[DiagnosticDataElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlEnableMaskBit to XML element.
 

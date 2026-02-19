@@ -28,6 +28,7 @@ class CommunicationCycle(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CommunicationCycle."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationCycle to XML element.
 

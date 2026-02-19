@@ -36,6 +36,7 @@ class AutosarVariableRef(ARObject):
         super().__init__()
         self.autosar_variable: Optional[Any] = None
         self.local_variable_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarVariableRef to XML element.
 

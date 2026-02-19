@@ -32,6 +32,7 @@ class DdsLatencyBudget(ARObject):
         """Initialize DdsLatencyBudget."""
         super().__init__()
         self.latency_budget: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsLatencyBudget to XML element.
 

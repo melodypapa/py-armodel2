@@ -31,6 +31,7 @@ class RuntimeError(TracedFailure):
     def __init__(self) -> None:
         """Initialize RuntimeError."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize RuntimeError to XML element.
 

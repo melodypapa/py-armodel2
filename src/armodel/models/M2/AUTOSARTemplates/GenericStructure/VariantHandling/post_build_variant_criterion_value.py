@@ -41,6 +41,7 @@ class PostBuildVariantCriterionValue(ARObject):
         self.annotations: list[Annotation] = []
         self.value: Integer = None
         self.variant_criterion: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterionValue to XML element.
 

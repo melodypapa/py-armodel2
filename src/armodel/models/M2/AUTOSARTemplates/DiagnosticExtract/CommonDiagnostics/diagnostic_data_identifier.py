@@ -48,6 +48,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         self.did_size: Optional[PositiveInteger] = None
         self.represents_vin: Optional[Boolean] = None
         self.support_info_byte: Optional[DiagnosticSupportInfoByte] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataIdentifier to XML element.
 

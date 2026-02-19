@@ -37,6 +37,7 @@ class LifeCyclePeriod(ARObject):
         self.ar_release: Optional[RevisionLabelString] = None
         self.date: Optional[DateTime] = None
         self.product_release: Optional[RevisionLabelString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LifeCyclePeriod to XML element.
 

@@ -41,6 +41,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         self.time_based_fdc: Optional[TimeValue] = None
         self.time_failed: Optional[TimeValue] = None
         self.time_passed: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceTimeBased to XML element.
 

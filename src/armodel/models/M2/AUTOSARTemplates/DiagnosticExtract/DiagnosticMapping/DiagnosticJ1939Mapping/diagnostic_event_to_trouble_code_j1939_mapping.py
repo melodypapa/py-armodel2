@@ -40,6 +40,7 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
         super().__init__()
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.trouble_code: Optional[DiagnosticTroubleCode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToTroubleCodeJ1939Mapping to XML element.
 

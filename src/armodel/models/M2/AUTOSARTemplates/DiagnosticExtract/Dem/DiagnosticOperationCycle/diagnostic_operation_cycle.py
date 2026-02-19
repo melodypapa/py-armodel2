@@ -32,6 +32,7 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         """Initialize DiagnosticOperationCycle."""
         super().__init__()
         self.type_cycle_type_enum: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticOperationCycle to XML element.
 

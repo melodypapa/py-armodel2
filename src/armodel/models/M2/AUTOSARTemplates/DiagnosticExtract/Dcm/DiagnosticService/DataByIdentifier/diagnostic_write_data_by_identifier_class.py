@@ -30,6 +30,7 @@ class DiagnosticWriteDataByIdentifierClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifierClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticWriteDataByIdentifierClass to XML element.
 

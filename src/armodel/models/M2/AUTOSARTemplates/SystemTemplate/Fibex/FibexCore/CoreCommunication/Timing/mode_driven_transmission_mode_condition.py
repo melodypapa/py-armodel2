@@ -32,6 +32,7 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         """Initialize ModeDrivenTransmissionModeCondition."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDrivenTransmissionModeCondition to XML element.
 

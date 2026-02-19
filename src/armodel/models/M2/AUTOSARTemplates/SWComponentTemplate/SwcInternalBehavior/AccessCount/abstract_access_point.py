@@ -37,6 +37,7 @@ class AbstractAccessPoint(Identifiable, ABC):
         """Initialize AbstractAccessPoint."""
         super().__init__()
         self.return_value: Optional[RteApiReturnValueProvisionEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractAccessPoint to XML element.
 

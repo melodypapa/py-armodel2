@@ -34,6 +34,7 @@ class ApplicationSwComponentType(AtomicSwComponentType):
     def __init__(self) -> None:
         """Initialize ApplicationSwComponentType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationSwComponentType to XML element.
 

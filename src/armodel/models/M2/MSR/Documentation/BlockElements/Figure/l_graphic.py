@@ -40,6 +40,7 @@ class LGraphic(LanguageSpecific):
         super().__init__()
         self.graphic: Graphic = None
         self.map: Optional[Map] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LGraphic to XML element.
 

@@ -45,6 +45,7 @@ class DdsCpDomain(Identifiable):
         self.dds_partitions: list[DdsCpPartition] = []
         self.dds_topics: list[DdsCpTopic] = []
         self.domain_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpDomain to XML element.
 

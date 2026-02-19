@@ -40,6 +40,7 @@ class AbstractCanCluster(ARObject, ABC):
         self.bus_off_recovery: Optional[CanClusterBusOffRecovery] = None
         self.can_fd_baudrate: Optional[PositiveUnlimitedInteger] = None
         self.can_xl_baudrate: Optional[PositiveUnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractCanCluster to XML element.
 

@@ -34,6 +34,7 @@ class SwBitRepresentation(ARObject):
         super().__init__()
         self.bit_position: Optional[Integer] = None
         self.number_of_bits: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwBitRepresentation to XML element.
 

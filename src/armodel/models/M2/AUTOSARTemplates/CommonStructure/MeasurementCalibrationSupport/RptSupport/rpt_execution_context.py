@@ -30,6 +30,7 @@ class RptExecutionContext(Identifiable):
     def __init__(self) -> None:
         """Initialize RptExecutionContext."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutionContext to XML element.
 

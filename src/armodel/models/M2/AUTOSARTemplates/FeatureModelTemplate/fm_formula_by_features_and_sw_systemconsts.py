@@ -33,6 +33,7 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
         """Initialize FMFormulaByFeaturesAndSwSystemconsts."""
         super().__init__()
         self.feature: Optional[FMFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFormulaByFeaturesAndSwSystemconsts to XML element.
 

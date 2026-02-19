@@ -36,14 +36,14 @@
         "ident": {
           "type": "ExternalTriggeringPoint",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The aggregation in the role ident provides the ability to the ExternalTriggeringPoint identifiable. semantical point of view, the ExternalTriggering considered a first-class Identifiable and therefore in the role ident shall always exist (until it possible to let ModeAccessPoint directly inherit"
         },
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The trigger taken for the ExternalTriggeringPoint."
         }

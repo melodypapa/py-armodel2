@@ -32,6 +32,7 @@ class PredefinedChapter(ARObject):
         """Initialize PredefinedChapter."""
         super().__init__()
         self.chapter_model: ChapterModel = None
+
     def serialize(self) -> ET.Element:
         """Serialize PredefinedChapter to XML element.
 

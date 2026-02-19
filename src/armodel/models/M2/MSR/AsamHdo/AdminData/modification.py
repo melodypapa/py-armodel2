@@ -34,6 +34,7 @@ class Modification(ARObject):
         super().__init__()
         self.change: MultiLanguageOverviewParagraph = None
         self.reason: Optional[MultiLanguageOverviewParagraph] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Modification to XML element.
 

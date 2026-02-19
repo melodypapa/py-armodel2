@@ -32,6 +32,7 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         """Initialize DiagnosticAuthTransmitCertificate."""
         super().__init__()
         self.certificates: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthTransmitCertificate to XML element.
 

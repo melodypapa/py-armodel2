@@ -35,6 +35,7 @@ class TcpOptionFilterList(Identifiable):
         """Initialize TcpOptionFilterList."""
         super().__init__()
         self.allowed_tcp_options: list[PositiveInteger] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TcpOptionFilterList to XML element.
 

@@ -30,6 +30,7 @@ class CryptoServiceJobNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize CryptoServiceJobNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceJobNeeds to XML element.
 

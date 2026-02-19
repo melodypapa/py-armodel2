@@ -36,6 +36,7 @@ class TimingClock(Identifiable, ABC):
         """Initialize TimingClock."""
         super().__init__()
         self.platform_time: Optional[GlobalTimeDomain] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingClock to XML element.
 

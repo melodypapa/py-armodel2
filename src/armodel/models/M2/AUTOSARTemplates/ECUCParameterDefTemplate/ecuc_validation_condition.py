@@ -43,6 +43,7 @@ class EcucValidationCondition(Identifiable):
         super().__init__()
         self.ecuc_queries: list[EcucQuery] = []
         self.validation: Optional[EcucConditionFormula] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucValidationCondition to XML element.
 

@@ -34,6 +34,7 @@ class DataMapping(ARObject, ABC):
         """Initialize DataMapping."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataMapping to XML element.
 

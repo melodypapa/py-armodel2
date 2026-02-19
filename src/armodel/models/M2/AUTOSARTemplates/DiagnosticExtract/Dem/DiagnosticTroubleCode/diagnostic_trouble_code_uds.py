@@ -57,6 +57,7 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         self.severity: Optional[DiagnosticUdsSeverityEnum] = None
         self.uds_dtc_value: Optional[PositiveInteger] = None
         self.wwh_obd_dtc: Optional[DiagnosticWwhObdDtcClassEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeUds to XML element.
 

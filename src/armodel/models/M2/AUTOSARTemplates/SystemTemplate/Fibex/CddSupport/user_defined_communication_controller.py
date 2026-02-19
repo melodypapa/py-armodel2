@@ -27,6 +27,7 @@ class UserDefinedCommunicationController(ARObject):
     def __init__(self) -> None:
         """Initialize UserDefinedCommunicationController."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedCommunicationController to XML element.
 

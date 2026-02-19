@@ -36,6 +36,7 @@ class SdgDef(ARElement):
         """Initialize SdgDef."""
         super().__init__()
         self.sdg_classes: list[SdgClass] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SdgDef to XML element.
 

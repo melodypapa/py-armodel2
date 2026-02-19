@@ -33,6 +33,7 @@ class SwcToSwcSignal(ARObject):
         """Initialize SwcToSwcSignal."""
         super().__init__()
         self.data_element_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwcToSwcSignal to XML element.
 

@@ -47,6 +47,7 @@ class HttpTp(TransportProtocolConfiguration):
         self.request_method_enum: Optional[Any] = None
         self.tcp_tp_config: Optional[TcpTp] = None
         self.uri: Optional[UriString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HttpTp to XML element.
 

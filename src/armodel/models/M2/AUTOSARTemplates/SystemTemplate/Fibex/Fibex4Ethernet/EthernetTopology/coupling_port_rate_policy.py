@@ -41,6 +41,7 @@ class CouplingPortRatePolicy(ARObject):
         self.priority: Optional[PositiveInteger] = None
         self.time_interval: Optional[TimeValue] = None
         self.v_lans: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortRatePolicy to XML element.
 

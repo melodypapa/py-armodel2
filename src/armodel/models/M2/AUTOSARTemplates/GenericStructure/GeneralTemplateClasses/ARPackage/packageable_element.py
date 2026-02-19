@@ -33,6 +33,7 @@ class PackageableElement(CollectableElement, ABC):
     def __init__(self) -> None:
         """Initialize PackageableElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize PackageableElement to XML element.
 

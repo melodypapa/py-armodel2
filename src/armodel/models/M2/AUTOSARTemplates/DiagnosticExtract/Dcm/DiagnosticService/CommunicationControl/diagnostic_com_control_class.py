@@ -44,6 +44,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         self.all_physicals: list[Any] = []
         self.specific_channels: list[DiagnosticComControl] = []
         self.sub_nodes: list[DiagnosticComControl] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticComControlClass to XML element.
 

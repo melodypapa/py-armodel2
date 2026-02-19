@@ -44,6 +44,7 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         self.derivation: Optional[EcucDerivationSpecification] = None
         self.symbolic_name: Optional[Boolean] = None
         self.with_auto: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucParameterDef to XML element.
 

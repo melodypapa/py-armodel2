@@ -40,6 +40,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         super().__init__()
         self.additional: Optional[String] = None
         self.estimated_execution_time: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoughEstimateOfExecutionTime to XML element.
 

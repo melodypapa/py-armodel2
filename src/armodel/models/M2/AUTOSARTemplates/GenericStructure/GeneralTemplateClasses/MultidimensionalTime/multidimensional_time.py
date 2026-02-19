@@ -37,6 +37,7 @@ class MultidimensionalTime(ARObject):
         super().__init__()
         self.cse_code: Optional[CseCodeType] = None
         self.cse_code_factor: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MultidimensionalTime to XML element.
 

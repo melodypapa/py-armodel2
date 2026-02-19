@@ -28,6 +28,7 @@ class AbstractCondition(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize AbstractCondition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractCondition to XML element.
 

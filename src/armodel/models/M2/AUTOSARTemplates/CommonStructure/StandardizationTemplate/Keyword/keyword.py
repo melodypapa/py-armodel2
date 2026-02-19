@@ -38,6 +38,7 @@ class Keyword(Identifiable):
         super().__init__()
         self.abbr_name: NameToken = None
         self.classifications: list[NameToken] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Keyword to XML element.
 

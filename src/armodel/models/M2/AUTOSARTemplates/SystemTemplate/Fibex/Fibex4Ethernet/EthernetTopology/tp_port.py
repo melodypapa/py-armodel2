@@ -35,6 +35,7 @@ class TpPort(ARObject):
         super().__init__()
         self.dynamically: Optional[Boolean] = None
         self.port_number: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TpPort to XML element.
 

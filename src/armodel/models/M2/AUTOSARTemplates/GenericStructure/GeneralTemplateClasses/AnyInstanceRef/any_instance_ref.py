@@ -42,6 +42,7 @@ class AnyInstanceRef(ARObject):
         self.base: AtpClassifier = None
         self.context_elements: list[AtpFeature] = []
         self.target: AtpFeature = None
+
     def serialize(self) -> ET.Element:
         """Serialize AnyInstanceRef to XML element.
 

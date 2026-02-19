@@ -37,6 +37,7 @@ class CyclicTiming(Describable):
         super().__init__()
         self.time_offset: Optional[TimeRangeType] = None
         self.time_period: Optional[TimeRangeType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CyclicTiming to XML element.
 

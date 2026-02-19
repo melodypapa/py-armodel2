@@ -35,6 +35,7 @@ class DataSendCompletedEvent(RTEEvent):
         """Initialize DataSendCompletedEvent."""
         super().__init__()
         self.event_source: Optional[VariableAccess] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataSendCompletedEvent to XML element.
 

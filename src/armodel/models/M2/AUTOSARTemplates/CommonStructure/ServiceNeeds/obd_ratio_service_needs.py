@@ -45,6 +45,7 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         self.connection_type: Optional[ObdRatioConnectionKindEnum] = None
         self.rate_based_monitored_event: Optional[DiagnosticEventNeeds] = None
         self.used_fid: Optional[FunctionInhibitionNeeds] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ObdRatioServiceNeeds to XML element.
 

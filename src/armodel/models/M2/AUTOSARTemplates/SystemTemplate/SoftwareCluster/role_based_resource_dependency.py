@@ -38,6 +38,7 @@ class RoleBasedResourceDependency(ARObject):
         super().__init__()
         self.resource: Optional[CpSoftwareCluster] = None
         self.role: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedResourceDependency to XML element.
 

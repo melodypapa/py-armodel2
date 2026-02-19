@@ -54,7 +54,7 @@
         "initValues": {
           "type": "PortPrototypeBlueprint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This specifies the init values for the dataElements in the PortPrototypeBlueprint."
         },
@@ -110,7 +110,7 @@
         "dataPrototype": {
           "type": "AutosarDataPrototype",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the data prototype for which the init value applies"
         },

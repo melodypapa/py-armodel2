@@ -27,6 +27,7 @@ class EcucMultilineStringParamDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucMultilineStringParamDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucMultilineStringParamDef to XML element.
 

@@ -40,6 +40,7 @@ class FrameMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_frame_ref: Optional[ARRef] = None
         self.target_frame_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FrameMapping to XML element.
 

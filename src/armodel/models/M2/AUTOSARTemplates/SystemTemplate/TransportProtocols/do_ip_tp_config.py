@@ -40,6 +40,7 @@ class DoIpTpConfig(TpConfig):
         super().__init__()
         self.do_ip_logic_address_addresses: list[DoIpLogicAddress] = []
         self.tp_connections: list[DoIpTpConnection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpTpConfig to XML element.
 

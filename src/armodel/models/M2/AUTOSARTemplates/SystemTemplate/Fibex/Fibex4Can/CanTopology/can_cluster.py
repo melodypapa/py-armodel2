@@ -27,6 +27,7 @@ class CanCluster(ARObject):
     def __init__(self) -> None:
         """Initialize CanCluster."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CanCluster to XML element.
 

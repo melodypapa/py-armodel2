@@ -46,6 +46,7 @@ class McGroup(ARElement):
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.ref_ref: Optional[ARRef] = None
         self.sub_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McGroup to XML element.
 
@@ -81,7 +82,7 @@ class McGroup(ARElement):
             serialized = ARObject._serialize_item(self.ref_calprm_set_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET")
+                wrapped = ET.Element("REF-CALPRM-SET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -95,7 +96,7 @@ class McGroup(ARElement):
             serialized = ARObject._serialize_item(self.ref_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF")
+                wrapped = ET.Element("REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,13 +141,13 @@ class McGroup(ARElement):
                     obj.mc_functions.append(child_value)
 
         # Parse ref_calprm_set_ref
-        child = ARObject._find_child_element(element, "REF-CALPRM-SET")
+        child = ARObject._find_child_element(element, "REF-CALPRM-SET-REF")
         if child is not None:
             ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
         # Parse ref_ref
-        child = ARObject._find_child_element(element, "REF")
+        child = ARObject._find_child_element(element, "REF-REF")
         if child is not None:
             ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value

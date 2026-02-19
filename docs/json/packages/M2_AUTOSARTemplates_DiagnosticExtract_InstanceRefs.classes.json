@@ -54,7 +54,7 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the PortPrototype that is contained in the"
         },
@@ -68,14 +68,14 @@
         "rootDataPrototype": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=45"
         },
         "targetData": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the target of the InstanceRef xml.sequenceOffset=60"
         }
@@ -182,7 +182,7 @@
         "contextModeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=50"
         },

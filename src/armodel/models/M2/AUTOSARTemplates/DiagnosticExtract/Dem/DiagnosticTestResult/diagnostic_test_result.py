@@ -45,6 +45,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         self.monitored: Optional[Any] = None
         self.test_identifier: Optional[DiagnosticTestIdentifier] = None
         self.update_kind: Optional[DiagnosticTestResult] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTestResult to XML element.
 

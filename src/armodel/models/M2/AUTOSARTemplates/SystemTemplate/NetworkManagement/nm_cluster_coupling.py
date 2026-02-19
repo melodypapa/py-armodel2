@@ -28,6 +28,7 @@ class NmClusterCoupling(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize NmClusterCoupling."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize NmClusterCoupling to XML element.
 

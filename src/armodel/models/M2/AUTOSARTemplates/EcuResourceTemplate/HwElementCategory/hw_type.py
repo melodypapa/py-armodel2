@@ -31,6 +31,7 @@ class HwType(HwDescriptionEntity):
     def __init__(self) -> None:
         """Initialize HwType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize HwType to XML element.
 

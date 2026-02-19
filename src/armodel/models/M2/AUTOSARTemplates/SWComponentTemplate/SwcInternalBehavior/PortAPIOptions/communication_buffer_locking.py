@@ -35,6 +35,7 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         """Initialize CommunicationBufferLocking."""
         super().__init__()
         self.support_buffer_locking: Optional[SupportBufferLockingEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationBufferLocking to XML element.
 

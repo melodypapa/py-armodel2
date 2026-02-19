@@ -37,6 +37,7 @@ class SystemSignalGroup(ARElement):
         super().__init__()
         self.system_signals: list[SystemSignal] = []
         self.transforming: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalGroup to XML element.
 

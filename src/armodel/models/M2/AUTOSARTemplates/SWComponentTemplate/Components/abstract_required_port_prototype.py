@@ -38,6 +38,7 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
         self.required_coms: list[RPortComSpec] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractRequiredPortPrototype to XML element.
 

@@ -38,6 +38,7 @@ class EthernetCluster(ARObject):
         super().__init__()
         self.coupling_port: Optional[TimeValue] = None
         self.mac_multicast_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetCluster to XML element.
 

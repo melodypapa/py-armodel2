@@ -47,6 +47,7 @@ class SecurityEventFilterChain(IdsCommonElement):
         self.one_every_n: Optional[SecurityEventOneEveryNFilter] = None
         self.state: Optional[SecurityEventStateFilter] = None
         self.threshold: Optional[SecurityEventThresholdFilter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventFilterChain to XML element.
 

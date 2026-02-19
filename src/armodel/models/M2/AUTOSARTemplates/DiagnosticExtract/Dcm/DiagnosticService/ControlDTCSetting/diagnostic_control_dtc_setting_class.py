@@ -35,6 +35,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()
         self.control_option: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlDTCSettingClass to XML element.
 

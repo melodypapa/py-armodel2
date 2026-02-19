@@ -37,6 +37,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         super().__init__()
         self.port_scheduler_scheduler_enum: Optional[EthernetCouplingPortSchedulerEnum] = None
         self.predecessors: list[CouplingPortStructuralElement] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortScheduler to XML element.
 

@@ -38,6 +38,7 @@ class UdpNmNode(NmNode):
         super().__init__()
         self.all_nm_messages: Optional[Boolean] = None
         self.nm_msg_cycle: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpNmNode to XML element.
 

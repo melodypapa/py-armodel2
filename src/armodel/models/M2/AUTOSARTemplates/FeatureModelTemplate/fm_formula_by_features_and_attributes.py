@@ -38,6 +38,7 @@ class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
         super().__init__()
         self.attribute: Optional[FMAttributeDef] = None
         self.feature: Optional[FMFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFormulaByFeaturesAndAttributes to XML element.
 

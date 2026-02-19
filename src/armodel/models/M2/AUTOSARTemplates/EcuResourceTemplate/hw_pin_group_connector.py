@@ -41,6 +41,7 @@ class HwPinGroupConnector(Describable):
         super().__init__()
         self.hw_pins: list[HwPinConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize HwPinGroupConnector to XML element.
 

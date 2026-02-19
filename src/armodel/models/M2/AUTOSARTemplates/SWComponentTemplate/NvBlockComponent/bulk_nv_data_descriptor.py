@@ -41,6 +41,7 @@ class BulkNvDataDescriptor(Identifiable):
         super().__init__()
         self.bulk_nv_block_ref: Optional[ARRef] = None
         self.nv_block_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BulkNvDataDescriptor to XML element.
 
@@ -66,7 +67,7 @@ class BulkNvDataDescriptor(Identifiable):
             serialized = ARObject._serialize_item(self.bulk_nv_block_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BULK-NV-BLOCK")
+                wrapped = ET.Element("BULK-NV-BLOCK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,7 +102,7 @@ class BulkNvDataDescriptor(Identifiable):
         obj = super(BulkNvDataDescriptor, cls).deserialize(element)
 
         # Parse bulk_nv_block_ref
-        child = ARObject._find_child_element(element, "BULK-NV-BLOCK")
+        child = ARObject._find_child_element(element, "BULK-NV-BLOCK-REF")
         if child is not None:
             bulk_nv_block_ref_value = ARRef.deserialize(child)
             obj.bulk_nv_block_ref = bulk_nv_block_ref_value

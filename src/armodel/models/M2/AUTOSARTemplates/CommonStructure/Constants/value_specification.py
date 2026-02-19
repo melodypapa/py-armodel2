@@ -35,6 +35,7 @@ class ValueSpecification(ARObject, ABC):
         """Initialize ValueSpecification."""
         super().__init__()
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ValueSpecification to XML element.
 

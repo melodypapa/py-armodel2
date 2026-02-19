@@ -35,6 +35,7 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         """Initialize DiagnosticPowertrainFreezeFrame."""
         super().__init__()
         self.pids: list[DiagnosticParameter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticPowertrainFreezeFrame to XML element.
 

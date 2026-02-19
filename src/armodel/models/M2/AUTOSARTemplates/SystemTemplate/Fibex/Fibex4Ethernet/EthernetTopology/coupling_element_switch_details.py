@@ -52,6 +52,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         self.stream_gates: list[SwitchStreamGateEntry] = []
         self.switch_streams: list[Any] = []
         self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingElementSwitchDetails to XML element.
 

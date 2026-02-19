@@ -90,6 +90,7 @@ class FlexrayCommunicationController(ARObject):
         self.second_key_slot: Optional[PositiveInteger] = None
         self.two_key_slot: Optional[Boolean] = None
         self.wake_up_pattern: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayCommunicationController to XML element.
 

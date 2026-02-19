@@ -37,6 +37,7 @@ class DataFormatTailoring(ARObject):
         super().__init__()
         self.class_tailorings: list[ClassTailoring] = []
         self.constraints: list[ConstraintTailoring] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataFormatTailoring to XML element.
 

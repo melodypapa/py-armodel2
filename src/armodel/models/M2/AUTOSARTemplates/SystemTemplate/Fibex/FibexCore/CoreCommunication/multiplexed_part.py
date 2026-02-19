@@ -33,6 +33,7 @@ class MultiplexedPart(ARObject, ABC):
         """Initialize MultiplexedPart."""
         super().__init__()
         self.segment_positions: list[SegmentPosition] = []
+
     def serialize(self) -> ET.Element:
         """Serialize MultiplexedPart to XML element.
 

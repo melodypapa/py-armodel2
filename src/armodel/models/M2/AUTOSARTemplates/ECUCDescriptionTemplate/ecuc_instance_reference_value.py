@@ -35,6 +35,7 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()
         self.value: Optional[AtpFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucInstanceReferenceValue to XML element.
 

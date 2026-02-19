@@ -45,6 +45,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         self.security_access: Optional[Any] = None
         self.security_delay: Optional[TimeValue] = None
         self.security_level: Optional[DiagnosticSecurityLevel] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecurityAccess to XML element.
 

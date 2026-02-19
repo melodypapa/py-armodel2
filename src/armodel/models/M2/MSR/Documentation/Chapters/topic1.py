@@ -40,6 +40,7 @@ class Topic1(Paginateable):
         super().__init__()
         self.help_entry: Optional[String] = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Topic1 to XML element.
 

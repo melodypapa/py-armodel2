@@ -45,6 +45,7 @@ class CanControllerFdConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerFdConfiguration to XML element.
 

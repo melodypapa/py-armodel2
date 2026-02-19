@@ -35,6 +35,7 @@ class FramePid(ARObject):
         super().__init__()
         self.index: Optional[Integer] = None
         self.pid: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FramePid to XML element.
 

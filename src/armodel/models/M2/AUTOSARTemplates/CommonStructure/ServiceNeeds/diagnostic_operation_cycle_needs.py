@@ -32,6 +32,7 @@ class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticOperationCycleNeeds."""
         super().__init__()
         self.operation_cycle: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticOperationCycleNeeds to XML element.
 

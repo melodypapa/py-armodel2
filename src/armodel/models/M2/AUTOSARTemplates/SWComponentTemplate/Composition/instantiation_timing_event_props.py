@@ -35,6 +35,7 @@ class InstantiationTimingEventProps(InstantiationRTEEventProps):
         """Initialize InstantiationTimingEventProps."""
         super().__init__()
         self.period: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InstantiationTimingEventProps to XML element.
 

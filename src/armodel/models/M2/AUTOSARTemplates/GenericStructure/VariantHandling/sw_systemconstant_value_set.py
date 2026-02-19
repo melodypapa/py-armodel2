@@ -40,6 +40,7 @@ class SwSystemconstantValueSet(ARElement):
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
         self.sws: list[SwSystemconstValue] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwSystemconstantValueSet to XML element.
 

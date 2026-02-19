@@ -77,6 +77,7 @@ class IPSecRule(Identifiable):
         self.remote_id: Optional[String] = None
         self.remote_ips: list[NetworkEndpoint] = []
         self.remote_port: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPSecRule to XML element.
 

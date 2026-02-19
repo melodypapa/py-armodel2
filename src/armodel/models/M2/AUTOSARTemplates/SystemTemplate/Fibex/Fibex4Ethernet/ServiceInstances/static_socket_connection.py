@@ -53,6 +53,7 @@ class StaticSocketConnection(Identifiable):
         self.remote_address: Optional[SocketAddress] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StaticSocketConnection to XML element.
 

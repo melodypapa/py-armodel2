@@ -46,6 +46,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
         self.context_datas: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target_data_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInPortInterfaceInstanceRef to XML element.
 

@@ -90,6 +90,7 @@ class DdsCpQosProfile(Identifiable):
         self.resource_limits: Optional[DdsResourceLimits] = None
         self.topic_data: Optional[DdsTopicData] = None
         self.transport_priority: Optional[DdsTransportPriority] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpQosProfile to XML element.
 

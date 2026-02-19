@@ -40,6 +40,7 @@ class BswModeReceiverPolicy(ARObject):
         self.enhanced_mode: Optional[Boolean] = None
         self.required_mode_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModeReceiverPolicy to XML element.
 

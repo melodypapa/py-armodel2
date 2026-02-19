@@ -41,6 +41,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         self.sync_jump_width: Optional[Integer] = None
         self.time_seg1: Optional[Integer] = None
         self.time_seg2: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerConfiguration to XML element.
 

@@ -30,6 +30,7 @@ class InitEvent(RTEEvent):
     def __init__(self) -> None:
         """Initialize InitEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize InitEvent to XML element.
 

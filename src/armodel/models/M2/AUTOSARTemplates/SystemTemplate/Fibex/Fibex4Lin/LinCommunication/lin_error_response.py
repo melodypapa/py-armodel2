@@ -33,6 +33,7 @@ class LinErrorResponse(ARObject):
         """Initialize LinErrorResponse."""
         super().__init__()
         self.response_error_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinErrorResponse to XML element.
 

@@ -49,6 +49,7 @@ class LatencyTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.nominal: Optional[MultidimensionalTime] = None
         self.scope: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LatencyTimingConstraint to XML element.
 

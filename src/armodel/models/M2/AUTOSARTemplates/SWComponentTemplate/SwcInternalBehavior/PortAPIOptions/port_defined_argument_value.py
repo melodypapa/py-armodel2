@@ -39,6 +39,7 @@ class PortDefinedArgumentValue(ARObject):
         super().__init__()
         self.value: Optional[ValueSpecification] = None
         self.value_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortDefinedArgumentValue to XML element.
 

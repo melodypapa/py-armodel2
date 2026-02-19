@@ -42,6 +42,7 @@ class AgeConstraint(TimingConstraint):
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
         self.scope: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AgeConstraint to XML element.
 

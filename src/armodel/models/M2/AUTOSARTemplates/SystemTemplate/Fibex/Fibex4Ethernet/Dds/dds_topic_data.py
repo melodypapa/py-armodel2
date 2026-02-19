@@ -32,6 +32,7 @@ class DdsTopicData(ARObject):
         """Initialize DdsTopicData."""
         super().__init__()
         self.topic_data: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsTopicData to XML element.
 

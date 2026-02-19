@@ -45,6 +45,7 @@ class ParameterAccess(AbstractAccessPoint):
         super().__init__()
         self.accessed_parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterAccess to XML element.
 
@@ -70,7 +71,7 @@ class ParameterAccess(AbstractAccessPoint):
             serialized = ARObject._serialize_item(self.accessed_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-PARAMETER")
+                wrapped = ET.Element("ACCESSED-PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,7 +110,7 @@ class ParameterAccess(AbstractAccessPoint):
         obj = super(ParameterAccess, cls).deserialize(element)
 
         # Parse accessed_parameter_ref
-        child = ARObject._find_child_element(element, "ACCESSED-PARAMETER")
+        child = ARObject._find_child_element(element, "ACCESSED-PARAMETER-REF")
         if child is not None:
             accessed_parameter_ref_value = ARRef.deserialize(child)
             obj.accessed_parameter_ref = accessed_parameter_ref_value

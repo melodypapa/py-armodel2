@@ -30,6 +30,7 @@ class SymbolicNameProps(ImplementationProps):
     def __init__(self) -> None:
         """Initialize SymbolicNameProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SymbolicNameProps to XML element.
 

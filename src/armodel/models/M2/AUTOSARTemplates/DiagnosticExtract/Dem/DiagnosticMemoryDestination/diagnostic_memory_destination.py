@@ -57,6 +57,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         self.memory_entry: Optional[DiagnosticMemoryEntryStorageTriggerEnum] = None
         self.status_bit: Optional[Boolean] = None
         self.type_of_freeze: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryDestination to XML element.
 

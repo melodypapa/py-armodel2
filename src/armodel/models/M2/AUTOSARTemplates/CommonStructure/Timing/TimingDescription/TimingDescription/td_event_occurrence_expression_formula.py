@@ -44,6 +44,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         self.event: Optional[TimingDescriptionEvent] = None
         self.mode: Optional[TimingModeInstance] = None
         self.variable: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventOccurrenceExpressionFormula to XML element.
 

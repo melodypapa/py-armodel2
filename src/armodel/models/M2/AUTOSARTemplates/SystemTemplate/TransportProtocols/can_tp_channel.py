@@ -35,6 +35,7 @@ class CanTpChannel(Identifiable):
         """Initialize CanTpChannel."""
         super().__init__()
         self.channel_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpChannel to XML element.
 

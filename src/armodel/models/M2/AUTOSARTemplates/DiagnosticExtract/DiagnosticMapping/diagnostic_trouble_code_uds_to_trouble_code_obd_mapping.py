@@ -37,6 +37,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         super().__init__()
         self.trouble_code: Optional[DiagnosticTroubleCode] = None
         self.trouble_code_uds: Optional[DiagnosticTroubleCode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping to XML element.
 

@@ -34,6 +34,7 @@ class DiagnosticPeriodicRate(ARObject):
         super().__init__()
         self.period: Optional[TimeValue] = None
         self.periodic_rate: Optional[DiagnosticPeriodicRate] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticPeriodicRate to XML element.
 

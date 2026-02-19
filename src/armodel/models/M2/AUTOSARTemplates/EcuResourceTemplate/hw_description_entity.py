@@ -47,6 +47,7 @@ class HwDescriptionEntity(Referrable, ABC):
         self.hw_attributes: list[HwAttributeValue] = []
         self.hw_categories: list[HwCategory] = []
         self.hw_type: Optional[HwType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwDescriptionEntity to XML element.
 

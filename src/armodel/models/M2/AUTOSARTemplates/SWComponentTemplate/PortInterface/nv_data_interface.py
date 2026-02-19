@@ -39,6 +39,7 @@ class NvDataInterface(DataInterface):
         """Initialize NvDataInterface."""
         super().__init__()
         self.nv_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NvDataInterface to XML element.
 

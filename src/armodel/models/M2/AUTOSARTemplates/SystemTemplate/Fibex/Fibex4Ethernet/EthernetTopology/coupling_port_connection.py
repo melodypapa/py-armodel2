@@ -43,6 +43,7 @@ class CouplingPortConnection(ARObject):
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_transmit: Optional[PositiveInteger] = None
         self.second_port: Optional[CouplingPort] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortConnection to XML element.
 

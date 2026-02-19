@@ -60,6 +60,7 @@ class RptExecutableEntityEvent(Identifiable):
         self.rpt_executable_entity: Optional[RptExecutableEntity] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_service_points: list[RptServicePoint] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntityEvent to XML element.
 

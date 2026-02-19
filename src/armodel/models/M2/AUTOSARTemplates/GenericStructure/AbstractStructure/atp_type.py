@@ -31,6 +31,7 @@ class AtpType(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AtpType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AtpType to XML element.
 

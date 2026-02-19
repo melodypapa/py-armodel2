@@ -31,6 +31,7 @@ class RecordValueSpecification(CompositeValueSpecification):
     def __init__(self) -> None:
         """Initialize RecordValueSpecification."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize RecordValueSpecification to XML element.
 

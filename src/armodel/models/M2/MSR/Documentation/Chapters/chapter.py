@@ -44,6 +44,7 @@ class Chapter(Paginateable):
         super().__init__()
         self.chapter_model: ChapterModel = None
         self.help_entry: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Chapter to XML element.
 

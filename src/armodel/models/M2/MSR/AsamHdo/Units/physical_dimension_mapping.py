@@ -34,6 +34,7 @@ class PhysicalDimensionMapping(ARObject):
         super().__init__()
         self.first_physical: Optional[PhysicalDimension] = None
         self.second_physical: Optional[PhysicalDimension] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PhysicalDimensionMapping to XML element.
 

@@ -35,6 +35,7 @@ class VlanConfig(Identifiable):
         """Initialize VlanConfig."""
         super().__init__()
         self.vlan_identifier: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VlanConfig to XML element.
 

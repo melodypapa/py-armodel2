@@ -59,6 +59,7 @@ class Collection(ARElement):
         self.element_role: Optional[Identifier] = None
         self.source_elements: list[Identifiable] = []
         self.source_instances: list[AtpFeature] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Collection to XML element.
 

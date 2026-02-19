@@ -30,6 +30,7 @@ class DiagnosticControlNeeds(DiagnosticCapabilityElement):
     def __init__(self) -> None:
         """Initialize DiagnosticControlNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlNeeds to XML element.
 

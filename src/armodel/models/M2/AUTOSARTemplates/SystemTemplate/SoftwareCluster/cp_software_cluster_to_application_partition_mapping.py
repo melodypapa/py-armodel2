@@ -40,6 +40,7 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         super().__init__()
         self.applications: list[ApplicationPartition] = []
         self.software_cluster: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToApplicationPartitionMapping to XML element.
 

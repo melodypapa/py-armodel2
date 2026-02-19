@@ -38,6 +38,7 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
         super().__init__()
         self.bit_position: Optional[PositiveInteger] = None
         self.is_default: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthRole to XML element.
 

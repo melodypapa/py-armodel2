@@ -46,6 +46,7 @@ class EndToEndDescription(ARObject):
         self.data_id_nibble: Optional[PositiveInteger] = None
         self.data_length: Optional[PositiveInteger] = None
         self.max_delta: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndDescription to XML element.
 

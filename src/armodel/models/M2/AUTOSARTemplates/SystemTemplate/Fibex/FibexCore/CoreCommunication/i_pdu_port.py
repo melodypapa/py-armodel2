@@ -45,6 +45,7 @@ class IPduPort(CommConnectorPort):
         self.rx_security: Optional[Boolean] = None
         self.timestamp_rx: Optional[TimeValue] = None
         self.use_auth_data: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPduPort to XML element.
 

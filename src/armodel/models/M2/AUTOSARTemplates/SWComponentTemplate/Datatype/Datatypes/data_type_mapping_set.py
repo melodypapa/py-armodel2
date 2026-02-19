@@ -43,6 +43,7 @@ class DataTypeMappingSet(ARElement):
         super().__init__()
         self.data_type_maps: list[DataTypeMap] = []
         self.mode_request_type_maps: list[ModeRequestTypeMap] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMappingSet to XML element.
 

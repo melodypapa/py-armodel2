@@ -37,6 +37,7 @@ class DhcpServerConfiguration(ARObject):
         super().__init__()
         self.ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration] = None
         self.ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DhcpServerConfiguration to XML element.
 

@@ -30,6 +30,7 @@ class BlueprintPolicyNotModifiable(BlueprintPolicy):
     def __init__(self) -> None:
         """Initialize BlueprintPolicyNotModifiable."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintPolicyNotModifiable to XML element.
 

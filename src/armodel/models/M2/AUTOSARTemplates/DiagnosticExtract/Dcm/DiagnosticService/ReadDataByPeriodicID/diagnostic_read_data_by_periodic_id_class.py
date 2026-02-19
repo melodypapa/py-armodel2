@@ -42,6 +42,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         self.max_periodic_did: Optional[PositiveInteger] = None
         self.periodic_rates: list[DiagnosticPeriodicRate] = []
         self.scheduler_max: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDataByPeriodicIDClass to XML element.
 

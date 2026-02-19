@@ -35,6 +35,7 @@ class BswInternalTriggeringPoint(Identifiable):
         """Initialize BswInternalTriggeringPoint."""
         super().__init__()
         self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswInternalTriggeringPoint to XML element.
 

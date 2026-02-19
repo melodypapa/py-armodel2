@@ -36,6 +36,7 @@ class DiagnosticAbstractDataIdentifier(DiagnosticCommonElement, ABC):
         """Initialize DiagnosticAbstractDataIdentifier."""
         super().__init__()
         self.id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAbstractDataIdentifier to XML element.
 

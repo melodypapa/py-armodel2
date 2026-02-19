@@ -35,6 +35,7 @@ class EcuPartition(Identifiable):
         """Initialize EcuPartition."""
         super().__init__()
         self.exec_in_user: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcuPartition to XML element.
 

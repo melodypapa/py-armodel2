@@ -41,6 +41,7 @@ class SynchronizationPointConstraint(TimingConstraint):
         self.source_events: list[AbstractEvent] = []
         self.target_eecs: list[Any] = []
         self.target_events: list[AbstractEvent] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SynchronizationPointConstraint to XML element.
 

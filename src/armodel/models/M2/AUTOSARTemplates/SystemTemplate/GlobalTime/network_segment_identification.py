@@ -32,6 +32,7 @@ class NetworkSegmentIdentification(ARObject):
         """Initialize NetworkSegmentIdentification."""
         super().__init__()
         self.network: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NetworkSegmentIdentification to XML element.
 

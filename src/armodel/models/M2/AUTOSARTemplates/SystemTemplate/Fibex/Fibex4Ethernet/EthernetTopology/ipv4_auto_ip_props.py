@@ -32,6 +32,7 @@ class Ipv4AutoIpProps(ARObject):
         """Initialize Ipv4AutoIpProps."""
         super().__init__()
         self.tcp_ip_auto_ip_init: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4AutoIpProps to XML element.
 

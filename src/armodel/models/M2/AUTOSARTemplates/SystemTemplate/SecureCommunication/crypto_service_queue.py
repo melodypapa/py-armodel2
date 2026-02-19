@@ -35,6 +35,7 @@ class CryptoServiceQueue(ARElement):
         """Initialize CryptoServiceQueue."""
         super().__init__()
         self.queue_size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceQueue to XML element.
 

@@ -85,7 +85,7 @@
         "defList": {
           "type": "DefList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a definition list in the documentation atpVariation"
         },
@@ -106,14 +106,14 @@
         "labeledListLabel": {
           "type": "LabeledList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a labeled list. atpVariation"
         },
         "list": {
           "type": "List",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents numbered or unnumbered list. atpVariation"
         },

@@ -36,6 +36,7 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
         self.data_prototype_in_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInPortInterfaceRef to XML element.
 
@@ -61,7 +62,7 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
             serialized = ARObject._serialize_item(self.data_prototype_in_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE-IN")
+                wrapped = ET.Element("DATA-PROTOTYPE-IN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,7 +87,7 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         obj = super(DataPrototypeInPortInterfaceRef, cls).deserialize(element)
 
         # Parse data_prototype_in_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN")
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN-REF")
         if child is not None:
             data_prototype_in_ref_value = ARRef.deserialize(child)
             obj.data_prototype_in_ref = data_prototype_in_ref_value

@@ -34,6 +34,7 @@ class ReceptionComSpecProps(ARObject):
         super().__init__()
         self.data_update: Optional[TimeValue] = None
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReceptionComSpecProps to XML element.
 

@@ -45,6 +45,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         self.dtc_props_props: Optional[DiagnosticTroubleCode] = None
         self.event_readiness: Optional[EventObdReadinessGroup] = None
         self.obd_dtc_value: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeObd to XML element.
 

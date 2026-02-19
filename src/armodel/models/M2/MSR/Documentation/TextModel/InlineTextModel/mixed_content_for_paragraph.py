@@ -90,6 +90,7 @@ class MixedContentForParagraph(ARObject, ABC):
         self.xfile: Xfile = None
         self.xref: Xref = None
         self.xref_target: XrefTarget = None
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForParagraph to XML element.
 

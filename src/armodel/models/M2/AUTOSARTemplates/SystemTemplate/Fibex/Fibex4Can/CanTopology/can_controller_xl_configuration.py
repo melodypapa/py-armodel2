@@ -51,6 +51,7 @@ class CanControllerXlConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerXlConfiguration to XML element.
 

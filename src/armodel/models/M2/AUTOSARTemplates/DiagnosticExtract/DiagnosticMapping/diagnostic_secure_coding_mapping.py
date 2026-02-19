@@ -37,6 +37,7 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         super().__init__()
         self.data_identifiers: list[Any] = []
         self.validation: Optional[DiagnosticStartRoutine] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecureCodingMapping to XML element.
 

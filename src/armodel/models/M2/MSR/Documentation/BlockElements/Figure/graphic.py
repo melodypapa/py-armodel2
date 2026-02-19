@@ -68,6 +68,7 @@ class Graphic(EngineeringObject):
         self.notation: Optional[GraphicNotationEnum] = None
         self.scale: Optional[String] = None
         self.width: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Graphic to XML element.
 

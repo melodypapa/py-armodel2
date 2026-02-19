@@ -45,6 +45,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         self.max_supported: Optional[PositiveInteger] = None
         self.response_on: Optional[TimeValue] = None
         self.store_event: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticResponseOnEventClass to XML element.
 

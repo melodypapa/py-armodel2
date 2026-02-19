@@ -34,6 +34,7 @@ class TDHeaderIdRange(ARObject):
         super().__init__()
         self.max_header_id: Optional[Integer] = None
         self.min_header_id: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDHeaderIdRange to XML element.
 

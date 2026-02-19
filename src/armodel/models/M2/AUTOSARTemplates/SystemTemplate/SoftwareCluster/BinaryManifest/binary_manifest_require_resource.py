@@ -35,6 +35,7 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         """Initialize BinaryManifestRequireResource."""
         super().__init__()
         self.connection_is: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestRequireResource to XML element.
 

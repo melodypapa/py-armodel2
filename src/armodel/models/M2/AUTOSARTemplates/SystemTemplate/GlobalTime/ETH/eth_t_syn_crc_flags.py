@@ -42,6 +42,7 @@ class EthTSynCrcFlags(ARObject):
         self.crc_precise: Optional[Boolean] = None
         self.crc_sequence_id: Optional[Boolean] = None
         self.crc_source_port: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTSynCrcFlags to XML element.
 

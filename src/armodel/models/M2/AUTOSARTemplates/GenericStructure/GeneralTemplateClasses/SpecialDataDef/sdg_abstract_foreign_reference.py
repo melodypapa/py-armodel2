@@ -36,6 +36,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         """Initialize SdgAbstractForeignReference."""
         super().__init__()
         self.dest_meta_class: Optional[MetaClassName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgAbstractForeignReference to XML element.
 

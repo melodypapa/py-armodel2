@@ -45,6 +45,7 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
         self.hold_over_time: Optional[TimeValue] = None
         self.sub_tlv_config: Optional[EthTSynSubTlvConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeEthMaster to XML element.
 

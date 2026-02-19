@@ -35,6 +35,7 @@ class Sdf(ARObject):
         super().__init__()
         self.gid: NameToken = None
         self.value: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Sdf to XML element.
 

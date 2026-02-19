@@ -32,6 +32,7 @@ class TransformationComSpecProps(Describable, ABC):
     def __init__(self) -> None:
         """Initialize TransformationComSpecProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationComSpecProps to XML element.
 

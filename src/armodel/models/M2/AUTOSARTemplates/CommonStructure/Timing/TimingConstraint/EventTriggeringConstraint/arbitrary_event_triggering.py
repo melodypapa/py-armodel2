@@ -42,6 +42,7 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         self.confidence_intervals: list[ConfidenceInterval] = []
         self.maximums: list[MultidimensionalTime] = []
         self.minimums: list[MultidimensionalTime] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ArbitraryEventTriggering to XML element.
 

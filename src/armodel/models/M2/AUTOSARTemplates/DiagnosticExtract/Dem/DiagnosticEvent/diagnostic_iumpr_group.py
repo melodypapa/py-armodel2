@@ -38,6 +38,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
         self.iumpr_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprGroup to XML element.
 
@@ -73,7 +74,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
             serialized = ARObject._serialize_item(self.iumpr_group_ref, "DiagnosticIumprGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IUMPR-GROUP")
+                wrapped = ET.Element("IUMPR-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,7 +109,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
                     obj.iumprs.append(child_value)
 
         # Parse iumpr_group_ref
-        child = ARObject._find_child_element(element, "IUMPR-GROUP")
+        child = ARObject._find_child_element(element, "IUMPR-GROUP-REF")
         if child is not None:
             iumpr_group_ref_value = ARRef.deserialize(child)
             obj.iumpr_group_ref = iumpr_group_ref_value

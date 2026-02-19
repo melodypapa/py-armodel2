@@ -32,6 +32,7 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
         self.grouped_aliases: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroup to XML element.
 

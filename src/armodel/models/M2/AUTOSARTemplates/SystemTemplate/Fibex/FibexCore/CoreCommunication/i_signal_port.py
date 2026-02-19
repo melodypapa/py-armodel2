@@ -52,6 +52,7 @@ class ISignalPort(CommConnectorPort):
         self.first_timeout: Optional[TimeValue] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalPort to XML element.
 

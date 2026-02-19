@@ -37,6 +37,7 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         super().__init__()
         self.diagnostic_session_session: Optional[DiagnosticSession] = None
         self.session_control: Optional[DiagnosticSession] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSessionControl to XML element.
 

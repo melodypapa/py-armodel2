@@ -35,6 +35,7 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         """Initialize DiagnosticSessionControlClass."""
         super().__init__()
         self.s3_server: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSessionControlClass to XML element.
 

@@ -69,6 +69,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         self.priority: Optional[PositiveInteger] = None
         self.significance: Optional[DiagnosticSignificanceEnum] = None
         self.snapshot: Optional[DiagnosticDataIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeProps to XML element.
 

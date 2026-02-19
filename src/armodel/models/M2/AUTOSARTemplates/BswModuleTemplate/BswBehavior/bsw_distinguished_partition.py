@@ -30,6 +30,7 @@ class BswDistinguishedPartition(Referrable):
     def __init__(self) -> None:
         """Initialize BswDistinguishedPartition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswDistinguishedPartition to XML element.
 

@@ -35,6 +35,7 @@ class EthTpConfig(TpConfig):
         """Initialize EthTpConfig."""
         super().__init__()
         self.tp_connections: list[EthTpConnection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EthTpConfig to XML element.
 

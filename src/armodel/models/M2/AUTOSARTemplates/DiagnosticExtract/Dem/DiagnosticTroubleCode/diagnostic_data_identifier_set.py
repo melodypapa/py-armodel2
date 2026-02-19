@@ -35,6 +35,7 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         """Initialize DiagnosticDataIdentifierSet."""
         super().__init__()
         self.data_identifiers: list[DiagnosticDataIdentifier] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataIdentifierSet to XML element.
 

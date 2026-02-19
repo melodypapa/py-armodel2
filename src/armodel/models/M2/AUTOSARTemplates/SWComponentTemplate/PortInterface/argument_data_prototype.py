@@ -45,6 +45,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
         self.server_argument_impl: Optional[ServerArgumentImplPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArgumentDataPrototype to XML element.
 

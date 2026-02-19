@@ -40,6 +40,7 @@ class LinPhysicalChannel(PhysicalChannel):
         super().__init__()
         self.bus_idle_timeout: Optional[TimeValue] = None
         self.schedule_tables: list[LinScheduleTable] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinPhysicalChannel to XML element.
 

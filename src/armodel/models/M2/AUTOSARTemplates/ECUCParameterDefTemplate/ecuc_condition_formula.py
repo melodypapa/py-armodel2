@@ -35,6 +35,7 @@ class EcucConditionFormula(ARObject):
         """Initialize EcucConditionFormula."""
         super().__init__()
         self.ecuc_query: Optional[EcucQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucConditionFormula to XML element.
 

@@ -53,6 +53,7 @@ class NetworkEndpoint(Identifiable):
         self.ip_sec_config: Optional[IPSecConfig] = None
         self.network_endpoints: list[NetworkEndpoint] = []
         self.priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NetworkEndpoint to XML element.
 

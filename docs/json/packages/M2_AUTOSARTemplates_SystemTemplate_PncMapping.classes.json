@@ -31,14 +31,14 @@
         "dynamicPncs": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to an ISignalIPduGroup that allows mapping of PNC without statically mapping this PNC directly to a This is needed to describe dynamic PNCs that learned only at run-time and which have also a an ISignalIPduGroup."
         },
         "ident": {
           "type": "PncMappingIdent",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This adds the ability to become referrable to PncMapping."
         },
@@ -59,7 +59,7 @@
         "pncGroups": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "IPduGroup participating in a Partial Network Cluster. This optional in case an ecu extract has only access, i.e. ecu is not directly connected to a supports partial network."
         },
@@ -73,7 +73,7 @@
         "pncPdurGroups": {
           "type": "PdurIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference maps the Partial Network Cluster to a set"
         },
@@ -101,14 +101,14 @@
         "vfcs": {
           "type": "PortGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
-          "note": "This reference is optional in case that Description doesn’t use a complete Software (VFB View). This supports the legacy systems. by: PortGroupInSystem"
+          "note": "This reference is optional in case that Description doesn\u2019t use a complete Software (VFB View). This supports the legacy systems. by: PortGroupInSystem"
         },
         "wakeupFrames": {
           "type": "FrameTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to collection of FrameTriggerings that are used wakeup of this PNC (Application Frames or Nm be used). This reference is only valid if this an ECU which has direct PNC ECU is directly connected to a network which network."
         }

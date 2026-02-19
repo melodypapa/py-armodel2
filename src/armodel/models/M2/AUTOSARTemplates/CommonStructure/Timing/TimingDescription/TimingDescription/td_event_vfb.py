@@ -33,6 +33,7 @@ class TDEventVfb(TimingDescriptionEvent, ABC):
         """Initialize TDEventVfb."""
         super().__init__()
         self.component: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventVfb to XML element.
 

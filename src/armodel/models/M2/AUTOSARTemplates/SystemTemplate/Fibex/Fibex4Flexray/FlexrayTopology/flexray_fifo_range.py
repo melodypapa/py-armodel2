@@ -34,6 +34,7 @@ class FlexrayFifoRange(ARObject):
         super().__init__()
         self.range_max: Optional[Integer] = None
         self.range_min: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFifoRange to XML element.
 

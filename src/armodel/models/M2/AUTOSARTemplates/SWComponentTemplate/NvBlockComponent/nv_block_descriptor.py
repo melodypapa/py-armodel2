@@ -85,6 +85,7 @@ class NvBlockDescriptor(Identifiable):
         self.support_dirty: Optional[Boolean] = None
         self.timing_event: Optional[TimingEvent] = None
         self.writing_strategies: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NvBlockDescriptor to XML element.
 
@@ -184,7 +185,7 @@ class NvBlockDescriptor(Identifiable):
             serialized = ARObject._serialize_item(self.ram_block_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RAM-BLOCK")
+                wrapped = ET.Element("RAM-BLOCK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -198,7 +199,7 @@ class NvBlockDescriptor(Identifiable):
             serialized = ARObject._serialize_item(self.rom_block_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROM-BLOCK")
+                wrapped = ET.Element("ROM-BLOCK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -327,13 +328,13 @@ class NvBlockDescriptor(Identifiable):
             obj.nv_block_needs = nv_block_needs_value
 
         # Parse ram_block_ref
-        child = ARObject._find_child_element(element, "RAM-BLOCK")
+        child = ARObject._find_child_element(element, "RAM-BLOCK-REF")
         if child is not None:
             ram_block_ref_value = ARRef.deserialize(child)
             obj.ram_block_ref = ram_block_ref_value
 
         # Parse rom_block_ref
-        child = ARObject._find_child_element(element, "ROM-BLOCK")
+        child = ARObject._find_child_element(element, "ROM-BLOCK-REF")
         if child is not None:
             rom_block_ref_value = ARRef.deserialize(child)
             obj.rom_block_ref = rom_block_ref_value

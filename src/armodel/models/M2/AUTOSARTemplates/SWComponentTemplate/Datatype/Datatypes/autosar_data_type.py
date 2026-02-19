@@ -43,6 +43,7 @@ class AutosarDataType(ARElement, ABC):
         """Initialize AutosarDataType."""
         super().__init__()
         self.sw_data_def_props: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarDataType to XML element.
 

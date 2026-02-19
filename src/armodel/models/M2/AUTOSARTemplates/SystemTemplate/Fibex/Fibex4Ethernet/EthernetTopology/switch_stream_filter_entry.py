@@ -55,6 +55,7 @@ class SwitchStreamFilterEntry(Identifiable):
         self.max_sdu_size: Optional[PositiveInteger] = None
         self.stream_gate: Optional[SwitchStreamGateEntry] = None
         self.stream: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamFilterEntry to XML element.
 

@@ -35,6 +35,7 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         """Initialize ConsistencyNeedsBlueprintSet."""
         super().__init__()
         self.consistency_needses: list[ConsistencyNeeds] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ConsistencyNeedsBlueprintSet to XML element.
 

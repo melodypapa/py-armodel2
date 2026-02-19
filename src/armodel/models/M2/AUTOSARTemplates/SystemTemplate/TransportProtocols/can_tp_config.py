@@ -55,6 +55,7 @@ class CanTpConfig(TpConfig):
         self.tp_connections: list[CanTpConnection] = []
         self.tp_ecus: list[CanTpEcu] = []
         self.tp_nodes: list[CanTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpConfig to XML element.
 

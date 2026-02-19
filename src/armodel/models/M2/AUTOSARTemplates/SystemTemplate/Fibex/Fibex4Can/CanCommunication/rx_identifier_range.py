@@ -34,6 +34,7 @@ class RxIdentifierRange(ARObject):
         super().__init__()
         self.lower_can_id: Optional[PositiveInteger] = None
         self.upper_can_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RxIdentifierRange to XML element.
 

@@ -39,6 +39,7 @@ class PeriodicEventTriggering(EventTriggeringConstraint):
         self.jitter: Optional[MultidimensionalTime] = None
         self.minimum_inter: Optional[MultidimensionalTime] = None
         self.period: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PeriodicEventTriggering to XML element.
 

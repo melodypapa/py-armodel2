@@ -30,6 +30,7 @@ class SdgPrimitiveAttribute(SdgAbstractPrimitiveAttribute):
     def __init__(self) -> None:
         """Initialize SdgPrimitiveAttribute."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SdgPrimitiveAttribute to XML element.
 

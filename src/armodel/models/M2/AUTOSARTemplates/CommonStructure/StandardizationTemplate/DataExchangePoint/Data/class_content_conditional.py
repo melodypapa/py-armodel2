@@ -50,6 +50,7 @@ class ClassContentConditional(Identifiable):
         self.condition: Optional[AbstractCondition] = None
         self.constraints: list[ConstraintTailoring] = []
         self.sdg_tailorings: list[SdgTailoring] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClassContentConditional to XML element.
 

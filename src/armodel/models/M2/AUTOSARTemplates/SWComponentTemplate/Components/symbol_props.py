@@ -32,6 +32,7 @@ class SymbolProps(ImplementationProps):
     def __init__(self) -> None:
         """Initialize SymbolProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SymbolProps to XML element.
 

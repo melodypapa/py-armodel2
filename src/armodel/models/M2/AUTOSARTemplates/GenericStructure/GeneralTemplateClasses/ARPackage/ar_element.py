@@ -40,6 +40,7 @@ class ARElement(PackageableElement, ABC):
     def __init__(self) -> None:
         """Initialize ARElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ARElement to XML element.
 

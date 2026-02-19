@@ -44,6 +44,7 @@ class AbstractValueRestriction(ARObject, ABC):
         self.min: Optional[Limit] = None
         self.min_length: Optional[PositiveInteger] = None
         self.pattern: Optional[RegularExpression] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractValueRestriction to XML element.
 

@@ -36,6 +36,7 @@ class AtpClassifier(Identifiable, ABC):
         """Initialize AtpClassifier."""
         super().__init__()
         self.atp_features: list[AtpFeature] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AtpClassifier to XML element.
 

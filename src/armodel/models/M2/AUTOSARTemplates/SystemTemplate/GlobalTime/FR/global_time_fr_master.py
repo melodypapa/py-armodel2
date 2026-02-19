@@ -35,6 +35,7 @@ class GlobalTimeFrMaster(GlobalTimeMaster):
         """Initialize GlobalTimeFrMaster."""
         super().__init__()
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeFrMaster to XML element.
 

@@ -40,6 +40,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
         self.parameters: list[EcucParameterDef] = []
         self.reference_refs: list[Any] = []
         self.sub_containers: list[EcucContainerDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucParamConfContainerDef to XML element.
 

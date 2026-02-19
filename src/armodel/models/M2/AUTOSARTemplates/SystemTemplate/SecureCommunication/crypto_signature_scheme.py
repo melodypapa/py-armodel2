@@ -35,6 +35,7 @@ class CryptoSignatureScheme(ARElement):
         """Initialize CryptoSignatureScheme."""
         super().__init__()
         self.signature: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoSignatureScheme to XML element.
 

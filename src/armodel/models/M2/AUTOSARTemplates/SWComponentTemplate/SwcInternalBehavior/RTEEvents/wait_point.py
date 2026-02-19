@@ -43,6 +43,7 @@ class WaitPoint(Identifiable):
         super().__init__()
         self.timeout: Optional[TimeValue] = None
         self.trigger: Optional[RTEEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize WaitPoint to XML element.
 

@@ -34,6 +34,7 @@ class TextTableValuePair(ARObject):
         super().__init__()
         self.first_value: Optional[Numerical] = None
         self.second_value: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TextTableValuePair to XML element.
 

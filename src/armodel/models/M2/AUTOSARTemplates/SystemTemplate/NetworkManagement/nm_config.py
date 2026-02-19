@@ -45,6 +45,7 @@ class NmConfig(FibexElement):
         self.nm_clusters: list[NmCluster] = []
         self.nm_cluster_couplings: list[NmClusterCoupling] = []
         self.nm_if_ecus: list[NmEcu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NmConfig to XML element.
 

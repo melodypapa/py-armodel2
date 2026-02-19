@@ -32,6 +32,7 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         """Initialize DiagnosticTransferExit."""
         super().__init__()
         self.transfer_exit: Optional[DiagnosticTransferExit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTransferExit to XML element.
 

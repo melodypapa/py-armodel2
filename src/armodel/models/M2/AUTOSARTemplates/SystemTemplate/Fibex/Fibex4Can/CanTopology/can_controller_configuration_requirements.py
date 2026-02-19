@@ -45,6 +45,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         self.min_number_of_time_quanta_per: Optional[Any] = None
         self.min_sample_point: Optional[Float] = None
         self.min_sync_jump: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerConfigurationRequirements to XML element.
 

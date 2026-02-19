@@ -45,6 +45,7 @@ class HwAttributeDef(Identifiable):
         self.hw_attributes: list[HwAttributeLiteralDef] = []
         self.is_required: Optional[Boolean] = None
         self.unit: Optional[Unit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwAttributeDef to XML element.
 

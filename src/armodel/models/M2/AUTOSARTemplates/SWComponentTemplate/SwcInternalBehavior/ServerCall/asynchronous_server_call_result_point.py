@@ -33,6 +33,7 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()
         self.asynchronous_server: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AsynchronousServerCallResultPoint to XML element.
 

@@ -40,6 +40,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         super().__init__()
         self.auth_roles: list[DiagnosticAuthRole] = []
         self.memory_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryDestinationUserDefined to XML element.
 

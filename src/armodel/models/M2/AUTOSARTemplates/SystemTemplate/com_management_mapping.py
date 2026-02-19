@@ -41,6 +41,7 @@ class ComManagementMapping(Identifiable):
         super().__init__()
         self.com_refs: list[ARRef] = []
         self.physical_channels: list[PhysicalChannel] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ComManagementMapping to XML element.
 

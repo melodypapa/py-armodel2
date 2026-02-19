@@ -27,6 +27,7 @@ class SecurityEventContextData(ARObject):
     def __init__(self) -> None:
         """Initialize SecurityEventContextData."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextData to XML element.
 

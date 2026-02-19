@@ -31,6 +31,7 @@ class AtpFeature(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AtpFeature."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AtpFeature to XML element.
 

@@ -38,6 +38,7 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         super().__init__()
         self.context: Optional[Any] = None
         self.target_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RPortInCompositionInstanceRef to XML element.
 

@@ -58,6 +58,7 @@ class PduTriggering(Identifiable):
         self.i_signal_refs: list[ARRef] = []
         self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
         self.trigger_i_pdu_send_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PduTriggering to XML element.
 

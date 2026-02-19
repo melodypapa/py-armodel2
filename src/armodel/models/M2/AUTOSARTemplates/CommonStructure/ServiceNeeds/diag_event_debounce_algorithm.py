@@ -33,6 +33,7 @@ class DiagEventDebounceAlgorithm(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize DiagEventDebounceAlgorithm."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceAlgorithm to XML element.
 

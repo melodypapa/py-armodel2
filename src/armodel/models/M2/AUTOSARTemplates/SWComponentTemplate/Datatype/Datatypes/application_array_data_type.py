@@ -39,6 +39,7 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         super().__init__()
         self.dynamic_array: Optional[String] = None
         self.element: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationArrayDataType to XML element.
 

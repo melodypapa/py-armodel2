@@ -32,6 +32,7 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         """Initialize DiagnosticReadScalingDataByIdentifier."""
         super().__init__()
         self.read_scaling: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadScalingDataByIdentifier to XML element.
 

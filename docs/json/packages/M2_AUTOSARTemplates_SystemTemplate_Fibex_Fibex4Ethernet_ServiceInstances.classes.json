@@ -81,7 +81,7 @@
         "routingGroups": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ServiceDiscovery module is able to activate and PDU routing for receiving events."
         },
@@ -162,7 +162,7 @@
         "consumedEventGroups": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Selection of event-groups the consumer wants to for. atpVariation"
         },
@@ -442,14 +442,14 @@
         "allowedIPv6Ext": {
           "type": "IPv6ExtHeaderFilterList",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a list of IPv6 Extension Headers allowed for SocketConnection. If no list is referenced all IPv6 are allowed and processed."
         },
         "allowedTcp": {
           "type": "TcpOptionFilterList",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a list of TCP options allowed for this Socket"
         },
@@ -620,7 +620,7 @@
         "routingGroups": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ServiceDiscovery module is able to activate and PDU routing from and to TCP/IP-sockets."
         }
@@ -660,7 +660,7 @@
         "eventGroup": {
           "type": "EventGroupControlTypeEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute defines the type of a RoutingGroup. There are RoutingGroups that activate the data path for unicast events of an event group. And there are activate the data path for initial are triggered, namely events that are sent out server side after a client got subscribed. Please this attribute is only valid for event Receiver communication) and omitted in MethodActivationRoutingGroups."
         },
@@ -710,21 +710,21 @@
         "pduCollection": {
           "type": "any (PduCollection)",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies if the referenced PduTriggering shall be collected using a queued (i.e. all PDU instances) or only the last PDU instance) semantics. If is not present the behavior of \"queued\" is"
         },
         "pduCollectionTrigger": {
           "type": "PduCollectionTriggerEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines whether the referenced Pdu contributes to the triggering of the socket transmission if Pdu collection is this socket."
         },
         "pduTriggering": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a Pdu that is transmitted over a socket"
         }
@@ -806,7 +806,7 @@
         "consumedEventGroups": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "All consumers of the event are referenced here. atp.Status=obsolete"
         },
@@ -841,7 +841,7 @@
         "routingGroups": {
           "type": "SoAdRoutingGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ServiceDiscovery module is able to activate and PDU routing for events."
         },

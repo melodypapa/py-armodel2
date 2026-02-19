@@ -43,6 +43,7 @@ class SwSystemconst(ARElement):
         """Initialize SwSystemconst."""
         super().__init__()
         self.sw_data_def: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwSystemconst to XML element.
 

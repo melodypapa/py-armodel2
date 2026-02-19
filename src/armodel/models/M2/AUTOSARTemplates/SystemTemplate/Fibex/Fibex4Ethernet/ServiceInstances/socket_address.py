@@ -76,6 +76,7 @@ class SocketAddress(Identifiable):
         self.pdu_collection: Optional[TimeValue] = None
         self.static_sockets: list[StaticSocketConnection] = []
         self.udp_checksum: Optional[UdpChecksumCalculationEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SocketAddress to XML element.
 

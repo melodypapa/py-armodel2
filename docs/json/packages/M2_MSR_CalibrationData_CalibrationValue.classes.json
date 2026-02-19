@@ -30,7 +30,7 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute defines the size of each dimension for CURVE, MAP, CUBOID, CUBE_4, RES_AXIS, VAL_BLK. dimension one value has to be defined, e.g. one of COM_AXIS and two or more in case of MAP."
         },
@@ -93,7 +93,7 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "For multidimensional compound primitivies (curve, map is necessary to know the dimensions.They are swArraySize."
         },
@@ -172,7 +172,7 @@
         "vg": {
           "type": "ValueGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This allows to have intersections in the values in order to rendering (eg. using stylesheets). For is important that the v values are always the same (flattened) order and the tool is interpret it without respecting vg."
         },

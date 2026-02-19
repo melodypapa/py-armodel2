@@ -35,6 +35,7 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         """Initialize DiagnosticIndicator."""
         super().__init__()
         self.type: Optional[DiagnosticIndicatorTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIndicator to XML element.
 

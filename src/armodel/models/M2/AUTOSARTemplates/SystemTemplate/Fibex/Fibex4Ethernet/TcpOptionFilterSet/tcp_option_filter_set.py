@@ -36,6 +36,7 @@ class TcpOptionFilterSet(ARElement):
         """Initialize TcpOptionFilterSet."""
         super().__init__()
         self.tcp_option_filter_list_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TcpOptionFilterSet to XML element.
 

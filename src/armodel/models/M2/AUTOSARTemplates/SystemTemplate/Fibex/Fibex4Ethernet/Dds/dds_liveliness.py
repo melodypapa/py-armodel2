@@ -37,6 +37,7 @@ class DdsLiveliness(ARObject):
         super().__init__()
         self.liveliness_lease: Optional[Float] = None
         self.liveness_kind: Optional[DdsLivenessKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsLiveliness to XML element.
 

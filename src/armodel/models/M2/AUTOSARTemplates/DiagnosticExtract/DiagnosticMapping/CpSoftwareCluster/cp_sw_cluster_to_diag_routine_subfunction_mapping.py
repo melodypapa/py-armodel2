@@ -40,6 +40,7 @@ class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.routine: Optional[DiagnosticRoutine] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterToDiagRoutineSubfunctionMapping to XML element.
 

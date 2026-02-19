@@ -37,6 +37,7 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
         super().__init__()
         self.implementation: Optional[Any] = None
         self.parameter: Optional[ArParameterInImplementationDataInstanceRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataTypeSubElementRef to XML element.
 

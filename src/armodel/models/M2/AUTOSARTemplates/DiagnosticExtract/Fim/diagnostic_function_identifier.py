@@ -30,6 +30,7 @@ class DiagnosticFunctionIdentifier(DiagnosticCommonElement):
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifier."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFunctionIdentifier to XML element.
 

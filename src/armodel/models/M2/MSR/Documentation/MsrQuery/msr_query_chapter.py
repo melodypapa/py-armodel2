@@ -43,6 +43,7 @@ class MsrQueryChapter(Paginateable):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result_chapter: Optional[MsrQueryResultChapter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryChapter to XML element.
 

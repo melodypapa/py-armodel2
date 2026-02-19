@@ -35,6 +35,7 @@ class BswCompositionTiming(TimingExtension):
         """Initialize BswCompositionTiming."""
         super().__init__()
         self.implementations: list[BswImplementation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswCompositionTiming to XML element.
 

@@ -35,6 +35,7 @@ class HwCategory(ARElement):
         """Initialize HwCategory."""
         super().__init__()
         self.hw_attribute_defs: list[HwAttributeDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize HwCategory to XML element.
 

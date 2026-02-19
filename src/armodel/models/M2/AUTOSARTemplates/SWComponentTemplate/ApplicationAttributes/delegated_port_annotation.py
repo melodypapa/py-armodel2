@@ -35,6 +35,7 @@ class DelegatedPortAnnotation(GeneralAnnotation):
         """Initialize DelegatedPortAnnotation."""
         super().__init__()
         self.signal_fan: Optional[SignalFanEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DelegatedPortAnnotation to XML element.
 

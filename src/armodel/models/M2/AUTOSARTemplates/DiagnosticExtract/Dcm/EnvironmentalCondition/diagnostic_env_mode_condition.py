@@ -32,6 +32,7 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         """Initialize DiagnosticEnvModeCondition."""
         super().__init__()
         self.mode_element: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvModeCondition to XML element.
 

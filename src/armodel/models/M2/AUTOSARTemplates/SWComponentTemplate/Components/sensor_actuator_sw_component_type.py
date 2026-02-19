@@ -37,6 +37,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
         self.sensor_actuator: Optional[HwDescriptionEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SensorActuatorSwComponentType to XML element.
 

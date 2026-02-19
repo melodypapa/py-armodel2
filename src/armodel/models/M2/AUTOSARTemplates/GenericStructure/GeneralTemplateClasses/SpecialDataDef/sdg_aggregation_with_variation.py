@@ -35,6 +35,7 @@ class SdgAggregationWithVariation(SdgElementWithGid):
         """Initialize SdgAggregationWithVariation."""
         super().__init__()
         self.sub_sdg: Optional[SdgClass] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgAggregationWithVariation to XML element.
 

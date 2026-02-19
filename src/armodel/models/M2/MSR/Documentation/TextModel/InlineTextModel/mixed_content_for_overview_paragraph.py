@@ -75,6 +75,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         self.tt: Tt = None
         self.xref: Xref = None
         self.xref_target: XrefTarget = None
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForOverviewParagraph to XML element.
 

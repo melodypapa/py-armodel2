@@ -29,6 +29,7 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
         self.sub_node: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticComControlSubNodeChannel to XML element.
 

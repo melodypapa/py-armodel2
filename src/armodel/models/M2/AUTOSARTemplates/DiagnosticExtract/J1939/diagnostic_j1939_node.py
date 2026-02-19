@@ -35,6 +35,7 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939Node."""
         super().__init__()
         self.nm_node: Optional[J1939NmNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939Node to XML element.
 

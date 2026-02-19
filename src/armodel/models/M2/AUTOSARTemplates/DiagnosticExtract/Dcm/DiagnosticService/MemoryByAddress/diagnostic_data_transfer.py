@@ -32,6 +32,7 @@ class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
         """Initialize DiagnosticDataTransfer."""
         super().__init__()
         self.data_transfer: Optional[DiagnosticDataTransfer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataTransfer to XML element.
 

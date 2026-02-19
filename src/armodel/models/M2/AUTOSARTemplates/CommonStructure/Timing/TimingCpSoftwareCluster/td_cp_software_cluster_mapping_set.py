@@ -32,6 +32,7 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()
         self.td_cp_softwares: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TDCpSoftwareClusterMappingSet to XML element.
 

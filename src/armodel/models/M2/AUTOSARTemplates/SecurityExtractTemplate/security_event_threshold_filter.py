@@ -38,6 +38,7 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         super().__init__()
         self.interval_length: Optional[TimeValue] = None
         self.threshold: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventThresholdFilter to XML element.
 

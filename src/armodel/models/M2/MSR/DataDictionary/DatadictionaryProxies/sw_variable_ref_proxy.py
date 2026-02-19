@@ -41,6 +41,7 @@ class SwVariableRefProxy(ARObject):
         super().__init__()
         self.autosar_variable_ref: Optional[ARRef] = None
         self.mc_data_instance: Optional[McDataInstance] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwVariableRefProxy to XML element.
 
@@ -56,7 +57,7 @@ class SwVariableRefProxy(ARObject):
             serialized = ARObject._serialize_item(self.autosar_variable_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR-VARIABLE-REF")
+                wrapped = ET.Element("AUTOSAR-VARIABLE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,7 +97,7 @@ class SwVariableRefProxy(ARObject):
         obj.__init__()
 
         # Parse autosar_variable_ref
-        child = ARObject._find_child_element(element, "AUTOSAR-VARIABLE-REF")
+        child = ARObject._find_child_element(element, "AUTOSAR-VARIABLE-REF-REF")
         if child is not None:
             autosar_variable_ref_value = ARRef.deserialize(child)
             obj.autosar_variable_ref = autosar_variable_ref_value

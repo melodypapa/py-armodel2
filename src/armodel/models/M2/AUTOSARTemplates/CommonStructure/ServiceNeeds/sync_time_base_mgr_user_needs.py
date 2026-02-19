@@ -31,6 +31,7 @@ class SyncTimeBaseMgrUserNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize SyncTimeBaseMgrUserNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SyncTimeBaseMgrUserNeeds to XML element.
 

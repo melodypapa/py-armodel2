@@ -36,6 +36,7 @@ class BufferProperties(ARObject):
         super().__init__()
         self.header_length: Optional[Integer] = None
         self.in_place: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BufferProperties to XML element.
 

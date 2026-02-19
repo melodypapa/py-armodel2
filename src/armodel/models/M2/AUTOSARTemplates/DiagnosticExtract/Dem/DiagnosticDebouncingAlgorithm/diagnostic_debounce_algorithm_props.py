@@ -36,6 +36,7 @@ class DiagnosticDebounceAlgorithmProps(Identifiable):
         """Initialize DiagnosticDebounceAlgorithmProps."""
         super().__init__()
         self.debounce: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDebounceAlgorithmProps to XML element.
 

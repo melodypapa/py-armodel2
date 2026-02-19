@@ -33,6 +33,7 @@ class EnumerationMappingTable(PackageableElement):
         """Initialize EnumerationMappingTable."""
         super().__init__()
         self.entrie_refs: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EnumerationMappingTable to XML element.
 

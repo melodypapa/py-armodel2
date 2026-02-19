@@ -55,6 +55,7 @@ class PhysConstrs(ARObject):
         self.scale_constrs: list[ScaleConstr] = []
         self.unit: Optional[Unit] = None
         self.upper_limit: Optional[Limit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PhysConstrs to XML element.
 

@@ -41,6 +41,7 @@ class TransformerHardErrorEvent(RTEEvent):
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
         self.required_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransformerHardErrorEvent to XML element.
 
@@ -80,7 +81,7 @@ class TransformerHardErrorEvent(RTEEvent):
             serialized = ARObject._serialize_item(self.required_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-TRIGGER")
+                wrapped = ET.Element("REQUIRED-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,7 +112,7 @@ class TransformerHardErrorEvent(RTEEvent):
             obj.operation = operation_value
 
         # Parse required_trigger_ref
-        child = ARObject._find_child_element(element, "REQUIRED-TRIGGER")
+        child = ARObject._find_child_element(element, "REQUIRED-TRIGGER-REF")
         if child is not None:
             required_trigger_ref_value = ARRef.deserialize(child)
             obj.required_trigger_ref = required_trigger_ref_value

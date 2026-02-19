@@ -30,6 +30,7 @@ class XrefTarget(SingleLanguageReferrable):
     def __init__(self) -> None:
         """Initialize XrefTarget."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize XrefTarget to XML element.
 

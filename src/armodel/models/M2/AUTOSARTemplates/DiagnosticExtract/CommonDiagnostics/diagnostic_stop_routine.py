@@ -37,6 +37,7 @@ class DiagnosticStopRoutine(DiagnosticRoutineSubfunction):
         super().__init__()
         self.requests: list[DiagnosticParameter] = []
         self.responses: list[DiagnosticParameter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStopRoutine to XML element.
 

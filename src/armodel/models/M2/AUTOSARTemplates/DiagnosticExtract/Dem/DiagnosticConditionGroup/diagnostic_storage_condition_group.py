@@ -32,6 +32,7 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         """Initialize DiagnosticStorageConditionGroup."""
         super().__init__()
         self.storages: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStorageConditionGroup to XML element.
 

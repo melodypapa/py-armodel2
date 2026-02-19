@@ -47,14 +47,14 @@
         "rootDataPrototypeInSr": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=10"
         },
         "targetDataPrototypeInSr": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -107,14 +107,14 @@
         "rootDataPrototypeInCs": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=10"
         },
         "targetDataPrototypeInCs": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -158,7 +158,7 @@
         "rootData": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This refers to the AutosarDataPrototype which is typed by ImplementationDatatype. The targetDataPrototype defined contextDataPrototypes can be found rootDataPrototype."
         },
@@ -193,7 +193,7 @@
         "AtpInstanceRef"
       ],
       "implemented_by": [],
-      "note": "This meta-class represents the ability to: • refer to a DataPrototype in the context of a PortInterface. • refer to the internal structure of a DataPrototype which is typed by an ApplicationDatatype in the context of a PortInterface.",
+      "note": "This meta-class represents the ability to: \u2022 refer to a DataPrototype in the context of a PortInterface. \u2022 refer to the internal structure of a DataPrototype which is typed by an ApplicationDatatype in the context of a PortInterface.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -220,14 +220,14 @@
         "rootData": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract xml.sequenceOffset=10"
         },
         "targetData": {
           "type": "DataPrototype",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract xml.sequenceOffset=30"
         }

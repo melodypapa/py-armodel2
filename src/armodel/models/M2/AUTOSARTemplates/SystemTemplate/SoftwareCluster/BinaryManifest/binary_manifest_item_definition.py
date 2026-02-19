@@ -43,6 +43,7 @@ class BinaryManifestItemDefinition(Identifiable):
         self.auxiliary_fields: list[BinaryManifestItem] = []
         self.is_optional: Optional[Boolean] = None
         self.size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItemDefinition to XML element.
 

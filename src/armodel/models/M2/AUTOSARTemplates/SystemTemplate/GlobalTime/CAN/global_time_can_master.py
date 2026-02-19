@@ -40,6 +40,7 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         super().__init__()
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
         self.sync: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeCanMaster to XML element.
 

@@ -30,6 +30,7 @@ class ImpositionTime(Identifiable):
     def __init__(self) -> None:
         """Initialize ImpositionTime."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ImpositionTime to XML element.
 

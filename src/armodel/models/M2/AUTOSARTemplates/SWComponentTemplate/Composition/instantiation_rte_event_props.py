@@ -38,6 +38,7 @@ class InstantiationRTEEventProps(ARObject, ABC):
         super().__init__()
         self.refined_event: Optional[RTEEvent] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InstantiationRTEEventProps to XML element.
 

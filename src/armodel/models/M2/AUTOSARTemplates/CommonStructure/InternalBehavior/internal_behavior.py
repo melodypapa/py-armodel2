@@ -67,6 +67,7 @@ class InternalBehavior(Identifiable, ABC):
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
         self.static_memorie_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize InternalBehavior to XML element.
 

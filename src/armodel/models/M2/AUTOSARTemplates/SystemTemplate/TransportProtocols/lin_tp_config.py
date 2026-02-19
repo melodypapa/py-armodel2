@@ -45,6 +45,7 @@ class LinTpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_connections: list[LinTpConnection] = []
         self.tp_nodes: list[LinTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinTpConfig to XML element.
 

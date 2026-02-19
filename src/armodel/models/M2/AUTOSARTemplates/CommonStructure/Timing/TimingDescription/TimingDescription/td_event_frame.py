@@ -45,6 +45,7 @@ class TDEventFrame(TDEventCom):
         self.frame: Optional[Frame] = None
         self.physical_channel: Optional[PhysicalChannel] = None
         self.td_event_type_enum: Optional[TDEventFrameTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventFrame to XML element.
 

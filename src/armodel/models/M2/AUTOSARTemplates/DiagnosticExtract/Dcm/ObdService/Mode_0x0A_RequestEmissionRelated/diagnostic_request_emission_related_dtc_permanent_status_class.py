@@ -30,6 +30,7 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatusClass(DiagnosticServiceC
     def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTCPermanentStatusClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestEmissionRelatedDTCPermanentStatusClass to XML element.
 

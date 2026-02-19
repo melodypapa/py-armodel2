@@ -35,6 +35,7 @@ class DoIpRoutingActivation(Identifiable):
         """Initialize DoIpRoutingActivation."""
         super().__init__()
         self.do_ip_targets: list[DoIpLogicTargetAddressProps] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpRoutingActivation to XML element.
 

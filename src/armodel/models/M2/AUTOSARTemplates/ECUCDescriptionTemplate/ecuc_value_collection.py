@@ -39,6 +39,7 @@ class EcucValueCollection(ARElement):
         super().__init__()
         self.ecuc_values: list[Any] = []
         self.ecu_extract: Optional[System] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucValueCollection to XML element.
 

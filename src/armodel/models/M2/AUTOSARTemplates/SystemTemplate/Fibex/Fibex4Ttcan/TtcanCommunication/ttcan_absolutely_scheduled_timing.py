@@ -43,6 +43,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.time_mark: Optional[Integer] = None
         self.trigger_ref: Optional[TtcanTriggerType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TtcanAbsolutelyScheduledTiming to XML element.
 
@@ -86,7 +87,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
             serialized = ARObject._serialize_item(self.trigger_ref, "TtcanTriggerType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,7 +125,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
             obj.time_mark = time_mark_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

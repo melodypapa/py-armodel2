@@ -131,7 +131,7 @@
         "rxPduTriggeringChannel": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to DltPdu that is received by the DltLog"
         },
@@ -145,7 +145,7 @@
         "txPduTriggering": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to DltPdu that is transmitted by the DltLog"
         }

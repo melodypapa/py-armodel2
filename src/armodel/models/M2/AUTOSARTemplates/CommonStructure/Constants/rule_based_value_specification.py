@@ -41,6 +41,7 @@ class RuleBasedValueSpecification(ARObject):
         self.arguments: Optional[RuleArguments] = None
         self.max_size_to_fill: Optional[Integer] = None
         self.rule: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleBasedValueSpecification to XML element.
 

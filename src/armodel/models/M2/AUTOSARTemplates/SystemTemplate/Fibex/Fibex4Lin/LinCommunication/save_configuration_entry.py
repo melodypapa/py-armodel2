@@ -30,6 +30,7 @@ class SaveConfigurationEntry(LinConfigurationEntry):
     def __init__(self) -> None:
         """Initialize SaveConfigurationEntry."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SaveConfigurationEntry to XML element.
 

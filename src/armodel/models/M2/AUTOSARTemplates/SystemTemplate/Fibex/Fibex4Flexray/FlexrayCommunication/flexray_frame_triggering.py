@@ -45,6 +45,7 @@ class FlexrayFrameTriggering(FrameTriggering):
         self.allow_dynamic: Optional[Boolean] = None
         self.message_id: Optional[PositiveInteger] = None
         self.payload_preamble: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFrameTriggering to XML element.
 

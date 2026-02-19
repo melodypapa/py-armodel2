@@ -37,6 +37,7 @@ class IdsmSignatureSupportCp(ARObject):
         super().__init__()
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmSignatureSupportCp to XML element.
 

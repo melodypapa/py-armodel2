@@ -30,6 +30,7 @@ class DiagnosticEnableCondition(DiagnosticCondition):
     def __init__(self) -> None:
         """Initialize DiagnosticEnableCondition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnableCondition to XML element.
 

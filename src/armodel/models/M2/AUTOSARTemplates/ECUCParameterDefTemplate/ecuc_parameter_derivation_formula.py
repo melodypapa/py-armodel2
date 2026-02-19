@@ -32,6 +32,7 @@ class EcucParameterDerivationFormula(ARObject):
         """Initialize EcucParameterDerivationFormula."""
         super().__init__()
         self.ecuc_query: Optional[EcucQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucParameterDerivationFormula to XML element.
 

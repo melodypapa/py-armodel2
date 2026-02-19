@@ -36,6 +36,7 @@ class LifeCycleStateDefinitionGroup(ARElement):
         """Initialize LifeCycleStateDefinitionGroup."""
         super().__init__()
         self.lc_states: list[LifeCycleState] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LifeCycleStateDefinitionGroup to XML element.
 

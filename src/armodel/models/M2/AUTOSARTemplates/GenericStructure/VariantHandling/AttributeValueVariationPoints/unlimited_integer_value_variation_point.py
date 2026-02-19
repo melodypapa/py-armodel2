@@ -27,6 +27,7 @@ class UnlimitedIntegerValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize UnlimitedIntegerValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UnlimitedIntegerValueVariationPoint to XML element.
 

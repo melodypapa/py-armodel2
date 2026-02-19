@@ -30,6 +30,7 @@ class BswMgrNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize BswMgrNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswMgrNeeds to XML element.
 

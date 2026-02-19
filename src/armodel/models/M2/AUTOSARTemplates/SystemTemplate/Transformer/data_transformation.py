@@ -43,6 +43,7 @@ class DataTransformation(Identifiable):
         self.data: Optional[DataTransformationKindEnum] = None
         self.execute_despite: Optional[Boolean] = None
         self.transformers: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataTransformation to XML element.
 

@@ -30,6 +30,7 @@ class PncMappingIdent(Referrable):
     def __init__(self) -> None:
         """Initialize PncMappingIdent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize PncMappingIdent to XML element.
 

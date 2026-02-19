@@ -41,6 +41,7 @@ class EcucEnumerationParamDef(EcucParameterDef):
         super().__init__()
         self.default_value: Optional[Identifier] = None
         self.literals: list[EcucEnumerationLiteralDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucEnumerationParamDef to XML element.
 

@@ -41,6 +41,7 @@ class BswVariableAccess(Referrable):
         super().__init__()
         self.accessed_variable_ref: Optional[ARRef] = None
         self.contexts: list[BswDistinguishedPartition] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswVariableAccess to XML element.
 

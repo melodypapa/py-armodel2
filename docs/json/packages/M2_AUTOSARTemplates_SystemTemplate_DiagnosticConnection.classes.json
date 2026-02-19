@@ -49,7 +49,7 @@
         "periodicResponseUudts": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to UUDT responses."
         },
@@ -154,7 +154,7 @@
         "tpSdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference is used to describe the data exchange"
         }

@@ -36,7 +36,7 @@
         "tcpOptionFilterLists": {
           "type": "TcpOptionFilterList",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Collection of permitted lists for the filtering of TCP options."
         }

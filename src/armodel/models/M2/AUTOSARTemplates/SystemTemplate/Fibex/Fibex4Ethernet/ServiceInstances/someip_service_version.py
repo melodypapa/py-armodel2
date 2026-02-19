@@ -34,6 +34,7 @@ class SomeipServiceVersion(ARObject):
         super().__init__()
         self.major_version: Optional[PositiveInteger] = None
         self.minor_version: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipServiceVersion to XML element.
 

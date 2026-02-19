@@ -38,6 +38,7 @@ class VlanMembership(ARObject):
         self.dhcp_address: Optional[Any] = None
         self.send_activity: Optional[Any] = None
         self.vlan: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VlanMembership to XML element.
 

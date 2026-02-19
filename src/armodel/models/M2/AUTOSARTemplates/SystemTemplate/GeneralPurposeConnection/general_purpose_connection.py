@@ -36,6 +36,7 @@ class GeneralPurposeConnection(ARElement):
         """Initialize GeneralPurposeConnection."""
         super().__init__()
         self.pdu_triggering_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize GeneralPurposeConnection to XML element.
 

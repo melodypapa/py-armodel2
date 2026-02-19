@@ -37,6 +37,7 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         super().__init__()
         self.freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame] = None
         self.request: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestPowertrainFreezeFrameData to XML element.
 

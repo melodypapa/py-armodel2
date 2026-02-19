@@ -450,7 +450,7 @@
         "includes": {
           "type": "FMFeatureSelectionSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Each FMFeatureSelectionSet may include one or more establishes a hierarchy See constr_5003 and details."
         },

@@ -36,6 +36,7 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         """Initialize EcucAbstractInternalReferenceDef."""
         super().__init__()
         self.requires: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractInternalReferenceDef to XML element.
 

@@ -35,6 +35,7 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
         """Initialize ClientServerOperationComProps."""
         super().__init__()
         self.queue_length: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationComProps to XML element.
 

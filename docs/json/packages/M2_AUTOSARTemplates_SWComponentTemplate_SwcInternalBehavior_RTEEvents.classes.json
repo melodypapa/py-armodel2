@@ -387,7 +387,7 @@
         "data": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "the data has been received. by: RVariableInAtomicSwc"
         }
@@ -432,7 +432,7 @@
         "data": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "there was an error during the by: RVariableInAtomicSwc"
         }
@@ -604,7 +604,7 @@
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The referenced Trigger raises this ExternalTrigger"
         }
@@ -649,7 +649,7 @@
         "eventSource": {
           "type": "InternalTriggeringPoint",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The referenced InternalTriggeringPoint raises this Internal"
         }
@@ -681,7 +681,7 @@
         "AtpStructureElement"
       ],
       "implemented_by": [],
-      "note": "This RTEEvent is supposed to be used for initialization purposes, i.e. for starting and restarting a partition. It is not guaranteed that all RunnableEntities referenced by this InitEvent are executed before the ’regular’ RunnableEntities are executed for the first time. The execution order depends on the task mapping.",
+      "note": "This RTEEvent is supposed to be used for initialization purposes, i.e. for starting and restarting a partition. It is not guaranteed that all RunnableEntities referenced by this InitEvent are executed before the \u2019regular\u2019 RunnableEntities are executed for the first time. The execution order depends on the task mapping.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -738,7 +738,7 @@
         "requiredTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the Trigger for which the transformer can"
         }
@@ -865,7 +865,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "this SwcModeManagerErrorEvent is raised in case error. by: PModeGroupInAtomic"
         }

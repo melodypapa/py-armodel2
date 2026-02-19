@@ -44,6 +44,7 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         self.local_unicast: Optional[ApplicationEndpoint] = None
         self.minor_version: Optional[AnyVersionString] = None
         self.static_remote: Optional[ApplicationEndpoint] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpConsumedServiceInstance to XML element.
 

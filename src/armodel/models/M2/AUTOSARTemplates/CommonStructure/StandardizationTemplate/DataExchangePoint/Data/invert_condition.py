@@ -32,6 +32,7 @@ class InvertCondition(AbstractCondition):
         """Initialize InvertCondition."""
         super().__init__()
         self.condition: AbstractCondition = None
+
     def serialize(self) -> ET.Element:
         """Serialize InvertCondition to XML element.
 

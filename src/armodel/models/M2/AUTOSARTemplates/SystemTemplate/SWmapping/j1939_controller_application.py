@@ -41,6 +41,7 @@ class J1939ControllerApplication(ARElement):
         super().__init__()
         self.function_id: Optional[PositiveInteger] = None
         self.sw_component_prototype_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939ControllerApplication to XML element.
 
@@ -80,7 +81,7 @@ class J1939ControllerApplication(ARElement):
             serialized = ARObject._serialize_item(self.sw_component_prototype_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE")
+                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,7 +112,7 @@ class J1939ControllerApplication(ARElement):
             obj.function_id = function_id_value
 
         # Parse sw_component_prototype_ref
-        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
         if child is not None:
             sw_component_prototype_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_ref = sw_component_prototype_ref_value

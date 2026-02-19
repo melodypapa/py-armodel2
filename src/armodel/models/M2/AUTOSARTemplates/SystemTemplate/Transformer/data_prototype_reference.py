@@ -33,6 +33,7 @@ class DataPrototypeReference(ARObject, ABC):
         """Initialize DataPrototypeReference."""
         super().__init__()
         self.tag_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeReference to XML element.
 

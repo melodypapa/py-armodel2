@@ -30,6 +30,7 @@ class DiagnosticDeAuthentication(DiagnosticAuthentication):
     def __init__(self) -> None:
         """Initialize DiagnosticDeAuthentication."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDeAuthentication to XML element.
 

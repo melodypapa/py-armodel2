@@ -37,6 +37,7 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         super().__init__()
         self.pid: Optional[DiagnosticParameter] = None
         self.request_current: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestCurrentPowertrainData to XML element.
 

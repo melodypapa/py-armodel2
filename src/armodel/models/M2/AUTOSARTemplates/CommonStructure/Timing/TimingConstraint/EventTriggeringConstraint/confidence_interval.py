@@ -39,6 +39,7 @@ class ConfidenceInterval(ARObject):
         self.lower_bound: Optional[MultidimensionalTime] = None
         self.propability: Optional[Float] = None
         self.upper_bound: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConfidenceInterval to XML element.
 

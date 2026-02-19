@@ -56,6 +56,7 @@ class SOMEIPTransformationISignalProps(ARObject):
         self.size_of_struct: Optional[PositiveInteger] = None
         self.size_of_union: Optional[PositiveInteger] = None
         self.tlv_data_id_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SOMEIPTransformationISignalProps to XML element.
 

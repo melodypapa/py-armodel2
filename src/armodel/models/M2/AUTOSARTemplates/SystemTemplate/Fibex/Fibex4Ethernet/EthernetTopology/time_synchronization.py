@@ -37,6 +37,7 @@ class TimeSynchronization(ARObject):
         super().__init__()
         self.time_sync_client_configuration: Optional[TimeSyncClientConfiguration] = None
         self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimeSynchronization to XML element.
 

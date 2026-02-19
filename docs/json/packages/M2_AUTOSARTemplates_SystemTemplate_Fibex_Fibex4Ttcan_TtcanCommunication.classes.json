@@ -44,7 +44,7 @@
         "trigger": {
           "type": "TtcanTriggerType",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Trigger type for this time window."
         }

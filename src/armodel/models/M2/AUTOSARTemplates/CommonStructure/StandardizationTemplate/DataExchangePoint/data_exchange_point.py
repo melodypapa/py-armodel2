@@ -47,6 +47,7 @@ class DataExchangePoint(ARElement):
         self.kind: DataExchangePoint = None
         self.referenced: Baseline = None
         self.specification_scope: Optional[SpecificationScope] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataExchangePoint to XML element.
 

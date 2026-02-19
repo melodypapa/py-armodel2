@@ -76,6 +76,7 @@ class GlobalTimeDomain(FibexElement):
         self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeDomain to XML element.
 

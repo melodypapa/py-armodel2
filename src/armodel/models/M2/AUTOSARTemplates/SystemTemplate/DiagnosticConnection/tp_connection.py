@@ -33,6 +33,7 @@ class TpConnection(ARObject, ABC):
         """Initialize TpConnection."""
         super().__init__()
         self.ident: Optional[TpConnectionIdent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TpConnection to XML element.
 

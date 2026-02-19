@@ -30,6 +30,7 @@ class IdsMgrCustomTimestampNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize IdsMgrCustomTimestampNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IdsMgrCustomTimestampNeeds to XML element.
 

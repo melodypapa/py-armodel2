@@ -35,6 +35,7 @@ class BinaryManifestItemNumericalValue(BinaryManifestItemValue):
         """Initialize BinaryManifestItemNumericalValue."""
         super().__init__()
         self.value: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItemNumericalValue to XML element.
 

@@ -111,7 +111,7 @@
         "port": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The option is valid for generated functions related to this port"
         },

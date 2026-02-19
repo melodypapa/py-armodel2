@@ -51,6 +51,7 @@ class AdminData(ARObject):
         self.language: Optional[LEnum] = None
         self.sdg: list[Sdg] = []
         self.used_languages: Optional[MultiLanguagePlainText] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AdminData to XML element.
 

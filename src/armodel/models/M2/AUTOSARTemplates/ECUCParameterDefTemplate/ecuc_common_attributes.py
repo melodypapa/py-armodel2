@@ -51,6 +51,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         self.post_build_variant: Optional[Boolean] = None
         self.requires_index: Optional[Boolean] = None
         self.value_configs: list[EcucValueConfigurationClass] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucCommonAttributes to XML element.
 

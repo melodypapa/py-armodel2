@@ -32,6 +32,7 @@ class StreamFilterMACAddress(ARObject):
         """Initialize StreamFilterMACAddress."""
         super().__init__()
         self.mac_address_string: Optional[MacAddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterMACAddress to XML element.
 

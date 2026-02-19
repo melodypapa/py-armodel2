@@ -50,6 +50,7 @@ class MixedContentForLongName(ARObject, ABC):
         self.sub: Superscript = None
         self.sup: Superscript = None
         self.tt: Tt = None
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForLongName to XML element.
 

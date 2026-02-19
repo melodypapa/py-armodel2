@@ -35,6 +35,7 @@ class UserDefinedIPdu(IPdu):
         """Initialize UserDefinedIPdu."""
         super().__init__()
         self.cdd_type: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedIPdu to XML element.
 

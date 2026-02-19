@@ -28,6 +28,7 @@ class CompositeRuleBasedValueArgument(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueArgument."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CompositeRuleBasedValueArgument to XML element.
 

@@ -46,6 +46,7 @@ class NmCoordinator(ARObject):
         self.nm_coord_sync: Optional[Boolean] = None
         self.nm_global: Optional[TimeValue] = None
         self.nm_nodes: list[NmNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NmCoordinator to XML element.
 

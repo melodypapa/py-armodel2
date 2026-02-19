@@ -27,6 +27,7 @@ class SlOverviewParagraph(ARObject):
     def __init__(self) -> None:
         """Initialize SlOverviewParagraph."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SlOverviewParagraph to XML element.
 

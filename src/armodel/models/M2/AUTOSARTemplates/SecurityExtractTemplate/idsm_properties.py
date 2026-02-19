@@ -40,6 +40,7 @@ class IdsmProperties(IdsCommonElement):
         super().__init__()
         self.rate_limitations: list[IdsmRateLimitation] = []
         self.traffic_limitations: list[IdsmTrafficLimitation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmProperties to XML element.
 

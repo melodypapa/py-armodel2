@@ -40,6 +40,7 @@ class BswDirectCallPoint(BswModuleCallPoint):
         super().__init__()
         self.called_entry: Optional[BswModuleEntry] = None
         self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswDirectCallPoint to XML element.
 

@@ -94,6 +94,7 @@ class System(ARElement):
         self.sw_clusters: list[CpSoftwareCluster] = []
         self.system_documentations: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize System to XML element.
 

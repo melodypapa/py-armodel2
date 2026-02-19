@@ -35,6 +35,7 @@ class J1939SharedAddressCluster(Identifiable):
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
         self.participatings: list[J1939Cluster] = []
+
     def serialize(self) -> ET.Element:
         """Serialize J1939SharedAddressCluster to XML element.
 

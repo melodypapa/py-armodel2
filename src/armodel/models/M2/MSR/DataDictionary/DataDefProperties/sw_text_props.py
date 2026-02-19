@@ -47,6 +47,7 @@ class SwTextProps(ARObject):
         self.base_type: Optional[SwBaseType] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwTextProps to XML element.
 

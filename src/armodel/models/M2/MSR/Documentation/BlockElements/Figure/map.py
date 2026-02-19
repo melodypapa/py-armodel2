@@ -62,6 +62,7 @@ class Map(ARObject):
         self.onmouseover: Optional[String] = None
         self.onmouseup: Optional[String] = None
         self.title: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Map to XML element.
 

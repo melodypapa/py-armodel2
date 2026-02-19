@@ -37,6 +37,7 @@ class EcucTextualParamValue(EcucParameterValue):
         """Initialize EcucTextualParamValue."""
         super().__init__()
         self.value: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucTextualParamValue to XML element.
 

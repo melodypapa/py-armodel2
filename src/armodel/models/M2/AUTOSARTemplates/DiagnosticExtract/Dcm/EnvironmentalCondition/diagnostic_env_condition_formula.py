@@ -40,6 +40,7 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         super().__init__()
         self.nrc_value: Optional[PositiveInteger] = None
         self.op: Optional[DiagnosticLogicalOperatorEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvConditionFormula to XML element.
 

@@ -35,6 +35,7 @@ class RteEventInSystemSeparation(Identifiable):
         """Initialize RteEventInSystemSeparation."""
         super().__init__()
         self.rte_event_instance_refs: list[RTEEvent] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RteEventInSystemSeparation to XML element.
 

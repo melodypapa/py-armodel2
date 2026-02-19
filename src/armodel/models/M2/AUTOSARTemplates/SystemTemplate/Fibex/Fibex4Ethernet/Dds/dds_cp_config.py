@@ -40,6 +40,7 @@ class DdsCpConfig(ARElement):
         super().__init__()
         self.dds_domains: list[DdsCpDomain] = []
         self.dds_qos_profiles: list[DdsCpQosProfile] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpConfig to XML element.
 

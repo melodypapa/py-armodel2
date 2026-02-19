@@ -41,6 +41,7 @@ class BinaryManifestResource(Identifiable, ABC):
         self.global_resource: Optional[PositiveInteger] = None
         self.resource: Optional[Any] = None
         self.resource_guard: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestResource to XML element.
 

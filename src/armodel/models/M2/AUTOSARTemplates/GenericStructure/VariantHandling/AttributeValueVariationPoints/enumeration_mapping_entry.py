@@ -35,6 +35,7 @@ class EnumerationMappingEntry(ARObject):
         super().__init__()
         self.enumerator: NameToken = None
         self.numerical_value: PositiveInteger = None
+
     def serialize(self) -> ET.Element:
         """Serialize EnumerationMappingEntry to XML element.
 

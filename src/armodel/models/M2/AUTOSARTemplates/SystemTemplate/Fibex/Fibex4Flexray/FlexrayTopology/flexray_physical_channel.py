@@ -35,6 +35,7 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         """Initialize FlexrayPhysicalChannel."""
         super().__init__()
         self.channel_name: Optional[FlexrayChannelName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayPhysicalChannel to XML element.
 

@@ -40,6 +40,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         super().__init__()
         self.resource: Optional[CpSoftwareCluster] = None
         self.timing: Optional[TimingDescription] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDCpSoftwareClusterResourceMapping to XML element.
 

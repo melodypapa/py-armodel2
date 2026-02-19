@@ -33,6 +33,7 @@ class RestrictionWithSeverity(ARObject, ABC):
         """Initialize RestrictionWithSeverity."""
         super().__init__()
         self.severity: SeverityEnum = None
+
     def serialize(self) -> ET.Element:
         """Serialize RestrictionWithSeverity to XML element.
 

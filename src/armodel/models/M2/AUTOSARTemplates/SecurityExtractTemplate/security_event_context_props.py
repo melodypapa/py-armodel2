@@ -50,6 +50,7 @@ class SecurityEventContextProps(Identifiable):
         self.security_event: Optional[SecurityEventDefinition] = None
         self.sensor_instance: Optional[PositiveInteger] = None
         self.severity: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextProps to XML element.
 

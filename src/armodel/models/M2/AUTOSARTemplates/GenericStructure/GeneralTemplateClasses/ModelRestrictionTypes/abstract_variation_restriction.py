@@ -39,6 +39,7 @@ class AbstractVariationRestriction(ARObject, ABC):
         super().__init__()
         self.valid_bindings: list[FullBindingTimeEnum] = []
         self.variation: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractVariationRestriction to XML element.
 

@@ -51,6 +51,7 @@ class Referrable(ARObject, ABC):
         super().__init__()
         self.short_name: Identifier = None
         self.short_name_fragments: list[ShortNameFragment] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Referrable to XML element.
 

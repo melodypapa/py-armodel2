@@ -36,6 +36,7 @@ class ApplicationEntry(ScheduleTableEntry):
         """Initialize ApplicationEntry."""
         super().__init__()
         self.frame_triggering_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationEntry to XML element.
 

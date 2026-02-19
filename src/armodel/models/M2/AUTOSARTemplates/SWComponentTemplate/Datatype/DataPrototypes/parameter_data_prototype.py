@@ -41,6 +41,7 @@ class ParameterDataPrototype(AutosarDataPrototype):
         """Initialize ParameterDataPrototype."""
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterDataPrototype to XML element.
 

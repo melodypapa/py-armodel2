@@ -36,6 +36,7 @@ class ExecutableEntityActivationReason(ImplementationProps):
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()
         self.bit_position: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutableEntityActivationReason to XML element.
 

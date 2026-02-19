@@ -37,6 +37,7 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         super().__init__()
         self.role: Optional[Identifier] = None
         self.swc_mode_switch_event: Optional[SwcModeSwitchEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchEventTriggeredActivity to XML element.
 

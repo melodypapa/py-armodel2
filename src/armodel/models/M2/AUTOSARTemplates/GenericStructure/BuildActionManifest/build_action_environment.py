@@ -36,6 +36,7 @@ class BuildActionEnvironment(Identifiable):
         """Initialize BuildActionEnvironment."""
         super().__init__()
         self.sdgs: list[Sdg] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BuildActionEnvironment to XML element.
 

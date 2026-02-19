@@ -35,6 +35,7 @@ class StaticPart(MultiplexedPart):
         """Initialize StaticPart."""
         super().__init__()
         self.i_pdu: Optional[ISignalIPdu] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StaticPart to XML element.
 

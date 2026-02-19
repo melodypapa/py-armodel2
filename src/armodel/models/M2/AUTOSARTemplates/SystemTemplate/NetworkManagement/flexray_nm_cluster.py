@@ -49,6 +49,7 @@ class FlexrayNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_repetition: Optional[Integer] = None
         self.nm_voting_cycle: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayNmCluster to XML element.
 

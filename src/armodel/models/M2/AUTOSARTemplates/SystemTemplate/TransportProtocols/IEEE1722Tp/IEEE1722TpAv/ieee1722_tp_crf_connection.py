@@ -48,6 +48,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         self.crf_type_enum: Optional[IEEE1722TpCrfTypeEnum] = None
         self.frame_sync: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpCrfConnection to XML element.
 

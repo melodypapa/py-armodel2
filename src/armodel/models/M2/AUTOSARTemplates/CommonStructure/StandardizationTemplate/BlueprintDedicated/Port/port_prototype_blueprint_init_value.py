@@ -41,6 +41,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
         super().__init__()
         self.data_prototype_ref: ARRef = None
         self.value: ValueSpecification = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortPrototypeBlueprintInitValue to XML element.
 

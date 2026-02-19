@@ -32,6 +32,7 @@ class FunctionInhibitionNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize FunctionInhibitionNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FunctionInhibitionNeeds to XML element.
 

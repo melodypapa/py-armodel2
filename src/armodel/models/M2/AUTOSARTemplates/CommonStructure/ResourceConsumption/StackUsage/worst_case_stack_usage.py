@@ -35,6 +35,7 @@ class WorstCaseStackUsage(StackUsage):
         """Initialize WorstCaseStackUsage."""
         super().__init__()
         self.memory_consumption: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize WorstCaseStackUsage to XML element.
 

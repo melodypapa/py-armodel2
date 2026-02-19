@@ -46,6 +46,7 @@ class ChapterModel(ARObject):
         self.chapter: Optional[ChapterOrMsrQuery] = None
         self.chapter_content: Optional[ChapterContent] = None
         self.topic1: Optional[TopicOrMsrQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ChapterModel to XML element.
 

@@ -28,6 +28,7 @@ class CpSoftwareClusterCommunicationResourceProps(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterCommunicationResourceProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterCommunicationResourceProps to XML element.
 

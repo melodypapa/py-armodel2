@@ -33,6 +33,7 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         """Initialize EOCExecutableEntityRefAbstract."""
         super().__init__()
         self.direct_successors: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRefAbstract to XML element.
 

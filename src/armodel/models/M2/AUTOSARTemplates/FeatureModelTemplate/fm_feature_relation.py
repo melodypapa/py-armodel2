@@ -40,6 +40,7 @@ class FMFeatureRelation(Identifiable):
         super().__init__()
         self.features: list[FMFeature] = []
         self.restriction: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureRelation to XML element.
 

@@ -85,6 +85,7 @@ class PortPrototype(Identifiable, ABC):
         self.parameter_ports: list[ParameterPortAnnotation] = []
         self.sender_receivers: list[Any] = []
         self.trigger_port_annotation_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PortPrototype to XML element.
 

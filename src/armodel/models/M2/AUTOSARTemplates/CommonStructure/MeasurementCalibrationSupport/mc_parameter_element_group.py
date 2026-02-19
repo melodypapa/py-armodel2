@@ -43,6 +43,7 @@ class McParameterElementGroup(ARObject):
         self.ram_location_ref: Optional[ARRef] = None
         self.rom_location_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize McParameterElementGroup to XML element.
 

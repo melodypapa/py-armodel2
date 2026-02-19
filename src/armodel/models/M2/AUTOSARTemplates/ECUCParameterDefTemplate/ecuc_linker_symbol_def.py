@@ -27,6 +27,7 @@ class EcucLinkerSymbolDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucLinkerSymbolDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucLinkerSymbolDef to XML element.
 

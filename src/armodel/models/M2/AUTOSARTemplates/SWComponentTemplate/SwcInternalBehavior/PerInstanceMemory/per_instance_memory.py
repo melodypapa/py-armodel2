@@ -48,6 +48,7 @@ class PerInstanceMemory(Identifiable):
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.type: Optional[CIdentifier] = None
         self.type_definition: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PerInstanceMemory to XML element.
 

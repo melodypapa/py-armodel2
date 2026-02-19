@@ -104,6 +104,7 @@ class SwcInternalBehavior(InternalBehavior):
         self.shareds: list[ParameterDataPrototype] = []
         self.supports: Optional[Boolean] = None
         self.variation_point_proxies: list[VariationPointProxy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwcInternalBehavior to XML element.
 

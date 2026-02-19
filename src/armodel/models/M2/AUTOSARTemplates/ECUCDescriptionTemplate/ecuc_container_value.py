@@ -48,6 +48,7 @@ class EcucContainerValue(Identifiable):
         self.parameter_values: list[EcucParameterValue] = []
         self.reference_value_refs: list[Any] = []
         self.sub_containers: list[EcucContainerValue] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucContainerValue to XML element.
 

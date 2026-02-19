@@ -35,6 +35,7 @@ class TextualCondition(AbstractCondition):
         """Initialize TextualCondition."""
         super().__init__()
         self.text: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize TextualCondition to XML element.
 

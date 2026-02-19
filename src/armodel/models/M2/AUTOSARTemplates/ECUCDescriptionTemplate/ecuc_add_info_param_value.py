@@ -35,6 +35,7 @@ class EcucAddInfoParamValue(EcucParameterValue):
         """Initialize EcucAddInfoParamValue."""
         super().__init__()
         self.value: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAddInfoParamValue to XML element.
 

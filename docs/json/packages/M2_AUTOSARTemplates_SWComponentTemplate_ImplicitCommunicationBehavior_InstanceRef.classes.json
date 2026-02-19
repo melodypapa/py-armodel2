@@ -46,7 +46,7 @@
         "targetData": {
           "type": "DataPrototypeGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the target of the InstanceRef xml.sequenceOffset=30"
         }
@@ -97,7 +97,7 @@
         "targetRunnable": {
           "type": "RunnableEntityGroup",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the target association of the InstanceRef. xml.sequenceOffset=30"
         }
@@ -192,7 +192,7 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a reference to a context PortPrototype. xml.sequenceOffset=30"
         },
@@ -206,7 +206,7 @@
         "targetVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the target VariableDataPrototype. xml.sequenceOffset=40"
         }

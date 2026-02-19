@@ -30,6 +30,7 @@ class VariationRestrictionWithSeverity(RestrictionWithSeverity):
     def __init__(self) -> None:
         """Initialize VariationRestrictionWithSeverity."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize VariationRestrictionWithSeverity to XML element.
 

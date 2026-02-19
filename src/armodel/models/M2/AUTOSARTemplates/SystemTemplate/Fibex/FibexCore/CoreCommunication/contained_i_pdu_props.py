@@ -56,6 +56,7 @@ class ContainedIPduProps(ARObject):
         self.timeout: Optional[TimeValue] = None
         self.trigger_ref: Optional[PduCollectionTriggerEnum] = None
         self.update: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ContainedIPduProps to XML element.
 
@@ -169,7 +170,7 @@ class ContainedIPduProps(ARObject):
             serialized = ARObject._serialize_item(self.trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -251,7 +252,7 @@ class ContainedIPduProps(ARObject):
             obj.timeout = timeout_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

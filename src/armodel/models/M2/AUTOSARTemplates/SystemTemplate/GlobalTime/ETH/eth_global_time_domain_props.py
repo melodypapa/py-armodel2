@@ -52,6 +52,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         self.manageds: list[Any] = []
         self.message: Optional[EthGlobalTimeMessageFormatEnum] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthGlobalTimeDomainProps to XML element.
 

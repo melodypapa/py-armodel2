@@ -31,6 +31,7 @@ class DiagnosticTroubleCode(DiagnosticCommonElement, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCode."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCode to XML element.
 

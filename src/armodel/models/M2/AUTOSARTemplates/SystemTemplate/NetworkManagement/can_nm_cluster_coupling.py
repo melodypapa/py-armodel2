@@ -42,6 +42,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
         self.coupled_clusters: list[CanNmCluster] = []
         self.nm_busload_reduction: Optional[Any] = None
         self.nm_immediate: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanNmClusterCoupling to XML element.
 

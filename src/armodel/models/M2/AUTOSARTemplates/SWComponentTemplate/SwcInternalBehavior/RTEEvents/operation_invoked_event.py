@@ -36,6 +36,7 @@ class OperationInvokedEvent(RTEEvent):
         """Initialize OperationInvokedEvent."""
         super().__init__()
         self.operation_instance_ref: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OperationInvokedEvent to XML element.
 

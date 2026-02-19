@@ -36,6 +36,7 @@ class IndexedArrayElement(ARObject):
         self.application_array: Optional[Any] = None
         self.implementation: Optional[Any] = None
         self.index: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IndexedArrayElement to XML element.
 

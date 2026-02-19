@@ -35,6 +35,7 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         """Initialize TDEventFrClusterCycleStart."""
         super().__init__()
         self.fr_cluster: Optional[FlexrayCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventFrClusterCycleStart to XML element.
 

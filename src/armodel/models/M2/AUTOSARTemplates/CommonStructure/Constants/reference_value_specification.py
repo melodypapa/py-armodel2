@@ -36,6 +36,7 @@ class ReferenceValueSpecification(ValueSpecification):
         """Initialize ReferenceValueSpecification."""
         super().__init__()
         self.reference_value_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReferenceValueSpecification to XML element.
 

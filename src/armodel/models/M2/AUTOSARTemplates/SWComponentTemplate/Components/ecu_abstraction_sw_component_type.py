@@ -38,6 +38,7 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         """Initialize EcuAbstractionSwComponentType."""
         super().__init__()
         self.hardwares: list[HwDescriptionEntity] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcuAbstractionSwComponentType to XML element.
 

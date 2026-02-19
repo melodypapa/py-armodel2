@@ -41,6 +41,7 @@ class HwPinGroupContent(ARObject):
         super().__init__()
         self.hw_pin: Optional[HwPin] = None
         self.hw_pin_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwPinGroupContent to XML element.
 
@@ -70,7 +71,7 @@ class HwPinGroupContent(ARObject):
             serialized = ARObject._serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-PIN-GROUP")
+                wrapped = ET.Element("HW-PIN-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,7 +103,7 @@ class HwPinGroupContent(ARObject):
             obj.hw_pin = hw_pin_value
 
         # Parse hw_pin_group_ref
-        child = ARObject._find_child_element(element, "HW-PIN-GROUP")
+        child = ARObject._find_child_element(element, "HW-PIN-GROUP-REF")
         if child is not None:
             hw_pin_group_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_ref = hw_pin_group_ref_value

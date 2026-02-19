@@ -46,6 +46,7 @@ class ConsistencyNeeds(Identifiable):
         self.dpg_requirese_refs: list[ARRef] = []
         self.reg_does_not_refs: list[ARRef] = []
         self.reg_requirese_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ConsistencyNeeds to XML element.
 

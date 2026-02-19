@@ -44,6 +44,7 @@ class SwSystemconstValue(ARObject):
         self.annotations: list[Annotation] = []
         self.sw_systemconst: SwSystemconst = None
         self.value: Numerical = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwSystemconstValue to XML element.
 

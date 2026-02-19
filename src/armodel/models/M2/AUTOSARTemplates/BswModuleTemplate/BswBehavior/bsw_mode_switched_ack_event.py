@@ -36,6 +36,7 @@ class BswModeSwitchedAckEvent(BswScheduleEvent):
         """Initialize BswModeSwitchedAckEvent."""
         super().__init__()
         self.mode_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModeSwitchedAckEvent to XML element.
 

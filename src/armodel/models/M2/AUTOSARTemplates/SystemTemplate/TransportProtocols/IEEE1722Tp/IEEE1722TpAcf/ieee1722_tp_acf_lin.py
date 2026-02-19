@@ -40,6 +40,7 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         self.base_frequency: Optional[PositiveInteger] = None
         self.frame_sync_enabled: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfLin to XML element.
 

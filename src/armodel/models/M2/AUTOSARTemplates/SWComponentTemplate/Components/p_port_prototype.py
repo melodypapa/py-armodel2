@@ -39,6 +39,7 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         """Initialize PPortPrototype."""
         super().__init__()
         self.provided: Optional[PortInterface] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PPortPrototype to XML element.
 

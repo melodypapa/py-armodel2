@@ -38,6 +38,7 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         super().__init__()
         self.evaluation_id: Optional[PositiveInteger] = None
         self.function: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthTransmitCertificateEvaluation to XML element.
 

@@ -56,6 +56,7 @@ class ApplicationEndpoint(Identifiable):
         self.provided_services: list[Any] = []
         self.tls_crypto_service: Optional[TlsCryptoServiceMapping] = None
         self.tp_configuration_configuration: Optional[TransportProtocolConfiguration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationEndpoint to XML element.
 

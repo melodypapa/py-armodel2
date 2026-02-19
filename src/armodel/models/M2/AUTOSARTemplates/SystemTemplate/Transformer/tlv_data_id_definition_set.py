@@ -35,6 +35,7 @@ class TlvDataIdDefinitionSet(ARElement):
         """Initialize TlvDataIdDefinitionSet."""
         super().__init__()
         self.tlv_data_ids: list[TlvDataIdDefinition] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TlvDataIdDefinitionSet to XML element.
 

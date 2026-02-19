@@ -49,6 +49,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         self.source_channel: Optional[BusMirrorChannel] = None
         self.target_channel: Optional[BusMirrorChannel] = None
         self.target_pdu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMapping to XML element.
 

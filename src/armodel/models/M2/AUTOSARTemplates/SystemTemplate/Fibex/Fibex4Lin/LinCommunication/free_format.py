@@ -35,6 +35,7 @@ class FreeFormat(FreeFormatEntry):
         """Initialize FreeFormat."""
         super().__init__()
         self.byte_values: list[Integer] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FreeFormat to XML element.
 

@@ -52,6 +52,7 @@ class AbstractServiceInstance(Identifiable, ABC):
         self.major_version: Optional[PositiveInteger] = None
         self.method: Optional[PduActivationRoutingGroup] = None
         self.routing_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractServiceInstance to XML element.
 

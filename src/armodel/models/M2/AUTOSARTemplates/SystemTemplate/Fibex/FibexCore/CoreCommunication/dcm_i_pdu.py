@@ -35,6 +35,7 @@ class DcmIPdu(IPdu):
         """Initialize DcmIPdu."""
         super().__init__()
         self.diag_pdu_type: Optional[DiagPduType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DcmIPdu to XML element.
 

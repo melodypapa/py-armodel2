@@ -40,6 +40,7 @@ class SomeipTpConfig(TpConfig):
         super().__init__()
         self.tp_channels: list[SomeipTpChannel] = []
         self.tp_connections: list[SomeipTpConnection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipTpConfig to XML element.
 

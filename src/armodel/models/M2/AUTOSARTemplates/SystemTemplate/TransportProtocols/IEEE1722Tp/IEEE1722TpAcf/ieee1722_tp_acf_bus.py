@@ -41,6 +41,7 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         super().__init__()
         self.acf_parts: list[IEEE1722TpAcfBusPart] = []
         self.bus_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfBus to XML element.
 

@@ -57,6 +57,7 @@ class CouplingElement(FibexElement):
         self.coupling_type: Optional[CouplingElementEnum] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.firewall_rules: list[StateDependentFirewall] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingElement to XML element.
 

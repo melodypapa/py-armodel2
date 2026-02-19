@@ -41,6 +41,7 @@ class EngineeringObject(ARObject, ABC):
         self.domain: Optional[NameToken] = None
         self.revision_label_strings: list[RevisionLabelString] = []
         self.short_label: NameToken = None
+
     def serialize(self) -> ET.Element:
         """Serialize EngineeringObject to XML element.
 

@@ -48,6 +48,7 @@ class AliasNameAssignment(ARObject):
         self.identifiable: Optional[Identifiable] = None
         self.label: Optional[MultilanguageLongName] = None
         self.short_label: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AliasNameAssignment to XML element.
 

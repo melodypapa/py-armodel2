@@ -30,6 +30,7 @@ class UnresolvedReferenceRestrictionWithSeverity(RestrictionWithSeverity):
     def __init__(self) -> None:
         """Initialize UnresolvedReferenceRestrictionWithSeverity."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UnresolvedReferenceRestrictionWithSeverity to XML element.
 

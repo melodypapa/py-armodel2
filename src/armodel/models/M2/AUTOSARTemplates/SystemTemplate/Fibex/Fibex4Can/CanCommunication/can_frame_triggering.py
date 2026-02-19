@@ -70,6 +70,7 @@ class CanFrameTriggering(FrameTriggering):
         self.rx_identifier_range_range: Optional[RxIdentifierRange] = None
         self.rx_mask: Optional[PositiveInteger] = None
         self.tx_mask: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanFrameTriggering to XML element.
 
@@ -147,7 +148,7 @@ class CanFrameTriggering(FrameTriggering):
             serialized = ARObject._serialize_item(self.can_xl_frame_ref, "CanXlFrameTriggeringProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CAN-XL-FRAME")
+                wrapped = ET.Element("CAN-XL-FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -270,7 +271,7 @@ class CanFrameTriggering(FrameTriggering):
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
         # Parse can_xl_frame_ref
-        child = ARObject._find_child_element(element, "CAN-XL-FRAME")
+        child = ARObject._find_child_element(element, "CAN-XL-FRAME-REF")
         if child is not None:
             can_xl_frame_ref_value = ARRef.deserialize(child)
             obj.can_xl_frame_ref = can_xl_frame_ref_value

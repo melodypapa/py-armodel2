@@ -37,6 +37,7 @@ class DdsHistory(ARObject):
         super().__init__()
         self.history_kind: Optional[DdsHistoryKindEnum] = None
         self.history_order: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsHistory to XML element.
 

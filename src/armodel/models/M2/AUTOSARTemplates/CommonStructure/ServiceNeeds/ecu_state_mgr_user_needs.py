@@ -31,6 +31,7 @@ class EcuStateMgrUserNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize EcuStateMgrUserNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcuStateMgrUserNeeds to XML element.
 

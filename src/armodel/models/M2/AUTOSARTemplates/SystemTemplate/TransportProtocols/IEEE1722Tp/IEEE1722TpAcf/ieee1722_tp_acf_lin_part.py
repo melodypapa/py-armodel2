@@ -41,6 +41,7 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         super().__init__()
         self.lin_identifier: Optional[PositiveInteger] = None
         self.sdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfLinPart to XML element.
 

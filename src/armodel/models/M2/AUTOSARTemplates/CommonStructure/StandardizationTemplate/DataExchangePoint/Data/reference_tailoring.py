@@ -41,6 +41,7 @@ class ReferenceTailoring(AttributeTailoring):
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
         self.unresolved_restriction_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReferenceTailoring to XML element.
 
@@ -76,7 +77,7 @@ class ReferenceTailoring(AttributeTailoring):
             serialized = ARObject._serialize_item(self.unresolved_restriction_ref, "UnresolvedReferenceRestrictionWithSeverity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UNRESOLVED-RESTRICTION")
+                wrapped = ET.Element("UNRESOLVED-RESTRICTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,7 +112,7 @@ class ReferenceTailoring(AttributeTailoring):
                     obj.type_tailorings.append(child_value)
 
         # Parse unresolved_restriction_ref
-        child = ARObject._find_child_element(element, "UNRESOLVED-RESTRICTION")
+        child = ARObject._find_child_element(element, "UNRESOLVED-RESTRICTION-REF")
         if child is not None:
             unresolved_restriction_ref_value = ARRef.deserialize(child)
             obj.unresolved_restriction_ref = unresolved_restriction_ref_value

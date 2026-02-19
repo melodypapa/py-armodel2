@@ -41,6 +41,7 @@ class ScheduleTableEntry(ARObject, ABC):
         self.delay: Optional[TimeValue] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.position_in_table: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ScheduleTableEntry to XML element.
 

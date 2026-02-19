@@ -86,6 +86,7 @@ class DocumentationBlock(ARObject):
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DocumentationBlock to XML element.
 
@@ -101,7 +102,7 @@ class DocumentationBlock(ARObject):
             serialized = ARObject._serialize_item(self.def_list_ref, "DefList")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEF-LIST")
+                wrapped = ET.Element("DEF-LIST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,7 +144,7 @@ class DocumentationBlock(ARObject):
             serialized = ARObject._serialize_item(self.labeled_list_label_ref, "LabeledList")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LABELED-LIST-LABEL")
+                wrapped = ET.Element("LABELED-LIST-LABEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -157,7 +158,7 @@ class DocumentationBlock(ARObject):
             serialized = ARObject._serialize_item(self.list_ref, "List")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LIST")
+                wrapped = ET.Element("LIST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -267,7 +268,7 @@ class DocumentationBlock(ARObject):
         obj.__init__()
 
         # Parse def_list_ref
-        child = ARObject._find_child_element(element, "DEF-LIST")
+        child = ARObject._find_child_element(element, "DEF-LIST-REF")
         if child is not None:
             def_list_ref_value = ARRef.deserialize(child)
             obj.def_list_ref = def_list_ref_value
@@ -285,13 +286,13 @@ class DocumentationBlock(ARObject):
             obj.formula = formula_value
 
         # Parse labeled_list_label_ref
-        child = ARObject._find_child_element(element, "LABELED-LIST-LABEL")
+        child = ARObject._find_child_element(element, "LABELED-LIST-LABEL-REF")
         if child is not None:
             labeled_list_label_ref_value = ARRef.deserialize(child)
             obj.labeled_list_label_ref = labeled_list_label_ref_value
 
         # Parse list_ref
-        child = ARObject._find_child_element(element, "LIST")
+        child = ARObject._find_child_element(element, "LIST-REF")
         if child is not None:
             list_ref_value = ARRef.deserialize(child)
             obj.list_ref = list_ref_value

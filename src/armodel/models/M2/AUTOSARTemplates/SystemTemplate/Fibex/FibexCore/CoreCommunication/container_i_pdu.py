@@ -66,6 +66,7 @@ class ContainerIPdu(IPdu):
         self.rx_accept: Optional[RxAcceptContainedIPduEnum] = None
         self.threshold_size: Optional[PositiveInteger] = None
         self.unused_bit: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ContainerIPdu to XML element.
 
@@ -125,7 +126,7 @@ class ContainerIPdu(IPdu):
             serialized = ARObject._serialize_item(self.container_trigger_ref, "ContainerIPduTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTAINER-TRIGGER")
+                wrapped = ET.Element("CONTAINER-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -260,7 +261,7 @@ class ContainerIPdu(IPdu):
             obj.container = container_value
 
         # Parse container_trigger_ref
-        child = ARObject._find_child_element(element, "CONTAINER-TRIGGER")
+        child = ARObject._find_child_element(element, "CONTAINER-TRIGGER-REF")
         if child is not None:
             container_trigger_ref_value = ARRef.deserialize(child)
             obj.container_trigger_ref = container_trigger_ref_value

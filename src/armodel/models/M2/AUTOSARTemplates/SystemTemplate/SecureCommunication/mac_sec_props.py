@@ -42,6 +42,7 @@ class MacSecProps(ARObject):
         self.mac_sec_kay: Optional[MacSecLocalKayProps] = None
         self.on_fail: Optional[TimeValue] = None
         self.sak_rekey_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecProps to XML element.
 

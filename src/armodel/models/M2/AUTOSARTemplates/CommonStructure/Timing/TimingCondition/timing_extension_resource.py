@@ -42,6 +42,7 @@ class TimingExtensionResource(Identifiable):
         self.timing_arguments: list[AutosarOperationArgumentInstance] = []
         self.timing_modes: list[TimingModeInstance] = []
         self.timing_variables: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TimingExtensionResource to XML element.
 

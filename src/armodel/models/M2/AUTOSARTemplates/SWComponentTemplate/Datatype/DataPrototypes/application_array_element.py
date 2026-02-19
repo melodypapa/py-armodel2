@@ -54,6 +54,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         self.array_size: Optional[ArraySizeSemanticsEnum] = None
         self.index_data_type: Optional[ApplicationPrimitiveDataType] = None
         self.max_number_of: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationArrayElement to XML element.
 

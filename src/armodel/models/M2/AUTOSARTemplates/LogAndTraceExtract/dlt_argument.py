@@ -53,6 +53,7 @@ class DltArgument(Identifiable):
         self.optional: Optional[Boolean] = None
         self.predefined_text: Optional[Boolean] = None
         self.variable_length: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltArgument to XML element.
 

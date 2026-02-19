@@ -28,6 +28,7 @@ class NetworkEndpointAddress(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize NetworkEndpointAddress."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize NetworkEndpointAddress to XML element.
 

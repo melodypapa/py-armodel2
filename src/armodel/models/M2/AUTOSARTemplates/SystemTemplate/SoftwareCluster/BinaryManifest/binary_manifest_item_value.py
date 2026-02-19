@@ -28,6 +28,7 @@ class BinaryManifestItemValue(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize BinaryManifestItemValue."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItemValue to XML element.
 

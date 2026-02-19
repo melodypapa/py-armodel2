@@ -37,6 +37,7 @@ class TriggerInterface(PortInterface):
         """Initialize TriggerInterface."""
         super().__init__()
         self.trigger_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerInterface to XML element.
 

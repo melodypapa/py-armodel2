@@ -38,6 +38,7 @@ class ModeTransition(Identifiable):
         super().__init__()
         self.entered_mode: Optional[ModeDeclaration] = None
         self.exited_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeTransition to XML element.
 

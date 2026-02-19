@@ -34,6 +34,7 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         super().__init__()
         self.ident: Optional[DiagnosticParameter] = None
         self.support_info: Optional[DiagnosticParameter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameter to XML element.
 

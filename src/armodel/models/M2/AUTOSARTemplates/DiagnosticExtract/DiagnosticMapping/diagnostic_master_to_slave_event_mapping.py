@@ -37,6 +37,7 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         super().__init__()
         self.master_event: Optional[DiagnosticEvent] = None
         self.slave_event: Optional[DiagnosticEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMasterToSlaveEventMapping to XML element.
 

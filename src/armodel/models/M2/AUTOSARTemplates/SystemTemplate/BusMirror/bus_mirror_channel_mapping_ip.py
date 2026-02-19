@@ -35,6 +35,7 @@ class BusMirrorChannelMappingIp(BusMirrorChannelMapping):
         """Initialize BusMirrorChannelMappingIp."""
         super().__init__()
         self.transmission: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMappingIp to XML element.
 

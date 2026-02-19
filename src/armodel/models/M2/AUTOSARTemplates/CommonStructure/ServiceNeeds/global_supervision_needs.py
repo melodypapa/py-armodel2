@@ -31,6 +31,7 @@ class GlobalSupervisionNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize GlobalSupervisionNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalSupervisionNeeds to XML element.
 

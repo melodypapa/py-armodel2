@@ -48,6 +48,7 @@ class J1939NodeName(ARObject):
         self.manufacturer_code: Optional[Integer] = None
         self.vehicle_system: Optional[Integer] = None
         self.vehicle_system_instance: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939NodeName to XML element.
 

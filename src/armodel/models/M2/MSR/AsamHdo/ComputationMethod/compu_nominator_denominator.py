@@ -27,6 +27,7 @@ class CompuNominatorDenominator(ARObject):
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CompuNominatorDenominator to XML element.
 

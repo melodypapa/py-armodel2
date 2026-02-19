@@ -37,6 +37,7 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
         super().__init__()
         self.destination: Optional[String] = None
         self.destination_type: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucInstanceReferenceDef to XML element.
 

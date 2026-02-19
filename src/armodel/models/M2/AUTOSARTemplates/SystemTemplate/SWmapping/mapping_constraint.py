@@ -33,6 +33,7 @@ class MappingConstraint(ARObject, ABC):
         """Initialize MappingConstraint."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MappingConstraint to XML element.
 

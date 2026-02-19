@@ -79,6 +79,7 @@ class EndToEndTransformationDescription(TransformationDescription):
         self.upper_header: Optional[PositiveInteger] = None
         self.window_size_init: Optional[PositiveInteger] = None
         self.window_size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndTransformationDescription to XML element.
 

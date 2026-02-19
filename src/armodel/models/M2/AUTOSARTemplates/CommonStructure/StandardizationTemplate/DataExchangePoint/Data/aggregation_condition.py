@@ -35,6 +35,7 @@ class AggregationCondition(AttributeCondition):
         """Initialize AggregationCondition."""
         super().__init__()
         self.aggregation: AggregationTailoring = None
+
     def serialize(self) -> ET.Element:
         """Serialize AggregationCondition to XML element.
 

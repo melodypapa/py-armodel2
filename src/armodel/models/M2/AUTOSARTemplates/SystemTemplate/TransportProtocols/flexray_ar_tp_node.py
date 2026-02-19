@@ -37,6 +37,7 @@ class FlexrayArTpNode(Identifiable):
         super().__init__()
         self.connectors: list[Any] = []
         self.tp_address: Optional[TpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayArTpNode to XML element.
 

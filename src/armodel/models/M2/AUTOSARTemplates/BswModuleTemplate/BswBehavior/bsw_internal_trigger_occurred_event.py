@@ -36,6 +36,7 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
         """Initialize BswInternalTriggerOccurredEvent."""
         super().__init__()
         self.event_source_point_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswInternalTriggerOccurredEvent to XML element.
 

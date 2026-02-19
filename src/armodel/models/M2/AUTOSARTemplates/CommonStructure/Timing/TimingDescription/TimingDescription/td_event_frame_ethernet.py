@@ -48,6 +48,7 @@ class TDEventFrameEthernet(TDEventCom):
         self.td_event_type: Optional[TDEventFrameEthernet] = None
         self.td_header_id_filters: list[TDHeaderIdRange] = []
         self.td_pdu_triggering_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventFrameEthernet to XML element.
 

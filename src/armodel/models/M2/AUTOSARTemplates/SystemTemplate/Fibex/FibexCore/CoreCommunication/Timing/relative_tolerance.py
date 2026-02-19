@@ -32,6 +32,7 @@ class RelativeTolerance(ARObject):
         """Initialize RelativeTolerance."""
         super().__init__()
         self.relative: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RelativeTolerance to XML element.
 

@@ -32,6 +32,7 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         """Initialize DiagnosticReadDTCInformation."""
         super().__init__()
         self.read: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDTCInformation to XML element.
 

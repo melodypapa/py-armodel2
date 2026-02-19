@@ -32,6 +32,7 @@ class AtpBlueprintable(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AtpBlueprintable."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprintable to XML element.
 

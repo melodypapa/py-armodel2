@@ -37,6 +37,7 @@ class ChapterContent(ARObject):
         super().__init__()
         self.prms: Prms = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ChapterContent to XML element.
 

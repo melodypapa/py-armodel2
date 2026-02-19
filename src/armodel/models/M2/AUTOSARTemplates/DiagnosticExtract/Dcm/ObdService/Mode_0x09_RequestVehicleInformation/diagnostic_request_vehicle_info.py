@@ -37,6 +37,7 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         super().__init__()
         self.info_type: Optional[DiagnosticInfoType] = None
         self.request_vehicle: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestVehicleInfo to XML element.
 

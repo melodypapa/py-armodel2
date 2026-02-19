@@ -30,6 +30,7 @@ class CryptoKeyManagementNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize CryptoKeyManagementNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoKeyManagementNeeds to XML element.
 

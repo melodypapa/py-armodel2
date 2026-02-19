@@ -50,6 +50,7 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         self.priority: Optional[PositiveInteger] = None
         self.request: Optional[RequestResponseDelay] = None
         self.service_offer: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdServerServiceInstanceConfig to XML element.
 

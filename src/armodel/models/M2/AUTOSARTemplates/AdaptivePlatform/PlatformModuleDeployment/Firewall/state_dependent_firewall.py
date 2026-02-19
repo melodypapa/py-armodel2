@@ -42,6 +42,7 @@ class StateDependentFirewall(ARElement):
         self.default_action: Optional[Any] = None
         self.firewall_rule_propses: list[FirewallRuleProps] = []
         self.firewall_states: list[ModeDeclaration] = []
+
     def serialize(self) -> ET.Element:
         """Serialize StateDependentFirewall to XML element.
 

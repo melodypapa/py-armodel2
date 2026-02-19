@@ -48,6 +48,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         self.context_datas: list[Any] = []
         self.root_data_prototype_in_cs_ref: Optional[ARRef] = None
         self.target_data_prototype_in_cs_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInClientServerInterfaceInstanceRef to XML element.
 

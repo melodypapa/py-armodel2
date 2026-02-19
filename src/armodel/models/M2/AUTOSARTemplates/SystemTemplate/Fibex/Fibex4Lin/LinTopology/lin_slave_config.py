@@ -64,6 +64,7 @@ class LinSlaveConfig(ARObject):
         self.protocol_version: Optional[String] = None
         self.supplier_id: Optional[PositiveInteger] = None
         self.variant_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinSlaveConfig to XML element.
 

@@ -35,6 +35,7 @@ class ConcreteClassTailoring(DataFormatElementScope):
         """Initialize ConcreteClassTailoring."""
         super().__init__()
         self.validation_root: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConcreteClassTailoring to XML element.
 

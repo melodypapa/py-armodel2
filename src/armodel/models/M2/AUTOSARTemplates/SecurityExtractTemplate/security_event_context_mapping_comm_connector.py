@@ -35,6 +35,7 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()
         self.comm_connectors: list[CommunicationConnector] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMappingCommConnector to XML element.
 

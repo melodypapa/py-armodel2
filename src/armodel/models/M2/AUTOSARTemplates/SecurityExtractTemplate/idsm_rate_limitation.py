@@ -38,6 +38,7 @@ class IdsmRateLimitation(Identifiable):
         super().__init__()
         self.max_events_in: PositiveInteger = None
         self.time_interval: Float = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmRateLimitation to XML element.
 

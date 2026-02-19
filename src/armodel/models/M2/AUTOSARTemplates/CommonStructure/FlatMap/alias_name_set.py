@@ -37,6 +37,7 @@ class AliasNameSet(ARElement):
         """Initialize AliasNameSet."""
         super().__init__()
         self.alias_names: list[AliasNameAssignment] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AliasNameSet to XML element.
 

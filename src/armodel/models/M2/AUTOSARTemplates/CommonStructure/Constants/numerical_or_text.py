@@ -36,6 +36,7 @@ class NumericalOrText(ARObject):
         super().__init__()
         self.vf: Optional[Numerical] = None
         self.vt: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NumericalOrText to XML element.
 

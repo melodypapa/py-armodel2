@@ -37,6 +37,7 @@ class AbstractEvent(Identifiable, ABC):
         """Initialize AbstractEvent."""
         super().__init__()
         self.activation: Optional[ExecutableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractEvent to XML element.
 

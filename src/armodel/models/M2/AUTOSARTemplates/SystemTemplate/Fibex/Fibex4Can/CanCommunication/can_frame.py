@@ -30,6 +30,7 @@ class CanFrame(Frame):
     def __init__(self) -> None:
         """Initialize CanFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CanFrame to XML element.
 

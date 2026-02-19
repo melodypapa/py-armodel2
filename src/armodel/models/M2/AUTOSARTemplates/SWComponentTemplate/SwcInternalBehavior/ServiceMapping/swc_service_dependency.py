@@ -49,6 +49,7 @@ class SwcServiceDependency(ServiceDependency):
         self.assigned_ports: list[RoleBasedPortAssignment] = []
         self.represented_port_ref: Optional[ARRef] = None
         self.service_needs: Optional[ServiceNeeds] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcServiceDependency to XML element.
 

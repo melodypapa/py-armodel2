@@ -58,6 +58,7 @@ class MlFigure(Paginateable):
         self.l_graphics: list[LGraphic] = []
         self.pgwide: Optional[PgwideEnum] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MlFigure to XML element.
 

@@ -49,6 +49,7 @@ class EcucModuleDef(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.refined_module: Optional[EcucModuleDef] = None
         self.supporteds: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucModuleDef to XML element.
 

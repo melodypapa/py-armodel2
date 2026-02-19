@@ -49,6 +49,7 @@ class ExecutionTimeConstraint(TimingConstraint):
         self.execution_time: Optional[ExecutionTimeTypeEnum] = None
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutionTimeConstraint to XML element.
 

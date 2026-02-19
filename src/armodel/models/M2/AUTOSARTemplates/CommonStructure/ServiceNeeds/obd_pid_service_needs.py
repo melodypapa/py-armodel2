@@ -32,6 +32,7 @@ class ObdPidServiceNeeds(DiagnosticCapabilityElement):
     def __init__(self) -> None:
         """Initialize ObdPidServiceNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ObdPidServiceNeeds to XML element.
 

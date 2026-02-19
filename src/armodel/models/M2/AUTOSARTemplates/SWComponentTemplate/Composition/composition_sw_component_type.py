@@ -64,6 +64,7 @@ class CompositionSwComponentType(SwComponentType):
         self.data_type_refs: list[ARRef] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
         self.physical: Optional[PhysicalDimension] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompositionSwComponentType to XML element.
 

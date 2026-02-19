@@ -35,6 +35,7 @@ class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticEnableConditionNeeds."""
         super().__init__()
         self.initial_status: Optional[EventAcceptanceStatusEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnableConditionNeeds to XML element.
 

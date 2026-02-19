@@ -32,6 +32,7 @@ class DdsDeadline(ARObject):
         """Initialize DdsDeadline."""
         super().__init__()
         self.deadline_period: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsDeadline to XML element.
 

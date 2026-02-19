@@ -39,6 +39,7 @@ class LinMaster(ARObject):
         self.lin_slaves: list[LinSlaveConfig] = []
         self.time_base: Optional[TimeValue] = None
         self.time_base_jitter: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinMaster to XML element.
 

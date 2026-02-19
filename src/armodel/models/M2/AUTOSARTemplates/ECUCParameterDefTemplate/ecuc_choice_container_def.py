@@ -35,6 +35,7 @@ class EcucChoiceContainerDef(EcucContainerDef):
         """Initialize EcucChoiceContainerDef."""
         super().__init__()
         self.choices: list[EcucParamConfContainerDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucChoiceContainerDef to XML element.
 

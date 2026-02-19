@@ -36,6 +36,7 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         """Initialize TDEventBsw."""
         super().__init__()
         self.bsw_module_description: Optional[BswModuleDescription] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventBsw to XML element.
 

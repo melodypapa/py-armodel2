@@ -45,6 +45,7 @@ class RptComponent(Identifiable):
         self.mc_datas: list[RoleBasedMcDataAssignment] = []
         self.rp_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_executable_entities: list[RptExecutableEntity] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptComponent to XML element.
 

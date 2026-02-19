@@ -30,6 +30,7 @@ class DiagnosticRequestPowertrainFreezeFrameDataClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameDataClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestPowertrainFreezeFrameDataClass to XML element.
 

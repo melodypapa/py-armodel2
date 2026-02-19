@@ -62,6 +62,7 @@ class Table(Paginateable):
         self.rowsep: Optional[TableSeparatorString] = None
         self.table_caption: Optional[Caption] = None
         self.tabstyle: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Table to XML element.
 

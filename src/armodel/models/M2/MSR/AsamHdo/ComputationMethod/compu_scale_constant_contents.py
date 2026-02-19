@@ -35,6 +35,7 @@ class CompuScaleConstantContents(CompuScaleContents):
         """Initialize CompuScaleConstantContents."""
         super().__init__()
         self.compu_const: Optional[CompuConst] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuScaleConstantContents to XML element.
 

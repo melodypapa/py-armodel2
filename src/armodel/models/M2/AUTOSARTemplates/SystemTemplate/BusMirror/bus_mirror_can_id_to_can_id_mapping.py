@@ -38,6 +38,7 @@ class BusMirrorCanIdToCanIdMapping(ARObject):
         super().__init__()
         self.remapped_can_id: Optional[PositiveInteger] = None
         self.souce_can_id_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorCanIdToCanIdMapping to XML element.
 

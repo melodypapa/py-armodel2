@@ -35,6 +35,7 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         """Initialize DoIpLogicTesterAddressProps."""
         super().__init__()
         self.do_ip_testers: list[DoIpRoutingActivation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpLogicTesterAddressProps to XML element.
 

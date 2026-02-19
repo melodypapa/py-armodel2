@@ -41,6 +41,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         self.default_value: Optional[BinaryManifestItem] = None
         self.is_unused: Optional[Boolean] = None
         self.value: Optional[BinaryManifestItem] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItem to XML element.
 

@@ -48,6 +48,7 @@ class VariableDataPrototypeInSystemInstanceRef(ARObject):
         self.context: Optional[RootSwCompositionPrototype] = None
         self.context_port_ref: ARRef = None
         self.target_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariableDataPrototypeInSystemInstanceRef to XML element.
 

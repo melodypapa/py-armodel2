@@ -48,6 +48,7 @@ class ExecutionOrderConstraint(TimingConstraint):
         self.is_event: Optional[Boolean] = None
         self.ordered_elements: list[Any] = []
         self.permit_multiple: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutionOrderConstraint to XML element.
 

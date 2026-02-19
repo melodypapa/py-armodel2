@@ -37,6 +37,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         """Initialize EcucReferenceValue."""
         super().__init__()
         self.value_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucReferenceValue to XML element.
 

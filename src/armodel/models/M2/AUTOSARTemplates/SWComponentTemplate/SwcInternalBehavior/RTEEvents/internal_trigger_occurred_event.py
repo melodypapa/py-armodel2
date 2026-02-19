@@ -36,6 +36,7 @@ class InternalTriggerOccurredEvent(RTEEvent):
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
         self.event_source_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InternalTriggerOccurredEvent to XML element.
 

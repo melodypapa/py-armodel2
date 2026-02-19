@@ -43,6 +43,7 @@ class DataConstrRule(ARObject):
         self.constr_level: Optional[Integer] = None
         self.internal_constrs: Optional[InternalConstrs] = None
         self.phys_constrs: Optional[PhysConstrs] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataConstrRule to XML element.
 

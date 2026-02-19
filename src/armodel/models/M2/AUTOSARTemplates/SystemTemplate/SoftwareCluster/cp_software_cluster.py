@@ -44,6 +44,7 @@ class CpSoftwareCluster(ARElement):
         self.software_cluster: Optional[PositiveInteger] = None
         self.sw_components: list[Any] = []
         self.sw_composition_component_types: list[CompositionSwComponentType] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareCluster to XML element.
 

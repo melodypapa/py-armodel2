@@ -134,6 +134,7 @@ class SystemMapping(Identifiable):
         self.sw_mapping_refs: list[ARRef] = []
         self.system_signal_group_to_refs: list[ARRef] = []
         self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SystemMapping to XML element.
 

@@ -37,6 +37,7 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         super().__init__()
         self.context: Optional[Any] = None
         self.target_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PPortInCompositionInstanceRef to XML element.
 

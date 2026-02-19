@@ -64,6 +64,7 @@ class Entry(ARObject):
         self.rowsep: Optional[TableSeparatorString] = None
         self.spanname: Optional[String] = None
         self.valign: Optional[ValignEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Entry to XML element.
 

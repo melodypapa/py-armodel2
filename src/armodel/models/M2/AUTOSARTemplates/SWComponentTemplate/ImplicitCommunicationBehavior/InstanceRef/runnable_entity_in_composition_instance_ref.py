@@ -39,6 +39,7 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable: Optional[RunnableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityInCompositionInstanceRef to XML element.
 

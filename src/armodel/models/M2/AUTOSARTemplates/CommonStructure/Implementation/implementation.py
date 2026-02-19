@@ -100,6 +100,7 @@ class Implementation(ARElement, ABC):
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Implementation to XML element.
 

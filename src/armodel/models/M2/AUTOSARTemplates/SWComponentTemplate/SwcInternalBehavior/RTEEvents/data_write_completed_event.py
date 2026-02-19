@@ -35,6 +35,7 @@ class DataWriteCompletedEvent(RTEEvent):
         """Initialize DataWriteCompletedEvent."""
         super().__init__()
         self.event_source: Optional[VariableAccess] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataWriteCompletedEvent to XML element.
 

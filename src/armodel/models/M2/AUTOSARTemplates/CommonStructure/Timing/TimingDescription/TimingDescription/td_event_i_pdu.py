@@ -45,6 +45,7 @@ class TDEventIPdu(TDEventCom):
         self.i_pdu: Optional[IPdu] = None
         self.physical_channel: Optional[PhysicalChannel] = None
         self.td_event_type: Optional[TDEventIPduTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventIPdu to XML element.
 

@@ -40,6 +40,7 @@ class EcucIntegerParamDef(EcucParameterDef):
         self.default_value: Optional[UnlimitedInteger] = None
         self.max: Optional[UnlimitedInteger] = None
         self.min: Optional[UnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucIntegerParamDef to XML element.
 

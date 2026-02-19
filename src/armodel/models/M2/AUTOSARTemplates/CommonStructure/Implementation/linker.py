@@ -42,6 +42,7 @@ class Linker(Identifiable):
         self.options: Optional[String] = None
         self.vendor: Optional[String] = None
         self.version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Linker to XML element.
 

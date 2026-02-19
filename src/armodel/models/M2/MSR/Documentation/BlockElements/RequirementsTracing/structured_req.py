@@ -75,6 +75,7 @@ class StructuredReq(Paginateable):
         self.tested_items: list[Traceable] = []
         self.type: String = None
         self.use_case: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StructuredReq to XML element.
 

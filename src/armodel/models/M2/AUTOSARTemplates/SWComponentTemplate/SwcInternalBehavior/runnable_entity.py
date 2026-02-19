@@ -101,6 +101,7 @@ class RunnableEntity(ExecutableEntity):
         self.symbol: Optional[CIdentifier] = None
         self.wait_points: list[WaitPoint] = []
         self.written_locals: list[VariableAccess] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntity to XML element.
 

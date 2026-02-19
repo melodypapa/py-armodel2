@@ -39,6 +39,7 @@ class DiagnosticComControlSpecificChannel(ARObject):
         self.specific_channel: Optional[CommunicationCluster] = None
         self.specific_physical: Optional[Any] = None
         self.subnet_number: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticComControlSpecificChannel to XML element.
 

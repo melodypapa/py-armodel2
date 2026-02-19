@@ -34,6 +34,7 @@ class IndexEntry(ARObject):
         super().__init__()
         self.sub: Superscript = None
         self.sup: Superscript = None
+
     def serialize(self) -> ET.Element:
         """Serialize IndexEntry to XML element.
 

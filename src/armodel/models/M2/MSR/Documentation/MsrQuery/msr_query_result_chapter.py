@@ -35,6 +35,7 @@ class MsrQueryResultChapter(ARObject):
         """Initialize MsrQueryResultChapter."""
         super().__init__()
         self.chapters: list[Chapter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryResultChapter to XML element.
 

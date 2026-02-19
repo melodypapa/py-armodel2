@@ -38,6 +38,7 @@ class DefList(Paginateable):
         """Initialize DefList."""
         super().__init__()
         self.def_item: DefItem = None
+
     def serialize(self) -> ET.Element:
         """Serialize DefList to XML element.
 

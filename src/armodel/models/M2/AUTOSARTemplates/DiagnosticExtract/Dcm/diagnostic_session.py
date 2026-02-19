@@ -45,6 +45,7 @@ class DiagnosticSession(DiagnosticCommonElement):
         self.jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum] = None
         self.p2_server_max: Optional[TimeValue] = None
         self.p2_star_server: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSession to XML element.
 

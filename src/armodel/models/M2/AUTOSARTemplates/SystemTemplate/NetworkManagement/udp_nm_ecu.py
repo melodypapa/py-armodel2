@@ -30,6 +30,7 @@ class UdpNmEcu(BusspecificNmEcu):
     def __init__(self) -> None:
         """Initialize UdpNmEcu."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UdpNmEcu to XML element.
 

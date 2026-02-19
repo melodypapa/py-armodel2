@@ -50,6 +50,7 @@ class GlobalTimeSlave(Identifiable, ABC):
         self.time_leap_future: Optional[TimeValue] = None
         self.time_leap: Optional[PositiveInteger] = None
         self.time_leap_past: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeSlave to XML element.
 

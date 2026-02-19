@@ -48,6 +48,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         self.diagnostic_value_access: Optional[DiagnosticValueAccessEnum] = None
         self.fixed_length: Optional[Boolean] = None
         self.processing_style: Optional[DiagnosticProcessingStyleEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticValueNeeds to XML element.
 

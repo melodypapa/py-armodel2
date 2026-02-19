@@ -36,6 +36,7 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
         self.diagnostic_storage: Optional[Any] = None
         self.swc_flat_service: Optional[Any] = None
         self.swc_service: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStorageConditionPortMapping to XML element.
 

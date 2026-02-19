@@ -49,6 +49,7 @@ class HwElementConnector(Describable):
         self.hw_elements: list[HwElement] = []
         self.hw_pins: list[HwPinConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize HwElementConnector to XML element.
 

@@ -32,6 +32,7 @@ class SwCalprmAxisSet(ARObject):
         """Initialize SwCalprmAxisSet."""
         super().__init__()
         self.sw_calprm_axises: list[SwCalprmAxis] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwCalprmAxisSet to XML element.
 

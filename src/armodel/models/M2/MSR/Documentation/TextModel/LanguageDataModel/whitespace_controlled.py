@@ -30,6 +30,7 @@ class WhitespaceControlled(ARObject, ABC):
         """Initialize WhitespaceControlled."""
         super().__init__()
         self.xml_space: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize WhitespaceControlled to XML element.
 

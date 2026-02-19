@@ -30,6 +30,7 @@ class BswInterruptEvent(BswEvent):
     def __init__(self) -> None:
         """Initialize BswInterruptEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswInterruptEvent to XML element.
 

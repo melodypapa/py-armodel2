@@ -64,6 +64,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         self.handle_timeout_enum: Optional[HandleTimeoutEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.timeout: Optional[ValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedReceiverComSpec to XML element.
 

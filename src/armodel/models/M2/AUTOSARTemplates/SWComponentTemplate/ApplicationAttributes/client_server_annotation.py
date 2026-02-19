@@ -35,6 +35,7 @@ class ClientServerAnnotation(GeneralAnnotation):
         """Initialize ClientServerAnnotation."""
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerAnnotation to XML element.
 

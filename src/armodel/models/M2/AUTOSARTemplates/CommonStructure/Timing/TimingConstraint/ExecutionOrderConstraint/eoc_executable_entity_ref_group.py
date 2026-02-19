@@ -58,6 +58,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         self.nested_elements: list[Any] = []
         self.successors: list[Any] = []
         self.triggering_event: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRefGroup to XML element.
 

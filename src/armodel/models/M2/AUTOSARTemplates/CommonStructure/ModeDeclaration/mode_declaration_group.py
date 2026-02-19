@@ -58,6 +58,7 @@ class ModeDeclarationGroup(ARElement):
         self.mode_transition_mode_declaration_groups: list[ModeTransition] = []
         self.mode_user_error: Optional[ModeErrorBehavior] = None
         self.on_transition: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationGroup to XML element.
 

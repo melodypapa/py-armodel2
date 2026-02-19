@@ -37,6 +37,7 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         super().__init__()
         self.ofs_data_id_list: PositiveInteger = None
         self.sync_data_id_list: PositiveInteger = None
+
     def serialize(self) -> ET.Element:
         """Serialize FrGlobalTimeDomainProps to XML element.
 

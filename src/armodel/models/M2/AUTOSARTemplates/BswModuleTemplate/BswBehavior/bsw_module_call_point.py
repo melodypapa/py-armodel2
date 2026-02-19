@@ -36,6 +36,7 @@ class BswModuleCallPoint(Referrable, ABC):
         """Initialize BswModuleCallPoint."""
         super().__init__()
         self.contexts: list[BswDistinguishedPartition] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleCallPoint to XML element.
 

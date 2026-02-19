@@ -37,6 +37,7 @@ class MemorySectionLocation(ARObject):
         super().__init__()
         self.provided_memory: Optional[HwElement] = None
         self.software: Optional[MemorySection] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MemorySectionLocation to XML element.
 

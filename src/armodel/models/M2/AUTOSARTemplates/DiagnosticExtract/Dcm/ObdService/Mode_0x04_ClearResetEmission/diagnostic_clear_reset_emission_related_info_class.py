@@ -30,6 +30,7 @@ class DiagnosticClearResetEmissionRelatedInfoClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticClearResetEmissionRelatedInfoClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticClearResetEmissionRelatedInfoClass to XML element.
 

@@ -35,6 +35,7 @@ class MacMulticastGroup(Identifiable):
         """Initialize MacMulticastGroup."""
         super().__init__()
         self.mac_multicast: Optional[MacAddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacMulticastGroup to XML element.
 

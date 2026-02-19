@@ -48,6 +48,7 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         self.context_mode_group_prototype_ref: Optional[ARRef] = None
         self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_mode_declaration: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RModeInAtomicSwcInstanceRef to XML element.
 

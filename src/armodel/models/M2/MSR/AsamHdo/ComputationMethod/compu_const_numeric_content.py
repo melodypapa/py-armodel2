@@ -35,6 +35,7 @@ class CompuConstNumericContent(CompuConstContent):
         """Initialize CompuConstNumericContent."""
         super().__init__()
         self.v: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuConstNumericContent to XML element.
 

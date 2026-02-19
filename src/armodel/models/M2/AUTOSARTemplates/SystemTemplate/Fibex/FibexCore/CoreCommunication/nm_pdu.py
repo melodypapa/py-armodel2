@@ -47,6 +47,7 @@ class NmPdu(Pdu):
         self.nm_data: Optional[Boolean] = None
         self.nm_vote_information: Optional[Boolean] = None
         self.unused_bit: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NmPdu to XML element.
 

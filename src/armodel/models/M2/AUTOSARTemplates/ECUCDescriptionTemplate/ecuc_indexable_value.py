@@ -33,6 +33,7 @@ class EcucIndexableValue(ARObject, ABC):
         """Initialize EcucIndexableValue."""
         super().__init__()
         self.index: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucIndexableValue to XML element.
 

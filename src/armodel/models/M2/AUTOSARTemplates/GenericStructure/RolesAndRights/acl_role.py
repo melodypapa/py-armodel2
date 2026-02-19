@@ -36,6 +36,7 @@ class AclRole(ARElement):
         """Initialize AclRole."""
         super().__init__()
         self.ldap_url: Optional[UriString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AclRole to XML element.
 

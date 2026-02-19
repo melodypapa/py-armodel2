@@ -44,6 +44,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         super().__init__()
         self.may_be: Optional[Boolean] = None
         self.required: Optional[PortInterface] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RPortPrototype to XML element.
 

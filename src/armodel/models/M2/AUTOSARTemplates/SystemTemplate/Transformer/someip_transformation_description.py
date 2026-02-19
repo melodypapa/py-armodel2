@@ -42,6 +42,7 @@ class SOMEIPTransformationDescription(TransformationDescription):
         self.alignment: Optional[PositiveInteger] = None
         self.byte_order: Optional[ByteOrderEnum] = None
         self.interface_version: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SOMEIPTransformationDescription to XML element.
 

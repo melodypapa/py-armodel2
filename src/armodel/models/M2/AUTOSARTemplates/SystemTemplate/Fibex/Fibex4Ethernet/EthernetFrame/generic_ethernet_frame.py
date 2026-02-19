@@ -30,6 +30,7 @@ class GenericEthernetFrame(AbstractEthernetFrame):
     def __init__(self) -> None:
         """Initialize GenericEthernetFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize GenericEthernetFrame to XML element.
 

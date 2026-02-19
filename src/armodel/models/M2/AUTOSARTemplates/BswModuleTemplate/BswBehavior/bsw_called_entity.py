@@ -31,6 +31,7 @@ class BswCalledEntity(BswModuleEntity):
     def __init__(self) -> None:
         """Initialize BswCalledEntity."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswCalledEntity to XML element.
 

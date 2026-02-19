@@ -31,6 +31,7 @@ class CollectableElement(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CollectableElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CollectableElement to XML element.
 

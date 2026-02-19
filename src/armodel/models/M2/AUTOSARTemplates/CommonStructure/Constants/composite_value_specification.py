@@ -31,6 +31,7 @@ class CompositeValueSpecification(ValueSpecification, ABC):
     def __init__(self) -> None:
         """Initialize CompositeValueSpecification."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CompositeValueSpecification to XML element.
 

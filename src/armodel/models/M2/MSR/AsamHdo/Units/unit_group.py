@@ -36,6 +36,7 @@ class UnitGroup(ARElement):
         """Initialize UnitGroup."""
         super().__init__()
         self.units: list[Unit] = []
+
     def serialize(self) -> ET.Element:
         """Serialize UnitGroup to XML element.
 

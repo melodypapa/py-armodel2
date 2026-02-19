@@ -40,6 +40,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.contexts: list[Any] = []
         self.target_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InnerPortGroupInCompositionInstanceRef to XML element.
 

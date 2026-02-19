@@ -37,6 +37,7 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.function: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterResourceToDiagFunctionIdMapping to XML element.
 

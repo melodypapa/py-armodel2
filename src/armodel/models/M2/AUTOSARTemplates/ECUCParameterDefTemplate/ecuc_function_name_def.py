@@ -27,6 +27,7 @@ class EcucFunctionNameDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucFunctionNameDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucFunctionNameDef to XML element.
 

@@ -64,6 +64,7 @@ class NmNode(Identifiable, ABC):
         self.nm_passive: Optional[Boolean] = None
         self.rx_nm_pdus: list[NmPdu] = []
         self.tx_nm_pdus: list[NmPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NmNode to XML element.
 

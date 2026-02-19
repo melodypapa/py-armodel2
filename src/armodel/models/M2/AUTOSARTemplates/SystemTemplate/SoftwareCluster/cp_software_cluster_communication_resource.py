@@ -35,6 +35,7 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         """Initialize CpSoftwareClusterCommunicationResource."""
         super().__init__()
         self.communication: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterCommunicationResource to XML element.
 

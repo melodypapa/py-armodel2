@@ -39,6 +39,7 @@ class SwConnector(Identifiable, ABC):
         """Initialize SwConnector."""
         super().__init__()
         self.mapping_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwConnector to XML element.
 

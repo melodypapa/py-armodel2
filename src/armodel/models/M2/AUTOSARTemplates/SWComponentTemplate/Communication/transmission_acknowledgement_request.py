@@ -32,6 +32,7 @@ class TransmissionAcknowledgementRequest(ARObject):
         """Initialize TransmissionAcknowledgementRequest."""
         super().__init__()
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransmissionAcknowledgementRequest to XML element.
 

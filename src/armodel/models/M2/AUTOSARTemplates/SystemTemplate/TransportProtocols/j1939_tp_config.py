@@ -45,6 +45,7 @@ class J1939TpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_connections: list[J1939TpConnection] = []
         self.tp_nodes: list[J1939TpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpConfig to XML element.
 

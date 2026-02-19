@@ -47,6 +47,7 @@ class FMFeatureMapElement(Identifiable):
         self.conditions: list[FMFeatureMap] = []
         self.post_build_variants: list[Any] = []
         self.sw_value_sets: list[SwSystemconstantValueSet] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMapElement to XML element.
 

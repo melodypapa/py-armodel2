@@ -30,6 +30,7 @@ class DiagnosticTransferExitClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticTransferExitClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTransferExitClass to XML element.
 

@@ -51,6 +51,7 @@ class LifeCycleInfoSet(ARElement):
         self.default_period: Optional[LifeCyclePeriod] = None
         self.life_cycle_infos: list[LifeCycleInfo] = []
         self.used_life_cycle: LifeCycleStateDefinitionGroup = None
+
     def serialize(self) -> ET.Element:
         """Serialize LifeCycleInfoSet to XML element.
 

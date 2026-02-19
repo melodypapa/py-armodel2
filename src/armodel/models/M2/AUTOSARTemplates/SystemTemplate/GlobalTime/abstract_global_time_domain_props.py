@@ -28,6 +28,7 @@ class AbstractGlobalTimeDomainProps(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize AbstractGlobalTimeDomainProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractGlobalTimeDomainProps to XML element.
 

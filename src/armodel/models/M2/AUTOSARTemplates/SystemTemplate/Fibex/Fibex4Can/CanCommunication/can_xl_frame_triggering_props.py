@@ -38,6 +38,7 @@ class CanXlFrameTriggeringProps(ARObject):
         self.priority_id: Optional[PositiveInteger] = None
         self.sdu_type: Optional[PositiveInteger] = None
         self.vcid: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanXlFrameTriggeringProps to XML element.
 

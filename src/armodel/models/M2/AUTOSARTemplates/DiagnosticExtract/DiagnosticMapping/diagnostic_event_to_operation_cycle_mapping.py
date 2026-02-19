@@ -37,6 +37,7 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         super().__init__()
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.operation_cycle: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToOperationCycleMapping to XML element.
 

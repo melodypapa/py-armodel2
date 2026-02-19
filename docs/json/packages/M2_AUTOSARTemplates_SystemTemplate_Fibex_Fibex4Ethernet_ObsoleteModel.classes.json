@@ -36,7 +36,7 @@
         "eventGroup": {
           "type": "EventGroupControlTypeEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute defines the type of a RoutingGroup. There are RoutingGroups that activate the data path for unicast events of an event group. And there are activate the data path for initial are triggered, namely events that are sent out server side after a client got subscribed. that this attribute is only valid for event Receiver communication) and omitted in MethodActivationRoutingGroups."
         }

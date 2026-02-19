@@ -30,6 +30,7 @@ class EthernetFrameTriggering(FrameTriggering):
     def __init__(self) -> None:
         """Initialize EthernetFrameTriggering."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetFrameTriggering to XML element.
 

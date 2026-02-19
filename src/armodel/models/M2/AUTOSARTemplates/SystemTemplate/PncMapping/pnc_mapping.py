@@ -84,6 +84,7 @@ class PncMapping(Describable):
         self.short_label: Optional[Identifier] = None
         self.vfc_refs: list[ARRef] = []
         self.wakeup_frame_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PncMapping to XML element.
 
@@ -119,7 +120,7 @@ class PncMapping(Describable):
             serialized = ARObject._serialize_item(self.ident_ref, "PncMappingIdent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDENT")
+                wrapped = ET.Element("IDENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -266,7 +267,7 @@ class PncMapping(Describable):
                     obj.dynamic_pnc_refs.append(child_value)
 
         # Parse ident_ref
-        child = ARObject._find_child_element(element, "IDENT")
+        child = ARObject._find_child_element(element, "IDENT-REF")
         if child is not None:
             ident_ref_value = ARRef.deserialize(child)
             obj.ident_ref = ident_ref_value

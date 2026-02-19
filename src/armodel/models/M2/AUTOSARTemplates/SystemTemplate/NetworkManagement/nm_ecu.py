@@ -66,6 +66,7 @@ class NmEcu(Identifiable):
         self.nm_remote_sleep_ind: Optional[Any] = None
         self.nm_state_change: Optional[Boolean] = None
         self.nm_user_data_enabled: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NmEcu to XML element.
 

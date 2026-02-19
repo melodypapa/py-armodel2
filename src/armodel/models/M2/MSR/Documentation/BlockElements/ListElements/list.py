@@ -44,6 +44,7 @@ class List(Paginateable):
         super().__init__()
         self.item: Item = None
         self.type_ref: Optional[ListEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize List to XML element.
 
@@ -83,7 +84,7 @@ class List(Paginateable):
             serialized = ARObject._serialize_item(self.type_ref, "ListEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
+                wrapped = ET.Element("TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,7 +115,7 @@ class List(Paginateable):
             obj.item = item_value
 
         # Parse type_ref
-        child = ARObject._find_child_element(element, "TYPE")
+        child = ARObject._find_child_element(element, "TYPE-REF")
         if child is not None:
             type_ref_value = ARRef.deserialize(child)
             obj.type_ref = type_ref_value

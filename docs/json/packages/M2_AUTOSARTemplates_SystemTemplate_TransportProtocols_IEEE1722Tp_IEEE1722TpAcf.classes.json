@@ -90,7 +90,7 @@
         "collectionTrigger": {
           "type": "PduCollectionTriggerEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines whether putting this AcfPart to the IEEE1722Tp message triggers immediate sending of the message."
         }
@@ -196,7 +196,7 @@
         "sdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the Pdu transported in the IEEE1722Tp"
         }
@@ -295,7 +295,7 @@
         "sdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the Pdu transported in the IEEE1722Tp"
         }

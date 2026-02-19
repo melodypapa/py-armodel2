@@ -30,6 +30,7 @@ class UserDefinedCommunicationConnector(CommunicationConnector):
     def __init__(self) -> None:
         """Initialize UserDefinedCommunicationConnector."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedCommunicationConnector to XML element.
 

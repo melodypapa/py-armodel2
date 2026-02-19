@@ -36,6 +36,7 @@ class AssignFrameId(LinConfigurationEntry):
         """Initialize AssignFrameId."""
         super().__init__()
         self.assigned_frame_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AssignFrameId to XML element.
 

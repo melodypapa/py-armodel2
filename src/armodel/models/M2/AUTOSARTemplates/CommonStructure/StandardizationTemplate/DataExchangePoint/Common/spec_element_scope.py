@@ -36,6 +36,7 @@ class SpecElementScope(SpecElementReference, ABC):
         """Initialize SpecElementScope."""
         super().__init__()
         self.in_scope: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SpecElementScope to XML element.
 

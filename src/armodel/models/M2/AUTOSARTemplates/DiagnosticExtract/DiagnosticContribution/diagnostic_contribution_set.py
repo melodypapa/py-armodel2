@@ -39,6 +39,7 @@ class DiagnosticContributionSet(ARElement):
         self.common: Optional[Any] = None
         self.elements: list[Any] = []
         self.service_tables: list[DiagnosticServiceTable] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticContributionSet to XML element.
 

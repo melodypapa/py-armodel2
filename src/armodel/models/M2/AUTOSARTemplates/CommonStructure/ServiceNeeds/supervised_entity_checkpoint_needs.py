@@ -31,6 +31,7 @@ class SupervisedEntityCheckpointNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize SupervisedEntityCheckpointNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SupervisedEntityCheckpointNeeds to XML element.
 

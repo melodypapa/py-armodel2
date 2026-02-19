@@ -37,6 +37,7 @@ class CommunicationControllerMapping(ARObject):
         super().__init__()
         self.communication_controller: Optional[CommunicationController] = None
         self.hw: Optional[HwElement] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationControllerMapping to XML element.
 

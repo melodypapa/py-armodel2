@@ -40,6 +40,7 @@ class SwAxisType(ARElement):
         super().__init__()
         self.sw_generic_axis: Optional[DocumentationBlock] = None
         self.sw_generic_axis_params: list[SwGenericAxisParam] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisType to XML element.
 

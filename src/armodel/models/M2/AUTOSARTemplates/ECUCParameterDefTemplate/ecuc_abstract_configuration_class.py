@@ -35,6 +35,7 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         super().__init__()
         self.config_class: Optional[EcucConfigurationClassEnum] = None
         self.config_variant: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractConfigurationClass to XML element.
 

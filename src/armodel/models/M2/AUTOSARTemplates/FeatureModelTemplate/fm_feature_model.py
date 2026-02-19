@@ -38,6 +38,7 @@ class FMFeatureModel(ARElement):
         super().__init__()
         self.features: list[FMFeature] = []
         self.root: Optional[FMFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureModel to XML element.
 

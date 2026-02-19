@@ -37,6 +37,7 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         """Initialize ApplicationRecordElement."""
         super().__init__()
         self.is_optional: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationRecordElement to XML element.
 

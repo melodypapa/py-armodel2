@@ -36,6 +36,7 @@ class EthTpConnection(TpConnection):
         """Initialize EthTpConnection."""
         super().__init__()
         self.tp_sdu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EthTpConnection to XML element.
 

@@ -35,6 +35,7 @@ class EcucQueryExpression(ARObject):
         """Initialize EcucQueryExpression."""
         super().__init__()
         self.config_element: Optional[EcucDefinitionElement] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucQueryExpression to XML element.
 

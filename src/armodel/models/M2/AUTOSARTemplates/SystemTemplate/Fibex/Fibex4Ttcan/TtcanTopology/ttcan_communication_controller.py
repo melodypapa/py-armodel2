@@ -47,6 +47,7 @@ class TtcanCommunicationController(ARObject):
         self.time_master: Optional[Integer] = None
         self.time_triggered: Optional[Integer] = None
         self.tx_enable: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TtcanCommunicationController to XML element.
 

@@ -35,6 +35,7 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         """Initialize SecurityEventOneEveryNFilter."""
         super().__init__()
         self.n: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventOneEveryNFilter to XML element.
 

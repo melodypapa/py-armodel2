@@ -32,6 +32,7 @@ class DiagnosticParameterSupportInfo(ARObject):
         """Initialize DiagnosticParameterSupportInfo."""
         super().__init__()
         self.support_info_bit: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterSupportInfo to XML element.
 

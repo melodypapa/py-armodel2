@@ -42,6 +42,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         self.request: Optional[RequestResponseDelay] = None
         self.subscribe: Optional[PositiveInteger] = None
         self.time_to_live: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdClientEventGroupTimingConfig to XML element.
 

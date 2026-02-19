@@ -44,6 +44,7 @@ class RptExecutableEntity(Identifiable):
         self.rpt_reads: list[RoleBasedMcDataAssignment] = []
         self.rpt_writes: list[RoleBasedMcDataAssignment] = []
         self.symbol: Optional[CIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntity to XML element.
 

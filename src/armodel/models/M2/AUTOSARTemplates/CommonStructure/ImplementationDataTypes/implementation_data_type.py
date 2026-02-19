@@ -58,6 +58,7 @@ class ImplementationDataType(AbstractImplementationDataType):
         self.sub_elements: list[ImplementationDataTypeElement] = []
         self.symbol_props: Optional[SymbolProps] = None
         self.type_emitter: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataType to XML element.
 

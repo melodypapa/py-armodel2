@@ -40,6 +40,7 @@ class MsrQueryP2(ARObject):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryP2 to XML element.
 

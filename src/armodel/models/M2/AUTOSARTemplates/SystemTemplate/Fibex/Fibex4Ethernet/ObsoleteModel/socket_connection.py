@@ -57,6 +57,7 @@ class SocketConnection(Describable):
         self.runtime_ip: Optional[Any] = None
         self.runtime_port: Optional[Any] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SocketConnection to XML element.
 

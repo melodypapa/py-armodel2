@@ -35,6 +35,7 @@ class ServiceInstanceCollectionSet(FibexElement):
         """Initialize ServiceInstanceCollectionSet."""
         super().__init__()
         self.service_instances: list[AbstractServiceInstance] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ServiceInstanceCollectionSet to XML element.
 

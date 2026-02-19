@@ -28,6 +28,7 @@ class BaseTypeDefinition(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize BaseTypeDefinition."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BaseTypeDefinition to XML element.
 

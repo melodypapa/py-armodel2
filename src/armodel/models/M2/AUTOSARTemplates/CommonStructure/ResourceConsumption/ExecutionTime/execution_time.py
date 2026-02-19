@@ -68,6 +68,7 @@ class ExecutionTime(Identifiable, ABC):
         self.included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutionTime to XML element.
 

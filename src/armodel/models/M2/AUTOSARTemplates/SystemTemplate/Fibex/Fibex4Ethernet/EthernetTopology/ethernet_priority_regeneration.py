@@ -37,6 +37,7 @@ class EthernetPriorityRegeneration(Referrable):
         super().__init__()
         self.ingress_priority: Optional[PositiveInteger] = None
         self.regenerated: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetPriorityRegeneration to XML element.
 

@@ -39,6 +39,7 @@ class AutosarParameterRef(ARObject):
         super().__init__()
         self.autosar_ref: Optional[ARRef] = None
         self.local_parameter_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarParameterRef to XML element.
 
@@ -54,7 +55,7 @@ class AutosarParameterRef(ARObject):
             serialized = ARObject._serialize_item(self.autosar_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR")
+                wrapped = ET.Element("AUTOSAR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -94,7 +95,7 @@ class AutosarParameterRef(ARObject):
         obj.__init__()
 
         # Parse autosar_ref
-        child = ARObject._find_child_element(element, "AUTOSAR")
+        child = ARObject._find_child_element(element, "AUTOSAR-REF")
         if child is not None:
             autosar_ref_value = ARRef.deserialize(child)
             obj.autosar_ref = autosar_ref_value

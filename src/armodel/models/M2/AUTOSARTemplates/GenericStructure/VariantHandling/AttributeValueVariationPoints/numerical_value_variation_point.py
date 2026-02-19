@@ -28,6 +28,7 @@ class NumericalValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize NumericalValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize NumericalValueVariationPoint to XML element.
 

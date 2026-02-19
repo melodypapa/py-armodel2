@@ -37,6 +37,7 @@ class IncludedDataTypeSet(ARObject):
         super().__init__()
         self.data_types: list[AutosarDataType] = []
         self.literal_prefix: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IncludedDataTypeSet to XML element.
 

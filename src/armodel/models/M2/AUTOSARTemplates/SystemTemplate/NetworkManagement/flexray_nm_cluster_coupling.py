@@ -40,6 +40,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         super().__init__()
         self.coupled_clusters: list[FlexrayNmCluster] = []
         self.nm_schedule: Optional[FlexrayNmScheduleVariant] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayNmClusterCoupling to XML element.
 

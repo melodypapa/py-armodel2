@@ -35,6 +35,7 @@ class AggregationTailoring(AttributeTailoring):
         """Initialize AggregationTailoring."""
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AggregationTailoring to XML element.
 

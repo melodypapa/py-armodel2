@@ -37,6 +37,7 @@ class TDLETZoneClock(TimingClock):
         super().__init__()
         self.accuracy_ext: Optional[MultidimensionalTime] = None
         self.accuracy_int: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDLETZoneClock to XML element.
 

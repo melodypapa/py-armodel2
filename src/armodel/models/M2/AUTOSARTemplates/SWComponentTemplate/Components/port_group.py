@@ -39,6 +39,7 @@ class PortGroup(Identifiable):
         super().__init__()
         self.inner_group_refs: list[ARRef] = []
         self.outer_port_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PortGroup to XML element.
 

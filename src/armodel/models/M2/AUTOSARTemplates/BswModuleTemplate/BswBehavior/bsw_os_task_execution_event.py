@@ -30,6 +30,7 @@ class BswOsTaskExecutionEvent(BswScheduleEvent):
     def __init__(self) -> None:
         """Initialize BswOsTaskExecutionEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswOsTaskExecutionEvent to XML element.
 

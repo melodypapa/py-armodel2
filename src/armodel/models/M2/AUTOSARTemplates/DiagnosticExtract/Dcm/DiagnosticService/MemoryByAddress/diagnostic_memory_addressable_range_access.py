@@ -33,6 +33,7 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         """Initialize DiagnosticMemoryAddressableRangeAccess."""
         super().__init__()
         self.memory_ranges: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryAddressableRangeAccess to XML element.
 

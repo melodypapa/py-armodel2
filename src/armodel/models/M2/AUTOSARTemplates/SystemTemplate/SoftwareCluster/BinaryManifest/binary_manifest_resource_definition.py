@@ -35,6 +35,7 @@ class BinaryManifestResourceDefinition(Identifiable):
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
         self.item_definitions: list[BinaryManifestItem] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestResourceDefinition to XML element.
 

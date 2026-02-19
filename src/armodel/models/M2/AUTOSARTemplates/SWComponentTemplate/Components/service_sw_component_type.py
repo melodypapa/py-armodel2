@@ -33,6 +33,7 @@ class ServiceSwComponentType(AtomicSwComponentType):
     def __init__(self) -> None:
         """Initialize ServiceSwComponentType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ServiceSwComponentType to XML element.
 

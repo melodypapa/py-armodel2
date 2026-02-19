@@ -35,6 +35,7 @@ class SwGenericAxisParamType(Identifiable):
         """Initialize SwGenericAxisParamType."""
         super().__init__()
         self.data_constr: Optional[DataConstr] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwGenericAxisParamType to XML element.
 

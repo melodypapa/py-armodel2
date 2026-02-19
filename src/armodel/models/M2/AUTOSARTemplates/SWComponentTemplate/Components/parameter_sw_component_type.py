@@ -47,6 +47,7 @@ class ParameterSwComponentType(SwComponentType):
         self.constants: list[ConstantSpecification] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterSwComponentType to XML element.
 

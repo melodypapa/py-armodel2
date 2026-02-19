@@ -36,6 +36,7 @@ class SwcModeManagerErrorEvent(RTEEvent):
         """Initialize SwcModeManagerErrorEvent."""
         super().__init__()
         self.mode_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcModeManagerErrorEvent to XML element.
 
@@ -61,7 +62,7 @@ class SwcModeManagerErrorEvent(RTEEvent):
             serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP")
+                wrapped = ET.Element("MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,7 +87,7 @@ class SwcModeManagerErrorEvent(RTEEvent):
         obj = super(SwcModeManagerErrorEvent, cls).deserialize(element)
 
         # Parse mode_group_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP")
+        child = ARObject._find_child_element(element, "MODE-GROUP-REF")
         if child is not None:
             mode_group_ref_value = ARRef.deserialize(child)
             obj.mode_group_ref = mode_group_ref_value

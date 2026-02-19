@@ -41,6 +41,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.swc_flat_service: Optional[Any] = None
         self.swc_service: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventPortMapping to XML element.
 

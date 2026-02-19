@@ -32,6 +32,7 @@ class IdentCaption(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize IdentCaption."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IdentCaption to XML element.
 

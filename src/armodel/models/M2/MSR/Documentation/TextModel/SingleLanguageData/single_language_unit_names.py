@@ -30,6 +30,7 @@ class SingleLanguageUnitNames(MixedContentForUnitNames):
     def __init__(self) -> None:
         """Initialize SingleLanguageUnitNames."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SingleLanguageUnitNames to XML element.
 

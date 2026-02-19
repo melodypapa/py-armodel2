@@ -46,6 +46,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
         self.contexts: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target: Optional[AbstractImplementationDataType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataTypeElementInPortInterfaceRef to XML element.
 

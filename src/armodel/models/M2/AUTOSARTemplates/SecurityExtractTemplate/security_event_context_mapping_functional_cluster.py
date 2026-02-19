@@ -35,6 +35,7 @@ class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
         """Initialize SecurityEventContextMappingFunctionalCluster."""
         super().__init__()
         self.affected: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMappingFunctionalCluster to XML element.
 

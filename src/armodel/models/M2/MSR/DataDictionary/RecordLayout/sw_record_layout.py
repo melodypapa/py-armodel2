@@ -37,6 +37,7 @@ class SwRecordLayout(ARElement):
         """Initialize SwRecordLayout."""
         super().__init__()
         self.sw_record_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayout to XML element.
 
@@ -62,7 +63,7 @@ class SwRecordLayout(ARElement):
             serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD")
+                wrapped = ET.Element("SW-RECORD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,7 +88,7 @@ class SwRecordLayout(ARElement):
         obj = super(SwRecordLayout, cls).deserialize(element)
 
         # Parse sw_record_ref
-        child = ARObject._find_child_element(element, "SW-RECORD")
+        child = ARObject._find_child_element(element, "SW-RECORD-REF")
         if child is not None:
             sw_record_ref_value = ARRef.deserialize(child)
             obj.sw_record_ref = sw_record_ref_value

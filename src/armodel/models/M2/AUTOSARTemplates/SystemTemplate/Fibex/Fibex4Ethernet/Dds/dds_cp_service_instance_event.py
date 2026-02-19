@@ -43,6 +43,7 @@ class DdsCpServiceInstanceEvent(ARObject):
         self.dds_event_ref: Optional[ARRef] = None
         self.dds_event_qos: Optional[DdsCpQosProfile] = None
         self.dds_event_topic: Optional[DdsCpTopic] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpServiceInstanceEvent to XML element.
 

@@ -40,6 +40,7 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         super().__init__()
         self.applications: list[ApplicationPartition] = []
         self.ecu_partition: Optional[EcuPartition] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationPartitionToEcuPartitionMapping to XML element.
 

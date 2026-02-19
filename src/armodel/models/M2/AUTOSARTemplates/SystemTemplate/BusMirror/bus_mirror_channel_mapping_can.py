@@ -52,6 +52,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
         self.mirror_source_lin: Optional[PositiveInteger] = None
         self.mirror_status: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMappingCan to XML element.
 

@@ -58,6 +58,7 @@ class FMFeature(ARElement):
         self.minimum: Optional[BindingTimeEnum] = None
         self.relations: list[FMFeatureRelation] = []
         self.restrictions: list[FMFeatureRestriction] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeature to XML element.
 

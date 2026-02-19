@@ -37,6 +37,7 @@ class Prms(Paginateable):
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
         self.prm: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize Prms to XML element.
 

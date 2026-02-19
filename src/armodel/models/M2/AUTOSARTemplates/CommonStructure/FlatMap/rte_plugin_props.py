@@ -34,6 +34,7 @@ class RtePluginProps(ARObject):
         super().__init__()
         self.associated: Optional[EcucContainerValue] = None
         self.associated_rte: Optional[EcucContainerValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RtePluginProps to XML element.
 

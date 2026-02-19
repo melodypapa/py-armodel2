@@ -44,6 +44,7 @@ class TriggerInAtomicSwcInstanceRef(ARObject, ABC):
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TriggerInAtomicSwcInstanceRef to XML element.
 

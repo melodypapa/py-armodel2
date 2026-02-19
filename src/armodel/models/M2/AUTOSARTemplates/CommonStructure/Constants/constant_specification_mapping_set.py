@@ -35,6 +35,7 @@ class ConstantSpecificationMappingSet(ARElement):
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()
         self.mappings: list[ConstantSpecification] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ConstantSpecificationMappingSet to XML element.
 

@@ -36,6 +36,7 @@ class Dhcpv6Props(ARObject):
         self.tcp_ip_dhcp: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_inf: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_sol: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Dhcpv6Props to XML element.
 

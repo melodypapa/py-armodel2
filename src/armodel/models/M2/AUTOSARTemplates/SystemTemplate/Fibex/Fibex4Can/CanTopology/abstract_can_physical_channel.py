@@ -31,6 +31,7 @@ class AbstractCanPhysicalChannel(PhysicalChannel, ABC):
     def __init__(self) -> None:
         """Initialize AbstractCanPhysicalChannel."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractCanPhysicalChannel to XML element.
 

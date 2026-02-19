@@ -32,6 +32,7 @@ class DdsOwnershipStrength(ARObject):
         """Initialize DdsOwnershipStrength."""
         super().__init__()
         self.ownership: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsOwnershipStrength to XML element.
 

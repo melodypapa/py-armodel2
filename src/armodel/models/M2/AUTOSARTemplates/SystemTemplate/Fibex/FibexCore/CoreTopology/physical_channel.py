@@ -56,6 +56,7 @@ class PhysicalChannel(Identifiable, ABC):
         self.i_signal_refs: list[ARRef] = []
         self.manageds: list[PhysicalChannel] = []
         self.pdu_triggering_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PhysicalChannel to XML element.
 

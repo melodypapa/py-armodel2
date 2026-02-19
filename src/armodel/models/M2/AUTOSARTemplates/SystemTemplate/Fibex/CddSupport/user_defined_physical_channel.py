@@ -30,6 +30,7 @@ class UserDefinedPhysicalChannel(PhysicalChannel):
     def __init__(self) -> None:
         """Initialize UserDefinedPhysicalChannel."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedPhysicalChannel to XML element.
 

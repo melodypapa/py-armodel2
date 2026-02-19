@@ -34,6 +34,7 @@ class SoftwareContext(ARObject):
         super().__init__()
         self.input: Optional[String] = None
         self.state: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SoftwareContext to XML element.
 

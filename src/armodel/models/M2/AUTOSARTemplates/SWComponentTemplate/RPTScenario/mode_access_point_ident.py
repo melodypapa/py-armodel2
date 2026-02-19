@@ -30,6 +30,7 @@ class ModeAccessPointIdent(IdentCaption):
     def __init__(self) -> None:
         """Initialize ModeAccessPointIdent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ModeAccessPointIdent to XML element.
 

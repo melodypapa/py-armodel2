@@ -37,6 +37,7 @@ class AnalyzedExecutionTime(ExecutionTime):
         super().__init__()
         self.best_case: Optional[MultidimensionalTime] = None
         self.worst_case: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AnalyzedExecutionTime to XML element.
 

@@ -37,6 +37,7 @@ class AccessCountSet(ARObject):
         super().__init__()
         self.access_counts: list[AccessCount] = []
         self.count_profile: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AccessCountSet to XML element.
 

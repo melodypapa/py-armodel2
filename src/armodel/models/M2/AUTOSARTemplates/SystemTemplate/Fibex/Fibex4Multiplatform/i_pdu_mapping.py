@@ -50,6 +50,7 @@ class IPduMapping(ARObject):
         self.pdur_tp_chunk: Optional[PositiveInteger] = None
         self.source_i_pdu_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPduMapping to XML element.
 
@@ -121,7 +122,7 @@ class IPduMapping(ARObject):
             serialized = ARObject._serialize_item(self.target_i_pdu_ref, "TargetIPduRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-I-PDU")
+                wrapped = ET.Element("TARGET-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -171,7 +172,7 @@ class IPduMapping(ARObject):
             obj.source_i_pdu_ref = source_i_pdu_ref_value
 
         # Parse target_i_pdu_ref
-        child = ARObject._find_child_element(element, "TARGET-I-PDU")
+        child = ARObject._find_child_element(element, "TARGET-I-PDU-REF")
         if child is not None:
             target_i_pdu_ref_value = ARRef.deserialize(child)
             obj.target_i_pdu_ref = target_i_pdu_ref_value

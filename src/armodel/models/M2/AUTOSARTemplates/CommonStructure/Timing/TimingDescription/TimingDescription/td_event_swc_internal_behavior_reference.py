@@ -32,6 +32,7 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         """Initialize TDEventSwcInternalBehaviorReference."""
         super().__init__()
         self.referenced_td_event_swc: Optional[TDEventSwc] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventSwcInternalBehaviorReference to XML element.
 

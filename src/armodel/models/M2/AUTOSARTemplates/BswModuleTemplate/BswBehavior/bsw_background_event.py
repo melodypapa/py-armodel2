@@ -30,6 +30,7 @@ class BswBackgroundEvent(BswScheduleEvent):
     def __init__(self) -> None:
         """Initialize BswBackgroundEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BswBackgroundEvent to XML element.
 

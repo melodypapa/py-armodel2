@@ -30,6 +30,7 @@ class J1939DcmDm19Support(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize J1939DcmDm19Support."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize J1939DcmDm19Support to XML element.
 

@@ -33,6 +33,7 @@ class ApplicationPrimitiveDataType(ApplicationDataType):
     def __init__(self) -> None:
         """Initialize ApplicationPrimitiveDataType."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationPrimitiveDataType to XML element.
 

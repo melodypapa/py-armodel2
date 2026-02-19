@@ -37,6 +37,7 @@ class FMAttributeValue(ARObject):
         super().__init__()
         self.definition: Optional[FMAttributeDef] = None
         self.value: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMAttributeValue to XML element.
 

@@ -41,6 +41,7 @@ class TransformationISignalProps(ARObject, ABC):
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototype_refs: list[ARRef] = []
         self.transformer: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationISignalProps to XML element.
 

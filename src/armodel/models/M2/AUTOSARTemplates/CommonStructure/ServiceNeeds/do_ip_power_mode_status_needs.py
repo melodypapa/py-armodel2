@@ -31,6 +31,7 @@ class DoIpPowerModeStatusNeeds(DoIpServiceNeeds):
     def __init__(self) -> None:
         """Initialize DoIpPowerModeStatusNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpPowerModeStatusNeeds to XML element.
 

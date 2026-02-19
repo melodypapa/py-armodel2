@@ -36,6 +36,7 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
         """Initialize EcucAbstractReferenceDef."""
         super().__init__()
         self.with_auto: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractReferenceDef to XML element.
 

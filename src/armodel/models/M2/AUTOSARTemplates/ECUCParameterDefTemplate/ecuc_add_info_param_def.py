@@ -30,6 +30,7 @@ class EcucAddInfoParamDef(EcucParameterDef):
     def __init__(self) -> None:
         """Initialize EcucAddInfoParamDef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAddInfoParamDef to XML element.
 

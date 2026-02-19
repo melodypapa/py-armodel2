@@ -98,7 +98,7 @@
         "pdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the lower layer Pdu used for the"
         },
@@ -178,7 +178,7 @@
         "sdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the upper layer Sdu used for the transport of"
         }

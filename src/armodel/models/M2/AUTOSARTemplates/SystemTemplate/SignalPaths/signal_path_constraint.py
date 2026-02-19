@@ -33,6 +33,7 @@ class SignalPathConstraint(ARObject, ABC):
         """Initialize SignalPathConstraint."""
         super().__init__()
         self.introduction: DocumentationBlock = None
+
     def serialize(self) -> ET.Element:
         """Serialize SignalPathConstraint to XML element.
 

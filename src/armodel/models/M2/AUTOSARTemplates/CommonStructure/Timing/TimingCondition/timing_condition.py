@@ -32,6 +32,7 @@ class TimingCondition(Identifiable):
         """Initialize TimingCondition."""
         super().__init__()
         self.timing_condition: Optional[TimingCondition] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingCondition to XML element.
 

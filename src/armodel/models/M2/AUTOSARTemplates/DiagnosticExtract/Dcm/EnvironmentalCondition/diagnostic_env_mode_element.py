@@ -31,6 +31,7 @@ class DiagnosticEnvModeElement(Referrable, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticEnvModeElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvModeElement to XML element.
 

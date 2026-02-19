@@ -48,6 +48,7 @@ class LinCommunicationConnector(CommunicationConnector):
         self.lin_configurable_frames: list[LinConfigurableFrame] = []
         self.lin_ordereds: list[LinOrderedConfigurableFrame] = []
         self.schedule: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinCommunicationConnector to XML element.
 

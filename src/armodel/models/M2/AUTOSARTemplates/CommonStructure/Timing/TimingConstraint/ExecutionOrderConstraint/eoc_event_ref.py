@@ -44,6 +44,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
         self.component: Optional[Any] = None
         self.event: Optional[AbstractEvent] = None
         self.successors: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EOCEventRef to XML element.
 

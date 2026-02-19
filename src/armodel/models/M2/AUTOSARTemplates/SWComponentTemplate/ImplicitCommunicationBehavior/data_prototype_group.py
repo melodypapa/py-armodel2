@@ -39,6 +39,7 @@ class DataPrototypeGroup(Identifiable):
         super().__init__()
         self.data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef] = []
         self.implicit_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeGroup to XML element.
 

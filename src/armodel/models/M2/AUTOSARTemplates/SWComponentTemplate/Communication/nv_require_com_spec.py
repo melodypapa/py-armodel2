@@ -44,6 +44,7 @@ class NvRequireComSpec(RPortComSpec):
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
         self.variable_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvRequireComSpec to XML element.
 

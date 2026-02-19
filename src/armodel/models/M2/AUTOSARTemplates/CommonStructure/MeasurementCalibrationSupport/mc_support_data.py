@@ -50,6 +50,7 @@ class McSupportData(ARObject):
         self.mc_variables: list[McDataInstance] = []
         self.measurables: list[SwSystemconstantValueSet] = []
         self.rpt_support_data: Optional[RptSupportData] = None
+
     def serialize(self) -> ET.Element:
         """Serialize McSupportData to XML element.
 

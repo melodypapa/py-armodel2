@@ -46,6 +46,7 @@ class EthernetPhysicalChannel(PhysicalChannel):
         self.network_endpoints: list[NetworkEndpoint] = []
         self.so_ad_config: Optional[SoAdConfig] = None
         self.vlan: Optional[VlanConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetPhysicalChannel to XML element.
 

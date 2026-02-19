@@ -36,6 +36,7 @@ class TpConfig(FibexElement, ABC):
         """Initialize TpConfig."""
         super().__init__()
         self.communication_cluster: Optional[CommunicationCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TpConfig to XML element.
 

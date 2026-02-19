@@ -35,6 +35,7 @@ class DiagnosticIumprDenominatorGroup(DiagnosticCommonElement):
         """Initialize DiagnosticIumprDenominatorGroup."""
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprDenominatorGroup to XML element.
 

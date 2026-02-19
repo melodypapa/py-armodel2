@@ -50,6 +50,7 @@ class PortPrototypeBlueprint(ARElement):
         self.interface: PortInterface = None
         self.provided_coms: list[PPortComSpec] = []
         self.required_coms: list[RPortComSpec] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PortPrototypeBlueprint to XML element.
 

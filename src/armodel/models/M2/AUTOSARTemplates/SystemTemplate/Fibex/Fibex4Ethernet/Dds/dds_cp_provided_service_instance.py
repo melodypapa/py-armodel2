@@ -44,6 +44,7 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         self.minor_version: Optional[PositiveInteger] = None
         self.provided_ddses: list[DdsCpServiceInstance] = []
         self.static_remotes: list[ApplicationEndpoint] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpProvidedServiceInstance to XML element.
 

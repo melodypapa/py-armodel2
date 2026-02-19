@@ -42,6 +42,7 @@ class TDCpSoftwareClusterMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requestors: list[CpSoftwareCluster] = []
         self.timing: Optional[TimingDescription] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDCpSoftwareClusterMapping to XML element.
 

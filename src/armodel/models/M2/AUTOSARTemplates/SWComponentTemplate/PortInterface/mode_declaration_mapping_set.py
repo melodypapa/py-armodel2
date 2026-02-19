@@ -35,6 +35,7 @@ class ModeDeclarationMappingSet(ARElement):
         """Initialize ModeDeclarationMappingSet."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationMappingSet to XML element.
 

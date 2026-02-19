@@ -41,6 +41,7 @@ class J1939NmNode(NmNode):
         super().__init__()
         self.address: Optional[J1939NmAddressConfigurationCapabilityEnum] = None
         self.node_name: Optional[J1939NodeName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939NmNode to XML element.
 

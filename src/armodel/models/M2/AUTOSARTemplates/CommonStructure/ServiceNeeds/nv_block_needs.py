@@ -86,6 +86,7 @@ class NvBlockNeeds(ServiceNeeds):
         self.write_verification: Optional[Boolean] = None
         self.writing: Optional[PositiveInteger] = None
         self.writing_priority: Optional[NvBlockNeedsWritingPriorityEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvBlockNeeds to XML element.
 

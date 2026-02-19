@@ -32,6 +32,7 @@ class FMFeatureRestriction(Identifiable):
         """Initialize FMFeatureRestriction."""
         super().__init__()
         self.restriction_and_attributes: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureRestriction to XML element.
 

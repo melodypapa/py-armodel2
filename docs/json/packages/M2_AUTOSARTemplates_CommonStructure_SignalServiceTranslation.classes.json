@@ -45,14 +45,14 @@
         "controls": {
           "type": "ConsumedEventGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the EventGroup which encapsulates the payload."
         },
         "controlPncs": {
           "type": "PncMappingIdent",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the PNCs which control the offer/subscribe the translated service instance."
         },
@@ -175,7 +175,7 @@
         "translation": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "of signal/service translation. by: VariableDataPrototypeIn"
         }
@@ -213,7 +213,7 @@
         "element": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the leaf element the SignalService apply to."
         },

@@ -31,6 +31,7 @@ class CryptoServiceMapping(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CryptoServiceMapping."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoServiceMapping to XML element.
 

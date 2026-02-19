@@ -35,6 +35,7 @@ class SwcTiming(TimingExtension):
         """Initialize SwcTiming."""
         super().__init__()
         self.behavior: Optional[SwcInternalBehavior] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcTiming to XML element.
 

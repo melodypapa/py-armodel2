@@ -28,6 +28,7 @@ class SubElementRef(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize SubElementRef."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SubElementRef to XML element.
 

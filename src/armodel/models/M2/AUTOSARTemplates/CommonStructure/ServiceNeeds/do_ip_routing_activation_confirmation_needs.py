@@ -38,6 +38,7 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
         super().__init__()
         self.data_length: Optional[PositiveInteger] = None
         self.routing: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpRoutingActivationConfirmationNeeds to XML element.
 

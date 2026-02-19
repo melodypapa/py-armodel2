@@ -38,6 +38,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         super().__init__()
         self.number_of: Optional[PositiveInteger] = None
         self.supports: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestProvideResource to XML element.
 

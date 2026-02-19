@@ -60,6 +60,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         self.related_trace: Optional[Traceable] = None
         self.scope: Optional[EcucScopeEnum] = None
         self.upper_multiplicity: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDefinitionElement to XML element.
 

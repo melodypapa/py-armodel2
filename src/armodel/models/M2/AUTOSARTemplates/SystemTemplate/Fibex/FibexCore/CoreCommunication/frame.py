@@ -44,6 +44,7 @@ class Frame(FibexElement, ABC):
         super().__init__()
         self.frame_length: Optional[Integer] = None
         self.pdu_to_frame_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize Frame to XML element.
 

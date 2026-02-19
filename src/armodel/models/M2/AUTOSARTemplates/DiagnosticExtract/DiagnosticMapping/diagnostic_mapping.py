@@ -38,6 +38,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         super().__init__()
         self.provider: Optional[CpSoftwareCluster] = None
         self.requester: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMapping to XML element.
 

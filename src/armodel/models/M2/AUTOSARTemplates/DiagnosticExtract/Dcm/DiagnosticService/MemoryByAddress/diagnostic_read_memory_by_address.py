@@ -32,6 +32,7 @@ class DiagnosticReadMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
         """Initialize DiagnosticReadMemoryByAddress."""
         super().__init__()
         self.read_class: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadMemoryByAddress to XML element.
 

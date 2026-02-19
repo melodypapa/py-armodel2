@@ -37,6 +37,7 @@ class GenericTp(TransportProtocolConfiguration):
         super().__init__()
         self.tp_address: Optional[String] = None
         self.tp_technology: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GenericTp to XML element.
 

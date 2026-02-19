@@ -40,6 +40,7 @@ class DoIpLogicAddress(Identifiable):
         super().__init__()
         self.address: Optional[Integer] = None
         self.do_ip_logic: Optional[AbstractDoIpLogicAddressProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpLogicAddress to XML element.
 

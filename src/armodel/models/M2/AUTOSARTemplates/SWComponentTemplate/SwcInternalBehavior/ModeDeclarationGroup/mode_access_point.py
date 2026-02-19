@@ -39,6 +39,7 @@ class ModeAccessPoint(ARObject):
         super().__init__()
         self.ident: Optional[ModeAccessPointIdent] = None
         self.mode_group_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeAccessPoint to XML element.
 
@@ -68,7 +69,7 @@ class ModeAccessPoint(ARObject):
             serialized = ARObject._serialize_item(self.mode_group_instance_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-INSTANCE-REF")
+                wrapped = ET.Element("MODE-GROUP-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,7 +101,7 @@ class ModeAccessPoint(ARObject):
             obj.ident = ident_value
 
         # Parse mode_group_instance_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "MODE-GROUP-INSTANCE-REF-REF")
         if child is not None:
             mode_group_instance_ref_value = ARRef.deserialize(child)
             obj.mode_group_instance_ref = mode_group_instance_ref_value

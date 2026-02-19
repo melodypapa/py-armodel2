@@ -34,6 +34,7 @@ class SecureCommunicationPropsSet(FibexElement):
         super().__init__()
         self.authentications: list[Any] = []
         self.freshness_propses: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationPropsSet to XML element.
 

@@ -31,6 +31,7 @@ class AtpStructureElement(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AtpStructureElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize AtpStructureElement to XML element.
 

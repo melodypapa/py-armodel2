@@ -50,6 +50,7 @@ class EcuResourceEstimation(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcuResourceEstimation to XML element.
 

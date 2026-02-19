@@ -43,6 +43,7 @@ class Compiler(Identifiable):
         self.options: Optional[String] = None
         self.vendor: Optional[String] = None
         self.version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Compiler to XML element.
 

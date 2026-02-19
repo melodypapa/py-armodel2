@@ -31,6 +31,7 @@ class DoIpActivationLineNeeds(DoIpServiceNeeds):
     def __init__(self) -> None:
         """Initialize DoIpActivationLineNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpActivationLineNeeds to XML element.
 

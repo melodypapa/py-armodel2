@@ -41,6 +41,7 @@ class DataTypeMap(ARObject):
         super().__init__()
         self.application_data_type: Optional[ApplicationDataType] = None
         self.implementation: Optional[AbstractImplementationDataType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMap to XML element.
 

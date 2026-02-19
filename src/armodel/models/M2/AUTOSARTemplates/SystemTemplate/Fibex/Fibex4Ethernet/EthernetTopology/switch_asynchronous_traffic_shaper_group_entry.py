@@ -35,6 +35,7 @@ class SwitchAsynchronousTrafficShaperGroupEntry(Identifiable):
         """Initialize SwitchAsynchronousTrafficShaperGroupEntry."""
         super().__init__()
         self.maximum: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchAsynchronousTrafficShaperGroupEntry to XML element.
 

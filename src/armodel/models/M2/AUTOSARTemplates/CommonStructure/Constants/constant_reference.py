@@ -35,6 +35,7 @@ class ConstantReference(ValueSpecification):
         """Initialize ConstantReference."""
         super().__init__()
         self.constant: Optional[ConstantSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConstantReference to XML element.
 

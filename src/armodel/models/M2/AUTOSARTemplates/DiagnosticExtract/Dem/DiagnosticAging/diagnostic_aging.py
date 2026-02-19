@@ -37,6 +37,7 @@ class DiagnosticAging(DiagnosticCommonElement):
         super().__init__()
         self.aging_cycle: Optional[Any] = None
         self.threshold: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAging to XML element.
 

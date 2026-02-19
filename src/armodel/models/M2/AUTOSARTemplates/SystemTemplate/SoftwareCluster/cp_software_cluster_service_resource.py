@@ -35,6 +35,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         """Initialize CpSoftwareClusterServiceResource."""
         super().__init__()
         self.resource_needses: list[EcucContainerValue] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterServiceResource to XML element.
 

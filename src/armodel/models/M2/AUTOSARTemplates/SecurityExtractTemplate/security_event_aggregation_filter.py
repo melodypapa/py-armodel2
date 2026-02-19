@@ -37,6 +37,7 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
         super().__init__()
         self.context_data: Optional[Any] = None
         self.minimum: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventAggregationFilter to XML element.
 

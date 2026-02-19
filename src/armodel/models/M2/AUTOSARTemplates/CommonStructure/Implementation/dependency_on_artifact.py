@@ -42,6 +42,7 @@ class DependencyOnArtifact(Identifiable):
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
         self.usage_refs: list[DependencyUsageEnum] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DependencyOnArtifact to XML element.
 

@@ -35,6 +35,7 @@ class DiagnosticStorageConditionNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticStorageConditionNeeds."""
         super().__init__()
         self.initial_status: Optional[StorageConditionStatusEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStorageConditionNeeds to XML element.
 

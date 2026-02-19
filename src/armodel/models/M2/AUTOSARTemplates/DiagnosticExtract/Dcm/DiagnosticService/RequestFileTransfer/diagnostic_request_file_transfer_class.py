@@ -30,6 +30,7 @@ class DiagnosticRequestFileTransferClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticRequestFileTransferClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestFileTransferClass to XML element.
 

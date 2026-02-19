@@ -47,6 +47,7 @@ class RTEEvent(AbstractEvent, ABC):
         super().__init__()
         self.disabled_mode_instance_refs: list[ModeDeclaration] = []
         self.start_on_event: Optional[RunnableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RTEEvent to XML element.
 

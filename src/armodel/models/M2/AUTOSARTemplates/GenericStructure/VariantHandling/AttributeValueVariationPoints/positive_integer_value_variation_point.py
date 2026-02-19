@@ -27,6 +27,7 @@ class PositiveIntegerValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize PositiveIntegerValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize PositiveIntegerValueVariationPoint to XML element.
 

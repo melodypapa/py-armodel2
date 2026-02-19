@@ -48,6 +48,7 @@ class SwPointerTargetProps(ARObject):
         self.function_pointer: Optional[BswModuleEntry] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.target_category: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwPointerTargetProps to XML element.
 

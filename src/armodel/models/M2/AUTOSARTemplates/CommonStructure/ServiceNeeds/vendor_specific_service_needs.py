@@ -30,6 +30,7 @@ class VendorSpecificServiceNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize VendorSpecificServiceNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize VendorSpecificServiceNeeds to XML element.
 

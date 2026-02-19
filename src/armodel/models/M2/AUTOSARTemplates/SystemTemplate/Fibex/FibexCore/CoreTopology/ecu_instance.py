@@ -119,6 +119,7 @@ class EcuInstance(FibexElement):
         self.tcp_ip_props: Optional[EthTcpIpProps] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcuInstance to XML element.
 

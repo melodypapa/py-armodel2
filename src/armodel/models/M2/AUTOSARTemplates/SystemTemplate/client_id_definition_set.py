@@ -35,6 +35,7 @@ class ClientIdDefinitionSet(ARElement):
         """Initialize ClientIdDefinitionSet."""
         super().__init__()
         self.client_ids: list[ClientIdDefinition] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientIdDefinitionSet to XML element.
 

@@ -35,6 +35,7 @@ class DynamicPart(MultiplexedPart):
         """Initialize DynamicPart."""
         super().__init__()
         self.dynamic_parts: list[DynamicPartAlternative] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DynamicPart to XML element.
 

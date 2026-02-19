@@ -45,6 +45,7 @@ class J1939TpPg(ARObject):
         self.pgn: Optional[Integer] = None
         self.requestable: Optional[Boolean] = None
         self.sdus: list[IPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpPg to XML element.
 

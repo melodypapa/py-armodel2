@@ -39,7 +39,7 @@
         "type": {
           "type": "ListEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The type of the list. Default is \"UNNUMBER\""
         }

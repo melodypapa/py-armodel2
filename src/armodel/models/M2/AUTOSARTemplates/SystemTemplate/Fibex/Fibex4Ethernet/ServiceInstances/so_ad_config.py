@@ -37,6 +37,7 @@ class SoAdConfig(ARObject):
         super().__init__()
         self.connections: list[SocketConnection] = []
         self.socket_addresses: list[SocketAddress] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SoAdConfig to XML element.
 

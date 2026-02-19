@@ -42,6 +42,7 @@ class MultiplexedIPdu(IPdu):
         self.dynamic_part: Optional[DynamicPart] = None
         self.selector_field: Optional[Integer] = None
         self.unused_bit: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MultiplexedIPdu to XML element.
 

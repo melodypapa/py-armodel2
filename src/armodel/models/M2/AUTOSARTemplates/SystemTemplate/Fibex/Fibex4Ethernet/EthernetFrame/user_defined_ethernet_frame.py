@@ -30,6 +30,7 @@ class UserDefinedEthernetFrame(AbstractEthernetFrame):
     def __init__(self) -> None:
         """Initialize UserDefinedEthernetFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedEthernetFrame to XML element.
 

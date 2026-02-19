@@ -48,7 +48,7 @@
         "accessCountSets": {
           "type": "AccessCountSet",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Set of access count values atpSplitable; atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },

@@ -58,6 +58,7 @@ class ISignalToIPduMapping(Identifiable):
         self.start_position: Optional[UnlimitedInteger] = None
         self.transfer_property_enum: Optional[TransferPropertyEnum] = None
         self.update: Optional[UnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalToIPduMapping to XML element.
 

@@ -41,6 +41,7 @@ class BuildActionEntity(Identifiable, ABC):
         super().__init__()
         self.delivery_artifacts: list[AutosarEngineeringObject] = []
         self.invocation: Optional[BuildActionInvocator] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BuildActionEntity to XML element.
 

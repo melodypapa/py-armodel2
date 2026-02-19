@@ -39,6 +39,7 @@ class EcucDerivationSpecification(ARObject):
         self.calculation: Optional[Any] = None
         self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDerivationSpecification to XML element.
 

@@ -44,6 +44,7 @@ class SecureCommunicationProps(ARObject):
         self.message_link: Optional[PositiveInteger] = None
         self.secondary: Optional[PositiveInteger] = None
         self.secured_area: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationProps to XML element.
 

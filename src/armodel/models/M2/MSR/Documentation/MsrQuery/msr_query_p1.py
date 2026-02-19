@@ -40,6 +40,7 @@ class MsrQueryP1(Paginateable):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result: Optional[TopicContent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryP1 to XML element.
 

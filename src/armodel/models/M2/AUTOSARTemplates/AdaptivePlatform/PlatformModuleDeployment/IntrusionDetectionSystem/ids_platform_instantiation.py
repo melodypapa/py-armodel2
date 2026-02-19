@@ -38,6 +38,7 @@ class IdsPlatformInstantiation(Identifiable, ABC):
         super().__init__()
         self.networks: list[PlatformModuleEthernetEndpointConfiguration] = []
         self.time_base_resource: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsPlatformInstantiation to XML element.
 

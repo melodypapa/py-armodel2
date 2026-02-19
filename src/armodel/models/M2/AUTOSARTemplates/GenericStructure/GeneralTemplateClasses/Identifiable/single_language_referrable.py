@@ -36,6 +36,7 @@ class SingleLanguageReferrable(Referrable, ABC):
         """Initialize SingleLanguageReferrable."""
         super().__init__()
         self.long_name1: Optional[SingleLanguageLongName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SingleLanguageReferrable to XML element.
 

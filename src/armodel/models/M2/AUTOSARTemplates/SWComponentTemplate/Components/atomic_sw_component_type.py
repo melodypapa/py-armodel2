@@ -47,6 +47,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
         super().__init__()
         self.internal_behavior: Optional[SwcInternalBehavior] = None
         self.symbol_props: Optional[SymbolProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AtomicSwComponentType to XML element.
 

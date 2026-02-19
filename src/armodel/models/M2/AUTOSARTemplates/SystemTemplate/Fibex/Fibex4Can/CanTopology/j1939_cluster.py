@@ -38,6 +38,7 @@ class J1939Cluster(ARObject):
         self.network_id: Optional[PositiveInteger] = None
         self.request2_support: Optional[Boolean] = None
         self.uses_address: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939Cluster to XML element.
 

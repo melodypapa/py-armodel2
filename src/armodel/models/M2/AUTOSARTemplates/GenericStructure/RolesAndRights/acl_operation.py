@@ -33,6 +33,7 @@ class AclOperation(ARElement):
         """Initialize AclOperation."""
         super().__init__()
         self.implieds: list[AclOperation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AclOperation to XML element.
 

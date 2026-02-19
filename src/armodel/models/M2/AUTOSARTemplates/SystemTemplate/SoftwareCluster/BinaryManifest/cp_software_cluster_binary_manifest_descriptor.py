@@ -57,6 +57,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         self.requires: list[BinaryManifestRequireResource] = []
         self.resources: list[Any] = []
         self.software_cluster: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterBinaryManifestDescriptor to XML element.
 

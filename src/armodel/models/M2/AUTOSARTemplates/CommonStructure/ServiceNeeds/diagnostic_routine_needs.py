@@ -37,6 +37,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticRoutineNeeds."""
         super().__init__()
         self.diag_routine: Optional[DiagnosticRoutineTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineNeeds to XML element.
 

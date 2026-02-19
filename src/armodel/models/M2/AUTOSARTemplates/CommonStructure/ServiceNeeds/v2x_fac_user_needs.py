@@ -30,6 +30,7 @@ class V2xFacUserNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize V2xFacUserNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize V2xFacUserNeeds to XML element.
 

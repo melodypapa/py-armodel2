@@ -49,6 +49,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         self.kind: Optional[DiagnosticTroubleCode] = None
         self.node: Optional[DiagnosticJ1939Node] = None
         self.spn: Optional[DiagnosticJ1939Spn] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeJ1939 to XML element.
 

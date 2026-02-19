@@ -36,6 +36,7 @@ class UserDefinedPdu(Pdu):
         """Initialize UserDefinedPdu."""
         super().__init__()
         self.cdd_type: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedPdu to XML element.
 

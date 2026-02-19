@@ -44,6 +44,7 @@ class DiagnosticConnectedIndicator(Identifiable):
         self.healing_cycle: Optional[PositiveInteger] = None
         self.indicator: Optional[DiagnosticIndicator] = None
         self.indicator_failure: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticConnectedIndicator to XML element.
 

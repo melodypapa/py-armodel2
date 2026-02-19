@@ -40,6 +40,7 @@ class MacSecParticipantSet(ARElement):
         super().__init__()
         self.ethernet_cluster: Optional[EthernetCluster] = None
         self.mka_participants: list[MacSecKayParticipant] = []
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecParticipantSet to XML element.
 

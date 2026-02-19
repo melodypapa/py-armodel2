@@ -41,6 +41,7 @@ class InterpolationRoutine(ARObject):
         self.interpolation: Optional[BswModuleEntry] = None
         self.is_default: Optional[Boolean] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InterpolationRoutine to XML element.
 

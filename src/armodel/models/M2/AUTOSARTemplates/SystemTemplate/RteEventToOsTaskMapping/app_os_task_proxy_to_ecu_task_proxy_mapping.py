@@ -42,6 +42,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         self.app_task_proxy: Optional[OsTaskProxy] = None
         self.ecu_task_proxy: Optional[OsTaskProxy] = None
         self.offset: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AppOsTaskProxyToEcuTaskProxyMapping to XML element.
 

@@ -48,6 +48,7 @@ class DiagnosticConnection(ARElement):
         self.physical_request: Optional[TpConnectionIdent] = None
         self.response: Optional[TpConnectionIdent] = None
         self.response_on: Optional[TpConnectionIdent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticConnection to XML element.
 

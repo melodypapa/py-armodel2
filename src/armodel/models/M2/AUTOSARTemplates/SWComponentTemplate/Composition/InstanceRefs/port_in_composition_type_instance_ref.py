@@ -41,6 +41,7 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         self.abstract_context: Optional[Any] = None
         self.base: Optional[CompositionSwComponentType] = None
         self.target_port_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortInCompositionTypeInstanceRef to XML element.
 

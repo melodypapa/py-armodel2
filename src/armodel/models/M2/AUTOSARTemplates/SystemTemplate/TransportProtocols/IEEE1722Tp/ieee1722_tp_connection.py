@@ -51,6 +51,7 @@ class IEEE1722TpConnection(ARElement, ABC):
         self.unique_stream_id: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpConnection to XML element.
 

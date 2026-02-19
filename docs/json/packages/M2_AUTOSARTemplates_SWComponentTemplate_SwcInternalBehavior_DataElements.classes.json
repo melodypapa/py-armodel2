@@ -20,7 +20,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to a parameter within AUTOSAR which can be one of the following use cases: localParameter: • localParameter which is used as whole (e.g. sharedAxis for curve) autosarVariable: • a parameter provided via PortPrototype which is used as whole (e.g. parameterAccess) • an element inside of a composite local parameter typed by ApplicationDatatype (e.g. sharedAxis for a curve) • an element inside of a composite parameter provided via Port and typed by ApplicationDatatype (e.g. sharedAxis for a curve) autosarParameterInImplDatatype: • an element inside of a composite local parameter typed by ImplementationDatatype • an element inside of a composite parameter provided via PortPrototype and typed by Implementation Datatype",
+      "note": "This class represents a reference to a parameter within AUTOSAR which can be one of the following use cases: localParameter: \u2022 localParameter which is used as whole (e.g. sharedAxis for curve) autosarVariable: \u2022 a parameter provided via PortPrototype which is used as whole (e.g. parameterAccess) \u2022 an element inside of a composite local parameter typed by ApplicationDatatype (e.g. sharedAxis for a curve) \u2022 an element inside of a composite parameter provided via Port and typed by ApplicationDatatype (e.g. sharedAxis for a curve) autosarParameterInImplDatatype: \u2022 an element inside of a composite local parameter typed by ImplementationDatatype \u2022 an element inside of a composite parameter provided via PortPrototype and typed by Implementation Datatype",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -39,14 +39,14 @@
         "autosar": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "is either imported via a port or is part of a structure. by: ParameterInAtomicSWC 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "localParameter": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "In the majority of cases this reference goes to Parameter than VariableDataPrototypes. reference to a VariableDataPrototype is special use cases, e.g. if the AutosarParameter used in the context of an SwAxisGrouped. is used if the arParameter is local to the it would technically also be feasible to use an this case. However, the InstanceRef have a contextElement (because the current the context). local instance is a special case which may optimization. Therefore an explicit provided for this case."
         }
@@ -75,7 +75,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to a variable within AUTOSAR which can be one of the following use cases: localVariable: • localVariable which is used as whole (e.g. InterRunnableVariable, inputValue for curve) autosarVariable: • a variable provided via Port which is used as whole (e.g. dataAccesspoints) • an element inside of a composite local variable typed by ApplicationDatatype (e.g. inputValue for a curve) • an element inside of a composite variable provided via Port and typed by ApplicationDatatype (e.g. inputValue for a curve) autosarVariableInImplDatatype: • an element inside of a composite local variable typed by ImplementationDatatype (e.g. nvramData mapping) • an element inside of a composite variable provided via Port and typed by ImplementationDatatype (e.g. inputValue for a curve)",
+      "note": "This class represents a reference to a variable within AUTOSAR which can be one of the following use cases: localVariable: \u2022 localVariable which is used as whole (e.g. InterRunnableVariable, inputValue for curve) autosarVariable: \u2022 a variable provided via Port which is used as whole (e.g. dataAccesspoints) \u2022 an element inside of a composite local variable typed by ApplicationDatatype (e.g. inputValue for a curve) \u2022 an element inside of a composite variable provided via Port and typed by ApplicationDatatype (e.g. inputValue for a curve) autosarVariableInImplDatatype: \u2022 an element inside of a composite local variable typed by ImplementationDatatype (e.g. nvramData mapping) \u2022 an element inside of a composite variable provided via Port and typed by ImplementationDatatype (e.g. inputValue for a curve)",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -101,7 +101,7 @@
         "localVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference is used if the variable is local to the current would also be possible to use the instance Such an instance ref would not have a the current instance is the context. local instance is a special case which may provide Therefore an explicit reference is this case."
         }
@@ -151,7 +151,7 @@
         "accessedParameter": {
           "type": "AutosarParameterRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the accessed calibration parameter."
         },
@@ -227,7 +227,7 @@
         "accessedVariable": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This denotes the accessed variable."
         },
@@ -257,7 +257,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn’t either, especially because ImplementationDataType Element isn’t derived from AtpPrototype.",
+      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn\u2019t either, especially because ImplementationDataType Element isn\u2019t derived from AtpPrototype.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -277,14 +277,14 @@
         "portPrototype": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the port providing/receiving the root of the variable"
         },
         "rootVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This refers to the VariableDataPrototype typed by the in which the target can be found."
         },
@@ -313,7 +313,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn’t either, especially because ImplementationDataType Element (intentionally) isn’t derived from AtpPrototype.",
+      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn\u2019t either, especially because ImplementationDataType Element (intentionally) isn\u2019t derived from AtpPrototype.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -333,7 +333,7 @@
         "portPrototype": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference points to the PortPrototype providing/ root of the parameter."
         },

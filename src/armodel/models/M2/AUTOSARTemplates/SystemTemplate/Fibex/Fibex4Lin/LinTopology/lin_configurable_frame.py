@@ -37,6 +37,7 @@ class LinConfigurableFrame(ARObject):
         super().__init__()
         self.frame: Optional[LinFrame] = None
         self.message_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinConfigurableFrame to XML element.
 

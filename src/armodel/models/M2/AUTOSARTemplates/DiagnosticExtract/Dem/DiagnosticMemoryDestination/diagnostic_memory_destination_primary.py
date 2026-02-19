@@ -35,6 +35,7 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()
         self.type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryDestinationPrimary to XML element.
 

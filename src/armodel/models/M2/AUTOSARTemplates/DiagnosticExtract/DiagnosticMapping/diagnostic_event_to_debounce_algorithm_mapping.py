@@ -37,6 +37,7 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         super().__init__()
         self.debounce: Optional[Any] = None
         self.diagnostic_event: Optional[DiagnosticEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToDebounceAlgorithmMapping to XML element.
 

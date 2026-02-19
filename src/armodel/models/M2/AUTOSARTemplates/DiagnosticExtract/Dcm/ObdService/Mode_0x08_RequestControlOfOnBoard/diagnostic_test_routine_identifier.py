@@ -39,6 +39,7 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
         self.id: Optional[PositiveInteger] = None
         self.request_data: Optional[PositiveInteger] = None
         self.response_data: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTestRoutineIdentifier to XML element.
 

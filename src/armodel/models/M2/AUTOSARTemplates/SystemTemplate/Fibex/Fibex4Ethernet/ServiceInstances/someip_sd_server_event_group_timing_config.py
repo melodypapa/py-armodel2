@@ -35,6 +35,7 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         """Initialize SomeipSdServerEventGroupTimingConfig."""
         super().__init__()
         self.request: Optional[RequestResponseDelay] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdServerEventGroupTimingConfig to XML element.
 

@@ -43,6 +43,7 @@ class LabeledList(Paginateable):
         super().__init__()
         self.indent_sample: Optional[IndentSample] = None
         self.labeled_item_label: LabeledItem = None
+
     def serialize(self) -> ET.Element:
         """Serialize LabeledList to XML element.
 

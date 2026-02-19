@@ -37,6 +37,7 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         super().__init__()
         self.data_element: Optional[DiagnosticDataElement] = None
         self.security_event_context: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecurityEventReportingModeMapping to XML element.
 

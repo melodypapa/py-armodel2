@@ -37,6 +37,7 @@ class GlobalTimeCorrectionProps(ARObject):
         self.offset_correction: Optional[TimeValue] = None
         self.rate_correction: Optional[TimeValue] = None
         self.rate_corrections: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeCorrectionProps to XML element.
 

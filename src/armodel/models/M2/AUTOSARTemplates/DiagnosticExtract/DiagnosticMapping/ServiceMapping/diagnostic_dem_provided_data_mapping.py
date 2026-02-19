@@ -40,6 +40,7 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         super().__init__()
         self.data_element: Optional[DiagnosticDataElement] = None
         self.data_provider: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDemProvidedDataMapping to XML element.
 

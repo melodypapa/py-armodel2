@@ -30,6 +30,7 @@ class DiagnosticFimAliasEvent(DiagnosticAbstractAliasEvent):
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEvent."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEvent to XML element.
 

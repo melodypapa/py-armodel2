@@ -36,6 +36,7 @@ class EcucDefinitionCollection(ARElement):
         """Initialize EcucDefinitionCollection."""
         super().__init__()
         self.modules: list[EcucModuleDef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDefinitionCollection to XML element.
 

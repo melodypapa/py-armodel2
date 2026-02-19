@@ -35,6 +35,7 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         """Initialize DiagnosticEnvSwcModeElement."""
         super().__init__()
         self.mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvSwcModeElement to XML element.
 

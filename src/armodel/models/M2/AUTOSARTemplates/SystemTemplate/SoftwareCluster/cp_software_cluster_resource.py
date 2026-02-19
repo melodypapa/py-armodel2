@@ -45,6 +45,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         self.dependents: list[RoleBasedResourceDependency] = []
         self.global_resource: Optional[PositiveInteger] = None
         self.is_mandatory: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterResource to XML element.
 

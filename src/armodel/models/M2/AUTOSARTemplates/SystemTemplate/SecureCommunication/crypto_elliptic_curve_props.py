@@ -35,6 +35,7 @@ class CryptoEllipticCurveProps(ARElement):
         """Initialize CryptoEllipticCurveProps."""
         super().__init__()
         self.named_curve_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoEllipticCurveProps to XML element.
 

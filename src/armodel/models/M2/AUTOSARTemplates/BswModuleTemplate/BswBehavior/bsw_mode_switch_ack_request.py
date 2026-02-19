@@ -32,6 +32,7 @@ class BswModeSwitchAckRequest(ARObject):
         """Initialize BswModeSwitchAckRequest."""
         super().__init__()
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModeSwitchAckRequest to XML element.
 

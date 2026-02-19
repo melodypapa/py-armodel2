@@ -42,6 +42,7 @@ class MultilanguageReferrable(Referrable, ABC):
         """Initialize MultilanguageReferrable."""
         super().__init__()
         self.long_name: Optional[MultilanguageLongName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MultilanguageReferrable to XML element.
 

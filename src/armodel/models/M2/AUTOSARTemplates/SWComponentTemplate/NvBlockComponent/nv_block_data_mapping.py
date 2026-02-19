@@ -44,6 +44,7 @@ class NvBlockDataMapping(ARObject):
         self.read_nv_data_ref: Optional[ARRef] = None
         self.written_nv_data_ref: Optional[ARRef] = None
         self.written_read_nv_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvBlockDataMapping to XML element.
 
@@ -73,7 +74,7 @@ class NvBlockDataMapping(ARObject):
             serialized = ARObject._serialize_item(self.nv_ram_block_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NV-RAM-BLOCK")
+                wrapped = ET.Element("NV-RAM-BLOCK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,7 +88,7 @@ class NvBlockDataMapping(ARObject):
             serialized = ARObject._serialize_item(self.read_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("READ-NV-DATA")
+                wrapped = ET.Element("READ-NV-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,7 +102,7 @@ class NvBlockDataMapping(ARObject):
             serialized = ARObject._serialize_item(self.written_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WRITTEN-NV-DATA")
+                wrapped = ET.Element("WRITTEN-NV-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,7 +116,7 @@ class NvBlockDataMapping(ARObject):
             serialized = ARObject._serialize_item(self.written_read_nv_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WRITTEN-READ-NV")
+                wrapped = ET.Element("WRITTEN-READ-NV-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -147,25 +148,25 @@ class NvBlockDataMapping(ARObject):
             obj.bitfield_text_table = bitfield_text_table_value
 
         # Parse nv_ram_block_ref
-        child = ARObject._find_child_element(element, "NV-RAM-BLOCK")
+        child = ARObject._find_child_element(element, "NV-RAM-BLOCK-REF")
         if child is not None:
             nv_ram_block_ref_value = ARRef.deserialize(child)
             obj.nv_ram_block_ref = nv_ram_block_ref_value
 
         # Parse read_nv_data_ref
-        child = ARObject._find_child_element(element, "READ-NV-DATA")
+        child = ARObject._find_child_element(element, "READ-NV-DATA-REF")
         if child is not None:
             read_nv_data_ref_value = ARRef.deserialize(child)
             obj.read_nv_data_ref = read_nv_data_ref_value
 
         # Parse written_nv_data_ref
-        child = ARObject._find_child_element(element, "WRITTEN-NV-DATA")
+        child = ARObject._find_child_element(element, "WRITTEN-NV-DATA-REF")
         if child is not None:
             written_nv_data_ref_value = ARRef.deserialize(child)
             obj.written_nv_data_ref = written_nv_data_ref_value
 
         # Parse written_read_nv_ref
-        child = ARObject._find_child_element(element, "WRITTEN-READ-NV")
+        child = ARObject._find_child_element(element, "WRITTEN-READ-NV-REF")
         if child is not None:
             written_read_nv_ref_value = ARRef.deserialize(child)
             obj.written_read_nv_ref = written_read_nv_ref_value

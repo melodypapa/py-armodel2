@@ -32,6 +32,7 @@ class EventObdReadinessGroup(ARObject):
         """Initialize EventObdReadinessGroup."""
         super().__init__()
         self.event_obd: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventObdReadinessGroup to XML element.
 

@@ -35,6 +35,7 @@ class BswQueuedDataReceptionPolicy(BswDataReceptionPolicy):
         """Initialize BswQueuedDataReceptionPolicy."""
         super().__init__()
         self.queue_length: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswQueuedDataReceptionPolicy to XML element.
 

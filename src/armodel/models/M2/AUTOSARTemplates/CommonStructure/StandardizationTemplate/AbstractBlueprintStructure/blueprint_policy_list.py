@@ -37,6 +37,7 @@ class BlueprintPolicyList(BlueprintPolicy):
         super().__init__()
         self.max_number_of: PositiveInteger = None
         self.min_number_of: PositiveInteger = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintPolicyList to XML element.
 

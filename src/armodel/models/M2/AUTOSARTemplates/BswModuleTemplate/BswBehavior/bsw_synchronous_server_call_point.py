@@ -40,6 +40,7 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         super().__init__()
         self.called_entry_entry: Optional[BswModuleClientServerEntry] = None
         self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswSynchronousServerCallPoint to XML element.
 

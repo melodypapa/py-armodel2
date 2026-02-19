@@ -42,6 +42,7 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         self.check_per: Optional[Boolean] = None
         self.configuration: Optional[DiagnosticHandleDDDIConfigurationEnum] = None
         self.subfunctions: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDynamicallyDefineDataIdentifierClass to XML element.
 

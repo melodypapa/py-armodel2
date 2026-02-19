@@ -34,6 +34,7 @@ class TimeRangeType(ARObject):
         super().__init__()
         self.tolerance_tolerance: Optional[TimeRangeType] = None
         self.value: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimeRangeType to XML element.
 

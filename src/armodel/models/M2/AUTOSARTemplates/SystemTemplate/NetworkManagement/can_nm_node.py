@@ -42,6 +42,7 @@ class CanNmNode(NmNode):
         self.nm_car_wake_up: Optional[Boolean] = None
         self.nm_msg_cycle: Optional[TimeValue] = None
         self.nm_msg: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanNmNode to XML element.
 

@@ -31,6 +31,7 @@ class TransformationProps(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize TransformationProps."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationProps to XML element.
 

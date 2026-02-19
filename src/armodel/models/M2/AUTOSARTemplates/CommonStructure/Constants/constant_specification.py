@@ -39,6 +39,7 @@ class ConstantSpecification(ARElement):
         """Initialize ConstantSpecification."""
         super().__init__()
         self.value_spec: Optional[ValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConstantSpecification to XML element.
 

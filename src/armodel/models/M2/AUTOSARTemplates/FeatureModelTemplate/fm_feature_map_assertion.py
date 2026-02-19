@@ -32,6 +32,7 @@ class FMFeatureMapAssertion(Identifiable):
         """Initialize FMFeatureMapAssertion."""
         super().__init__()
         self.fm_syscond_and_sw_systemconsts: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMapAssertion to XML element.
 

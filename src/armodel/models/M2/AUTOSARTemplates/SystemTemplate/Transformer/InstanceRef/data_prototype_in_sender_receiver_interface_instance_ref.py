@@ -45,6 +45,7 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         self.context_datas: list[Any] = []
         self.root_data_prototype_in_sr_ref: Optional[ARRef] = None
         self.target_data_prototype_in_sr_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInSenderReceiverInterfaceInstanceRef to XML element.
 

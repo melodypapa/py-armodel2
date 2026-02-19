@@ -32,6 +32,7 @@ class FileInfoComment(ARObject):
         """Initialize FileInfoComment."""
         super().__init__()
         self.sdgs: list[Sdg] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FileInfoComment to XML element.
 

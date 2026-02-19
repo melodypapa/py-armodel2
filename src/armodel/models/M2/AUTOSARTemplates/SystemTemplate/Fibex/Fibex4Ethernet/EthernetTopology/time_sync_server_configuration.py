@@ -46,6 +46,7 @@ class TimeSyncServerConfiguration(Referrable):
         self.sync_interval: Optional[TimeValue] = None
         self.time_sync_server_identifier: Optional[String] = None
         self.time_sync: Optional[TimeSyncTechnologyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimeSyncServerConfiguration to XML element.
 

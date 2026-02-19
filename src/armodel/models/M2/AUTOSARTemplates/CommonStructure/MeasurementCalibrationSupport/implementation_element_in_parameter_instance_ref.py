@@ -35,6 +35,7 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         super().__init__()
         self.context_ref: Optional[ARRef] = None
         self.target: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationElementInParameterInstanceRef to XML element.
 

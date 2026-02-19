@@ -35,6 +35,7 @@ class NotAvailableValueSpecification(ValueSpecification):
         """Initialize NotAvailableValueSpecification."""
         super().__init__()
         self.default_pattern: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NotAvailableValueSpecification to XML element.
 

@@ -20,7 +20,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Provides a description of an abstract memory section used in the Implementation for code or data. It shall be declared by the Implementation Description of the module or component, which actually allocates the memory in its code. This means in case of data prototypes which are allocated by the RTE, that the generated Implementation Description of the RTE shall contain the corresponding MemorySections. The attribute \"symbol\" (if symbol is missing: \"shortName\") defines the module or component specific section name used in the code. For details see the document \"Specification of Memory Mapping\". Typically the section name is build according the pattern: <SwAddrMethod shortName>[_<further specialization nominator>][_<alignment>] where • [<SwAddrMethod shortName>] is the shortName of the referenced SwAddrMethod • [_<further specialization nominator>] is an optional infix to indicate the specialization in the case that several MemorySections for different purpose of the same Implementation Description referring to the same or equally named SwAddrMethods. • [_<alignment>] is the alignment attributes value and is only applicable in the case that the memory AllocationKeywordPolicy value of the referenced SwAddrMethod is set to addrMethodShortNameAnd Alignment MemorySection used to Implement the code of RunnableEntitys and BswSchedulableEntitys shall have a symbol (if missing: shortName) identical to the referred SwAddrMethod to conform to the generated RTE header files. In addition to the section name described above, a prefix is used in the corresponding macro code in order to define a name space. This prefix is by default given by the shortName of the BswModule Description resp. the SwComponentType. It can be superseded by the prefix attribute.",
+      "note": "Provides a description of an abstract memory section used in the Implementation for code or data. It shall be declared by the Implementation Description of the module or component, which actually allocates the memory in its code. This means in case of data prototypes which are allocated by the RTE, that the generated Implementation Description of the RTE shall contain the corresponding MemorySections. The attribute \"symbol\" (if symbol is missing: \"shortName\") defines the module or component specific section name used in the code. For details see the document \"Specification of Memory Mapping\". Typically the section name is build according the pattern: <SwAddrMethod shortName>[_<further specialization nominator>][_<alignment>] where \u2022 [<SwAddrMethod shortName>] is the shortName of the referenced SwAddrMethod \u2022 [_<further specialization nominator>] is an optional infix to indicate the specialization in the case that several MemorySections for different purpose of the same Implementation Description referring to the same or equally named SwAddrMethods. \u2022 [_<alignment>] is the alignment attributes value and is only applicable in the case that the memory AllocationKeywordPolicy value of the referenced SwAddrMethod is set to addrMethodShortNameAnd Alignment MemorySection used to Implement the code of RunnableEntitys and BswSchedulableEntitys shall have a symbol (if missing: shortName) identical to the referred SwAddrMethod to conform to the generated RTE header files. In addition to the section name described above, a prefix is used in the corresponding macro code in order to define a name space. This prefix is by default given by the shortName of the BswModule Description resp. the SwComponentType. It can be superseded by the prefix attribute.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -68,7 +68,7 @@
           "multiplicity": "0..1",
           "kind": "reference",
           "is_ref": false,
-          "note": "The prefix used to set the memory section’s namespace code. The existence of a prefix element for a default prefix (such as the Bsw This allows the user to name spaces for memory sections within of one module, cluster or SWC."
+          "note": "The prefix used to set the memory section\u2019s namespace code. The existence of a prefix element for a default prefix (such as the Bsw This allows the user to name spaces for memory sections within of one module, cluster or SWC."
         },
         "size": {
           "type": "PositiveInteger",
@@ -130,7 +130,7 @@
         "implementedIn": {
           "type": "DependencyOnArtifact",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Optional reference that allows to Indicate the code artifact containing the preprocessor implementation sections with this prefix. of this link supersedes the usage of a memory with the default name (derived from the"
         }

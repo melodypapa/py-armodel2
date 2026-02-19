@@ -31,6 +31,7 @@ class DoIpGidNeeds(DoIpServiceNeeds):
     def __init__(self) -> None:
         """Initialize DoIpGidNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpGidNeeds to XML element.
 

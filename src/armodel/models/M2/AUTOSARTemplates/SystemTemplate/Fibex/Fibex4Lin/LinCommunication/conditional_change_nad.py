@@ -44,6 +44,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
         self.invert: Optional[Integer] = None
         self.mask: Optional[Integer] = None
         self.new_nad: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConditionalChangeNad to XML element.
 

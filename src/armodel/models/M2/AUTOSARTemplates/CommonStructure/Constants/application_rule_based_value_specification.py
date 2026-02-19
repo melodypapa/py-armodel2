@@ -46,6 +46,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         self.category_specification: Optional[Identifier] = None
         self.sw_axis_conts: list[RuleBasedAxisCont] = []
         self.sw_value_cont: Optional[RuleBasedValueCont] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationRuleBasedValueSpecification to XML element.
 

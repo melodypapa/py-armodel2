@@ -43,6 +43,7 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         self.acf_transporteds: list[IEEE1722TpAcfBus] = []
         self.collection: Optional[TimeValue] = None
         self.mixed_bus_type: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfConnection to XML element.
 

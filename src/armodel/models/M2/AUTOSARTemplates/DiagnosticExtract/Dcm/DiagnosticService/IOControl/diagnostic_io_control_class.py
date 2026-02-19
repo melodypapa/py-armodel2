@@ -30,6 +30,7 @@ class DiagnosticIoControlClass(DiagnosticServiceClass):
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIoControlClass to XML element.
 

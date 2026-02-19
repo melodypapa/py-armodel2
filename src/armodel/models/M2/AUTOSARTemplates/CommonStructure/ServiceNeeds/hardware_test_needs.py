@@ -31,6 +31,7 @@ class HardwareTestNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize HardwareTestNeeds."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize HardwareTestNeeds to XML element.
 

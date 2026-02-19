@@ -35,6 +35,7 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         """Initialize ReceiverAnnotation."""
         super().__init__()
         self.signal_age: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReceiverAnnotation to XML element.
 

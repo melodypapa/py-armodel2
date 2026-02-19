@@ -44,6 +44,7 @@ class OffsetTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.source: Optional[TimingDescriptionEvent] = None
         self.target: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OffsetTimingConstraint to XML element.
 

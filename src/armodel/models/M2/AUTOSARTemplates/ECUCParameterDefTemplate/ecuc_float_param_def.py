@@ -41,6 +41,7 @@ class EcucFloatParamDef(EcucParameterDef):
         self.default_value: Optional[Float] = None
         self.max: Optional[Limit] = None
         self.min: Optional[Limit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucFloatParamDef to XML element.
 

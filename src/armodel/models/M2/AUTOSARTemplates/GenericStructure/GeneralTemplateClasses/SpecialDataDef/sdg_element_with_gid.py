@@ -33,6 +33,7 @@ class SdgElementWithGid(ARObject, ABC):
         """Initialize SdgElementWithGid."""
         super().__init__()
         self.gid: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgElementWithGid to XML element.
 

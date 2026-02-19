@@ -39,6 +39,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
         """Initialize AutosarDataPrototype."""
         super().__init__()
         self.type: Optional[AutosarDataType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarDataPrototype to XML element.
 

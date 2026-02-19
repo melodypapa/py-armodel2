@@ -34,6 +34,7 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         super().__init__()
         self.j1939_controller: Optional[Any] = None
         self.j1939_nm_node: Optional[J1939NmNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939ControllerApplicationToJ1939NmNodeMapping to XML element.
 

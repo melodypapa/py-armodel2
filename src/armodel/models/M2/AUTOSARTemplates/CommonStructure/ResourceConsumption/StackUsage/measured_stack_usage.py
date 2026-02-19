@@ -42,6 +42,7 @@ class MeasuredStackUsage(StackUsage):
         self.maximum_memory_consumption: Optional[PositiveInteger] = None
         self.minimum_memory_consumption: Optional[PositiveInteger] = None
         self.test_pattern: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MeasuredStackUsage to XML element.
 

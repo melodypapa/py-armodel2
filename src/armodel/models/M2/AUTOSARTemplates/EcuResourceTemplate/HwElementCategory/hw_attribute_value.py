@@ -45,6 +45,7 @@ class HwAttributeValue(ARObject):
         self.hw_attribute_def: Optional[HwAttributeDef] = None
         self.v: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwAttributeValue to XML element.
 

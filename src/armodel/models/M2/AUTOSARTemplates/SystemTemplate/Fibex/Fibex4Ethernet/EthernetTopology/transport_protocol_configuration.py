@@ -28,6 +28,7 @@ class TransportProtocolConfiguration(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize TransportProtocolConfiguration."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TransportProtocolConfiguration to XML element.
 

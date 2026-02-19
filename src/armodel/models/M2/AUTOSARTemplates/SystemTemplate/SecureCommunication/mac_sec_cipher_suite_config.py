@@ -32,6 +32,7 @@ class MacSecCipherSuiteConfig(ARObject):
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()
         self.cipher_suite: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecCipherSuiteConfig to XML element.
 

@@ -42,6 +42,7 @@ class TimingClockSyncAccuracy(Identifiable):
         self.accuracy: Optional[MultidimensionalTime] = None
         self.lower: Optional[TimingClock] = None
         self.upper: Optional[TimingClock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingClockSyncAccuracy to XML element.
 

@@ -66,6 +66,7 @@ class DltLogChannel(Identifiable):
         self.rx_pdu_triggering_channel_ref: Optional[ARRef] = None
         self.segmentation: Optional[Boolean] = None
         self.tx_pdu_triggering_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltLogChannel to XML element.
 

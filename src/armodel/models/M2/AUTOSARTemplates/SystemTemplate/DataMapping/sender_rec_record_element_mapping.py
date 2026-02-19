@@ -49,6 +49,7 @@ class SenderRecRecordElementMapping(ARObject):
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderRecRecordElementMapping to XML element.
 
@@ -106,7 +107,7 @@ class SenderRecRecordElementMapping(ARObject):
             serialized = ARObject._serialize_item(self.sender_to_signal_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SENDER-TO-SIGNAL")
+                wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,7 +121,7 @@ class SenderRecRecordElementMapping(ARObject):
             serialized = ARObject._serialize_item(self.signal_to_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SIGNAL-TO")
+                wrapped = ET.Element("SIGNAL-TO-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -178,13 +179,13 @@ class SenderRecRecordElementMapping(ARObject):
             obj.implementation = implementation_value
 
         # Parse sender_to_signal_ref
-        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")
+        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL-REF")
         if child is not None:
             sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
-        child = ARObject._find_child_element(element, "SIGNAL-TO")
+        child = ARObject._find_child_element(element, "SIGNAL-TO-REF")
         if child is not None:
             signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value

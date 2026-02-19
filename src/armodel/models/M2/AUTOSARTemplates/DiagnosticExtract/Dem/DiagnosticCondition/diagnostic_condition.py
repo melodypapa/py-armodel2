@@ -36,6 +36,7 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         """Initialize DiagnosticCondition."""
         super().__init__()
         self.init_value: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCondition to XML element.
 

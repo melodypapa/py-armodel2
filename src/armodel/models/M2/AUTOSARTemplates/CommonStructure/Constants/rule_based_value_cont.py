@@ -41,6 +41,7 @@ class RuleBasedValueCont(ARObject):
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.unit: Optional[Unit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleBasedValueCont to XML element.
 
@@ -70,7 +71,7 @@ class RuleBasedValueCont(ARObject):
             serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-ARRAYSIZE")
+                wrapped = ET.Element("SW-ARRAYSIZE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,7 +117,7 @@ class RuleBasedValueCont(ARObject):
             obj.rule_based = rule_based_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value

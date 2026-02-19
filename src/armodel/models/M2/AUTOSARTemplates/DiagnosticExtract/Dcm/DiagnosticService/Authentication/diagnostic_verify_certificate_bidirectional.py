@@ -30,6 +30,7 @@ class DiagnosticVerifyCertificateBidirectional(DiagnosticAuthentication):
     def __init__(self) -> None:
         """Initialize DiagnosticVerifyCertificateBidirectional."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticVerifyCertificateBidirectional to XML element.
 

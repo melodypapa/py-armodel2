@@ -43,6 +43,7 @@ class DoIpTpConnection(TpConnection):
         self.do_ip_source: Optional[DoIpLogicAddress] = None
         self.do_ip_target: Optional[DoIpLogicAddress] = None
         self.tp_sdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpTpConnection to XML element.
 

@@ -41,6 +41,7 @@ class CanClusterBusOffRecovery(ARObject):
         self.bor_time_l2: Optional[TimeValue] = None
         self.bor_time_tx: Optional[TimeValue] = None
         self.main_function: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanClusterBusOffRecovery to XML element.
 

@@ -35,6 +35,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
         self.allowed_i_pv6_exts: list[PositiveInteger] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IPv6ExtHeaderFilterList to XML element.
 

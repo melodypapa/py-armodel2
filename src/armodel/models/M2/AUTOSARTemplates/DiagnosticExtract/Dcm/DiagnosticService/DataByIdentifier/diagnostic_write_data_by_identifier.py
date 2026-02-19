@@ -32,6 +32,7 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         """Initialize DiagnosticWriteDataByIdentifier."""
         super().__init__()
         self.write_class: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticWriteDataByIdentifier to XML element.
 

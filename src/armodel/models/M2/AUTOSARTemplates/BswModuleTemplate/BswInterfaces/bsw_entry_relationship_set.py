@@ -36,6 +36,7 @@ class BswEntryRelationshipSet(ARElement):
         """Initialize BswEntryRelationshipSet."""
         super().__init__()
         self.bsw_entry_relationships: list[BswEntryRelationship] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BswEntryRelationshipSet to XML element.
 

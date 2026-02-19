@@ -40,6 +40,7 @@ class CpSoftwareClusterResourcePool(ARElement):
         super().__init__()
         self.ecu_scopes: list[EcuInstance] = []
         self.resources: list[CpSoftwareCluster] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterResourcePool to XML element.
 

@@ -40,6 +40,7 @@ class SubElementMapping(ARObject):
         self.first_element_ref: Optional[ARRef] = None
         self.second_element_ref: Optional[ARRef] = None
         self.text_table_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize SubElementMapping to XML element.
 
@@ -55,7 +56,7 @@ class SubElementMapping(ARObject):
             serialized = ARObject._serialize_item(self.first_element_ref, "SubElementRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-ELEMENT")
+                wrapped = ET.Element("FIRST-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -69,7 +70,7 @@ class SubElementMapping(ARObject):
             serialized = ARObject._serialize_item(self.second_element_ref, "SubElementRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-ELEMENT")
+                wrapped = ET.Element("SECOND-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,7 +84,7 @@ class SubElementMapping(ARObject):
             serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TEXT-TABLE")
+                wrapped = ET.Element("TEXT-TABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,19 +110,19 @@ class SubElementMapping(ARObject):
         obj.__init__()
 
         # Parse first_element_ref
-        child = ARObject._find_child_element(element, "FIRST-ELEMENT")
+        child = ARObject._find_child_element(element, "FIRST-ELEMENT-REF")
         if child is not None:
             first_element_ref_value = ARRef.deserialize(child)
             obj.first_element_ref = first_element_ref_value
 
         # Parse second_element_ref
-        child = ARObject._find_child_element(element, "SECOND-ELEMENT")
+        child = ARObject._find_child_element(element, "SECOND-ELEMENT-REF")
         if child is not None:
             second_element_ref_value = ARRef.deserialize(child)
             obj.second_element_ref = second_element_ref_value
 
         # Parse text_table_ref
-        child = ARObject._find_child_element(element, "TEXT-TABLE")
+        child = ARObject._find_child_element(element, "TEXT-TABLE-REF")
         if child is not None:
             text_table_ref_value = ARRef.deserialize(child)
             obj.text_table_ref = text_table_ref_value

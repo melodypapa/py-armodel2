@@ -27,6 +27,7 @@ class LinCluster(ARObject):
     def __init__(self) -> None:
         """Initialize LinCluster."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize LinCluster to XML element.
 

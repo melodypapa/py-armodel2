@@ -36,6 +36,7 @@ class InterpolationRoutineMappingSet(ARElement):
         """Initialize InterpolationRoutineMappingSet."""
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
+
     def serialize(self) -> ET.Element:
         """Serialize InterpolationRoutineMappingSet to XML element.
 

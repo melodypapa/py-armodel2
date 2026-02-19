@@ -41,6 +41,7 @@ class BswInterruptEntity(BswModuleEntity):
         super().__init__()
         self.interrupt_category: Optional[BswInterruptCategory] = None
         self.interrupt_source: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswInterruptEntity to XML element.
 

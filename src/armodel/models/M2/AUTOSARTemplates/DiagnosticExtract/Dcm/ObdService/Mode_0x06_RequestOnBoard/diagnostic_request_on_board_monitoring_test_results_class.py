@@ -30,6 +30,7 @@ class DiagnosticRequestOnBoardMonitoringTestResultsClass(DiagnosticServiceClass)
     def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResultsClass."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestOnBoardMonitoringTestResultsClass to XML element.
 

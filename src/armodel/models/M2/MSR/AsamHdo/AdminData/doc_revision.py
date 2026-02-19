@@ -51,6 +51,7 @@ class DocRevision(ARObject):
         self.revision_label_p1: Optional[RevisionLabelString] = None
         self.revision_label_p2: Optional[RevisionLabelString] = None
         self.state: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DocRevision to XML element.
 

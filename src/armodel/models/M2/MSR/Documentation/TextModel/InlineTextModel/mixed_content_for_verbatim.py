@@ -48,6 +48,7 @@ class MixedContentForVerbatim(ARObject, ABC):
         self.e: EmphasisText = None
         self.tt: Tt = None
         self.xref: Xref = None
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForVerbatim to XML element.
 

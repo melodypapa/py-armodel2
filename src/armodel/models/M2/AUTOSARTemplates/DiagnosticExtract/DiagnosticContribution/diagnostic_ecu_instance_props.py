@@ -40,6 +40,7 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         super().__init__()
         self.ecu_instances: list[EcuInstance] = []
         self.obd_support: Optional[DiagnosticObdSupportEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEcuInstanceProps to XML element.
 

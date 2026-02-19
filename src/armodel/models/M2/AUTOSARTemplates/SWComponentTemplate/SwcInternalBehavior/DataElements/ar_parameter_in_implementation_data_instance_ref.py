@@ -42,6 +42,7 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArParameterInImplementationDataInstanceRef to XML element.
 

@@ -32,6 +32,7 @@ class DdsTransportPriority(ARObject):
         """Initialize DdsTransportPriority."""
         super().__init__()
         self.transport_priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsTransportPriority to XML element.
 

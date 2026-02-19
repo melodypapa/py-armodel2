@@ -36,6 +36,7 @@ class ParameterPortAnnotation(GeneralAnnotation):
         """Initialize ParameterPortAnnotation."""
         super().__init__()
         self.parameter_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterPortAnnotation to XML element.
 

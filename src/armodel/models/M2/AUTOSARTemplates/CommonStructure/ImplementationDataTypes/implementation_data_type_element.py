@@ -61,6 +61,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         self.is_optional: Optional[Boolean] = None
         self.sub_elements: list[Any] = []
         self.sw_data_def: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataTypeElement to XML element.
 

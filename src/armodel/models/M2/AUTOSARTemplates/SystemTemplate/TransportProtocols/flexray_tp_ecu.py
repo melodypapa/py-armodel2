@@ -42,6 +42,7 @@ class FlexrayTpEcu(ARObject):
         self.cycle_time_main: Optional[TimeValue] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.full_duplex: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpEcu to XML element.
 

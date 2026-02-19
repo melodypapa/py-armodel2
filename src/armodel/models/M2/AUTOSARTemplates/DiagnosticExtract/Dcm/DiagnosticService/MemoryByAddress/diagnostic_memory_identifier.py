@@ -45,6 +45,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         self.id: Optional[PositiveInteger] = None
         self.memory_high: Optional[String] = None
         self.memory_low: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryIdentifier to XML element.
 

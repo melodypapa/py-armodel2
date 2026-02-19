@@ -57,6 +57,7 @@ class AclObjectSet(ARElement):
         self.collection_ref: Optional[ARRef] = None
         self.derived_froms: list[AtpBlueprint] = []
         self.engineerings: list[AutosarEngineeringObject] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AclObjectSet to XML element.
 

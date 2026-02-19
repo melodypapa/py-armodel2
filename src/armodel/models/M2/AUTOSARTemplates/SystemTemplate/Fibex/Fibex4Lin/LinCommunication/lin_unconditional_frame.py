@@ -30,6 +30,7 @@ class LinUnconditionalFrame(LinFrame):
     def __init__(self) -> None:
         """Initialize LinUnconditionalFrame."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize LinUnconditionalFrame to XML element.
 

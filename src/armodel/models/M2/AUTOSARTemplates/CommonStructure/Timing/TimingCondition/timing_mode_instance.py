@@ -32,6 +32,7 @@ class TimingModeInstance(Identifiable):
         """Initialize TimingModeInstance."""
         super().__init__()
         self.mode_instance: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingModeInstance to XML element.
 

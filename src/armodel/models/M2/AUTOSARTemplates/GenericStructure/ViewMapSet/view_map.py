@@ -43,6 +43,7 @@ class ViewMap(Identifiable):
         self.first_elements: list[AtpFeature] = []
         self.role: Optional[Identifier] = None
         self.second_elements: list[AtpFeature] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ViewMap to XML element.
 

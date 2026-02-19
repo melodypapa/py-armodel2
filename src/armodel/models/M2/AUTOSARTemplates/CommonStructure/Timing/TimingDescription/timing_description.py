@@ -31,6 +31,7 @@ class TimingDescription(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize TimingDescription."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize TimingDescription to XML element.
 

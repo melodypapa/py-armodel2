@@ -45,6 +45,7 @@ class GlobalTimeGateway(Identifiable):
         self.host: Optional[EcuInstance] = None
         self.master: Optional[GlobalTimeMaster] = None
         self.slave: Optional[GlobalTimeSlave] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeGateway to XML element.
 

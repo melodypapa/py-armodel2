@@ -47,6 +47,7 @@ class TextTableMapping(ARObject):
         self.identical: Optional[Boolean] = None
         self.mapping_ref: Optional[MappingDirectionEnum] = None
         self.value_pairs: list[TextTableValuePair] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TextTableMapping to XML element.
 
@@ -90,7 +91,7 @@ class TextTableMapping(ARObject):
             serialized = ARObject._serialize_item(self.mapping_ref, "MappingDirectionEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPING")
+                wrapped = ET.Element("MAPPING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -138,7 +139,7 @@ class TextTableMapping(ARObject):
             obj.identical = identical_value
 
         # Parse mapping_ref
-        child = ARObject._find_child_element(element, "MAPPING")
+        child = ARObject._find_child_element(element, "MAPPING-REF")
         if child is not None:
             mapping_ref_value = ARRef.deserialize(child)
             obj.mapping_ref = mapping_ref_value

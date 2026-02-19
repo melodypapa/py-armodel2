@@ -53,6 +53,7 @@ class ReferenceBase(ARObject):
         self.package_ref: Optional[ARRef] = None
         self.global_element_refs: list[ReferrableSubtypesEnum] = []
         self.global_in_package_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ReferenceBase to XML element.
 

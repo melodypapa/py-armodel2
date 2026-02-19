@@ -27,6 +27,7 @@ class FMConditionByFeaturesAndAttributes(ARObject):
     def __init__(self) -> None:
         """Initialize FMConditionByFeaturesAndAttributes."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize FMConditionByFeaturesAndAttributes to XML element.
 

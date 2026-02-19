@@ -35,6 +35,7 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         super().__init__()
         self.bsw_mode_group_prototype_ref: Optional[ARRef] = None
         self.swc_mode_group_swc_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcBswSynchronizedModeGroupPrototype to XML element.
 
@@ -64,7 +65,7 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
             serialized = ARObject._serialize_item(self.swc_mode_group_swc_instance_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-MODE-GROUP-SWC-INSTANCE-REF")
+                wrapped = ET.Element("SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,7 +97,7 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
             obj.bsw_mode_group_prototype_ref = bsw_mode_group_prototype_ref_value
 
         # Parse swc_mode_group_swc_instance_ref
-        child = ARObject._find_child_element(element, "SWC-MODE-GROUP-SWC-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
         if child is not None:
             swc_mode_group_swc_instance_ref_value = ARRef.deserialize(child)
             obj.swc_mode_group_swc_instance_ref = swc_mode_group_swc_instance_ref_value

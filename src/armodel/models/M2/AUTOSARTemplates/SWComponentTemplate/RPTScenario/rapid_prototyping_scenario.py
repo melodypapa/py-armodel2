@@ -48,6 +48,7 @@ class RapidPrototypingScenario(ARElement):
         self.rpt_containers: list[RptContainer] = []
         self.rpt_profiles: list[RptProfile] = []
         self.rpt_system: Optional[System] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RapidPrototypingScenario to XML element.
 

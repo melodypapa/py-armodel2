@@ -37,6 +37,7 @@ class SwitchStreamFilterActionDestPortModification(Identifiable):
         super().__init__()
         self.egress_ports: list[CouplingPort] = []
         self.modification: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamFilterActionDestPortModification to XML element.
 

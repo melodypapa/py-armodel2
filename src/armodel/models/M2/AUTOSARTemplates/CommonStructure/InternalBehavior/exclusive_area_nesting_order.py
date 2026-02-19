@@ -36,6 +36,7 @@ class ExclusiveAreaNestingOrder(Referrable):
         """Initialize ExclusiveAreaNestingOrder."""
         super().__init__()
         self.exclusive_areas: list[ExclusiveArea] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ExclusiveAreaNestingOrder to XML element.
 

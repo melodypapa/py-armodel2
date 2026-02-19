@@ -27,6 +27,7 @@ class CanCommunicationController(ARObject):
     def __init__(self) -> None:
         """Initialize CanCommunicationController."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize CanCommunicationController to XML element.
 

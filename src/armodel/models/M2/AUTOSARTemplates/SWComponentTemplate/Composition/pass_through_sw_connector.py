@@ -41,6 +41,7 @@ class PassThroughSwConnector(SwConnector):
         super().__init__()
         self.provided_outer: Optional[AbstractProvidedPortPrototype] = None
         self.required_outer: Optional[AbstractRequiredPortPrototype] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PassThroughSwConnector to XML element.
 

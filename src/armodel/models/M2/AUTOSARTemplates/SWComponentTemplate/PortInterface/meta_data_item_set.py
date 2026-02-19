@@ -39,6 +39,7 @@ class MetaDataItemSet(ARObject):
         super().__init__()
         self.data_element_refs: list[ARRef] = []
         self.meta_data_items: list[MetaDataItem] = []
+
     def serialize(self) -> ET.Element:
         """Serialize MetaDataItemSet to XML element.
 

@@ -35,6 +35,7 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         """Initialize DiagnosticMeasurementIdentifier."""
         super().__init__()
         self.obd_mid: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMeasurementIdentifier to XML element.
 

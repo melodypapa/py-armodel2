@@ -36,6 +36,7 @@ class ApplicationError(Identifiable):
         """Initialize ApplicationError."""
         super().__init__()
         self.error_code: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationError to XML element.
 

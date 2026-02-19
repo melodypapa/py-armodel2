@@ -38,6 +38,7 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         super().__init__()
         self.clock_reference: Optional[TimingClock] = None
         self.occurrence: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingDescriptionEvent to XML element.
 

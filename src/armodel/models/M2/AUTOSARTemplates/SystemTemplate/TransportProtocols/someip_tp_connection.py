@@ -40,6 +40,7 @@ class SomeipTpConnection(ARObject):
         self.tp_channel: Optional[SomeipTpChannel] = None
         self.tp_sdu_ref: Optional[ARRef] = None
         self.transport_pdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipTpConnection to XML element.
 

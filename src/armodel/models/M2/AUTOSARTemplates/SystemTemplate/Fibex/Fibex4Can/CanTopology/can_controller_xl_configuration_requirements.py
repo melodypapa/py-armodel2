@@ -65,6 +65,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
         self.min_sync_jump: Optional[Float] = None
         self.min_trcv_delay: Optional[TimeValue] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerXlConfigurationRequirements to XML element.
 

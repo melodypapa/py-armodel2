@@ -35,6 +35,7 @@ class SdgCaption(MultilanguageReferrable):
         """Initialize SdgCaption."""
         super().__init__()
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgCaption to XML element.
 

@@ -39,6 +39,7 @@ class Field(AutosarDataPrototype):
         self.has_getter: Optional[Boolean] = None
         self.has_notifier: Optional[Boolean] = None
         self.has_setter: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Field to XML element.
 

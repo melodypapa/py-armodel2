@@ -36,6 +36,7 @@ class ExternalTriggerOccurredEvent(RTEEvent):
         """Initialize ExternalTriggerOccurredEvent."""
         super().__init__()
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExternalTriggerOccurredEvent to XML element.
 
@@ -61,7 +62,7 @@ class ExternalTriggerOccurredEvent(RTEEvent):
             serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,7 +87,7 @@ class ExternalTriggerOccurredEvent(RTEEvent):
         obj = super(ExternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

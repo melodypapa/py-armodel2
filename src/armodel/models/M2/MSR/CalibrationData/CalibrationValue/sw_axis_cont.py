@@ -58,6 +58,7 @@ class SwAxisCont(ARObject):
         self.sw_values_phys: Optional[SwValues] = None
         self.unit: Optional[Unit] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisCont to XML element.
 
@@ -87,7 +88,7 @@ class SwAxisCont(ARObject):
             serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-ARRAYSIZE")
+                wrapped = ET.Element("SW-ARRAYSIZE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -175,7 +176,7 @@ class SwAxisCont(ARObject):
             obj.category = category_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value

@@ -76,6 +76,7 @@ class BswModuleEntry(ARElement):
         self.role: Optional[Identifier] = None
         self.service_id: Optional[PositiveInteger] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntry to XML element.
 

@@ -38,6 +38,7 @@ class TransmissionModeCondition(ARObject):
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
         self.i_signal_in_i_pdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransmissionModeCondition to XML element.
 

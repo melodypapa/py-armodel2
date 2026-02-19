@@ -34,6 +34,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         super().__init__()
         self.consumed_services: list[Any] = []
         self.provided_services: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ConsumedProvidedServiceInstanceGroup to XML element.
 

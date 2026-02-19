@@ -36,6 +36,7 @@ class TDEventCycleStart(TDEventCom, ABC):
         """Initialize TDEventCycleStart."""
         super().__init__()
         self.cycle_repetition: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventCycleStart to XML element.
 

@@ -62,6 +62,7 @@ class TcpProps(ARObject):
         self.tcp_syn_max_rtx: Optional[PositiveInteger] = None
         self.tcp_syn_received: Optional[TimeValue] = None
         self.tcp_ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TcpProps to XML element.
 

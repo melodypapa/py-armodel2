@@ -70,6 +70,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         self.sd_server_config: Optional[Any] = None
         self.sd_server_timer: Optional[Any] = None
         self.service_identifier: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ProvidedServiceInstance to XML element.
 

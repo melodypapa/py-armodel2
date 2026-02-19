@@ -32,6 +32,7 @@ class EcucDestinationUriDef(Identifiable):
         """Initialize EcucDestinationUriDef."""
         super().__init__()
         self.destination_uri: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucDestinationUriDef to XML element.
 

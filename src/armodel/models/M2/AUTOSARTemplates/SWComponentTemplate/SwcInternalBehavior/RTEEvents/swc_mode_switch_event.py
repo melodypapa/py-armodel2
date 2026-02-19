@@ -35,6 +35,7 @@ class SwcModeSwitchEvent(RTEEvent):
         """Initialize SwcModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcModeSwitchEvent to XML element.
 

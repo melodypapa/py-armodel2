@@ -41,6 +41,7 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         super().__init__()
         self.bulk_nv_datas: list[BulkNvDataDescriptor] = []
         self.nv_blocks: list[NvBlockDescriptor] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NvBlockSwComponentType to XML element.
 

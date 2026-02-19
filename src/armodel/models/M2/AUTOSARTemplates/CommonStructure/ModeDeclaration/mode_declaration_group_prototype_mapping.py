@@ -40,6 +40,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         self.first_mode_group_prototype_ref: Optional[ARRef] = None
         self.mode: Optional[ModeDeclaration] = None
         self.second_mode_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationGroupPrototypeMapping to XML element.
 
