@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -48,6 +49,64 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         self.wakeup_local: Optional[Boolean] = None
         self.wakeup_remote: Optional[Boolean] = None
         self.wakeup: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthernetWakeupSleepOnDatalineConfig":
+        """Deserialize XML element to EthernetWakeupSleepOnDatalineConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthernetWakeupSleepOnDatalineConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sleep_mode
+        child = ARObject._find_child_element(element, "SLEEP-MODE")
+        if child is not None:
+            sleep_mode_value = child.text
+            obj.sleep_mode = sleep_mode_value
+
+        # Parse sleep_repetition
+        child = ARObject._find_child_element(element, "SLEEP-REPETITION")
+        if child is not None:
+            sleep_repetition_value = child.text
+            obj.sleep_repetition = sleep_repetition_value
+
+        # Parse sleep
+        child = ARObject._find_child_element(element, "SLEEP")
+        if child is not None:
+            sleep_value = child.text
+            obj.sleep = sleep_value
+
+        # Parse wakeup_forward
+        child = ARObject._find_child_element(element, "WAKEUP-FORWARD")
+        if child is not None:
+            wakeup_forward_value = child.text
+            obj.wakeup_forward = wakeup_forward_value
+
+        # Parse wakeup_local
+        child = ARObject._find_child_element(element, "WAKEUP-LOCAL")
+        if child is not None:
+            wakeup_local_value = child.text
+            obj.wakeup_local = wakeup_local_value
+
+        # Parse wakeup_remote
+        child = ARObject._find_child_element(element, "WAKEUP-REMOTE")
+        if child is not None:
+            wakeup_remote_value = child.text
+            obj.wakeup_remote = wakeup_remote_value
+
+        # Parse wakeup
+        child = ARObject._find_child_element(element, "WAKEUP")
+        if child is not None:
+            wakeup_value = child.text
+            obj.wakeup = wakeup_value
+
+        return obj
+
 
 
 class EthernetWakeupSleepOnDatalineConfigBuilder:

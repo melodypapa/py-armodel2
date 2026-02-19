@@ -27,6 +27,22 @@ class UnlimitedIntegerValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize UnlimitedIntegerValueVariationPoint."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UnlimitedIntegerValueVariationPoint":
+        """Deserialize XML element to UnlimitedIntegerValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UnlimitedIntegerValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UnlimitedIntegerValueVariationPointBuilder:

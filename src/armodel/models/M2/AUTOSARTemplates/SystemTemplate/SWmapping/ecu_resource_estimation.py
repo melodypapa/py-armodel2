@@ -50,6 +50,52 @@ class EcuResourceEstimation(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecu_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcuResourceEstimation":
+        """Deserialize XML element to EcuResourceEstimation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcuResourceEstimation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_resource
+        child = ARObject._find_child_element(element, "BSW-RESOURCE")
+        if child is not None:
+            bsw_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
+            obj.bsw_resource = bsw_resource_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse rte_resource
+        child = ARObject._find_child_element(element, "RTE-RESOURCE")
+        if child is not None:
+            rte_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
+            obj.rte_resource = rte_resource_value
+
+        # Parse sw_comp_to_ecu_refs (list)
+        obj.sw_comp_to_ecu_refs = []
+        for child in ARObject._find_all_child_elements(element, "SW-COMP-TO-ECUS"):
+            sw_comp_to_ecu_refs_value = ARObject._deserialize_by_tag(child, "SwcToEcuMapping")
+            obj.sw_comp_to_ecu_refs.append(sw_comp_to_ecu_refs_value)
+
+        return obj
+
 
 
 class EcuResourceEstimationBuilder:

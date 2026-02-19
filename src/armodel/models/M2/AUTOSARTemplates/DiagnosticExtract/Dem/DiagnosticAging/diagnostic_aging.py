@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,34 @@ class DiagnosticAging(DiagnosticCommonElement):
         super().__init__()
         self.aging_cycle: Optional[Any] = None
         self.threshold: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAging":
+        """Deserialize XML element to DiagnosticAging object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAging object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse aging_cycle
+        child = ARObject._find_child_element(element, "AGING-CYCLE")
+        if child is not None:
+            aging_cycle_value = child.text
+            obj.aging_cycle = aging_cycle_value
+
+        # Parse threshold
+        child = ARObject._find_child_element(element, "THRESHOLD")
+        if child is not None:
+            threshold_value = child.text
+            obj.threshold = threshold_value
+
+        return obj
+
 
 
 class DiagnosticAgingBuilder:

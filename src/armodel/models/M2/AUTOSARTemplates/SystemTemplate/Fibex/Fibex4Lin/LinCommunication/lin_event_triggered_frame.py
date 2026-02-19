@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
     LinFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_schedule_table import (
     LinScheduleTable,
 )
@@ -39,6 +40,34 @@ class LinEventTriggeredFrame(LinFrame):
         super().__init__()
         self.collision_schedule: Optional[LinScheduleTable] = None
         self.lin_unconditional_frames: list[LinUnconditionalFrame] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinEventTriggeredFrame":
+        """Deserialize XML element to LinEventTriggeredFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinEventTriggeredFrame object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse collision_schedule
+        child = ARObject._find_child_element(element, "COLLISION-SCHEDULE")
+        if child is not None:
+            collision_schedule_value = ARObject._deserialize_by_tag(child, "LinScheduleTable")
+            obj.collision_schedule = collision_schedule_value
+
+        # Parse lin_unconditional_frames (list)
+        obj.lin_unconditional_frames = []
+        for child in ARObject._find_all_child_elements(element, "LIN-UNCONDITIONAL-FRAMES"):
+            lin_unconditional_frames_value = ARObject._deserialize_by_tag(child, "LinUnconditionalFrame")
+            obj.lin_unconditional_frames.append(lin_unconditional_frames_value)
+
+        return obj
+
 
 
 class LinEventTriggeredFrameBuilder:

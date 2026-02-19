@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_mapping import (
     CryptoServiceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
 )
@@ -44,6 +45,40 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
         self.crypto_service_queue: Optional[CryptoServiceQueue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecOcCryptoServiceMapping":
+        """Deserialize XML element to SecOcCryptoServiceMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecOcCryptoServiceMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
+            obj.authentication = authentication_value
+
+        # Parse crypto_service_key
+        child = ARObject._find_child_element(element, "CRYPTO-SERVICE-KEY")
+        if child is not None:
+            crypto_service_key_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.crypto_service_key = crypto_service_key_value
+
+        # Parse crypto_service_queue
+        child = ARObject._find_child_element(element, "CRYPTO-SERVICE-QUEUE")
+        if child is not None:
+            crypto_service_queue_value = ARObject._deserialize_by_tag(child, "CryptoServiceQueue")
+            obj.crypto_service_queue = crypto_service_queue_value
+
+        return obj
+
 
 
 class SecOcCryptoServiceMappingBuilder:

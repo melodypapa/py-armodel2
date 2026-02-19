@@ -33,6 +33,28 @@ class BlueprintPolicy(ARObject, ABC):
         """Initialize BlueprintPolicy."""
         super().__init__()
         self.attribute_name: String = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicy":
+        """Deserialize XML element to BlueprintPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse attribute_name
+        child = ARObject._find_child_element(element, "ATTRIBUTE-NAME")
+        if child is not None:
+            attribute_name_value = child.text
+            obj.attribute_name = attribute_name_value
+
+        return obj
+
 
 
 class BlueprintPolicyBuilder:

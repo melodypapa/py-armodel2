@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Address,
     SymbolString,
@@ -38,6 +39,34 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
         super().__init__()
         self.address: Optional[Address] = None
         self.symbol: Optional[SymbolString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestAddressableObject":
+        """Deserialize XML element to BinaryManifestAddressableObject object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestAddressableObject object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse address
+        child = ARObject._find_child_element(element, "ADDRESS")
+        if child is not None:
+            address_value = child.text
+            obj.address = address_value
+
+        # Parse symbol
+        child = ARObject._find_child_element(element, "SYMBOL")
+        if child is not None:
+            symbol_value = child.text
+            obj.symbol = symbol_value
+
+        return obj
+
 
 
 class BinaryManifestAddressableObjectBuilder:

@@ -43,6 +43,40 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.time_mark: Optional[Integer] = None
         self.trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TtcanAbsolutelyScheduledTiming":
+        """Deserialize XML element to TtcanAbsolutelyScheduledTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TtcanAbsolutelyScheduledTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_cycle_cycle
+        child = ARObject._find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
+        if child is not None:
+            communication_cycle_cycle_value = ARObject._deserialize_by_tag(child, "CommunicationCycle")
+            obj.communication_cycle_cycle = communication_cycle_cycle_value
+
+        # Parse time_mark
+        child = ARObject._find_child_element(element, "TIME-MARK")
+        if child is not None:
+            time_mark_value = child.text
+            obj.time_mark = time_mark_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = child.text
+            obj.trigger_ref = trigger_ref_value
+
+        return obj
+
 
 
 class TtcanAbsolutelyScheduledTimingBuilder:

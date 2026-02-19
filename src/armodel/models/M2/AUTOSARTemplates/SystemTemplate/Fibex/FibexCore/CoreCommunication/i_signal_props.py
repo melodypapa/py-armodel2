@@ -29,6 +29,28 @@ class ISignalProps(ARObject):
         """Initialize ISignalProps."""
         super().__init__()
         self.handle_out_of_range: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ISignalProps":
+        """Deserialize XML element to ISignalProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ISignalProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse handle_out_of_range
+        child = ARObject._find_child_element(element, "HANDLE-OUT-OF-RANGE")
+        if child is not None:
+            handle_out_of_range_value = child.text
+            obj.handle_out_of_range = handle_out_of_range_value
+
+        return obj
+
 
 
 class ISignalPropsBuilder:

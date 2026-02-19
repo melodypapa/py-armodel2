@@ -36,6 +36,34 @@ class PostBuildVariantCondition(ARObject):
         super().__init__()
         self.matching: Any = None
         self.value: Integer = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PostBuildVariantCondition":
+        """Deserialize XML element to PostBuildVariantCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PostBuildVariantCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse matching
+        child = ARObject._find_child_element(element, "MATCHING")
+        if child is not None:
+            matching_value = child.text
+            obj.matching = matching_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class PostBuildVariantConditionBuilder:

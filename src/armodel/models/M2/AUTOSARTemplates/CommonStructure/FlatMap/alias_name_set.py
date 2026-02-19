@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.alias_name_assignment import (
     AliasNameAssignment,
 )
@@ -36,6 +37,28 @@ class AliasNameSet(ARElement):
         """Initialize AliasNameSet."""
         super().__init__()
         self.alias_names: list[AliasNameAssignment] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AliasNameSet":
+        """Deserialize XML element to AliasNameSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AliasNameSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alias_names (list)
+        obj.alias_names = []
+        for child in ARObject._find_all_child_elements(element, "ALIAS-NAMES"):
+            alias_names_value = ARObject._deserialize_by_tag(child, "AliasNameAssignment")
+            obj.alias_names.append(alias_names_value)
+
+        return obj
+
 
 
 class AliasNameSetBuilder:

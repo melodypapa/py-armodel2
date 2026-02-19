@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -39,6 +40,34 @@ class DoIpLogicAddress(Identifiable):
         super().__init__()
         self.address: Optional[Integer] = None
         self.do_ip_logic: Optional[AbstractDoIpLogicAddressProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpLogicAddress":
+        """Deserialize XML element to DoIpLogicAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpLogicAddress object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse address
+        child = ARObject._find_child_element(element, "ADDRESS")
+        if child is not None:
+            address_value = child.text
+            obj.address = address_value
+
+        # Parse do_ip_logic
+        child = ARObject._find_child_element(element, "DO-IP-LOGIC")
+        if child is not None:
+            do_ip_logic_value = ARObject._deserialize_by_tag(child, "AbstractDoIpLogicAddressProps")
+            obj.do_ip_logic = do_ip_logic_value
+
+        return obj
+
 
 
 class DoIpLogicAddressBuilder:

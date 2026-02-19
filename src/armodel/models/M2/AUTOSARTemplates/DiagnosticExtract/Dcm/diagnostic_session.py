@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm import (
     DiagnosticJumpToBootLoaderEnum,
 )
@@ -44,6 +45,46 @@ class DiagnosticSession(DiagnosticCommonElement):
         self.jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum] = None
         self.p2_server_max: Optional[TimeValue] = None
         self.p2_star_server: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticSession":
+        """Deserialize XML element to DiagnosticSession object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticSession object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        # Parse jump_to_boot
+        child = ARObject._find_child_element(element, "JUMP-TO-BOOT")
+        if child is not None:
+            jump_to_boot_value = child.text
+            obj.jump_to_boot = jump_to_boot_value
+
+        # Parse p2_server_max
+        child = ARObject._find_child_element(element, "P2-SERVER-MAX")
+        if child is not None:
+            p2_server_max_value = child.text
+            obj.p2_server_max = p2_server_max_value
+
+        # Parse p2_star_server
+        child = ARObject._find_child_element(element, "P2-STAR-SERVER")
+        if child is not None:
+            p2_star_server_value = child.text
+            obj.p2_star_server = p2_star_server_value
+
+        return obj
+
 
 
 class DiagnosticSessionBuilder:

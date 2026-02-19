@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
@@ -50,6 +51,58 @@ class IEEE1722TpConnection(ARElement, ABC):
         self.unique_stream_id: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpConnection":
+        """Deserialize XML element to IEEE1722TpConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_mac
+        child = ARObject._find_child_element(element, "DESTINATION-MAC")
+        if child is not None:
+            destination_mac_value = child.text
+            obj.destination_mac = destination_mac_value
+
+        # Parse mac_address_string
+        child = ARObject._find_child_element(element, "MAC-ADDRESS-STRING")
+        if child is not None:
+            mac_address_string_value = child.text
+            obj.mac_address_string = mac_address_string_value
+
+        # Parse pdu_ref
+        child = ARObject._find_child_element(element, "PDU")
+        if child is not None:
+            pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.pdu_ref = pdu_ref_value
+
+        # Parse unique_stream_id
+        child = ARObject._find_child_element(element, "UNIQUE-STREAM-ID")
+        if child is not None:
+            unique_stream_id_value = child.text
+            obj.unique_stream_id = unique_stream_id_value
+
+        # Parse version
+        child = ARObject._find_child_element(element, "VERSION")
+        if child is not None:
+            version_value = child.text
+            obj.version = version_value
+
+        # Parse vlan_priority
+        child = ARObject._find_child_element(element, "VLAN-PRIORITY")
+        if child is not None:
+            vlan_priority_value = child.text
+            obj.vlan_priority = vlan_priority_value
+
+        return obj
+
 
 
 class IEEE1722TpConnectionBuilder:

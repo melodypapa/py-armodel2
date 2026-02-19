@@ -34,6 +34,34 @@ class ClientIdRange(ARObject):
         super().__init__()
         self.lower_limit: Optional[Limit] = None
         self.upper_limit: Optional[Limit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientIdRange":
+        """Deserialize XML element to ClientIdRange object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientIdRange object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lower_limit
+        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        if child is not None:
+            lower_limit_value = child.text
+            obj.lower_limit = lower_limit_value
+
+        # Parse upper_limit
+        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        if child is not None:
+            upper_limit_value = child.text
+            obj.upper_limit = upper_limit_value
+
+        return obj
+
 
 
 class ClientIdRangeBuilder:

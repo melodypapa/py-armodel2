@@ -37,6 +37,40 @@ class Tt(ARObject):
         self.term: String = None
         self.tex_render: Optional[String] = None
         self.type: NameToken = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Tt":
+        """Deserialize XML element to Tt object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Tt object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse term
+        child = ARObject._find_child_element(element, "TERM")
+        if child is not None:
+            term_value = child.text
+            obj.term = term_value
+
+        # Parse tex_render
+        child = ARObject._find_child_element(element, "TEX-RENDER")
+        if child is not None:
+            tex_render_value = child.text
+            obj.tex_render = tex_render_value
+
+        # Parse type
+        child = ARObject._find_child_element(element, "TYPE")
+        if child is not None:
+            type_value = child.text
+            obj.type = type_value
+
+        return obj
+
 
 
 class TtBuilder:

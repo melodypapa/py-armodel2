@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.mc_function_data_ref_set import (
     McFunctionDataRefSet,
@@ -45,6 +46,58 @@ class McFunction(ARElement):
         self.out_ref: Optional[ARRef] = None
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.sub_functions: list[McFunction] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McFunction":
+        """Deserialize XML element to McFunction object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McFunction object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse def_calprm_set_ref
+        child = ARObject._find_child_element(element, "DEF-CALPRM-SET")
+        if child is not None:
+            def_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            obj.def_calprm_set_ref = def_calprm_set_ref_value
+
+        # Parse in_measurement_ref
+        child = ARObject._find_child_element(element, "IN-MEASUREMENT")
+        if child is not None:
+            in_measurement_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            obj.in_measurement_ref = in_measurement_ref_value
+
+        # Parse loc_ref
+        child = ARObject._find_child_element(element, "LOC")
+        if child is not None:
+            loc_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            obj.loc_ref = loc_ref_value
+
+        # Parse out_ref
+        child = ARObject._find_child_element(element, "OUT")
+        if child is not None:
+            out_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            obj.out_ref = out_ref_value
+
+        # Parse ref_calprm_set_ref
+        child = ARObject._find_child_element(element, "REF-CALPRM-SET")
+        if child is not None:
+            ref_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            obj.ref_calprm_set_ref = ref_calprm_set_ref_value
+
+        # Parse sub_functions (list)
+        obj.sub_functions = []
+        for child in ARObject._find_all_child_elements(element, "SUB-FUNCTIONS"):
+            sub_functions_value = ARObject._deserialize_by_tag(child, "McFunction")
+            obj.sub_functions.append(sub_functions_value)
+
+        return obj
+
 
 
 class McFunctionBuilder:

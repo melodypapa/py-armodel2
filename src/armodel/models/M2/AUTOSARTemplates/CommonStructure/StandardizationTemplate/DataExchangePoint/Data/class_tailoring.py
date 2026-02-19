@@ -40,6 +40,40 @@ class ClassTailoring(ARObject, ABC):
         self.class_contents: list[ClassContentConditional] = []
         self.multiplicity: Optional[Any] = None
         self.variation: Optional[VariationRestrictionWithSeverity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClassTailoring":
+        """Deserialize XML element to ClassTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClassTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse class_contents (list)
+        obj.class_contents = []
+        for child in ARObject._find_all_child_elements(element, "CLASS-CONTENTS"):
+            class_contents_value = ARObject._deserialize_by_tag(child, "ClassContentConditional")
+            obj.class_contents.append(class_contents_value)
+
+        # Parse multiplicity
+        child = ARObject._find_child_element(element, "MULTIPLICITY")
+        if child is not None:
+            multiplicity_value = child.text
+            obj.multiplicity = multiplicity_value
+
+        # Parse variation
+        child = ARObject._find_child_element(element, "VARIATION")
+        if child is not None:
+            variation_value = ARObject._deserialize_by_tag(child, "VariationRestrictionWithSeverity")
+            obj.variation = variation_value
+
+        return obj
+
 
 
 class ClassTailoringBuilder:

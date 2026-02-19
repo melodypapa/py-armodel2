@@ -28,6 +28,22 @@ class AbstractGlobalTimeDomainProps(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize AbstractGlobalTimeDomainProps."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractGlobalTimeDomainProps":
+        """Deserialize XML element to AbstractGlobalTimeDomainProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractGlobalTimeDomainProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class AbstractGlobalTimeDomainPropsBuilder:

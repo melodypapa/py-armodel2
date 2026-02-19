@@ -35,6 +35,34 @@ class EnumerationMappingEntry(ARObject):
         super().__init__()
         self.enumerator: NameToken = None
         self.numerical_value: PositiveInteger = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EnumerationMappingEntry":
+        """Deserialize XML element to EnumerationMappingEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EnumerationMappingEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse enumerator
+        child = ARObject._find_child_element(element, "ENUMERATOR")
+        if child is not None:
+            enumerator_value = child.text
+            obj.enumerator = enumerator_value
+
+        # Parse numerical_value
+        child = ARObject._find_child_element(element, "NUMERICAL-VALUE")
+        if child is not None:
+            numerical_value_value = child.text
+            obj.numerical_value = numerical_value_value
+
+        return obj
+
 
 
 class EnumerationMappingEntryBuilder:

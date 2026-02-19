@@ -42,6 +42,46 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         self.max_length: Optional[PositiveInteger] = None
         self.min_length: Optional[PositiveInteger] = None
         self.regular: Optional[RegularExpression] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucAbstractStringParamDef":
+        """Deserialize XML element to EcucAbstractStringParamDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucAbstractStringParamDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_value
+        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        if child is not None:
+            default_value_value = child.text
+            obj.default_value = default_value_value
+
+        # Parse max_length
+        child = ARObject._find_child_element(element, "MAX-LENGTH")
+        if child is not None:
+            max_length_value = child.text
+            obj.max_length = max_length_value
+
+        # Parse min_length
+        child = ARObject._find_child_element(element, "MIN-LENGTH")
+        if child is not None:
+            min_length_value = child.text
+            obj.min_length = min_length_value
+
+        # Parse regular
+        child = ARObject._find_child_element(element, "REGULAR")
+        if child is not None:
+            regular_value = child.text
+            obj.regular = regular_value
+
+        return obj
+
 
 
 class EcucAbstractStringParamDefBuilder:

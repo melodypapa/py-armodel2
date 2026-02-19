@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
     IEEE1722TpAcfBusPart,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
     CanAddressingModeType,
@@ -53,6 +54,52 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
         self.can_identifier: Optional[RxIdentifierRange] = None
         self.sdu_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfCanPart":
+        """Deserialize XML element to IEEE1722TpAcfCanPart object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfCanPart object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse can_addressing
+        child = ARObject._find_child_element(element, "CAN-ADDRESSING")
+        if child is not None:
+            can_addressing_value = child.text
+            obj.can_addressing = can_addressing_value
+
+        # Parse can_bit_rate_switch
+        child = ARObject._find_child_element(element, "CAN-BIT-RATE-SWITCH")
+        if child is not None:
+            can_bit_rate_switch_value = child.text
+            obj.can_bit_rate_switch = can_bit_rate_switch_value
+
+        # Parse can_frame_tx_behavior
+        child = ARObject._find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
+        if child is not None:
+            can_frame_tx_behavior_value = child.text
+            obj.can_frame_tx_behavior = can_frame_tx_behavior_value
+
+        # Parse can_identifier
+        child = ARObject._find_child_element(element, "CAN-IDENTIFIER")
+        if child is not None:
+            can_identifier_value = ARObject._deserialize_by_tag(child, "RxIdentifierRange")
+            obj.can_identifier = can_identifier_value
+
+        # Parse sdu_ref
+        child = ARObject._find_child_element(element, "SDU")
+        if child is not None:
+            sdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.sdu_ref = sdu_ref_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfCanPartBuilder:

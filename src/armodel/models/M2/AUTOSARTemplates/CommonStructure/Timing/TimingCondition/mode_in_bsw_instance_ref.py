@@ -43,6 +43,40 @@ class ModeInBswInstanceRef(ARObject):
         self.context_bsw: Optional[BswImplementation] = None
         self.context_mode_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeInBswInstanceRef":
+        """Deserialize XML element to ModeInBswInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeInBswInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_bsw
+        child = ARObject._find_child_element(element, "CONTEXT-BSW")
+        if child is not None:
+            context_bsw_value = ARObject._deserialize_by_tag(child, "BswImplementation")
+            obj.context_bsw = context_bsw_value
+
+        # Parse context_mode_ref
+        child = ARObject._find_child_element(element, "CONTEXT-MODE")
+        if child is not None:
+            context_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.context_mode_ref = context_mode_ref_value
+
+        # Parse target_mode
+        child = ARObject._find_child_element(element, "TARGET-MODE")
+        if child is not None:
+            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.target_mode = target_mode_value
+
+        return obj
+
 
 
 class ModeInBswInstanceRefBuilder:

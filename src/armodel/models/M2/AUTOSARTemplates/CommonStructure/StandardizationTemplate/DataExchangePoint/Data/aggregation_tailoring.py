@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
     ClassTailoring,
 )
@@ -34,6 +35,28 @@ class AggregationTailoring(AttributeTailoring):
         """Initialize AggregationTailoring."""
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AggregationTailoring":
+        """Deserialize XML element to AggregationTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AggregationTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type_tailorings (list)
+        obj.type_tailorings = []
+        for child in ARObject._find_all_child_elements(element, "TYPE-TAILORINGS"):
+            type_tailorings_value = ARObject._deserialize_by_tag(child, "ClassTailoring")
+            obj.type_tailorings.append(type_tailorings_value)
+
+        return obj
+
 
 
 class AggregationTailoringBuilder:

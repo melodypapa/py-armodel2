@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,6 +45,34 @@ class SystemSignal(ARElement):
         super().__init__()
         self.dynamic_length: Optional[Boolean] = None
         self.physical_props: Optional[SwDataDefProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SystemSignal":
+        """Deserialize XML element to SystemSignal object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SystemSignal object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dynamic_length
+        child = ARObject._find_child_element(element, "DYNAMIC-LENGTH")
+        if child is not None:
+            dynamic_length_value = child.text
+            obj.dynamic_length = dynamic_length_value
+
+        # Parse physical_props
+        child = ARObject._find_child_element(element, "PHYSICAL-PROPS")
+        if child is not None:
+            physical_props_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.physical_props = physical_props_value
+
+        return obj
+
 
 
 class SystemSignalBuilder:

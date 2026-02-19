@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
     AbstractGlobalTimeDomainProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH import (
     EthGlobalTimeMessageFormatEnum,
 )
@@ -51,6 +52,58 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         self.manageds: list[Any] = []
         self.message: Optional[EthGlobalTimeMessageFormatEnum] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeDomainProps":
+        """Deserialize XML element to EthGlobalTimeDomainProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthGlobalTimeDomainProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse crc_flags
+        child = ARObject._find_child_element(element, "CRC-FLAGS")
+        if child is not None:
+            crc_flags_value = ARObject._deserialize_by_tag(child, "EthTSynCrcFlags")
+            obj.crc_flags = crc_flags_value
+
+        # Parse destination
+        child = ARObject._find_child_element(element, "DESTINATION")
+        if child is not None:
+            destination_value = child.text
+            obj.destination = destination_value
+
+        # Parse fup_data_id_list
+        child = ARObject._find_child_element(element, "FUP-DATA-ID-LIST")
+        if child is not None:
+            fup_data_id_list_value = child.text
+            obj.fup_data_id_list = fup_data_id_list_value
+
+        # Parse manageds (list)
+        obj.manageds = []
+        for child in ARObject._find_all_child_elements(element, "MANAGEDS"):
+            manageds_value = child.text
+            obj.manageds.append(manageds_value)
+
+        # Parse message
+        child = ARObject._find_child_element(element, "MESSAGE")
+        if child is not None:
+            message_value = child.text
+            obj.message = message_value
+
+        # Parse vlan_priority
+        child = ARObject._find_child_element(element, "VLAN-PRIORITY")
+        if child is not None:
+            vlan_priority_value = child.text
+            obj.vlan_priority = vlan_priority_value
+
+        return obj
+
 
 
 class EthGlobalTimeDomainPropsBuilder:

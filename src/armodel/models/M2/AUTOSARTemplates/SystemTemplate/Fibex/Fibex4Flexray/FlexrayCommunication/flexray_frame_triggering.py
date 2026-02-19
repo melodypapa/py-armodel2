@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -44,6 +45,46 @@ class FlexrayFrameTriggering(FrameTriggering):
         self.allow_dynamic: Optional[Boolean] = None
         self.message_id: Optional[PositiveInteger] = None
         self.payload_preamble: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayFrameTriggering":
+        """Deserialize XML element to FlexrayFrameTriggering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayFrameTriggering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse absolutelies (list)
+        obj.absolutelies = []
+        for child in ARObject._find_all_child_elements(element, "ABSOLUTELIES"):
+            absolutelies_value = ARObject._deserialize_by_tag(child, "FlexrayAbsolutelyScheduledTiming")
+            obj.absolutelies.append(absolutelies_value)
+
+        # Parse allow_dynamic
+        child = ARObject._find_child_element(element, "ALLOW-DYNAMIC")
+        if child is not None:
+            allow_dynamic_value = child.text
+            obj.allow_dynamic = allow_dynamic_value
+
+        # Parse message_id
+        child = ARObject._find_child_element(element, "MESSAGE-ID")
+        if child is not None:
+            message_id_value = child.text
+            obj.message_id = message_id_value
+
+        # Parse payload_preamble
+        child = ARObject._find_child_element(element, "PAYLOAD-PREAMBLE")
+        if child is not None:
+            payload_preamble_value = child.text
+            obj.payload_preamble = payload_preamble_value
+
+        return obj
+
 
 
 class FlexrayFrameTriggeringBuilder:

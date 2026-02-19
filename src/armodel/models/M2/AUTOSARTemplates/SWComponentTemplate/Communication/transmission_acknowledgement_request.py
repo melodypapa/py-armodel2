@@ -32,6 +32,28 @@ class TransmissionAcknowledgementRequest(ARObject):
         """Initialize TransmissionAcknowledgementRequest."""
         super().__init__()
         self.timeout: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransmissionAcknowledgementRequest":
+        """Deserialize XML element to TransmissionAcknowledgementRequest object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransmissionAcknowledgementRequest object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = child.text
+            obj.timeout = timeout_value
+
+        return obj
+
 
 
 class TransmissionAcknowledgementRequestBuilder:

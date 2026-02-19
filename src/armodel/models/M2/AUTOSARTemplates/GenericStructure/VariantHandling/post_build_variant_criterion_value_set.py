@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class PostBuildVariantCriterionValueSet(ARElement):
@@ -33,6 +34,28 @@ class PostBuildVariantCriterionValueSet(ARElement):
         """Initialize PostBuildVariantCriterionValueSet."""
         super().__init__()
         self.post_build_variants: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PostBuildVariantCriterionValueSet":
+        """Deserialize XML element to PostBuildVariantCriterionValueSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PostBuildVariantCriterionValueSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse post_build_variants (list)
+        obj.post_build_variants = []
+        for child in ARObject._find_all_child_elements(element, "POST-BUILD-VARIANTS"):
+            post_build_variants_value = child.text
+            obj.post_build_variants.append(post_build_variants_value)
+
+        return obj
+
 
 
 class PostBuildVariantCriterionValueSetBuilder:

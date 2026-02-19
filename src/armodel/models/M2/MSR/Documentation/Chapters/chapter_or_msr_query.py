@@ -40,6 +40,34 @@ class ChapterOrMsrQuery(ARObject):
         super().__init__()
         self.chapter: Chapter = None
         self.msr_query_chapter: MsrQueryChapter = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ChapterOrMsrQuery":
+        """Deserialize XML element to ChapterOrMsrQuery object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ChapterOrMsrQuery object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapter
+        child = ARObject._find_child_element(element, "CHAPTER")
+        if child is not None:
+            chapter_value = ARObject._deserialize_by_tag(child, "Chapter")
+            obj.chapter = chapter_value
+
+        # Parse msr_query_chapter
+        child = ARObject._find_child_element(element, "MSR-QUERY-CHAPTER")
+        if child is not None:
+            msr_query_chapter_value = ARObject._deserialize_by_tag(child, "MsrQueryChapter")
+            obj.msr_query_chapter = msr_query_chapter_value
+
+        return obj
+
 
 
 class ChapterOrMsrQueryBuilder:

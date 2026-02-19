@@ -53,6 +53,52 @@ class SdgContents(ARObject):
         self.sdg: Optional[Sdg] = None
         self.sdx_ref: Optional[ARRef] = None
         self.sdxf_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgContents":
+        """Deserialize XML element to SdgContents object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgContents object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sd
+        child = ARObject._find_child_element(element, "SD")
+        if child is not None:
+            sd_value = ARObject._deserialize_by_tag(child, "Sd")
+            obj.sd = sd_value
+
+        # Parse sdf
+        child = ARObject._find_child_element(element, "SDF")
+        if child is not None:
+            sdf_value = ARObject._deserialize_by_tag(child, "Sdf")
+            obj.sdf = sdf_value
+
+        # Parse sdg
+        child = ARObject._find_child_element(element, "SDG")
+        if child is not None:
+            sdg_value = ARObject._deserialize_by_tag(child, "Sdg")
+            obj.sdg = sdg_value
+
+        # Parse sdx_ref
+        child = ARObject._find_child_element(element, "SDX")
+        if child is not None:
+            sdx_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.sdx_ref = sdx_ref_value
+
+        # Parse sdxf_ref
+        child = ARObject._find_child_element(element, "SDXF")
+        if child is not None:
+            sdxf_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.sdxf_ref = sdxf_ref_value
+
+        return obj
+
 
 
 class SdgContentsBuilder:

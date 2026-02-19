@@ -28,6 +28,22 @@ class SubElementRef(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize SubElementRef."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SubElementRef":
+        """Deserialize XML element to SubElementRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SubElementRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SubElementRefBuilder:

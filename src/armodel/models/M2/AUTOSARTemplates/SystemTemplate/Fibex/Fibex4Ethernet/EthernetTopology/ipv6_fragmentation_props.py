@@ -39,6 +39,46 @@ class Ipv6FragmentationProps(ARObject):
         self.tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6FragmentationProps":
+        """Deserialize XML element to Ipv6FragmentationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6FragmentationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_ip
+        child = ARObject._find_child_element(element, "TCP-IP-IP")
+        if child is not None:
+            tcp_ip_ip_value = child.text
+            obj.tcp_ip_ip = tcp_ip_ip_value
+
+        # Parse tcp_ip_ip_reassembly_buffer_size
+        child = ARObject._find_child_element(element, "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE")
+        if child is not None:
+            tcp_ip_ip_reassembly_buffer_size_value = child.text
+            obj.tcp_ip_ip_reassembly_buffer_size = tcp_ip_ip_reassembly_buffer_size_value
+
+        # Parse tcp_ip_ip_tx
+        child = ARObject._find_child_element(element, "TCP-IP-IP-TX")
+        if child is not None:
+            tcp_ip_ip_tx_value = child.text
+            obj.tcp_ip_ip_tx = tcp_ip_ip_tx_value
+
+        # Parse tcp_ip_ip_tx_fragment_buffer_size
+        child = ARObject._find_child_element(element, "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE")
+        if child is not None:
+            tcp_ip_ip_tx_fragment_buffer_size_value = child.text
+            obj.tcp_ip_ip_tx_fragment_buffer_size = tcp_ip_ip_tx_fragment_buffer_size_value
+
+        return obj
+
 
 
 class Ipv6FragmentationPropsBuilder:

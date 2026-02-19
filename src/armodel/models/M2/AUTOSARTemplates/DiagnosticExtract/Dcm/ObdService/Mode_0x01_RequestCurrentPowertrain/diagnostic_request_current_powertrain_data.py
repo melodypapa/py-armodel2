@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
 )
@@ -36,6 +37,34 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         super().__init__()
         self.pid: Optional[DiagnosticParameter] = None
         self.request_current: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestCurrentPowertrainData":
+        """Deserialize XML element to DiagnosticRequestCurrentPowertrainData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRequestCurrentPowertrainData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse pid
+        child = ARObject._find_child_element(element, "PID")
+        if child is not None:
+            pid_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            obj.pid = pid_value
+
+        # Parse request_current
+        child = ARObject._find_child_element(element, "REQUEST-CURRENT")
+        if child is not None:
+            request_current_value = child.text
+            obj.request_current = request_current_value
+
+        return obj
+
 
 
 class DiagnosticRequestCurrentPowertrainDataBuilder:

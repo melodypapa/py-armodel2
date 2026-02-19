@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -37,6 +38,34 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         super().__init__()
         self.evaluation_id: Optional[PositiveInteger] = None
         self.function: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificateEvaluation":
+        """Deserialize XML element to DiagnosticAuthTransmitCertificateEvaluation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAuthTransmitCertificateEvaluation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse evaluation_id
+        child = ARObject._find_child_element(element, "EVALUATION-ID")
+        if child is not None:
+            evaluation_id_value = child.text
+            obj.evaluation_id = evaluation_id_value
+
+        # Parse function
+        child = ARObject._find_child_element(element, "FUNCTION")
+        if child is not None:
+            function_value = child.text
+            obj.function = function_value
+
+        return obj
+
 
 
 class DiagnosticAuthTransmitCertificateEvaluationBuilder:

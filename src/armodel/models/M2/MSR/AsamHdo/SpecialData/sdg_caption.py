@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
 )
@@ -34,6 +35,28 @@ class SdgCaption(MultilanguageReferrable):
         """Initialize SdgCaption."""
         super().__init__()
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgCaption":
+        """Deserialize XML element to SdgCaption object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgCaption object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        return obj
+
 
 
 class SdgCaptionBuilder:

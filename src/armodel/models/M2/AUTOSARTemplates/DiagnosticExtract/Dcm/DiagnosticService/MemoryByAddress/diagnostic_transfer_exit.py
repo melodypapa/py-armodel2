@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_by_address import (
     DiagnosticMemoryByAddress,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticTransferExit(DiagnosticMemoryByAddress):
@@ -31,6 +32,28 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         """Initialize DiagnosticTransferExit."""
         super().__init__()
         self.transfer_exit: Optional[DiagnosticTransferExit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTransferExit":
+        """Deserialize XML element to DiagnosticTransferExit object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticTransferExit object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse transfer_exit
+        child = ARObject._find_child_element(element, "TRANSFER-EXIT")
+        if child is not None:
+            transfer_exit_value = ARObject._deserialize_by_tag(child, "DiagnosticTransferExit")
+            obj.transfer_exit = transfer_exit_value
+
+        return obj
+
 
 
 class DiagnosticTransferExitBuilder:

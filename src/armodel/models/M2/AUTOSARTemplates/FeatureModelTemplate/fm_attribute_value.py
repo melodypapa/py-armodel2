@@ -37,6 +37,34 @@ class FMAttributeValue(ARObject):
         super().__init__()
         self.definition: Optional[FMAttributeDef] = None
         self.value: Optional[Numerical] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMAttributeValue":
+        """Deserialize XML element to FMAttributeValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMAttributeValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse definition
+        child = ARObject._find_child_element(element, "DEFINITION")
+        if child is not None:
+            definition_value = ARObject._deserialize_by_tag(child, "FMAttributeDef")
+            obj.definition = definition_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class FMAttributeValueBuilder:

@@ -53,6 +53,58 @@ class DataPrototypeMapping(ARObject):
         self.second_to_first: Optional[DataTransformation] = None
         self.sub_element_refs: list[ARRef] = []
         self.text_table_ref: ARRef = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeMapping":
+        """Deserialize XML element to DataPrototypeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_data_ref
+        child = ARObject._find_child_element(element, "FIRST-DATA")
+        if child is not None:
+            first_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.first_data_ref = first_data_ref_value
+
+        # Parse first_to_second
+        child = ARObject._find_child_element(element, "FIRST-TO-SECOND")
+        if child is not None:
+            first_to_second_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.first_to_second = first_to_second_value
+
+        # Parse second_data_ref
+        child = ARObject._find_child_element(element, "SECOND-DATA")
+        if child is not None:
+            second_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.second_data_ref = second_data_ref_value
+
+        # Parse second_to_first
+        child = ARObject._find_child_element(element, "SECOND-TO-FIRST")
+        if child is not None:
+            second_to_first_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.second_to_first = second_to_first_value
+
+        # Parse sub_element_refs (list)
+        obj.sub_element_refs = []
+        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
+            sub_element_refs_value = ARObject._deserialize_by_tag(child, "SubElementMapping")
+            obj.sub_element_refs.append(sub_element_refs_value)
+
+        # Parse text_table_ref
+        child = ARObject._find_child_element(element, "TEXT-TABLE")
+        if child is not None:
+            text_table_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            obj.text_table_ref = text_table_ref_value
+
+        return obj
+
 
 
 class DataPrototypeMappingBuilder:

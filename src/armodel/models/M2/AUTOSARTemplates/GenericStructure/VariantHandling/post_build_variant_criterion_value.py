@@ -41,6 +41,40 @@ class PostBuildVariantCriterionValue(ARObject):
         self.annotations: list[Annotation] = []
         self.value: Integer = None
         self.variant_criterion: Any = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PostBuildVariantCriterionValue":
+        """Deserialize XML element to PostBuildVariantCriterionValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PostBuildVariantCriterionValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse annotations (list)
+        obj.annotations = []
+        for child in ARObject._find_all_child_elements(element, "ANNOTATIONS"):
+            annotations_value = ARObject._deserialize_by_tag(child, "Annotation")
+            obj.annotations.append(annotations_value)
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        # Parse variant_criterion
+        child = ARObject._find_child_element(element, "VARIANT-CRITERION")
+        if child is not None:
+            variant_criterion_value = child.text
+            obj.variant_criterion = variant_criterion_value
+
+        return obj
+
 
 
 class PostBuildVariantCriterionValueBuilder:

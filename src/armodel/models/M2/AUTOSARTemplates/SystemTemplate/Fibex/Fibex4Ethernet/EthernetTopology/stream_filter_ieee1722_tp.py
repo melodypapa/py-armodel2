@@ -32,6 +32,28 @@ class StreamFilterIEEE1722Tp(ARObject):
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
         self.stream_id: Optional[PositiveUnlimitedInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterIEEE1722Tp":
+        """Deserialize XML element to StreamFilterIEEE1722Tp object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterIEEE1722Tp object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse stream_id
+        child = ARObject._find_child_element(element, "STREAM-ID")
+        if child is not None:
+            stream_id_value = child.text
+            obj.stream_id = stream_id_value
+
+        return obj
+
 
 
 class StreamFilterIEEE1722TpBuilder:

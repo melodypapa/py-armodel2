@@ -37,6 +37,34 @@ class TimeSynchronization(ARObject):
         super().__init__()
         self.time_sync_client_configuration: Optional[TimeSyncClientConfiguration] = None
         self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimeSynchronization":
+        """Deserialize XML element to TimeSynchronization object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimeSynchronization object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse time_sync_client_configuration
+        child = ARObject._find_child_element(element, "TIME-SYNC-CLIENT-CONFIGURATION")
+        if child is not None:
+            time_sync_client_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncClientConfiguration")
+            obj.time_sync_client_configuration = time_sync_client_configuration_value
+
+        # Parse time_sync_server_configuration
+        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
+        if child is not None:
+            time_sync_server_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncServerConfiguration")
+            obj.time_sync_server_configuration = time_sync_server_configuration_value
+
+        return obj
+
 
 
 class TimeSynchronizationBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
@@ -43,6 +44,34 @@ class ParameterRequireComSpec(RPortComSpec):
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
         self.parameter_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ParameterRequireComSpec":
+        """Deserialize XML element to ParameterRequireComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ParameterRequireComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse init_value
+        child = ARObject._find_child_element(element, "INIT-VALUE")
+        if child is not None:
+            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.init_value = init_value_value
+
+        # Parse parameter_ref
+        child = ARObject._find_child_element(element, "PARAMETER")
+        if child is not None:
+            parameter_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.parameter_ref = parameter_ref_value
+
+        return obj
+
 
 
 class ParameterRequireComSpecBuilder:

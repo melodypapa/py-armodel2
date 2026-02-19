@@ -38,6 +38,34 @@ class DocumentViewSelectable(ARObject, ABC):
         super().__init__()
         self.si: NameTokens = None
         self.view: Optional[ViewTokens] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DocumentViewSelectable":
+        """Deserialize XML element to DocumentViewSelectable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DocumentViewSelectable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse si
+        child = ARObject._find_child_element(element, "SI")
+        if child is not None:
+            si_value = child.text
+            obj.si = si_value
+
+        # Parse view
+        child = ARObject._find_child_element(element, "VIEW")
+        if child is not None:
+            view_value = child.text
+            obj.view = view_value
+
+        return obj
+
 
 
 class DocumentViewSelectableBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LifeCycleState(Identifiable):
@@ -30,6 +31,22 @@ class LifeCycleState(Identifiable):
     def __init__(self) -> None:
         """Initialize LifeCycleState."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LifeCycleState":
+        """Deserialize XML element to LifeCycleState object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LifeCycleState object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class LifeCycleStateBuilder:

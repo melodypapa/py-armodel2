@@ -32,6 +32,28 @@ class SpecificationScope(ARObject):
         """Initialize SpecificationScope."""
         super().__init__()
         self.specification_documents: list[SpecificationDocumentScope] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SpecificationScope":
+        """Deserialize XML element to SpecificationScope object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SpecificationScope object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse specification_documents (list)
+        obj.specification_documents = []
+        for child in ARObject._find_all_child_elements(element, "SPECIFICATION-DOCUMENTS"):
+            specification_documents_value = ARObject._deserialize_by_tag(child, "SpecificationDocumentScope")
+            obj.specification_documents.append(specification_documents_value)
+
+        return obj
+
 
 
 class SpecificationScopeBuilder:

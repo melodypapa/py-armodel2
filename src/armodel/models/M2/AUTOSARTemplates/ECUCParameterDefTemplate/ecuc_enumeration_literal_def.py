@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -36,6 +37,34 @@ class EcucEnumerationLiteralDef(Identifiable):
         super().__init__()
         self.ecuc_cond: Optional[Any] = None
         self.origin: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucEnumerationLiteralDef":
+        """Deserialize XML element to EcucEnumerationLiteralDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucEnumerationLiteralDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecuc_cond
+        child = ARObject._find_child_element(element, "ECUC-COND")
+        if child is not None:
+            ecuc_cond_value = child.text
+            obj.ecuc_cond = ecuc_cond_value
+
+        # Parse origin
+        child = ARObject._find_child_element(element, "ORIGIN")
+        if child is not None:
+            origin_value = child.text
+            obj.origin = origin_value
+
+        return obj
+
 
 
 class EcucEnumerationLiteralDefBuilder:

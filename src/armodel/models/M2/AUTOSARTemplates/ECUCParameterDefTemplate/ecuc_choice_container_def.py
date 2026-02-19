@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_param_conf_container_def import (
     EcucParamConfContainerDef,
 )
@@ -34,6 +35,28 @@ class EcucChoiceContainerDef(EcucContainerDef):
         """Initialize EcucChoiceContainerDef."""
         super().__init__()
         self.choices: list[EcucParamConfContainerDef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucChoiceContainerDef":
+        """Deserialize XML element to EcucChoiceContainerDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucChoiceContainerDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse choices (list)
+        obj.choices = []
+        for child in ARObject._find_all_child_elements(element, "CHOICES"):
+            choices_value = ARObject._deserialize_by_tag(child, "EcucParamConfContainerDef")
+            obj.choices.append(choices_value)
+
+        return obj
+
 
 
 class EcucChoiceContainerDefBuilder:

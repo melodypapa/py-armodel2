@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -44,6 +45,40 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
         self.offset: Optional[Integer] = None
         self.os_task_proxy: Optional[OsTaskProxy] = None
         self.rte_event_instance_ref: Optional[RTEEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RteEventInSystemToOsTaskProxyMapping":
+        """Deserialize XML element to RteEventInSystemToOsTaskProxyMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RteEventInSystemToOsTaskProxyMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse offset
+        child = ARObject._find_child_element(element, "OFFSET")
+        if child is not None:
+            offset_value = child.text
+            obj.offset = offset_value
+
+        # Parse os_task_proxy
+        child = ARObject._find_child_element(element, "OS-TASK-PROXY")
+        if child is not None:
+            os_task_proxy_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
+            obj.os_task_proxy = os_task_proxy_value
+
+        # Parse rte_event_instance_ref
+        child = ARObject._find_child_element(element, "RTE-EVENT-INSTANCE-REF")
+        if child is not None:
+            rte_event_instance_ref_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            obj.rte_event_instance_ref = rte_event_instance_ref_value
+
+        return obj
+
 
 
 class RteEventInSystemToOsTaskProxyMappingBuilder:

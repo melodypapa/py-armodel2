@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_abstract_foreign_reference import (
     SdgAbstractForeignReference,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SdgForeignReference(SdgAbstractForeignReference):
@@ -29,6 +30,22 @@ class SdgForeignReference(SdgAbstractForeignReference):
     def __init__(self) -> None:
         """Initialize SdgForeignReference."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgForeignReference":
+        """Deserialize XML element to SdgForeignReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgForeignReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SdgForeignReferenceBuilder:

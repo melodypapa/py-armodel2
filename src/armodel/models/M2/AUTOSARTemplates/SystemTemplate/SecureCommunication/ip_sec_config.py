@@ -40,6 +40,34 @@ class IPSecConfig(ARObject):
         super().__init__()
         self.ip_sec_config: Optional[IPSecConfigProps] = None
         self.ip_sec_rules: list[IPSecRule] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPSecConfig":
+        """Deserialize XML element to IPSecConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPSecConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ip_sec_config
+        child = ARObject._find_child_element(element, "IP-SEC-CONFIG")
+        if child is not None:
+            ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfigProps")
+            obj.ip_sec_config = ip_sec_config_value
+
+        # Parse ip_sec_rules (list)
+        obj.ip_sec_rules = []
+        for child in ARObject._find_all_child_elements(element, "IP-SEC-RULES"):
+            ip_sec_rules_value = ARObject._deserialize_by_tag(child, "IPSecRule")
+            obj.ip_sec_rules.append(ip_sec_rules_value)
+
+        return obj
+
 
 
 class IPSecConfigBuilder:

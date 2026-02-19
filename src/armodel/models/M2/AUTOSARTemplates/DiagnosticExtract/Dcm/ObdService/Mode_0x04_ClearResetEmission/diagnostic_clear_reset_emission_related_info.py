@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
@@ -31,6 +32,28 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         """Initialize DiagnosticClearResetEmissionRelatedInfo."""
         super().__init__()
         self.clear_reset: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticClearResetEmissionRelatedInfo":
+        """Deserialize XML element to DiagnosticClearResetEmissionRelatedInfo object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticClearResetEmissionRelatedInfo object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse clear_reset
+        child = ARObject._find_child_element(element, "CLEAR-RESET")
+        if child is not None:
+            clear_reset_value = child.text
+            obj.clear_reset = clear_reset_value
+
+        return obj
+
 
 
 class DiagnosticClearResetEmissionRelatedInfoBuilder:

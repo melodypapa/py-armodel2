@@ -48,6 +48,40 @@ class AtpInstanceRef(ARObject, ABC):
         self.atp_base: AtpClassifier = None
         self.atp_context_refs: list[ARRef] = []
         self.atp_target: AtpFeature = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AtpInstanceRef":
+        """Deserialize XML element to AtpInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AtpInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse atp_base
+        child = ARObject._find_child_element(element, "ATP-BASE")
+        if child is not None:
+            atp_base_value = ARObject._deserialize_by_tag(child, "AtpClassifier")
+            obj.atp_base = atp_base_value
+
+        # Parse atp_context_refs (list)
+        obj.atp_context_refs = []
+        for child in ARObject._find_all_child_elements(element, "ATP-CONTEXTS"):
+            atp_context_refs_value = ARObject._deserialize_by_tag(child, "AtpPrototype")
+            obj.atp_context_refs.append(atp_context_refs_value)
+
+        # Parse atp_target
+        child = ARObject._find_child_element(element, "ATP-TARGET")
+        if child is not None:
+            atp_target_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.atp_target = atp_target_value
+
+        return obj
+
 
 
 class AtpInstanceRefBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constraint import (
     MappingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
     MappingScopeEnum,
@@ -35,6 +36,28 @@ class ComponentSeparation(MappingConstraint):
         """Initialize ComponentSeparation."""
         super().__init__()
         self.mapping_scope_enum_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ComponentSeparation":
+        """Deserialize XML element to ComponentSeparation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ComponentSeparation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mapping_scope_enum_ref
+        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM")
+        if child is not None:
+            mapping_scope_enum_ref_value = child.text
+            obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
+
+        return obj
+
 
 
 class ComponentSeparationBuilder:

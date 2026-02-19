@@ -29,6 +29,22 @@ class PPortComSpec(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize PPortComSpec."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PPortComSpec":
+        """Deserialize XML element to PPortComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PPortComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class PPortComSpecBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_slave import (
     GlobalTimeSlave,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,34 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
         super().__init__()
         self.crc_validated: Optional[Any] = None
         self.sequence: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeFrSlave":
+        """Deserialize XML element to GlobalTimeFrSlave object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeFrSlave object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse crc_validated
+        child = ARObject._find_child_element(element, "CRC-VALIDATED")
+        if child is not None:
+            crc_validated_value = child.text
+            obj.crc_validated = crc_validated_value
+
+        # Parse sequence
+        child = ARObject._find_child_element(element, "SEQUENCE")
+        if child is not None:
+            sequence_value = child.text
+            obj.sequence = sequence_value
+
+        return obj
+
 
 
 class GlobalTimeFrSlaveBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.EcuReset import (
     DiagnosticResponseToEcuResetEnum,
 )
@@ -34,6 +35,28 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         """Initialize DiagnosticEcuResetClass."""
         super().__init__()
         self.respond_to: Optional[DiagnosticResponseToEcuResetEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuResetClass":
+        """Deserialize XML element to DiagnosticEcuResetClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEcuResetClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse respond_to
+        child = ARObject._find_child_element(element, "RESPOND-TO")
+        if child is not None:
+            respond_to_value = child.text
+            obj.respond_to = respond_to_value
+
+        return obj
+
 
 
 class DiagnosticEcuResetClassBuilder:

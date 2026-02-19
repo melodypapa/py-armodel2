@@ -32,6 +32,28 @@ class DdsOwnership(ARObject):
         """Initialize DdsOwnership."""
         super().__init__()
         self.ownership_kind: Optional[DdsOwnershipKindEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsOwnership":
+        """Deserialize XML element to DdsOwnership object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsOwnership object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ownership_kind
+        child = ARObject._find_child_element(element, "OWNERSHIP-KIND")
+        if child is not None:
+            ownership_kind_value = child.text
+            obj.ownership_kind = ownership_kind_value
+
+        return obj
+
 
 
 class DdsOwnershipBuilder:

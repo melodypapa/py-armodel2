@@ -42,6 +42,40 @@ class EcucConditionSpecification(ARObject):
         self.condition: Optional[EcucConditionFormula] = None
         self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucConditionSpecification":
+        """Deserialize XML element to EcucConditionSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucConditionSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse condition
+        child = ARObject._find_child_element(element, "CONDITION")
+        if child is not None:
+            condition_value = ARObject._deserialize_by_tag(child, "EcucConditionFormula")
+            obj.condition = condition_value
+
+        # Parse ecuc_queries (list)
+        obj.ecuc_queries = []
+        for child in ARObject._find_all_child_elements(element, "ECUC-QUERIES"):
+            ecuc_queries_value = ARObject._deserialize_by_tag(child, "EcucQuery")
+            obj.ecuc_queries.append(ecuc_queries_value)
+
+        # Parse informal_formula
+        child = ARObject._find_child_element(element, "INFORMAL-FORMULA")
+        if child is not None:
+            informal_formula_value = ARObject._deserialize_by_tag(child, "MlFormula")
+            obj.informal_formula = informal_formula_value
+
+        return obj
+
 
 
 class EcucConditionSpecificationBuilder:

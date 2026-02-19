@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
     DataFormatElementScope,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (
     VariationRestrictionWithSeverity,
 )
@@ -37,6 +38,34 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         super().__init__()
         self.multiplicity: Optional[Any] = None
         self.variation: Optional[VariationRestrictionWithSeverity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AttributeTailoring":
+        """Deserialize XML element to AttributeTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AttributeTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse multiplicity
+        child = ARObject._find_child_element(element, "MULTIPLICITY")
+        if child is not None:
+            multiplicity_value = child.text
+            obj.multiplicity = multiplicity_value
+
+        # Parse variation
+        child = ARObject._find_child_element(element, "VARIATION")
+        if child is not None:
+            variation_value = ARObject._deserialize_by_tag(child, "VariationRestrictionWithSeverity")
+            obj.variation = variation_value
+
+        return obj
+
 
 
 class AttributeTailoringBuilder:

@@ -44,6 +44,64 @@ class SecureCommunicationProps(ARObject):
         self.message_link: Optional[PositiveInteger] = None
         self.secondary: Optional[PositiveInteger] = None
         self.secured_area: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecureCommunicationProps":
+        """Deserialize XML element to SecureCommunicationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecureCommunicationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse auth_data
+        child = ARObject._find_child_element(element, "AUTH-DATA")
+        if child is not None:
+            auth_data_value = child.text
+            obj.auth_data = auth_data_value
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse data_id
+        child = ARObject._find_child_element(element, "DATA-ID")
+        if child is not None:
+            data_id_value = child.text
+            obj.data_id = data_id_value
+
+        # Parse freshness_value
+        child = ARObject._find_child_element(element, "FRESHNESS-VALUE")
+        if child is not None:
+            freshness_value_value = child.text
+            obj.freshness_value = freshness_value_value
+
+        # Parse message_link
+        child = ARObject._find_child_element(element, "MESSAGE-LINK")
+        if child is not None:
+            message_link_value = child.text
+            obj.message_link = message_link_value
+
+        # Parse secondary
+        child = ARObject._find_child_element(element, "SECONDARY")
+        if child is not None:
+            secondary_value = child.text
+            obj.secondary = secondary_value
+
+        # Parse secured_area
+        child = ARObject._find_child_element(element, "SECURED-AREA")
+        if child is not None:
+            secured_area_value = child.text
+            obj.secured_area = secured_area_value
+
+        return obj
+
 
 
 class SecureCommunicationPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_reference_def import (
     EcucAbstractReferenceDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -35,6 +36,28 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         """Initialize EcucAbstractInternalReferenceDef."""
         super().__init__()
         self.requires: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucAbstractInternalReferenceDef":
+        """Deserialize XML element to EcucAbstractInternalReferenceDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucAbstractInternalReferenceDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse requires
+        child = ARObject._find_child_element(element, "REQUIRES")
+        if child is not None:
+            requires_value = child.text
+            obj.requires = requires_value
+
+        return obj
+
 
 
 class EcucAbstractInternalReferenceDefBuilder:

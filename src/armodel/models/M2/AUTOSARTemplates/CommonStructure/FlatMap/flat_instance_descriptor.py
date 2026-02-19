@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -56,6 +57,52 @@ class FlatInstanceDescriptor(Identifiable):
         self.rte_plugin_props: Optional[RtePluginProps] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.upstream: Optional[AtpFeature] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlatInstanceDescriptor":
+        """Deserialize XML element to FlatInstanceDescriptor object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlatInstanceDescriptor object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecu_extract
+        child = ARObject._find_child_element(element, "ECU-EXTRACT")
+        if child is not None:
+            ecu_extract_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.ecu_extract = ecu_extract_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse rte_plugin_props
+        child = ARObject._find_child_element(element, "RTE-PLUGIN-PROPS")
+        if child is not None:
+            rte_plugin_props_value = ARObject._deserialize_by_tag(child, "RtePluginProps")
+            obj.rte_plugin_props = rte_plugin_props_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        # Parse upstream
+        child = ARObject._find_child_element(element, "UPSTREAM")
+        if child is not None:
+            upstream_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.upstream = upstream_value
+
+        return obj
+
 
 
 class FlatInstanceDescriptorBuilder:

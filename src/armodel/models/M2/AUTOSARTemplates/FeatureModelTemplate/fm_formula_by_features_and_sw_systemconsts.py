@@ -33,6 +33,28 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
         """Initialize FMFormulaByFeaturesAndSwSystemconsts."""
         super().__init__()
         self.feature: Optional[FMFeature] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFormulaByFeaturesAndSwSystemconsts":
+        """Deserialize XML element to FMFormulaByFeaturesAndSwSystemconsts object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFormulaByFeaturesAndSwSystemconsts object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse feature
+        child = ARObject._find_child_element(element, "FEATURE")
+        if child is not None:
+            feature_value = ARObject._deserialize_by_tag(child, "FMFeature")
+            obj.feature = feature_value
+
+        return obj
+
 
 
 class FMFormulaByFeaturesAndSwSystemconstsBuilder:

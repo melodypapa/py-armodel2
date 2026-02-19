@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -34,6 +35,28 @@ class UserDefinedIPdu(IPdu):
         """Initialize UserDefinedIPdu."""
         super().__init__()
         self.cdd_type: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedIPdu":
+        """Deserialize XML element to UserDefinedIPdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedIPdu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cdd_type
+        child = ARObject._find_child_element(element, "CDD-TYPE")
+        if child is not None:
+            cdd_type_value = child.text
+            obj.cdd_type = cdd_type_value
+
+        return obj
+
 
 
 class UserDefinedIPduBuilder:

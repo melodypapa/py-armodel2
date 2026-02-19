@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class HwType(HwDescriptionEntity):
@@ -30,6 +31,22 @@ class HwType(HwDescriptionEntity):
     def __init__(self) -> None:
         """Initialize HwType."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwType":
+        """Deserialize XML element to HwType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class HwTypeBuilder:

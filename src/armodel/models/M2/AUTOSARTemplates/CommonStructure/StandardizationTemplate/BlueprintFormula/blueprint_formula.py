@@ -37,6 +37,34 @@ class BlueprintFormula(ARObject):
         super().__init__()
         self.ecuc: EcucDefinitionElement = None
         self.verbatim: MultiLanguageVerbatim = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintFormula":
+        """Deserialize XML element to BlueprintFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecuc
+        child = ARObject._find_child_element(element, "ECUC")
+        if child is not None:
+            ecuc_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
+            obj.ecuc = ecuc_value
+
+        # Parse verbatim
+        child = ARObject._find_child_element(element, "VERBATIM")
+        if child is not None:
+            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            obj.verbatim = verbatim_value
+
+        return obj
+
 
 
 class BlueprintFormulaBuilder:

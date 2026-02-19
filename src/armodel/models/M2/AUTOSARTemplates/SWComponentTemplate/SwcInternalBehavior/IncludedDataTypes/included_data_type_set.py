@@ -37,6 +37,34 @@ class IncludedDataTypeSet(ARObject):
         super().__init__()
         self.data_types: list[AutosarDataType] = []
         self.literal_prefix: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IncludedDataTypeSet":
+        """Deserialize XML element to IncludedDataTypeSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IncludedDataTypeSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_types (list)
+        obj.data_types = []
+        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
+            data_types_value = ARObject._deserialize_by_tag(child, "AutosarDataType")
+            obj.data_types.append(data_types_value)
+
+        # Parse literal_prefix
+        child = ARObject._find_child_element(element, "LITERAL-PREFIX")
+        if child is not None:
+            literal_prefix_value = child.text
+            obj.literal_prefix = literal_prefix_value
+
+        return obj
+
 
 
 class IncludedDataTypeSetBuilder:

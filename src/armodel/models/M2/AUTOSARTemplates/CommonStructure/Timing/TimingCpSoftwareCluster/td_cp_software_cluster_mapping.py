@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -41,6 +42,40 @@ class TDCpSoftwareClusterMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requestors: list[CpSoftwareCluster] = []
         self.timing: Optional[TimingDescription] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterMapping":
+        """Deserialize XML element to TDCpSoftwareClusterMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDCpSoftwareClusterMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provider
+        child = ARObject._find_child_element(element, "PROVIDER")
+        if child is not None:
+            provider_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.provider = provider_value
+
+        # Parse requestors (list)
+        obj.requestors = []
+        for child in ARObject._find_all_child_elements(element, "REQUESTORS"):
+            requestors_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.requestors.append(requestors_value)
+
+        # Parse timing
+        child = ARObject._find_child_element(element, "TIMING")
+        if child is not None:
+            timing_value = ARObject._deserialize_by_tag(child, "TimingDescription")
+            obj.timing = timing_value
+
+        return obj
+
 
 
 class TDCpSoftwareClusterMappingBuilder:

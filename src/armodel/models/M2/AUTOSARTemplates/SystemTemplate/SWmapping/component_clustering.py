@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constraint import (
     MappingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
     MappingScopeEnum,
@@ -37,6 +38,34 @@ class ComponentClustering(MappingConstraint):
         super().__init__()
         self.clustereds: list[Any] = []
         self.mapping_scope_enum_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ComponentClustering":
+        """Deserialize XML element to ComponentClustering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ComponentClustering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse clustereds (list)
+        obj.clustereds = []
+        for child in ARObject._find_all_child_elements(element, "CLUSTEREDS"):
+            clustereds_value = child.text
+            obj.clustereds.append(clustereds_value)
+
+        # Parse mapping_scope_enum_ref
+        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM")
+        if child is not None:
+            mapping_scope_enum_ref_value = child.text
+            obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
+
+        return obj
+
 
 
 class ComponentClusteringBuilder:

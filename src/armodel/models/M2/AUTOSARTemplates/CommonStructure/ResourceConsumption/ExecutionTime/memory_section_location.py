@@ -37,6 +37,34 @@ class MemorySectionLocation(ARObject):
         super().__init__()
         self.provided_memory: Optional[HwElement] = None
         self.software: Optional[MemorySection] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MemorySectionLocation":
+        """Deserialize XML element to MemorySectionLocation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MemorySectionLocation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provided_memory
+        child = ARObject._find_child_element(element, "PROVIDED-MEMORY")
+        if child is not None:
+            provided_memory_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.provided_memory = provided_memory_value
+
+        # Parse software
+        child = ARObject._find_child_element(element, "SOFTWARE")
+        if child is not None:
+            software_value = ARObject._deserialize_by_tag(child, "MemorySection")
+            obj.software = software_value
+
+        return obj
+
 
 
 class MemorySectionLocationBuilder:

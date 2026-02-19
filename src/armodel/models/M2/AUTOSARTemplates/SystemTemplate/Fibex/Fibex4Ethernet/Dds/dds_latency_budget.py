@@ -32,6 +32,28 @@ class DdsLatencyBudget(ARObject):
         """Initialize DdsLatencyBudget."""
         super().__init__()
         self.latency_budget: Optional[Float] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsLatencyBudget":
+        """Deserialize XML element to DdsLatencyBudget object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsLatencyBudget object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse latency_budget
+        child = ARObject._find_child_element(element, "LATENCY-BUDGET")
+        if child is not None:
+            latency_budget_value = child.text
+            obj.latency_budget = latency_budget_value
+
+        return obj
+
 
 
 class DdsLatencyBudgetBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
     AbstractRuleBasedValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
@@ -31,6 +32,28 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
         self.rule_based: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NumericalRuleBasedValueSpecification":
+        """Deserialize XML element to NumericalRuleBasedValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NumericalRuleBasedValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rule_based
+        child = ARObject._find_child_element(element, "RULE-BASED")
+        if child is not None:
+            rule_based_value = child.text
+            obj.rule_based = rule_based_value
+
+        return obj
+
 
 
 class NumericalRuleBasedValueSpecificationBuilder:

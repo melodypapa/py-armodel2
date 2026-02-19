@@ -37,6 +37,34 @@ class BlueprintGenerator(ARObject):
         super().__init__()
         self.expression: Optional[VerbatimString] = None
         self.introduction: Optional[DocumentationBlock] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintGenerator":
+        """Deserialize XML element to BlueprintGenerator object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintGenerator object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse expression
+        child = ARObject._find_child_element(element, "EXPRESSION")
+        if child is not None:
+            expression_value = child.text
+            obj.expression = expression_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        return obj
+
 
 
 class BlueprintGeneratorBuilder:

@@ -38,6 +38,34 @@ class FormulaExpression(ARObject, ABC):
         super().__init__()
         self.atp_reference_refs: list[ARRef] = []
         self.atp_string_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FormulaExpression":
+        """Deserialize XML element to FormulaExpression object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FormulaExpression object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse atp_reference_refs (list)
+        obj.atp_reference_refs = []
+        for child in ARObject._find_all_child_elements(element, "ATP-REFERENCES"):
+            atp_reference_refs_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.atp_reference_refs.append(atp_reference_refs_value)
+
+        # Parse atp_string_refs (list)
+        obj.atp_string_refs = []
+        for child in ARObject._find_all_child_elements(element, "ATP-STRINGS"):
+            atp_string_refs_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.atp_string_refs.append(atp_string_refs_value)
+
+        return obj
+
 
 
 class FormulaExpressionBuilder:

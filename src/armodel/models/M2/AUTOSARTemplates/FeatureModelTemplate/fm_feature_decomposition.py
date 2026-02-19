@@ -42,6 +42,46 @@ class FMFeatureDecomposition(ARObject):
         self.features: list[FMFeature] = []
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFeatureDecomposition":
+        """Deserialize XML element to FMFeatureDecomposition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFeatureDecomposition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse features (list)
+        obj.features = []
+        for child in ARObject._find_all_child_elements(element, "FEATURES"):
+            features_value = ARObject._deserialize_by_tag(child, "FMFeature")
+            obj.features.append(features_value)
+
+        # Parse max
+        child = ARObject._find_child_element(element, "MAX")
+        if child is not None:
+            max_value = child.text
+            obj.max = max_value
+
+        # Parse min
+        child = ARObject._find_child_element(element, "MIN")
+        if child is not None:
+            min_value = child.text
+            obj.min = min_value
+
+        return obj
+
 
 
 class FMFeatureDecompositionBuilder:

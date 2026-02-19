@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     ValignEnum,
 )
@@ -39,6 +40,34 @@ class Row(Paginateable):
         super().__init__()
         self.rowsep: Optional[TableSeparatorString] = None
         self.valign: Optional[ValignEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Row":
+        """Deserialize XML element to Row object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Row object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rowsep
+        child = ARObject._find_child_element(element, "ROWSEP")
+        if child is not None:
+            rowsep_value = child.text
+            obj.rowsep = rowsep_value
+
+        # Parse valign
+        child = ARObject._find_child_element(element, "VALIGN")
+        if child is not None:
+            valign_value = child.text
+            obj.valign = valign_value
+
+        return obj
+
 
 
 class RowBuilder:

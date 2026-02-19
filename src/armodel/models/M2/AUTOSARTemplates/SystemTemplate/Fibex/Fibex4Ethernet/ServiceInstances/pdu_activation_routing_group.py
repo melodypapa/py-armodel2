@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     EventGroupControlTypeEnum,
@@ -40,6 +41,34 @@ class PduActivationRoutingGroup(Identifiable):
         super().__init__()
         self.event_group_ref: Optional[ARRef] = None
         self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PduActivationRoutingGroup":
+        """Deserialize XML element to PduActivationRoutingGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PduActivationRoutingGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_group_ref
+        child = ARObject._find_child_element(element, "EVENT-GROUP")
+        if child is not None:
+            event_group_ref_value = child.text
+            obj.event_group_ref = event_group_ref_value
+
+        # Parse i_pdu_identifiers (list)
+        obj.i_pdu_identifiers = []
+        for child in ARObject._find_all_child_elements(element, "I-PDU-IDENTIFIERS"):
+            i_pdu_identifiers_value = ARObject._deserialize_by_tag(child, "SoConIPduIdentifier")
+            obj.i_pdu_identifiers.append(i_pdu_identifiers_value)
+
+        return obj
+
 
 
 class PduActivationRoutingGroupBuilder:

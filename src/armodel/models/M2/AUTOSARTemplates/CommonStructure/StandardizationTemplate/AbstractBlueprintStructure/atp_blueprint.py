@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
     BlueprintPolicy,
 )
@@ -37,6 +38,28 @@ class AtpBlueprint(Identifiable, ABC):
         """Initialize AtpBlueprint."""
         super().__init__()
         self.blueprint_policies: list[BlueprintPolicy] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AtpBlueprint":
+        """Deserialize XML element to AtpBlueprint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AtpBlueprint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint_policies (list)
+        obj.blueprint_policies = []
+        for child in ARObject._find_all_child_elements(element, "BLUEPRINT-POLICIES"):
+            blueprint_policies_value = ARObject._deserialize_by_tag(child, "BlueprintPolicy")
+            obj.blueprint_policies.append(blueprint_policies_value)
+
+        return obj
+
 
 
 class AtpBlueprintBuilder:

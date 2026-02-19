@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
     DltMessage,
 )
@@ -34,6 +35,28 @@ class LogAndTraceMessageCollectionSet(ARElement):
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()
         self.dlt_messages: list[DltMessage] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LogAndTraceMessageCollectionSet":
+        """Deserialize XML element to LogAndTraceMessageCollectionSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LogAndTraceMessageCollectionSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dlt_messages (list)
+        obj.dlt_messages = []
+        for child in ARObject._find_all_child_elements(element, "DLT-MESSAGES"):
+            dlt_messages_value = ARObject._deserialize_by_tag(child, "DltMessage")
+            obj.dlt_messages.append(dlt_messages_value)
+
+        return obj
+
 
 
 class LogAndTraceMessageCollectionSetBuilder:

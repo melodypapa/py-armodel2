@@ -33,6 +33,28 @@ class TpConnection(ARObject, ABC):
         """Initialize TpConnection."""
         super().__init__()
         self.ident: Optional[TpConnectionIdent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TpConnection":
+        """Deserialize XML element to TpConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TpConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ident
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            obj.ident = ident_value
+
+        return obj
+
 
 
 class TpConnectionBuilder:

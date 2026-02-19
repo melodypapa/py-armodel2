@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
     IEEE1722TpAvConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
     IEEE1722TpAafAes3DataTypeEnum,
     IEEE1722TpAafFormatEnum,
@@ -57,6 +58,82 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         self.pcm_bit_depth: Optional[PositiveInteger] = None
         self.sparse: Optional[Boolean] = None
         self.streams_per: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAafConnection":
+        """Deserialize XML element to IEEE1722TpAafConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAafConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse aaf_aes3_data
+        child = ARObject._find_child_element(element, "AAF-AES3-DATA")
+        if child is not None:
+            aaf_aes3_data_value = child.text
+            obj.aaf_aes3_data = aaf_aes3_data_value
+
+        # Parse aaf_format_enum
+        child = ARObject._find_child_element(element, "AAF-FORMAT-ENUM")
+        if child is not None:
+            aaf_format_enum_value = child.text
+            obj.aaf_format_enum = aaf_format_enum_value
+
+        # Parse aaf_nominal_rate
+        child = ARObject._find_child_element(element, "AAF-NOMINAL-RATE")
+        if child is not None:
+            aaf_nominal_rate_value = child.text
+            obj.aaf_nominal_rate = aaf_nominal_rate_value
+
+        # Parse aes3_data_type_h
+        child = ARObject._find_child_element(element, "AES3-DATA-TYPE-H")
+        if child is not None:
+            aes3_data_type_h_value = child.text
+            obj.aes3_data_type_h = aes3_data_type_h_value
+
+        # Parse aes3_data_type_l
+        child = ARObject._find_child_element(element, "AES3-DATA-TYPE-L")
+        if child is not None:
+            aes3_data_type_l_value = child.text
+            obj.aes3_data_type_l = aes3_data_type_l_value
+
+        # Parse channels_per
+        child = ARObject._find_child_element(element, "CHANNELS-PER")
+        if child is not None:
+            channels_per_value = child.text
+            obj.channels_per = channels_per_value
+
+        # Parse event_default
+        child = ARObject._find_child_element(element, "EVENT-DEFAULT")
+        if child is not None:
+            event_default_value = child.text
+            obj.event_default = event_default_value
+
+        # Parse pcm_bit_depth
+        child = ARObject._find_child_element(element, "PCM-BIT-DEPTH")
+        if child is not None:
+            pcm_bit_depth_value = child.text
+            obj.pcm_bit_depth = pcm_bit_depth_value
+
+        # Parse sparse
+        child = ARObject._find_child_element(element, "SPARSE")
+        if child is not None:
+            sparse_value = child.text
+            obj.sparse = sparse_value
+
+        # Parse streams_per
+        child = ARObject._find_child_element(element, "STREAMS-PER")
+        if child is not None:
+            streams_per_value = child.text
+            obj.streams_per = streams_per_value
+
+        return obj
+
 
 
 class IEEE1722TpAafConnectionBuilder:

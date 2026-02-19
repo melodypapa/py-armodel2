@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
@@ -31,6 +32,28 @@ class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()
         self.event_source: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallReturnsEvent":
+        """Deserialize XML element to BswAsynchronousServerCallReturnsEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswAsynchronousServerCallReturnsEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_source
+        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        if child is not None:
+            event_source_value = child.text
+            obj.event_source = event_source_value
+
+        return obj
+
 
 
 class BswAsynchronousServerCallReturnsEventBuilder:

@@ -34,6 +34,34 @@ class ClientServerApplicationErrorMapping(ARObject):
         super().__init__()
         self.first_application: Optional[ApplicationError] = None
         self.second: Optional[ApplicationError] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientServerApplicationErrorMapping":
+        """Deserialize XML element to ClientServerApplicationErrorMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientServerApplicationErrorMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_application
+        child = ARObject._find_child_element(element, "FIRST-APPLICATION")
+        if child is not None:
+            first_application_value = ARObject._deserialize_by_tag(child, "ApplicationError")
+            obj.first_application = first_application_value
+
+        # Parse second
+        child = ARObject._find_child_element(element, "SECOND")
+        if child is not None:
+            second_value = ARObject._deserialize_by_tag(child, "ApplicationError")
+            obj.second = second_value
+
+        return obj
+
 
 
 class ClientServerApplicationErrorMappingBuilder:

@@ -39,6 +39,40 @@ class EcucDerivationSpecification(ARObject):
         self.calculation: Optional[Any] = None
         self.ecuc_queries: list[EcucQuery] = []
         self.informal_formula: Optional[MlFormula] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucDerivationSpecification":
+        """Deserialize XML element to EcucDerivationSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucDerivationSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse calculation
+        child = ARObject._find_child_element(element, "CALCULATION")
+        if child is not None:
+            calculation_value = child.text
+            obj.calculation = calculation_value
+
+        # Parse ecuc_queries (list)
+        obj.ecuc_queries = []
+        for child in ARObject._find_all_child_elements(element, "ECUC-QUERIES"):
+            ecuc_queries_value = ARObject._deserialize_by_tag(child, "EcucQuery")
+            obj.ecuc_queries.append(ecuc_queries_value)
+
+        # Parse informal_formula
+        child = ARObject._find_child_element(element, "INFORMAL-FORMULA")
+        if child is not None:
+            informal_formula_value = ARObject._deserialize_by_tag(child, "MlFormula")
+            obj.informal_formula = informal_formula_value
+
+        return obj
+
 
 
 class EcucDerivationSpecificationBuilder:

@@ -32,6 +32,28 @@ class DoIpEntity(ARObject):
         """Initialize DoIpEntity."""
         super().__init__()
         self.do_ip_entity_role_enum: Optional[DoIpEntityRoleEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpEntity":
+        """Deserialize XML element to DoIpEntity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpEntity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse do_ip_entity_role_enum
+        child = ARObject._find_child_element(element, "DO-IP-ENTITY-ROLE-ENUM")
+        if child is not None:
+            do_ip_entity_role_enum_value = child.text
+            obj.do_ip_entity_role_enum = do_ip_entity_role_enum_value
+
+        return obj
+
 
 
 class DoIpEntityBuilder:

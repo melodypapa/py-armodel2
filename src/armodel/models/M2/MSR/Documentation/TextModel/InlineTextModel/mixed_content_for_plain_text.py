@@ -28,6 +28,22 @@ class MixedContentForPlainText(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize MixedContentForPlainText."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MixedContentForPlainText":
+        """Deserialize XML element to MixedContentForPlainText object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MixedContentForPlainText object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class MixedContentForPlainTextBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -36,6 +37,34 @@ class DiagnosticFimAliasEventMapping(DiagnosticMapping):
         super().__init__()
         self.actual_event: Optional[DiagnosticEvent] = None
         self.alias_event_event: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEventMapping":
+        """Deserialize XML element to DiagnosticFimAliasEventMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticFimAliasEventMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse actual_event
+        child = ARObject._find_child_element(element, "ACTUAL-EVENT")
+        if child is not None:
+            actual_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.actual_event = actual_event_value
+
+        # Parse alias_event_event
+        child = ARObject._find_child_element(element, "ALIAS-EVENT-EVENT")
+        if child is not None:
+            alias_event_event_value = child.text
+            obj.alias_event_event = alias_event_event_value
+
+        return obj
+
 
 
 class DiagnosticFimAliasEventMappingBuilder:

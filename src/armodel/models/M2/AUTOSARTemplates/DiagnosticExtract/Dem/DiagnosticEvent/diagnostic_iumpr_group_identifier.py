@@ -32,6 +32,28 @@ class DiagnosticIumprGroupIdentifier(ARObject):
         """Initialize DiagnosticIumprGroupIdentifier."""
         super().__init__()
         self.group_id: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprGroupIdentifier":
+        """Deserialize XML element to DiagnosticIumprGroupIdentifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticIumprGroupIdentifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse group_id
+        child = ARObject._find_child_element(element, "GROUP-ID")
+        if child is not None:
+            group_id_value = child.text
+            obj.group_id = group_id_value
+
+        return obj
+
 
 
 class DiagnosticIumprGroupIdentifierBuilder:

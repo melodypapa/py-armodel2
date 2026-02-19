@@ -28,6 +28,22 @@ class CompositeRuleBasedValueArgument(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CompositeRuleBasedValueArgument."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompositeRuleBasedValueArgument":
+        """Deserialize XML element to CompositeRuleBasedValueArgument object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompositeRuleBasedValueArgument object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class CompositeRuleBasedValueArgumentBuilder:

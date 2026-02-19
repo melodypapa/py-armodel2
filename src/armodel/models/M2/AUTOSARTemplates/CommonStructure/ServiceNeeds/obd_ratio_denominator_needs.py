@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticDenominatorConditionEnum,
 )
@@ -34,6 +35,28 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
         """Initialize ObdRatioDenominatorNeeds."""
         super().__init__()
         self.denominator: Optional[DiagnosticDenominatorConditionEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ObdRatioDenominatorNeeds":
+        """Deserialize XML element to ObdRatioDenominatorNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ObdRatioDenominatorNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse denominator
+        child = ARObject._find_child_element(element, "DENOMINATOR")
+        if child is not None:
+            denominator_value = child.text
+            obj.denominator = denominator_value
+
+        return obj
+
 
 
 class ObdRatioDenominatorNeedsBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -35,6 +36,28 @@ class ApplicationError(Identifiable):
         """Initialize ApplicationError."""
         super().__init__()
         self.error_code: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationError":
+        """Deserialize XML element to ApplicationError object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationError object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse error_code
+        child = ARObject._find_child_element(element, "ERROR-CODE")
+        if child is not None:
+            error_code_value = child.text
+            obj.error_code = error_code_value
+
+        return obj
+
 
 
 class ApplicationErrorBuilder:

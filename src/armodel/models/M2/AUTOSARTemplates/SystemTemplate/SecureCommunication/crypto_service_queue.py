@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class CryptoServiceQueue(ARElement):
         """Initialize CryptoServiceQueue."""
         super().__init__()
         self.queue_size: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CryptoServiceQueue":
+        """Deserialize XML element to CryptoServiceQueue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CryptoServiceQueue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse queue_size
+        child = ARObject._find_child_element(element, "QUEUE-SIZE")
+        if child is not None:
+            queue_size_value = child.text
+            obj.queue_size = queue_size_value
+
+        return obj
+
 
 
 class CryptoServiceQueueBuilder:

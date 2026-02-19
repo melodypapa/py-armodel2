@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.IPv6HeaderFilterList.i_pv6_ext_header_filter_list import (
     IPv6ExtHeaderFilterList,
@@ -35,6 +36,28 @@ class IPv6ExtHeaderFilterSet(ARElement):
         """Initialize IPv6ExtHeaderFilterSet."""
         super().__init__()
         self.ext_header_filter_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPv6ExtHeaderFilterSet":
+        """Deserialize XML element to IPv6ExtHeaderFilterSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPv6ExtHeaderFilterSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ext_header_filter_refs (list)
+        obj.ext_header_filter_refs = []
+        for child in ARObject._find_all_child_elements(element, "EXT-HEADER-FILTERS"):
+            ext_header_filter_refs_value = ARObject._deserialize_by_tag(child, "IPv6ExtHeaderFilterList")
+            obj.ext_header_filter_refs.append(ext_header_filter_refs_value)
+
+        return obj
+
 
 
 class IPv6ExtHeaderFilterSetBuilder:

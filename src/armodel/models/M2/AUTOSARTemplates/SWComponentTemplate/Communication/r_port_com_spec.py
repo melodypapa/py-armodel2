@@ -29,6 +29,22 @@ class RPortComSpec(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize RPortComSpec."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RPortComSpec":
+        """Deserialize XML element to RPortComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RPortComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class RPortComSpecBuilder:

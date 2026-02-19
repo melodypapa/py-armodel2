@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
     Pdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -46,6 +47,46 @@ class NmPdu(Pdu):
         self.nm_data: Optional[Boolean] = None
         self.nm_vote_information: Optional[Boolean] = None
         self.unused_bit: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NmPdu":
+        """Deserialize XML element to NmPdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NmPdu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse i_signal_to_i_pdu_refs (list)
+        obj.i_signal_to_i_pdu_refs = []
+        for child in ARObject._find_all_child_elements(element, "I-SIGNAL-TO-I-PDUS"):
+            i_signal_to_i_pdu_refs_value = ARObject._deserialize_by_tag(child, "ISignalToIPduMapping")
+            obj.i_signal_to_i_pdu_refs.append(i_signal_to_i_pdu_refs_value)
+
+        # Parse nm_data
+        child = ARObject._find_child_element(element, "NM-DATA")
+        if child is not None:
+            nm_data_value = child.text
+            obj.nm_data = nm_data_value
+
+        # Parse nm_vote_information
+        child = ARObject._find_child_element(element, "NM-VOTE-INFORMATION")
+        if child is not None:
+            nm_vote_information_value = child.text
+            obj.nm_vote_information = nm_vote_information_value
+
+        # Parse unused_bit
+        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        if child is not None:
+            unused_bit_value = child.text
+            obj.unused_bit = unused_bit_value
+
+        return obj
+
 
 
 class NmPduBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_mode_element import (
     DiagnosticEnvModeElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -34,6 +35,28 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         """Initialize DiagnosticEnvSwcModeElement."""
         super().__init__()
         self.mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvSwcModeElement":
+        """Deserialize XML element to DiagnosticEnvSwcModeElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEnvSwcModeElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mode
+        child = ARObject._find_child_element(element, "MODE")
+        if child is not None:
+            mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.mode = mode_value
+
+        return obj
+
 
 
 class DiagnosticEnvSwcModeElementBuilder:

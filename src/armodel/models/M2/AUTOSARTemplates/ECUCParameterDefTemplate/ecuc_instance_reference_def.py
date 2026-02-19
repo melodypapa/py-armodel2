@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_external_reference_def import (
     EcucAbstractExternalReferenceDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -36,6 +37,34 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
         super().__init__()
         self.destination: Optional[String] = None
         self.destination_type: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucInstanceReferenceDef":
+        """Deserialize XML element to EcucInstanceReferenceDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucInstanceReferenceDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination
+        child = ARObject._find_child_element(element, "DESTINATION")
+        if child is not None:
+            destination_value = child.text
+            obj.destination = destination_value
+
+        # Parse destination_type
+        child = ARObject._find_child_element(element, "DESTINATION-TYPE")
+        if child is not None:
+            destination_type_value = child.text
+            obj.destination_type = destination_type_value
+
+        return obj
+
 
 
 class EcucInstanceReferenceDefBuilder:

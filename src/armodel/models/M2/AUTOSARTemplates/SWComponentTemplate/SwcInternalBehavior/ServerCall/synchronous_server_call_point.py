@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.server_call_point import (
     ServerCallPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
 )
@@ -35,6 +36,28 @@ class SynchronousServerCallPoint(ServerCallPoint):
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
         self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SynchronousServerCallPoint":
+        """Deserialize XML element to SynchronousServerCallPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SynchronousServerCallPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse called_from
+        child = ARObject._find_child_element(element, "CALLED-FROM")
+        if child is not None:
+            called_from_value = ARObject._deserialize_by_tag(child, "ExclusiveAreaNestingOrder")
+            obj.called_from = called_from_value
+
+        return obj
+
 
 
 class SynchronousServerCallPointBuilder:

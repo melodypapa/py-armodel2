@@ -39,6 +39,34 @@ class MetaDataItemSet(ARObject):
         super().__init__()
         self.data_element_refs: list[ARRef] = []
         self.meta_data_items: list[MetaDataItem] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MetaDataItemSet":
+        """Deserialize XML element to MetaDataItemSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MetaDataItemSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_refs (list)
+        obj.data_element_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-ELEMENTS"):
+            data_element_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_refs.append(data_element_refs_value)
+
+        # Parse meta_data_items (list)
+        obj.meta_data_items = []
+        for child in ARObject._find_all_child_elements(element, "META-DATA-ITEMS"):
+            meta_data_items_value = ARObject._deserialize_by_tag(child, "MetaDataItem")
+            obj.meta_data_items.append(meta_data_items_value)
+
+        return obj
+
 
 
 class MetaDataItemSetBuilder:

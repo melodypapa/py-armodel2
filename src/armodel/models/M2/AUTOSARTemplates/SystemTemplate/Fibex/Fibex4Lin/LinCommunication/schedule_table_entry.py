@@ -41,6 +41,40 @@ class ScheduleTableEntry(ARObject, ABC):
         self.delay: Optional[TimeValue] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.position_in_table: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ScheduleTableEntry":
+        """Deserialize XML element to ScheduleTableEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ScheduleTableEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse delay
+        child = ARObject._find_child_element(element, "DELAY")
+        if child is not None:
+            delay_value = child.text
+            obj.delay = delay_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse position_in_table
+        child = ARObject._find_child_element(element, "POSITION-IN-TABLE")
+        if child is not None:
+            position_in_table_value = child.text
+            obj.position_in_table = position_in_table_value
+
+        return obj
+
 
 
 class ScheduleTableEntryBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_reference_value import (
     EcucAbstractReferenceValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -34,6 +35,28 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()
         self.value: Optional[AtpFeature] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucInstanceReferenceValue":
+        """Deserialize XML element to EcucInstanceReferenceValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucInstanceReferenceValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.value = value_value
+
+        return obj
+
 
 
 class EcucInstanceReferenceValueBuilder:

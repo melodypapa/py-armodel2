@@ -37,6 +37,34 @@ class PrivacyLevel(ARObject):
         super().__init__()
         self.compu_method: Optional[CompuMethod] = None
         self.privacy_level: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PrivacyLevel":
+        """Deserialize XML element to PrivacyLevel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PrivacyLevel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse compu_method
+        child = ARObject._find_child_element(element, "COMPU-METHOD")
+        if child is not None:
+            compu_method_value = ARObject._deserialize_by_tag(child, "CompuMethod")
+            obj.compu_method = compu_method_value
+
+        # Parse privacy_level
+        child = ARObject._find_child_element(element, "PRIVACY-LEVEL")
+        if child is not None:
+            privacy_level_value = child.text
+            obj.privacy_level = privacy_level_value
+
+        return obj
+
 
 
 class PrivacyLevelBuilder:

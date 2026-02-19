@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
     IEEE1722TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
@@ -41,6 +42,34 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         super().__init__()
         self.max_transit_time: Optional[TimeValue] = None
         self.sdu_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAvConnection":
+        """Deserialize XML element to IEEE1722TpAvConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAvConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_transit_time
+        child = ARObject._find_child_element(element, "MAX-TRANSIT-TIME")
+        if child is not None:
+            max_transit_time_value = child.text
+            obj.max_transit_time = max_transit_time_value
+
+        # Parse sdu_refs (list)
+        obj.sdu_refs = []
+        for child in ARObject._find_all_child_elements(element, "SDUS"):
+            sdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.sdu_refs.append(sdu_refs_value)
+
+        return obj
+
 
 
 class IEEE1722TpAvConnectionBuilder:

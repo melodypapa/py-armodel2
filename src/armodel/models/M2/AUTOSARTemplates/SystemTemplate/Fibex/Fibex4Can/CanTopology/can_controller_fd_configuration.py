@@ -45,6 +45,64 @@ class CanControllerFdConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanControllerFdConfiguration":
+        """Deserialize XML element to CanControllerFdConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanControllerFdConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse padding_value
+        child = ARObject._find_child_element(element, "PADDING-VALUE")
+        if child is not None:
+            padding_value_value = child.text
+            obj.padding_value = padding_value_value
+
+        # Parse prop_seg
+        child = ARObject._find_child_element(element, "PROP-SEG")
+        if child is not None:
+            prop_seg_value = child.text
+            obj.prop_seg = prop_seg_value
+
+        # Parse ssp_offset
+        child = ARObject._find_child_element(element, "SSP-OFFSET")
+        if child is not None:
+            ssp_offset_value = child.text
+            obj.ssp_offset = ssp_offset_value
+
+        # Parse sync_jump_width
+        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        if child is not None:
+            sync_jump_width_value = child.text
+            obj.sync_jump_width = sync_jump_width_value
+
+        # Parse time_seg1
+        child = ARObject._find_child_element(element, "TIME-SEG1")
+        if child is not None:
+            time_seg1_value = child.text
+            obj.time_seg1 = time_seg1_value
+
+        # Parse time_seg2
+        child = ARObject._find_child_element(element, "TIME-SEG2")
+        if child is not None:
+            time_seg2_value = child.text
+            obj.time_seg2 = time_seg2_value
+
+        # Parse tx_bit_rate_switch
+        child = ARObject._find_child_element(element, "TX-BIT-RATE-SWITCH")
+        if child is not None:
+            tx_bit_rate_switch_value = child.text
+            obj.tx_bit_rate_switch = tx_bit_rate_switch_value
+
+        return obj
+
 
 
 class CanControllerFdConfigurationBuilder:

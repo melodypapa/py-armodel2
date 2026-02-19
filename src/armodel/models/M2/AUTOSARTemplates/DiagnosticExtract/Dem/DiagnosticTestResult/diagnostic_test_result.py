@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -44,6 +45,46 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         self.monitored: Optional[Any] = None
         self.test_identifier: Optional[DiagnosticTestIdentifier] = None
         self.update_kind: Optional[DiagnosticTestResult] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTestResult":
+        """Deserialize XML element to DiagnosticTestResult object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticTestResult object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse diagnostic_event
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        if child is not None:
+            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.diagnostic_event = diagnostic_event_value
+
+        # Parse monitored
+        child = ARObject._find_child_element(element, "MONITORED")
+        if child is not None:
+            monitored_value = child.text
+            obj.monitored = monitored_value
+
+        # Parse test_identifier
+        child = ARObject._find_child_element(element, "TEST-IDENTIFIER")
+        if child is not None:
+            test_identifier_value = ARObject._deserialize_by_tag(child, "DiagnosticTestIdentifier")
+            obj.test_identifier = test_identifier_value
+
+        # Parse update_kind
+        child = ARObject._find_child_element(element, "UPDATE-KIND")
+        if child is not None:
+            update_kind_value = ARObject._deserialize_by_tag(child, "DiagnosticTestResult")
+            obj.update_kind = update_kind_value
+
+        return obj
+
 
 
 class DiagnosticTestResultBuilder:

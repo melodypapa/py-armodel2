@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -35,6 +36,28 @@ class AtpClassifier(Identifiable, ABC):
         """Initialize AtpClassifier."""
         super().__init__()
         self.atp_features: list[AtpFeature] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AtpClassifier":
+        """Deserialize XML element to AtpClassifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AtpClassifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse atp_features (list)
+        obj.atp_features = []
+        for child in ARObject._find_all_child_elements(element, "ATP-FEATURES"):
+            atp_features_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.atp_features.append(atp_features_value)
+
+        return obj
+
 
 
 class AtpClassifierBuilder:

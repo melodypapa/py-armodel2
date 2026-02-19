@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.SynchronizationTiming import (
     EventOccurrenceKindEnum,
     SynchronizationTypeEnum,
@@ -49,6 +50,52 @@ class SynchronizationTimingConstraint(TimingConstraint):
         self.scope_events: list[TimingDescriptionEvent] = []
         self.synchronization: Optional[SynchronizationTypeEnum] = None
         self.tolerance: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SynchronizationTimingConstraint":
+        """Deserialize XML element to SynchronizationTimingConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SynchronizationTimingConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event
+        child = ARObject._find_child_element(element, "EVENT")
+        if child is not None:
+            event_value = child.text
+            obj.event = event_value
+
+        # Parse scopes (list)
+        obj.scopes = []
+        for child in ARObject._find_all_child_elements(element, "SCOPES"):
+            scopes_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
+            obj.scopes.append(scopes_value)
+
+        # Parse scope_events (list)
+        obj.scope_events = []
+        for child in ARObject._find_all_child_elements(element, "SCOPE-EVENTS"):
+            scope_events_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
+            obj.scope_events.append(scope_events_value)
+
+        # Parse synchronization
+        child = ARObject._find_child_element(element, "SYNCHRONIZATION")
+        if child is not None:
+            synchronization_value = child.text
+            obj.synchronization = synchronization_value
+
+        # Parse tolerance
+        child = ARObject._find_child_element(element, "TOLERANCE")
+        if child is not None:
+            tolerance_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.tolerance = tolerance_value
+
+        return obj
+
 
 
 class SynchronizationTimingConstraintBuilder:

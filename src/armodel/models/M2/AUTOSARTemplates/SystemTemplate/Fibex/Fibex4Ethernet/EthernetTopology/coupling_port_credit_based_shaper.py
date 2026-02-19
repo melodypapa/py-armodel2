@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -38,6 +39,40 @@ class CouplingPortCreditBasedShaper(Identifiable):
         self.idle_slope: Optional[PositiveInteger] = None
         self.lower_boundary: Optional[PositiveInteger] = None
         self.upper_boundary: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CouplingPortCreditBasedShaper":
+        """Deserialize XML element to CouplingPortCreditBasedShaper object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CouplingPortCreditBasedShaper object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse idle_slope
+        child = ARObject._find_child_element(element, "IDLE-SLOPE")
+        if child is not None:
+            idle_slope_value = child.text
+            obj.idle_slope = idle_slope_value
+
+        # Parse lower_boundary
+        child = ARObject._find_child_element(element, "LOWER-BOUNDARY")
+        if child is not None:
+            lower_boundary_value = child.text
+            obj.lower_boundary = lower_boundary_value
+
+        # Parse upper_boundary
+        child = ARObject._find_child_element(element, "UPPER-BOUNDARY")
+        if child is not None:
+            upper_boundary_value = child.text
+            obj.upper_boundary = upper_boundary_value
+
+        return obj
+
 
 
 class CouplingPortCreditBasedShaperBuilder:

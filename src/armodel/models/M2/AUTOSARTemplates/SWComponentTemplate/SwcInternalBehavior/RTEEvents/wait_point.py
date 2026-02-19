@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -42,6 +43,34 @@ class WaitPoint(Identifiable):
         super().__init__()
         self.timeout: Optional[TimeValue] = None
         self.trigger: Optional[RTEEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "WaitPoint":
+        """Deserialize XML element to WaitPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized WaitPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = child.text
+            obj.timeout = timeout_value
+
+        # Parse trigger
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            obj.trigger = trigger_value
+
+        return obj
+
 
 
 class WaitPointBuilder:

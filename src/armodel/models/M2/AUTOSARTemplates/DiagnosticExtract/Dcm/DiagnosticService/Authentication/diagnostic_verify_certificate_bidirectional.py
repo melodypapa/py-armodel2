@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.Authentication.diagnostic_authentication import (
     DiagnosticAuthentication,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticVerifyCertificateBidirectional(DiagnosticAuthentication):
@@ -29,6 +30,22 @@ class DiagnosticVerifyCertificateBidirectional(DiagnosticAuthentication):
     def __init__(self) -> None:
         """Initialize DiagnosticVerifyCertificateBidirectional."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticVerifyCertificateBidirectional":
+        """Deserialize XML element to DiagnosticVerifyCertificateBidirectional object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticVerifyCertificateBidirectional object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class DiagnosticVerifyCertificateBidirectionalBuilder:

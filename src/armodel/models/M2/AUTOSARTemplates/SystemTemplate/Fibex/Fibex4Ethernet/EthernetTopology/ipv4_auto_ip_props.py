@@ -32,6 +32,28 @@ class Ipv4AutoIpProps(ARObject):
         """Initialize Ipv4AutoIpProps."""
         super().__init__()
         self.tcp_ip_auto_ip_init: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv4AutoIpProps":
+        """Deserialize XML element to Ipv4AutoIpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv4AutoIpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_auto_ip_init
+        child = ARObject._find_child_element(element, "TCP-IP-AUTO-IP-INIT")
+        if child is not None:
+            tcp_ip_auto_ip_init_value = child.text
+            obj.tcp_ip_auto_ip_init = tcp_ip_auto_ip_init_value
+
+        return obj
+
 
 
 class Ipv4AutoIpPropsBuilder:

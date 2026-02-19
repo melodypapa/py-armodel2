@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
     BlueprintPolicy,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BlueprintPolicySingle(BlueprintPolicy):
@@ -29,6 +30,22 @@ class BlueprintPolicySingle(BlueprintPolicy):
     def __init__(self) -> None:
         """Initialize BlueprintPolicySingle."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicySingle":
+        """Deserialize XML element to BlueprintPolicySingle object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintPolicySingle object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BlueprintPolicySingleBuilder:

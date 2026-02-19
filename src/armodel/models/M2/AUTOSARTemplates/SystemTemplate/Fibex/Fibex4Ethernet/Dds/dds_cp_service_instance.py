@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
     AbstractServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -52,6 +53,58 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         self.dds_service_qos: Optional[DdsCpQosProfile] = None
         self.service_instance: Optional[PositiveInteger] = None
         self.service_interface: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpServiceInstance":
+        """Deserialize XML element to DdsCpServiceInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpServiceInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dds_field_reply
+        child = ARObject._find_child_element(element, "DDS-FIELD-REPLY")
+        if child is not None:
+            dds_field_reply_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
+            obj.dds_field_reply = dds_field_reply_value
+
+        # Parse dds_field
+        child = ARObject._find_child_element(element, "DDS-FIELD")
+        if child is not None:
+            dds_field_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
+            obj.dds_field = dds_field_value
+
+        # Parse dds_method
+        child = ARObject._find_child_element(element, "DDS-METHOD")
+        if child is not None:
+            dds_method_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
+            obj.dds_method = dds_method_value
+
+        # Parse dds_service_qos
+        child = ARObject._find_child_element(element, "DDS-SERVICE-QOS")
+        if child is not None:
+            dds_service_qos_value = ARObject._deserialize_by_tag(child, "DdsCpQosProfile")
+            obj.dds_service_qos = dds_service_qos_value
+
+        # Parse service_instance
+        child = ARObject._find_child_element(element, "SERVICE-INSTANCE")
+        if child is not None:
+            service_instance_value = child.text
+            obj.service_instance = service_instance_value
+
+        # Parse service_interface
+        child = ARObject._find_child_element(element, "SERVICE-INTERFACE")
+        if child is not None:
+            service_interface_value = child.text
+            obj.service_interface = service_interface_value
+
+        return obj
+
 
 
 class DdsCpServiceInstanceBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
@@ -37,6 +38,28 @@ class Item(Paginateable):
         """Initialize Item."""
         super().__init__()
         self.item_contents: DocumentationBlock = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Item":
+        """Deserialize XML element to Item object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Item object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse item_contents
+        child = ARObject._find_child_element(element, "ITEM-CONTENTS")
+        if child is not None:
+            item_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.item_contents = item_contents_value
+
+        return obj
+
 
 
 class ItemBuilder:

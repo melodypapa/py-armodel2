@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
 )
@@ -40,6 +41,34 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         super().__init__()
         self.access: Optional[DiagnosticAccessPermission] = None
         self.service_class: Optional[DiagnosticServiceClass] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceInstance":
+        """Deserialize XML element to DiagnosticServiceInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticServiceInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse access
+        child = ARObject._find_child_element(element, "ACCESS")
+        if child is not None:
+            access_value = ARObject._deserialize_by_tag(child, "DiagnosticAccessPermission")
+            obj.access = access_value
+
+        # Parse service_class
+        child = ARObject._find_child_element(element, "SERVICE-CLASS")
+        if child is not None:
+            service_class_value = ARObject._deserialize_by_tag(child, "DiagnosticServiceClass")
+            obj.service_class = service_class_value
+
+        return obj
+
 
 
 class DiagnosticServiceInstanceBuilder:

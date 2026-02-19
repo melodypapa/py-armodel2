@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcImplementation.swc_implementation import (
     SwcImplementation,
 )
@@ -34,6 +35,28 @@ class SwcToImplMapping(Identifiable):
         """Initialize SwcToImplMapping."""
         super().__init__()
         self.component: Optional[SwcImplementation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcToImplMapping":
+        """Deserialize XML element to SwcToImplMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcToImplMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse component
+        child = ARObject._find_child_element(element, "COMPONENT")
+        if child is not None:
+            component_value = ARObject._deserialize_by_tag(child, "SwcImplementation")
+            obj.component = component_value
+
+        return obj
+
 
 
 class SwcToImplMappingBuilder:

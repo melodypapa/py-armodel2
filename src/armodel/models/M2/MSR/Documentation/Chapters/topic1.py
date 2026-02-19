@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -39,6 +40,34 @@ class Topic1(Paginateable):
         super().__init__()
         self.help_entry: Optional[String] = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Topic1":
+        """Deserialize XML element to Topic1 object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Topic1 object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse help_entry
+        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        if child is not None:
+            help_entry_value = child.text
+            obj.help_entry = help_entry_value
+
+        # Parse topic_content_or_msr
+        child = ARObject._find_child_element(element, "TOPIC-CONTENT-OR-MSR")
+        if child is not None:
+            topic_content_or_msr_value = ARObject._deserialize_by_tag(child, "TopicContentOrMsrQuery")
+            obj.topic_content_or_msr = topic_content_or_msr_value
+
+        return obj
+
 
 
 class Topic1Builder:

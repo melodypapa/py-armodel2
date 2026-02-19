@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -40,6 +41,34 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         super().__init__()
         self.acf_parts: list[IEEE1722TpAcfBusPart] = []
         self.bus_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfBus":
+        """Deserialize XML element to IEEE1722TpAcfBus object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfBus object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse acf_parts (list)
+        obj.acf_parts = []
+        for child in ARObject._find_all_child_elements(element, "ACF-PARTS"):
+            acf_parts_value = ARObject._deserialize_by_tag(child, "IEEE1722TpAcfBusPart")
+            obj.acf_parts.append(acf_parts_value)
+
+        # Parse bus_id
+        child = ARObject._find_child_element(element, "BUS-ID")
+        if child is not None:
+            bus_id_value = child.text
+            obj.bus_id = bus_id_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfBusBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -65,6 +66,82 @@ class NmEcu(Identifiable):
         self.nm_remote_sleep_ind: Optional[Any] = None
         self.nm_state_change: Optional[Boolean] = None
         self.nm_user_data_enabled: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NmEcu":
+        """Deserialize XML element to NmEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NmEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bus_dependent_nm_ecus (list)
+        obj.bus_dependent_nm_ecus = []
+        for child in ARObject._find_all_child_elements(element, "BUS-DEPENDENT-NM-ECUS"):
+            bus_dependent_nm_ecus_value = ARObject._deserialize_by_tag(child, "BusspecificNmEcu")
+            obj.bus_dependent_nm_ecus.append(bus_dependent_nm_ecus_value)
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse nm_bus_synchronization
+        child = ARObject._find_child_element(element, "NM-BUS-SYNCHRONIZATION")
+        if child is not None:
+            nm_bus_synchronization_value = child.text
+            obj.nm_bus_synchronization = nm_bus_synchronization_value
+
+        # Parse nm_com_control_enabled
+        child = ARObject._find_child_element(element, "NM-COM-CONTROL-ENABLED")
+        if child is not None:
+            nm_com_control_enabled_value = child.text
+            obj.nm_com_control_enabled = nm_com_control_enabled_value
+
+        # Parse nm_coordinator
+        child = ARObject._find_child_element(element, "NM-COORDINATOR")
+        if child is not None:
+            nm_coordinator_value = ARObject._deserialize_by_tag(child, "NmCoordinator")
+            obj.nm_coordinator = nm_coordinator_value
+
+        # Parse nm_cycletime
+        child = ARObject._find_child_element(element, "NM-CYCLETIME")
+        if child is not None:
+            nm_cycletime_value = child.text
+            obj.nm_cycletime = nm_cycletime_value
+
+        # Parse nm_pdu_rx_indication
+        child = ARObject._find_child_element(element, "NM-PDU-RX-INDICATION")
+        if child is not None:
+            nm_pdu_rx_indication_value = child.text
+            obj.nm_pdu_rx_indication = nm_pdu_rx_indication_value
+
+        # Parse nm_remote_sleep_ind
+        child = ARObject._find_child_element(element, "NM-REMOTE-SLEEP-IND")
+        if child is not None:
+            nm_remote_sleep_ind_value = child.text
+            obj.nm_remote_sleep_ind = nm_remote_sleep_ind_value
+
+        # Parse nm_state_change
+        child = ARObject._find_child_element(element, "NM-STATE-CHANGE")
+        if child is not None:
+            nm_state_change_value = child.text
+            obj.nm_state_change = nm_state_change_value
+
+        # Parse nm_user_data_enabled
+        child = ARObject._find_child_element(element, "NM-USER-DATA-ENABLED")
+        if child is not None:
+            nm_user_data_enabled_value = child.text
+            obj.nm_user_data_enabled = nm_user_data_enabled_value
+
+        return obj
+
 
 
 class NmEcuBuilder:

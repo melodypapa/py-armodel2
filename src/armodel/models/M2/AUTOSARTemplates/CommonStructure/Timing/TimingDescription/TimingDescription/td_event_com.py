@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -35,6 +36,28 @@ class TDEventCom(TimingDescriptionEvent, ABC):
         """Initialize TDEventCom."""
         super().__init__()
         self.ecu_instance: Optional[EcuInstance] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventCom":
+        """Deserialize XML element to TDEventCom object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventCom object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        return obj
+
 
 
 class TDEventComBuilder:

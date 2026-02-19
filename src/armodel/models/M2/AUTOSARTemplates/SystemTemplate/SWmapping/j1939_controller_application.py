@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -40,6 +41,34 @@ class J1939ControllerApplication(ARElement):
         super().__init__()
         self.function_id: Optional[PositiveInteger] = None
         self.sw_component_prototype_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939ControllerApplication":
+        """Deserialize XML element to J1939ControllerApplication object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939ControllerApplication object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse function_id
+        child = ARObject._find_child_element(element, "FUNCTION-ID")
+        if child is not None:
+            function_id_value = child.text
+            obj.function_id = function_id_value
+
+        # Parse sw_component_prototype_ref
+        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE")
+        if child is not None:
+            sw_component_prototype_ref_value = ARObject._deserialize_by_tag(child, "SwComponentPrototype")
+            obj.sw_component_prototype_ref = sw_component_prototype_ref_value
+
+        return obj
+
 
 
 class J1939ControllerApplicationBuilder:

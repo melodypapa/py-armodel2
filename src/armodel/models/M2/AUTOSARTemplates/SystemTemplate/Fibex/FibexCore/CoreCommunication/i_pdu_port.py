@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.comm_connector_port import (
     CommConnectorPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     IPduSignalProcessingEnum,
 )
@@ -44,6 +45,46 @@ class IPduPort(CommConnectorPort):
         self.rx_security: Optional[Boolean] = None
         self.timestamp_rx: Optional[TimeValue] = None
         self.use_auth_data: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPduPort":
+        """Deserialize XML element to IPduPort object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPduPort object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse i_pdu_signal
+        child = ARObject._find_child_element(element, "I-PDU-SIGNAL")
+        if child is not None:
+            i_pdu_signal_value = child.text
+            obj.i_pdu_signal = i_pdu_signal_value
+
+        # Parse rx_security
+        child = ARObject._find_child_element(element, "RX-SECURITY")
+        if child is not None:
+            rx_security_value = child.text
+            obj.rx_security = rx_security_value
+
+        # Parse timestamp_rx
+        child = ARObject._find_child_element(element, "TIMESTAMP-RX")
+        if child is not None:
+            timestamp_rx_value = child.text
+            obj.timestamp_rx = timestamp_rx_value
+
+        # Parse use_auth_data
+        child = ARObject._find_child_element(element, "USE-AUTH-DATA")
+        if child is not None:
+            use_auth_data_value = child.text
+            obj.use_auth_data = use_auth_data_value
+
+        return obj
+
 
 
 class IPduPortBuilder:

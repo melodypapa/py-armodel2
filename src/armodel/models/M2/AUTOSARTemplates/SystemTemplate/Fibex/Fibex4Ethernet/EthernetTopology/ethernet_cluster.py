@@ -38,6 +38,34 @@ class EthernetCluster(ARObject):
         super().__init__()
         self.coupling_port: Optional[TimeValue] = None
         self.mac_multicast_group_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthernetCluster":
+        """Deserialize XML element to EthernetCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthernetCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse coupling_port
+        child = ARObject._find_child_element(element, "COUPLING-PORT")
+        if child is not None:
+            coupling_port_value = child.text
+            obj.coupling_port = coupling_port_value
+
+        # Parse mac_multicast_group_refs (list)
+        obj.mac_multicast_group_refs = []
+        for child in ARObject._find_all_child_elements(element, "MAC-MULTICAST-GROUPS"):
+            mac_multicast_group_refs_value = ARObject._deserialize_by_tag(child, "MacMulticastGroup")
+            obj.mac_multicast_group_refs.append(mac_multicast_group_refs_value)
+
+        return obj
+
 
 
 class EthernetClusterBuilder:

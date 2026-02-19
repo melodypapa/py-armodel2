@@ -33,6 +33,28 @@ class MultiplexedPart(ARObject, ABC):
         """Initialize MultiplexedPart."""
         super().__init__()
         self.segment_positions: list[SegmentPosition] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiplexedPart":
+        """Deserialize XML element to MultiplexedPart object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiplexedPart object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse segment_positions (list)
+        obj.segment_positions = []
+        for child in ARObject._find_all_child_elements(element, "SEGMENT-POSITIONS"):
+            segment_positions_value = ARObject._deserialize_by_tag(child, "SegmentPosition")
+            obj.segment_positions.append(segment_positions_value)
+
+        return obj
+
 
 
 class MultiplexedPartBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -37,6 +38,34 @@ class Keyword(Identifiable):
         super().__init__()
         self.abbr_name: NameToken = None
         self.classifications: list[NameToken] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Keyword":
+        """Deserialize XML element to Keyword object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Keyword object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse abbr_name
+        child = ARObject._find_child_element(element, "ABBR-NAME")
+        if child is not None:
+            abbr_name_value = child.text
+            obj.abbr_name = abbr_name_value
+
+        # Parse classifications (list)
+        obj.classifications = []
+        for child in ARObject._find_all_child_elements(element, "CLASSIFICATIONS"):
+            classifications_value = child.text
+            obj.classifications.append(classifications_value)
+
+        return obj
+
 
 
 class KeywordBuilder:

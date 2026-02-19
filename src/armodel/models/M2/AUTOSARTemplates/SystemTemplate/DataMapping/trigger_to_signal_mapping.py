@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
@@ -40,6 +41,34 @@ class TriggerToSignalMapping(DataMapping):
         super().__init__()
         self.system_signal: Optional[SystemSignal] = None
         self.trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TriggerToSignalMapping":
+        """Deserialize XML element to TriggerToSignalMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TriggerToSignalMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse system_signal
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        if child is not None:
+            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
+            obj.system_signal = system_signal_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.trigger_ref = trigger_ref_value
+
+        return obj
+
 
 
 class TriggerToSignalMappingBuilder:

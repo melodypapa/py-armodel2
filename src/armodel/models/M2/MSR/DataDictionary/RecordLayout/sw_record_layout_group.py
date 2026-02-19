@@ -51,6 +51,52 @@ class SwRecordLayoutGroup(ARObject):
         self.short_label: Optional[Identifier] = None
         self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
         self.sw_record: Optional[RecordLayoutIteratorPoint] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwRecordLayoutGroup":
+        """Deserialize XML element to SwRecordLayoutGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwRecordLayoutGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        # Parse sw_generic_axis_param
+        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM")
+        if child is not None:
+            sw_generic_axis_param_value = ARObject._deserialize_by_tag(child, "SwGenericAxisParam")
+            obj.sw_generic_axis_param = sw_generic_axis_param_value
+
+        # Parse sw_record
+        child = ARObject._find_child_element(element, "SW-RECORD")
+        if child is not None:
+            sw_record_value = child.text
+            obj.sw_record = sw_record_value
+
+        return obj
+
 
 
 class SwRecordLayoutGroupBuilder:

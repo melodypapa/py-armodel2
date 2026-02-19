@@ -32,6 +32,28 @@ class GlobalTimeCouplingPortProps(ARObject):
         """Initialize GlobalTimeCouplingPortProps."""
         super().__init__()
         self.propagation: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeCouplingPortProps":
+        """Deserialize XML element to GlobalTimeCouplingPortProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeCouplingPortProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse propagation
+        child = ARObject._find_child_element(element, "PROPAGATION")
+        if child is not None:
+            propagation_value = child.text
+            obj.propagation = propagation_value
+
+        return obj
+
 
 
 class GlobalTimeCouplingPortPropsBuilder:

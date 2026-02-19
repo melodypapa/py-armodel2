@@ -44,6 +44,40 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_operation: Optional[ClientServerOperation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "OperationInAtomicSwcInstanceRef":
+        """Deserialize XML element to OperationInAtomicSwcInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized OperationInAtomicSwcInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
+            obj.base = base_value
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        # Parse target_operation
+        child = ARObject._find_child_element(element, "TARGET-OPERATION")
+        if child is not None:
+            target_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.target_operation = target_operation_value
+
+        return obj
+
 
 
 class OperationInAtomicSwcInstanceRefBuilder:

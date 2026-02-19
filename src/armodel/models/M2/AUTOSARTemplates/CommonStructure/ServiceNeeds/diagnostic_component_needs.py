@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticComponentNeeds(DiagnosticCapabilityElement):
@@ -30,6 +31,22 @@ class DiagnosticComponentNeeds(DiagnosticCapabilityElement):
     def __init__(self) -> None:
         """Initialize DiagnosticComponentNeeds."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticComponentNeeds":
+        """Deserialize XML element to DiagnosticComponentNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticComponentNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class DiagnosticComponentNeedsBuilder:

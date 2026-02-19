@@ -35,6 +35,34 @@ class TcpIpIcmpv4Props(ARObject):
         super().__init__()
         self.tcp_ip_icmp: Optional[Boolean] = None
         self.tcp_ip_icmp_v4_ttl: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TcpIpIcmpv4Props":
+        """Deserialize XML element to TcpIpIcmpv4Props object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TcpIpIcmpv4Props object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_icmp
+        child = ARObject._find_child_element(element, "TCP-IP-ICMP")
+        if child is not None:
+            tcp_ip_icmp_value = child.text
+            obj.tcp_ip_icmp = tcp_ip_icmp_value
+
+        # Parse tcp_ip_icmp_v4_ttl
+        child = ARObject._find_child_element(element, "TCP-IP-ICMP-V4-TTL")
+        if child is not None:
+            tcp_ip_icmp_v4_ttl_value = child.text
+            obj.tcp_ip_icmp_v4_ttl = tcp_ip_icmp_v4_ttl_value
+
+        return obj
+
 
 
 class TcpIpIcmpv4PropsBuilder:

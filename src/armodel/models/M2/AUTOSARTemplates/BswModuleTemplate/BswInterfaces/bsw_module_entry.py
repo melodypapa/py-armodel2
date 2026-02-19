@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces import (
     BswCallType,
     BswEntryKindEnum,
@@ -75,6 +76,88 @@ class BswModuleEntry(ARElement):
         self.role: Optional[Identifier] = None
         self.service_id: Optional[PositiveInteger] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswModuleEntry":
+        """Deserialize XML element to BswModuleEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswModuleEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse arguments (list)
+        obj.arguments = []
+        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
+            arguments_value = ARObject._deserialize_by_tag(child, "SwServiceArg")
+            obj.arguments.append(arguments_value)
+
+        # Parse bsw_entry_kind_enum
+        child = ARObject._find_child_element(element, "BSW-ENTRY-KIND-ENUM")
+        if child is not None:
+            bsw_entry_kind_enum_value = child.text
+            obj.bsw_entry_kind_enum = bsw_entry_kind_enum_value
+
+        # Parse call_type
+        child = ARObject._find_child_element(element, "CALL-TYPE")
+        if child is not None:
+            call_type_value = child.text
+            obj.call_type = call_type_value
+
+        # Parse execution
+        child = ARObject._find_child_element(element, "EXECUTION")
+        if child is not None:
+            execution_value = child.text
+            obj.execution = execution_value
+
+        # Parse function
+        child = ARObject._find_child_element(element, "FUNCTION")
+        if child is not None:
+            function_value = child.text
+            obj.function = function_value
+
+        # Parse is_reentrant
+        child = ARObject._find_child_element(element, "IS-REENTRANT")
+        if child is not None:
+            is_reentrant_value = child.text
+            obj.is_reentrant = is_reentrant_value
+
+        # Parse is_synchronous
+        child = ARObject._find_child_element(element, "IS-SYNCHRONOUS")
+        if child is not None:
+            is_synchronous_value = child.text
+            obj.is_synchronous = is_synchronous_value
+
+        # Parse return_type
+        child = ARObject._find_child_element(element, "RETURN-TYPE")
+        if child is not None:
+            return_type_value = ARObject._deserialize_by_tag(child, "SwServiceArg")
+            obj.return_type = return_type_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse service_id
+        child = ARObject._find_child_element(element, "SERVICE-ID")
+        if child is not None:
+            service_id_value = child.text
+            obj.service_id = service_id_value
+
+        # Parse sw_service_impl_policy
+        child = ARObject._find_child_element(element, "SW-SERVICE-IMPL-POLICY")
+        if child is not None:
+            sw_service_impl_policy_value = child.text
+            obj.sw_service_impl_policy = sw_service_impl_policy_value
+
+        return obj
+
 
 
 class BswModuleEntryBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
     SdgElementWithGid,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -30,6 +31,22 @@ class SdgAbstractPrimitiveAttribute(SdgElementWithGid, ABC):
     def __init__(self) -> None:
         """Initialize SdgAbstractPrimitiveAttribute."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgAbstractPrimitiveAttribute":
+        """Deserialize XML element to SdgAbstractPrimitiveAttribute object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgAbstractPrimitiveAttribute object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SdgAbstractPrimitiveAttributeBuilder:

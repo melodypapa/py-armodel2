@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling import (
     BindingTimeEnum,
 )
@@ -57,6 +58,58 @@ class FMFeature(ARElement):
         self.minimum: Optional[BindingTimeEnum] = None
         self.relations: list[FMFeatureRelation] = []
         self.restrictions: list[FMFeatureRestriction] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFeature":
+        """Deserialize XML element to FMFeature object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFeature object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse attribute_defs (list)
+        obj.attribute_defs = []
+        for child in ARObject._find_all_child_elements(element, "ATTRIBUTE-DEFS"):
+            attribute_defs_value = ARObject._deserialize_by_tag(child, "FMAttributeDef")
+            obj.attribute_defs.append(attribute_defs_value)
+
+        # Parse decomposition_decompositions (list)
+        obj.decomposition_decompositions = []
+        for child in ARObject._find_all_child_elements(element, "DECOMPOSITION-DECOMPOSITIONS"):
+            decomposition_decompositions_value = ARObject._deserialize_by_tag(child, "FMFeature")
+            obj.decomposition_decompositions.append(decomposition_decompositions_value)
+
+        # Parse maximum
+        child = ARObject._find_child_element(element, "MAXIMUM")
+        if child is not None:
+            maximum_value = child.text
+            obj.maximum = maximum_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = child.text
+            obj.minimum = minimum_value
+
+        # Parse relations (list)
+        obj.relations = []
+        for child in ARObject._find_all_child_elements(element, "RELATIONS"):
+            relations_value = ARObject._deserialize_by_tag(child, "FMFeatureRelation")
+            obj.relations.append(relations_value)
+
+        # Parse restrictions (list)
+        obj.restrictions = []
+        for child in ARObject._find_all_child_elements(element, "RESTRICTIONS"):
+            restrictions_value = ARObject._deserialize_by_tag(child, "FMFeatureRestriction")
+            obj.restrictions.append(restrictions_value)
+
+        return obj
+
 
 
 class FMFeatureBuilder:

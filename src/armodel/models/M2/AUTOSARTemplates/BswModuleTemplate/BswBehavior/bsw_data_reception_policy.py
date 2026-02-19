@@ -34,6 +34,28 @@ class BswDataReceptionPolicy(ARObject, ABC):
         """Initialize BswDataReceptionPolicy."""
         super().__init__()
         self.received_data_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswDataReceptionPolicy":
+        """Deserialize XML element to BswDataReceptionPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswDataReceptionPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse received_data_ref
+        child = ARObject._find_child_element(element, "RECEIVED-DATA")
+        if child is not None:
+            received_data_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.received_data_ref = received_data_ref_value
+
+        return obj
+
 
 
 class BswDataReceptionPolicyBuilder:

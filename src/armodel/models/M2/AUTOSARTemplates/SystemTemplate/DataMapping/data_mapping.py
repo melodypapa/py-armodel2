@@ -34,6 +34,28 @@ class DataMapping(ARObject, ABC):
         """Initialize DataMapping."""
         super().__init__()
         self.introduction: Optional[DocumentationBlock] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataMapping":
+        """Deserialize XML element to DataMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        return obj
+
 
 
 class DataMappingBuilder:

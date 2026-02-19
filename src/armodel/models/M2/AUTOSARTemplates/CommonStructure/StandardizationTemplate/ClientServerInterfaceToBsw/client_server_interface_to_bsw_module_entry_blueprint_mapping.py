@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_interface import (
     ClientServerInterface,
 )
@@ -44,6 +45,40 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         self.client_server: ClientServerInterface = None
         self.operation: ClientServerOperation = None
         self.port_defined_arguments: list[PortDefinedArgumentValue] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientServerInterfaceToBswModuleEntryBlueprintMapping":
+        """Deserialize XML element to ClientServerInterfaceToBswModuleEntryBlueprintMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientServerInterfaceToBswModuleEntryBlueprintMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse client_server
+        child = ARObject._find_child_element(element, "CLIENT-SERVER")
+        if child is not None:
+            client_server_value = ARObject._deserialize_by_tag(child, "ClientServerInterface")
+            obj.client_server = client_server_value
+
+        # Parse operation
+        child = ARObject._find_child_element(element, "OPERATION")
+        if child is not None:
+            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation = operation_value
+
+        # Parse port_defined_arguments (list)
+        obj.port_defined_arguments = []
+        for child in ARObject._find_all_child_elements(element, "PORT-DEFINED-ARGUMENTS"):
+            port_defined_arguments_value = ARObject._deserialize_by_tag(child, "PortDefinedArgumentValue")
+            obj.port_defined_arguments.append(port_defined_arguments_value)
+
+        return obj
+
 
 
 class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder:

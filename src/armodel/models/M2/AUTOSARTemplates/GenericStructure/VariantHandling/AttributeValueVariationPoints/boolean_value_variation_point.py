@@ -27,6 +27,22 @@ class BooleanValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize BooleanValueVariationPoint."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BooleanValueVariationPoint":
+        """Deserialize XML element to BooleanValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BooleanValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BooleanValueVariationPointBuilder:

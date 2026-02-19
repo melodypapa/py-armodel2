@@ -40,6 +40,40 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable_ref: ARRef = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InnerRunnableEntityGroupInCompositionInstanceRef":
+        """Deserialize XML element to InnerRunnableEntityGroupInCompositionInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InnerRunnableEntityGroupInCompositionInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse context_sws (list)
+        obj.context_sws = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-SWS"):
+            context_sws_value = child.text
+            obj.context_sws.append(context_sws_value)
+
+        # Parse target_runnable_ref
+        child = ARObject._find_child_element(element, "TARGET-RUNNABLE")
+        if child is not None:
+            target_runnable_ref_value = ARObject._deserialize_by_tag(child, "RunnableEntityGroup")
+            obj.target_runnable_ref = target_runnable_ref_value
+
+        return obj
+
 
 
 class InnerRunnableEntityGroupInCompositionInstanceRefBuilder:

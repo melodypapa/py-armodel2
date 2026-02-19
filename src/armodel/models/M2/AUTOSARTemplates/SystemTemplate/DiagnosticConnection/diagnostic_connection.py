@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
@@ -47,6 +48,52 @@ class DiagnosticConnection(ARElement):
         self.physical_request: Optional[TpConnectionIdent] = None
         self.response: Optional[TpConnectionIdent] = None
         self.response_on: Optional[TpConnectionIdent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticConnection":
+        """Deserialize XML element to DiagnosticConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse functional_requests (list)
+        obj.functional_requests = []
+        for child in ARObject._find_all_child_elements(element, "FUNCTIONAL-REQUESTS"):
+            functional_requests_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            obj.functional_requests.append(functional_requests_value)
+
+        # Parse periodic_response_uudt_refs (list)
+        obj.periodic_response_uudt_refs = []
+        for child in ARObject._find_all_child_elements(element, "PERIODIC-RESPONSE-UUDTS"):
+            periodic_response_uudt_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.periodic_response_uudt_refs.append(periodic_response_uudt_refs_value)
+
+        # Parse physical_request
+        child = ARObject._find_child_element(element, "PHYSICAL-REQUEST")
+        if child is not None:
+            physical_request_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            obj.physical_request = physical_request_value
+
+        # Parse response
+        child = ARObject._find_child_element(element, "RESPONSE")
+        if child is not None:
+            response_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            obj.response = response_value
+
+        # Parse response_on
+        child = ARObject._find_child_element(element, "RESPONSE-ON")
+        if child is not None:
+            response_on_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            obj.response_on = response_on_value
+
+        return obj
+
 
 
 class DiagnosticConnectionBuilder:

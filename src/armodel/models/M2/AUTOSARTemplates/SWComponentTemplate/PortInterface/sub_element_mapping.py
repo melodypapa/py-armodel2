@@ -40,6 +40,40 @@ class SubElementMapping(ARObject):
         self.first_element_ref: Optional[ARRef] = None
         self.second_element_ref: Optional[ARRef] = None
         self.text_table_ref: ARRef = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SubElementMapping":
+        """Deserialize XML element to SubElementMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SubElementMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_element_ref
+        child = ARObject._find_child_element(element, "FIRST-ELEMENT")
+        if child is not None:
+            first_element_ref_value = ARObject._deserialize_by_tag(child, "SubElementRef")
+            obj.first_element_ref = first_element_ref_value
+
+        # Parse second_element_ref
+        child = ARObject._find_child_element(element, "SECOND-ELEMENT")
+        if child is not None:
+            second_element_ref_value = ARObject._deserialize_by_tag(child, "SubElementRef")
+            obj.second_element_ref = second_element_ref_value
+
+        # Parse text_table_ref
+        child = ARObject._find_child_element(element, "TEXT-TABLE")
+        if child is not None:
+            text_table_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            obj.text_table_ref = text_table_ref_value
+
+        return obj
+
 
 
 class SubElementMappingBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -66,6 +67,94 @@ class J1939TpConnection(TpConnection):
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
         self.transmitter: Optional[J1939TpNode] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939TpConnection":
+        """Deserialize XML element to J1939TpConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939TpConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse broadcast
+        child = ARObject._find_child_element(element, "BROADCAST")
+        if child is not None:
+            broadcast_value = child.text
+            obj.broadcast = broadcast_value
+
+        # Parse buffer_ratio
+        child = ARObject._find_child_element(element, "BUFFER-RATIO")
+        if child is not None:
+            buffer_ratio_value = child.text
+            obj.buffer_ratio = buffer_ratio_value
+
+        # Parse cancellation
+        child = ARObject._find_child_element(element, "CANCELLATION")
+        if child is not None:
+            cancellation_value = child.text
+            obj.cancellation = cancellation_value
+
+        # Parse data_pdu
+        child = ARObject._find_child_element(element, "DATA-PDU")
+        if child is not None:
+            data_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
+            obj.data_pdu = data_pdu_value
+
+        # Parse dynamic_bs
+        child = ARObject._find_child_element(element, "DYNAMIC-BS")
+        if child is not None:
+            dynamic_bs_value = child.text
+            obj.dynamic_bs = dynamic_bs_value
+
+        # Parse flow_control_pdu
+        child = ARObject._find_child_element(element, "FLOW-CONTROL-PDU")
+        if child is not None:
+            flow_control_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
+            obj.flow_control_pdu = flow_control_pdu_value
+
+        # Parse max_bs
+        child = ARObject._find_child_element(element, "MAX-BS")
+        if child is not None:
+            max_bs_value = child.text
+            obj.max_bs = max_bs_value
+
+        # Parse max_exp_bs
+        child = ARObject._find_child_element(element, "MAX-EXP-BS")
+        if child is not None:
+            max_exp_bs_value = child.text
+            obj.max_exp_bs = max_exp_bs_value
+
+        # Parse receivers (list)
+        obj.receivers = []
+        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
+            receivers_value = ARObject._deserialize_by_tag(child, "J1939TpNode")
+            obj.receivers.append(receivers_value)
+
+        # Parse retry
+        child = ARObject._find_child_element(element, "RETRY")
+        if child is not None:
+            retry_value = child.text
+            obj.retry = retry_value
+
+        # Parse tp_pgs (list)
+        obj.tp_pgs = []
+        for child in ARObject._find_all_child_elements(element, "TP-PGS"):
+            tp_pgs_value = ARObject._deserialize_by_tag(child, "J1939TpPg")
+            obj.tp_pgs.append(tp_pgs_value)
+
+        # Parse transmitter
+        child = ARObject._find_child_element(element, "TRANSMITTER")
+        if child is not None:
+            transmitter_value = ARObject._deserialize_by_tag(child, "J1939TpNode")
+            obj.transmitter = transmitter_value
+
+        return obj
+
 
 
 class J1939TpConnectionBuilder:

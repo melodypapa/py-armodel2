@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint_address import (
     NetworkEndpointAddress,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     IpAddressKeepEnum,
     Ipv6AddressSourceEnum,
@@ -56,6 +57,76 @@ class Ipv6Configuration(NetworkEndpointAddress):
         self.ip_address_prefix: Optional[PositiveInteger] = None
         self.ipv6_address: Optional[Ip6AddressString] = None
         self.ipv6_address_source: Optional[Ipv6AddressSourceEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6Configuration":
+        """Deserialize XML element to Ipv6Configuration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6Configuration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse assignment
+        child = ARObject._find_child_element(element, "ASSIGNMENT")
+        if child is not None:
+            assignment_value = child.text
+            obj.assignment = assignment_value
+
+        # Parse default_router
+        child = ARObject._find_child_element(element, "DEFAULT-ROUTER")
+        if child is not None:
+            default_router_value = child.text
+            obj.default_router = default_router_value
+
+        # Parse dns_servers (list)
+        obj.dns_servers = []
+        for child in ARObject._find_all_child_elements(element, "DNS-SERVERS"):
+            dns_servers_value = child.text
+            obj.dns_servers.append(dns_servers_value)
+
+        # Parse enable_anycast
+        child = ARObject._find_child_element(element, "ENABLE-ANYCAST")
+        if child is not None:
+            enable_anycast_value = child.text
+            obj.enable_anycast = enable_anycast_value
+
+        # Parse hop_count
+        child = ARObject._find_child_element(element, "HOP-COUNT")
+        if child is not None:
+            hop_count_value = child.text
+            obj.hop_count = hop_count_value
+
+        # Parse ip_address_keep_enum
+        child = ARObject._find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
+        if child is not None:
+            ip_address_keep_enum_value = child.text
+            obj.ip_address_keep_enum = ip_address_keep_enum_value
+
+        # Parse ip_address_prefix
+        child = ARObject._find_child_element(element, "IP-ADDRESS-PREFIX")
+        if child is not None:
+            ip_address_prefix_value = child.text
+            obj.ip_address_prefix = ip_address_prefix_value
+
+        # Parse ipv6_address
+        child = ARObject._find_child_element(element, "IPV6-ADDRESS")
+        if child is not None:
+            ipv6_address_value = child.text
+            obj.ipv6_address = ipv6_address_value
+
+        # Parse ipv6_address_source
+        child = ARObject._find_child_element(element, "IPV6-ADDRESS-SOURCE")
+        if child is not None:
+            ipv6_address_source_value = child.text
+            obj.ipv6_address_source = ipv6_address_source_value
+
+        return obj
+
 
 
 class Ipv6ConfigurationBuilder:

@@ -37,6 +37,34 @@ class SwcExclusiveAreaPolicy(ARObject):
         super().__init__()
         self.api_principle_enum: Optional[ApiPrincipleEnum] = None
         self.exclusive_area: Optional[ExclusiveArea] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcExclusiveAreaPolicy":
+        """Deserialize XML element to SwcExclusiveAreaPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcExclusiveAreaPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse api_principle_enum
+        child = ARObject._find_child_element(element, "API-PRINCIPLE-ENUM")
+        if child is not None:
+            api_principle_enum_value = child.text
+            obj.api_principle_enum = api_principle_enum_value
+
+        # Parse exclusive_area
+        child = ARObject._find_child_element(element, "EXCLUSIVE-AREA")
+        if child is not None:
+            exclusive_area_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
+            obj.exclusive_area = exclusive_area_value
+
+        return obj
+
 
 
 class SwcExclusiveAreaPolicyBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -56,6 +57,58 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         self.requires: list[BinaryManifestRequireResource] = []
         self.resources: list[Any] = []
         self.software_cluster: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterBinaryManifestDescriptor":
+        """Deserialize XML element to CpSoftwareClusterBinaryManifestDescriptor object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSoftwareClusterBinaryManifestDescriptor object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cp_software_cluster
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        if child is not None:
+            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.cp_software_cluster = cp_software_cluster_value
+
+        # Parse meta_data_fields (list)
+        obj.meta_data_fields = []
+        for child in ARObject._find_all_child_elements(element, "META-DATA-FIELDS"):
+            meta_data_fields_value = ARObject._deserialize_by_tag(child, "BinaryManifestMetaDataField")
+            obj.meta_data_fields.append(meta_data_fields_value)
+
+        # Parse provides (list)
+        obj.provides = []
+        for child in ARObject._find_all_child_elements(element, "PROVIDES"):
+            provides_value = ARObject._deserialize_by_tag(child, "BinaryManifestProvideResource")
+            obj.provides.append(provides_value)
+
+        # Parse requires (list)
+        obj.requires = []
+        for child in ARObject._find_all_child_elements(element, "REQUIRES"):
+            requires_value = ARObject._deserialize_by_tag(child, "BinaryManifestRequireResource")
+            obj.requires.append(requires_value)
+
+        # Parse resources (list)
+        obj.resources = []
+        for child in ARObject._find_all_child_elements(element, "RESOURCES"):
+            resources_value = child.text
+            obj.resources.append(resources_value)
+
+        # Parse software_cluster
+        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        if child is not None:
+            software_cluster_value = child.text
+            obj.software_cluster = software_cluster_value
+
+        return obj
+
 
 
 class CpSoftwareClusterBinaryManifestDescriptorBuilder:

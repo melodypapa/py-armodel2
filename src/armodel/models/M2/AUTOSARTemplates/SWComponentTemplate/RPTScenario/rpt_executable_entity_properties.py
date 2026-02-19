@@ -45,6 +45,46 @@ class RptExecutableEntityProperties(ARObject):
         self.min_rpt_event_id: Optional[PositiveInteger] = None
         self.rpt_execution_control: Optional[RptExecutionControlEnum] = None
         self.rpt_service_point_enum: Optional[RptServicePointEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RptExecutableEntityProperties":
+        """Deserialize XML element to RptExecutableEntityProperties object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RptExecutableEntityProperties object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_rpt_event_id
+        child = ARObject._find_child_element(element, "MAX-RPT-EVENT-ID")
+        if child is not None:
+            max_rpt_event_id_value = child.text
+            obj.max_rpt_event_id = max_rpt_event_id_value
+
+        # Parse min_rpt_event_id
+        child = ARObject._find_child_element(element, "MIN-RPT-EVENT-ID")
+        if child is not None:
+            min_rpt_event_id_value = child.text
+            obj.min_rpt_event_id = min_rpt_event_id_value
+
+        # Parse rpt_execution_control
+        child = ARObject._find_child_element(element, "RPT-EXECUTION-CONTROL")
+        if child is not None:
+            rpt_execution_control_value = child.text
+            obj.rpt_execution_control = rpt_execution_control_value
+
+        # Parse rpt_service_point_enum
+        child = ARObject._find_child_element(element, "RPT-SERVICE-POINT-ENUM")
+        if child is not None:
+            rpt_service_point_enum_value = child.text
+            obj.rpt_service_point_enum = rpt_service_point_enum_value
+
+        return obj
+
 
 
 class RptExecutableEntityPropertiesBuilder:

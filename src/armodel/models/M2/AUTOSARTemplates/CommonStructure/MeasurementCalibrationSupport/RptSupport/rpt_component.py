@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
     RoleBasedMcDataAssignment,
 )
@@ -44,6 +45,40 @@ class RptComponent(Identifiable):
         self.mc_datas: list[RoleBasedMcDataAssignment] = []
         self.rp_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_executable_entities: list[RptExecutableEntity] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RptComponent":
+        """Deserialize XML element to RptComponent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RptComponent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mc_datas (list)
+        obj.mc_datas = []
+        for child in ARObject._find_all_child_elements(element, "MC-DATAS"):
+            mc_datas_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
+            obj.mc_datas.append(mc_datas_value)
+
+        # Parse rp_impl_policy
+        child = ARObject._find_child_element(element, "RP-IMPL-POLICY")
+        if child is not None:
+            rp_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
+            obj.rp_impl_policy = rp_impl_policy_value
+
+        # Parse rpt_executable_entities (list)
+        obj.rpt_executable_entities = []
+        for child in ARObject._find_all_child_elements(element, "RPT-EXECUTABLE-ENTITIES"):
+            rpt_executable_entities_value = ARObject._deserialize_by_tag(child, "RptExecutableEntity")
+            obj.rpt_executable_entities.append(rpt_executable_entities_value)
+
+        return obj
+
 
 
 class RptComponentBuilder:

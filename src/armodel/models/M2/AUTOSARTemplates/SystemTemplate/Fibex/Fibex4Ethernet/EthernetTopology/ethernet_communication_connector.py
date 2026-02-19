@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -47,6 +48,52 @@ class EthernetCommunicationConnector(CommunicationConnector):
         self.neighbor_cache: Optional[PositiveInteger] = None
         self.path_mtu: Optional[Boolean] = None
         self.path_mtu_timeout: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthernetCommunicationConnector":
+        """Deserialize XML element to EthernetCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthernetCommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse eth_ip_props
+        child = ARObject._find_child_element(element, "ETH-IP-PROPS")
+        if child is not None:
+            eth_ip_props_value = ARObject._deserialize_by_tag(child, "EthIpProps")
+            obj.eth_ip_props = eth_ip_props_value
+
+        # Parse maximum
+        child = ARObject._find_child_element(element, "MAXIMUM")
+        if child is not None:
+            maximum_value = child.text
+            obj.maximum = maximum_value
+
+        # Parse neighbor_cache
+        child = ARObject._find_child_element(element, "NEIGHBOR-CACHE")
+        if child is not None:
+            neighbor_cache_value = child.text
+            obj.neighbor_cache = neighbor_cache_value
+
+        # Parse path_mtu
+        child = ARObject._find_child_element(element, "PATH-MTU")
+        if child is not None:
+            path_mtu_value = child.text
+            obj.path_mtu = path_mtu_value
+
+        # Parse path_mtu_timeout
+        child = ARObject._find_child_element(element, "PATH-MTU-TIMEOUT")
+        if child is not None:
+            path_mtu_timeout_value = child.text
+            obj.path_mtu_timeout = path_mtu_timeout_value
+
+        return obj
+
 
 
 class EthernetCommunicationConnectorBuilder:

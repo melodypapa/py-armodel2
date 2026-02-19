@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_info_type import (
     DiagnosticInfoType,
 )
@@ -36,6 +37,34 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         super().__init__()
         self.info_type: Optional[DiagnosticInfoType] = None
         self.request_vehicle: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestVehicleInfo":
+        """Deserialize XML element to DiagnosticRequestVehicleInfo object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRequestVehicleInfo object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse info_type
+        child = ARObject._find_child_element(element, "INFO-TYPE")
+        if child is not None:
+            info_type_value = ARObject._deserialize_by_tag(child, "DiagnosticInfoType")
+            obj.info_type = info_type_value
+
+        # Parse request_vehicle
+        child = ARObject._find_child_element(element, "REQUEST-VEHICLE")
+        if child is not None:
+            request_vehicle_value = child.text
+            obj.request_vehicle = request_vehicle_value
+
+        return obj
+
 
 
 class DiagnosticRequestVehicleInfoBuilder:

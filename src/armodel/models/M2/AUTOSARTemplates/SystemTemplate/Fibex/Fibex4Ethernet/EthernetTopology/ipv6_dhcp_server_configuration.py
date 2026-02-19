@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Ip6AddressString,
     TimeValue,
@@ -43,6 +44,52 @@ class Ipv6DhcpServerConfiguration(Describable):
         self.default_lease: Optional[TimeValue] = None
         self.dns_servers: list[Ip6AddressString] = []
         self.network_mask: Optional[Ip6AddressString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6DhcpServerConfiguration":
+        """Deserialize XML element to Ipv6DhcpServerConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6DhcpServerConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse address_range
+        child = ARObject._find_child_element(element, "ADDRESS-RANGE")
+        if child is not None:
+            address_range_value = child.text
+            obj.address_range = address_range_value
+
+        # Parse default_gateway
+        child = ARObject._find_child_element(element, "DEFAULT-GATEWAY")
+        if child is not None:
+            default_gateway_value = child.text
+            obj.default_gateway = default_gateway_value
+
+        # Parse default_lease
+        child = ARObject._find_child_element(element, "DEFAULT-LEASE")
+        if child is not None:
+            default_lease_value = child.text
+            obj.default_lease = default_lease_value
+
+        # Parse dns_servers (list)
+        obj.dns_servers = []
+        for child in ARObject._find_all_child_elements(element, "DNS-SERVERS"):
+            dns_servers_value = child.text
+            obj.dns_servers.append(dns_servers_value)
+
+        # Parse network_mask
+        child = ARObject._find_child_element(element, "NETWORK-MASK")
+        if child is not None:
+            network_mask_value = child.text
+            obj.network_mask = network_mask_value
+
+        return obj
+
 
 
 class Ipv6DhcpServerConfigurationBuilder:

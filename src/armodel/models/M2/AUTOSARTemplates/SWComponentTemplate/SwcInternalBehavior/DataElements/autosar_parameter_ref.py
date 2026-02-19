@@ -39,6 +39,34 @@ class AutosarParameterRef(ARObject):
         super().__init__()
         self.autosar_ref: Optional[ARRef] = None
         self.local_parameter_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AutosarParameterRef":
+        """Deserialize XML element to AutosarParameterRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AutosarParameterRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse autosar_ref
+        child = ARObject._find_child_element(element, "AUTOSAR")
+        if child is not None:
+            autosar_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.autosar_ref = autosar_ref_value
+
+        # Parse local_parameter_ref
+        child = ARObject._find_child_element(element, "LOCAL-PARAMETER")
+        if child is not None:
+            local_parameter_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.local_parameter_ref = local_parameter_ref_value
+
+        return obj
+
 
 
 class AutosarParameterRefBuilder:

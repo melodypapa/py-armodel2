@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.app_os_task_proxy_to_ecu_task_proxy_mapping import (
     AppOsTaskProxyToEcuTaskProxyMapping,
@@ -133,6 +134,160 @@ class SystemMapping(Identifiable):
         self.sw_mapping_refs: list[ARRef] = []
         self.system_signal_group_to_refs: list[ARRef] = []
         self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SystemMapping":
+        """Deserialize XML element to SystemMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SystemMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse applications (list)
+        obj.applications = []
+        for child in ARObject._find_all_child_elements(element, "APPLICATIONS"):
+            applications_value = ARObject._deserialize_by_tag(child, "ApplicationPartitionToEcuPartitionMapping")
+            obj.applications.append(applications_value)
+
+        # Parse app_os_tasks (list)
+        obj.app_os_tasks = []
+        for child in ARObject._find_all_child_elements(element, "APP-OS-TASKS"):
+            app_os_tasks_value = ARObject._deserialize_by_tag(child, "AppOsTaskProxyToEcuTaskProxyMapping")
+            obj.app_os_tasks.append(app_os_tasks_value)
+
+        # Parse coms (list)
+        obj.coms = []
+        for child in ARObject._find_all_child_elements(element, "COMS"):
+            coms_value = ARObject._deserialize_by_tag(child, "ComManagementMapping")
+            obj.coms.append(coms_value)
+
+        # Parse crypto_service_refs (list)
+        obj.crypto_service_refs = []
+        for child in ARObject._find_all_child_elements(element, "CRYPTO-SERVICES"):
+            crypto_service_refs_value = ARObject._deserialize_by_tag(child, "CryptoServiceMapping")
+            obj.crypto_service_refs.append(crypto_service_refs_value)
+
+        # Parse data_mapping_refs (list)
+        obj.data_mapping_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-MAPPINGS"):
+            data_mapping_refs_value = ARObject._deserialize_by_tag(child, "DataMapping")
+            obj.data_mapping_refs.append(data_mapping_refs_value)
+
+        # Parse dds_i_signal_tos (list)
+        obj.dds_i_signal_tos = []
+        for child in ARObject._find_all_child_elements(element, "DDS-I-SIGNAL-TOS"):
+            dds_i_signal_tos_value = ARObject._deserialize_by_tag(child, "DdsCpISignalToDdsTopicMapping")
+            obj.dds_i_signal_tos.append(dds_i_signal_tos_value)
+
+        # Parse ecu_resource_refs (list)
+        obj.ecu_resource_refs = []
+        for child in ARObject._find_all_child_elements(element, "ECU-RESOURCES"):
+            ecu_resource_refs_value = ARObject._deserialize_by_tag(child, "ECUMapping")
+            obj.ecu_resource_refs.append(ecu_resource_refs_value)
+
+        # Parse j1939_controllers (list)
+        obj.j1939_controllers = []
+        for child in ARObject._find_all_child_elements(element, "J1939-CONTROLLERS"):
+            j1939_controllers_value = child.text
+            obj.j1939_controllers.append(j1939_controllers_value)
+
+        # Parse mapping_refs (list)
+        obj.mapping_refs = []
+        for child in ARObject._find_all_child_elements(element, "MAPPINGS"):
+            mapping_refs_value = ARObject._deserialize_by_tag(child, "MappingConstraint")
+            obj.mapping_refs.append(mapping_refs_value)
+
+        # Parse pnc_mapping_refs (list)
+        obj.pnc_mapping_refs = []
+        for child in ARObject._find_all_child_elements(element, "PNC-MAPPINGS"):
+            pnc_mapping_refs_value = ARObject._deserialize_by_tag(child, "PncMapping")
+            obj.pnc_mapping_refs.append(pnc_mapping_refs_value)
+
+        # Parse port_element_tos (list)
+        obj.port_element_tos = []
+        for child in ARObject._find_all_child_elements(element, "PORT-ELEMENT-TOS"):
+            port_element_tos_value = ARObject._deserialize_by_tag(child, "PortElementToCommunicationResourceMapping")
+            obj.port_element_tos.append(port_element_tos_value)
+
+        # Parse resources (list)
+        obj.resources = []
+        for child in ARObject._find_all_child_elements(element, "RESOURCES"):
+            resources_value = ARObject._deserialize_by_tag(child, "EcuResourceEstimation")
+            obj.resources.append(resources_value)
+
+        # Parse resource_tos (list)
+        obj.resource_tos = []
+        for child in ARObject._find_all_child_elements(element, "RESOURCE-TOS"):
+            resource_tos_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.resource_tos.append(resource_tos_value)
+
+        # Parse rte_event_in_systems (list)
+        obj.rte_event_in_systems = []
+        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-IN-SYSTEMS"):
+            rte_event_in_systems_value = child.text
+            obj.rte_event_in_systems.append(rte_event_in_systems_value)
+
+        # Parse rte_event_to_oses (list)
+        obj.rte_event_to_oses = []
+        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-TO-OSES"):
+            rte_event_to_oses_value = ARObject._deserialize_by_tag(child, "RteEventInSystemToOsTaskProxyMapping")
+            obj.rte_event_to_oses.append(rte_event_to_oses_value)
+
+        # Parse signal_paths (list)
+        obj.signal_paths = []
+        for child in ARObject._find_all_child_elements(element, "SIGNAL-PATHS"):
+            signal_paths_value = ARObject._deserialize_by_tag(child, "SignalPathConstraint")
+            obj.signal_paths.append(signal_paths_value)
+
+        # Parse software_clusters (list)
+        obj.software_clusters = []
+        for child in ARObject._find_all_child_elements(element, "SOFTWARE-CLUSTERS"):
+            software_clusters_value = child.text
+            obj.software_clusters.append(software_clusters_value)
+
+        # Parse sw_clusters (list)
+        obj.sw_clusters = []
+        for child in ARObject._find_all_child_elements(element, "SW-CLUSTERS"):
+            sw_clusters_value = child.text
+            obj.sw_clusters.append(sw_clusters_value)
+
+        # Parse swc_tos (list)
+        obj.swc_tos = []
+        for child in ARObject._find_all_child_elements(element, "SWC-TOS"):
+            swc_tos_value = ARObject._deserialize_by_tag(child, "SwcToApplicationPartitionMapping")
+            obj.swc_tos.append(swc_tos_value)
+
+        # Parse sw_impl_mapping_refs (list)
+        obj.sw_impl_mapping_refs = []
+        for child in ARObject._find_all_child_elements(element, "SW-IMPL-MAPPINGS"):
+            sw_impl_mapping_refs_value = ARObject._deserialize_by_tag(child, "SwcToImplMapping")
+            obj.sw_impl_mapping_refs.append(sw_impl_mapping_refs_value)
+
+        # Parse sw_mapping_refs (list)
+        obj.sw_mapping_refs = []
+        for child in ARObject._find_all_child_elements(element, "SW-MAPPINGS"):
+            sw_mapping_refs_value = ARObject._deserialize_by_tag(child, "SwcToEcuMapping")
+            obj.sw_mapping_refs.append(sw_mapping_refs_value)
+
+        # Parse system_signal_group_to_refs (list)
+        obj.system_signal_group_to_refs = []
+        for child in ARObject._find_all_child_elements(element, "SYSTEM-SIGNAL-GROUP-TOS"):
+            system_signal_group_to_refs_value = ARObject._deserialize_by_tag(child, "SystemSignalGroupToCommunicationResourceMapping")
+            obj.system_signal_group_to_refs.append(system_signal_group_to_refs_value)
+
+        # Parse system_signal_tos (list)
+        obj.system_signal_tos = []
+        for child in ARObject._find_all_child_elements(element, "SYSTEM-SIGNAL-TOS"):
+            system_signal_tos_value = ARObject._deserialize_by_tag(child, "SystemSignalToCommunicationResourceMapping")
+            obj.system_signal_tos.append(system_signal_tos_value)
+
+        return obj
+
 
 
 class SystemMappingBuilder:

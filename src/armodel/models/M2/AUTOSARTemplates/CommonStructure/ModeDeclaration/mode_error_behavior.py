@@ -38,6 +38,34 @@ class ModeErrorBehavior(ARObject):
         super().__init__()
         self.default_mode: Optional[ModeDeclaration] = None
         self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeErrorBehavior":
+        """Deserialize XML element to ModeErrorBehavior object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeErrorBehavior object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_mode
+        child = ARObject._find_child_element(element, "DEFAULT-MODE")
+        if child is not None:
+            default_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.default_mode = default_mode_value
+
+        # Parse error_reaction
+        child = ARObject._find_child_element(element, "ERROR-REACTION")
+        if child is not None:
+            error_reaction_value = child.text
+            obj.error_reaction = error_reaction_value
+
+        return obj
+
 
 
 class ModeErrorBehaviorBuilder:

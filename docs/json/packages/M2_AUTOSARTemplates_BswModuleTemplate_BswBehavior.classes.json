@@ -60,22 +60,22 @@
         }
       ],
       "attributes": {
-        "arTypedPers": {
+        "arTypedPerInstanceMemories": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": true,
           "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the Basic Software The aggregation of arTypedPerInstanceMemory to variability with the purpose to support the Basic Software Module’s different algorithms in the requiring different number of memory atpVariation"
         },
-        "bswPerInstances": {
-          "type": "any (BswPerInstance)",
+        "bswPerInstanceMemoryPolicies": {
+          "type": "BswPerInstanceMemoryPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Policy for a arTypedPerInstanceMemory The policy selects the options of the Schedule Manager API atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "clientPolicies": {
-          "type": "any (BswClientPolicy)",
+          "type": "BswClientPolicy",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,

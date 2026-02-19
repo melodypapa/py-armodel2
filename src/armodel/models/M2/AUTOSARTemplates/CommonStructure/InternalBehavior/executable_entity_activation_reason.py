@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
     ImplementationProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -35,6 +36,28 @@ class ExecutableEntityActivationReason(ImplementationProps):
         """Initialize ExecutableEntityActivationReason."""
         super().__init__()
         self.bit_position: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ExecutableEntityActivationReason":
+        """Deserialize XML element to ExecutableEntityActivationReason object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ExecutableEntityActivationReason object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bit_position
+        child = ARObject._find_child_element(element, "BIT-POSITION")
+        if child is not None:
+            bit_position_value = child.text
+            obj.bit_position = bit_position_value
+
+        return obj
+
 
 
 class ExecutableEntityActivationReasonBuilder:

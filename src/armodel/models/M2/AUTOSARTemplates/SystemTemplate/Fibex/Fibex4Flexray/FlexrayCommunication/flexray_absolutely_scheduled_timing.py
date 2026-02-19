@@ -37,6 +37,34 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         super().__init__()
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.slot_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayAbsolutelyScheduledTiming":
+        """Deserialize XML element to FlexrayAbsolutelyScheduledTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayAbsolutelyScheduledTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_cycle_cycle
+        child = ARObject._find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
+        if child is not None:
+            communication_cycle_cycle_value = ARObject._deserialize_by_tag(child, "CommunicationCycle")
+            obj.communication_cycle_cycle = communication_cycle_cycle_value
+
+        # Parse slot_id
+        child = ARObject._find_child_element(element, "SLOT-ID")
+        if child is not None:
+            slot_id_value = child.text
+            obj.slot_id = slot_id_value
+
+        return obj
+
 
 
 class FlexrayAbsolutelyScheduledTimingBuilder:

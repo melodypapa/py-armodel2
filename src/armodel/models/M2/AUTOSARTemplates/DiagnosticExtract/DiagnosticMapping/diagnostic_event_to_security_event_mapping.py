@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -36,6 +37,34 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
         super().__init__()
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.security_event_context: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventToSecurityEventMapping":
+        """Deserialize XML element to DiagnosticEventToSecurityEventMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEventToSecurityEventMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse diagnostic_event
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        if child is not None:
+            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.diagnostic_event = diagnostic_event_value
+
+        # Parse security_event_context
+        child = ARObject._find_child_element(element, "SECURITY-EVENT-CONTEXT")
+        if child is not None:
+            security_event_context_value = child.text
+            obj.security_event_context = security_event_context_value
+
+        return obj
+
 
 
 class DiagnosticEventToSecurityEventMappingBuilder:

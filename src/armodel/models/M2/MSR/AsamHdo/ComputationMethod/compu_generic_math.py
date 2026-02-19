@@ -32,6 +32,28 @@ class CompuGenericMath(ARObject):
         """Initialize CompuGenericMath."""
         super().__init__()
         self.level: Optional[PrimitiveIdentifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompuGenericMath":
+        """Deserialize XML element to CompuGenericMath object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompuGenericMath object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse level
+        child = ARObject._find_child_element(element, "LEVEL")
+        if child is not None:
+            level_value = child.text
+            obj.level = level_value
+
+        return obj
+
 
 
 class CompuGenericMathBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus_part import (
     IEEE1722TpAcfBusPart,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -40,6 +41,34 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         super().__init__()
         self.lin_identifier: Optional[PositiveInteger] = None
         self.sdu_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfLinPart":
+        """Deserialize XML element to IEEE1722TpAcfLinPart object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfLinPart object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lin_identifier
+        child = ARObject._find_child_element(element, "LIN-IDENTIFIER")
+        if child is not None:
+            lin_identifier_value = child.text
+            obj.lin_identifier = lin_identifier_value
+
+        # Parse sdu_ref
+        child = ARObject._find_child_element(element, "SDU")
+        if child is not None:
+            sdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.sdu_ref = sdu_ref_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfLinPartBuilder:

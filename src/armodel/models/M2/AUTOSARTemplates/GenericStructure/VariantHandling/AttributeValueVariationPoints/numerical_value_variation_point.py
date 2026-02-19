@@ -28,6 +28,22 @@ class NumericalValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize NumericalValueVariationPoint."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NumericalValueVariationPoint":
+        """Deserialize XML element to NumericalValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NumericalValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class NumericalValueVariationPointBuilder:

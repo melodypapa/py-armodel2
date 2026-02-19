@@ -34,6 +34,34 @@ class SwBitRepresentation(ARObject):
         super().__init__()
         self.bit_position: Optional[Integer] = None
         self.number_of_bits: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwBitRepresentation":
+        """Deserialize XML element to SwBitRepresentation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwBitRepresentation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bit_position
+        child = ARObject._find_child_element(element, "BIT-POSITION")
+        if child is not None:
+            bit_position_value = child.text
+            obj.bit_position = bit_position_value
+
+        # Parse number_of_bits
+        child = ARObject._find_child_element(element, "NUMBER-OF-BITS")
+        if child is not None:
+            number_of_bits_value = child.text
+            obj.number_of_bits = number_of_bits_value
+
+        return obj
+
 
 
 class SwBitRepresentationBuilder:

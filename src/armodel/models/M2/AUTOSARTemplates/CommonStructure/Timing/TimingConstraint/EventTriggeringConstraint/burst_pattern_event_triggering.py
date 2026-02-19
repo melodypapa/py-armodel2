@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
     EventTriggeringConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -47,6 +48,58 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         self.pattern_jitter: Optional[MultidimensionalTime] = None
         self.pattern_length: Optional[MultidimensionalTime] = None
         self.pattern_period: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BurstPatternEventTriggering":
+        """Deserialize XML element to BurstPatternEventTriggering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BurstPatternEventTriggering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_number_of
+        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        if child is not None:
+            max_number_of_value = child.text
+            obj.max_number_of = max_number_of_value
+
+        # Parse minimum_inter
+        child = ARObject._find_child_element(element, "MINIMUM-INTER")
+        if child is not None:
+            minimum_inter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.minimum_inter = minimum_inter_value
+
+        # Parse min_number_of
+        child = ARObject._find_child_element(element, "MIN-NUMBER-OF")
+        if child is not None:
+            min_number_of_value = child.text
+            obj.min_number_of = min_number_of_value
+
+        # Parse pattern_jitter
+        child = ARObject._find_child_element(element, "PATTERN-JITTER")
+        if child is not None:
+            pattern_jitter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.pattern_jitter = pattern_jitter_value
+
+        # Parse pattern_length
+        child = ARObject._find_child_element(element, "PATTERN-LENGTH")
+        if child is not None:
+            pattern_length_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.pattern_length = pattern_length_value
+
+        # Parse pattern_period
+        child = ARObject._find_child_element(element, "PATTERN-PERIOD")
+        if child is not None:
+            pattern_period_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.pattern_period = pattern_period_value
+
+        return obj
+
 
 
 class BurstPatternEventTriggeringBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.ExecutionTimeConstraint import (
     ExecutionTimeTypeEnum,
 )
@@ -48,6 +49,52 @@ class ExecutionTimeConstraint(TimingConstraint):
         self.execution_time: Optional[ExecutionTimeTypeEnum] = None
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ExecutionTimeConstraint":
+        """Deserialize XML element to ExecutionTimeConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ExecutionTimeConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse component
+        child = ARObject._find_child_element(element, "COMPONENT")
+        if child is not None:
+            component_value = child.text
+            obj.component = component_value
+
+        # Parse executable_entity
+        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY")
+        if child is not None:
+            executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
+            obj.executable_entity = executable_entity_value
+
+        # Parse execution_time
+        child = ARObject._find_child_element(element, "EXECUTION-TIME")
+        if child is not None:
+            execution_time_value = child.text
+            obj.execution_time = execution_time_value
+
+        # Parse maximum
+        child = ARObject._find_child_element(element, "MAXIMUM")
+        if child is not None:
+            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.maximum = maximum_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.minimum = minimum_value
+
+        return obj
+
 
 
 class ExecutionTimeConstraintBuilder:

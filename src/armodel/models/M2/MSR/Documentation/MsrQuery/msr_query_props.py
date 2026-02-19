@@ -39,6 +39,40 @@ class MsrQueryProps(ARObject):
         self.comment: Optional[String] = None
         self.msr_query_args: list[MsrQueryArg] = []
         self.msr_query_name: String = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryProps":
+        """Deserialize XML element to MsrQueryProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse comment
+        child = ARObject._find_child_element(element, "COMMENT")
+        if child is not None:
+            comment_value = child.text
+            obj.comment = comment_value
+
+        # Parse msr_query_args (list)
+        obj.msr_query_args = []
+        for child in ARObject._find_all_child_elements(element, "MSR-QUERY-ARGS"):
+            msr_query_args_value = ARObject._deserialize_by_tag(child, "MsrQueryArg")
+            obj.msr_query_args.append(msr_query_args_value)
+
+        # Parse msr_query_name
+        child = ARObject._find_child_element(element, "MSR-QUERY-NAME")
+        if child is not None:
+            msr_query_name_value = child.text
+            obj.msr_query_name = msr_query_name_value
+
+        return obj
+
 
 
 class MsrQueryPropsBuilder:

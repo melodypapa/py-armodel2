@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.Keyword.keyword import (
     Keyword,
 )
@@ -34,6 +35,28 @@ class KeywordSet(ARElement):
         """Initialize KeywordSet."""
         super().__init__()
         self.keywords: list[Keyword] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "KeywordSet":
+        """Deserialize XML element to KeywordSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized KeywordSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse keywords (list)
+        obj.keywords = []
+        for child in ARObject._find_all_child_elements(element, "KEYWORDS"):
+            keywords_value = ARObject._deserialize_by_tag(child, "Keyword")
+            obj.keywords.append(keywords_value)
+
+        return obj
+
 
 
 class KeywordSetBuilder:

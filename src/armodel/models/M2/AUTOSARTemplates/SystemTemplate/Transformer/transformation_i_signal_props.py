@@ -41,6 +41,40 @@ class TransformationISignalProps(ARObject, ABC):
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototype_refs: list[ARRef] = []
         self.transformer: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransformationISignalProps":
+        """Deserialize XML element to TransformationISignalProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransformationISignalProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cs_error_reaction
+        child = ARObject._find_child_element(element, "CS-ERROR-REACTION")
+        if child is not None:
+            cs_error_reaction_value = child.text
+            obj.cs_error_reaction = cs_error_reaction_value
+
+        # Parse data_prototype_refs (list)
+        obj.data_prototype_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-PROTOTYPES"):
+            data_prototype_refs_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.data_prototype_refs.append(data_prototype_refs_value)
+
+        # Parse transformer
+        child = ARObject._find_child_element(element, "TRANSFORMER")
+        if child is not None:
+            transformer_value = child.text
+            obj.transformer = transformer_value
+
+        return obj
+
 
 
 class TransformationISignalPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeIcvSupportEnum,
 )
@@ -50,6 +51,52 @@ class GlobalTimeMaster(Identifiable, ABC):
         self.immediate: Optional[TimeValue] = None
         self.is_system_wide: Optional[Boolean] = None
         self.sync_period: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeMaster":
+        """Deserialize XML element to GlobalTimeMaster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeMaster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_connector
+        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR")
+        if child is not None:
+            communication_connector_value = ARObject._deserialize_by_tag(child, "CommunicationConnector")
+            obj.communication_connector = communication_connector_value
+
+        # Parse icv_secured
+        child = ARObject._find_child_element(element, "ICV-SECURED")
+        if child is not None:
+            icv_secured_value = child.text
+            obj.icv_secured = icv_secured_value
+
+        # Parse immediate
+        child = ARObject._find_child_element(element, "IMMEDIATE")
+        if child is not None:
+            immediate_value = child.text
+            obj.immediate = immediate_value
+
+        # Parse is_system_wide
+        child = ARObject._find_child_element(element, "IS-SYSTEM-WIDE")
+        if child is not None:
+            is_system_wide_value = child.text
+            obj.is_system_wide = is_system_wide_value
+
+        # Parse sync_period
+        child = ARObject._find_child_element(element, "SYNC-PERIOD")
+        if child is not None:
+            sync_period_value = child.text
+            obj.sync_period = sync_period_value
+
+        return obj
+
 
 
 class GlobalTimeMasterBuilder:

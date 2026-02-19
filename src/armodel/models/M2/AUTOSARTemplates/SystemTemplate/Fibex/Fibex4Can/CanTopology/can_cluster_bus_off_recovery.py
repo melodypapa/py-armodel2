@@ -41,6 +41,52 @@ class CanClusterBusOffRecovery(ARObject):
         self.bor_time_l2: Optional[TimeValue] = None
         self.bor_time_tx: Optional[TimeValue] = None
         self.main_function: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanClusterBusOffRecovery":
+        """Deserialize XML element to CanClusterBusOffRecovery object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanClusterBusOffRecovery object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bor_counter_l1_to
+        child = ARObject._find_child_element(element, "BOR-COUNTER-L1-TO")
+        if child is not None:
+            bor_counter_l1_to_value = child.text
+            obj.bor_counter_l1_to = bor_counter_l1_to_value
+
+        # Parse bor_time_l1
+        child = ARObject._find_child_element(element, "BOR-TIME-L1")
+        if child is not None:
+            bor_time_l1_value = child.text
+            obj.bor_time_l1 = bor_time_l1_value
+
+        # Parse bor_time_l2
+        child = ARObject._find_child_element(element, "BOR-TIME-L2")
+        if child is not None:
+            bor_time_l2_value = child.text
+            obj.bor_time_l2 = bor_time_l2_value
+
+        # Parse bor_time_tx
+        child = ARObject._find_child_element(element, "BOR-TIME-TX")
+        if child is not None:
+            bor_time_tx_value = child.text
+            obj.bor_time_tx = bor_time_tx_value
+
+        # Parse main_function
+        child = ARObject._find_child_element(element, "MAIN-FUNCTION")
+        if child is not None:
+            main_function_value = child.text
+            obj.main_function = main_function_value
+
+        return obj
+
 
 
 class CanClusterBusOffRecoveryBuilder:

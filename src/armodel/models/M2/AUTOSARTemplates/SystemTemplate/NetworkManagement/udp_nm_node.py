@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node import (
     NmNode,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -37,6 +38,34 @@ class UdpNmNode(NmNode):
         super().__init__()
         self.all_nm_messages: Optional[Boolean] = None
         self.nm_msg_cycle: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UdpNmNode":
+        """Deserialize XML element to UdpNmNode object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UdpNmNode object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse all_nm_messages
+        child = ARObject._find_child_element(element, "ALL-NM-MESSAGES")
+        if child is not None:
+            all_nm_messages_value = child.text
+            obj.all_nm_messages = all_nm_messages_value
+
+        # Parse nm_msg_cycle
+        child = ARObject._find_child_element(element, "NM-MSG-CYCLE")
+        if child is not None:
+            nm_msg_cycle_value = child.text
+            obj.nm_msg_cycle = nm_msg_cycle_value
+
+        return obj
+
 
 
 class UdpNmNodeBuilder:

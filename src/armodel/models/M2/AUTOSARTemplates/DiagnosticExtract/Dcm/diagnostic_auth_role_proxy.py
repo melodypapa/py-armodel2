@@ -32,6 +32,28 @@ class DiagnosticAuthRoleProxy(ARObject):
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
         self.authentications: list[DiagnosticAuthRole] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthRoleProxy":
+        """Deserialize XML element to DiagnosticAuthRoleProxy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAuthRoleProxy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentications (list)
+        obj.authentications = []
+        for child in ARObject._find_all_child_elements(element, "AUTHENTICATIONS"):
+            authentications_value = ARObject._deserialize_by_tag(child, "DiagnosticAuthRole")
+            obj.authentications.append(authentications_value)
+
+        return obj
+
 
 
 class DiagnosticAuthRoleProxyBuilder:

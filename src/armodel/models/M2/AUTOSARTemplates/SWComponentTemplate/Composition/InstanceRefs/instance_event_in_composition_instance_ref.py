@@ -39,6 +39,40 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_prototypes: list[Any] = []
         self.target_event: Optional[RTEEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InstanceEventInCompositionInstanceRef":
+        """Deserialize XML element to InstanceEventInCompositionInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InstanceEventInCompositionInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse context_prototypes (list)
+        obj.context_prototypes = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-PROTOTYPES"):
+            context_prototypes_value = child.text
+            obj.context_prototypes.append(context_prototypes_value)
+
+        # Parse target_event
+        child = ARObject._find_child_element(element, "TARGET-EVENT")
+        if child is not None:
+            target_event_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            obj.target_event = target_event_value
+
+        return obj
+
 
 
 class InstanceEventInCompositionInstanceRefBuilder:

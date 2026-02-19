@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import (
     TransformationDescription,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
 )
@@ -41,6 +42,40 @@ class SOMEIPTransformationDescription(TransformationDescription):
         self.alignment: Optional[PositiveInteger] = None
         self.byte_order: Optional[ByteOrderEnum] = None
         self.interface_version: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationDescription":
+        """Deserialize XML element to SOMEIPTransformationDescription object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SOMEIPTransformationDescription object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alignment
+        child = ARObject._find_child_element(element, "ALIGNMENT")
+        if child is not None:
+            alignment_value = child.text
+            obj.alignment = alignment_value
+
+        # Parse byte_order
+        child = ARObject._find_child_element(element, "BYTE-ORDER")
+        if child is not None:
+            byte_order_value = child.text
+            obj.byte_order = byte_order_value
+
+        # Parse interface_version
+        child = ARObject._find_child_element(element, "INTERFACE-VERSION")
+        if child is not None:
+            interface_version_value = child.text
+            obj.interface_version = interface_version_value
+
+        return obj
+
 
 
 class SOMEIPTransformationDescriptionBuilder:

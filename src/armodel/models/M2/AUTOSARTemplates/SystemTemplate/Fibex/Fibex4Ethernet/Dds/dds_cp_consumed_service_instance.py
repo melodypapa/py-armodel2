@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_service_instance import (
     DdsCpServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     AnyVersionString,
 )
@@ -43,6 +44,46 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         self.local_unicast: Optional[ApplicationEndpoint] = None
         self.minor_version: Optional[AnyVersionString] = None
         self.static_remote: Optional[ApplicationEndpoint] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpConsumedServiceInstance":
+        """Deserialize XML element to DdsCpConsumedServiceInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpConsumedServiceInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse consumed_ddses (list)
+        obj.consumed_ddses = []
+        for child in ARObject._find_all_child_elements(element, "CONSUMED-DDSES"):
+            consumed_ddses_value = ARObject._deserialize_by_tag(child, "DdsCpServiceInstance")
+            obj.consumed_ddses.append(consumed_ddses_value)
+
+        # Parse local_unicast
+        child = ARObject._find_child_element(element, "LOCAL-UNICAST")
+        if child is not None:
+            local_unicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.local_unicast = local_unicast_value
+
+        # Parse minor_version
+        child = ARObject._find_child_element(element, "MINOR-VERSION")
+        if child is not None:
+            minor_version_value = child.text
+            obj.minor_version = minor_version_value
+
+        # Parse static_remote
+        child = ARObject._find_child_element(element, "STATIC-REMOTE")
+        if child is not None:
+            static_remote_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.static_remote = static_remote_value
+
+        return obj
+
 
 
 class DdsCpConsumedServiceInstanceBuilder:

@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection import (
     AutoCollectEnum,
 )
@@ -58,6 +59,64 @@ class Collection(ARElement):
         self.element_role: Optional[Identifier] = None
         self.source_elements: list[Identifiable] = []
         self.source_instances: list[AtpFeature] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Collection":
+        """Deserialize XML element to Collection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Collection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse auto_collect_enum
+        child = ARObject._find_child_element(element, "AUTO-COLLECT-ENUM")
+        if child is not None:
+            auto_collect_enum_value = child.text
+            obj.auto_collect_enum = auto_collect_enum_value
+
+        # Parse collecteds (list)
+        obj.collecteds = []
+        for child in ARObject._find_all_child_elements(element, "COLLECTEDS"):
+            collecteds_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.collecteds.append(collecteds_value)
+
+        # Parse collection
+        child = ARObject._find_child_element(element, "COLLECTION")
+        if child is not None:
+            collection_value = child.text
+            obj.collection = collection_value
+
+        # Parse elements (list)
+        obj.elements = []
+        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
+            elements_value = ARObject._deserialize_by_tag(child, "Identifiable")
+            obj.elements.append(elements_value)
+
+        # Parse element_role
+        child = ARObject._find_child_element(element, "ELEMENT-ROLE")
+        if child is not None:
+            element_role_value = child.text
+            obj.element_role = element_role_value
+
+        # Parse source_elements (list)
+        obj.source_elements = []
+        for child in ARObject._find_all_child_elements(element, "SOURCE-ELEMENTS"):
+            source_elements_value = ARObject._deserialize_by_tag(child, "Identifiable")
+            obj.source_elements.append(source_elements_value)
+
+        # Parse source_instances (list)
+        obj.source_instances = []
+        for child in ARObject._find_all_child_elements(element, "SOURCE-INSTANCES"):
+            source_instances_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.source_instances.append(source_instances_value)
+
+        return obj
+
 
 
 class CollectionBuilder:

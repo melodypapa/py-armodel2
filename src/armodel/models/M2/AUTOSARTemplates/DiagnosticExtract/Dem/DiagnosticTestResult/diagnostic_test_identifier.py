@@ -34,6 +34,34 @@ class DiagnosticTestIdentifier(ARObject):
         super().__init__()
         self.id: Optional[PositiveInteger] = None
         self.uas_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTestIdentifier":
+        """Deserialize XML element to DiagnosticTestIdentifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticTestIdentifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        # Parse uas_id
+        child = ARObject._find_child_element(element, "UAS-ID")
+        if child is not None:
+            uas_id_value = child.text
+            obj.uas_id = uas_id_value
+
+        return obj
+
 
 
 class DiagnosticTestIdentifierBuilder:

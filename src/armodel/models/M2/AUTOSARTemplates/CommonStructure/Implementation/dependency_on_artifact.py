@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     DependencyUsageEnum,
@@ -41,6 +42,34 @@ class DependencyOnArtifact(Identifiable):
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
         self.usage_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DependencyOnArtifact":
+        """Deserialize XML element to DependencyOnArtifact object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DependencyOnArtifact object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse artifact
+        child = ARObject._find_child_element(element, "ARTIFACT")
+        if child is not None:
+            artifact_value = ARObject._deserialize_by_tag(child, "AutosarEngineeringObject")
+            obj.artifact = artifact_value
+
+        # Parse usage_refs (list)
+        obj.usage_refs = []
+        for child in ARObject._find_all_child_elements(element, "USAGES"):
+            usage_refs_value = child.text
+            obj.usage_refs.append(usage_refs_value)
+
+        return obj
+
 
 
 class DependencyOnArtifactBuilder:

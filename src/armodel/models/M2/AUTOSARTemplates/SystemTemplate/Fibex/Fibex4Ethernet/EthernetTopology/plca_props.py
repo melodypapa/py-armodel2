@@ -34,6 +34,34 @@ class PlcaProps(ARObject):
         super().__init__()
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_max_burst: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PlcaProps":
+        """Deserialize XML element to PlcaProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PlcaProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse plca_local_node
+        child = ARObject._find_child_element(element, "PLCA-LOCAL-NODE")
+        if child is not None:
+            plca_local_node_value = child.text
+            obj.plca_local_node = plca_local_node_value
+
+        # Parse plca_max_burst
+        child = ARObject._find_child_element(element, "PLCA-MAX-BURST")
+        if child is not None:
+            plca_max_burst_value = child.text
+            obj.plca_max_burst = plca_max_burst_value
+
+        return obj
+
 
 
 class PlcaPropsBuilder:

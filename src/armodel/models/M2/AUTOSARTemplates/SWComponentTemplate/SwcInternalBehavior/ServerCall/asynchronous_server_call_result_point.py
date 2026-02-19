@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AsynchronousServerCallResultPoint(AbstractAccessPoint):
@@ -32,6 +33,28 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()
         self.asynchronous_server: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AsynchronousServerCallResultPoint":
+        """Deserialize XML element to AsynchronousServerCallResultPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AsynchronousServerCallResultPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse asynchronous_server
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS-SERVER")
+        if child is not None:
+            asynchronous_server_value = child.text
+            obj.asynchronous_server = asynchronous_server_value
+
+        return obj
+
 
 
 class AsynchronousServerCallResultPointBuilder:

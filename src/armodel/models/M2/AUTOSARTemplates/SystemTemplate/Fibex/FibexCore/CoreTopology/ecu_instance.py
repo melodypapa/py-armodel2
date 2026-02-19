@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -118,6 +119,166 @@ class EcuInstance(FibexElement):
         self.tcp_ip_props: Optional[EthTcpIpProps] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcuInstance":
+        """Deserialize XML element to EcuInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcuInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse associated_com_refs (list)
+        obj.associated_com_refs = []
+        for child in ARObject._find_all_child_elements(element, "ASSOCIATED-COMS"):
+            associated_com_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
+            obj.associated_com_refs.append(associated_com_refs_value)
+
+        # Parse associateds (list)
+        obj.associateds = []
+        for child in ARObject._find_all_child_elements(element, "ASSOCIATEDS"):
+            associateds_value = ARObject._deserialize_by_tag(child, "ConsumedProvidedServiceInstanceGroup")
+            obj.associateds.append(associateds_value)
+
+        # Parse associated_pdur_refs (list)
+        obj.associated_pdur_refs = []
+        for child in ARObject._find_all_child_elements(element, "ASSOCIATED-PDURS"):
+            associated_pdur_refs_value = ARObject._deserialize_by_tag(child, "PdurIPduGroup")
+            obj.associated_pdur_refs.append(associated_pdur_refs_value)
+
+        # Parse channel
+        child = ARObject._find_child_element(element, "CHANNEL")
+        if child is not None:
+            channel_value = child.text
+            obj.channel = channel_value
+
+        # Parse client_id_range
+        child = ARObject._find_child_element(element, "CLIENT-ID-RANGE")
+        if child is not None:
+            client_id_range_value = ARObject._deserialize_by_tag(child, "ClientIdRange")
+            obj.client_id_range = client_id_range_value
+
+        # Parse com
+        child = ARObject._find_child_element(element, "COM")
+        if child is not None:
+            com_value = child.text
+            obj.com = com_value
+
+        # Parse com_enable
+        child = ARObject._find_child_element(element, "COM-ENABLE")
+        if child is not None:
+            com_enable_value = child.text
+            obj.com_enable = com_enable_value
+
+        # Parse comm_controllers (list)
+        obj.comm_controllers = []
+        for child in ARObject._find_all_child_elements(element, "COMM-CONTROLLERS"):
+            comm_controllers_value = child.text
+            obj.comm_controllers.append(comm_controllers_value)
+
+        # Parse connectors (list)
+        obj.connectors = []
+        for child in ARObject._find_all_child_elements(element, "CONNECTORS"):
+            connectors_value = child.text
+            obj.connectors.append(connectors_value)
+
+        # Parse dlt_config
+        child = ARObject._find_child_element(element, "DLT-CONFIG")
+        if child is not None:
+            dlt_config_value = ARObject._deserialize_by_tag(child, "DltConfig")
+            obj.dlt_config = dlt_config_value
+
+        # Parse do_ip_config
+        child = ARObject._find_child_element(element, "DO-IP-CONFIG")
+        if child is not None:
+            do_ip_config_value = ARObject._deserialize_by_tag(child, "DoIpConfig")
+            obj.do_ip_config = do_ip_config_value
+
+        # Parse ecu_task_proxies (list)
+        obj.ecu_task_proxies = []
+        for child in ARObject._find_all_child_elements(element, "ECU-TASK-PROXIES"):
+            ecu_task_proxies_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
+            obj.ecu_task_proxies.append(ecu_task_proxies_value)
+
+        # Parse eth_switch_port
+        child = ARObject._find_child_element(element, "ETH-SWITCH-PORT")
+        if child is not None:
+            eth_switch_port_value = child.text
+            obj.eth_switch_port = eth_switch_port_value
+
+        # Parse firewall_rules (list)
+        obj.firewall_rules = []
+        for child in ARObject._find_all_child_elements(element, "FIREWALL-RULES"):
+            firewall_rules_value = ARObject._deserialize_by_tag(child, "StateDependentFirewall")
+            obj.firewall_rules.append(firewall_rules_value)
+
+        # Parse partitions (list)
+        obj.partitions = []
+        for child in ARObject._find_all_child_elements(element, "PARTITIONS"):
+            partitions_value = ARObject._deserialize_by_tag(child, "EcuPartition")
+            obj.partitions.append(partitions_value)
+
+        # Parse pnc_nm_request
+        child = ARObject._find_child_element(element, "PNC-NM-REQUEST")
+        if child is not None:
+            pnc_nm_request_value = child.text
+            obj.pnc_nm_request = pnc_nm_request_value
+
+        # Parse pnc_prepare
+        child = ARObject._find_child_element(element, "PNC-PREPARE")
+        if child is not None:
+            pnc_prepare_value = child.text
+            obj.pnc_prepare = pnc_prepare_value
+
+        # Parse pnc
+        child = ARObject._find_child_element(element, "PNC")
+        if child is not None:
+            pnc_value = child.text
+            obj.pnc = pnc_value
+
+        # Parse pn_reset_time
+        child = ARObject._find_child_element(element, "PN-RESET-TIME")
+        if child is not None:
+            pn_reset_time_value = child.text
+            obj.pn_reset_time = pn_reset_time_value
+
+        # Parse sleep_mode
+        child = ARObject._find_child_element(element, "SLEEP-MODE")
+        if child is not None:
+            sleep_mode_value = child.text
+            obj.sleep_mode = sleep_mode_value
+
+        # Parse tcp_ip_icmp_props
+        child = ARObject._find_child_element(element, "TCP-IP-ICMP-PROPS")
+        if child is not None:
+            tcp_ip_icmp_props_value = ARObject._deserialize_by_tag(child, "EthTcpIpIcmpProps")
+            obj.tcp_ip_icmp_props = tcp_ip_icmp_props_value
+
+        # Parse tcp_ip_props
+        child = ARObject._find_child_element(element, "TCP-IP-PROPS")
+        if child is not None:
+            tcp_ip_props_value = ARObject._deserialize_by_tag(child, "EthTcpIpProps")
+            obj.tcp_ip_props = tcp_ip_props_value
+
+        # Parse v2x_supported
+        child = ARObject._find_child_element(element, "V2X-SUPPORTED")
+        if child is not None:
+            v2x_supported_value = child.text
+            obj.v2x_supported = v2x_supported_value
+
+        # Parse wake_up_over_bus_supported
+        child = ARObject._find_child_element(element, "WAKE-UP-OVER-BUS-SUPPORTED")
+        if child is not None:
+            wake_up_over_bus_supported_value = child.text
+            obj.wake_up_over_bus_supported = wake_up_over_bus_supported_value
+
+        return obj
+
 
 
 class EcuInstanceBuilder:

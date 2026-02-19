@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description import (
     TimingDescription,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
@@ -37,6 +38,34 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         super().__init__()
         self.clock_reference: Optional[TimingClock] = None
         self.occurrence: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingDescriptionEvent":
+        """Deserialize XML element to TimingDescriptionEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingDescriptionEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse clock_reference
+        child = ARObject._find_child_element(element, "CLOCK-REFERENCE")
+        if child is not None:
+            clock_reference_value = ARObject._deserialize_by_tag(child, "TimingClock")
+            obj.clock_reference = clock_reference_value
+
+        # Parse occurrence
+        child = ARObject._find_child_element(element, "OCCURRENCE")
+        if child is not None:
+            occurrence_value = child.text
+            obj.occurrence = occurrence_value
+
+        return obj
+
 
 
 class TimingDescriptionEventBuilder:

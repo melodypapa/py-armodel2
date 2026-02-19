@@ -41,6 +41,34 @@ class HwPinGroupContent(ARObject):
         super().__init__()
         self.hw_pin: Optional[HwPin] = None
         self.hw_pin_group_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwPinGroupContent":
+        """Deserialize XML element to HwPinGroupContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwPinGroupContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse hw_pin
+        child = ARObject._find_child_element(element, "HW-PIN")
+        if child is not None:
+            hw_pin_value = ARObject._deserialize_by_tag(child, "HwPin")
+            obj.hw_pin = hw_pin_value
+
+        # Parse hw_pin_group_ref
+        child = ARObject._find_child_element(element, "HW-PIN-GROUP")
+        if child is not None:
+            hw_pin_group_ref_value = ARObject._deserialize_by_tag(child, "HwPinGroup")
+            obj.hw_pin_group_ref = hw_pin_group_ref_value
+
+        return obj
+
 
 
 class HwPinGroupContentBuilder:

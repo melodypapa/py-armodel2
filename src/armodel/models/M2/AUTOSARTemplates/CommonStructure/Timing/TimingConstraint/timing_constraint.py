@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable import (
     Traceable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
     TimingCondition,
 )
@@ -35,6 +36,28 @@ class TimingConstraint(Traceable, ABC):
         """Initialize TimingConstraint."""
         super().__init__()
         self.timing_condition: Optional[TimingCondition] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingConstraint":
+        """Deserialize XML element to TimingConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse timing_condition
+        child = ARObject._find_child_element(element, "TIMING-CONDITION")
+        if child is not None:
+            timing_condition_value = ARObject._deserialize_by_tag(child, "TimingCondition")
+            obj.timing_condition = timing_condition_value
+
+        return obj
+
 
 
 class TimingConstraintBuilder:

@@ -28,6 +28,22 @@ class NmClusterCoupling(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize NmClusterCoupling."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NmClusterCoupling":
+        """Deserialize XML element to NmClusterCoupling object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NmClusterCoupling object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class NmClusterCouplingBuilder:

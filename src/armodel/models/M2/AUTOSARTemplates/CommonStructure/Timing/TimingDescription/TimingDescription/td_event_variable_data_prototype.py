@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
     TDEventVfbPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -37,6 +38,34 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
         self.td_event_variable_type: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventVariableDataPrototype":
+        """Deserialize XML element to TDEventVariableDataPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventVariableDataPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        if child is not None:
+            data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_ref = data_element_ref_value
+
+        # Parse td_event_variable_type
+        child = ARObject._find_child_element(element, "TD-EVENT-VARIABLE-TYPE")
+        if child is not None:
+            td_event_variable_type_value = child.text
+            obj.td_event_variable_type = td_event_variable_type_value
+
+        return obj
+
 
 
 class TDEventVariableDataPrototypeBuilder:

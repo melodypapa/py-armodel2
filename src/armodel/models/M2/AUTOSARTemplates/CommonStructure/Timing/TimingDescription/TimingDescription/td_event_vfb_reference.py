@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb import (
     TDEventVfb,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TDEventVfbReference(TDEventVfb):
@@ -31,6 +32,28 @@ class TDEventVfbReference(TDEventVfb):
         """Initialize TDEventVfbReference."""
         super().__init__()
         self.referenced_td_event_vfb: Optional[TDEventVfb] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventVfbReference":
+        """Deserialize XML element to TDEventVfbReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventVfbReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse referenced_td_event_vfb
+        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-VFB")
+        if child is not None:
+            referenced_td_event_vfb_value = ARObject._deserialize_by_tag(child, "TDEventVfb")
+            obj.referenced_td_event_vfb = referenced_td_event_vfb_value
+
+        return obj
+
 
 
 class TDEventVfbReferenceBuilder:

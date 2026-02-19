@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -49,6 +50,46 @@ class Unit(ARElement):
         self.factor_si_to_unit: Optional[Float] = None
         self.offset_si_to_unit: Optional[Float] = None
         self.physical: Optional[PhysicalDimension] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Unit":
+        """Deserialize XML element to Unit object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Unit object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse display_name
+        child = ARObject._find_child_element(element, "DISPLAY-NAME")
+        if child is not None:
+            display_name_value = ARObject._deserialize_by_tag(child, "SingleLanguageUnitNames")
+            obj.display_name = display_name_value
+
+        # Parse factor_si_to_unit
+        child = ARObject._find_child_element(element, "FACTOR-SI-TO-UNIT")
+        if child is not None:
+            factor_si_to_unit_value = child.text
+            obj.factor_si_to_unit = factor_si_to_unit_value
+
+        # Parse offset_si_to_unit
+        child = ARObject._find_child_element(element, "OFFSET-SI-TO-UNIT")
+        if child is not None:
+            offset_si_to_unit_value = child.text
+            obj.offset_si_to_unit = offset_si_to_unit_value
+
+        # Parse physical
+        child = ARObject._find_child_element(element, "PHYSICAL")
+        if child is not None:
+            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.physical = physical_value
+
+        return obj
+
 
 
 class UnitBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -37,6 +38,34 @@ class TimingEvent(RTEEvent):
         super().__init__()
         self.offset: Optional[TimeValue] = None
         self.period: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingEvent":
+        """Deserialize XML element to TimingEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse offset
+        child = ARObject._find_child_element(element, "OFFSET")
+        if child is not None:
+            offset_value = child.text
+            obj.offset = offset_value
+
+        # Parse period
+        child = ARObject._find_child_element(element, "PERIOD")
+        if child is not None:
+            period_value = child.text
+            obj.period = period_value
+
+        return obj
+
 
 
 class TimingEventBuilder:

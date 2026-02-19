@@ -27,6 +27,22 @@ class TimeValueValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize TimeValueValueVariationPoint."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimeValueValueVariationPoint":
+        """Deserialize XML element to TimeValueValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimeValueValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class TimeValueValueVariationPointBuilder:

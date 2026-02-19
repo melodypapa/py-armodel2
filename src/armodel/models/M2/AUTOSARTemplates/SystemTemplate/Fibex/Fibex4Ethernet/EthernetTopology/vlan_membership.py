@@ -38,6 +38,46 @@ class VlanMembership(ARObject):
         self.dhcp_address: Optional[Any] = None
         self.send_activity: Optional[Any] = None
         self.vlan: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VlanMembership":
+        """Deserialize XML element to VlanMembership object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VlanMembership object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_priority
+        child = ARObject._find_child_element(element, "DEFAULT-PRIORITY")
+        if child is not None:
+            default_priority_value = child.text
+            obj.default_priority = default_priority_value
+
+        # Parse dhcp_address
+        child = ARObject._find_child_element(element, "DHCP-ADDRESS")
+        if child is not None:
+            dhcp_address_value = child.text
+            obj.dhcp_address = dhcp_address_value
+
+        # Parse send_activity
+        child = ARObject._find_child_element(element, "SEND-ACTIVITY")
+        if child is not None:
+            send_activity_value = child.text
+            obj.send_activity = send_activity_value
+
+        # Parse vlan
+        child = ARObject._find_child_element(element, "VLAN")
+        if child is not None:
+            vlan_value = child.text
+            obj.vlan = vlan_value
+
+        return obj
+
 
 
 class VlanMembershipBuilder:

@@ -35,6 +35,34 @@ class Sdf(ARObject):
         super().__init__()
         self.gid: NameToken = None
         self.value: Optional[Numerical] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Sdf":
+        """Deserialize XML element to Sdf object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Sdf object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse gid
+        child = ARObject._find_child_element(element, "GID")
+        if child is not None:
+            gid_value = child.text
+            obj.gid = gid_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class SdfBuilder:

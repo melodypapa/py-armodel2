@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr import (
     DataConstr,
 )
@@ -34,6 +35,28 @@ class SwGenericAxisParamType(Identifiable):
         """Initialize SwGenericAxisParamType."""
         super().__init__()
         self.data_constr: Optional[DataConstr] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwGenericAxisParamType":
+        """Deserialize XML element to SwGenericAxisParamType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwGenericAxisParamType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_constr
+        child = ARObject._find_child_element(element, "DATA-CONSTR")
+        if child is not None:
+            data_constr_value = ARObject._deserialize_by_tag(child, "DataConstr")
+            obj.data_constr = data_constr_value
+
+        return obj
+
 
 
 class SwGenericAxisParamTypeBuilder:

@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements import (
     VariableAccessScopeEnum,
@@ -43,6 +44,34 @@ class VariableAccess(AbstractAccessPoint):
         super().__init__()
         self.accessed_variable_ref: Optional[ARRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariableAccess":
+        """Deserialize XML element to VariableAccess object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariableAccess object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse accessed_variable_ref
+        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE")
+        if child is not None:
+            accessed_variable_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            obj.accessed_variable_ref = accessed_variable_ref_value
+
+        # Parse scope
+        child = ARObject._find_child_element(element, "SCOPE")
+        if child is not None:
+            scope_value = child.text
+            obj.scope = scope_value
+
+        return obj
+
 
 
 class VariableAccessBuilder:

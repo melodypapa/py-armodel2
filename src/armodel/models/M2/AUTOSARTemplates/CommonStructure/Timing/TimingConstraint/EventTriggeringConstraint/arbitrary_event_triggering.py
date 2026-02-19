@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.event_triggering_constraint import (
     EventTriggeringConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.confidence_interval import (
     ConfidenceInterval,
 )
@@ -41,6 +42,40 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         self.confidence_intervals: list[ConfidenceInterval] = []
         self.maximums: list[MultidimensionalTime] = []
         self.minimums: list[MultidimensionalTime] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ArbitraryEventTriggering":
+        """Deserialize XML element to ArbitraryEventTriggering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ArbitraryEventTriggering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse confidence_intervals (list)
+        obj.confidence_intervals = []
+        for child in ARObject._find_all_child_elements(element, "CONFIDENCE-INTERVALS"):
+            confidence_intervals_value = ARObject._deserialize_by_tag(child, "ConfidenceInterval")
+            obj.confidence_intervals.append(confidence_intervals_value)
+
+        # Parse maximums (list)
+        obj.maximums = []
+        for child in ARObject._find_all_child_elements(element, "MAXIMUMS"):
+            maximums_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.maximums.append(maximums_value)
+
+        # Parse minimums (list)
+        obj.minimums = []
+        for child in ARObject._find_all_child_elements(element, "MINIMUMS"):
+            minimums_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.minimums.append(minimums_value)
+
+        return obj
+
 
 
 class ArbitraryEventTriggeringBuilder:

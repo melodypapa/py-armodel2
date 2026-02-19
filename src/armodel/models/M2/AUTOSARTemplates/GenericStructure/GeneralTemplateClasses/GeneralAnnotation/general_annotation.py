@@ -44,6 +44,40 @@ class GeneralAnnotation(ARObject, ABC):
         self.annotation: String = None
         self.annotation_text: DocumentationBlock = None
         self.label: Optional[MultilanguageLongName] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GeneralAnnotation":
+        """Deserialize XML element to GeneralAnnotation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GeneralAnnotation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse annotation
+        child = ARObject._find_child_element(element, "ANNOTATION")
+        if child is not None:
+            annotation_value = child.text
+            obj.annotation = annotation_value
+
+        # Parse annotation_text
+        child = ARObject._find_child_element(element, "ANNOTATION-TEXT")
+        if child is not None:
+            annotation_text_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.annotation_text = annotation_text_value
+
+        # Parse label
+        child = ARObject._find_child_element(element, "LABEL")
+        if child is not None:
+            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            obj.label = label_value
+
+        return obj
+
 
 
 class GeneralAnnotationBuilder:

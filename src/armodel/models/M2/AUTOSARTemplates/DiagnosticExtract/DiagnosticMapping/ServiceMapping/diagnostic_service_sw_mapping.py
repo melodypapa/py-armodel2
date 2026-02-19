@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -55,6 +56,70 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         self.mapped_swc: Optional[Any] = None
         self.parameter: Optional[DiagnosticParameter] = None
         self.service_instance: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticServiceSwMapping":
+        """Deserialize XML element to DiagnosticServiceSwMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticServiceSwMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse accessed_data_ref
+        child = ARObject._find_child_element(element, "ACCESSED-DATA")
+        if child is not None:
+            accessed_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.accessed_data_ref = accessed_data_ref_value
+
+        # Parse diagnostic_data
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA")
+        if child is not None:
+            diagnostic_data_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
+            obj.diagnostic_data = diagnostic_data_value
+
+        # Parse diagnostic
+        child = ARObject._find_child_element(element, "DIAGNOSTIC")
+        if child is not None:
+            diagnostic_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            obj.diagnostic = diagnostic_value
+
+        # Parse mapped_bsw
+        child = ARObject._find_child_element(element, "MAPPED-BSW")
+        if child is not None:
+            mapped_bsw_value = child.text
+            obj.mapped_bsw = mapped_bsw_value
+
+        # Parse mapped_flat_swc
+        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC")
+        if child is not None:
+            mapped_flat_swc_value = child.text
+            obj.mapped_flat_swc = mapped_flat_swc_value
+
+        # Parse mapped_swc
+        child = ARObject._find_child_element(element, "MAPPED-SWC")
+        if child is not None:
+            mapped_swc_value = child.text
+            obj.mapped_swc = mapped_swc_value
+
+        # Parse parameter
+        child = ARObject._find_child_element(element, "PARAMETER")
+        if child is not None:
+            parameter_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            obj.parameter = parameter_value
+
+        # Parse service_instance
+        child = ARObject._find_child_element(element, "SERVICE-INSTANCE")
+        if child is not None:
+            service_instance_value = child.text
+            obj.service_instance = service_instance_value
+
+        return obj
+
 
 
 class DiagnosticServiceSwMappingBuilder:

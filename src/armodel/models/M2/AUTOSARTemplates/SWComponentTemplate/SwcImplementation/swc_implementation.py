@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
     Implementation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -46,6 +47,40 @@ class SwcImplementation(Implementation):
         self.behavior: Optional[SwcInternalBehavior] = None
         self.per_instance_memories: list[PerInstanceMemory] = []
         self.required: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcImplementation":
+        """Deserialize XML element to SwcImplementation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcImplementation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse behavior
+        child = ARObject._find_child_element(element, "BEHAVIOR")
+        if child is not None:
+            behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
+            obj.behavior = behavior_value
+
+        # Parse per_instance_memories (list)
+        obj.per_instance_memories = []
+        for child in ARObject._find_all_child_elements(element, "PER-INSTANCE-MEMORIES"):
+            per_instance_memories_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
+            obj.per_instance_memories.append(per_instance_memories_value)
+
+        # Parse required
+        child = ARObject._find_child_element(element, "REQUIRED")
+        if child is not None:
+            required_value = child.text
+            obj.required = required_value
+
+        return obj
+
 
 
 class SwcImplementationBuilder:

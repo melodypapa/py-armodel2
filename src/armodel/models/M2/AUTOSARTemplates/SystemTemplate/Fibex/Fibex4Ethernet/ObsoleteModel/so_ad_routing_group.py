@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     EventGroupControlTypeEnum,
@@ -35,6 +36,28 @@ class SoAdRoutingGroup(FibexElement):
         """Initialize SoAdRoutingGroup."""
         super().__init__()
         self.event_group_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SoAdRoutingGroup":
+        """Deserialize XML element to SoAdRoutingGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SoAdRoutingGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_group_ref
+        child = ARObject._find_child_element(element, "EVENT-GROUP")
+        if child is not None:
+            event_group_ref_value = child.text
+            obj.event_group_ref = event_group_ref_value
+
+        return obj
+
 
 
 class SoAdRoutingGroupBuilder:

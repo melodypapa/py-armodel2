@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -52,6 +53,52 @@ class NetworkEndpoint(Identifiable):
         self.ip_sec_config: Optional[IPSecConfig] = None
         self.network_endpoints: list[NetworkEndpoint] = []
         self.priority: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NetworkEndpoint":
+        """Deserialize XML element to NetworkEndpoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NetworkEndpoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse fully_qualified
+        child = ARObject._find_child_element(element, "FULLY-QUALIFIED")
+        if child is not None:
+            fully_qualified_value = child.text
+            obj.fully_qualified = fully_qualified_value
+
+        # Parse infrastructure_services
+        child = ARObject._find_child_element(element, "INFRASTRUCTURE-SERVICES")
+        if child is not None:
+            infrastructure_services_value = ARObject._deserialize_by_tag(child, "InfrastructureServices")
+            obj.infrastructure_services = infrastructure_services_value
+
+        # Parse ip_sec_config
+        child = ARObject._find_child_element(element, "IP-SEC-CONFIG")
+        if child is not None:
+            ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfig")
+            obj.ip_sec_config = ip_sec_config_value
+
+        # Parse network_endpoints (list)
+        obj.network_endpoints = []
+        for child in ARObject._find_all_child_elements(element, "NETWORK-ENDPOINTS"):
+            network_endpoints_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
+            obj.network_endpoints.append(network_endpoints_value)
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        return obj
+
 
 
 class NetworkEndpointBuilder:

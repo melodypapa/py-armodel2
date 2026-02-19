@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_resource import (
     BinaryManifestResource,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -34,6 +35,28 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         """Initialize BinaryManifestRequireResource."""
         super().__init__()
         self.connection_is: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestRequireResource":
+        """Deserialize XML element to BinaryManifestRequireResource object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestRequireResource object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse connection_is
+        child = ARObject._find_child_element(element, "CONNECTION-IS")
+        if child is not None:
+            connection_is_value = child.text
+            obj.connection_is = connection_is_value
+
+        return obj
+
 
 
 class BinaryManifestRequireResourceBuilder:

@@ -48,6 +48,46 @@ class AliasNameAssignment(ARObject):
         self.identifiable: Optional[Identifiable] = None
         self.label: Optional[MultilanguageLongName] = None
         self.short_label: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AliasNameAssignment":
+        """Deserialize XML element to AliasNameAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AliasNameAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse flat_instance
+        child = ARObject._find_child_element(element, "FLAT-INSTANCE")
+        if child is not None:
+            flat_instance_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
+            obj.flat_instance = flat_instance_value
+
+        # Parse identifiable
+        child = ARObject._find_child_element(element, "IDENTIFIABLE")
+        if child is not None:
+            identifiable_value = ARObject._deserialize_by_tag(child, "Identifiable")
+            obj.identifiable = identifiable_value
+
+        # Parse label
+        child = ARObject._find_child_element(element, "LABEL")
+        if child is not None:
+            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            obj.label = label_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class AliasNameAssignmentBuilder:

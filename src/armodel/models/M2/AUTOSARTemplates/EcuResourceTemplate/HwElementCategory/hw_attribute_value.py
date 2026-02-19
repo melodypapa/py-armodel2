@@ -45,6 +45,46 @@ class HwAttributeValue(ARObject):
         self.hw_attribute_def: Optional[HwAttributeDef] = None
         self.v: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwAttributeValue":
+        """Deserialize XML element to HwAttributeValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwAttributeValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse annotation
+        child = ARObject._find_child_element(element, "ANNOTATION")
+        if child is not None:
+            annotation_value = ARObject._deserialize_by_tag(child, "Annotation")
+            obj.annotation = annotation_value
+
+        # Parse hw_attribute_def
+        child = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEF")
+        if child is not None:
+            hw_attribute_def_value = ARObject._deserialize_by_tag(child, "HwAttributeDef")
+            obj.hw_attribute_def = hw_attribute_def_value
+
+        # Parse v
+        child = ARObject._find_child_element(element, "V")
+        if child is not None:
+            v_value = child.text
+            obj.v = v_value
+
+        # Parse vt
+        child = ARObject._find_child_element(element, "VT")
+        if child is not None:
+            vt_value = child.text
+            obj.vt = vt_value
+
+        return obj
+
 
 
 class HwAttributeValueBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
     TimingExtension,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
     BswImplementation,
 )
@@ -34,6 +35,28 @@ class BswCompositionTiming(TimingExtension):
         """Initialize BswCompositionTiming."""
         super().__init__()
         self.implementations: list[BswImplementation] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswCompositionTiming":
+        """Deserialize XML element to BswCompositionTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswCompositionTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse implementations (list)
+        obj.implementations = []
+        for child in ARObject._find_all_child_elements(element, "IMPLEMENTATIONS"):
+            implementations_value = ARObject._deserialize_by_tag(child, "BswImplementation")
+            obj.implementations.append(implementations_value)
+
+        return obj
+
 
 
 class BswCompositionTimingBuilder:

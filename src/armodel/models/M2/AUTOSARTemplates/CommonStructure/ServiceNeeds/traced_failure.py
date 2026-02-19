@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,28 @@ class TracedFailure(Identifiable, ABC):
         """Initialize TracedFailure."""
         super().__init__()
         self.id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TracedFailure":
+        """Deserialize XML element to TracedFailure object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TracedFailure object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        return obj
+
 
 
 class TracedFailureBuilder:

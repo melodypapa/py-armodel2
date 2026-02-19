@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -72,6 +73,100 @@ class DoIpInterface(Identifiable):
         self.use_mac_address: Optional[Boolean] = None
         self.use_vehicle: Optional[Boolean] = None
         self.vehicle: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpInterface":
+        """Deserialize XML element to DoIpInterface object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpInterface object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alive_check
+        child = ARObject._find_child_element(element, "ALIVE-CHECK")
+        if child is not None:
+            alive_check_value = child.text
+            obj.alive_check = alive_check_value
+
+        # Parse doip_channel
+        child = ARObject._find_child_element(element, "DOIP-CHANNEL")
+        if child is not None:
+            doip_channel_value = ARObject._deserialize_by_tag(child, "DoIpTpConfig")
+            obj.doip_channel = doip_channel_value
+
+        # Parse doip_connections (list)
+        obj.doip_connections = []
+        for child in ARObject._find_all_child_elements(element, "DOIP-CONNECTIONS"):
+            doip_connections_value = ARObject._deserialize_by_tag(child, "SocketConnection")
+            obj.doip_connections.append(doip_connections_value)
+
+        # Parse do_ip_routings (list)
+        obj.do_ip_routings = []
+        for child in ARObject._find_all_child_elements(element, "DO-IP-ROUTINGS"):
+            do_ip_routings_value = ARObject._deserialize_by_tag(child, "DoIpRoutingActivation")
+            obj.do_ip_routings.append(do_ip_routings_value)
+
+        # Parse general_inactivity
+        child = ARObject._find_child_element(element, "GENERAL-INACTIVITY")
+        if child is not None:
+            general_inactivity_value = child.text
+            obj.general_inactivity = general_inactivity_value
+
+        # Parse initial_inactivity
+        child = ARObject._find_child_element(element, "INITIAL-INACTIVITY")
+        if child is not None:
+            initial_inactivity_value = child.text
+            obj.initial_inactivity = initial_inactivity_value
+
+        # Parse initial_vehicle
+        child = ARObject._find_child_element(element, "INITIAL-VEHICLE")
+        if child is not None:
+            initial_vehicle_value = child.text
+            obj.initial_vehicle = initial_vehicle_value
+
+        # Parse is_activation_line
+        child = ARObject._find_child_element(element, "IS-ACTIVATION-LINE")
+        if child is not None:
+            is_activation_line_value = child.text
+            obj.is_activation_line = is_activation_line_value
+
+        # Parse max_tester
+        child = ARObject._find_child_element(element, "MAX-TESTER")
+        if child is not None:
+            max_tester_value = child.text
+            obj.max_tester = max_tester_value
+
+        # Parse sockets (list)
+        obj.sockets = []
+        for child in ARObject._find_all_child_elements(element, "SOCKETS"):
+            sockets_value = ARObject._deserialize_by_tag(child, "StaticSocketConnection")
+            obj.sockets.append(sockets_value)
+
+        # Parse use_mac_address
+        child = ARObject._find_child_element(element, "USE-MAC-ADDRESS")
+        if child is not None:
+            use_mac_address_value = child.text
+            obj.use_mac_address = use_mac_address_value
+
+        # Parse use_vehicle
+        child = ARObject._find_child_element(element, "USE-VEHICLE")
+        if child is not None:
+            use_vehicle_value = child.text
+            obj.use_vehicle = use_vehicle_value
+
+        # Parse vehicle
+        child = ARObject._find_child_element(element, "VEHICLE")
+        if child is not None:
+            vehicle_value = child.text
+            obj.vehicle = vehicle_value
+
+        return obj
+
 
 
 class DoIpInterfaceBuilder:

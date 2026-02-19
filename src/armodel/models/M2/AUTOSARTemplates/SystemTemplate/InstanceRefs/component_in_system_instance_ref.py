@@ -39,6 +39,40 @@ class ComponentInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target: Any = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ComponentInSystemInstanceRef":
+        """Deserialize XML element to ComponentInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ComponentInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "System")
+            obj.base = base_value
+
+        # Parse context
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context = context_value
+
+        # Parse target
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_value = child.text
+            obj.target = target_value
+
+        return obj
+
 
 
 class ComponentInSystemInstanceRefBuilder:

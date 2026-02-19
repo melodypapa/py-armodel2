@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -37,6 +38,34 @@ class ModeTransition(Identifiable):
         super().__init__()
         self.entered_mode: Optional[ModeDeclaration] = None
         self.exited_mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeTransition":
+        """Deserialize XML element to ModeTransition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeTransition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse entered_mode
+        child = ARObject._find_child_element(element, "ENTERED-MODE")
+        if child is not None:
+            entered_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.entered_mode = entered_mode_value
+
+        # Parse exited_mode
+        child = ARObject._find_child_element(element, "EXITED-MODE")
+        if child is not None:
+            exited_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.exited_mode = exited_mode_value
+
+        return obj
+
 
 
 class ModeTransitionBuilder:

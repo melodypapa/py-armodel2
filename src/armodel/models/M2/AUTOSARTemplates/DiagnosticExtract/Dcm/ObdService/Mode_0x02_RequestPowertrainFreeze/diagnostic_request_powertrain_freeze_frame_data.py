@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x02_RequestPowertrainFreeze.diagnostic_powertrain_freeze_frame import (
     DiagnosticPowertrainFreezeFrame,
 )
@@ -36,6 +37,34 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         super().__init__()
         self.freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame] = None
         self.request: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestPowertrainFreezeFrameData":
+        """Deserialize XML element to DiagnosticRequestPowertrainFreezeFrameData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRequestPowertrainFreezeFrameData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse freeze_frame_freeze_frame
+        child = ARObject._find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME")
+        if child is not None:
+            freeze_frame_freeze_frame_value = ARObject._deserialize_by_tag(child, "DiagnosticPowertrainFreezeFrame")
+            obj.freeze_frame_freeze_frame = freeze_frame_freeze_frame_value
+
+        # Parse request
+        child = ARObject._find_child_element(element, "REQUEST")
+        if child is not None:
+            request_value = child.text
+            obj.request = request_value
+
+        return obj
+
 
 
 class DiagnosticRequestPowertrainFreezeFrameDataBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -34,6 +35,28 @@ class DataDumpEntry(LinConfigurationEntry):
         """Initialize DataDumpEntry."""
         super().__init__()
         self.byte_values: list[Integer] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataDumpEntry":
+        """Deserialize XML element to DataDumpEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataDumpEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse byte_values (list)
+        obj.byte_values = []
+        for child in ARObject._find_all_child_elements(element, "BYTE-VALUES"):
+            byte_values_value = child.text
+            obj.byte_values.append(byte_values_value)
+
+        return obj
+
 
 
 class DataDumpEntryBuilder:

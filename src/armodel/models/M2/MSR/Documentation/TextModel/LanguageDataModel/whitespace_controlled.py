@@ -30,6 +30,28 @@ class WhitespaceControlled(ARObject, ABC):
         """Initialize WhitespaceControlled."""
         super().__init__()
         self.xml_space: Any = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "WhitespaceControlled":
+        """Deserialize XML element to WhitespaceControlled object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized WhitespaceControlled object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse xml_space
+        child = ARObject._find_child_element(element, "XML-SPACE")
+        if child is not None:
+            xml_space_value = child.text
+            obj.xml_space = xml_space_value
+
+        return obj
+
 
 
 class WhitespaceControlledBuilder:

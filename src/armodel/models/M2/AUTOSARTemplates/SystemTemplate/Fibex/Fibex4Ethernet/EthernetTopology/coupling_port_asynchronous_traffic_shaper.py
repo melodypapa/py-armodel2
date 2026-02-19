@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,6 +42,40 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         self.committed_burst: Optional[PositiveInteger] = None
         self.committed: Optional[PositiveInteger] = None
         self.traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CouplingPortAsynchronousTrafficShaper":
+        """Deserialize XML element to CouplingPortAsynchronousTrafficShaper object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CouplingPortAsynchronousTrafficShaper object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse committed_burst
+        child = ARObject._find_child_element(element, "COMMITTED-BURST")
+        if child is not None:
+            committed_burst_value = child.text
+            obj.committed_burst = committed_burst_value
+
+        # Parse committed
+        child = ARObject._find_child_element(element, "COMMITTED")
+        if child is not None:
+            committed_value = child.text
+            obj.committed = committed_value
+
+        # Parse traffic_shaper
+        child = ARObject._find_child_element(element, "TRAFFIC-SHAPER")
+        if child is not None:
+            traffic_shaper_value = ARObject._deserialize_by_tag(child, "SwitchAsynchronousTrafficShaperGroupEntry")
+            obj.traffic_shaper = traffic_shaper_value
+
+        return obj
+
 
 
 class CouplingPortAsynchronousTrafficShaperBuilder:

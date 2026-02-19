@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -45,6 +46,46 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         self.freeze_current: Optional[Boolean] = None
         self.reset_to_default: Optional[Boolean] = None
         self.short_term: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIoControlNeeds":
+        """Deserialize XML element to DiagnosticIoControlNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticIoControlNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse current_value
+        child = ARObject._find_child_element(element, "CURRENT-VALUE")
+        if child is not None:
+            current_value_value = ARObject._deserialize_by_tag(child, "DiagnosticValueNeeds")
+            obj.current_value = current_value_value
+
+        # Parse freeze_current
+        child = ARObject._find_child_element(element, "FREEZE-CURRENT")
+        if child is not None:
+            freeze_current_value = child.text
+            obj.freeze_current = freeze_current_value
+
+        # Parse reset_to_default
+        child = ARObject._find_child_element(element, "RESET-TO-DEFAULT")
+        if child is not None:
+            reset_to_default_value = child.text
+            obj.reset_to_default = reset_to_default_value
+
+        # Parse short_term
+        child = ARObject._find_child_element(element, "SHORT-TERM")
+        if child is not None:
+            short_term_value = child.text
+            obj.short_term = short_term_value
+
+        return obj
+
 
 
 class DiagnosticIoControlNeedsBuilder:

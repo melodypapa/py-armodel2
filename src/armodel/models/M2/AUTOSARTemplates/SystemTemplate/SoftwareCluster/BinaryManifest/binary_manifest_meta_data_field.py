@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_addressable_object import (
     BinaryManifestAddressableObject,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     VerbatimString,
@@ -37,6 +38,34 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         super().__init__()
         self.size: Optional[PositiveInteger] = None
         self.value: Optional[VerbatimString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestMetaDataField":
+        """Deserialize XML element to BinaryManifestMetaDataField object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestMetaDataField object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse size
+        child = ARObject._find_child_element(element, "SIZE")
+        if child is not None:
+            size_value = child.text
+            obj.size = size_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class BinaryManifestMetaDataFieldBuilder:

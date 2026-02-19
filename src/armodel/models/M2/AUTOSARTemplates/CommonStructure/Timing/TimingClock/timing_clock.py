@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_domain import (
     GlobalTimeDomain,
 )
@@ -35,6 +36,28 @@ class TimingClock(Identifiable, ABC):
         """Initialize TimingClock."""
         super().__init__()
         self.platform_time: Optional[GlobalTimeDomain] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingClock":
+        """Deserialize XML element to TimingClock object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingClock object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse platform_time
+        child = ARObject._find_child_element(element, "PLATFORM-TIME")
+        if child is not None:
+            platform_time_value = ARObject._deserialize_by_tag(child, "GlobalTimeDomain")
+            obj.platform_time = platform_time_value
+
+        return obj
+
 
 
 class TimingClockBuilder:

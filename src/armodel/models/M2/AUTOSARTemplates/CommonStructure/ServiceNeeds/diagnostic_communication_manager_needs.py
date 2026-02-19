@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
@@ -32,6 +33,28 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticCommunicationManagerNeeds."""
         super().__init__()
         self.service_request: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCommunicationManagerNeeds":
+        """Deserialize XML element to DiagnosticCommunicationManagerNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticCommunicationManagerNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse service_request
+        child = ARObject._find_child_element(element, "SERVICE-REQUEST")
+        if child is not None:
+            service_request_value = child.text
+            obj.service_request = service_request_value
+
+        return obj
+
 
 
 class DiagnosticCommunicationManagerNeedsBuilder:

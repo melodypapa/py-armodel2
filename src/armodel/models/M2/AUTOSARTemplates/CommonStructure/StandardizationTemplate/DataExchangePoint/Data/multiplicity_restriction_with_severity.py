@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
     RestrictionWithSeverity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class MultiplicityRestrictionWithSeverity(RestrictionWithSeverity):
@@ -29,6 +30,22 @@ class MultiplicityRestrictionWithSeverity(RestrictionWithSeverity):
     def __init__(self) -> None:
         """Initialize MultiplicityRestrictionWithSeverity."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiplicityRestrictionWithSeverity":
+        """Deserialize XML element to MultiplicityRestrictionWithSeverity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiplicityRestrictionWithSeverity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class MultiplicityRestrictionWithSeverityBuilder:

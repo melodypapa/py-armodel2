@@ -28,6 +28,22 @@ class AbstractCondition(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize AbstractCondition."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractCondition":
+        """Deserialize XML element to AbstractCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class AbstractConditionBuilder:

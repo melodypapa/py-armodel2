@@ -81,6 +81,136 @@ class FlexrayArTpChannel(ARObject):
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
         self.tp_connections: list[FlexrayArTpConnection] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayArTpChannel":
+        """Deserialize XML element to FlexrayArTpChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayArTpChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ack_type
+        child = ARObject._find_child_element(element, "ACK-TYPE")
+        if child is not None:
+            ack_type_value = child.text
+            obj.ack_type = ack_type_value
+
+        # Parse cancellation
+        child = ARObject._find_child_element(element, "CANCELLATION")
+        if child is not None:
+            cancellation_value = child.text
+            obj.cancellation = cancellation_value
+
+        # Parse extended
+        child = ARObject._find_child_element(element, "EXTENDED")
+        if child is not None:
+            extended_value = child.text
+            obj.extended = extended_value
+
+        # Parse max_ar
+        child = ARObject._find_child_element(element, "MAX-AR")
+        if child is not None:
+            max_ar_value = child.text
+            obj.max_ar = max_ar_value
+
+        # Parse max_as
+        child = ARObject._find_child_element(element, "MAX-AS")
+        if child is not None:
+            max_as_value = child.text
+            obj.max_as = max_as_value
+
+        # Parse max_bs
+        child = ARObject._find_child_element(element, "MAX-BS")
+        if child is not None:
+            max_bs_value = child.text
+            obj.max_bs = max_bs_value
+
+        # Parse max_fc_wait
+        child = ARObject._find_child_element(element, "MAX-FC-WAIT")
+        if child is not None:
+            max_fc_wait_value = child.text
+            obj.max_fc_wait = max_fc_wait_value
+
+        # Parse maximum_message
+        child = ARObject._find_child_element(element, "MAXIMUM-MESSAGE")
+        if child is not None:
+            maximum_message_value = child.text
+            obj.maximum_message = maximum_message_value
+
+        # Parse max_retries
+        child = ARObject._find_child_element(element, "MAX-RETRIES")
+        if child is not None:
+            max_retries_value = child.text
+            obj.max_retries = max_retries_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = child.text
+            obj.minimum = minimum_value
+
+        # Parse multicast
+        child = ARObject._find_child_element(element, "MULTICAST")
+        if child is not None:
+            multicast_value = child.text
+            obj.multicast = multicast_value
+
+        # Parse n_pdus (list)
+        obj.n_pdus = []
+        for child in ARObject._find_all_child_elements(element, "N-PDUS"):
+            n_pdus_value = ARObject._deserialize_by_tag(child, "NPdu")
+            obj.n_pdus.append(n_pdus_value)
+
+        # Parse time_br
+        child = ARObject._find_child_element(element, "TIME-BR")
+        if child is not None:
+            time_br_value = child.text
+            obj.time_br = time_br_value
+
+        # Parse time_cs
+        child = ARObject._find_child_element(element, "TIME-CS")
+        if child is not None:
+            time_cs_value = child.text
+            obj.time_cs = time_cs_value
+
+        # Parse timeout_ar
+        child = ARObject._find_child_element(element, "TIMEOUT-AR")
+        if child is not None:
+            timeout_ar_value = child.text
+            obj.timeout_ar = timeout_ar_value
+
+        # Parse timeout_as
+        child = ARObject._find_child_element(element, "TIMEOUT-AS")
+        if child is not None:
+            timeout_as_value = child.text
+            obj.timeout_as = timeout_as_value
+
+        # Parse timeout_bs
+        child = ARObject._find_child_element(element, "TIMEOUT-BS")
+        if child is not None:
+            timeout_bs_value = child.text
+            obj.timeout_bs = timeout_bs_value
+
+        # Parse timeout_cr
+        child = ARObject._find_child_element(element, "TIMEOUT-CR")
+        if child is not None:
+            timeout_cr_value = child.text
+            obj.timeout_cr = timeout_cr_value
+
+        # Parse tp_connections (list)
+        obj.tp_connections = []
+        for child in ARObject._find_all_child_elements(element, "TP-CONNECTIONS"):
+            tp_connections_value = ARObject._deserialize_by_tag(child, "FlexrayArTpConnection")
+            obj.tp_connections.append(tp_connections_value)
+
+        return obj
+
 
 
 class FlexrayArTpChannelBuilder:

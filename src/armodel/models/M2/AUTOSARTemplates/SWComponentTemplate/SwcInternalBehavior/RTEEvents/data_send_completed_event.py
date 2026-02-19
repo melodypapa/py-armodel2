@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
     VariableAccess,
 )
@@ -34,6 +35,28 @@ class DataSendCompletedEvent(RTEEvent):
         """Initialize DataSendCompletedEvent."""
         super().__init__()
         self.event_source: Optional[VariableAccess] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataSendCompletedEvent":
+        """Deserialize XML element to DataSendCompletedEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataSendCompletedEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_source
+        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        if child is not None:
+            event_source_value = ARObject._deserialize_by_tag(child, "VariableAccess")
+            obj.event_source = event_source_value
+
+        return obj
+
 
 
 class DataSendCompletedEventBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDestination.diagnostic_memory_destination import (
     DiagnosticMemoryDestination,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode import (
     DiagnosticTypeOfDtcSupportedEnum,
 )
@@ -34,6 +35,28 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         """Initialize DiagnosticMemoryDestinationPrimary."""
         super().__init__()
         self.type_of_dtc: Optional[DiagnosticTypeOfDtcSupportedEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestinationPrimary":
+        """Deserialize XML element to DiagnosticMemoryDestinationPrimary object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticMemoryDestinationPrimary object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type_of_dtc
+        child = ARObject._find_child_element(element, "TYPE-OF-DTC")
+        if child is not None:
+            type_of_dtc_value = child.text
+            obj.type_of_dtc = type_of_dtc_value
+
+        return obj
+
 
 
 class DiagnosticMemoryDestinationPrimaryBuilder:

@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticRoutineTypeEnum,
 )
@@ -36,6 +37,28 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticRoutineNeeds."""
         super().__init__()
         self.diag_routine: Optional[DiagnosticRoutineTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRoutineNeeds":
+        """Deserialize XML element to DiagnosticRoutineNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRoutineNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse diag_routine
+        child = ARObject._find_child_element(element, "DIAG-ROUTINE")
+        if child is not None:
+            diag_routine_value = child.text
+            obj.diag_routine = diag_routine_value
+
+        return obj
+
 
 
 class DiagnosticRoutineNeedsBuilder:

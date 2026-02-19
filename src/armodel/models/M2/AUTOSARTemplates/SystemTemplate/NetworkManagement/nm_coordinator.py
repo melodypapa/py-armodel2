@@ -46,6 +46,46 @@ class NmCoordinator(ARObject):
         self.nm_coord_sync: Optional[Boolean] = None
         self.nm_global: Optional[TimeValue] = None
         self.nm_nodes: list[NmNode] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NmCoordinator":
+        """Deserialize XML element to NmCoordinator object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NmCoordinator object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse index
+        child = ARObject._find_child_element(element, "INDEX")
+        if child is not None:
+            index_value = child.text
+            obj.index = index_value
+
+        # Parse nm_coord_sync
+        child = ARObject._find_child_element(element, "NM-COORD-SYNC")
+        if child is not None:
+            nm_coord_sync_value = child.text
+            obj.nm_coord_sync = nm_coord_sync_value
+
+        # Parse nm_global
+        child = ARObject._find_child_element(element, "NM-GLOBAL")
+        if child is not None:
+            nm_global_value = child.text
+            obj.nm_global = nm_global_value
+
+        # Parse nm_nodes (list)
+        obj.nm_nodes = []
+        for child in ARObject._find_all_child_elements(element, "NM-NODES"):
+            nm_nodes_value = ARObject._deserialize_by_tag(child, "NmNode")
+            obj.nm_nodes.append(nm_nodes_value)
+
+        return obj
+
 
 
 class NmCoordinatorBuilder:

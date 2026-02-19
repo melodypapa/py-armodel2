@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
@@ -37,6 +38,28 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         """Initialize PRPortPrototype."""
         super().__init__()
         self.provided: Optional[PortInterface] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PRPortPrototype":
+        """Deserialize XML element to PRPortPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PRPortPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provided
+        child = ARObject._find_child_element(element, "PROVIDED")
+        if child is not None:
+            provided_value = ARObject._deserialize_by_tag(child, "PortInterface")
+            obj.provided = provided_value
+
+        return obj
+
 
 
 class PRPortPrototypeBuilder:

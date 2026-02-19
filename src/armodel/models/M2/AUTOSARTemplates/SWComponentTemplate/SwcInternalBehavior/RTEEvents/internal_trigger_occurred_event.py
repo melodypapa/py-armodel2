@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.internal_triggering_point import (
     InternalTriggeringPoint,
@@ -35,6 +36,28 @@ class InternalTriggerOccurredEvent(RTEEvent):
         """Initialize InternalTriggerOccurredEvent."""
         super().__init__()
         self.event_source_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InternalTriggerOccurredEvent":
+        """Deserialize XML element to InternalTriggerOccurredEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InternalTriggerOccurredEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_source_ref
+        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        if child is not None:
+            event_source_ref_value = ARObject._deserialize_by_tag(child, "InternalTriggeringPoint")
+            obj.event_source_ref = event_source_ref_value
+
+        return obj
+
 
 
 class InternalTriggerOccurredEventBuilder:

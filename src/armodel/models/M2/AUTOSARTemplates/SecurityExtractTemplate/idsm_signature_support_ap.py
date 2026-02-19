@@ -37,6 +37,34 @@ class IdsmSignatureSupportAp(ARObject):
         super().__init__()
         self.crypto_primitive: String = None
         self.key_slot: Optional[CryptoKeySlot] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportAp":
+        """Deserialize XML element to IdsmSignatureSupportAp object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IdsmSignatureSupportAp object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse crypto_primitive
+        child = ARObject._find_child_element(element, "CRYPTO-PRIMITIVE")
+        if child is not None:
+            crypto_primitive_value = child.text
+            obj.crypto_primitive = crypto_primitive_value
+
+        # Parse key_slot
+        child = ARObject._find_child_element(element, "KEY-SLOT")
+        if child is not None:
+            key_slot_value = ARObject._deserialize_by_tag(child, "CryptoKeySlot")
+            obj.key_slot = key_slot_value
+
+        return obj
+
 
 
 class IdsmSignatureSupportApBuilder:

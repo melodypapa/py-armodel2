@@ -32,6 +32,28 @@ class DdsTopicData(ARObject):
         """Initialize DdsTopicData."""
         super().__init__()
         self.topic_data: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsTopicData":
+        """Deserialize XML element to DdsTopicData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsTopicData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse topic_data
+        child = ARObject._find_child_element(element, "TOPIC-DATA")
+        if child is not None:
+            topic_data_value = child.text
+            obj.topic_data = topic_data_value
+
+        return obj
+
 
 
 class DdsTopicDataBuilder:

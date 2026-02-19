@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
@@ -39,6 +40,28 @@ class TraceableText(Paginateable):
         """Initialize TraceableText."""
         super().__init__()
         self.text: DocumentationBlock = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TraceableText":
+        """Deserialize XML element to TraceableText object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TraceableText object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse text
+        child = ARObject._find_child_element(element, "TEXT")
+        if child is not None:
+            text_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.text = text_value
+
+        return obj
+
 
 
 class TraceableTextBuilder:

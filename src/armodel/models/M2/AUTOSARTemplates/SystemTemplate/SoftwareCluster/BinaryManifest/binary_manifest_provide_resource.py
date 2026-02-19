@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_resource import (
     BinaryManifestResource,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -37,6 +38,34 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         super().__init__()
         self.number_of: Optional[PositiveInteger] = None
         self.supports: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestProvideResource":
+        """Deserialize XML element to BinaryManifestProvideResource object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestProvideResource object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse number_of
+        child = ARObject._find_child_element(element, "NUMBER-OF")
+        if child is not None:
+            number_of_value = child.text
+            obj.number_of = number_of_value
+
+        # Parse supports
+        child = ARObject._find_child_element(element, "SUPPORTS")
+        if child is not None:
+            supports_value = child.text
+            obj.supports = supports_value
+
+        return obj
+
 
 
 class BinaryManifestProvideResourceBuilder:

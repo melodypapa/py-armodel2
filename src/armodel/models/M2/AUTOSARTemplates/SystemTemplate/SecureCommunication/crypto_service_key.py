@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -50,6 +51,52 @@ class CryptoServiceKey(ARElement):
         self.key_generation: Optional[CryptoServiceKey] = None
         self.key_storage_type: Optional[String] = None
         self.length: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CryptoServiceKey":
+        """Deserialize XML element to CryptoServiceKey object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CryptoServiceKey object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse algorithm_family
+        child = ARObject._find_child_element(element, "ALGORITHM-FAMILY")
+        if child is not None:
+            algorithm_family_value = child.text
+            obj.algorithm_family = algorithm_family_value
+
+        # Parse development
+        child = ARObject._find_child_element(element, "DEVELOPMENT")
+        if child is not None:
+            development_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.development = development_value
+
+        # Parse key_generation
+        child = ARObject._find_child_element(element, "KEY-GENERATION")
+        if child is not None:
+            key_generation_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.key_generation = key_generation_value
+
+        # Parse key_storage_type
+        child = ARObject._find_child_element(element, "KEY-STORAGE-TYPE")
+        if child is not None:
+            key_storage_type_value = child.text
+            obj.key_storage_type = key_storage_type_value
+
+        # Parse length
+        child = ARObject._find_child_element(element, "LENGTH")
+        if child is not None:
+            length_value = child.text
+            obj.length = length_value
+
+        return obj
+
 
 
 class CryptoServiceKeyBuilder:

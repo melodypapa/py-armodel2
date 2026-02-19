@@ -52,6 +52,58 @@ class MacSecLocalKayProps(ARObject):
         self.mka_participants: list[MacSecKayParticipant] = []
         self.role: Optional[MacSecRoleEnum] = None
         self.source_mac: Optional[MacAddressString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacSecLocalKayProps":
+        """Deserialize XML element to MacSecLocalKayProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacSecLocalKayProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_mac
+        child = ARObject._find_child_element(element, "DESTINATION-MAC")
+        if child is not None:
+            destination_mac_value = child.text
+            obj.destination_mac = destination_mac_value
+
+        # Parse global_kay_props
+        child = ARObject._find_child_element(element, "GLOBAL-KAY-PROPS")
+        if child is not None:
+            global_kay_props_value = ARObject._deserialize_by_tag(child, "MacSecGlobalKayProps")
+            obj.global_kay_props = global_kay_props_value
+
+        # Parse key_server
+        child = ARObject._find_child_element(element, "KEY-SERVER")
+        if child is not None:
+            key_server_value = child.text
+            obj.key_server = key_server_value
+
+        # Parse mka_participants (list)
+        obj.mka_participants = []
+        for child in ARObject._find_all_child_elements(element, "MKA-PARTICIPANTS"):
+            mka_participants_value = ARObject._deserialize_by_tag(child, "MacSecKayParticipant")
+            obj.mka_participants.append(mka_participants_value)
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse source_mac
+        child = ARObject._find_child_element(element, "SOURCE-MAC")
+        if child is not None:
+            source_mac_value = child.text
+            obj.source_mac = source_mac_value
+
+        return obj
+
 
 
 class MacSecLocalKayPropsBuilder:

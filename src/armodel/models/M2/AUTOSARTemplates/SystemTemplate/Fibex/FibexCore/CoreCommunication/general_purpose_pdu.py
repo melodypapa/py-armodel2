@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu import (
     Pdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class GeneralPurposePdu(Pdu):
@@ -29,6 +30,22 @@ class GeneralPurposePdu(Pdu):
     def __init__(self) -> None:
         """Initialize GeneralPurposePdu."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GeneralPurposePdu":
+        """Deserialize XML element to GeneralPurposePdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GeneralPurposePdu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class GeneralPurposePduBuilder:

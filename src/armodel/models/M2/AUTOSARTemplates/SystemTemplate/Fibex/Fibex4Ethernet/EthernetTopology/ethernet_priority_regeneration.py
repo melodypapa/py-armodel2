@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,34 @@ class EthernetPriorityRegeneration(Referrable):
         super().__init__()
         self.ingress_priority: Optional[PositiveInteger] = None
         self.regenerated: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthernetPriorityRegeneration":
+        """Deserialize XML element to EthernetPriorityRegeneration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthernetPriorityRegeneration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ingress_priority
+        child = ARObject._find_child_element(element, "INGRESS-PRIORITY")
+        if child is not None:
+            ingress_priority_value = child.text
+            obj.ingress_priority = ingress_priority_value
+
+        # Parse regenerated
+        child = ARObject._find_child_element(element, "REGENERATED")
+        if child is not None:
+            regenerated_value = child.text
+            obj.regenerated = regenerated_value
+
+        return obj
+
 
 
 class EthernetPriorityRegenerationBuilder:

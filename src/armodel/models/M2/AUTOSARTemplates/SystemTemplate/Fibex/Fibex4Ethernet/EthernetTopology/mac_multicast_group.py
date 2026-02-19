@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
 )
@@ -34,6 +35,28 @@ class MacMulticastGroup(Identifiable):
         """Initialize MacMulticastGroup."""
         super().__init__()
         self.mac_multicast: Optional[MacAddressString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacMulticastGroup":
+        """Deserialize XML element to MacMulticastGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacMulticastGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mac_multicast
+        child = ARObject._find_child_element(element, "MAC-MULTICAST")
+        if child is not None:
+            mac_multicast_value = child.text
+            obj.mac_multicast = mac_multicast_value
+
+        return obj
+
 
 
 class MacMulticastGroupBuilder:

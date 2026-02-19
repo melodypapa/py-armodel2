@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.j1939_cluster import (
     J1939Cluster,
 )
@@ -34,6 +35,28 @@ class J1939SharedAddressCluster(Identifiable):
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
         self.participatings: list[J1939Cluster] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939SharedAddressCluster":
+        """Deserialize XML element to J1939SharedAddressCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939SharedAddressCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse participatings (list)
+        obj.participatings = []
+        for child in ARObject._find_all_child_elements(element, "PARTICIPATINGS"):
+            participatings_value = ARObject._deserialize_by_tag(child, "J1939Cluster")
+            obj.participatings.append(participatings_value)
+
+        return obj
+
 
 
 class J1939SharedAddressClusterBuilder:

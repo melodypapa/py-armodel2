@@ -40,6 +40,40 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         self.first_mode_group_prototype_ref: Optional[ARRef] = None
         self.mode: Optional[ModeDeclaration] = None
         self.second_mode_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroupPrototypeMapping":
+        """Deserialize XML element to ModeDeclarationGroupPrototypeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeDeclarationGroupPrototypeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_mode_group_prototype_ref
+        child = ARObject._find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE")
+        if child is not None:
+            first_mode_group_prototype_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
+
+        # Parse mode
+        child = ARObject._find_child_element(element, "MODE")
+        if child is not None:
+            mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.mode = mode_value
+
+        # Parse second_mode_ref
+        child = ARObject._find_child_element(element, "SECOND-MODE")
+        if child is not None:
+            second_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.second_mode_ref = second_mode_ref_value
+
+        return obj
+
 
 
 class ModeDeclarationGroupPrototypeMappingBuilder:

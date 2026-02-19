@@ -33,6 +33,28 @@ class RestrictionWithSeverity(ARObject, ABC):
         """Initialize RestrictionWithSeverity."""
         super().__init__()
         self.severity: SeverityEnum = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RestrictionWithSeverity":
+        """Deserialize XML element to RestrictionWithSeverity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RestrictionWithSeverity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse severity
+        child = ARObject._find_child_element(element, "SEVERITY")
+        if child is not None:
+            severity_value = child.text
+            obj.severity = severity_value
+
+        return obj
+
 
 
 class RestrictionWithSeverityBuilder:

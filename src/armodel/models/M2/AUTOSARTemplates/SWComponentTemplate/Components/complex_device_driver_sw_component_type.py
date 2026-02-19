@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
@@ -37,6 +38,28 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         """Initialize ComplexDeviceDriverSwComponentType."""
         super().__init__()
         self.hardwares: list[HwDescriptionEntity] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ComplexDeviceDriverSwComponentType":
+        """Deserialize XML element to ComplexDeviceDriverSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ComplexDeviceDriverSwComponentType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse hardwares (list)
+        obj.hardwares = []
+        for child in ARObject._find_all_child_elements(element, "HARDWARES"):
+            hardwares_value = ARObject._deserialize_by_tag(child, "HwDescriptionEntity")
+            obj.hardwares.append(hardwares_value)
+
+        return obj
+
 
 
 class ComplexDeviceDriverSwComponentTypeBuilder:

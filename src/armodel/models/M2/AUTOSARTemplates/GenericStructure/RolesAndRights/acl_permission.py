@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.RolesAndRights import (
     AclScopeEnum,
@@ -56,6 +57,52 @@ class AclPermission(ARElement):
         self.acl_operations: list[AclOperation] = []
         self.acl_roles: list[AclRole] = []
         self.acl_scope: AclScopeEnum = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AclPermission":
+        """Deserialize XML element to AclPermission object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AclPermission object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse acl_contexts (list)
+        obj.acl_contexts = []
+        for child in ARObject._find_all_child_elements(element, "ACL-CONTEXTS"):
+            acl_contexts_value = child.text
+            obj.acl_contexts.append(acl_contexts_value)
+
+        # Parse acl_object_set_refs (list)
+        obj.acl_object_set_refs = []
+        for child in ARObject._find_all_child_elements(element, "ACL-OBJECT-SETS"):
+            acl_object_set_refs_value = ARObject._deserialize_by_tag(child, "AclObjectSet")
+            obj.acl_object_set_refs.append(acl_object_set_refs_value)
+
+        # Parse acl_operations (list)
+        obj.acl_operations = []
+        for child in ARObject._find_all_child_elements(element, "ACL-OPERATIONS"):
+            acl_operations_value = ARObject._deserialize_by_tag(child, "AclOperation")
+            obj.acl_operations.append(acl_operations_value)
+
+        # Parse acl_roles (list)
+        obj.acl_roles = []
+        for child in ARObject._find_all_child_elements(element, "ACL-ROLES"):
+            acl_roles_value = ARObject._deserialize_by_tag(child, "AclRole")
+            obj.acl_roles.append(acl_roles_value)
+
+        # Parse acl_scope
+        child = ARObject._find_child_element(element, "ACL-SCOPE")
+        if child is not None:
+            acl_scope_value = child.text
+            obj.acl_scope = acl_scope_value
+
+        return obj
+
 
 
 class AclPermissionBuilder:

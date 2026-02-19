@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,6 +44,46 @@ class DiagnosticConnectedIndicator(Identifiable):
         self.healing_cycle: Optional[PositiveInteger] = None
         self.indicator: Optional[DiagnosticIndicator] = None
         self.indicator_failure: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticConnectedIndicator":
+        """Deserialize XML element to DiagnosticConnectedIndicator object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticConnectedIndicator object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse behavior_indicator_behavior_enum
+        child = ARObject._find_child_element(element, "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
+        if child is not None:
+            behavior_indicator_behavior_enum_value = child.text
+            obj.behavior_indicator_behavior_enum = behavior_indicator_behavior_enum_value
+
+        # Parse healing_cycle
+        child = ARObject._find_child_element(element, "HEALING-CYCLE")
+        if child is not None:
+            healing_cycle_value = child.text
+            obj.healing_cycle = healing_cycle_value
+
+        # Parse indicator
+        child = ARObject._find_child_element(element, "INDICATOR")
+        if child is not None:
+            indicator_value = ARObject._deserialize_by_tag(child, "DiagnosticIndicator")
+            obj.indicator = indicator_value
+
+        # Parse indicator_failure
+        child = ARObject._find_child_element(element, "INDICATOR-FAILURE")
+        if child is not None:
+            indicator_failure_value = child.text
+            obj.indicator_failure = indicator_failure_value
+
+        return obj
+
 
 
 class DiagnosticConnectedIndicatorBuilder:

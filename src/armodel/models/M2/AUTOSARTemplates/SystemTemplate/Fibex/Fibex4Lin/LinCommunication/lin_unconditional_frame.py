@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
     LinFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class LinUnconditionalFrame(LinFrame):
@@ -29,6 +30,22 @@ class LinUnconditionalFrame(LinFrame):
     def __init__(self) -> None:
         """Initialize LinUnconditionalFrame."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinUnconditionalFrame":
+        """Deserialize XML element to LinUnconditionalFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinUnconditionalFrame object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class LinUnconditionalFrameBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,6 +49,52 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         self.routine_info: Optional[PositiveInteger] = None
         self.start: Optional[DiagnosticStartRoutine] = None
         self.stop: Optional[DiagnosticStopRoutine] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRoutine":
+        """Deserialize XML element to DiagnosticRoutine object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRoutine object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        # Parse request_result
+        child = ARObject._find_child_element(element, "REQUEST-RESULT")
+        if child is not None:
+            request_result_value = child.text
+            obj.request_result = request_result_value
+
+        # Parse routine_info
+        child = ARObject._find_child_element(element, "ROUTINE-INFO")
+        if child is not None:
+            routine_info_value = child.text
+            obj.routine_info = routine_info_value
+
+        # Parse start
+        child = ARObject._find_child_element(element, "START")
+        if child is not None:
+            start_value = ARObject._deserialize_by_tag(child, "DiagnosticStartRoutine")
+            obj.start = start_value
+
+        # Parse stop
+        child = ARObject._find_child_element(element, "STOP")
+        if child is not None:
+            stop_value = ARObject._deserialize_by_tag(child, "DiagnosticStopRoutine")
+            obj.stop = stop_value
+
+        return obj
+
 
 
 class DiagnosticRoutineBuilder:

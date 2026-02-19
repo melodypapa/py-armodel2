@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -83,6 +84,94 @@ class PncMapping(Describable):
         self.short_label: Optional[Identifier] = None
         self.vfc_refs: list[ARRef] = []
         self.wakeup_frame_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PncMapping":
+        """Deserialize XML element to PncMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PncMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dynamic_pnc_refs (list)
+        obj.dynamic_pnc_refs = []
+        for child in ARObject._find_all_child_elements(element, "DYNAMIC-PNCS"):
+            dynamic_pnc_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
+            obj.dynamic_pnc_refs.append(dynamic_pnc_refs_value)
+
+        # Parse ident_ref
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_ref_value = ARObject._deserialize_by_tag(child, "PncMappingIdent")
+            obj.ident_ref = ident_ref_value
+
+        # Parse physical_channels (list)
+        obj.physical_channels = []
+        for child in ARObject._find_all_child_elements(element, "PHYSICAL-CHANNELS"):
+            physical_channels_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
+            obj.physical_channels.append(physical_channels_value)
+
+        # Parse pnc_consumeds (list)
+        obj.pnc_consumeds = []
+        for child in ARObject._find_all_child_elements(element, "PNC-CONSUMEDS"):
+            pnc_consumeds_value = ARObject._deserialize_by_tag(child, "ConsumedProvidedServiceInstanceGroup")
+            obj.pnc_consumeds.append(pnc_consumeds_value)
+
+        # Parse pnc_group_refs (list)
+        obj.pnc_group_refs = []
+        for child in ARObject._find_all_child_elements(element, "PNC-GROUPS"):
+            pnc_group_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
+            obj.pnc_group_refs.append(pnc_group_refs_value)
+
+        # Parse pnc_identifier
+        child = ARObject._find_child_element(element, "PNC-IDENTIFIER")
+        if child is not None:
+            pnc_identifier_value = child.text
+            obj.pnc_identifier = pnc_identifier_value
+
+        # Parse pnc_pdur_group_refs (list)
+        obj.pnc_pdur_group_refs = []
+        for child in ARObject._find_all_child_elements(element, "PNC-PDUR-GROUPS"):
+            pnc_pdur_group_refs_value = ARObject._deserialize_by_tag(child, "PdurIPduGroup")
+            obj.pnc_pdur_group_refs.append(pnc_pdur_group_refs_value)
+
+        # Parse pnc_wakeup
+        child = ARObject._find_child_element(element, "PNC-WAKEUP")
+        if child is not None:
+            pnc_wakeup_value = child.text
+            obj.pnc_wakeup = pnc_wakeup_value
+
+        # Parse relevant_fors (list)
+        obj.relevant_fors = []
+        for child in ARObject._find_all_child_elements(element, "RELEVANT-FORS"):
+            relevant_fors_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.relevant_fors.append(relevant_fors_value)
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        # Parse vfc_refs (list)
+        obj.vfc_refs = []
+        for child in ARObject._find_all_child_elements(element, "VFCS"):
+            vfc_refs_value = ARObject._deserialize_by_tag(child, "PortGroup")
+            obj.vfc_refs.append(vfc_refs_value)
+
+        # Parse wakeup_frame_refs (list)
+        obj.wakeup_frame_refs = []
+        for child in ARObject._find_all_child_elements(element, "WAKEUP-FRAMES"):
+            wakeup_frame_refs_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
+            obj.wakeup_frame_refs.append(wakeup_frame_refs_value)
+
+        return obj
+
 
 
 class PncMappingBuilder:

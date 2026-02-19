@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -47,6 +48,58 @@ class ExecutionOrderConstraint(TimingConstraint):
         self.is_event: Optional[Boolean] = None
         self.ordered_elements: list[Any] = []
         self.permit_multiple: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ExecutionOrderConstraint":
+        """Deserialize XML element to ExecutionOrderConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ExecutionOrderConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse execution_order
+        child = ARObject._find_child_element(element, "EXECUTION-ORDER")
+        if child is not None:
+            execution_order_value = child.text
+            obj.execution_order = execution_order_value
+
+        # Parse ignore_order
+        child = ARObject._find_child_element(element, "IGNORE-ORDER")
+        if child is not None:
+            ignore_order_value = child.text
+            obj.ignore_order = ignore_order_value
+
+        # Parse is_event
+        child = ARObject._find_child_element(element, "IS-EVENT")
+        if child is not None:
+            is_event_value = child.text
+            obj.is_event = is_event_value
+
+        # Parse ordered_elements (list)
+        obj.ordered_elements = []
+        for child in ARObject._find_all_child_elements(element, "ORDERED-ELEMENTS"):
+            ordered_elements_value = child.text
+            obj.ordered_elements.append(ordered_elements_value)
+
+        # Parse permit_multiple
+        child = ARObject._find_child_element(element, "PERMIT-MULTIPLE")
+        if child is not None:
+            permit_multiple_value = child.text
+            obj.permit_multiple = permit_multiple_value
+
+        return obj
+
 
 
 class ExecutionOrderConstraintBuilder:

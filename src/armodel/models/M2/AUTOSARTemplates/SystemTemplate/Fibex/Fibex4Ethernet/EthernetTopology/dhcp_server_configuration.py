@@ -37,6 +37,34 @@ class DhcpServerConfiguration(ARObject):
         super().__init__()
         self.ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration] = None
         self.ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DhcpServerConfiguration":
+        """Deserialize XML element to DhcpServerConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DhcpServerConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ipv4_dhcp_server
+        child = ARObject._find_child_element(element, "IPV4-DHCP-SERVER")
+        if child is not None:
+            ipv4_dhcp_server_value = ARObject._deserialize_by_tag(child, "Ipv4DhcpServerConfiguration")
+            obj.ipv4_dhcp_server = ipv4_dhcp_server_value
+
+        # Parse ipv6_dhcp_server
+        child = ARObject._find_child_element(element, "IPV6-DHCP-SERVER")
+        if child is not None:
+            ipv6_dhcp_server_value = ARObject._deserialize_by_tag(child, "Ipv6DhcpServerConfiguration")
+            obj.ipv6_dhcp_server = ipv6_dhcp_server_value
+
+        return obj
+
 
 
 class DhcpServerConfigurationBuilder:

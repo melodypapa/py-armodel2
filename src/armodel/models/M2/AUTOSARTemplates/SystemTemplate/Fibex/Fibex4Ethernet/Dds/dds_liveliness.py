@@ -37,6 +37,34 @@ class DdsLiveliness(ARObject):
         super().__init__()
         self.liveliness_lease: Optional[Float] = None
         self.liveness_kind: Optional[DdsLivenessKindEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsLiveliness":
+        """Deserialize XML element to DdsLiveliness object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsLiveliness object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse liveliness_lease
+        child = ARObject._find_child_element(element, "LIVELINESS-LEASE")
+        if child is not None:
+            liveliness_lease_value = child.text
+            obj.liveliness_lease = liveliness_lease_value
+
+        # Parse liveness_kind
+        child = ARObject._find_child_element(element, "LIVENESS-KIND")
+        if child is not None:
+            liveness_kind_value = child.text
+            obj.liveness_kind = liveness_kind_value
+
+        return obj
+
 
 
 class DdsLivelinessBuilder:

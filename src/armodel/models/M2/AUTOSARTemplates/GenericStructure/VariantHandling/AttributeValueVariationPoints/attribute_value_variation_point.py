@@ -45,6 +45,46 @@ class AttributeValueVariationPoint(ARObject, ABC):
         self.blueprint_value: Optional[String] = None
         self.sd: Optional[String] = None
         self.short_label: Optional[PrimitiveIdentifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AttributeValueVariationPoint":
+        """Deserialize XML element to AttributeValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AttributeValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse binding_time_enum
+        child = ARObject._find_child_element(element, "BINDING-TIME-ENUM")
+        if child is not None:
+            binding_time_enum_value = child.text
+            obj.binding_time_enum = binding_time_enum_value
+
+        # Parse blueprint_value
+        child = ARObject._find_child_element(element, "BLUEPRINT-VALUE")
+        if child is not None:
+            blueprint_value_value = child.text
+            obj.blueprint_value = blueprint_value_value
+
+        # Parse sd
+        child = ARObject._find_child_element(element, "SD")
+        if child is not None:
+            sd_value = child.text
+            obj.sd = sd_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class AttributeValueVariationPointBuilder:

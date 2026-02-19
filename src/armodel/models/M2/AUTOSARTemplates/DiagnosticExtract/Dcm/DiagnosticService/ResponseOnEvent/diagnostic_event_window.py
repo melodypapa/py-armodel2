@@ -29,6 +29,28 @@ class DiagnosticEventWindow(ARObject):
         """Initialize DiagnosticEventWindow."""
         super().__init__()
         self.event_window: Optional[DiagnosticEventWindow] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventWindow":
+        """Deserialize XML element to DiagnosticEventWindow object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEventWindow object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_window
+        child = ARObject._find_child_element(element, "EVENT-WINDOW")
+        if child is not None:
+            event_window_value = ARObject._deserialize_by_tag(child, "DiagnosticEventWindow")
+            obj.event_window = event_window_value
+
+        return obj
+
 
 
 class DiagnosticEventWindowBuilder:

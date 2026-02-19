@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -39,6 +40,34 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.diagnostic_event: Optional[DiagnosticEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSwClusterToDiagEventMapping":
+        """Deserialize XML element to CpSwClusterToDiagEventMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSwClusterToDiagEventMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cp_software_cluster
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        if child is not None:
+            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.cp_software_cluster = cp_software_cluster_value
+
+        # Parse diagnostic_event
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        if child is not None:
+            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.diagnostic_event = diagnostic_event_value
+
+        return obj
+
 
 
 class CpSwClusterToDiagEventMappingBuilder:

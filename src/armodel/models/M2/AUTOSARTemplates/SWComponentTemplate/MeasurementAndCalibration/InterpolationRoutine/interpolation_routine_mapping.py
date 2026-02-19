@@ -38,6 +38,34 @@ class InterpolationRoutineMapping(ARObject):
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
         self.sw_record: Optional[SwRecordLayout] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InterpolationRoutineMapping":
+        """Deserialize XML element to InterpolationRoutineMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InterpolationRoutineMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interpolation_routines (list)
+        obj.interpolation_routines = []
+        for child in ARObject._find_all_child_elements(element, "INTERPOLATION-ROUTINES"):
+            interpolation_routines_value = ARObject._deserialize_by_tag(child, "InterpolationRoutine")
+            obj.interpolation_routines.append(interpolation_routines_value)
+
+        # Parse sw_record
+        child = ARObject._find_child_element(element, "SW-RECORD")
+        if child is not None:
+            sw_record_value = ARObject._deserialize_by_tag(child, "SwRecordLayout")
+            obj.sw_record = sw_record_value
+
+        return obj
+
 
 
 class InterpolationRoutineMappingBuilder:

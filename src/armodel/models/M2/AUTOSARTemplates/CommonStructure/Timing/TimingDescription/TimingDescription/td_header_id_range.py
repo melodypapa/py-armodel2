@@ -34,6 +34,34 @@ class TDHeaderIdRange(ARObject):
         super().__init__()
         self.max_header_id: Optional[Integer] = None
         self.min_header_id: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDHeaderIdRange":
+        """Deserialize XML element to TDHeaderIdRange object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDHeaderIdRange object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_header_id
+        child = ARObject._find_child_element(element, "MAX-HEADER-ID")
+        if child is not None:
+            max_header_id_value = child.text
+            obj.max_header_id = max_header_id_value
+
+        # Parse min_header_id
+        child = ARObject._find_child_element(element, "MIN-HEADER-ID")
+        if child is not None:
+            min_header_id_value = child.text
+            obj.min_header_id = min_header_id_value
+
+        return obj
+
 
 
 class TDHeaderIdRangeBuilder:

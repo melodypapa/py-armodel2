@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.instantiation_rte_event_props import (
     InstantiationRTEEventProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -34,6 +35,28 @@ class InstantiationTimingEventProps(InstantiationRTEEventProps):
         """Initialize InstantiationTimingEventProps."""
         super().__init__()
         self.period: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InstantiationTimingEventProps":
+        """Deserialize XML element to InstantiationTimingEventProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InstantiationTimingEventProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse period
+        child = ARObject._find_child_element(element, "PERIOD")
+        if child is not None:
+            period_value = child.text
+            obj.period = period_value
+
+        return obj
+
 
 
 class InstantiationTimingEventPropsBuilder:

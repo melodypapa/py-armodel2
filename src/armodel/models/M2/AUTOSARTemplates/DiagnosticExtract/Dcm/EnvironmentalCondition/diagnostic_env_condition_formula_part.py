@@ -28,6 +28,22 @@ class DiagnosticEnvConditionFormulaPart(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize DiagnosticEnvConditionFormulaPart."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvConditionFormulaPart":
+        """Deserialize XML element to DiagnosticEnvConditionFormulaPart object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEnvConditionFormulaPart object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class DiagnosticEnvConditionFormulaPartBuilder:

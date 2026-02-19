@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -30,6 +31,22 @@ class CollectableElement(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CollectableElement."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CollectableElement":
+        """Deserialize XML element to CollectableElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CollectableElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class CollectableElementBuilder:

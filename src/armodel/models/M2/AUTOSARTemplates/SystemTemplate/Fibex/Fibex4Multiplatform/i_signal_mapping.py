@@ -40,6 +40,40 @@ class ISignalMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_signal_ref: Optional[ARRef] = None
         self.target_signal_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ISignalMapping":
+        """Deserialize XML element to ISignalMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ISignalMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse source_signal_ref
+        child = ARObject._find_child_element(element, "SOURCE-SIGNAL")
+        if child is not None:
+            source_signal_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            obj.source_signal_ref = source_signal_ref_value
+
+        # Parse target_signal_ref
+        child = ARObject._find_child_element(element, "TARGET-SIGNAL")
+        if child is not None:
+            target_signal_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            obj.target_signal_ref = target_signal_ref_value
+
+        return obj
+
 
 
 class ISignalMappingBuilder:

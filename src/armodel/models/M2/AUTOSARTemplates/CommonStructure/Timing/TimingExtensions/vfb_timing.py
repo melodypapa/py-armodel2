@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
     TimingExtension,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
@@ -35,6 +36,28 @@ class VfbTiming(TimingExtension):
         """Initialize VfbTiming."""
         super().__init__()
         self.component: Optional[SwComponentType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VfbTiming":
+        """Deserialize XML element to VfbTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VfbTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse component
+        child = ARObject._find_child_element(element, "COMPONENT")
+        if child is not None:
+            component_value = ARObject._deserialize_by_tag(child, "SwComponentType")
+            obj.component = component_value
+
+        return obj
+
 
 
 class VfbTimingBuilder:

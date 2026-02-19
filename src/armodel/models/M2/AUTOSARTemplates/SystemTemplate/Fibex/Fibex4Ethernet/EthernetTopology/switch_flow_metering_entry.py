@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     FlowMeteringColorModeEnum,
 )
@@ -48,6 +49,58 @@ class SwitchFlowMeteringEntry(Identifiable):
         self.coupling_flag: Optional[Boolean] = None
         self.excess_burst: Optional[PositiveInteger] = None
         self.excess: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwitchFlowMeteringEntry":
+        """Deserialize XML element to SwitchFlowMeteringEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwitchFlowMeteringEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse color_mode
+        child = ARObject._find_child_element(element, "COLOR-MODE")
+        if child is not None:
+            color_mode_value = child.text
+            obj.color_mode = color_mode_value
+
+        # Parse committed_burst
+        child = ARObject._find_child_element(element, "COMMITTED-BURST")
+        if child is not None:
+            committed_burst_value = child.text
+            obj.committed_burst = committed_burst_value
+
+        # Parse committed
+        child = ARObject._find_child_element(element, "COMMITTED")
+        if child is not None:
+            committed_value = child.text
+            obj.committed = committed_value
+
+        # Parse coupling_flag
+        child = ARObject._find_child_element(element, "COUPLING-FLAG")
+        if child is not None:
+            coupling_flag_value = child.text
+            obj.coupling_flag = coupling_flag_value
+
+        # Parse excess_burst
+        child = ARObject._find_child_element(element, "EXCESS-BURST")
+        if child is not None:
+            excess_burst_value = child.text
+            obj.excess_burst = excess_burst_value
+
+        # Parse excess
+        child = ARObject._find_child_element(element, "EXCESS")
+        if child is not None:
+            excess_value = child.text
+            obj.excess = excess_value
+
+        return obj
+
 
 
 class SwitchFlowMeteringEntryBuilder:

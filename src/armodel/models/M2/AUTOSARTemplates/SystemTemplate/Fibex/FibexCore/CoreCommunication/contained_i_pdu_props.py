@@ -56,6 +56,76 @@ class ContainedIPduProps(ARObject):
         self.timeout: Optional[TimeValue] = None
         self.trigger_ref: Optional[ARRef] = None
         self.update: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ContainedIPduProps":
+        """Deserialize XML element to ContainedIPduProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ContainedIPduProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse collection
+        child = ARObject._find_child_element(element, "COLLECTION")
+        if child is not None:
+            collection_value = child.text
+            obj.collection = collection_value
+
+        # Parse contained_pdu_ref
+        child = ARObject._find_child_element(element, "CONTAINED-PDU")
+        if child is not None:
+            contained_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.contained_pdu_ref = contained_pdu_ref_value
+
+        # Parse header_id_long
+        child = ARObject._find_child_element(element, "HEADER-ID-LONG")
+        if child is not None:
+            header_id_long_value = child.text
+            obj.header_id_long = header_id_long_value
+
+        # Parse header_id_short
+        child = ARObject._find_child_element(element, "HEADER-ID-SHORT")
+        if child is not None:
+            header_id_short_value = child.text
+            obj.header_id_short = header_id_short_value
+
+        # Parse offset
+        child = ARObject._find_child_element(element, "OFFSET")
+        if child is not None:
+            offset_value = child.text
+            obj.offset = offset_value
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = child.text
+            obj.timeout = timeout_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = child.text
+            obj.trigger_ref = trigger_ref_value
+
+        # Parse update
+        child = ARObject._find_child_element(element, "UPDATE")
+        if child is not None:
+            update_value = child.text
+            obj.update = update_value
+
+        return obj
+
 
 
 class ContainedIPduPropsBuilder:

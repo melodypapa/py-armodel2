@@ -43,6 +43,40 @@ class McParameterElementGroup(ARObject):
         self.ram_location_ref: Optional[ARRef] = None
         self.rom_location_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McParameterElementGroup":
+        """Deserialize XML element to McParameterElementGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McParameterElementGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ram_location_ref
+        child = ARObject._find_child_element(element, "RAM-LOCATION")
+        if child is not None:
+            ram_location_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.ram_location_ref = ram_location_ref_value
+
+        # Parse rom_location_ref
+        child = ARObject._find_child_element(element, "ROM-LOCATION")
+        if child is not None:
+            rom_location_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.rom_location_ref = rom_location_ref_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class McParameterElementGroupBuilder:

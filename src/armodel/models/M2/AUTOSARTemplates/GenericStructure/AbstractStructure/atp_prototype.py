@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_type import (
     AtpType,
 )
@@ -35,6 +36,28 @@ class AtpPrototype(Identifiable, ABC):
         """Initialize AtpPrototype."""
         super().__init__()
         self.atp_type: AtpType = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AtpPrototype":
+        """Deserialize XML element to AtpPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AtpPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse atp_type
+        child = ARObject._find_child_element(element, "ATP-TYPE")
+        if child is not None:
+            atp_type_value = ARObject._deserialize_by_tag(child, "AtpType")
+            obj.atp_type = atp_type_value
+
+        return obj
+
 
 
 class AtpPrototypeBuilder:

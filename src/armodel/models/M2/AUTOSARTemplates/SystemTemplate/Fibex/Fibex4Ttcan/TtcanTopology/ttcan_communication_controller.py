@@ -47,6 +47,70 @@ class TtcanCommunicationController(ARObject):
         self.time_master: Optional[Integer] = None
         self.time_triggered: Optional[Integer] = None
         self.tx_enable: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TtcanCommunicationController":
+        """Deserialize XML element to TtcanCommunicationController object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TtcanCommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse appl_watchdog
+        child = ARObject._find_child_element(element, "APPL-WATCHDOG")
+        if child is not None:
+            appl_watchdog_value = child.text
+            obj.appl_watchdog = appl_watchdog_value
+
+        # Parse expected_tx
+        child = ARObject._find_child_element(element, "EXPECTED-TX")
+        if child is not None:
+            expected_tx_value = child.text
+            obj.expected_tx = expected_tx_value
+
+        # Parse external_clock
+        child = ARObject._find_child_element(element, "EXTERNAL-CLOCK")
+        if child is not None:
+            external_clock_value = child.text
+            obj.external_clock = external_clock_value
+
+        # Parse initial_ref_offset
+        child = ARObject._find_child_element(element, "INITIAL-REF-OFFSET")
+        if child is not None:
+            initial_ref_offset_value = child.text
+            obj.initial_ref_offset = initial_ref_offset_value
+
+        # Parse master
+        child = ARObject._find_child_element(element, "MASTER")
+        if child is not None:
+            master_value = child.text
+            obj.master = master_value
+
+        # Parse time_master
+        child = ARObject._find_child_element(element, "TIME-MASTER")
+        if child is not None:
+            time_master_value = child.text
+            obj.time_master = time_master_value
+
+        # Parse time_triggered
+        child = ARObject._find_child_element(element, "TIME-TRIGGERED")
+        if child is not None:
+            time_triggered_value = child.text
+            obj.time_triggered = time_triggered_value
+
+        # Parse tx_enable
+        child = ARObject._find_child_element(element, "TX-ENABLE")
+        if child is not None:
+            tx_enable_value = child.text
+            obj.tx_enable = tx_enable_value
+
+        return obj
+
 
 
 class TtcanCommunicationControllerBuilder:

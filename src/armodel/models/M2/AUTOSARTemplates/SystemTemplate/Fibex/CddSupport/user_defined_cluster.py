@@ -27,6 +27,22 @@ class UserDefinedCluster(ARObject):
     def __init__(self) -> None:
         """Initialize UserDefinedCluster."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedCluster":
+        """Deserialize XML element to UserDefinedCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedClusterBuilder:

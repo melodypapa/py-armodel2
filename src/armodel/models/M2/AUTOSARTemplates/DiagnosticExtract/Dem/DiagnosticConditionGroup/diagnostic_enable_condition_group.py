@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditionGroup.diagnostic_condition_group import (
     DiagnosticConditionGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
@@ -31,6 +32,28 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         """Initialize DiagnosticEnableConditionGroup."""
         super().__init__()
         self.enable_conditions: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnableConditionGroup":
+        """Deserialize XML element to DiagnosticEnableConditionGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEnableConditionGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse enable_conditions (list)
+        obj.enable_conditions = []
+        for child in ARObject._find_all_child_elements(element, "ENABLE-CONDITIONS"):
+            enable_conditions_value = child.text
+            obj.enable_conditions.append(enable_conditions_value)
+
+        return obj
+
 
 
 class DiagnosticEnableConditionGroupBuilder:

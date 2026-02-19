@@ -40,6 +40,40 @@ class AbstractCanCluster(ARObject, ABC):
         self.bus_off_recovery: Optional[CanClusterBusOffRecovery] = None
         self.can_fd_baudrate: Optional[PositiveUnlimitedInteger] = None
         self.can_xl_baudrate: Optional[PositiveUnlimitedInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractCanCluster":
+        """Deserialize XML element to AbstractCanCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractCanCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bus_off_recovery
+        child = ARObject._find_child_element(element, "BUS-OFF-RECOVERY")
+        if child is not None:
+            bus_off_recovery_value = ARObject._deserialize_by_tag(child, "CanClusterBusOffRecovery")
+            obj.bus_off_recovery = bus_off_recovery_value
+
+        # Parse can_fd_baudrate
+        child = ARObject._find_child_element(element, "CAN-FD-BAUDRATE")
+        if child is not None:
+            can_fd_baudrate_value = child.text
+            obj.can_fd_baudrate = can_fd_baudrate_value
+
+        # Parse can_xl_baudrate
+        child = ARObject._find_child_element(element, "CAN-XL-BAUDRATE")
+        if child is not None:
+            can_xl_baudrate_value = child.text
+            obj.can_xl_baudrate = can_xl_baudrate_value
+
+        return obj
+
 
 
 class AbstractCanClusterBuilder:

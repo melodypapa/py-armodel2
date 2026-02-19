@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -40,6 +41,34 @@ class PdurIPduGroup(FibexElement):
         super().__init__()
         self.communication: Optional[String] = None
         self.i_pdu_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PdurIPduGroup":
+        """Deserialize XML element to PdurIPduGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PdurIPduGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication
+        child = ARObject._find_child_element(element, "COMMUNICATION")
+        if child is not None:
+            communication_value = child.text
+            obj.communication = communication_value
+
+        # Parse i_pdu_refs (list)
+        obj.i_pdu_refs = []
+        for child in ARObject._find_all_child_elements(element, "I-PDUS"):
+            i_pdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.i_pdu_refs.append(i_pdu_refs_value)
+
+        return obj
+
 
 
 class PdurIPduGroupBuilder:

@@ -27,6 +27,22 @@ class CanCluster(ARObject):
     def __init__(self) -> None:
         """Initialize CanCluster."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanCluster":
+        """Deserialize XML element to CanCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class CanClusterBuilder:

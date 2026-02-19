@@ -37,6 +37,40 @@ class GlobalTimeCorrectionProps(ARObject):
         self.offset_correction: Optional[TimeValue] = None
         self.rate_correction: Optional[TimeValue] = None
         self.rate_corrections: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeCorrectionProps":
+        """Deserialize XML element to GlobalTimeCorrectionProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeCorrectionProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse offset_correction
+        child = ARObject._find_child_element(element, "OFFSET-CORRECTION")
+        if child is not None:
+            offset_correction_value = child.text
+            obj.offset_correction = offset_correction_value
+
+        # Parse rate_correction
+        child = ARObject._find_child_element(element, "RATE-CORRECTION")
+        if child is not None:
+            rate_correction_value = child.text
+            obj.rate_correction = rate_correction_value
+
+        # Parse rate_corrections
+        child = ARObject._find_child_element(element, "RATE-CORRECTIONS")
+        if child is not None:
+            rate_corrections_value = child.text
+            obj.rate_corrections = rate_corrections_value
+
+        return obj
+
 
 
 class GlobalTimeCorrectionPropsBuilder:

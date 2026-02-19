@@ -51,6 +51,34 @@ class Referrable(ARObject, ABC):
         super().__init__()
         self.short_name: Identifier = None
         self.short_name_fragments: list[ShortNameFragment] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Referrable":
+        """Deserialize XML element to Referrable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Referrable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse short_name
+        child = ARObject._find_child_element(element, "SHORT-NAME")
+        if child is not None:
+            short_name_value = child.text
+            obj.short_name = short_name_value
+
+        # Parse short_name_fragments (list)
+        obj.short_name_fragments = []
+        for child in ARObject._find_all_child_elements(element, "SHORT-NAME-FRAGMENTS"):
+            short_name_fragments_value = ARObject._deserialize_by_tag(child, "ShortNameFragment")
+            obj.short_name_fragments.append(short_name_fragments_value)
+
+        return obj
+
 
 
 class ReferrableBuilder:

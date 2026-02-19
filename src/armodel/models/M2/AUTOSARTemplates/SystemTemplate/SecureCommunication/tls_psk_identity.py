@@ -39,6 +39,40 @@ class TlsPskIdentity(ARObject):
         self.pre_shared_key: Optional[CryptoServiceKey] = None
         self.psk_identity: Optional[String] = None
         self.psk_identity_hint: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TlsPskIdentity":
+        """Deserialize XML element to TlsPskIdentity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TlsPskIdentity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse pre_shared_key
+        child = ARObject._find_child_element(element, "PRE-SHARED-KEY")
+        if child is not None:
+            pre_shared_key_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.pre_shared_key = pre_shared_key_value
+
+        # Parse psk_identity
+        child = ARObject._find_child_element(element, "PSK-IDENTITY")
+        if child is not None:
+            psk_identity_value = child.text
+            obj.psk_identity = psk_identity_value
+
+        # Parse psk_identity_hint
+        child = ARObject._find_child_element(element, "PSK-IDENTITY-HINT")
+        if child is not None:
+            psk_identity_hint_value = child.text
+            obj.psk_identity_hint = psk_identity_hint_value
+
+        return obj
+
 
 
 class TlsPskIdentityBuilder:

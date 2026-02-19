@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
     EngineeringObject,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.Figure import (
     GraphicFitEnum,
     GraphicNotationEnum,
@@ -67,6 +68,112 @@ class Graphic(EngineeringObject):
         self.notation: Optional[GraphicNotationEnum] = None
         self.scale: Optional[String] = None
         self.width: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Graphic":
+        """Deserialize XML element to Graphic object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Graphic object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse editfit
+        child = ARObject._find_child_element(element, "EDITFIT")
+        if child is not None:
+            editfit_value = child.text
+            obj.editfit = editfit_value
+
+        # Parse edit_height
+        child = ARObject._find_child_element(element, "EDIT-HEIGHT")
+        if child is not None:
+            edit_height_value = child.text
+            obj.edit_height = edit_height_value
+
+        # Parse editscale
+        child = ARObject._find_child_element(element, "EDITSCALE")
+        if child is not None:
+            editscale_value = child.text
+            obj.editscale = editscale_value
+
+        # Parse edit_width
+        child = ARObject._find_child_element(element, "EDIT-WIDTH")
+        if child is not None:
+            edit_width_value = child.text
+            obj.edit_width = edit_width_value
+
+        # Parse filename
+        child = ARObject._find_child_element(element, "FILENAME")
+        if child is not None:
+            filename_value = child.text
+            obj.filename = filename_value
+
+        # Parse fit
+        child = ARObject._find_child_element(element, "FIT")
+        if child is not None:
+            fit_value = child.text
+            obj.fit = fit_value
+
+        # Parse generator
+        child = ARObject._find_child_element(element, "GENERATOR")
+        if child is not None:
+            generator_value = child.text
+            obj.generator = generator_value
+
+        # Parse height
+        child = ARObject._find_child_element(element, "HEIGHT")
+        if child is not None:
+            height_value = child.text
+            obj.height = height_value
+
+        # Parse html_fit
+        child = ARObject._find_child_element(element, "HTML-FIT")
+        if child is not None:
+            html_fit_value = child.text
+            obj.html_fit = html_fit_value
+
+        # Parse html_height
+        child = ARObject._find_child_element(element, "HTML-HEIGHT")
+        if child is not None:
+            html_height_value = child.text
+            obj.html_height = html_height_value
+
+        # Parse html_scale
+        child = ARObject._find_child_element(element, "HTML-SCALE")
+        if child is not None:
+            html_scale_value = child.text
+            obj.html_scale = html_scale_value
+
+        # Parse html_width
+        child = ARObject._find_child_element(element, "HTML-WIDTH")
+        if child is not None:
+            html_width_value = child.text
+            obj.html_width = html_width_value
+
+        # Parse notation
+        child = ARObject._find_child_element(element, "NOTATION")
+        if child is not None:
+            notation_value = child.text
+            obj.notation = notation_value
+
+        # Parse scale
+        child = ARObject._find_child_element(element, "SCALE")
+        if child is not None:
+            scale_value = child.text
+            obj.scale = scale_value
+
+        # Parse width
+        child = ARObject._find_child_element(element, "WIDTH")
+        if child is not None:
+            width_value = child.text
+            obj.width = width_value
+
+        return obj
+
 
 
 class GraphicBuilder:

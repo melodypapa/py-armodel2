@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     ContainerIPduHeaderTypeEnum,
@@ -65,6 +66,82 @@ class ContainerIPdu(IPdu):
         self.rx_accept: Optional[RxAcceptContainedIPduEnum] = None
         self.threshold_size: Optional[PositiveInteger] = None
         self.unused_bit: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ContainerIPdu":
+        """Deserialize XML element to ContainerIPdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ContainerIPdu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse contained_i_pdu_propses (list)
+        obj.contained_i_pdu_propses = []
+        for child in ARObject._find_all_child_elements(element, "CONTAINED-I-PDU-PROPSES"):
+            contained_i_pdu_propses_value = ARObject._deserialize_by_tag(child, "ContainedIPduProps")
+            obj.contained_i_pdu_propses.append(contained_i_pdu_propses_value)
+
+        # Parse contained_pdu_refs (list)
+        obj.contained_pdu_refs = []
+        for child in ARObject._find_all_child_elements(element, "CONTAINED-PDUS"):
+            contained_pdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.contained_pdu_refs.append(contained_pdu_refs_value)
+
+        # Parse container
+        child = ARObject._find_child_element(element, "CONTAINER")
+        if child is not None:
+            container_value = child.text
+            obj.container = container_value
+
+        # Parse container_trigger_ref
+        child = ARObject._find_child_element(element, "CONTAINER-TRIGGER")
+        if child is not None:
+            container_trigger_ref_value = child.text
+            obj.container_trigger_ref = container_trigger_ref_value
+
+        # Parse header_type
+        child = ARObject._find_child_element(element, "HEADER-TYPE")
+        if child is not None:
+            header_type_value = child.text
+            obj.header_type = header_type_value
+
+        # Parse minimum_rx
+        child = ARObject._find_child_element(element, "MINIMUM-RX")
+        if child is not None:
+            minimum_rx_value = child.text
+            obj.minimum_rx = minimum_rx_value
+
+        # Parse minimum_tx
+        child = ARObject._find_child_element(element, "MINIMUM-TX")
+        if child is not None:
+            minimum_tx_value = child.text
+            obj.minimum_tx = minimum_tx_value
+
+        # Parse rx_accept
+        child = ARObject._find_child_element(element, "RX-ACCEPT")
+        if child is not None:
+            rx_accept_value = child.text
+            obj.rx_accept = rx_accept_value
+
+        # Parse threshold_size
+        child = ARObject._find_child_element(element, "THRESHOLD-SIZE")
+        if child is not None:
+            threshold_size_value = child.text
+            obj.threshold_size = threshold_size_value
+
+        # Parse unused_bit
+        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        if child is not None:
+            unused_bit_value = child.text
+            obj.unused_bit = unused_bit_value
+
+        return obj
+
 
 
 class ContainerIPduBuilder:

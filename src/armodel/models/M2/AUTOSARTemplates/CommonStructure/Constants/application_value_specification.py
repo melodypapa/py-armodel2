@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -45,6 +46,40 @@ class ApplicationValueSpecification(ValueSpecification):
         self.category: Optional[Identifier] = None
         self.sw_axis_conts: list[SwAxisCont] = []
         self.sw_value_cont: Optional[SwValueCont] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationValueSpecification":
+        """Deserialize XML element to ApplicationValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse sw_axis_conts (list)
+        obj.sw_axis_conts = []
+        for child in ARObject._find_all_child_elements(element, "SW-AXIS-CONTS"):
+            sw_axis_conts_value = ARObject._deserialize_by_tag(child, "SwAxisCont")
+            obj.sw_axis_conts.append(sw_axis_conts_value)
+
+        # Parse sw_value_cont
+        child = ARObject._find_child_element(element, "SW-VALUE-CONT")
+        if child is not None:
+            sw_value_cont_value = ARObject._deserialize_by_tag(child, "SwValueCont")
+            obj.sw_value_cont = sw_value_cont_value
+
+        return obj
+
 
 
 class ApplicationValueSpecificationBuilder:

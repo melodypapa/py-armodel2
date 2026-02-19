@@ -32,6 +32,28 @@ class RunnableEntityArgument(ARObject):
         """Initialize RunnableEntityArgument."""
         super().__init__()
         self.symbol: Optional[CIdentifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RunnableEntityArgument":
+        """Deserialize XML element to RunnableEntityArgument object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RunnableEntityArgument object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse symbol
+        child = ARObject._find_child_element(element, "SYMBOL")
+        if child is not None:
+            symbol_value = child.text
+            obj.symbol = symbol_value
+
+        return obj
+
 
 
 class RunnableEntityArgumentBuilder:

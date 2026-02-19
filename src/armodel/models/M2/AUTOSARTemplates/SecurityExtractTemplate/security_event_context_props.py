@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -49,6 +50,58 @@ class SecurityEventContextProps(Identifiable):
         self.security_event: Optional[SecurityEventDefinition] = None
         self.sensor_instance: Optional[PositiveInteger] = None
         self.severity: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextProps":
+        """Deserialize XML element to SecurityEventContextProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventContextProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_data
+        child = ARObject._find_child_element(element, "CONTEXT-DATA")
+        if child is not None:
+            context_data_value = child.text
+            obj.context_data = context_data_value
+
+        # Parse default
+        child = ARObject._find_child_element(element, "DEFAULT")
+        if child is not None:
+            default_value = child.text
+            obj.default = default_value
+
+        # Parse persistent
+        child = ARObject._find_child_element(element, "PERSISTENT")
+        if child is not None:
+            persistent_value = child.text
+            obj.persistent = persistent_value
+
+        # Parse security_event
+        child = ARObject._find_child_element(element, "SECURITY-EVENT")
+        if child is not None:
+            security_event_value = ARObject._deserialize_by_tag(child, "SecurityEventDefinition")
+            obj.security_event = security_event_value
+
+        # Parse sensor_instance
+        child = ARObject._find_child_element(element, "SENSOR-INSTANCE")
+        if child is not None:
+            sensor_instance_value = child.text
+            obj.sensor_instance = sensor_instance_value
+
+        # Parse severity
+        child = ARObject._find_child_element(element, "SEVERITY")
+        if child is not None:
+            severity_value = child.text
+            obj.severity = severity_value
+
+        return obj
+
 
 
 class SecurityEventContextPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_av_connection import (
     IEEE1722TpAvConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
     IEEE1722TpCrfPullEnum,
     IEEE1722TpCrfTypeEnum,
@@ -47,6 +48,52 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         self.crf_type_enum: Optional[IEEE1722TpCrfTypeEnum] = None
         self.frame_sync: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpCrfConnection":
+        """Deserialize XML element to IEEE1722TpCrfConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpCrfConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base_frequency
+        child = ARObject._find_child_element(element, "BASE-FREQUENCY")
+        if child is not None:
+            base_frequency_value = child.text
+            obj.base_frequency = base_frequency_value
+
+        # Parse crf_pull_enum
+        child = ARObject._find_child_element(element, "CRF-PULL-ENUM")
+        if child is not None:
+            crf_pull_enum_value = child.text
+            obj.crf_pull_enum = crf_pull_enum_value
+
+        # Parse crf_type_enum
+        child = ARObject._find_child_element(element, "CRF-TYPE-ENUM")
+        if child is not None:
+            crf_type_enum_value = child.text
+            obj.crf_type_enum = crf_type_enum_value
+
+        # Parse frame_sync
+        child = ARObject._find_child_element(element, "FRAME-SYNC")
+        if child is not None:
+            frame_sync_value = child.text
+            obj.frame_sync = frame_sync_value
+
+        # Parse timestamp
+        child = ARObject._find_child_element(element, "TIMESTAMP")
+        if child is not None:
+            timestamp_value = child.text
+            obj.timestamp = timestamp_value
+
+        return obj
+
 
 
 class IEEE1722TpCrfConnectionBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
     GlobalTimeMaster,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeCrcSupportEnum,
 )
@@ -44,6 +45,40 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
         self.hold_over_time: Optional[TimeValue] = None
         self.sub_tlv_config: Optional[EthTSynSubTlvConfig] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeEthMaster":
+        """Deserialize XML element to GlobalTimeEthMaster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeEthMaster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse crc_secured
+        child = ARObject._find_child_element(element, "CRC-SECURED")
+        if child is not None:
+            crc_secured_value = child.text
+            obj.crc_secured = crc_secured_value
+
+        # Parse hold_over_time
+        child = ARObject._find_child_element(element, "HOLD-OVER-TIME")
+        if child is not None:
+            hold_over_time_value = child.text
+            obj.hold_over_time = hold_over_time_value
+
+        # Parse sub_tlv_config
+        child = ARObject._find_child_element(element, "SUB-TLV-CONFIG")
+        if child is not None:
+            sub_tlv_config_value = ARObject._deserialize_by_tag(child, "EthTSynSubTlvConfig")
+            obj.sub_tlv_config = sub_tlv_config_value
+
+        return obj
+
 
 
 class GlobalTimeEthMasterBuilder:

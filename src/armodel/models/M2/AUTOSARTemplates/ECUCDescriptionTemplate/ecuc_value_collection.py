@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
     System,
 )
@@ -38,6 +39,34 @@ class EcucValueCollection(ARElement):
         super().__init__()
         self.ecuc_values: list[Any] = []
         self.ecu_extract: Optional[System] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucValueCollection":
+        """Deserialize XML element to EcucValueCollection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucValueCollection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecuc_values (list)
+        obj.ecuc_values = []
+        for child in ARObject._find_all_child_elements(element, "ECUC-VALUES"):
+            ecuc_values_value = child.text
+            obj.ecuc_values.append(ecuc_values_value)
+
+        # Parse ecu_extract
+        child = ARObject._find_child_element(element, "ECU-EXTRACT")
+        if child is not None:
+            ecu_extract_value = ARObject._deserialize_by_tag(child, "System")
+            obj.ecu_extract = ecu_extract_value
+
+        return obj
+
 
 
 class EcucValueCollectionBuilder:

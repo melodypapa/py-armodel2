@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_item import (
@@ -37,6 +38,28 @@ class DefList(Paginateable):
         """Initialize DefList."""
         super().__init__()
         self.def_item: DefItem = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DefList":
+        """Deserialize XML element to DefList object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DefList object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse def_item
+        child = ARObject._find_child_element(element, "DEF-ITEM")
+        if child is not None:
+            def_item_value = ARObject._deserialize_by_tag(child, "DefItem")
+            obj.def_item = def_item_value
+
+        return obj
+
 
 
 class DefListBuilder:

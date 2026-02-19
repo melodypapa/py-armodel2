@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.timing_extension import (
     TimingExtension,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
 )
@@ -34,6 +35,28 @@ class SwcTiming(TimingExtension):
         """Initialize SwcTiming."""
         super().__init__()
         self.behavior: Optional[SwcInternalBehavior] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcTiming":
+        """Deserialize XML element to SwcTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse behavior
+        child = ARObject._find_child_element(element, "BEHAVIOR")
+        if child is not None:
+            behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
+            obj.behavior = behavior_value
+
+        return obj
+
 
 
 class SwcTimingBuilder:

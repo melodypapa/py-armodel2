@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -49,6 +50,58 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         self.inhibitings: list[FunctionInhibitionNeeds] = []
         self.prestored: Optional[Boolean] = None
         self.uses_monitor: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEventNeeds":
+        """Deserialize XML element to DiagnosticEventNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEventNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse deferring_fids (list)
+        obj.deferring_fids = []
+        for child in ARObject._find_all_child_elements(element, "DEFERRING-FIDS"):
+            deferring_fids_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
+            obj.deferring_fids.append(deferring_fids_value)
+
+        # Parse diag_event_debounce
+        child = ARObject._find_child_element(element, "DIAG-EVENT-DEBOUNCE")
+        if child is not None:
+            diag_event_debounce_value = child.text
+            obj.diag_event_debounce = diag_event_debounce_value
+
+        # Parse inhibiting_fid
+        child = ARObject._find_child_element(element, "INHIBITING-FID")
+        if child is not None:
+            inhibiting_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
+            obj.inhibiting_fid = inhibiting_fid_value
+
+        # Parse inhibitings (list)
+        obj.inhibitings = []
+        for child in ARObject._find_all_child_elements(element, "INHIBITINGS"):
+            inhibitings_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
+            obj.inhibitings.append(inhibitings_value)
+
+        # Parse prestored
+        child = ARObject._find_child_element(element, "PRESTORED")
+        if child is not None:
+            prestored_value = child.text
+            obj.prestored = prestored_value
+
+        # Parse uses_monitor
+        child = ARObject._find_child_element(element, "USES-MONITOR")
+        if child is not None:
+            uses_monitor_value = child.text
+            obj.uses_monitor = uses_monitor_value
+
+        return obj
+
 
 
 class DiagnosticEventNeedsBuilder:

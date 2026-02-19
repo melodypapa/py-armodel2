@@ -35,6 +35,28 @@ class MultiLanguageOverviewParagraph(ARObject):
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
         self.l2: LOverviewParagraph = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiLanguageOverviewParagraph":
+        """Deserialize XML element to MultiLanguageOverviewParagraph object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiLanguageOverviewParagraph object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse l2
+        child = ARObject._find_child_element(element, "L2")
+        if child is not None:
+            l2_value = ARObject._deserialize_by_tag(child, "LOverviewParagraph")
+            obj.l2 = l2_value
+
+        return obj
+
 
 
 class MultiLanguageOverviewParagraphBuilder:

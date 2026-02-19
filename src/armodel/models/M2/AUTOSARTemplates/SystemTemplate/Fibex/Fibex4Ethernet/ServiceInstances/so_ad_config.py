@@ -37,6 +37,34 @@ class SoAdConfig(ARObject):
         super().__init__()
         self.connections: list[SocketConnection] = []
         self.socket_addresses: list[SocketAddress] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SoAdConfig":
+        """Deserialize XML element to SoAdConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SoAdConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse connections (list)
+        obj.connections = []
+        for child in ARObject._find_all_child_elements(element, "CONNECTIONS"):
+            connections_value = ARObject._deserialize_by_tag(child, "SocketConnection")
+            obj.connections.append(connections_value)
+
+        # Parse socket_addresses (list)
+        obj.socket_addresses = []
+        for child in ARObject._find_all_child_elements(element, "SOCKET-ADDRESSES"):
+            socket_addresses_value = ARObject._deserialize_by_tag(child, "SocketAddress")
+            obj.socket_addresses.append(socket_addresses_value)
+
+        return obj
+
 
 
 class SoAdConfigBuilder:

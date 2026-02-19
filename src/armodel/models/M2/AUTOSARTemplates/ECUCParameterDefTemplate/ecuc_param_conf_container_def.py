@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
@@ -39,6 +40,40 @@ class EcucParamConfContainerDef(EcucContainerDef):
         self.parameters: list[EcucParameterDef] = []
         self.reference_refs: list[ARRef] = []
         self.sub_containers: list[EcucContainerDef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucParamConfContainerDef":
+        """Deserialize XML element to EcucParamConfContainerDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucParamConfContainerDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse parameters (list)
+        obj.parameters = []
+        for child in ARObject._find_all_child_elements(element, "PARAMETERS"):
+            parameters_value = ARObject._deserialize_by_tag(child, "EcucParameterDef")
+            obj.parameters.append(parameters_value)
+
+        # Parse reference_refs (list)
+        obj.reference_refs = []
+        for child in ARObject._find_all_child_elements(element, "REFERENCES"):
+            reference_refs_value = child.text
+            obj.reference_refs.append(reference_refs_value)
+
+        # Parse sub_containers (list)
+        obj.sub_containers = []
+        for child in ARObject._find_all_child_elements(element, "SUB-CONTAINERS"):
+            sub_containers_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
+            obj.sub_containers.append(sub_containers_value)
+
+        return obj
+
 
 
 class EcucParamConfContainerDefBuilder:

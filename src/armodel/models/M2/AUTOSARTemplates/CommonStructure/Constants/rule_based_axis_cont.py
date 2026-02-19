@@ -50,6 +50,52 @@ class RuleBasedAxisCont(ARObject):
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit: Optional[Unit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleBasedAxisCont":
+        """Deserialize XML element to RuleBasedAxisCont object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleBasedAxisCont object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse rule_based
+        child = ARObject._find_child_element(element, "RULE-BASED")
+        if child is not None:
+            rule_based_value = child.text
+            obj.rule_based = rule_based_value
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse sw_axis_index
+        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        if child is not None:
+            sw_axis_index_value = child.text
+            obj.sw_axis_index = sw_axis_index_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class RuleBasedAxisContBuilder:

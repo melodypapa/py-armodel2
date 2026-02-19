@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
@@ -52,6 +53,52 @@ class TimingExtension(ARElement, ABC):
         self.timing_conditions: list[TimingCondition] = []
         self.timings: list[TimingConstraint] = []
         self.timing_resource: Optional[TimingExtension] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingExtension":
+        """Deserialize XML element to TimingExtension object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingExtension object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse timing_clocks (list)
+        obj.timing_clocks = []
+        for child in ARObject._find_all_child_elements(element, "TIMING-CLOCKS"):
+            timing_clocks_value = ARObject._deserialize_by_tag(child, "TimingClock")
+            obj.timing_clocks.append(timing_clocks_value)
+
+        # Parse timing_clock_syncs (list)
+        obj.timing_clock_syncs = []
+        for child in ARObject._find_all_child_elements(element, "TIMING-CLOCK-SYNCS"):
+            timing_clock_syncs_value = ARObject._deserialize_by_tag(child, "TimingClockSyncAccuracy")
+            obj.timing_clock_syncs.append(timing_clock_syncs_value)
+
+        # Parse timing_conditions (list)
+        obj.timing_conditions = []
+        for child in ARObject._find_all_child_elements(element, "TIMING-CONDITIONS"):
+            timing_conditions_value = ARObject._deserialize_by_tag(child, "TimingCondition")
+            obj.timing_conditions.append(timing_conditions_value)
+
+        # Parse timings (list)
+        obj.timings = []
+        for child in ARObject._find_all_child_elements(element, "TIMINGS"):
+            timings_value = ARObject._deserialize_by_tag(child, "TimingConstraint")
+            obj.timings.append(timings_value)
+
+        # Parse timing_resource
+        child = ARObject._find_child_element(element, "TIMING-RESOURCE")
+        if child is not None:
+            timing_resource_value = ARObject._deserialize_by_tag(child, "TimingExtension")
+            obj.timing_resource = timing_resource_value
+
+        return obj
+
 
 
 class TimingExtensionBuilder:

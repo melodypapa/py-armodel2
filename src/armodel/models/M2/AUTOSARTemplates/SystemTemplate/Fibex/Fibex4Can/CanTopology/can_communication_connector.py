@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_communication_connector import (
     AbstractCanCommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     PositiveUnlimitedInteger,
@@ -39,6 +40,40 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         self.pnc_wakeup_can: Optional[PositiveInteger] = None
         self.pnc_wakeup: Optional[PositiveUnlimitedInteger] = None
         self.pnc_wakeup_dlc: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanCommunicationConnector":
+        """Deserialize XML element to CanCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanCommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse pnc_wakeup_can
+        child = ARObject._find_child_element(element, "PNC-WAKEUP-CAN")
+        if child is not None:
+            pnc_wakeup_can_value = child.text
+            obj.pnc_wakeup_can = pnc_wakeup_can_value
+
+        # Parse pnc_wakeup
+        child = ARObject._find_child_element(element, "PNC-WAKEUP")
+        if child is not None:
+            pnc_wakeup_value = child.text
+            obj.pnc_wakeup = pnc_wakeup_value
+
+        # Parse pnc_wakeup_dlc
+        child = ARObject._find_child_element(element, "PNC-WAKEUP-DLC")
+        if child is not None:
+            pnc_wakeup_dlc_value = child.text
+            obj.pnc_wakeup_dlc = pnc_wakeup_dlc_value
+
+        return obj
+
 
 
 class CanCommunicationConnectorBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
@@ -31,6 +32,28 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         """Initialize SenderRecRecordTypeMapping."""
         super().__init__()
         self.record_elements: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderRecRecordTypeMapping":
+        """Deserialize XML element to SenderRecRecordTypeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderRecRecordTypeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse record_elements (list)
+        obj.record_elements = []
+        for child in ARObject._find_all_child_elements(element, "RECORD-ELEMENTS"):
+            record_elements_value = child.text
+            obj.record_elements.append(record_elements_value)
+
+        return obj
+
 
 
 class SenderRecRecordTypeMappingBuilder:

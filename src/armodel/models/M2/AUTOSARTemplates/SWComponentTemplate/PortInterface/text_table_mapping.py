@@ -47,6 +47,46 @@ class TextTableMapping(ARObject):
         self.identical: Optional[Boolean] = None
         self.mapping_ref: Optional[ARRef] = None
         self.value_pairs: list[TextTableValuePair] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TextTableMapping":
+        """Deserialize XML element to TextTableMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TextTableMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bitfield_text_table
+        child = ARObject._find_child_element(element, "BITFIELD-TEXT-TABLE")
+        if child is not None:
+            bitfield_text_table_value = child.text
+            obj.bitfield_text_table = bitfield_text_table_value
+
+        # Parse identical
+        child = ARObject._find_child_element(element, "IDENTICAL")
+        if child is not None:
+            identical_value = child.text
+            obj.identical = identical_value
+
+        # Parse mapping_ref
+        child = ARObject._find_child_element(element, "MAPPING")
+        if child is not None:
+            mapping_ref_value = child.text
+            obj.mapping_ref = mapping_ref_value
+
+        # Parse value_pairs (list)
+        obj.value_pairs = []
+        for child in ARObject._find_all_child_elements(element, "VALUE-PAIRS"):
+            value_pairs_value = ARObject._deserialize_by_tag(child, "TextTableValuePair")
+            obj.value_pairs.append(value_pairs_value)
+
+        return obj
+
 
 
 class TextTableMappingBuilder:

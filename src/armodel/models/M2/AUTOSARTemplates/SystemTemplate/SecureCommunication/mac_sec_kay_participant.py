@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
 )
@@ -41,6 +42,40 @@ class MacSecKayParticipant(Identifiable):
         self.ckn: Optional[CryptoServiceKey] = None
         self.crypto_algo: Optional[MacSecCryptoAlgoConfig] = None
         self.sak: Optional[CryptoServiceKey] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacSecKayParticipant":
+        """Deserialize XML element to MacSecKayParticipant object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacSecKayParticipant object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ckn
+        child = ARObject._find_child_element(element, "CKN")
+        if child is not None:
+            ckn_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.ckn = ckn_value
+
+        # Parse crypto_algo
+        child = ARObject._find_child_element(element, "CRYPTO-ALGO")
+        if child is not None:
+            crypto_algo_value = ARObject._deserialize_by_tag(child, "MacSecCryptoAlgoConfig")
+            obj.crypto_algo = crypto_algo_value
+
+        # Parse sak
+        child = ARObject._find_child_element(element, "SAK")
+        if child is not None:
+            sak_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.sak = sak_value
+
+        return obj
+
 
 
 class MacSecKayParticipantBuilder:

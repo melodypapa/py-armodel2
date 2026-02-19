@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_swc import (
     TDEventSwc,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
     RunnableEntity,
 )
@@ -41,6 +42,40 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         self.runnable: Optional[RunnableEntity] = None
         self.td_event_swc_behavior_type: Optional[Any] = None
         self.variable_access: Optional[VariableAccess] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventSwcInternalBehavior":
+        """Deserialize XML element to TDEventSwcInternalBehavior object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventSwcInternalBehavior object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse runnable
+        child = ARObject._find_child_element(element, "RUNNABLE")
+        if child is not None:
+            runnable_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
+            obj.runnable = runnable_value
+
+        # Parse td_event_swc_behavior_type
+        child = ARObject._find_child_element(element, "TD-EVENT-SWC-BEHAVIOR-TYPE")
+        if child is not None:
+            td_event_swc_behavior_type_value = child.text
+            obj.td_event_swc_behavior_type = td_event_swc_behavior_type_value
+
+        # Parse variable_access
+        child = ARObject._find_child_element(element, "VARIABLE-ACCESS")
+        if child is not None:
+            variable_access_value = ARObject._deserialize_by_tag(child, "VariableAccess")
+            obj.variable_access = variable_access_value
+
+        return obj
+
 
 
 class TDEventSwcInternalBehaviorBuilder:

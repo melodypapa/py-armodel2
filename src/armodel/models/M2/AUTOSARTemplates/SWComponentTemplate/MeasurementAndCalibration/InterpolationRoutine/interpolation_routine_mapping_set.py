@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.InterpolationRoutine.interpolation_routine import (
     InterpolationRoutine,
 )
@@ -35,6 +36,28 @@ class InterpolationRoutineMappingSet(ARElement):
         """Initialize InterpolationRoutineMappingSet."""
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InterpolationRoutineMappingSet":
+        """Deserialize XML element to InterpolationRoutineMappingSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InterpolationRoutineMappingSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interpolation_routines (list)
+        obj.interpolation_routines = []
+        for child in ARObject._find_all_child_elements(element, "INTERPOLATION-ROUTINES"):
+            interpolation_routines_value = ARObject._deserialize_by_tag(child, "InterpolationRoutine")
+            obj.interpolation_routines.append(interpolation_routines_value)
+
+        return obj
+
 
 
 class InterpolationRoutineMappingSetBuilder:

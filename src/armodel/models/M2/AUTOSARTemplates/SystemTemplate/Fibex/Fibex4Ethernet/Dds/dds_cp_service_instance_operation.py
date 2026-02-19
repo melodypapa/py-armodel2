@@ -33,6 +33,28 @@ class DdsCpServiceInstanceOperation(ARObject):
         """Initialize DdsCpServiceInstanceOperation."""
         super().__init__()
         self.dds_operation_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpServiceInstanceOperation":
+        """Deserialize XML element to DdsCpServiceInstanceOperation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpServiceInstanceOperation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dds_operation_ref
+        child = ARObject._find_child_element(element, "DDS-OPERATION")
+        if child is not None:
+            dds_operation_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.dds_operation_ref = dds_operation_ref_value
+
+        return obj
+
 
 
 class DdsCpServiceInstanceOperationBuilder:

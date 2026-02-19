@@ -24,6 +24,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CategoryString,
     String,
@@ -70,6 +71,58 @@ class Identifiable(MultilanguageReferrable, ABC):
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.uuid: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Identifiable":
+        """Deserialize XML element to Identifiable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Identifiable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse admin_data
+        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        if child is not None:
+            admin_data_value = ARObject._deserialize_by_tag(child, "AdminData")
+            obj.admin_data = admin_data_value
+
+        # Parse annotations (list)
+        obj.annotations = []
+        for child in ARObject._find_all_child_elements(element, "ANNOTATIONS"):
+            annotations_value = ARObject._deserialize_by_tag(child, "Annotation")
+            obj.annotations.append(annotations_value)
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse uuid
+        child = ARObject._find_child_element(element, "UUID")
+        if child is not None:
+            uuid_value = child.text
+            obj.uuid = uuid_value
+
+        return obj
+
 
 
 class IdentifiableBuilder:

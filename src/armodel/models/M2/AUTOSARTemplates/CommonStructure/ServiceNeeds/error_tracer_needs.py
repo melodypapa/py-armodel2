@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_failure import (
     TracedFailure,
 )
@@ -35,6 +36,28 @@ class ErrorTracerNeeds(ServiceNeeds):
         """Initialize ErrorTracerNeeds."""
         super().__init__()
         self.traced_failures: list[TracedFailure] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ErrorTracerNeeds":
+        """Deserialize XML element to ErrorTracerNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ErrorTracerNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse traced_failures (list)
+        obj.traced_failures = []
+        for child in ARObject._find_all_child_elements(element, "TRACED-FAILURES"):
+            traced_failures_value = ARObject._deserialize_by_tag(child, "TracedFailure")
+            obj.traced_failures.append(traced_failures_value)
+
+        return obj
+
 
 
 class ErrorTracerNeedsBuilder:

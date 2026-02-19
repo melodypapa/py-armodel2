@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
     DataPrototypeReference,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -35,6 +36,28 @@ class DataPrototypeInPortInterfaceRef(DataPrototypeReference):
         """Initialize DataPrototypeInPortInterfaceRef."""
         super().__init__()
         self.data_prototype_in_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInPortInterfaceRef":
+        """Deserialize XML element to DataPrototypeInPortInterfaceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeInPortInterfaceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_prototype_in_ref
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN")
+        if child is not None:
+            data_prototype_in_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.data_prototype_in_ref = data_prototype_in_ref_value
+
+        return obj
+
 
 
 class DataPrototypeInPortInterfaceRefBuilder:

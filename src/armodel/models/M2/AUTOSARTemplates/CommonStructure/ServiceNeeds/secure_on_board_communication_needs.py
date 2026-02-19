@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     VerificationStatusIndicationModeEnum,
 )
@@ -34,6 +35,28 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         """Initialize SecureOnBoardCommunicationNeeds."""
         super().__init__()
         self.verification: Optional[VerificationStatusIndicationModeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecureOnBoardCommunicationNeeds":
+        """Deserialize XML element to SecureOnBoardCommunicationNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecureOnBoardCommunicationNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse verification
+        child = ARObject._find_child_element(element, "VERIFICATION")
+        if child is not None:
+            verification_value = child.text
+            obj.verification = verification_value
+
+        return obj
+
 
 
 class SecureOnBoardCommunicationNeedsBuilder:

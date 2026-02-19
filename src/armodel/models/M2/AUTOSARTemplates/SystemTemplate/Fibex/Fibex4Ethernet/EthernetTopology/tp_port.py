@@ -35,6 +35,34 @@ class TpPort(ARObject):
         super().__init__()
         self.dynamically: Optional[Boolean] = None
         self.port_number: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TpPort":
+        """Deserialize XML element to TpPort object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TpPort object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dynamically
+        child = ARObject._find_child_element(element, "DYNAMICALLY")
+        if child is not None:
+            dynamically_value = child.text
+            obj.dynamically = dynamically_value
+
+        # Parse port_number
+        child = ARObject._find_child_element(element, "PORT-NUMBER")
+        if child is not None:
+            port_number_value = child.text
+            obj.port_number = port_number_value
+
+        return obj
+
 
 
 class TpPortBuilder:

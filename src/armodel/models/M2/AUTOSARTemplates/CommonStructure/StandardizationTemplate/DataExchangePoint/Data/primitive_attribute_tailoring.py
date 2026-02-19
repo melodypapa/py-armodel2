@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data import (
     DefaultValueApplicationStrategyEnum,
 )
@@ -41,6 +42,40 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         self.default_value: Optional[DefaultValueApplicationStrategyEnum] = None
         self.sub_attributes: list[Any] = []
         self.value_restriction_with_severity: Optional[ValueRestrictionWithSeverity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeTailoring":
+        """Deserialize XML element to PrimitiveAttributeTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PrimitiveAttributeTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_value
+        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        if child is not None:
+            default_value_value = child.text
+            obj.default_value = default_value_value
+
+        # Parse sub_attributes (list)
+        obj.sub_attributes = []
+        for child in ARObject._find_all_child_elements(element, "SUB-ATTRIBUTES"):
+            sub_attributes_value = child.text
+            obj.sub_attributes.append(sub_attributes_value)
+
+        # Parse value_restriction_with_severity
+        child = ARObject._find_child_element(element, "VALUE-RESTRICTION-WITH-SEVERITY")
+        if child is not None:
+            value_restriction_with_severity_value = ARObject._deserialize_by_tag(child, "ValueRestrictionWithSeverity")
+            obj.value_restriction_with_severity = value_restriction_with_severity_value
+
+        return obj
+
 
 
 class PrimitiveAttributeTailoringBuilder:

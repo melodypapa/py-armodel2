@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -39,6 +40,34 @@ class ClientIdDefinition(Identifiable):
         super().__init__()
         self.client_id: Optional[Numerical] = None
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientIdDefinition":
+        """Deserialize XML element to ClientIdDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientIdDefinition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse client_id
+        child = ARObject._find_child_element(element, "CLIENT-ID")
+        if child is not None:
+            client_id_value = child.text
+            obj.client_id = client_id_value
+
+        # Parse client_server_instance_ref
+        child = ARObject._find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
+        if child is not None:
+            client_server_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.client_server_instance_ref = client_server_instance_ref_value
+
+        return obj
+
 
 
 class ClientIdDefinitionBuilder:

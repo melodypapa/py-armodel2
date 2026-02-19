@@ -34,6 +34,34 @@ class Modification(ARObject):
         super().__init__()
         self.change: MultiLanguageOverviewParagraph = None
         self.reason: Optional[MultiLanguageOverviewParagraph] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Modification":
+        """Deserialize XML element to Modification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Modification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse change
+        child = ARObject._find_child_element(element, "CHANGE")
+        if child is not None:
+            change_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.change = change_value
+
+        # Parse reason
+        child = ARObject._find_child_element(element, "REASON")
+        if child is not None:
+            reason_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.reason = reason_value
+
+        return obj
+
 
 
 class ModificationBuilder:

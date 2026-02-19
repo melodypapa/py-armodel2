@@ -37,6 +37,34 @@ class TopicContentOrMsrQuery(ARObject):
         super().__init__()
         self.msr_query_p1: MsrQueryP1 = None
         self.topic_content: TopicContent = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TopicContentOrMsrQuery":
+        """Deserialize XML element to TopicContentOrMsrQuery object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TopicContentOrMsrQuery object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse msr_query_p1
+        child = ARObject._find_child_element(element, "MSR-QUERY-P1")
+        if child is not None:
+            msr_query_p1_value = ARObject._deserialize_by_tag(child, "MsrQueryP1")
+            obj.msr_query_p1 = msr_query_p1_value
+
+        # Parse topic_content
+        child = ARObject._find_child_element(element, "TOPIC-CONTENT")
+        if child is not None:
+            topic_content_value = ARObject._deserialize_by_tag(child, "TopicContent")
+            obj.topic_content = topic_content_value
+
+        return obj
+
 
 
 class TopicContentOrMsrQueryBuilder:

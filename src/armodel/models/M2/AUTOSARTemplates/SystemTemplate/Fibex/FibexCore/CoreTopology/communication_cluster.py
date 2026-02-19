@@ -44,6 +44,46 @@ class CommunicationCluster(ARObject, ABC):
         self.physical_channels: list[PhysicalChannel] = []
         self.protocol_name: Optional[String] = None
         self.protocol_version: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommunicationCluster":
+        """Deserialize XML element to CommunicationCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommunicationCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse baudrate
+        child = ARObject._find_child_element(element, "BAUDRATE")
+        if child is not None:
+            baudrate_value = child.text
+            obj.baudrate = baudrate_value
+
+        # Parse physical_channels (list)
+        obj.physical_channels = []
+        for child in ARObject._find_all_child_elements(element, "PHYSICAL-CHANNELS"):
+            physical_channels_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
+            obj.physical_channels.append(physical_channels_value)
+
+        # Parse protocol_name
+        child = ARObject._find_child_element(element, "PROTOCOL-NAME")
+        if child is not None:
+            protocol_name_value = child.text
+            obj.protocol_name = protocol_name_value
+
+        # Parse protocol_version
+        child = ARObject._find_child_element(element, "PROTOCOL-VERSION")
+        if child is not None:
+            protocol_version_value = child.text
+            obj.protocol_version = protocol_version_value
+
+        return obj
+
 
 
 class CommunicationClusterBuilder:

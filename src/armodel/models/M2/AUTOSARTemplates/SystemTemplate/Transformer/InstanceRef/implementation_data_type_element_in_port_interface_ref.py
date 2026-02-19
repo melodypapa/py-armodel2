@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.data_prototype_reference import (
     DataPrototypeReference,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -45,6 +46,40 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
         self.contexts: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target: Optional[AbstractImplementationDataType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElementInPortInterfaceRef":
+        """Deserialize XML element to ImplementationDataTypeElementInPortInterfaceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationDataTypeElementInPortInterfaceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = child.text
+            obj.contexts.append(contexts_value)
+
+        # Parse root_data_ref
+        child = ARObject._find_child_element(element, "ROOT-DATA")
+        if child is not None:
+            root_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.root_data_ref = root_data_ref_value
+
+        # Parse target
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
+            obj.target = target_value
+
+        return obj
+
 
 
 class ImplementationDataTypeElementInPortInterfaceRefBuilder:

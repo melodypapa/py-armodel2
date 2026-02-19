@@ -27,6 +27,22 @@ class SecurityEventContextData(ARObject):
     def __init__(self) -> None:
         """Initialize SecurityEventContextData."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextData":
+        """Deserialize XML element to SecurityEventContextData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventContextData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SecurityEventContextDataBuilder:

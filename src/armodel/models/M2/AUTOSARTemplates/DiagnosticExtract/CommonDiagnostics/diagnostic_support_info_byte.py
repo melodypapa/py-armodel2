@@ -34,6 +34,34 @@ class DiagnosticSupportInfoByte(ARObject):
         super().__init__()
         self.position: Optional[PositiveInteger] = None
         self.size: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticSupportInfoByte":
+        """Deserialize XML element to DiagnosticSupportInfoByte object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticSupportInfoByte object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse position
+        child = ARObject._find_child_element(element, "POSITION")
+        if child is not None:
+            position_value = child.text
+            obj.position = position_value
+
+        # Parse size
+        child = ARObject._find_child_element(element, "SIZE")
+        if child is not None:
+            size_value = child.text
+            obj.size = size_value
+
+        return obj
+
 
 
 class DiagnosticSupportInfoByteBuilder:

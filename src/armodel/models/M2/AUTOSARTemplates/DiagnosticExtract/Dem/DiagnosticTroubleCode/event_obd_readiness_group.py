@@ -32,6 +32,28 @@ class EventObdReadinessGroup(ARObject):
         """Initialize EventObdReadinessGroup."""
         super().__init__()
         self.event_obd: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EventObdReadinessGroup":
+        """Deserialize XML element to EventObdReadinessGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EventObdReadinessGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_obd
+        child = ARObject._find_child_element(element, "EVENT-OBD")
+        if child is not None:
+            event_obd_value = child.text
+            obj.event_obd = event_obd_value
+
+        return obj
+
 
 
 class EventObdReadinessGroupBuilder:

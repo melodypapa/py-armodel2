@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
     NmClusterCoupling,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -41,6 +42,40 @@ class CanNmClusterCoupling(NmClusterCoupling):
         self.coupled_clusters: list[CanNmCluster] = []
         self.nm_busload_reduction: Optional[Any] = None
         self.nm_immediate: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanNmClusterCoupling":
+        """Deserialize XML element to CanNmClusterCoupling object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanNmClusterCoupling object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse coupled_clusters (list)
+        obj.coupled_clusters = []
+        for child in ARObject._find_all_child_elements(element, "COUPLED-CLUSTERS"):
+            coupled_clusters_value = ARObject._deserialize_by_tag(child, "CanNmCluster")
+            obj.coupled_clusters.append(coupled_clusters_value)
+
+        # Parse nm_busload_reduction
+        child = ARObject._find_child_element(element, "NM-BUSLOAD-REDUCTION")
+        if child is not None:
+            nm_busload_reduction_value = child.text
+            obj.nm_busload_reduction = nm_busload_reduction_value
+
+        # Parse nm_immediate
+        child = ARObject._find_child_element(element, "NM-IMMEDIATE")
+        if child is not None:
+            nm_immediate_value = child.text
+            obj.nm_immediate = nm_immediate_value
+
+        return obj
+
 
 
 class CanNmClusterCouplingBuilder:

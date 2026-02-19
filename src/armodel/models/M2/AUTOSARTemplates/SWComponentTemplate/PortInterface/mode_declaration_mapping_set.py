@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -34,6 +35,28 @@ class ModeDeclarationMappingSet(ARElement):
         """Initialize ModeDeclarationMappingSet."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationMappingSet":
+        """Deserialize XML element to ModeDeclarationMappingSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeDeclarationMappingSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse modes (list)
+        obj.modes = []
+        for child in ARObject._find_all_child_elements(element, "MODES"):
+            modes_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.modes.append(modes_value)
+
+        return obj
+
 
 
 class ModeDeclarationMappingSetBuilder:

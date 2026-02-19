@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.abstract_service_instance import (
     AbstractServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -69,6 +70,100 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         self.sd_server_config: Optional[Any] = None
         self.sd_server_timer: Optional[Any] = None
         self.service_identifier: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ProvidedServiceInstance":
+        """Deserialize XML element to ProvidedServiceInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ProvidedServiceInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse allowed_services (list)
+        obj.allowed_services = []
+        for child in ARObject._find_all_child_elements(element, "ALLOWED-SERVICES"):
+            allowed_services_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
+            obj.allowed_services.append(allowed_services_value)
+
+        # Parse auto_available
+        child = ARObject._find_child_element(element, "AUTO-AVAILABLE")
+        if child is not None:
+            auto_available_value = child.text
+            obj.auto_available = auto_available_value
+
+        # Parse event_handlers (list)
+        obj.event_handlers = []
+        for child in ARObject._find_all_child_elements(element, "EVENT-HANDLERS"):
+            event_handlers_value = ARObject._deserialize_by_tag(child, "EventHandler")
+            obj.event_handlers.append(event_handlers_value)
+
+        # Parse instance
+        child = ARObject._find_child_element(element, "INSTANCE")
+        if child is not None:
+            instance_value = child.text
+            obj.instance = instance_value
+
+        # Parse load_balancing
+        child = ARObject._find_child_element(element, "LOAD-BALANCING")
+        if child is not None:
+            load_balancing_value = child.text
+            obj.load_balancing = load_balancing_value
+
+        # Parse local_unicast
+        child = ARObject._find_child_element(element, "LOCAL-UNICAST")
+        if child is not None:
+            local_unicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.local_unicast = local_unicast_value
+
+        # Parse minor_version
+        child = ARObject._find_child_element(element, "MINOR-VERSION")
+        if child is not None:
+            minor_version_value = child.text
+            obj.minor_version = minor_version_value
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        # Parse remote_multicasts (list)
+        obj.remote_multicasts = []
+        for child in ARObject._find_all_child_elements(element, "REMOTE-MULTICASTS"):
+            remote_multicasts_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.remote_multicasts.append(remote_multicasts_value)
+
+        # Parse remote_unicasts (list)
+        obj.remote_unicasts = []
+        for child in ARObject._find_all_child_elements(element, "REMOTE-UNICASTS"):
+            remote_unicasts_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.remote_unicasts.append(remote_unicasts_value)
+
+        # Parse sd_server_config
+        child = ARObject._find_child_element(element, "SD-SERVER-CONFIG")
+        if child is not None:
+            sd_server_config_value = child.text
+            obj.sd_server_config = sd_server_config_value
+
+        # Parse sd_server_timer
+        child = ARObject._find_child_element(element, "SD-SERVER-TIMER")
+        if child is not None:
+            sd_server_timer_value = child.text
+            obj.sd_server_timer = sd_server_timer_value
+
+        # Parse service_identifier
+        child = ARObject._find_child_element(element, "SERVICE-IDENTIFIER")
+        if child is not None:
+            service_identifier_value = child.text
+            obj.service_identifier = service_identifier_value
+
+        return obj
+
 
 
 class ProvidedServiceInstanceBuilder:

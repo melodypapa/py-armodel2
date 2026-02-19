@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -32,6 +33,28 @@ class CommConnectorPort(Identifiable, ABC):
         """Initialize CommConnectorPort."""
         super().__init__()
         self.communication: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommConnectorPort":
+        """Deserialize XML element to CommConnectorPort object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommConnectorPort object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication
+        child = ARObject._find_child_element(element, "COMMUNICATION")
+        if child is not None:
+            communication_value = child.text
+            obj.communication = communication_value
+
+        return obj
+
 
 
 class CommConnectorPortBuilder:

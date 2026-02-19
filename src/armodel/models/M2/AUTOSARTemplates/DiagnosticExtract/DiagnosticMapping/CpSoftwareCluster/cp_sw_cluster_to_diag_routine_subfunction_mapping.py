@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -39,6 +40,34 @@ class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.routine: Optional[DiagnosticRoutine] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSwClusterToDiagRoutineSubfunctionMapping":
+        """Deserialize XML element to CpSwClusterToDiagRoutineSubfunctionMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSwClusterToDiagRoutineSubfunctionMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cp_software_cluster
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        if child is not None:
+            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.cp_software_cluster = cp_software_cluster_value
+
+        # Parse routine
+        child = ARObject._find_child_element(element, "ROUTINE")
+        if child is not None:
+            routine_value = ARObject._deserialize_by_tag(child, "DiagnosticRoutine")
+            obj.routine = routine_value
+
+        return obj
+
 
 
 class CpSwClusterToDiagRoutineSubfunctionMappingBuilder:

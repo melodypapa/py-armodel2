@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
     CompuMethod,
 )
@@ -37,6 +38,28 @@ class PostBuildVariantCriterion(ARElement):
         """Initialize PostBuildVariantCriterion."""
         super().__init__()
         self.compu_method: CompuMethod = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PostBuildVariantCriterion":
+        """Deserialize XML element to PostBuildVariantCriterion object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PostBuildVariantCriterion object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse compu_method
+        child = ARObject._find_child_element(element, "COMPU-METHOD")
+        if child is not None:
+            compu_method_value = ARObject._deserialize_by_tag(child, "CompuMethod")
+            obj.compu_method = compu_method_value
+
+        return obj
+
 
 
 class PostBuildVariantCriterionBuilder:

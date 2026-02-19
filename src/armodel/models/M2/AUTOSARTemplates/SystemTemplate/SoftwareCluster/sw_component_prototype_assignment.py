@@ -29,6 +29,28 @@ class SwComponentPrototypeAssignment(ARObject):
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
         self.sw_component: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwComponentPrototypeAssignment":
+        """Deserialize XML element to SwComponentPrototypeAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwComponentPrototypeAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_component
+        child = ARObject._find_child_element(element, "SW-COMPONENT")
+        if child is not None:
+            sw_component_value = child.text
+            obj.sw_component = sw_component_value
+
+        return obj
+
 
 
 class SwComponentPrototypeAssignmentBuilder:

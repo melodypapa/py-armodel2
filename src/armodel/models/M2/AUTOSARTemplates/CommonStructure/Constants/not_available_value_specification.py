@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class NotAvailableValueSpecification(ValueSpecification):
         """Initialize NotAvailableValueSpecification."""
         super().__init__()
         self.default_pattern: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NotAvailableValueSpecification":
+        """Deserialize XML element to NotAvailableValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NotAvailableValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_pattern
+        child = ARObject._find_child_element(element, "DEFAULT-PATTERN")
+        if child is not None:
+            default_pattern_value = child.text
+            obj.default_pattern = default_pattern_value
+
+        return obj
+
 
 
 class NotAvailableValueSpecificationBuilder:

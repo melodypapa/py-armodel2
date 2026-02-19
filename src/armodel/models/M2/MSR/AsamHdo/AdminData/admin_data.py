@@ -51,6 +51,46 @@ class AdminData(ARObject):
         self.language: Optional[LEnum] = None
         self.sdg: list[Sdg] = []
         self.used_languages: Optional[MultiLanguagePlainText] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AdminData":
+        """Deserialize XML element to AdminData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AdminData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse doc_revisions (list)
+        obj.doc_revisions = []
+        for child in ARObject._find_all_child_elements(element, "DOC-REVISIONS"):
+            doc_revisions_value = ARObject._deserialize_by_tag(child, "DocRevision")
+            obj.doc_revisions.append(doc_revisions_value)
+
+        # Parse language
+        child = ARObject._find_child_element(element, "LANGUAGE")
+        if child is not None:
+            language_value = child.text
+            obj.language = language_value
+
+        # Parse sdg (list)
+        obj.sdg = []
+        for child in ARObject._find_all_child_elements(element, "SDG"):
+            sdg_value = ARObject._deserialize_by_tag(child, "Sdg")
+            obj.sdg.append(sdg_value)
+
+        # Parse used_languages
+        child = ARObject._find_child_element(element, "USED-LANGUAGES")
+        if child is not None:
+            used_languages_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            obj.used_languages = used_languages_value
+
+        return obj
+
 
 
 class AdminDataBuilder:

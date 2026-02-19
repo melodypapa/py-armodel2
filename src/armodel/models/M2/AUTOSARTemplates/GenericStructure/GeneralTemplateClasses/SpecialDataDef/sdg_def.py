@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
 )
@@ -35,6 +36,28 @@ class SdgDef(ARElement):
         """Initialize SdgDef."""
         super().__init__()
         self.sdg_classes: list[SdgClass] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgDef":
+        """Deserialize XML element to SdgDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sdg_classes (list)
+        obj.sdg_classes = []
+        for child in ARObject._find_all_child_elements(element, "SDG-CLASSES"):
+            sdg_classes_value = ARObject._deserialize_by_tag(child, "SdgClass")
+            obj.sdg_classes.append(sdg_classes_value)
+
+        return obj
+
 
 
 class SdgDefBuilder:

@@ -42,6 +42,46 @@ class FlexrayTpEcu(ARObject):
         self.cycle_time_main: Optional[TimeValue] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.full_duplex: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayTpEcu":
+        """Deserialize XML element to FlexrayTpEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayTpEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cancellation
+        child = ARObject._find_child_element(element, "CANCELLATION")
+        if child is not None:
+            cancellation_value = child.text
+            obj.cancellation = cancellation_value
+
+        # Parse cycle_time_main
+        child = ARObject._find_child_element(element, "CYCLE-TIME-MAIN")
+        if child is not None:
+            cycle_time_main_value = child.text
+            obj.cycle_time_main = cycle_time_main_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse full_duplex
+        child = ARObject._find_child_element(element, "FULL-DUPLEX")
+        if child is not None:
+            full_duplex_value = child.text
+            obj.full_duplex = full_duplex_value
+
+        return obj
+
 
 
 class FlexrayTpEcuBuilder:

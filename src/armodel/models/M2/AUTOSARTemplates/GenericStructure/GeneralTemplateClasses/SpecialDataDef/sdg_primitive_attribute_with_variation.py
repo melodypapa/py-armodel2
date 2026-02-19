@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_abstract_primitive_attribute import (
     SdgAbstractPrimitiveAttribute,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SdgPrimitiveAttributeWithVariation(SdgAbstractPrimitiveAttribute):
@@ -29,6 +30,22 @@ class SdgPrimitiveAttributeWithVariation(SdgAbstractPrimitiveAttribute):
     def __init__(self) -> None:
         """Initialize SdgPrimitiveAttributeWithVariation."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgPrimitiveAttributeWithVariation":
+        """Deserialize XML element to SdgPrimitiveAttributeWithVariation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgPrimitiveAttributeWithVariation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SdgPrimitiveAttributeWithVariationBuilder:

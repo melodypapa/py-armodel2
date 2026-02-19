@@ -49,6 +49,46 @@ class RoleBasedDataAssignment(ARObject):
         self.used_data_ref: Optional[ARRef] = None
         self.used_parameter_ref: Optional[ARRef] = None
         self.used_pim: Optional[PerInstanceMemory] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedDataAssignment":
+        """Deserialize XML element to RoleBasedDataAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedDataAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse used_data_ref
+        child = ARObject._find_child_element(element, "USED-DATA")
+        if child is not None:
+            used_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            obj.used_data_ref = used_data_ref_value
+
+        # Parse used_parameter_ref
+        child = ARObject._find_child_element(element, "USED-PARAMETER")
+        if child is not None:
+            used_parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            obj.used_parameter_ref = used_parameter_ref_value
+
+        # Parse used_pim
+        child = ARObject._find_child_element(element, "USED-PIM")
+        if child is not None:
+            used_pim_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
+            obj.used_pim = used_pim_value
+
+        return obj
+
 
 
 class RoleBasedDataAssignmentBuilder:

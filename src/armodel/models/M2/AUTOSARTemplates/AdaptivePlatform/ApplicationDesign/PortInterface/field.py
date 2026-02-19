@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -38,6 +39,40 @@ class Field(AutosarDataPrototype):
         self.has_getter: Optional[Boolean] = None
         self.has_notifier: Optional[Boolean] = None
         self.has_setter: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Field":
+        """Deserialize XML element to Field object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Field object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse has_getter
+        child = ARObject._find_child_element(element, "HAS-GETTER")
+        if child is not None:
+            has_getter_value = child.text
+            obj.has_getter = has_getter_value
+
+        # Parse has_notifier
+        child = ARObject._find_child_element(element, "HAS-NOTIFIER")
+        if child is not None:
+            has_notifier_value = child.text
+            obj.has_notifier = has_notifier_value
+
+        # Parse has_setter
+        child = ARObject._find_child_element(element, "HAS-SETTER")
+        if child is not None:
+            has_setter_value = child.text
+            obj.has_setter = has_setter_value
+
+        return obj
+
 
 
 class FieldBuilder:

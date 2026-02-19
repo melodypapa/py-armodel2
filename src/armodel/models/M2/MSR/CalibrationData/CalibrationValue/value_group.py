@@ -40,6 +40,34 @@ class ValueGroup(ARObject):
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
         self.vg_contents: Optional[SwValues] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ValueGroup":
+        """Deserialize XML element to ValueGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ValueGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse label
+        child = ARObject._find_child_element(element, "LABEL")
+        if child is not None:
+            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            obj.label = label_value
+
+        # Parse vg_contents
+        child = ARObject._find_child_element(element, "VG-CONTENTS")
+        if child is not None:
+            vg_contents_value = ARObject._deserialize_by_tag(child, "SwValues")
+            obj.vg_contents = vg_contents_value
+
+        return obj
+
 
 
 class ValueGroupBuilder:

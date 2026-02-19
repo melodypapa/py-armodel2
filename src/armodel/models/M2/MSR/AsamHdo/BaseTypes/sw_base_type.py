@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.AsamHdo.BaseTypes.base_type import (
     BaseType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SwBaseType(BaseType):
@@ -34,6 +35,22 @@ class SwBaseType(BaseType):
     def __init__(self) -> None:
         """Initialize SwBaseType."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwBaseType":
+        """Deserialize XML element to SwBaseType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwBaseType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SwBaseTypeBuilder:

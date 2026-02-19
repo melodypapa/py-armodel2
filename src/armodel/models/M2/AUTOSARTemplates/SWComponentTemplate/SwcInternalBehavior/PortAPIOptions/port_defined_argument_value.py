@@ -39,6 +39,34 @@ class PortDefinedArgumentValue(ARObject):
         super().__init__()
         self.value: Optional[ValueSpecification] = None
         self.value_type: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortDefinedArgumentValue":
+        """Deserialize XML element to PortDefinedArgumentValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortDefinedArgumentValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.value = value_value
+
+        # Parse value_type
+        child = ARObject._find_child_element(element, "VALUE-TYPE")
+        if child is not None:
+            value_type_value = child.text
+            obj.value_type = value_type_value
+
+        return obj
+
 
 
 class PortDefinedArgumentValueBuilder:

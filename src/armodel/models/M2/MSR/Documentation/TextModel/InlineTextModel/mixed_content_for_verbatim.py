@@ -48,6 +48,46 @@ class MixedContentForVerbatim(ARObject, ABC):
         self.e: EmphasisText = None
         self.tt: Tt = None
         self.xref: Xref = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MixedContentForVerbatim":
+        """Deserialize XML element to MixedContentForVerbatim object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MixedContentForVerbatim object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse br
+        child = ARObject._find_child_element(element, "BR")
+        if child is not None:
+            br_value = ARObject._deserialize_by_tag(child, "Br")
+            obj.br = br_value
+
+        # Parse e
+        child = ARObject._find_child_element(element, "E")
+        if child is not None:
+            e_value = ARObject._deserialize_by_tag(child, "EmphasisText")
+            obj.e = e_value
+
+        # Parse tt
+        child = ARObject._find_child_element(element, "TT")
+        if child is not None:
+            tt_value = ARObject._deserialize_by_tag(child, "Tt")
+            obj.tt = tt_value
+
+        # Parse xref
+        child = ARObject._find_child_element(element, "XREF")
+        if child is not None:
+            xref_value = ARObject._deserialize_by_tag(child, "Xref")
+            obj.xref = xref_value
+
+        return obj
+
 
 
 class MixedContentForVerbatimBuilder:

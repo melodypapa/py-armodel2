@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Common.restriction_with_severity import (
     RestrictionWithSeverity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
 )
@@ -34,6 +35,28 @@ class SdgTailoring(RestrictionWithSeverity):
         """Initialize SdgTailoring."""
         super().__init__()
         self.sdg_class: Optional[SdgClass] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgTailoring":
+        """Deserialize XML element to SdgTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sdg_class
+        child = ARObject._find_child_element(element, "SDG-CLASS")
+        if child is not None:
+            sdg_class_value = ARObject._deserialize_by_tag(child, "SdgClass")
+            obj.sdg_class = sdg_class_value
+
+        return obj
+
 
 
 class SdgTailoringBuilder:

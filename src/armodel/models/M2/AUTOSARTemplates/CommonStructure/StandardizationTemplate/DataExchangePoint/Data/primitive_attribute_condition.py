@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_condition import (
     AttributeCondition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class PrimitiveAttributeCondition(AttributeCondition):
@@ -31,6 +32,28 @@ class PrimitiveAttributeCondition(AttributeCondition):
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()
         self.attribute: Any = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PrimitiveAttributeCondition":
+        """Deserialize XML element to PrimitiveAttributeCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PrimitiveAttributeCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse attribute
+        child = ARObject._find_child_element(element, "ATTRIBUTE")
+        if child is not None:
+            attribute_value = child.text
+            obj.attribute = attribute_value
+
+        return obj
+
 
 
 class PrimitiveAttributeConditionBuilder:

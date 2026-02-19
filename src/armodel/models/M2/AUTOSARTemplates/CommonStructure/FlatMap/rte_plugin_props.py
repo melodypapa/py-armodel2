@@ -34,6 +34,34 @@ class RtePluginProps(ARObject):
         super().__init__()
         self.associated: Optional[EcucContainerValue] = None
         self.associated_rte: Optional[EcucContainerValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RtePluginProps":
+        """Deserialize XML element to RtePluginProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RtePluginProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse associated
+        child = ARObject._find_child_element(element, "ASSOCIATED")
+        if child is not None:
+            associated_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
+            obj.associated = associated_value
+
+        # Parse associated_rte
+        child = ARObject._find_child_element(element, "ASSOCIATED-RTE")
+        if child is not None:
+            associated_rte_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
+            obj.associated_rte = associated_rte_value
+
+        return obj
+
 
 
 class RtePluginPropsBuilder:

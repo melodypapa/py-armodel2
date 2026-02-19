@@ -44,6 +44,40 @@ class SwSystemconstValue(ARObject):
         self.annotations: list[Annotation] = []
         self.sw_systemconst: SwSystemconst = None
         self.value: Numerical = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwSystemconstValue":
+        """Deserialize XML element to SwSystemconstValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwSystemconstValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse annotations (list)
+        obj.annotations = []
+        for child in ARObject._find_all_child_elements(element, "ANNOTATIONS"):
+            annotations_value = ARObject._deserialize_by_tag(child, "Annotation")
+            obj.annotations.append(annotations_value)
+
+        # Parse sw_systemconst
+        child = ARObject._find_child_element(element, "SW-SYSTEMCONST")
+        if child is not None:
+            sw_systemconst_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
+            obj.sw_systemconst = sw_systemconst_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class SwSystemconstValueBuilder:

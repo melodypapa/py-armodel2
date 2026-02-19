@@ -42,6 +42,40 @@ class RptSupportData(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.rpt_components: list[RptComponent] = []
         self.rpt_service_points: list[RptServicePoint] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RptSupportData":
+        """Deserialize XML element to RptSupportData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RptSupportData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse executions (list)
+        obj.executions = []
+        for child in ARObject._find_all_child_elements(element, "EXECUTIONS"):
+            executions_value = ARObject._deserialize_by_tag(child, "RptExecutionContext")
+            obj.executions.append(executions_value)
+
+        # Parse rpt_components (list)
+        obj.rpt_components = []
+        for child in ARObject._find_all_child_elements(element, "RPT-COMPONENTS"):
+            rpt_components_value = ARObject._deserialize_by_tag(child, "RptComponent")
+            obj.rpt_components.append(rpt_components_value)
+
+        # Parse rpt_service_points (list)
+        obj.rpt_service_points = []
+        for child in ARObject._find_all_child_elements(element, "RPT-SERVICE-POINTS"):
+            rpt_service_points_value = ARObject._deserialize_by_tag(child, "RptServicePoint")
+            obj.rpt_service_points.append(rpt_service_points_value)
+
+        return obj
+
 
 
 class RptSupportDataBuilder:

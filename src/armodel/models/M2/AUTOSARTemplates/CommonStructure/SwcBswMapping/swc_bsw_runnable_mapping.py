@@ -37,6 +37,34 @@ class SwcBswRunnableMapping(ARObject):
         super().__init__()
         self.bsw_entity: Optional[BswModuleEntity] = None
         self.swc_runnable: Optional[RunnableEntity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcBswRunnableMapping":
+        """Deserialize XML element to SwcBswRunnableMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcBswRunnableMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_entity
+        child = ARObject._find_child_element(element, "BSW-ENTITY")
+        if child is not None:
+            bsw_entity_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
+            obj.bsw_entity = bsw_entity_value
+
+        # Parse swc_runnable
+        child = ARObject._find_child_element(element, "SWC-RUNNABLE")
+        if child is not None:
+            swc_runnable_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
+            obj.swc_runnable = swc_runnable_value
+
+        return obj
+
 
 
 class SwcBswRunnableMappingBuilder:

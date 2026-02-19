@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
     ScheduleTableEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -30,6 +31,22 @@ class FreeFormatEntry(ScheduleTableEntry, ABC):
     def __init__(self) -> None:
         """Initialize FreeFormatEntry."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FreeFormatEntry":
+        """Deserialize XML element to FreeFormatEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FreeFormatEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class FreeFormatEntryBuilder:

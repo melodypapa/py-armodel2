@@ -46,6 +46,40 @@ class InstantiationDataDefProps(ARObject):
         self.parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.variable_instance_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InstantiationDataDefProps":
+        """Deserialize XML element to InstantiationDataDefProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InstantiationDataDefProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse parameter_ref
+        child = ARObject._find_child_element(element, "PARAMETER")
+        if child is not None:
+            parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            obj.parameter_ref = parameter_ref_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        # Parse variable_instance_ref
+        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE")
+        if child is not None:
+            variable_instance_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            obj.variable_instance_ref = variable_instance_ref_value
+
+        return obj
+
 
 
 class InstantiationDataDefPropsBuilder:

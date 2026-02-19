@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
         """Initialize DiagnosticCustomServiceClass."""
         super().__init__()
         self.custom_service: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCustomServiceClass":
+        """Deserialize XML element to DiagnosticCustomServiceClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticCustomServiceClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse custom_service
+        child = ARObject._find_child_element(element, "CUSTOM-SERVICE")
+        if child is not None:
+            custom_service_value = child.text
+            obj.custom_service = custom_service_value
+
+        return obj
+
 
 
 class DiagnosticCustomServiceClassBuilder:

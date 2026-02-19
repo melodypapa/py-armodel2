@@ -43,6 +43,40 @@ class DataConstrRule(ARObject):
         self.constr_level: Optional[Integer] = None
         self.internal_constrs: Optional[InternalConstrs] = None
         self.phys_constrs: Optional[PhysConstrs] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataConstrRule":
+        """Deserialize XML element to DataConstrRule object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataConstrRule object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse constr_level
+        child = ARObject._find_child_element(element, "CONSTR-LEVEL")
+        if child is not None:
+            constr_level_value = child.text
+            obj.constr_level = constr_level_value
+
+        # Parse internal_constrs
+        child = ARObject._find_child_element(element, "INTERNAL-CONSTRS")
+        if child is not None:
+            internal_constrs_value = ARObject._deserialize_by_tag(child, "InternalConstrs")
+            obj.internal_constrs = internal_constrs_value
+
+        # Parse phys_constrs
+        child = ARObject._find_child_element(element, "PHYS-CONSTRS")
+        if child is not None:
+            phys_constrs_value = ARObject._deserialize_by_tag(child, "PhysConstrs")
+            obj.phys_constrs = phys_constrs_value
+
+        return obj
+
 
 
 class DataConstrRuleBuilder:

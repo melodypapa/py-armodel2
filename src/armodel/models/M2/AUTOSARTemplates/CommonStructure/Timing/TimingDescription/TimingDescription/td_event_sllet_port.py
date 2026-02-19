@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_sllet import (
     TDEventSLLET,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -35,6 +36,28 @@ class TDEventSLLETPort(TDEventSLLET):
         """Initialize TDEventSLLETPort."""
         super().__init__()
         self.port_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventSLLETPort":
+        """Deserialize XML element to TDEventSLLETPort object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventSLLETPort object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse port_ref
+        child = ARObject._find_child_element(element, "PORT")
+        if child is not None:
+            port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.port_ref = port_ref_value
+
+        return obj
+
 
 
 class TDEventSLLETPortBuilder:

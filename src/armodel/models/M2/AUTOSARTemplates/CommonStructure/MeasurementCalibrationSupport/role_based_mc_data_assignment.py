@@ -45,6 +45,40 @@ class RoleBasedMcDataAssignment(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.mc_data_instances: list[McDataInstance] = []
         self.role: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedMcDataAssignment":
+        """Deserialize XML element to RoleBasedMcDataAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedMcDataAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse executions (list)
+        obj.executions = []
+        for child in ARObject._find_all_child_elements(element, "EXECUTIONS"):
+            executions_value = ARObject._deserialize_by_tag(child, "RptExecutionContext")
+            obj.executions.append(executions_value)
+
+        # Parse mc_data_instances (list)
+        obj.mc_data_instances = []
+        for child in ARObject._find_all_child_elements(element, "MC-DATA-INSTANCES"):
+            mc_data_instances_value = ARObject._deserialize_by_tag(child, "McDataInstance")
+            obj.mc_data_instances.append(mc_data_instances_value)
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        return obj
+
 
 
 class RoleBasedMcDataAssignmentBuilder:

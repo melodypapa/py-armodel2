@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_logic_address import (
     DoIpLogicAddress,
@@ -42,6 +43,40 @@ class DoIpTpConnection(TpConnection):
         self.do_ip_source: Optional[DoIpLogicAddress] = None
         self.do_ip_target: Optional[DoIpLogicAddress] = None
         self.tp_sdu_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpTpConnection":
+        """Deserialize XML element to DoIpTpConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpTpConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse do_ip_source
+        child = ARObject._find_child_element(element, "DO-IP-SOURCE")
+        if child is not None:
+            do_ip_source_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
+            obj.do_ip_source = do_ip_source_value
+
+        # Parse do_ip_target
+        child = ARObject._find_child_element(element, "DO-IP-TARGET")
+        if child is not None:
+            do_ip_target_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
+            obj.do_ip_target = do_ip_target_value
+
+        # Parse tp_sdu_ref
+        child = ARObject._find_child_element(element, "TP-SDU")
+        if child is not None:
+            tp_sdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.tp_sdu_ref = tp_sdu_ref_value
+
+        return obj
+
 
 
 class DoIpTpConnectionBuilder:

@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -42,6 +43,46 @@ class Compiler(Identifiable):
         self.options: Optional[String] = None
         self.vendor: Optional[String] = None
         self.version: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Compiler":
+        """Deserialize XML element to Compiler object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Compiler object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse name
+        child = ARObject._find_child_element(element, "NAME")
+        if child is not None:
+            name_value = child.text
+            obj.name = name_value
+
+        # Parse options
+        child = ARObject._find_child_element(element, "OPTIONS")
+        if child is not None:
+            options_value = child.text
+            obj.options = options_value
+
+        # Parse vendor
+        child = ARObject._find_child_element(element, "VENDOR")
+        if child is not None:
+            vendor_value = child.text
+            obj.vendor = vendor_value
+
+        # Parse version
+        child = ARObject._find_child_element(element, "VERSION")
+        if child is not None:
+            version_value = child.text
+            obj.version = version_value
+
+        return obj
+
 
 
 class CompilerBuilder:

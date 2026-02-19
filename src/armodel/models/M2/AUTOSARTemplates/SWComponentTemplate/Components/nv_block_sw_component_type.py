@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.bulk_nv_data_descriptor import (
     BulkNvDataDescriptor,
 )
@@ -40,6 +41,34 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         super().__init__()
         self.bulk_nv_datas: list[BulkNvDataDescriptor] = []
         self.nv_blocks: list[NvBlockDescriptor] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NvBlockSwComponentType":
+        """Deserialize XML element to NvBlockSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NvBlockSwComponentType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bulk_nv_datas (list)
+        obj.bulk_nv_datas = []
+        for child in ARObject._find_all_child_elements(element, "BULK-NV-DATAS"):
+            bulk_nv_datas_value = ARObject._deserialize_by_tag(child, "BulkNvDataDescriptor")
+            obj.bulk_nv_datas.append(bulk_nv_datas_value)
+
+        # Parse nv_blocks (list)
+        obj.nv_blocks = []
+        for child in ARObject._find_all_child_elements(element, "NV-BLOCKS"):
+            nv_blocks_value = ARObject._deserialize_by_tag(child, "NvBlockDescriptor")
+            obj.nv_blocks.append(nv_blocks_value)
+
+        return obj
+
 
 
 class NvBlockSwComponentTypeBuilder:

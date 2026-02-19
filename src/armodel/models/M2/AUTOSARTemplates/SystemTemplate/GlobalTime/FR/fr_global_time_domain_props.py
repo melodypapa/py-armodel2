@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_global_time_domain_props import (
     AbstractGlobalTimeDomainProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,34 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         super().__init__()
         self.ofs_data_id_list: PositiveInteger = None
         self.sync_data_id_list: PositiveInteger = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FrGlobalTimeDomainProps":
+        """Deserialize XML element to FrGlobalTimeDomainProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FrGlobalTimeDomainProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ofs_data_id_list
+        child = ARObject._find_child_element(element, "OFS-DATA-ID-LIST")
+        if child is not None:
+            ofs_data_id_list_value = child.text
+            obj.ofs_data_id_list = ofs_data_id_list_value
+
+        # Parse sync_data_id_list
+        child = ARObject._find_child_element(element, "SYNC-DATA-ID-LIST")
+        if child is not None:
+            sync_data_id_list_value = child.text
+            obj.sync_data_id_list = sync_data_id_list_value
+
+        return obj
+
 
 
 class FrGlobalTimeDomainPropsBuilder:

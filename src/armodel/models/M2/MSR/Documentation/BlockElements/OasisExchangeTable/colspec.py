@@ -48,6 +48,58 @@ class Colspec(ARObject):
         self.colsep: Optional[TableSeparatorString] = None
         self.colwidth: Optional[String] = None
         self.rowsep: Optional[TableSeparatorString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Colspec":
+        """Deserialize XML element to Colspec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Colspec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse align
+        child = ARObject._find_child_element(element, "ALIGN")
+        if child is not None:
+            align_value = child.text
+            obj.align = align_value
+
+        # Parse colname
+        child = ARObject._find_child_element(element, "COLNAME")
+        if child is not None:
+            colname_value = child.text
+            obj.colname = colname_value
+
+        # Parse colnum
+        child = ARObject._find_child_element(element, "COLNUM")
+        if child is not None:
+            colnum_value = child.text
+            obj.colnum = colnum_value
+
+        # Parse colsep
+        child = ARObject._find_child_element(element, "COLSEP")
+        if child is not None:
+            colsep_value = child.text
+            obj.colsep = colsep_value
+
+        # Parse colwidth
+        child = ARObject._find_child_element(element, "COLWIDTH")
+        if child is not None:
+            colwidth_value = child.text
+            obj.colwidth = colwidth_value
+
+        # Parse rowsep
+        child = ARObject._find_child_element(element, "ROWSEP")
+        if child is not None:
+            rowsep_value = child.text
+            obj.rowsep = rowsep_value
+
+        return obj
+
 
 
 class ColspecBuilder:

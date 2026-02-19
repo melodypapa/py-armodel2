@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_addressable_range_access import (
     DiagnosticMemoryAddressableRangeAccess,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticRequestDownload(DiagnosticMemoryAddressableRangeAccess):
@@ -31,6 +32,28 @@ class DiagnosticRequestDownload(DiagnosticMemoryAddressableRangeAccess):
         """Initialize DiagnosticRequestDownload."""
         super().__init__()
         self.request: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestDownload":
+        """Deserialize XML element to DiagnosticRequestDownload object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRequestDownload object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse request
+        child = ARObject._find_child_element(element, "REQUEST")
+        if child is not None:
+            request_value = child.text
+            obj.request = request_value
+
+        return obj
+
 
 
 class DiagnosticRequestDownloadBuilder:

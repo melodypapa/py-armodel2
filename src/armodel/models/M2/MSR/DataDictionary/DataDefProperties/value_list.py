@@ -35,6 +35,28 @@ class ValueList(ARObject):
         """Initialize ValueList."""
         super().__init__()
         self.v: Optional[Numerical] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ValueList":
+        """Deserialize XML element to ValueList object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ValueList object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse v
+        child = ARObject._find_child_element(element, "V")
+        if child is not None:
+            v_value = child.text
+            obj.v = v_value
+
+        return obj
+
 
 
 class ValueListBuilder:

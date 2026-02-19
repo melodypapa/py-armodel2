@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_map_element import (
@@ -37,6 +38,28 @@ class FMFeatureMap(ARElement):
         """Initialize FMFeatureMap."""
         super().__init__()
         self.mappings: list[FMFeatureMapElement] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFeatureMap":
+        """Deserialize XML element to FMFeatureMap object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFeatureMap object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mappings (list)
+        obj.mappings = []
+        for child in ARObject._find_all_child_elements(element, "MAPPINGS"):
+            mappings_value = ARObject._deserialize_by_tag(child, "FMFeatureMapElement")
+            obj.mappings.append(mappings_value)
+
+        return obj
+
 
 
 class FMFeatureMapBuilder:

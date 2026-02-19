@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition.diagnostic_env_condition_formula_part import (
     DiagnosticEnvConditionFormulaPart,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition import (
     DiagnosticCompareTypeEnum,
 )
@@ -35,6 +36,28 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         """Initialize DiagnosticEnvCompareCondition."""
         super().__init__()
         self.compare_type: Optional[DiagnosticCompareTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEnvCompareCondition":
+        """Deserialize XML element to DiagnosticEnvCompareCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEnvCompareCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse compare_type
+        child = ARObject._find_child_element(element, "COMPARE-TYPE")
+        if child is not None:
+            compare_type_value = child.text
+            obj.compare_type = compare_type_value
+
+        return obj
+
 
 
 class DiagnosticEnvCompareConditionBuilder:

@@ -34,6 +34,34 @@ class DefaultValueElement(ARObject):
         super().__init__()
         self.element_byte_value: Optional[Integer] = None
         self.element_position: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DefaultValueElement":
+        """Deserialize XML element to DefaultValueElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DefaultValueElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse element_byte_value
+        child = ARObject._find_child_element(element, "ELEMENT-BYTE-VALUE")
+        if child is not None:
+            element_byte_value_value = child.text
+            obj.element_byte_value = element_byte_value_value
+
+        # Parse element_position
+        child = ARObject._find_child_element(element, "ELEMENT-POSITION")
+        if child is not None:
+            element_position_value = child.text
+            obj.element_position = element_position_value
+
+        return obj
+
 
 
 class DefaultValueElementBuilder:

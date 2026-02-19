@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SaveConfigurationEntry(LinConfigurationEntry):
@@ -29,6 +30,22 @@ class SaveConfigurationEntry(LinConfigurationEntry):
     def __init__(self) -> None:
         """Initialize SaveConfigurationEntry."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SaveConfigurationEntry":
+        """Deserialize XML element to SaveConfigurationEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SaveConfigurationEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SaveConfigurationEntryBuilder:

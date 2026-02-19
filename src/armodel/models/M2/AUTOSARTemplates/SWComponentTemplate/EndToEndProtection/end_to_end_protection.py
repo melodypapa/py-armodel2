@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EndToEndProtection(Identifiable):
@@ -32,6 +33,28 @@ class EndToEndProtection(Identifiable):
         """Initialize EndToEndProtection."""
         super().__init__()
         self.end_to_ends: list[EndToEndProtection] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EndToEndProtection":
+        """Deserialize XML element to EndToEndProtection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EndToEndProtection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse end_to_ends (list)
+        obj.end_to_ends = []
+        for child in ARObject._find_all_child_elements(element, "END-TO-ENDS"):
+            end_to_ends_value = ARObject._deserialize_by_tag(child, "EndToEndProtection")
+            obj.end_to_ends.append(end_to_ends_value)
+
+        return obj
+
 
 
 class EndToEndProtectionBuilder:

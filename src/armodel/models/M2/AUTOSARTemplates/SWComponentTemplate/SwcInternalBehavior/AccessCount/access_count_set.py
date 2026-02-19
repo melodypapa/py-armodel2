@@ -37,6 +37,34 @@ class AccessCountSet(ARObject):
         super().__init__()
         self.access_counts: list[AccessCount] = []
         self.count_profile: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AccessCountSet":
+        """Deserialize XML element to AccessCountSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AccessCountSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse access_counts (list)
+        obj.access_counts = []
+        for child in ARObject._find_all_child_elements(element, "ACCESS-COUNTS"):
+            access_counts_value = ARObject._deserialize_by_tag(child, "AccessCount")
+            obj.access_counts.append(access_counts_value)
+
+        # Parse count_profile
+        child = ARObject._find_child_element(element, "COUNT-PROFILE")
+        if child is not None:
+            count_profile_value = child.text
+            obj.count_profile = count_profile_value
+
+        return obj
+
 
 
 class AccessCountSetBuilder:

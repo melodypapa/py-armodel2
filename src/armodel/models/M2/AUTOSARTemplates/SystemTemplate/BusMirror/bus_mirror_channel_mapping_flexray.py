@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
     BusMirrorChannelMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -34,6 +35,28 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
         """Initialize BusMirrorChannelMappingFlexray."""
         super().__init__()
         self.transmission: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingFlexray":
+        """Deserialize XML element to BusMirrorChannelMappingFlexray object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorChannelMappingFlexray object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse transmission
+        child = ARObject._find_child_element(element, "TRANSMISSION")
+        if child is not None:
+            transmission_value = child.text
+            obj.transmission = transmission_value
+
+        return obj
+
 
 
 class BusMirrorChannelMappingFlexrayBuilder:

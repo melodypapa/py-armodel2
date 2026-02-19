@@ -48,6 +48,40 @@ class Sdg(ARObject):
         self.gid: NameToken = None
         self.sdg_caption: Optional[SdgCaption] = None
         self.sdg_contents: Optional[SdgContents] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Sdg":
+        """Deserialize XML element to Sdg object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Sdg object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse gid
+        child = ARObject._find_child_element(element, "GID")
+        if child is not None:
+            gid_value = child.text
+            obj.gid = gid_value
+
+        # Parse sdg_caption
+        child = ARObject._find_child_element(element, "SDG-CAPTION")
+        if child is not None:
+            sdg_caption_value = ARObject._deserialize_by_tag(child, "SdgCaption")
+            obj.sdg_caption = sdg_caption_value
+
+        # Parse sdg_contents
+        child = ARObject._find_child_element(element, "SDG-CONTENTS")
+        if child is not None:
+            sdg_contents_value = ARObject._deserialize_by_tag(child, "SdgContents")
+            obj.sdg_contents = sdg_contents_value
+
+        return obj
+
 
 
 class SdgBuilder:

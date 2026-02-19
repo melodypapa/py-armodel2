@@ -46,6 +46,46 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
         self.context_datas: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target_data_ref: ARRef = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInPortInterfaceInstanceRef":
+        """Deserialize XML element to DataPrototypeInPortInterfaceInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeInPortInterfaceInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse abstract_base
+        child = ARObject._find_child_element(element, "ABSTRACT-BASE")
+        if child is not None:
+            abstract_base_value = ARObject._deserialize_by_tag(child, "PortInterface")
+            obj.abstract_base = abstract_base_value
+
+        # Parse context_datas (list)
+        obj.context_datas = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-DATAS"):
+            context_datas_value = child.text
+            obj.context_datas.append(context_datas_value)
+
+        # Parse root_data_ref
+        child = ARObject._find_child_element(element, "ROOT-DATA")
+        if child is not None:
+            root_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.root_data_ref = root_data_ref_value
+
+        # Parse target_data_ref
+        child = ARObject._find_child_element(element, "TARGET-DATA")
+        if child is not None:
+            target_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.target_data_ref = target_data_ref_value
+
+        return obj
+
 
 
 class DataPrototypeInPortInterfaceInstanceRefBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -34,6 +35,28 @@ class EcuPartition(Identifiable):
         """Initialize EcuPartition."""
         super().__init__()
         self.exec_in_user: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcuPartition":
+        """Deserialize XML element to EcuPartition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcuPartition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse exec_in_user
+        child = ARObject._find_child_element(element, "EXEC-IN-USER")
+        if child is not None:
+            exec_in_user_value = child.text
+            obj.exec_in_user = exec_in_user_value
+
+        return obj
+
 
 
 class EcuPartitionBuilder:

@@ -46,6 +46,40 @@ class ChapterModel(ARObject):
         self.chapter: Optional[ChapterOrMsrQuery] = None
         self.chapter_content: Optional[ChapterContent] = None
         self.topic1: Optional[TopicOrMsrQuery] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ChapterModel":
+        """Deserialize XML element to ChapterModel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ChapterModel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapter
+        child = ARObject._find_child_element(element, "CHAPTER")
+        if child is not None:
+            chapter_value = ARObject._deserialize_by_tag(child, "ChapterOrMsrQuery")
+            obj.chapter = chapter_value
+
+        # Parse chapter_content
+        child = ARObject._find_child_element(element, "CHAPTER-CONTENT")
+        if child is not None:
+            chapter_content_value = ARObject._deserialize_by_tag(child, "ChapterContent")
+            obj.chapter_content = chapter_content_value
+
+        # Parse topic1
+        child = ARObject._find_child_element(element, "TOPIC1")
+        if child is not None:
+            topic1_value = ARObject._deserialize_by_tag(child, "TopicOrMsrQuery")
+            obj.topic1 = topic1_value
+
+        return obj
+
 
 
 class ChapterModelBuilder:

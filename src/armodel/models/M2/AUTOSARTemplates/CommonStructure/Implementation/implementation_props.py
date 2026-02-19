@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
 )
@@ -37,6 +38,28 @@ class ImplementationProps(Referrable, ABC):
         """Initialize ImplementationProps."""
         super().__init__()
         self.symbol: Optional[CIdentifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationProps":
+        """Deserialize XML element to ImplementationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse symbol
+        child = ARObject._find_child_element(element, "SYMBOL")
+        if child is not None:
+            symbol_value = child.text
+            obj.symbol = symbol_value
+
+        return obj
+
 
 
 class ImplementationPropsBuilder:

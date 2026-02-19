@@ -34,6 +34,28 @@ class MultilanguageLongName(ARObject):
         """Initialize MultilanguageLongName."""
         super().__init__()
         self.l4: LLongName = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultilanguageLongName":
+        """Deserialize XML element to MultilanguageLongName object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultilanguageLongName object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse l4
+        child = ARObject._find_child_element(element, "L4")
+        if child is not None:
+            l4_value = ARObject._deserialize_by_tag(child, "LLongName")
+            obj.l4 = l4_value
+
+        return obj
+
 
 
 class MultilanguageLongNameBuilder:

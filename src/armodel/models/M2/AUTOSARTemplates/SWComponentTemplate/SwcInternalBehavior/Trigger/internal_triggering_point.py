@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
     SwImplPolicyEnum,
 )
@@ -35,6 +36,28 @@ class InternalTriggeringPoint(AbstractAccessPoint):
         """Initialize InternalTriggeringPoint."""
         super().__init__()
         self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InternalTriggeringPoint":
+        """Deserialize XML element to InternalTriggeringPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InternalTriggeringPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_impl_policy_enum
+        child = ARObject._find_child_element(element, "SW-IMPL-POLICY-ENUM")
+        if child is not None:
+            sw_impl_policy_enum_value = child.text
+            obj.sw_impl_policy_enum = sw_impl_policy_enum_value
+
+        return obj
+
 
 
 class InternalTriggeringPointBuilder:

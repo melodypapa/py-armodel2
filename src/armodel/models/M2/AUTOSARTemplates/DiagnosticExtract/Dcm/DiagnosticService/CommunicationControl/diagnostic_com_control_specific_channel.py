@@ -39,6 +39,40 @@ class DiagnosticComControlSpecificChannel(ARObject):
         self.specific_channel: Optional[CommunicationCluster] = None
         self.specific_physical: Optional[Any] = None
         self.subnet_number: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSpecificChannel":
+        """Deserialize XML element to DiagnosticComControlSpecificChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticComControlSpecificChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse specific_channel
+        child = ARObject._find_child_element(element, "SPECIFIC-CHANNEL")
+        if child is not None:
+            specific_channel_value = ARObject._deserialize_by_tag(child, "CommunicationCluster")
+            obj.specific_channel = specific_channel_value
+
+        # Parse specific_physical
+        child = ARObject._find_child_element(element, "SPECIFIC-PHYSICAL")
+        if child is not None:
+            specific_physical_value = child.text
+            obj.specific_physical = specific_physical_value
+
+        # Parse subnet_number
+        child = ARObject._find_child_element(element, "SUBNET-NUMBER")
+        if child is not None:
+            subnet_number_value = child.text
+            obj.subnet_number = subnet_number_value
+
+        return obj
+
 
 
 class DiagnosticComControlSpecificChannelBuilder:

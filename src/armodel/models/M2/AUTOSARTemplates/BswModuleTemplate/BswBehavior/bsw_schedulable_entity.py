@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswSchedulableEntity(BswModuleEntity):
@@ -30,6 +31,22 @@ class BswSchedulableEntity(BswModuleEntity):
     def __init__(self) -> None:
         """Initialize BswSchedulableEntity."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswSchedulableEntity":
+        """Deserialize XML element to BswSchedulableEntity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswSchedulableEntity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BswSchedulableEntityBuilder:

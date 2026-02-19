@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr_rule import (
     DataConstrRule,
 )
@@ -37,6 +38,28 @@ class DataConstr(ARElement):
         """Initialize DataConstr."""
         super().__init__()
         self.data_constr_rules: list[DataConstrRule] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataConstr":
+        """Deserialize XML element to DataConstr object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataConstr object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_constr_rules (list)
+        obj.data_constr_rules = []
+        for child in ARObject._find_all_child_elements(element, "DATA-CONSTR-RULES"):
+            data_constr_rules_value = ARObject._deserialize_by_tag(child, "DataConstrRule")
+            obj.data_constr_rules.append(data_constr_rules_value)
+
+        return obj
+
 
 
 class DataConstrBuilder:

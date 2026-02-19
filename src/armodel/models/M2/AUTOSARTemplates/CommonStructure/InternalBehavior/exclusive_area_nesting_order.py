@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area import (
     ExclusiveArea,
 )
@@ -35,6 +36,28 @@ class ExclusiveAreaNestingOrder(Referrable):
         """Initialize ExclusiveAreaNestingOrder."""
         super().__init__()
         self.exclusive_areas: list[ExclusiveArea] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ExclusiveAreaNestingOrder":
+        """Deserialize XML element to ExclusiveAreaNestingOrder object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ExclusiveAreaNestingOrder object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse exclusive_areas (list)
+        obj.exclusive_areas = []
+        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREAS"):
+            exclusive_areas_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
+            obj.exclusive_areas.append(exclusive_areas_value)
+
+        return obj
+
 
 
 class ExclusiveAreaNestingOrderBuilder:

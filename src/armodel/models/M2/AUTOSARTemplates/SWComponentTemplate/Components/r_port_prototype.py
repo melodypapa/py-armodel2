@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,6 +44,34 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         super().__init__()
         self.may_be: Optional[Boolean] = None
         self.required: Optional[PortInterface] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RPortPrototype":
+        """Deserialize XML element to RPortPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RPortPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse may_be
+        child = ARObject._find_child_element(element, "MAY-BE")
+        if child is not None:
+            may_be_value = child.text
+            obj.may_be = may_be_value
+
+        # Parse required
+        child = ARObject._find_child_element(element, "REQUIRED")
+        if child is not None:
+            required_value = ARObject._deserialize_by_tag(child, "PortInterface")
+            obj.required = required_value
+
+        return obj
+
 
 
 class RPortPrototypeBuilder:

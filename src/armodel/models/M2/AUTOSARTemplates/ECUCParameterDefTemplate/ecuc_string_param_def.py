@@ -27,6 +27,22 @@ class EcucStringParamDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucStringParamDef."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucStringParamDef":
+        """Deserialize XML element to EcucStringParamDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucStringParamDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class EcucStringParamDefBuilder:

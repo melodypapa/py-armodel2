@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -38,6 +39,28 @@ class NvDataInterface(DataInterface):
         """Initialize NvDataInterface."""
         super().__init__()
         self.nv_data_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NvDataInterface":
+        """Deserialize XML element to NvDataInterface object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NvDataInterface object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse nv_data_refs (list)
+        obj.nv_data_refs = []
+        for child in ARObject._find_all_child_elements(element, "NV-DATAS"):
+            nv_data_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.nv_data_refs.append(nv_data_refs_value)
+
+        return obj
+
 
 
 class NvDataInterfaceBuilder:

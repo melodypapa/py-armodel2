@@ -41,6 +41,52 @@ class CouplingPortRatePolicy(ARObject):
         self.priority: Optional[PositiveInteger] = None
         self.time_interval: Optional[TimeValue] = None
         self.v_lans: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CouplingPortRatePolicy":
+        """Deserialize XML element to CouplingPortRatePolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CouplingPortRatePolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_length
+        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        if child is not None:
+            data_length_value = child.text
+            obj.data_length = data_length_value
+
+        # Parse policy_action
+        child = ARObject._find_child_element(element, "POLICY-ACTION")
+        if child is not None:
+            policy_action_value = ARObject._deserialize_by_tag(child, "CouplingPortRatePolicy")
+            obj.policy_action = policy_action_value
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        # Parse time_interval
+        child = ARObject._find_child_element(element, "TIME-INTERVAL")
+        if child is not None:
+            time_interval_value = child.text
+            obj.time_interval = time_interval_value
+
+        # Parse v_lans (list)
+        obj.v_lans = []
+        for child in ARObject._find_all_child_elements(element, "V-LANS"):
+            v_lans_value = child.text
+            obj.v_lans.append(v_lans_value)
+
+        return obj
+
 
 
 class CouplingPortRatePolicyBuilder:

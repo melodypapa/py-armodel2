@@ -37,6 +37,34 @@ class BusMirrorChannel(ARObject):
         super().__init__()
         self.bus_mirror: Optional[PositiveInteger] = None
         self.channel: Optional[PhysicalChannel] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorChannel":
+        """Deserialize XML element to BusMirrorChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bus_mirror
+        child = ARObject._find_child_element(element, "BUS-MIRROR")
+        if child is not None:
+            bus_mirror_value = child.text
+            obj.bus_mirror = bus_mirror_value
+
+        # Parse channel
+        child = ARObject._find_child_element(element, "CHANNEL")
+        if child is not None:
+            channel_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
+            obj.channel = channel_value
+
+        return obj
+
 
 
 class BusMirrorChannelBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node import (
     NmNode,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
     J1939NmAddressConfigurationCapabilityEnum,
 )
@@ -40,6 +41,34 @@ class J1939NmNode(NmNode):
         super().__init__()
         self.address: Optional[J1939NmAddressConfigurationCapabilityEnum] = None
         self.node_name: Optional[J1939NodeName] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939NmNode":
+        """Deserialize XML element to J1939NmNode object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939NmNode object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse address
+        child = ARObject._find_child_element(element, "ADDRESS")
+        if child is not None:
+            address_value = child.text
+            obj.address = address_value
+
+        # Parse node_name
+        child = ARObject._find_child_element(element, "NODE-NAME")
+        if child is not None:
+            node_name_value = ARObject._deserialize_by_tag(child, "J1939NodeName")
+            obj.node_name = node_name_value
+
+        return obj
+
 
 
 class J1939NmNodeBuilder:

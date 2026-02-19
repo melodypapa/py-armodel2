@@ -36,6 +36,40 @@ class BusMirrorCanIdRangeMapping(ARObject):
         self.destination_base: Optional[PositiveInteger] = None
         self.source_can_id_code: Optional[PositiveInteger] = None
         self.source_can_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorCanIdRangeMapping":
+        """Deserialize XML element to BusMirrorCanIdRangeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorCanIdRangeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_base
+        child = ARObject._find_child_element(element, "DESTINATION-BASE")
+        if child is not None:
+            destination_base_value = child.text
+            obj.destination_base = destination_base_value
+
+        # Parse source_can_id_code
+        child = ARObject._find_child_element(element, "SOURCE-CAN-ID-CODE")
+        if child is not None:
+            source_can_id_code_value = child.text
+            obj.source_can_id_code = source_can_id_code_value
+
+        # Parse source_can_id
+        child = ARObject._find_child_element(element, "SOURCE-CAN-ID")
+        if child is not None:
+            source_can_id_value = child.text
+            obj.source_can_id = source_can_id_value
+
+        return obj
+
 
 
 class BusMirrorCanIdRangeMappingBuilder:

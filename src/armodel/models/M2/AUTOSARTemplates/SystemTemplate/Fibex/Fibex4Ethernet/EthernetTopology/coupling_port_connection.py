@@ -43,6 +43,52 @@ class CouplingPortConnection(ARObject):
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_transmit: Optional[PositiveInteger] = None
         self.second_port: Optional[CouplingPort] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CouplingPortConnection":
+        """Deserialize XML element to CouplingPortConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CouplingPortConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_port
+        child = ARObject._find_child_element(element, "FIRST-PORT")
+        if child is not None:
+            first_port_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.first_port = first_port_value
+
+        # Parse node_ports (list)
+        obj.node_ports = []
+        for child in ARObject._find_all_child_elements(element, "NODE-PORTS"):
+            node_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.node_ports.append(node_ports_value)
+
+        # Parse plca_local_node
+        child = ARObject._find_child_element(element, "PLCA-LOCAL-NODE")
+        if child is not None:
+            plca_local_node_value = child.text
+            obj.plca_local_node = plca_local_node_value
+
+        # Parse plca_transmit
+        child = ARObject._find_child_element(element, "PLCA-TRANSMIT")
+        if child is not None:
+            plca_transmit_value = child.text
+            obj.plca_transmit = plca_transmit_value
+
+        # Parse second_port
+        child = ARObject._find_child_element(element, "SECOND-PORT")
+        if child is not None:
+            second_port_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.second_port = second_port_value
+
+        return obj
+
 
 
 class CouplingPortConnectionBuilder:

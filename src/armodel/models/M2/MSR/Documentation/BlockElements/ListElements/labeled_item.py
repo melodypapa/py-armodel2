@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -47,6 +48,40 @@ class LabeledItem(Paginateable):
         self.help_entry: Optional[String] = None
         self.item_contents: Optional[DocumentationBlock] = None
         self.item_label: MultiLanguageOverviewParagraph = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LabeledItem":
+        """Deserialize XML element to LabeledItem object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LabeledItem object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse help_entry
+        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        if child is not None:
+            help_entry_value = child.text
+            obj.help_entry = help_entry_value
+
+        # Parse item_contents
+        child = ARObject._find_child_element(element, "ITEM-CONTENTS")
+        if child is not None:
+            item_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.item_contents = item_contents_value
+
+        # Parse item_label
+        child = ARObject._find_child_element(element, "ITEM-LABEL")
+        if child is not None:
+            item_label_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.item_label = item_label_value
+
+        return obj
+
 
 
 class LabeledItemBuilder:

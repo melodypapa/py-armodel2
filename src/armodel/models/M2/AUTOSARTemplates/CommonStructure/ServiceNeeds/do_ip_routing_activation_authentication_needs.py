@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.do_ip_service_needs import (
     DoIpServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     PositiveInteger,
@@ -37,6 +38,34 @@ class DoIpRoutingActivationAuthenticationNeeds(DoIpServiceNeeds):
         super().__init__()
         self.data_length: Optional[PositiveInteger] = None
         self.routing: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpRoutingActivationAuthenticationNeeds":
+        """Deserialize XML element to DoIpRoutingActivationAuthenticationNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpRoutingActivationAuthenticationNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_length
+        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        if child is not None:
+            data_length_value = child.text
+            obj.data_length = data_length_value
+
+        # Parse routing
+        child = ARObject._find_child_element(element, "ROUTING")
+        if child is not None:
+            routing_value = child.text
+            obj.routing = routing_value
+
+        return obj
+
 
 
 class DoIpRoutingActivationAuthenticationNeedsBuilder:

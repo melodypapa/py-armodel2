@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,6 +42,40 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         self.max_periodic_did: Optional[PositiveInteger] = None
         self.periodic_rates: list[DiagnosticPeriodicRate] = []
         self.scheduler_max: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadDataByPeriodicIDClass":
+        """Deserialize XML element to DiagnosticReadDataByPeriodicIDClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticReadDataByPeriodicIDClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_periodic_did
+        child = ARObject._find_child_element(element, "MAX-PERIODIC-DID")
+        if child is not None:
+            max_periodic_did_value = child.text
+            obj.max_periodic_did = max_periodic_did_value
+
+        # Parse periodic_rates (list)
+        obj.periodic_rates = []
+        for child in ARObject._find_all_child_elements(element, "PERIODIC-RATES"):
+            periodic_rates_value = ARObject._deserialize_by_tag(child, "DiagnosticPeriodicRate")
+            obj.periodic_rates.append(periodic_rates_value)
+
+        # Parse scheduler_max
+        child = ARObject._find_child_element(element, "SCHEDULER-MAX")
+        if child is not None:
+            scheduler_max_value = child.text
+            obj.scheduler_max = scheduler_max_value
+
+        return obj
+
 
 
 class DiagnosticReadDataByPeriodicIDClassBuilder:

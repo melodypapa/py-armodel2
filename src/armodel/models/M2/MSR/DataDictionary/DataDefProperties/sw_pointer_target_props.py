@@ -48,6 +48,40 @@ class SwPointerTargetProps(ARObject):
         self.function_pointer: Optional[BswModuleEntry] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.target_category: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwPointerTargetProps":
+        """Deserialize XML element to SwPointerTargetProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwPointerTargetProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse function_pointer
+        child = ARObject._find_child_element(element, "FUNCTION-POINTER")
+        if child is not None:
+            function_pointer_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.function_pointer = function_pointer_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        # Parse target_category
+        child = ARObject._find_child_element(element, "TARGET-CATEGORY")
+        if child is not None:
+            target_category_value = child.text
+            obj.target_category = target_category_value
+
+        return obj
+
 
 
 class SwPointerTargetPropsBuilder:

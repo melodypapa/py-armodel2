@@ -39,6 +39,34 @@ class ModeAccessPoint(ARObject):
         super().__init__()
         self.ident: Optional[ModeAccessPointIdent] = None
         self.mode_group_instance_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeAccessPoint":
+        """Deserialize XML element to ModeAccessPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeAccessPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ident
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_value = ARObject._deserialize_by_tag(child, "ModeAccessPointIdent")
+            obj.ident = ident_value
+
+        # Parse mode_group_instance_ref
+        child = ARObject._find_child_element(element, "MODE-GROUP-INSTANCE-REF")
+        if child is not None:
+            mode_group_instance_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.mode_group_instance_ref = mode_group_instance_ref_value
+
+        return obj
+
 
 
 class ModeAccessPointBuilder:

@@ -35,6 +35,34 @@ class ShortNameFragment(ARObject):
         super().__init__()
         self.fragment: Identifier = None
         self.role: String = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ShortNameFragment":
+        """Deserialize XML element to ShortNameFragment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ShortNameFragment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse fragment
+        child = ARObject._find_child_element(element, "FRAGMENT")
+        if child is not None:
+            fragment_value = child.text
+            obj.fragment = fragment_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        return obj
+
 
 
 class ShortNameFragmentBuilder:

@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
@@ -38,6 +39,28 @@ class SwConnector(Identifiable, ABC):
         """Initialize SwConnector."""
         super().__init__()
         self.mapping_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwConnector":
+        """Deserialize XML element to SwConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mapping_ref
+        child = ARObject._find_child_element(element, "MAPPING")
+        if child is not None:
+            mapping_ref_value = ARObject._deserialize_by_tag(child, "PortInterfaceMapping")
+            obj.mapping_ref = mapping_ref_value
+
+        return obj
+
 
 
 class SwConnectorBuilder:

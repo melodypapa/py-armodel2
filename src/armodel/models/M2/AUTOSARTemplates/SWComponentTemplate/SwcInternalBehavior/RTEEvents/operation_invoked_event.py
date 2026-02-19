@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -35,6 +36,28 @@ class OperationInvokedEvent(RTEEvent):
         """Initialize OperationInvokedEvent."""
         super().__init__()
         self.operation_instance_ref: Optional[ClientServerOperation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "OperationInvokedEvent":
+        """Deserialize XML element to OperationInvokedEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized OperationInvokedEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse operation_instance_ref
+        child = ARObject._find_child_element(element, "OPERATION-INSTANCE-REF")
+        if child is not None:
+            operation_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation_instance_ref = operation_instance_ref_value
+
+        return obj
+
 
 
 class OperationInvokedEventBuilder:

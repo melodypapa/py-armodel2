@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
@@ -35,6 +36,28 @@ class ModeInterfaceMapping(PortInterfaceMapping):
         """Initialize ModeInterfaceMapping."""
         super().__init__()
         self.mode_mapping_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeInterfaceMapping":
+        """Deserialize XML element to ModeInterfaceMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeInterfaceMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mode_mapping_ref
+        child = ARObject._find_child_element(element, "MODE-MAPPING")
+        if child is not None:
+            mode_mapping_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.mode_mapping_ref = mode_mapping_ref_value
+
+        return obj
+
 
 
 class ModeInterfaceMappingBuilder:

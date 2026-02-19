@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucDestinationUriDef(Identifiable):
@@ -31,6 +32,28 @@ class EcucDestinationUriDef(Identifiable):
         """Initialize EcucDestinationUriDef."""
         super().__init__()
         self.destination_uri: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucDestinationUriDef":
+        """Deserialize XML element to EcucDestinationUriDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucDestinationUriDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_uri
+        child = ARObject._find_child_element(element, "DESTINATION-URI")
+        if child is not None:
+            destination_uri_value = child.text
+            obj.destination_uri = destination_uri_value
+
+        return obj
+
 
 
 class EcucDestinationUriDefBuilder:

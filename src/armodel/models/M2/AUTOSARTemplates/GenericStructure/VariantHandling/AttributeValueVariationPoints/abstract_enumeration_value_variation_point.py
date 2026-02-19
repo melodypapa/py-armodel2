@@ -37,6 +37,34 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         super().__init__()
         self.base: Optional[Identifier] = None
         self.enum_table_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractEnumerationValueVariationPoint":
+        """Deserialize XML element to AbstractEnumerationValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractEnumerationValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = child.text
+            obj.base = base_value
+
+        # Parse enum_table_ref
+        child = ARObject._find_child_element(element, "ENUM-TABLE")
+        if child is not None:
+            enum_table_ref_value = child.text
+            obj.enum_table_ref = enum_table_ref_value
+
+        return obj
+
 
 
 class AbstractEnumerationValueVariationPointBuilder:

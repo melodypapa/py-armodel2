@@ -37,6 +37,34 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         super().__init__()
         self.dds_topic: Optional[DdsCpTopic] = None
         self.i_signal: Optional[ISignal] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpISignalToDdsTopicMapping":
+        """Deserialize XML element to DdsCpISignalToDdsTopicMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpISignalToDdsTopicMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dds_topic
+        child = ARObject._find_child_element(element, "DDS-TOPIC")
+        if child is not None:
+            dds_topic_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
+            obj.dds_topic = dds_topic_value
+
+        # Parse i_signal
+        child = ARObject._find_child_element(element, "I-SIGNAL")
+        if child is not None:
+            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
+            obj.i_signal = i_signal_value
+
+        return obj
+
 
 
 class DdsCpISignalToDdsTopicMappingBuilder:

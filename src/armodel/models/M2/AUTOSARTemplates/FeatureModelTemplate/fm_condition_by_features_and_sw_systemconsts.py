@@ -27,6 +27,22 @@ class FMConditionByFeaturesAndSwSystemconsts(ARObject):
     def __init__(self) -> None:
         """Initialize FMConditionByFeaturesAndSwSystemconsts."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMConditionByFeaturesAndSwSystemconsts":
+        """Deserialize XML element to FMConditionByFeaturesAndSwSystemconsts object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMConditionByFeaturesAndSwSystemconsts object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class FMConditionByFeaturesAndSwSystemconstsBuilder:

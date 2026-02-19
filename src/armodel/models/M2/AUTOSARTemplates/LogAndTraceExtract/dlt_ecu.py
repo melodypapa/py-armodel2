@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -40,6 +41,34 @@ class DltEcu(ARElement):
         super().__init__()
         self.applications: list[DltApplication] = []
         self.ecu_id: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DltEcu":
+        """Deserialize XML element to DltEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DltEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse applications (list)
+        obj.applications = []
+        for child in ARObject._find_all_child_elements(element, "APPLICATIONS"):
+            applications_value = ARObject._deserialize_by_tag(child, "DltApplication")
+            obj.applications.append(applications_value)
+
+        # Parse ecu_id
+        child = ARObject._find_child_element(element, "ECU-ID")
+        if child is not None:
+            ecu_id_value = child.text
+            obj.ecu_id = ecu_id_value
+
+        return obj
+
 
 
 class DltEcuBuilder:

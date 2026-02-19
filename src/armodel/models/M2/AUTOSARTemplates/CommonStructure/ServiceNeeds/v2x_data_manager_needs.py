@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class V2xDataManagerNeeds(ServiceNeeds):
@@ -29,6 +30,22 @@ class V2xDataManagerNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize V2xDataManagerNeeds."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "V2xDataManagerNeeds":
+        """Deserialize XML element to V2xDataManagerNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized V2xDataManagerNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class V2xDataManagerNeedsBuilder:

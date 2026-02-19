@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
     PncGatewayTypeEnum,
 )
@@ -53,6 +54,58 @@ class CommunicationConnector(Identifiable, ABC):
         self.ecu_comm_ports: list[CommConnectorPort] = []
         self.pnc_filter_arrays: list[PositiveInteger] = []
         self.pnc_gateway_type_enum: Optional[PncGatewayTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommunicationConnector":
+        """Deserialize XML element to CommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse comm_controller
+        child = ARObject._find_child_element(element, "COMM-CONTROLLER")
+        if child is not None:
+            comm_controller_value = child.text
+            obj.comm_controller = comm_controller_value
+
+        # Parse create_ecu
+        child = ARObject._find_child_element(element, "CREATE-ECU")
+        if child is not None:
+            create_ecu_value = child.text
+            obj.create_ecu = create_ecu_value
+
+        # Parse dynamic_pnc_to
+        child = ARObject._find_child_element(element, "DYNAMIC-PNC-TO")
+        if child is not None:
+            dynamic_pnc_to_value = child.text
+            obj.dynamic_pnc_to = dynamic_pnc_to_value
+
+        # Parse ecu_comm_ports (list)
+        obj.ecu_comm_ports = []
+        for child in ARObject._find_all_child_elements(element, "ECU-COMM-PORTS"):
+            ecu_comm_ports_value = ARObject._deserialize_by_tag(child, "CommConnectorPort")
+            obj.ecu_comm_ports.append(ecu_comm_ports_value)
+
+        # Parse pnc_filter_arrays (list)
+        obj.pnc_filter_arrays = []
+        for child in ARObject._find_all_child_elements(element, "PNC-FILTER-ARRAYS"):
+            pnc_filter_arrays_value = child.text
+            obj.pnc_filter_arrays.append(pnc_filter_arrays_value)
+
+        # Parse pnc_gateway_type_enum
+        child = ARObject._find_child_element(element, "PNC-GATEWAY-TYPE-ENUM")
+        if child is not None:
+            pnc_gateway_type_enum_value = child.text
+            obj.pnc_gateway_type_enum = pnc_gateway_type_enum_value
+
+        return obj
+
 
 
 class CommunicationConnectorBuilder:

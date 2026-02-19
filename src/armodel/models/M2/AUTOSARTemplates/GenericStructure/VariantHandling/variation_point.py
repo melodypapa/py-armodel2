@@ -42,6 +42,34 @@ class VariationPoint(ARObject):
         super().__init__()
         self.blueprint: Optional[DocumentationBlock] = None
         self.sw_syscond: Optional[ConditionByFormula] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariationPoint":
+        """Deserialize XML element to VariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint
+        child = ARObject._find_child_element(element, "BLUEPRINT")
+        if child is not None:
+            blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.blueprint = blueprint_value
+
+        # Parse sw_syscond
+        child = ARObject._find_child_element(element, "SW-SYSCOND")
+        if child is not None:
+            sw_syscond_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
+            obj.sw_syscond = sw_syscond_value
+
+        return obj
+
 
 
 class VariationPointBuilder:

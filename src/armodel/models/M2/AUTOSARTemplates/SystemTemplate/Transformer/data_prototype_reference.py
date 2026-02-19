@@ -33,6 +33,28 @@ class DataPrototypeReference(ARObject, ABC):
         """Initialize DataPrototypeReference."""
         super().__init__()
         self.tag_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeReference":
+        """Deserialize XML element to DataPrototypeReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tag_id
+        child = ARObject._find_child_element(element, "TAG-ID")
+        if child is not None:
+            tag_id_value = child.text
+            obj.tag_id = tag_id_value
+
+        return obj
+
 
 
 class DataPrototypeReferenceBuilder:

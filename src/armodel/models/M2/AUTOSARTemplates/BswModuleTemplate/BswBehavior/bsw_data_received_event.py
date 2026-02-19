@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -35,6 +36,28 @@ class BswDataReceivedEvent(BswScheduleEvent):
         """Initialize BswDataReceivedEvent."""
         super().__init__()
         self.data_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswDataReceivedEvent":
+        """Deserialize XML element to BswDataReceivedEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswDataReceivedEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_ref
+        child = ARObject._find_child_element(element, "DATA")
+        if child is not None:
+            data_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_ref = data_ref_value
+
+        return obj
+
 
 
 class BswDataReceivedEventBuilder:

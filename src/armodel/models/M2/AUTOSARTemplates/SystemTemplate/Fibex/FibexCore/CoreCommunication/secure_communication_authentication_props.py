@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         """Initialize SecureCommunicationAuthenticationProps."""
         super().__init__()
         self.auth_info_tx: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecureCommunicationAuthenticationProps":
+        """Deserialize XML element to SecureCommunicationAuthenticationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecureCommunicationAuthenticationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse auth_info_tx
+        child = ARObject._find_child_element(element, "AUTH-INFO-TX")
+        if child is not None:
+            auth_info_tx_value = child.text
+            obj.auth_info_tx = auth_info_tx_value
+
+        return obj
+
 
 
 class SecureCommunicationAuthenticationPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.ExecutionTime.execution_time import (
     ExecutionTime,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -39,6 +40,34 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         super().__init__()
         self.additional: Optional[String] = None
         self.estimated_execution_time: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoughEstimateOfExecutionTime":
+        """Deserialize XML element to RoughEstimateOfExecutionTime object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoughEstimateOfExecutionTime object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse additional
+        child = ARObject._find_child_element(element, "ADDITIONAL")
+        if child is not None:
+            additional_value = child.text
+            obj.additional = additional_value
+
+        # Parse estimated_execution_time
+        child = ARObject._find_child_element(element, "ESTIMATED-EXECUTION-TIME")
+        if child is not None:
+            estimated_execution_time_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.estimated_execution_time = estimated_execution_time_value
+
+        return obj
+
 
 
 class RoughEstimateOfExecutionTimeBuilder:

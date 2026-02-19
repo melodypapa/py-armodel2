@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
@@ -36,6 +37,28 @@ class AbstractEvent(Identifiable, ABC):
         """Initialize AbstractEvent."""
         super().__init__()
         self.activation: Optional[ExecutableEntity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractEvent":
+        """Deserialize XML element to AbstractEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse activation
+        child = ARObject._find_child_element(element, "ACTIVATION")
+        if child is not None:
+            activation_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
+            obj.activation = activation_value
+
+        return obj
+
 
 
 class AbstractEventBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -47,6 +48,46 @@ class LinCommunicationConnector(CommunicationConnector):
         self.lin_configurable_frames: list[LinConfigurableFrame] = []
         self.lin_ordereds: list[LinOrderedConfigurableFrame] = []
         self.schedule: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinCommunicationConnector":
+        """Deserialize XML element to LinCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinCommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse initial_nad
+        child = ARObject._find_child_element(element, "INITIAL-NAD")
+        if child is not None:
+            initial_nad_value = child.text
+            obj.initial_nad = initial_nad_value
+
+        # Parse lin_configurable_frames (list)
+        obj.lin_configurable_frames = []
+        for child in ARObject._find_all_child_elements(element, "LIN-CONFIGURABLE-FRAMES"):
+            lin_configurable_frames_value = ARObject._deserialize_by_tag(child, "LinConfigurableFrame")
+            obj.lin_configurable_frames.append(lin_configurable_frames_value)
+
+        # Parse lin_ordereds (list)
+        obj.lin_ordereds = []
+        for child in ARObject._find_all_child_elements(element, "LIN-ORDEREDS"):
+            lin_ordereds_value = ARObject._deserialize_by_tag(child, "LinOrderedConfigurableFrame")
+            obj.lin_ordereds.append(lin_ordereds_value)
+
+        # Parse schedule
+        child = ARObject._find_child_element(element, "SCHEDULE")
+        if child is not None:
+            schedule_value = child.text
+            obj.schedule = schedule_value
+
+        return obj
+
 
 
 class LinCommunicationConnectorBuilder:

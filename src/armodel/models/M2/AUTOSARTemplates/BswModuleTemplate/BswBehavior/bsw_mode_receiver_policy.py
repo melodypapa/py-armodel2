@@ -40,6 +40,40 @@ class BswModeReceiverPolicy(ARObject):
         self.enhanced_mode: Optional[Boolean] = None
         self.required_mode_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswModeReceiverPolicy":
+        """Deserialize XML element to BswModeReceiverPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswModeReceiverPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse enhanced_mode
+        child = ARObject._find_child_element(element, "ENHANCED-MODE")
+        if child is not None:
+            enhanced_mode_value = child.text
+            obj.enhanced_mode = enhanced_mode_value
+
+        # Parse required_mode_ref
+        child = ARObject._find_child_element(element, "REQUIRED-MODE")
+        if child is not None:
+            required_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.required_mode_ref = required_mode_ref_value
+
+        # Parse supports
+        child = ARObject._find_child_element(element, "SUPPORTS")
+        if child is not None:
+            supports_value = child.text
+            obj.supports = supports_value
+
+        return obj
+
 
 
 class BswModeReceiverPolicyBuilder:

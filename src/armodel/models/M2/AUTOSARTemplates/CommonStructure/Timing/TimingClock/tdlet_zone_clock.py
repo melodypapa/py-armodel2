@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -36,6 +37,34 @@ class TDLETZoneClock(TimingClock):
         super().__init__()
         self.accuracy_ext: Optional[MultidimensionalTime] = None
         self.accuracy_int: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDLETZoneClock":
+        """Deserialize XML element to TDLETZoneClock object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDLETZoneClock object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse accuracy_ext
+        child = ARObject._find_child_element(element, "ACCURACY-EXT")
+        if child is not None:
+            accuracy_ext_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.accuracy_ext = accuracy_ext_value
+
+        # Parse accuracy_int
+        child = ARObject._find_child_element(element, "ACCURACY-INT")
+        if child is not None:
+            accuracy_int_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.accuracy_int = accuracy_int_value
+
+        return obj
+
 
 
 class TDLETZoneClockBuilder:

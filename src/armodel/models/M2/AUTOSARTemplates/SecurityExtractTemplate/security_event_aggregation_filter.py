@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
     AbstractSecurityEventFilter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -36,6 +37,34 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
         super().__init__()
         self.context_data: Optional[Any] = None
         self.minimum: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventAggregationFilter":
+        """Deserialize XML element to SecurityEventAggregationFilter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventAggregationFilter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_data
+        child = ARObject._find_child_element(element, "CONTEXT-DATA")
+        if child is not None:
+            context_data_value = child.text
+            obj.context_data = context_data_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = child.text
+            obj.minimum = minimum_value
+
+        return obj
+
 
 
 class SecurityEventAggregationFilterBuilder:

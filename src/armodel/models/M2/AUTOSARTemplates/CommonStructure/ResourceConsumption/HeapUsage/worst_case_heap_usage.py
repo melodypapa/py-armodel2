@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.HeapUsage.heap_usage import (
     HeapUsage,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class WorstCaseHeapUsage(HeapUsage):
         """Initialize WorstCaseHeapUsage."""
         super().__init__()
         self.memory_consumption: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "WorstCaseHeapUsage":
+        """Deserialize XML element to WorstCaseHeapUsage object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized WorstCaseHeapUsage object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse memory_consumption
+        child = ARObject._find_child_element(element, "MEMORY-CONSUMPTION")
+        if child is not None:
+            memory_consumption_value = child.text
+            obj.memory_consumption = memory_consumption_value
+
+        return obj
+
 
 
 class WorstCaseHeapUsageBuilder:

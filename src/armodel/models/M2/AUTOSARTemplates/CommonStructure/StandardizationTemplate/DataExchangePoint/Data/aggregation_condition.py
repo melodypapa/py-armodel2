@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_condition import (
     AttributeCondition,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.aggregation_tailoring import (
     AggregationTailoring,
 )
@@ -34,6 +35,28 @@ class AggregationCondition(AttributeCondition):
         """Initialize AggregationCondition."""
         super().__init__()
         self.aggregation: AggregationTailoring = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AggregationCondition":
+        """Deserialize XML element to AggregationCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AggregationCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse aggregation
+        child = ARObject._find_child_element(element, "AGGREGATION")
+        if child is not None:
+            aggregation_value = ARObject._deserialize_by_tag(child, "AggregationTailoring")
+            obj.aggregation = aggregation_value
+
+        return obj
+
 
 
 class AggregationConditionBuilder:

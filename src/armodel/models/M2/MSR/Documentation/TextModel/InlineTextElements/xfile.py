@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.single_language_referrable import (
     SingleLanguageReferrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -38,6 +39,40 @@ class Xfile(SingleLanguageReferrable):
         self.tool: Optional[String] = None
         self.tool_version: Optional[String] = None
         self.url: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Xfile":
+        """Deserialize XML element to Xfile object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Xfile object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tool
+        child = ARObject._find_child_element(element, "TOOL")
+        if child is not None:
+            tool_value = child.text
+            obj.tool = tool_value
+
+        # Parse tool_version
+        child = ARObject._find_child_element(element, "TOOL-VERSION")
+        if child is not None:
+            tool_version_value = child.text
+            obj.tool_version = tool_version_value
+
+        # Parse url
+        child = ARObject._find_child_element(element, "URL")
+        if child is not None:
+            url_value = child.text
+            obj.url = url_value
+
+        return obj
+
 
 
 class XfileBuilder:

@@ -33,6 +33,28 @@ class LinCommunicationController(ARObject, ABC):
         """Initialize LinCommunicationController."""
         super().__init__()
         self.protocol_version: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinCommunicationController":
+        """Deserialize XML element to LinCommunicationController object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinCommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse protocol_version
+        child = ARObject._find_child_element(element, "PROTOCOL-VERSION")
+        if child is not None:
+            protocol_version_value = child.text
+            obj.protocol_version = protocol_version_value
+
+        return obj
+
 
 
 class LinCommunicationControllerBuilder:

@@ -46,6 +46,64 @@ class EndToEndDescription(ARObject):
         self.data_id_nibble: Optional[PositiveInteger] = None
         self.data_length: Optional[PositiveInteger] = None
         self.max_delta: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EndToEndDescription":
+        """Deserialize XML element to EndToEndDescription object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EndToEndDescription object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse counter_offset
+        child = ARObject._find_child_element(element, "COUNTER-OFFSET")
+        if child is not None:
+            counter_offset_value = child.text
+            obj.counter_offset = counter_offset_value
+
+        # Parse crc_offset
+        child = ARObject._find_child_element(element, "CRC-OFFSET")
+        if child is not None:
+            crc_offset_value = child.text
+            obj.crc_offset = crc_offset_value
+
+        # Parse data_id_mode
+        child = ARObject._find_child_element(element, "DATA-ID-MODE")
+        if child is not None:
+            data_id_mode_value = child.text
+            obj.data_id_mode = data_id_mode_value
+
+        # Parse data_id_nibble
+        child = ARObject._find_child_element(element, "DATA-ID-NIBBLE")
+        if child is not None:
+            data_id_nibble_value = child.text
+            obj.data_id_nibble = data_id_nibble_value
+
+        # Parse data_length
+        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        if child is not None:
+            data_length_value = child.text
+            obj.data_length = data_length_value
+
+        # Parse max_delta
+        child = ARObject._find_child_element(element, "MAX-DELTA")
+        if child is not None:
+            max_delta_value = child.text
+            obj.max_delta = max_delta_value
+
+        return obj
+
 
 
 class EndToEndDescriptionBuilder:

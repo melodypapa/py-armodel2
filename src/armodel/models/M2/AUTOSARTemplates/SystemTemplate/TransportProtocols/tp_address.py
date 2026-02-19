@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -34,6 +35,28 @@ class TpAddress(Identifiable):
         """Initialize TpAddress."""
         super().__init__()
         self.tp_address: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TpAddress":
+        """Deserialize XML element to TpAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TpAddress object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tp_address
+        child = ARObject._find_child_element(element, "TP-ADDRESS")
+        if child is not None:
+            tp_address_value = child.text
+            obj.tp_address = tp_address_value
+
+        return obj
+
 
 
 class TpAddressBuilder:

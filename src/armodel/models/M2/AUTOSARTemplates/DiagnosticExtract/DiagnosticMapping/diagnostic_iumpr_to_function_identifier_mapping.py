@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
     DiagnosticIumpr,
 )
@@ -36,6 +37,34 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         super().__init__()
         self.function: Optional[Any] = None
         self.iumpr: Optional[DiagnosticIumpr] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIumprToFunctionIdentifierMapping":
+        """Deserialize XML element to DiagnosticIumprToFunctionIdentifierMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticIumprToFunctionIdentifierMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse function
+        child = ARObject._find_child_element(element, "FUNCTION")
+        if child is not None:
+            function_value = child.text
+            obj.function = function_value
+
+        # Parse iumpr
+        child = ARObject._find_child_element(element, "IUMPR")
+        if child is not None:
+            iumpr_value = ARObject._deserialize_by_tag(child, "DiagnosticIumpr")
+            obj.iumpr = iumpr_value
+
+        return obj
+
 
 
 class DiagnosticIumprToFunctionIdentifierMappingBuilder:

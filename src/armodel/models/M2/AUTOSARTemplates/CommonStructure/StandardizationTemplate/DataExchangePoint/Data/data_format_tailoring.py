@@ -37,6 +37,34 @@ class DataFormatTailoring(ARObject):
         super().__init__()
         self.class_tailorings: list[ClassTailoring] = []
         self.constraints: list[ConstraintTailoring] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataFormatTailoring":
+        """Deserialize XML element to DataFormatTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataFormatTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse class_tailorings (list)
+        obj.class_tailorings = []
+        for child in ARObject._find_all_child_elements(element, "CLASS-TAILORINGS"):
+            class_tailorings_value = ARObject._deserialize_by_tag(child, "ClassTailoring")
+            obj.class_tailorings.append(class_tailorings_value)
+
+        # Parse constraints (list)
+        obj.constraints = []
+        for child in ARObject._find_all_child_elements(element, "CONSTRAINTS"):
+            constraints_value = ARObject._deserialize_by_tag(child, "ConstraintTailoring")
+            obj.constraints.append(constraints_value)
+
+        return obj
+
 
 
 class DataFormatTailoringBuilder:

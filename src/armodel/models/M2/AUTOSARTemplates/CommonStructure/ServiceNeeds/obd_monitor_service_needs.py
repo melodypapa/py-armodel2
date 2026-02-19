@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticMonitorUpdateKindEnum,
 )
@@ -50,6 +51,46 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         self.event_needs: Optional[DiagnosticEventNeeds] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ObdMonitorServiceNeeds":
+        """Deserialize XML element to ObdMonitorServiceNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ObdMonitorServiceNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse application_data
+        child = ARObject._find_child_element(element, "APPLICATION-DATA")
+        if child is not None:
+            application_data_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
+            obj.application_data = application_data_value
+
+        # Parse event_needs
+        child = ARObject._find_child_element(element, "EVENT-NEEDS")
+        if child is not None:
+            event_needs_value = ARObject._deserialize_by_tag(child, "DiagnosticEventNeeds")
+            obj.event_needs = event_needs_value
+
+        # Parse unit_and_scaling_id
+        child = ARObject._find_child_element(element, "UNIT-AND-SCALING-ID")
+        if child is not None:
+            unit_and_scaling_id_value = child.text
+            obj.unit_and_scaling_id = unit_and_scaling_id_value
+
+        # Parse update_kind
+        child = ARObject._find_child_element(element, "UPDATE-KIND")
+        if child is not None:
+            update_kind_value = child.text
+            obj.update_kind = update_kind_value
+
+        return obj
+
 
 
 class ObdMonitorServiceNeedsBuilder:

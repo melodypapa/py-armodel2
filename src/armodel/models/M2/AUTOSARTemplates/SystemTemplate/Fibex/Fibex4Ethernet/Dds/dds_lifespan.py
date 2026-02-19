@@ -32,6 +32,28 @@ class DdsLifespan(ARObject):
         """Initialize DdsLifespan."""
         super().__init__()
         self.lifespan_duration: Optional[Float] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsLifespan":
+        """Deserialize XML element to DdsLifespan object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsLifespan object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lifespan_duration
+        child = ARObject._find_child_element(element, "LIFESPAN-DURATION")
+        if child is not None:
+            lifespan_duration_value = child.text
+            obj.lifespan_duration = lifespan_duration_value
+
+        return obj
+
 
 
 class DdsLifespanBuilder:

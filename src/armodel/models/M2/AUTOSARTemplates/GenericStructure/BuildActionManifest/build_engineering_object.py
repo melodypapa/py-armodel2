@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
     EngineeringObject,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     RegularExpression,
@@ -40,6 +41,40 @@ class BuildEngineeringObject(EngineeringObject):
         self.file_type: NameToken = None
         self.file_type_pattern: RegularExpression = None
         self.intended: Optional[UriString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BuildEngineeringObject":
+        """Deserialize XML element to BuildEngineeringObject object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BuildEngineeringObject object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse file_type
+        child = ARObject._find_child_element(element, "FILE-TYPE")
+        if child is not None:
+            file_type_value = child.text
+            obj.file_type = file_type_value
+
+        # Parse file_type_pattern
+        child = ARObject._find_child_element(element, "FILE-TYPE-PATTERN")
+        if child is not None:
+            file_type_pattern_value = child.text
+            obj.file_type_pattern = file_type_pattern_value
+
+        # Parse intended
+        child = ARObject._find_child_element(element, "INTENDED")
+        if child is not None:
+            intended_value = child.text
+            obj.intended = intended_value
+
+        return obj
+
 
 
 class BuildEngineeringObjectBuilder:

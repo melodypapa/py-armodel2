@@ -39,6 +39,34 @@ class AbstractVariationRestriction(ARObject, ABC):
         super().__init__()
         self.valid_bindings: list[FullBindingTimeEnum] = []
         self.variation: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractVariationRestriction":
+        """Deserialize XML element to AbstractVariationRestriction object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractVariationRestriction object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse valid_bindings (list)
+        obj.valid_bindings = []
+        for child in ARObject._find_all_child_elements(element, "VALID-BINDINGS"):
+            valid_bindings_value = child.text
+            obj.valid_bindings.append(valid_bindings_value)
+
+        # Parse variation
+        child = ARObject._find_child_element(element, "VARIATION")
+        if child is not None:
+            variation_value = child.text
+            obj.variation = variation_value
+
+        return obj
+
 
 
 class AbstractVariationRestrictionBuilder:

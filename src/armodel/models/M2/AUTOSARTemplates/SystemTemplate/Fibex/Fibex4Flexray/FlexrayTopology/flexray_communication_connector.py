@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Float,
@@ -37,6 +38,34 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         super().__init__()
         self.nm_ready_sleep: Optional[Float] = None
         self.wake_up: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayCommunicationConnector":
+        """Deserialize XML element to FlexrayCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayCommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse nm_ready_sleep
+        child = ARObject._find_child_element(element, "NM-READY-SLEEP")
+        if child is not None:
+            nm_ready_sleep_value = child.text
+            obj.nm_ready_sleep = nm_ready_sleep_value
+
+        # Parse wake_up
+        child = ARObject._find_child_element(element, "WAKE-UP")
+        if child is not None:
+            wake_up_value = child.text
+            obj.wake_up = wake_up_value
+
+        return obj
+
 
 
 class FlexrayCommunicationConnectorBuilder:

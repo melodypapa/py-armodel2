@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
     BswInternalTriggeringPoint,
@@ -72,6 +73,76 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.issued_trigger_refs: list[ARRef] = []
         self.managed_mode_refs: list[ARRef] = []
         self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswModuleEntity":
+        """Deserialize XML element to BswModuleEntity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswModuleEntity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse accessed_mode_refs (list)
+        obj.accessed_mode_refs = []
+        for child in ARObject._find_all_child_elements(element, "ACCESSED-MODES"):
+            accessed_mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.accessed_mode_refs.append(accessed_mode_refs_value)
+
+        # Parse activation_point_refs (list)
+        obj.activation_point_refs = []
+        for child in ARObject._find_all_child_elements(element, "ACTIVATION-POINTS"):
+            activation_point_refs_value = ARObject._deserialize_by_tag(child, "BswInternalTriggeringPoint")
+            obj.activation_point_refs.append(activation_point_refs_value)
+
+        # Parse call_points (list)
+        obj.call_points = []
+        for child in ARObject._find_all_child_elements(element, "CALL-POINTS"):
+            call_points_value = ARObject._deserialize_by_tag(child, "BswModuleCallPoint")
+            obj.call_points.append(call_points_value)
+
+        # Parse data_receives (list)
+        obj.data_receives = []
+        for child in ARObject._find_all_child_elements(element, "DATA-RECEIVES"):
+            data_receives_value = ARObject._deserialize_by_tag(child, "BswVariableAccess")
+            obj.data_receives.append(data_receives_value)
+
+        # Parse data_send_points (list)
+        obj.data_send_points = []
+        for child in ARObject._find_all_child_elements(element, "DATA-SEND-POINTS"):
+            data_send_points_value = ARObject._deserialize_by_tag(child, "BswVariableAccess")
+            obj.data_send_points.append(data_send_points_value)
+
+        # Parse implemented
+        child = ARObject._find_child_element(element, "IMPLEMENTED")
+        if child is not None:
+            implemented_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.implemented = implemented_value
+
+        # Parse issued_trigger_refs (list)
+        obj.issued_trigger_refs = []
+        for child in ARObject._find_all_child_elements(element, "ISSUED-TRIGGERS"):
+            issued_trigger_refs_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.issued_trigger_refs.append(issued_trigger_refs_value)
+
+        # Parse managed_mode_refs (list)
+        obj.managed_mode_refs = []
+        for child in ARObject._find_all_child_elements(element, "MANAGED-MODES"):
+            managed_mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.managed_mode_refs.append(managed_mode_refs_value)
+
+        # Parse scheduler_name
+        child = ARObject._find_child_element(element, "SCHEDULER-NAME")
+        if child is not None:
+            scheduler_name_value = ARObject._deserialize_by_tag(child, "BswSchedulerNamePrefix")
+            obj.scheduler_name = scheduler_name_value
+
+        return obj
+
 
 
 class BswModuleEntityBuilder:

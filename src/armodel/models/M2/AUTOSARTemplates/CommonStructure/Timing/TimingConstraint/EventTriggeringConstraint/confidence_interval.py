@@ -39,6 +39,40 @@ class ConfidenceInterval(ARObject):
         self.lower_bound: Optional[MultidimensionalTime] = None
         self.propability: Optional[Float] = None
         self.upper_bound: Optional[MultidimensionalTime] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConfidenceInterval":
+        """Deserialize XML element to ConfidenceInterval object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConfidenceInterval object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lower_bound
+        child = ARObject._find_child_element(element, "LOWER-BOUND")
+        if child is not None:
+            lower_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.lower_bound = lower_bound_value
+
+        # Parse propability
+        child = ARObject._find_child_element(element, "PROPABILITY")
+        if child is not None:
+            propability_value = child.text
+            obj.propability = propability_value
+
+        # Parse upper_bound
+        child = ARObject._find_child_element(element, "UPPER-BOUND")
+        if child is not None:
+            upper_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.upper_bound = upper_bound_value
+
+        return obj
+
 
 
 class ConfidenceIntervalBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -38,6 +39,40 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requesters: list[CpSoftwareCluster] = []
         self.service: Optional[CpSoftwareCluster] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToResourceMapping":
+        """Deserialize XML element to CpSoftwareClusterToResourceMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSoftwareClusterToResourceMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provider
+        child = ARObject._find_child_element(element, "PROVIDER")
+        if child is not None:
+            provider_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.provider = provider_value
+
+        # Parse requesters (list)
+        obj.requesters = []
+        for child in ARObject._find_all_child_elements(element, "REQUESTERS"):
+            requesters_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.requesters.append(requesters_value)
+
+        # Parse service
+        child = ARObject._find_child_element(element, "SERVICE")
+        if child is not None:
+            service_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.service = service_value
+
+        return obj
+
 
 
 class CpSoftwareClusterToResourceMappingBuilder:

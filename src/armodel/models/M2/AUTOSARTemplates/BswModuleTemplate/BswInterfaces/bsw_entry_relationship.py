@@ -37,6 +37,40 @@ class BswEntryRelationship(ARObject):
         self.bsw_entry: Optional[BswEntryRelationship] = None
         self.from_: Optional[BswModuleEntry] = None
         self.to: Optional[BswModuleEntry] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswEntryRelationship":
+        """Deserialize XML element to BswEntryRelationship object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswEntryRelationship object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_entry
+        child = ARObject._find_child_element(element, "BSW-ENTRY")
+        if child is not None:
+            bsw_entry_value = ARObject._deserialize_by_tag(child, "BswEntryRelationship")
+            obj.bsw_entry = bsw_entry_value
+
+        # Parse from_
+        child = ARObject._find_child_element(element, "FROM")
+        if child is not None:
+            from__value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.from_ = from__value
+
+        # Parse to
+        child = ARObject._find_child_element(element, "TO")
+        if child is not None:
+            to_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.to = to_value
+
+        return obj
+
 
 
 class BswEntryRelationshipBuilder:

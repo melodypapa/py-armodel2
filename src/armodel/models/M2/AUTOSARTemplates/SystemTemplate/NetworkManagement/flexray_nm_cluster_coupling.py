@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster_coupling import (
     NmClusterCoupling,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
     FlexrayNmScheduleVariant,
 )
@@ -39,6 +40,34 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         super().__init__()
         self.coupled_clusters: list[FlexrayNmCluster] = []
         self.nm_schedule: Optional[FlexrayNmScheduleVariant] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayNmClusterCoupling":
+        """Deserialize XML element to FlexrayNmClusterCoupling object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayNmClusterCoupling object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse coupled_clusters (list)
+        obj.coupled_clusters = []
+        for child in ARObject._find_all_child_elements(element, "COUPLED-CLUSTERS"):
+            coupled_clusters_value = ARObject._deserialize_by_tag(child, "FlexrayNmCluster")
+            obj.coupled_clusters.append(coupled_clusters_value)
+
+        # Parse nm_schedule
+        child = ARObject._find_child_element(element, "NM-SCHEDULE")
+        if child is not None:
+            nm_schedule_value = child.text
+            obj.nm_schedule = nm_schedule_value
+
+        return obj
+
 
 
 class FlexrayNmClusterCouplingBuilder:

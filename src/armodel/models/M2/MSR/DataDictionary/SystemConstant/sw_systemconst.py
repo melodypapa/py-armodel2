@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
@@ -42,6 +43,28 @@ class SwSystemconst(ARElement):
         """Initialize SwSystemconst."""
         super().__init__()
         self.sw_data_def: Optional[SwDataDefProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwSystemconst":
+        """Deserialize XML element to SwSystemconst object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwSystemconst object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        return obj
+
 
 
 class SwSystemconstBuilder:

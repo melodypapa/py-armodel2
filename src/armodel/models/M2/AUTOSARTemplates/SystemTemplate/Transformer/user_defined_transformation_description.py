@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_description import (
     TransformationDescription,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedTransformationDescription(TransformationDescription):
@@ -29,6 +30,22 @@ class UserDefinedTransformationDescription(TransformationDescription):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationDescription."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationDescription":
+        """Deserialize XML element to UserDefinedTransformationDescription object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedTransformationDescription object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedTransformationDescriptionBuilder:

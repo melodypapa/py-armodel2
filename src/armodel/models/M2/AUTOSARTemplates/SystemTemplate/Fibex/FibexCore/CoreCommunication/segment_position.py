@@ -39,6 +39,40 @@ class SegmentPosition(ARObject):
         self.segment_byte: Optional[ByteOrderEnum] = None
         self.segment_length: Optional[Integer] = None
         self.segment: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SegmentPosition":
+        """Deserialize XML element to SegmentPosition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SegmentPosition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse segment_byte
+        child = ARObject._find_child_element(element, "SEGMENT-BYTE")
+        if child is not None:
+            segment_byte_value = child.text
+            obj.segment_byte = segment_byte_value
+
+        # Parse segment_length
+        child = ARObject._find_child_element(element, "SEGMENT-LENGTH")
+        if child is not None:
+            segment_length_value = child.text
+            obj.segment_length = segment_length_value
+
+        # Parse segment
+        child = ARObject._find_child_element(element, "SEGMENT")
+        if child is not None:
+            segment_value = child.text
+            obj.segment = segment_value
+
+        return obj
+
 
 
 class SegmentPositionBuilder:

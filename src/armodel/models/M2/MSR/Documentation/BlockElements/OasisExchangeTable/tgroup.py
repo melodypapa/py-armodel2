@@ -58,6 +58,70 @@ class Tgroup(ARObject):
         self.tbody: Tbody = None
         self.tfoot: Optional[Tbody] = None
         self.thead: Optional[Tbody] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Tgroup":
+        """Deserialize XML element to Tgroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Tgroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse align
+        child = ARObject._find_child_element(element, "ALIGN")
+        if child is not None:
+            align_value = child.text
+            obj.align = align_value
+
+        # Parse cols
+        child = ARObject._find_child_element(element, "COLS")
+        if child is not None:
+            cols_value = child.text
+            obj.cols = cols_value
+
+        # Parse colsep
+        child = ARObject._find_child_element(element, "COLSEP")
+        if child is not None:
+            colsep_value = child.text
+            obj.colsep = colsep_value
+
+        # Parse colspecs (list)
+        obj.colspecs = []
+        for child in ARObject._find_all_child_elements(element, "COLSPECS"):
+            colspecs_value = ARObject._deserialize_by_tag(child, "Colspec")
+            obj.colspecs.append(colspecs_value)
+
+        # Parse rowsep
+        child = ARObject._find_child_element(element, "ROWSEP")
+        if child is not None:
+            rowsep_value = child.text
+            obj.rowsep = rowsep_value
+
+        # Parse tbody
+        child = ARObject._find_child_element(element, "TBODY")
+        if child is not None:
+            tbody_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.tbody = tbody_value
+
+        # Parse tfoot
+        child = ARObject._find_child_element(element, "TFOOT")
+        if child is not None:
+            tfoot_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.tfoot = tfoot_value
+
+        # Parse thead
+        child = ARObject._find_child_element(element, "THEAD")
+        if child is not None:
+            thead_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.thead = thead_value
+
+        return obj
+
 
 
 class TgroupBuilder:

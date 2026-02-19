@@ -37,6 +37,34 @@ class DoIpConfig(ARObject):
         super().__init__()
         self.doip_interfaces: list[DoIpInterface] = []
         self.logic_address: Optional[DoIpLogicAddress] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpConfig":
+        """Deserialize XML element to DoIpConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse doip_interfaces (list)
+        obj.doip_interfaces = []
+        for child in ARObject._find_all_child_elements(element, "DOIP-INTERFACES"):
+            doip_interfaces_value = ARObject._deserialize_by_tag(child, "DoIpInterface")
+            obj.doip_interfaces.append(doip_interfaces_value)
+
+        # Parse logic_address
+        child = ARObject._find_child_element(element, "LOGIC-ADDRESS")
+        if child is not None:
+            logic_address_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
+            obj.logic_address = logic_address_value
+
+        return obj
+
 
 
 class DoIpConfigBuilder:

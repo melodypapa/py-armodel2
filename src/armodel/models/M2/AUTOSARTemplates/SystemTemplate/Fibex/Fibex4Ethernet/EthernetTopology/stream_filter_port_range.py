@@ -34,6 +34,34 @@ class StreamFilterPortRange(ARObject):
         super().__init__()
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterPortRange":
+        """Deserialize XML element to StreamFilterPortRange object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterPortRange object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max
+        child = ARObject._find_child_element(element, "MAX")
+        if child is not None:
+            max_value = child.text
+            obj.max = max_value
+
+        # Parse min
+        child = ARObject._find_child_element(element, "MIN")
+        if child is not None:
+            min_value = child.text
+            obj.min = min_value
+
+        return obj
+
 
 
 class StreamFilterPortRangeBuilder:

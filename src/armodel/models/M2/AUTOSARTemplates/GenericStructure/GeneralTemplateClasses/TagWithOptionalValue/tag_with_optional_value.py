@@ -38,6 +38,40 @@ class TagWithOptionalValue(ARObject):
         self.key: Optional[String] = None
         self.sequence_offset: Optional[Integer] = None
         self.value: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TagWithOptionalValue":
+        """Deserialize XML element to TagWithOptionalValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TagWithOptionalValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse key
+        child = ARObject._find_child_element(element, "KEY")
+        if child is not None:
+            key_value = child.text
+            obj.key = key_value
+
+        # Parse sequence_offset
+        child = ARObject._find_child_element(element, "SEQUENCE-OFFSET")
+        if child is not None:
+            sequence_offset_value = child.text
+            obj.sequence_offset = sequence_offset_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class TagWithOptionalValueBuilder:

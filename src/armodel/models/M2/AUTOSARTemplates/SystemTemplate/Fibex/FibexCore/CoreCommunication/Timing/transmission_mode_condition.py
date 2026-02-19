@@ -38,6 +38,34 @@ class TransmissionModeCondition(ARObject):
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
         self.i_signal_in_i_pdu_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransmissionModeCondition":
+        """Deserialize XML element to TransmissionModeCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransmissionModeCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_filter
+        child = ARObject._find_child_element(element, "DATA-FILTER")
+        if child is not None:
+            data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            obj.data_filter = data_filter_value
+
+        # Parse i_signal_in_i_pdu_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-IN-I-PDU")
+        if child is not None:
+            i_signal_in_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "ISignalToIPduMapping")
+            obj.i_signal_in_i_pdu_ref = i_signal_in_i_pdu_ref_value
+
+        return obj
+
 
 
 class TransmissionModeConditionBuilder:

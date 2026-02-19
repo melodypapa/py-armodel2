@@ -49,6 +49,52 @@ class ReferenceBase(ARObject):
         self.is_default: Boolean = None
         self.package: Optional[ARPackage] = None
         self.short_label: Identifier = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ReferenceBase":
+        """Deserialize XML element to ReferenceBase object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ReferenceBase object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse global_element_refs (list)
+        obj.global_element_refs = []
+        for child in ARObject._find_all_child_elements(element, "GLOBAL-ELEMENTS"):
+            global_element_refs_value = child.text
+            obj.global_element_refs.append(global_element_refs_value)
+
+        # Parse global_ins (list)
+        obj.global_ins = []
+        for child in ARObject._find_all_child_elements(element, "GLOBAL-INS"):
+            global_ins_value = ARObject._deserialize_by_tag(child, "ARPackage")
+            obj.global_ins.append(global_ins_value)
+
+        # Parse is_default
+        child = ARObject._find_child_element(element, "IS-DEFAULT")
+        if child is not None:
+            is_default_value = child.text
+            obj.is_default = is_default_value
+
+        # Parse package
+        child = ARObject._find_child_element(element, "PACKAGE")
+        if child is not None:
+            package_value = ARObject._deserialize_by_tag(child, "ARPackage")
+            obj.package = package_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class ReferenceBaseBuilder:

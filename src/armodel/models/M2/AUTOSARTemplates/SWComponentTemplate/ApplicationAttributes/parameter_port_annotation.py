@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
@@ -35,6 +36,28 @@ class ParameterPortAnnotation(GeneralAnnotation):
         """Initialize ParameterPortAnnotation."""
         super().__init__()
         self.parameter_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ParameterPortAnnotation":
+        """Deserialize XML element to ParameterPortAnnotation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ParameterPortAnnotation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse parameter_ref
+        child = ARObject._find_child_element(element, "PARAMETER")
+        if child is not None:
+            parameter_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.parameter_ref = parameter_ref_value
+
+        return obj
+
 
 
 class ParameterPortAnnotationBuilder:

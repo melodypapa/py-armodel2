@@ -42,6 +42,46 @@ class EcucDestinationUriPolicy(ARObject):
         self.destination_uri: Optional[Any] = None
         self.parameters: list[EcucParameterDef] = []
         self.reference_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucDestinationUriPolicy":
+        """Deserialize XML element to EcucDestinationUriPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucDestinationUriPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse containers (list)
+        obj.containers = []
+        for child in ARObject._find_all_child_elements(element, "CONTAINERS"):
+            containers_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
+            obj.containers.append(containers_value)
+
+        # Parse destination_uri
+        child = ARObject._find_child_element(element, "DESTINATION-URI")
+        if child is not None:
+            destination_uri_value = child.text
+            obj.destination_uri = destination_uri_value
+
+        # Parse parameters (list)
+        obj.parameters = []
+        for child in ARObject._find_all_child_elements(element, "PARAMETERS"):
+            parameters_value = ARObject._deserialize_by_tag(child, "EcucParameterDef")
+            obj.parameters.append(parameters_value)
+
+        # Parse reference_refs (list)
+        obj.reference_refs = []
+        for child in ARObject._find_all_child_elements(element, "REFERENCES"):
+            reference_refs_value = child.text
+            obj.reference_refs.append(reference_refs_value)
+
+        return obj
+
 
 
 class EcucDestinationUriPolicyBuilder:

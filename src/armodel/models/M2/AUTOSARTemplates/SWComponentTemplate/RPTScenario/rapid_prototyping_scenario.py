@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_container import (
     RptContainer,
 )
@@ -47,6 +48,46 @@ class RapidPrototypingScenario(ARElement):
         self.rpt_containers: list[RptContainer] = []
         self.rpt_profiles: list[RptProfile] = []
         self.rpt_system: Optional[System] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RapidPrototypingScenario":
+        """Deserialize XML element to RapidPrototypingScenario object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RapidPrototypingScenario object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse host_system
+        child = ARObject._find_child_element(element, "HOST-SYSTEM")
+        if child is not None:
+            host_system_value = ARObject._deserialize_by_tag(child, "System")
+            obj.host_system = host_system_value
+
+        # Parse rpt_containers (list)
+        obj.rpt_containers = []
+        for child in ARObject._find_all_child_elements(element, "RPT-CONTAINERS"):
+            rpt_containers_value = ARObject._deserialize_by_tag(child, "RptContainer")
+            obj.rpt_containers.append(rpt_containers_value)
+
+        # Parse rpt_profiles (list)
+        obj.rpt_profiles = []
+        for child in ARObject._find_all_child_elements(element, "RPT-PROFILES"):
+            rpt_profiles_value = ARObject._deserialize_by_tag(child, "RptProfile")
+            obj.rpt_profiles.append(rpt_profiles_value)
+
+        # Parse rpt_system
+        child = ARObject._find_child_element(element, "RPT-SYSTEM")
+        if child is not None:
+            rpt_system_value = ARObject._deserialize_by_tag(child, "System")
+            obj.rpt_system = rpt_system_value
+
+        return obj
+
 
 
 class RapidPrototypingScenarioBuilder:

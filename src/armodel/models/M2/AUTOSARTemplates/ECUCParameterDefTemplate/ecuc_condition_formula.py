@@ -35,6 +35,28 @@ class EcucConditionFormula(ARObject):
         """Initialize EcucConditionFormula."""
         super().__init__()
         self.ecuc_query: Optional[EcucQuery] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucConditionFormula":
+        """Deserialize XML element to EcucConditionFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucConditionFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ecuc_query
+        child = ARObject._find_child_element(element, "ECUC-QUERY")
+        if child is not None:
+            ecuc_query_value = ARObject._deserialize_by_tag(child, "EcucQuery")
+            obj.ecuc_query = ecuc_query_value
+
+        return obj
+
 
 
 class EcucConditionFormulaBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
     AbstractCondition,
 )
@@ -49,6 +50,46 @@ class ClassContentConditional(Identifiable):
         self.condition: Optional[AbstractCondition] = None
         self.constraints: list[ConstraintTailoring] = []
         self.sdg_tailorings: list[SdgTailoring] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClassContentConditional":
+        """Deserialize XML element to ClassContentConditional object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClassContentConditional object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse attributes (list)
+        obj.attributes = []
+        for child in ARObject._find_all_child_elements(element, "ATTRIBUTES"):
+            attributes_value = ARObject._deserialize_by_tag(child, "AttributeTailoring")
+            obj.attributes.append(attributes_value)
+
+        # Parse condition
+        child = ARObject._find_child_element(element, "CONDITION")
+        if child is not None:
+            condition_value = ARObject._deserialize_by_tag(child, "AbstractCondition")
+            obj.condition = condition_value
+
+        # Parse constraints (list)
+        obj.constraints = []
+        for child in ARObject._find_all_child_elements(element, "CONSTRAINTS"):
+            constraints_value = ARObject._deserialize_by_tag(child, "ConstraintTailoring")
+            obj.constraints.append(constraints_value)
+
+        # Parse sdg_tailorings (list)
+        obj.sdg_tailorings = []
+        for child in ARObject._find_all_child_elements(element, "SDG-TAILORINGS"):
+            sdg_tailorings_value = ARObject._deserialize_by_tag(child, "SdgTailoring")
+            obj.sdg_tailorings.append(sdg_tailorings_value)
+
+        return obj
+
 
 
 class ClassContentConditionalBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -32,6 +33,28 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         """Initialize TDEventSwc."""
         super().__init__()
         self.component: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventSwc":
+        """Deserialize XML element to TDEventSwc object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventSwc object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse component
+        child = ARObject._find_child_element(element, "COMPONENT")
+        if child is not None:
+            component_value = child.text
+            obj.component = component_value
+
+        return obj
+
 
 
 class TDEventSwcBuilder:

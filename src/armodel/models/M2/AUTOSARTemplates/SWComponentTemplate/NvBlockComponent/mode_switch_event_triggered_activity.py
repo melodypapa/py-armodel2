@@ -37,6 +37,34 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         super().__init__()
         self.role: Optional[Identifier] = None
         self.swc_mode_switch_event: Optional[SwcModeSwitchEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeSwitchEventTriggeredActivity":
+        """Deserialize XML element to ModeSwitchEventTriggeredActivity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeSwitchEventTriggeredActivity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse swc_mode_switch_event
+        child = ARObject._find_child_element(element, "SWC-MODE-SWITCH-EVENT")
+        if child is not None:
+            swc_mode_switch_event_value = ARObject._deserialize_by_tag(child, "SwcModeSwitchEvent")
+            obj.swc_mode_switch_event = swc_mode_switch_event_value
+
+        return obj
+
 
 
 class ModeSwitchEventTriggeredActivityBuilder:

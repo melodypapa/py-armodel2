@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_cluster import (
     EthernetCluster,
 )
@@ -39,6 +40,34 @@ class MacSecParticipantSet(ARElement):
         super().__init__()
         self.ethernet_cluster: Optional[EthernetCluster] = None
         self.mka_participants: list[MacSecKayParticipant] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacSecParticipantSet":
+        """Deserialize XML element to MacSecParticipantSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacSecParticipantSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ethernet_cluster
+        child = ARObject._find_child_element(element, "ETHERNET-CLUSTER")
+        if child is not None:
+            ethernet_cluster_value = ARObject._deserialize_by_tag(child, "EthernetCluster")
+            obj.ethernet_cluster = ethernet_cluster_value
+
+        # Parse mka_participants (list)
+        obj.mka_participants = []
+        for child in ARObject._find_all_child_elements(element, "MKA-PARTICIPANTS"):
+            mka_participants_value = ARObject._deserialize_by_tag(child, "MacSecKayParticipant")
+            obj.mka_participants.append(mka_participants_value)
+
+        return obj
+
 
 
 class MacSecParticipantSetBuilder:

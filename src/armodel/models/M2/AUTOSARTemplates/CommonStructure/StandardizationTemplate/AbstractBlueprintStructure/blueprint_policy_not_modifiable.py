@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
     BlueprintPolicy,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BlueprintPolicyNotModifiable(BlueprintPolicy):
@@ -29,6 +30,22 @@ class BlueprintPolicyNotModifiable(BlueprintPolicy):
     def __init__(self) -> None:
         """Initialize BlueprintPolicyNotModifiable."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicyNotModifiable":
+        """Deserialize XML element to BlueprintPolicyNotModifiable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintPolicyNotModifiable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BlueprintPolicyNotModifiableBuilder:

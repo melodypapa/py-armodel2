@@ -40,6 +40,40 @@ class FrameMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_frame_ref: Optional[ARRef] = None
         self.target_frame_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FrameMapping":
+        """Deserialize XML element to FrameMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FrameMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse source_frame_ref
+        child = ARObject._find_child_element(element, "SOURCE-FRAME")
+        if child is not None:
+            source_frame_ref_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
+            obj.source_frame_ref = source_frame_ref_value
+
+        # Parse target_frame_ref
+        child = ARObject._find_child_element(element, "TARGET-FRAME")
+        if child is not None:
+            target_frame_ref_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
+            obj.target_frame_ref = target_frame_ref_value
+
+        return obj
+
 
 
 class FrameMappingBuilder:

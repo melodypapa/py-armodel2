@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,6 +42,40 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         self.request: Optional[RequestResponseDelay] = None
         self.subscribe: Optional[PositiveInteger] = None
         self.time_to_live: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SomeipSdClientEventGroupTimingConfig":
+        """Deserialize XML element to SomeipSdClientEventGroupTimingConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SomeipSdClientEventGroupTimingConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse request
+        child = ARObject._find_child_element(element, "REQUEST")
+        if child is not None:
+            request_value = ARObject._deserialize_by_tag(child, "RequestResponseDelay")
+            obj.request = request_value
+
+        # Parse subscribe
+        child = ARObject._find_child_element(element, "SUBSCRIBE")
+        if child is not None:
+            subscribe_value = child.text
+            obj.subscribe = subscribe_value
+
+        # Parse time_to_live
+        child = ARObject._find_child_element(element, "TIME-TO-LIVE")
+        if child is not None:
+            time_to_live_value = child.text
+            obj.time_to_live = time_to_live_value
+
+        return obj
+
 
 
 class SomeipSdClientEventGroupTimingConfigBuilder:

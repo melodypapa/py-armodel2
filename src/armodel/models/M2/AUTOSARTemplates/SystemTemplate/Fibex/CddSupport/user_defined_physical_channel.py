@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedPhysicalChannel(PhysicalChannel):
@@ -29,6 +30,22 @@ class UserDefinedPhysicalChannel(PhysicalChannel):
     def __init__(self) -> None:
         """Initialize UserDefinedPhysicalChannel."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedPhysicalChannel":
+        """Deserialize XML element to UserDefinedPhysicalChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedPhysicalChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedPhysicalChannelBuilder:

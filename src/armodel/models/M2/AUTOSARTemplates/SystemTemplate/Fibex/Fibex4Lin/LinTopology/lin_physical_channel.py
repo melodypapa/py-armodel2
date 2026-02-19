@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -39,6 +40,34 @@ class LinPhysicalChannel(PhysicalChannel):
         super().__init__()
         self.bus_idle_timeout: Optional[TimeValue] = None
         self.schedule_tables: list[LinScheduleTable] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinPhysicalChannel":
+        """Deserialize XML element to LinPhysicalChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinPhysicalChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bus_idle_timeout
+        child = ARObject._find_child_element(element, "BUS-IDLE-TIMEOUT")
+        if child is not None:
+            bus_idle_timeout_value = child.text
+            obj.bus_idle_timeout = bus_idle_timeout_value
+
+        # Parse schedule_tables (list)
+        obj.schedule_tables = []
+        for child in ARObject._find_all_child_elements(element, "SCHEDULE-TABLES"):
+            schedule_tables_value = ARObject._deserialize_by_tag(child, "LinScheduleTable")
+            obj.schedule_tables.append(schedule_tables_value)
+
+        return obj
+
 
 
 class LinPhysicalChannelBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
     SwSystemconstantValueSet,
 )
@@ -46,6 +47,46 @@ class FMFeatureMapElement(Identifiable):
         self.conditions: list[FMFeatureMap] = []
         self.post_build_variants: list[Any] = []
         self.sw_value_sets: list[SwSystemconstantValueSet] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFeatureMapElement":
+        """Deserialize XML element to FMFeatureMapElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFeatureMapElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse assertions (list)
+        obj.assertions = []
+        for child in ARObject._find_all_child_elements(element, "ASSERTIONS"):
+            assertions_value = ARObject._deserialize_by_tag(child, "FMFeatureMap")
+            obj.assertions.append(assertions_value)
+
+        # Parse conditions (list)
+        obj.conditions = []
+        for child in ARObject._find_all_child_elements(element, "CONDITIONS"):
+            conditions_value = ARObject._deserialize_by_tag(child, "FMFeatureMap")
+            obj.conditions.append(conditions_value)
+
+        # Parse post_build_variants (list)
+        obj.post_build_variants = []
+        for child in ARObject._find_all_child_elements(element, "POST-BUILD-VARIANTS"):
+            post_build_variants_value = child.text
+            obj.post_build_variants.append(post_build_variants_value)
+
+        # Parse sw_value_sets (list)
+        obj.sw_value_sets = []
+        for child in ARObject._find_all_child_elements(element, "SW-VALUE-SETS"):
+            sw_value_sets_value = ARObject._deserialize_by_tag(child, "SwSystemconstantValueSet")
+            obj.sw_value_sets.append(sw_value_sets_value)
+
+        return obj
+
 
 
 class FMFeatureMapElementBuilder:

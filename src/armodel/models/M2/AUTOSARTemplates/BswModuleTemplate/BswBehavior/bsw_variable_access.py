@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
@@ -40,6 +41,34 @@ class BswVariableAccess(Referrable):
         super().__init__()
         self.accessed_variable_ref: Optional[ARRef] = None
         self.contexts: list[BswDistinguishedPartition] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswVariableAccess":
+        """Deserialize XML element to BswVariableAccess object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswVariableAccess object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse accessed_variable_ref
+        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE")
+        if child is not None:
+            accessed_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.accessed_variable_ref = accessed_variable_ref_value
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = ARObject._deserialize_by_tag(child, "BswDistinguishedPartition")
+            obj.contexts.append(contexts_value)
+
+        return obj
+
 
 
 class BswVariableAccessBuilder:

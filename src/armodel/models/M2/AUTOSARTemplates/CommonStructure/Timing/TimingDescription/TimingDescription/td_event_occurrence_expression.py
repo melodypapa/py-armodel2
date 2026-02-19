@@ -41,6 +41,46 @@ class TDEventOccurrenceExpression(ARObject):
         self.formula: Optional[Any] = None
         self.modes: list[TimingModeInstance] = []
         self.variables: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpression":
+        """Deserialize XML element to TDEventOccurrenceExpression object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventOccurrenceExpression object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse arguments (list)
+        obj.arguments = []
+        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
+            arguments_value = ARObject._deserialize_by_tag(child, "AutosarOperationArgumentInstance")
+            obj.arguments.append(arguments_value)
+
+        # Parse formula
+        child = ARObject._find_child_element(element, "FORMULA")
+        if child is not None:
+            formula_value = child.text
+            obj.formula = formula_value
+
+        # Parse modes (list)
+        obj.modes = []
+        for child in ARObject._find_all_child_elements(element, "MODES"):
+            modes_value = ARObject._deserialize_by_tag(child, "TimingModeInstance")
+            obj.modes.append(modes_value)
+
+        # Parse variables (list)
+        obj.variables = []
+        for child in ARObject._find_all_child_elements(element, "VARIABLES"):
+            variables_value = child.text
+            obj.variables.append(variables_value)
+
+        return obj
+
 
 
 class TDEventOccurrenceExpressionBuilder:

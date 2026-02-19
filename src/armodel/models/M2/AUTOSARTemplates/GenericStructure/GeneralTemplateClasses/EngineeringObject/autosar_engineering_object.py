@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
     EngineeringObject,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AutosarEngineeringObject(EngineeringObject):
@@ -31,6 +32,22 @@ class AutosarEngineeringObject(EngineeringObject):
     def __init__(self) -> None:
         """Initialize AutosarEngineeringObject."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AutosarEngineeringObject":
+        """Deserialize XML element to AutosarEngineeringObject object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AutosarEngineeringObject object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class AutosarEngineeringObjectBuilder:

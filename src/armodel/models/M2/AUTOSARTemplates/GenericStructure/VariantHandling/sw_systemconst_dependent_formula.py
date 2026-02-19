@@ -37,6 +37,34 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         super().__init__()
         self.sysc: Optional[SwSystemconst] = None
         self.sysc_string: Optional[SwSystemconst] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwSystemconstDependentFormula":
+        """Deserialize XML element to SwSystemconstDependentFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwSystemconstDependentFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sysc
+        child = ARObject._find_child_element(element, "SYSC")
+        if child is not None:
+            sysc_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
+            obj.sysc = sysc_value
+
+        # Parse sysc_string
+        child = ARObject._find_child_element(element, "SYSC-STRING")
+        if child is not None:
+            sysc_string_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
+            obj.sysc_string = sysc_string_value
+
+        return obj
+
 
 
 class SwSystemconstDependentFormulaBuilder:

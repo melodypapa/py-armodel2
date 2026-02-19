@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -43,6 +44,46 @@ class OffsetTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.source: Optional[TimingDescriptionEvent] = None
         self.target: Optional[TimingDescriptionEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "OffsetTimingConstraint":
+        """Deserialize XML element to OffsetTimingConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized OffsetTimingConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse maximum
+        child = ARObject._find_child_element(element, "MAXIMUM")
+        if child is not None:
+            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.maximum = maximum_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.minimum = minimum_value
+
+        # Parse source
+        child = ARObject._find_child_element(element, "SOURCE")
+        if child is not None:
+            source_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
+            obj.source = source_value
+
+        # Parse target
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
+            obj.target = target_value
+
+        return obj
+
 
 
 class OffsetTimingConstraintBuilder:

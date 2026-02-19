@@ -36,6 +36,40 @@ class DdsResourceLimits(ARObject):
         self.max_instances: Optional[PositiveInteger] = None
         self.max_samples: Optional[PositiveInteger] = None
         self.max_samples_per_instance: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsResourceLimits":
+        """Deserialize XML element to DdsResourceLimits object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsResourceLimits object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_instances
+        child = ARObject._find_child_element(element, "MAX-INSTANCES")
+        if child is not None:
+            max_instances_value = child.text
+            obj.max_instances = max_instances_value
+
+        # Parse max_samples
+        child = ARObject._find_child_element(element, "MAX-SAMPLES")
+        if child is not None:
+            max_samples_value = child.text
+            obj.max_samples = max_samples_value
+
+        # Parse max_samples_per_instance
+        child = ARObject._find_child_element(element, "MAX-SAMPLES-PER-INSTANCE")
+        if child is not None:
+            max_samples_per_instance_value = child.text
+            obj.max_samples_per_instance = max_samples_per_instance_value
+
+        return obj
+
 
 
 class DdsResourceLimitsBuilder:

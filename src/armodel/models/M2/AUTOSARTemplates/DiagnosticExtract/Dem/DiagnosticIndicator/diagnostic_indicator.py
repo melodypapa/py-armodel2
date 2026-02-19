@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator import (
     DiagnosticIndicatorTypeEnum,
 )
@@ -34,6 +35,28 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         """Initialize DiagnosticIndicator."""
         super().__init__()
         self.type: Optional[DiagnosticIndicatorTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIndicator":
+        """Deserialize XML element to DiagnosticIndicator object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticIndicator object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type
+        child = ARObject._find_child_element(element, "TYPE")
+        if child is not None:
+            type_value = child.text
+            obj.type = type_value
+
+        return obj
+
 
 
 class DiagnosticIndicatorBuilder:

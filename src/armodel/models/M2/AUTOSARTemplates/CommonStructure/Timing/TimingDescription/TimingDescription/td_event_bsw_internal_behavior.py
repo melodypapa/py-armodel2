@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
 )
@@ -36,6 +37,34 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         super().__init__()
         self.bsw_module_entity_entity: Optional[BswModuleEntity] = None
         self.td_event_bsw_behavior_type: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventBswInternalBehavior":
+        """Deserialize XML element to TDEventBswInternalBehavior object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventBswInternalBehavior object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_module_entity_entity
+        child = ARObject._find_child_element(element, "BSW-MODULE-ENTITY-ENTITY")
+        if child is not None:
+            bsw_module_entity_entity_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
+            obj.bsw_module_entity_entity = bsw_module_entity_entity_value
+
+        # Parse td_event_bsw_behavior_type
+        child = ARObject._find_child_element(element, "TD-EVENT-BSW-BEHAVIOR-TYPE")
+        if child is not None:
+            td_event_bsw_behavior_type_value = child.text
+            obj.td_event_bsw_behavior_type = td_event_bsw_behavior_type_value
+
+        return obj
+
 
 
 class TDEventBswInternalBehaviorBuilder:

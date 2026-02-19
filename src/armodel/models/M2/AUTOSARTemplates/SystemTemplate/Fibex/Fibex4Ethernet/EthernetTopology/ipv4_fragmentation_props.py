@@ -38,6 +38,40 @@ class Ipv4FragmentationProps(ARObject):
         self.tcp_ip_ip: Optional[Boolean] = None
         self.tcp_ip_ip_num: Optional[PositiveInteger] = None
         self.tcp_ip_ip_reass: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv4FragmentationProps":
+        """Deserialize XML element to Ipv4FragmentationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv4FragmentationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_ip
+        child = ARObject._find_child_element(element, "TCP-IP-IP")
+        if child is not None:
+            tcp_ip_ip_value = child.text
+            obj.tcp_ip_ip = tcp_ip_ip_value
+
+        # Parse tcp_ip_ip_num
+        child = ARObject._find_child_element(element, "TCP-IP-IP-NUM")
+        if child is not None:
+            tcp_ip_ip_num_value = child.text
+            obj.tcp_ip_ip_num = tcp_ip_ip_num_value
+
+        # Parse tcp_ip_ip_reass
+        child = ARObject._find_child_element(element, "TCP-IP-IP-REASS")
+        if child is not None:
+            tcp_ip_ip_reass_value = child.text
+            obj.tcp_ip_ip_reass = tcp_ip_ip_reass_value
+
+        return obj
+
 
 
 class Ipv4FragmentationPropsBuilder:

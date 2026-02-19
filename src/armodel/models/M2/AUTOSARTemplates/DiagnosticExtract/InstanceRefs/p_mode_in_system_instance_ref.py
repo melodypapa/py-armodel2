@@ -53,6 +53,52 @@ class PModeInSystemInstanceRef(ARObject):
         self.context_mode_group_ref: Optional[ARRef] = None
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PModeInSystemInstanceRef":
+        """Deserialize XML element to PModeInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PModeInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "System")
+            obj.base = base_value
+
+        # Parse context
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context = context_value
+
+        # Parse context_mode_group_ref
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP")
+        if child is not None:
+            context_mode_group_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.context_mode_group_ref = context_mode_group_ref_value
+
+        # Parse context_p_port_prototype
+        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE")
+        if child is not None:
+            context_p_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
+            obj.context_p_port_prototype = context_p_port_prototype_value
+
+        # Parse target_mode
+        child = ARObject._find_child_element(element, "TARGET-MODE")
+        if child is not None:
+            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.target_mode = target_mode_value
+
+        return obj
+
 
 
 class PModeInSystemInstanceRefBuilder:

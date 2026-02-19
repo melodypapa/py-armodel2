@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
     AbstractAccessPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -42,6 +43,34 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         super().__init__()
         self.operation_instance_ref: Optional[ClientServerOperation] = None
         self.timeout: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ServerCallPoint":
+        """Deserialize XML element to ServerCallPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ServerCallPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse operation_instance_ref
+        child = ARObject._find_child_element(element, "OPERATION-INSTANCE-REF")
+        if child is not None:
+            operation_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation_instance_ref = operation_instance_ref_value
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = child.text
+            obj.timeout = timeout_value
+
+        return obj
+
 
 
 class ServerCallPointBuilder:

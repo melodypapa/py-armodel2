@@ -35,6 +35,34 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         super().__init__()
         self.config_class: Optional[EcucConfigurationClassEnum] = None
         self.config_variant: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucAbstractConfigurationClass":
+        """Deserialize XML element to EcucAbstractConfigurationClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucAbstractConfigurationClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse config_class
+        child = ARObject._find_child_element(element, "CONFIG-CLASS")
+        if child is not None:
+            config_class_value = child.text
+            obj.config_class = config_class_value
+
+        # Parse config_variant
+        child = ARObject._find_child_element(element, "CONFIG-VARIANT")
+        if child is not None:
+            config_variant_value = child.text
+            obj.config_variant = config_variant_value
+
+        return obj
+
 
 
 class EcucAbstractConfigurationClassBuilder:

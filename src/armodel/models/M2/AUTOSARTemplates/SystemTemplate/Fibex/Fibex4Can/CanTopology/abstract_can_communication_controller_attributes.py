@@ -32,6 +32,34 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         super().__init__()
         self.can_controller_fd: Optional[Any] = None
         self.can_controller_xl: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationControllerAttributes":
+        """Deserialize XML element to AbstractCanCommunicationControllerAttributes object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractCanCommunicationControllerAttributes object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse can_controller_fd
+        child = ARObject._find_child_element(element, "CAN-CONTROLLER-FD")
+        if child is not None:
+            can_controller_fd_value = child.text
+            obj.can_controller_fd = can_controller_fd_value
+
+        # Parse can_controller_xl
+        child = ARObject._find_child_element(element, "CAN-CONTROLLER-XL")
+        if child is not None:
+            can_controller_xl_value = child.text
+            obj.can_controller_xl = can_controller_xl_value
+
+        return obj
+
 
 
 class AbstractCanCommunicationControllerAttributesBuilder:

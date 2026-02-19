@@ -34,6 +34,34 @@ class PhysicalDimensionMapping(ARObject):
         super().__init__()
         self.first_physical: Optional[PhysicalDimension] = None
         self.second_physical: Optional[PhysicalDimension] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PhysicalDimensionMapping":
+        """Deserialize XML element to PhysicalDimensionMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PhysicalDimensionMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_physical
+        child = ARObject._find_child_element(element, "FIRST-PHYSICAL")
+        if child is not None:
+            first_physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.first_physical = first_physical_value
+
+        # Parse second_physical
+        child = ARObject._find_child_element(element, "SECOND-PHYSICAL")
+        if child is not None:
+            second_physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.second_physical = second_physical_value
+
+        return obj
+
 
 
 class PhysicalDimensionMappingBuilder:

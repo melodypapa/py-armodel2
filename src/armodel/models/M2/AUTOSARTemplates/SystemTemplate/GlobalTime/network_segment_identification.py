@@ -32,6 +32,28 @@ class NetworkSegmentIdentification(ARObject):
         """Initialize NetworkSegmentIdentification."""
         super().__init__()
         self.network: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NetworkSegmentIdentification":
+        """Deserialize XML element to NetworkSegmentIdentification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NetworkSegmentIdentification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = child.text
+            obj.network = network_value
+
+        return obj
+
 
 
 class NetworkSegmentIdentificationBuilder:

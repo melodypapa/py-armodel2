@@ -35,6 +35,28 @@ class EcucQueryExpression(ARObject):
         """Initialize EcucQueryExpression."""
         super().__init__()
         self.config_element: Optional[EcucDefinitionElement] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucQueryExpression":
+        """Deserialize XML element to EcucQueryExpression object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucQueryExpression object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse config_element
+        child = ARObject._find_child_element(element, "CONFIG-ELEMENT")
+        if child is not None:
+            config_element_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
+            obj.config_element = config_element_value
+
+        return obj
+
 
 
 class EcucQueryExpressionBuilder:

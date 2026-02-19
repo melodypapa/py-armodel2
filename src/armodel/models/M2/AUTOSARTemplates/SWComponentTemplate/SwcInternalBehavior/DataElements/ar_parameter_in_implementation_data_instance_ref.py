@@ -42,6 +42,46 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ArParameterInImplementationDataInstanceRef":
+        """Deserialize XML element to ArParameterInImplementationDataInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ArParameterInImplementationDataInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_datas (list)
+        obj.context_datas = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-DATAS"):
+            context_datas_value = child.text
+            obj.context_datas.append(context_datas_value)
+
+        # Parse port_prototype_ref
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        if child is not None:
+            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.port_prototype_ref = port_prototype_ref_value
+
+        # Parse root_parameter
+        child = ARObject._find_child_element(element, "ROOT-PARAMETER")
+        if child is not None:
+            root_parameter_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.root_parameter = root_parameter_value
+
+        # Parse target_data
+        child = ARObject._find_child_element(element, "TARGET-DATA")
+        if child is not None:
+            target_data_value = child.text
+            obj.target_data = target_data_value
+
+        return obj
+
 
 
 class ArParameterInImplementationDataInstanceRefBuilder:

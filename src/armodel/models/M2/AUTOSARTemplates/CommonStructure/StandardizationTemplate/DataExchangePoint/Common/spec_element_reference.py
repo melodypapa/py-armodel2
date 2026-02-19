@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -35,6 +36,28 @@ class SpecElementReference(Identifiable, ABC):
         """Initialize SpecElementReference."""
         super().__init__()
         self.alternative: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SpecElementReference":
+        """Deserialize XML element to SpecElementReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SpecElementReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alternative
+        child = ARObject._find_child_element(element, "ALTERNATIVE")
+        if child is not None:
+            alternative_value = child.text
+            obj.alternative = alternative_value
+
+        return obj
+
 
 
 class SpecElementReferenceBuilder:

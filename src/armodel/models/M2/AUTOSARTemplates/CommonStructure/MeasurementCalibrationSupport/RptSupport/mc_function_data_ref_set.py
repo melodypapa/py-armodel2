@@ -38,6 +38,34 @@ class McFunctionDataRefSet(ARObject):
         super().__init__()
         self.flat_map_entries: list[FlatInstanceDescriptor] = []
         self.mc_data_instances: list[McDataInstance] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McFunctionDataRefSet":
+        """Deserialize XML element to McFunctionDataRefSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McFunctionDataRefSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse flat_map_entries (list)
+        obj.flat_map_entries = []
+        for child in ARObject._find_all_child_elements(element, "FLAT-MAP-ENTRIES"):
+            flat_map_entries_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
+            obj.flat_map_entries.append(flat_map_entries_value)
+
+        # Parse mc_data_instances (list)
+        obj.mc_data_instances = []
+        for child in ARObject._find_all_child_elements(element, "MC-DATA-INSTANCES"):
+            mc_data_instances_value = ARObject._deserialize_by_tag(child, "McDataInstance")
+            obj.mc_data_instances.append(mc_data_instances_value)
+
+        return obj
+
 
 
 class McFunctionDataRefSetBuilder:

@@ -50,6 +50,52 @@ class IPduMapping(ARObject):
         self.pdur_tp_chunk: Optional[PositiveInteger] = None
         self.source_i_pdu_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPduMapping":
+        """Deserialize XML element to IPduMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPduMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse pdu_max_length
+        child = ARObject._find_child_element(element, "PDU-MAX-LENGTH")
+        if child is not None:
+            pdu_max_length_value = child.text
+            obj.pdu_max_length = pdu_max_length_value
+
+        # Parse pdur_tp_chunk
+        child = ARObject._find_child_element(element, "PDUR-TP-CHUNK")
+        if child is not None:
+            pdur_tp_chunk_value = child.text
+            obj.pdur_tp_chunk = pdur_tp_chunk_value
+
+        # Parse source_i_pdu_ref
+        child = ARObject._find_child_element(element, "SOURCE-I-PDU")
+        if child is not None:
+            source_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.source_i_pdu_ref = source_i_pdu_ref_value
+
+        # Parse target_i_pdu_ref
+        child = ARObject._find_child_element(element, "TARGET-I-PDU")
+        if child is not None:
+            target_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "TargetIPduRef")
+            obj.target_i_pdu_ref = target_i_pdu_ref_value
+
+        return obj
+
 
 
 class IPduMappingBuilder:

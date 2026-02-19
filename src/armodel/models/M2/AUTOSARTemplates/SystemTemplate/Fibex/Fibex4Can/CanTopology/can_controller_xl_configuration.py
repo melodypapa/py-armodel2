@@ -51,6 +51,82 @@ class CanControllerXlConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfiguration":
+        """Deserialize XML element to CanControllerXlConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanControllerXlConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse error_signaling
+        child = ARObject._find_child_element(element, "ERROR-SIGNALING")
+        if child is not None:
+            error_signaling_value = child.text
+            obj.error_signaling = error_signaling_value
+
+        # Parse prop_seg
+        child = ARObject._find_child_element(element, "PROP-SEG")
+        if child is not None:
+            prop_seg_value = child.text
+            obj.prop_seg = prop_seg_value
+
+        # Parse pwm_l
+        child = ARObject._find_child_element(element, "PWM-L")
+        if child is not None:
+            pwm_l_value = child.text
+            obj.pwm_l = pwm_l_value
+
+        # Parse pwm_o
+        child = ARObject._find_child_element(element, "PWM-O")
+        if child is not None:
+            pwm_o_value = child.text
+            obj.pwm_o = pwm_o_value
+
+        # Parse pwm_s
+        child = ARObject._find_child_element(element, "PWM-S")
+        if child is not None:
+            pwm_s_value = child.text
+            obj.pwm_s = pwm_s_value
+
+        # Parse ssp_offset
+        child = ARObject._find_child_element(element, "SSP-OFFSET")
+        if child is not None:
+            ssp_offset_value = child.text
+            obj.ssp_offset = ssp_offset_value
+
+        # Parse sync_jump_width
+        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        if child is not None:
+            sync_jump_width_value = child.text
+            obj.sync_jump_width = sync_jump_width_value
+
+        # Parse time_seg1
+        child = ARObject._find_child_element(element, "TIME-SEG1")
+        if child is not None:
+            time_seg1_value = child.text
+            obj.time_seg1 = time_seg1_value
+
+        # Parse time_seg2
+        child = ARObject._find_child_element(element, "TIME-SEG2")
+        if child is not None:
+            time_seg2_value = child.text
+            obj.time_seg2 = time_seg2_value
+
+        # Parse trcv_pwm_mode
+        child = ARObject._find_child_element(element, "TRCV-PWM-MODE")
+        if child is not None:
+            trcv_pwm_mode_value = child.text
+            obj.trcv_pwm_mode = trcv_pwm_mode_value
+
+        return obj
+
 
 
 class CanControllerXlConfigurationBuilder:

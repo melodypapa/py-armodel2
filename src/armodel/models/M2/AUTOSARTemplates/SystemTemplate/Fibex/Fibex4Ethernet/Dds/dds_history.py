@@ -37,6 +37,34 @@ class DdsHistory(ARObject):
         super().__init__()
         self.history_kind: Optional[DdsHistoryKindEnum] = None
         self.history_order: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsHistory":
+        """Deserialize XML element to DdsHistory object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsHistory object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse history_kind
+        child = ARObject._find_child_element(element, "HISTORY-KIND")
+        if child is not None:
+            history_kind_value = child.text
+            obj.history_kind = history_kind_value
+
+        # Parse history_order
+        child = ARObject._find_child_element(element, "HISTORY-ORDER")
+        if child is not None:
+            history_order_value = child.text
+            obj.history_order = history_order_value
+
+        return obj
+
 
 
 class DdsHistoryBuilder:

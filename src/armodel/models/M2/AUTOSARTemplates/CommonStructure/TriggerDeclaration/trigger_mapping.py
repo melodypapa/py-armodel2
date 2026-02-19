@@ -35,6 +35,34 @@ class TriggerMapping(ARObject):
         super().__init__()
         self.first_trigger_ref: Optional[ARRef] = None
         self.second_trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TriggerMapping":
+        """Deserialize XML element to TriggerMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TriggerMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_trigger_ref
+        child = ARObject._find_child_element(element, "FIRST-TRIGGER")
+        if child is not None:
+            first_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.first_trigger_ref = first_trigger_ref_value
+
+        # Parse second_trigger_ref
+        child = ARObject._find_child_element(element, "SECOND-TRIGGER")
+        if child is not None:
+            second_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.second_trigger_ref = second_trigger_ref_value
+
+        return obj
+
 
 
 class TriggerMappingBuilder:

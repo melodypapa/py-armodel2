@@ -36,6 +36,40 @@ class FirewallRuleProps(ARObject):
         self.action: Optional[Any] = None
         self.matching_egresses: list[FirewallRule] = []
         self.matchings: list[FirewallRule] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FirewallRuleProps":
+        """Deserialize XML element to FirewallRuleProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FirewallRuleProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse action
+        child = ARObject._find_child_element(element, "ACTION")
+        if child is not None:
+            action_value = child.text
+            obj.action = action_value
+
+        # Parse matching_egresses (list)
+        obj.matching_egresses = []
+        for child in ARObject._find_all_child_elements(element, "MATCHING-EGRESSES"):
+            matching_egresses_value = ARObject._deserialize_by_tag(child, "FirewallRule")
+            obj.matching_egresses.append(matching_egresses_value)
+
+        # Parse matchings (list)
+        obj.matchings = []
+        for child in ARObject._find_all_child_elements(element, "MATCHINGS"):
+            matchings_value = ARObject._deserialize_by_tag(child, "FirewallRule")
+            obj.matchings.append(matchings_value)
+
+        return obj
+
 
 
 class FirewallRulePropsBuilder:

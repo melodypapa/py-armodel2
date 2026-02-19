@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
     ResumePosition,
     RunMode,
@@ -42,6 +43,40 @@ class LinScheduleTable(Identifiable):
         self.resume_position: Optional[ResumePosition] = None
         self.run_mode: Optional[RunMode] = None
         self.table_entries: list[ScheduleTableEntry] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinScheduleTable":
+        """Deserialize XML element to LinScheduleTable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinScheduleTable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse resume_position
+        child = ARObject._find_child_element(element, "RESUME-POSITION")
+        if child is not None:
+            resume_position_value = child.text
+            obj.resume_position = resume_position_value
+
+        # Parse run_mode
+        child = ARObject._find_child_element(element, "RUN-MODE")
+        if child is not None:
+            run_mode_value = child.text
+            obj.run_mode = run_mode_value
+
+        # Parse table_entries (list)
+        obj.table_entries = []
+        for child in ARObject._find_all_child_elements(element, "TABLE-ENTRIES"):
+            table_entries_value = ARObject._deserialize_by_tag(child, "ScheduleTableEntry")
+            obj.table_entries.append(table_entries_value)
+
+        return obj
+
 
 
 class LinScheduleTableBuilder:

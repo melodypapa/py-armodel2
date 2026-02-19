@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,6 +42,40 @@ class ServerComSpec(PPortComSpec):
         self.operation: Optional[ClientServerOperation] = None
         self.queue_length: Optional[PositiveInteger] = None
         self.transformation_coms: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ServerComSpec":
+        """Deserialize XML element to ServerComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ServerComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse operation
+        child = ARObject._find_child_element(element, "OPERATION")
+        if child is not None:
+            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation = operation_value
+
+        # Parse queue_length
+        child = ARObject._find_child_element(element, "QUEUE-LENGTH")
+        if child is not None:
+            queue_length_value = child.text
+            obj.queue_length = queue_length_value
+
+        # Parse transformation_coms (list)
+        obj.transformation_coms = []
+        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-COMS"):
+            transformation_coms_value = child.text
+            obj.transformation_coms.append(transformation_coms_value)
+
+        return obj
+
 
 
 class ServerComSpecBuilder:

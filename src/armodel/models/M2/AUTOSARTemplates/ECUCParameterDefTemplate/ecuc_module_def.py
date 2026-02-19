@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     CIdentifier,
@@ -48,6 +49,52 @@ class EcucModuleDef(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.refined_module: Optional[EcucModuleDef] = None
         self.supporteds: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucModuleDef":
+        """Deserialize XML element to EcucModuleDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucModuleDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse api_service_prefix
+        child = ARObject._find_child_element(element, "API-SERVICE-PREFIX")
+        if child is not None:
+            api_service_prefix_value = child.text
+            obj.api_service_prefix = api_service_prefix_value
+
+        # Parse containers (list)
+        obj.containers = []
+        for child in ARObject._find_all_child_elements(element, "CONTAINERS"):
+            containers_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
+            obj.containers.append(containers_value)
+
+        # Parse post_build_variant
+        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        if child is not None:
+            post_build_variant_value = child.text
+            obj.post_build_variant = post_build_variant_value
+
+        # Parse refined_module
+        child = ARObject._find_child_element(element, "REFINED-MODULE")
+        if child is not None:
+            refined_module_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
+            obj.refined_module = refined_module_value
+
+        # Parse supporteds (list)
+        obj.supporteds = []
+        for child in ARObject._find_all_child_elements(element, "SUPPORTEDS"):
+            supporteds_value = child.text
+            obj.supporteds.append(supporteds_value)
+
+        return obj
+
 
 
 class EcucModuleDefBuilder:

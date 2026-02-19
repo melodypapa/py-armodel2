@@ -40,6 +40,40 @@ class DynamicPartAlternative(ARObject):
         self.initial_dynamic: Optional[Boolean] = None
         self.i_pdu: Optional[ISignalIPdu] = None
         self.selector_field: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DynamicPartAlternative":
+        """Deserialize XML element to DynamicPartAlternative object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DynamicPartAlternative object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse initial_dynamic
+        child = ARObject._find_child_element(element, "INITIAL-DYNAMIC")
+        if child is not None:
+            initial_dynamic_value = child.text
+            obj.initial_dynamic = initial_dynamic_value
+
+        # Parse i_pdu
+        child = ARObject._find_child_element(element, "I-PDU")
+        if child is not None:
+            i_pdu_value = ARObject._deserialize_by_tag(child, "ISignalIPdu")
+            obj.i_pdu = i_pdu_value
+
+        # Parse selector_field
+        child = ARObject._find_child_element(element, "SELECTOR-FIELD")
+        if child is not None:
+            selector_field_value = child.text
+            obj.selector_field = selector_field_value
+
+        return obj
+
 
 
 class DynamicPartAlternativeBuilder:

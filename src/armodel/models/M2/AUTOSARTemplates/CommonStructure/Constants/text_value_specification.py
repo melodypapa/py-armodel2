@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     VerbatimString,
 )
@@ -35,6 +36,28 @@ class TextValueSpecification(ValueSpecification):
         """Initialize TextValueSpecification."""
         super().__init__()
         self.value: Optional[VerbatimString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TextValueSpecification":
+        """Deserialize XML element to TextValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TextValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class TextValueSpecificationBuilder:

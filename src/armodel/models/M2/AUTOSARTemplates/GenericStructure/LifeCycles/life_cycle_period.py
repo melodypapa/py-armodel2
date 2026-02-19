@@ -37,6 +37,40 @@ class LifeCyclePeriod(ARObject):
         self.ar_release: Optional[RevisionLabelString] = None
         self.date: Optional[DateTime] = None
         self.product_release: Optional[RevisionLabelString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LifeCyclePeriod":
+        """Deserialize XML element to LifeCyclePeriod object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LifeCyclePeriod object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ar_release
+        child = ARObject._find_child_element(element, "AR-RELEASE")
+        if child is not None:
+            ar_release_value = child.text
+            obj.ar_release = ar_release_value
+
+        # Parse date
+        child = ARObject._find_child_element(element, "DATE")
+        if child is not None:
+            date_value = child.text
+            obj.date = date_value
+
+        # Parse product_release
+        child = ARObject._find_child_element(element, "PRODUCT-RELEASE")
+        if child is not None:
+            product_release_value = child.text
+            obj.product_release = product_release_value
+
+        return obj
+
 
 
 class LifeCyclePeriodBuilder:

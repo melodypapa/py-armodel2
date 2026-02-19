@@ -37,6 +37,34 @@ class IdsmSignatureSupportCp(ARObject):
         super().__init__()
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportCp":
+        """Deserialize XML element to IdsmSignatureSupportCp object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IdsmSignatureSupportCp object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
+            obj.authentication = authentication_value
+
+        # Parse crypto_service_key
+        child = ARObject._find_child_element(element, "CRYPTO-SERVICE-KEY")
+        if child is not None:
+            crypto_service_key_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.crypto_service_key = crypto_service_key_value
+
+        return obj
+
 
 
 class IdsmSignatureSupportCpBuilder:

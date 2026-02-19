@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.operation_in_atomic_swc_instance_ref import (
     OperationInAtomicSwcInstanceRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -39,6 +40,34 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_required_operation: Optional[ClientServerOperation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ROperationInAtomicSwcInstanceRef":
+        """Deserialize XML element to ROperationInAtomicSwcInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ROperationInAtomicSwcInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_r_port_prototype
+        child = ARObject._find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE")
+        if child is not None:
+            context_r_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
+            obj.context_r_port_prototype = context_r_port_prototype_value
+
+        # Parse target_required_operation
+        child = ARObject._find_child_element(element, "TARGET-REQUIRED-OPERATION")
+        if child is not None:
+            target_required_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.target_required_operation = target_required_operation_value
+
+        return obj
+
 
 
 class ROperationInAtomicSwcInstanceRefBuilder:

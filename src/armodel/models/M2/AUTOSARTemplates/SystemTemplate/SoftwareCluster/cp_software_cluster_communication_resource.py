@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_resource import (
     CpSoftwareClusterResource,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -34,6 +35,28 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         """Initialize CpSoftwareClusterCommunicationResource."""
         super().__init__()
         self.communication: Optional[CpSoftwareCluster] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterCommunicationResource":
+        """Deserialize XML element to CpSoftwareClusterCommunicationResource object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSoftwareClusterCommunicationResource object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication
+        child = ARObject._find_child_element(element, "COMMUNICATION")
+        if child is not None:
+            communication_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.communication = communication_value
+
+        return obj
+
 
 
 class CpSoftwareClusterCommunicationResourceBuilder:

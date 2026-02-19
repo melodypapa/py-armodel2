@@ -27,6 +27,22 @@ class UserDefinedCommunicationController(ARObject):
     def __init__(self) -> None:
         """Initialize UserDefinedCommunicationController."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedCommunicationController":
+        """Deserialize XML element to UserDefinedCommunicationController object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedCommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedCommunicationControllerBuilder:

@@ -37,6 +37,34 @@ class TimeSyncClientConfiguration(ARObject):
         super().__init__()
         self.ordered_masters: list[OrderedMaster] = []
         self.time_sync: Optional[TimeSyncTechnologyEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimeSyncClientConfiguration":
+        """Deserialize XML element to TimeSyncClientConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimeSyncClientConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ordered_masters (list)
+        obj.ordered_masters = []
+        for child in ARObject._find_all_child_elements(element, "ORDERED-MASTERS"):
+            ordered_masters_value = ARObject._deserialize_by_tag(child, "OrderedMaster")
+            obj.ordered_masters.append(ordered_masters_value)
+
+        # Parse time_sync
+        child = ARObject._find_child_element(element, "TIME-SYNC")
+        if child is not None:
+            time_sync_value = child.text
+            obj.time_sync = time_sync_value
+
+        return obj
+
 
 
 class TimeSyncClientConfigurationBuilder:

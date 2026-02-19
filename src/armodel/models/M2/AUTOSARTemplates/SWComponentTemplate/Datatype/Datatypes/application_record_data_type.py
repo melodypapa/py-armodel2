@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_composite_data_type import (
     ApplicationCompositeDataType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ApplicationRecordDataType(ApplicationCompositeDataType):
@@ -33,6 +34,28 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
         """Initialize ApplicationRecordDataType."""
         super().__init__()
         self.elements: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationRecordDataType":
+        """Deserialize XML element to ApplicationRecordDataType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationRecordDataType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse elements (list)
+        obj.elements = []
+        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
+            elements_value = child.text
+            obj.elements.append(elements_value)
+
+        return obj
+
 
 
 class ApplicationRecordDataTypeBuilder:

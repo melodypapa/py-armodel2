@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -53,6 +54,64 @@ class SwitchStreamIdentification(Identifiable):
         self.filter_action_vlan: Optional[PositiveInteger] = None
         self.ingress_ports: list[CouplingPort] = []
         self.stream_filter: Optional[SwitchStreamFilterRule] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwitchStreamIdentification":
+        """Deserialize XML element to SwitchStreamIdentification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwitchStreamIdentification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse egress_ports (list)
+        obj.egress_ports = []
+        for child in ARObject._find_all_child_elements(element, "EGRESS-PORTS"):
+            egress_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.egress_ports.append(egress_ports_value)
+
+        # Parse filter_action_block
+        child = ARObject._find_child_element(element, "FILTER-ACTION-BLOCK")
+        if child is not None:
+            filter_action_block_value = child.text
+            obj.filter_action_block = filter_action_block_value
+
+        # Parse filter_action_dest
+        child = ARObject._find_child_element(element, "FILTER-ACTION-DEST")
+        if child is not None:
+            filter_action_dest_value = child.text
+            obj.filter_action_dest = filter_action_dest_value
+
+        # Parse filter_action_drop
+        child = ARObject._find_child_element(element, "FILTER-ACTION-DROP")
+        if child is not None:
+            filter_action_drop_value = child.text
+            obj.filter_action_drop = filter_action_drop_value
+
+        # Parse filter_action_vlan
+        child = ARObject._find_child_element(element, "FILTER-ACTION-VLAN")
+        if child is not None:
+            filter_action_vlan_value = child.text
+            obj.filter_action_vlan = filter_action_vlan_value
+
+        # Parse ingress_ports (list)
+        obj.ingress_ports = []
+        for child in ARObject._find_all_child_elements(element, "INGRESS-PORTS"):
+            ingress_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.ingress_ports.append(ingress_ports_value)
+
+        # Parse stream_filter
+        child = ARObject._find_child_element(element, "STREAM-FILTER")
+        if child is not None:
+            stream_filter_value = ARObject._deserialize_by_tag(child, "SwitchStreamFilterRule")
+            obj.stream_filter = stream_filter_value
+
+        return obj
+
 
 
 class SwitchStreamIdentificationBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -32,6 +33,28 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         """Initialize DiagnosticAuthentication."""
         super().__init__()
         self.authentication: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthentication":
+        """Deserialize XML element to DiagnosticAuthentication object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAuthentication object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        return obj
+
 
 
 class DiagnosticAuthenticationBuilder:

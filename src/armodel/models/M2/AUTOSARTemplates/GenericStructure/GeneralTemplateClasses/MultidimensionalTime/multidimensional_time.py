@@ -37,6 +37,34 @@ class MultidimensionalTime(ARObject):
         super().__init__()
         self.cse_code: Optional[CseCodeType] = None
         self.cse_code_factor: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultidimensionalTime":
+        """Deserialize XML element to MultidimensionalTime object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultidimensionalTime object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cse_code
+        child = ARObject._find_child_element(element, "CSE-CODE")
+        if child is not None:
+            cse_code_value = child.text
+            obj.cse_code = cse_code_value
+
+        # Parse cse_code_factor
+        child = ARObject._find_child_element(element, "CSE-CODE-FACTOR")
+        if child is not None:
+            cse_code_factor_value = child.text
+            obj.cse_code_factor = cse_code_factor_value
+
+        return obj
+
 
 
 class MultidimensionalTimeBuilder:

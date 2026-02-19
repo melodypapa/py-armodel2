@@ -36,6 +36,34 @@ class NumericalOrText(ARObject):
         super().__init__()
         self.vf: Optional[Numerical] = None
         self.vt: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NumericalOrText":
+        """Deserialize XML element to NumericalOrText object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NumericalOrText object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse vf
+        child = ARObject._find_child_element(element, "VF")
+        if child is not None:
+            vf_value = child.text
+            obj.vf = vf_value
+
+        # Parse vt
+        child = ARObject._find_child_element(element, "VT")
+        if child is not None:
+            vt_value = child.text
+            obj.vt = vt_value
+
+        return obj
+
 
 
 class NumericalOrTextBuilder:

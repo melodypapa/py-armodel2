@@ -39,6 +39,40 @@ class LinMaster(ARObject):
         self.lin_slaves: list[LinSlaveConfig] = []
         self.time_base: Optional[TimeValue] = None
         self.time_base_jitter: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinMaster":
+        """Deserialize XML element to LinMaster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinMaster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lin_slaves (list)
+        obj.lin_slaves = []
+        for child in ARObject._find_all_child_elements(element, "LIN-SLAVES"):
+            lin_slaves_value = ARObject._deserialize_by_tag(child, "LinSlaveConfig")
+            obj.lin_slaves.append(lin_slaves_value)
+
+        # Parse time_base
+        child = ARObject._find_child_element(element, "TIME-BASE")
+        if child is not None:
+            time_base_value = child.text
+            obj.time_base = time_base_value
+
+        # Parse time_base_jitter
+        child = ARObject._find_child_element(element, "TIME-BASE-JITTER")
+        if child is not None:
+            time_base_jitter_value = child.text
+            obj.time_base_jitter = time_base_jitter_value
+
+        return obj
+
 
 
 class LinMasterBuilder:

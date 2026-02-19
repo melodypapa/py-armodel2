@@ -38,6 +38,40 @@ class TtcanCluster(ARObject):
         self.basic_cycle_length: Optional[Integer] = None
         self.ntu: Optional[TimeValue] = None
         self.operation_mode: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TtcanCluster":
+        """Deserialize XML element to TtcanCluster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TtcanCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse basic_cycle_length
+        child = ARObject._find_child_element(element, "BASIC-CYCLE-LENGTH")
+        if child is not None:
+            basic_cycle_length_value = child.text
+            obj.basic_cycle_length = basic_cycle_length_value
+
+        # Parse ntu
+        child = ARObject._find_child_element(element, "NTU")
+        if child is not None:
+            ntu_value = child.text
+            obj.ntu = ntu_value
+
+        # Parse operation_mode
+        child = ARObject._find_child_element(element, "OPERATION-MODE")
+        if child is not None:
+            operation_mode_value = child.text
+            obj.operation_mode = operation_mode_value
+
+        return obj
+
 
 
 class TtcanClusterBuilder:

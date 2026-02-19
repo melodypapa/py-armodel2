@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -43,6 +44,46 @@ class SwcToEcuMapping(Identifiable):
         self.controlled_hw: Optional[HwElement] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.processing_unit: Optional[HwElement] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcToEcuMapping":
+        """Deserialize XML element to SwcToEcuMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcToEcuMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse components (list)
+        obj.components = []
+        for child in ARObject._find_all_child_elements(element, "COMPONENTS"):
+            components_value = child.text
+            obj.components.append(components_value)
+
+        # Parse controlled_hw
+        child = ARObject._find_child_element(element, "CONTROLLED-HW")
+        if child is not None:
+            controlled_hw_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.controlled_hw = controlled_hw_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse processing_unit
+        child = ARObject._find_child_element(element, "PROCESSING-UNIT")
+        if child is not None:
+            processing_unit_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.processing_unit = processing_unit_value
+
+        return obj
+
 
 
 class SwcToEcuMappingBuilder:

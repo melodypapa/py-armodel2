@@ -43,6 +43,40 @@ class DdsCpServiceInstanceEvent(ARObject):
         self.dds_event_ref: Optional[ARRef] = None
         self.dds_event_qos: Optional[DdsCpQosProfile] = None
         self.dds_event_topic: Optional[DdsCpTopic] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpServiceInstanceEvent":
+        """Deserialize XML element to DdsCpServiceInstanceEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpServiceInstanceEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dds_event_ref
+        child = ARObject._find_child_element(element, "DDS-EVENT")
+        if child is not None:
+            dds_event_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.dds_event_ref = dds_event_ref_value
+
+        # Parse dds_event_qos
+        child = ARObject._find_child_element(element, "DDS-EVENT-QOS")
+        if child is not None:
+            dds_event_qos_value = ARObject._deserialize_by_tag(child, "DdsCpQosProfile")
+            obj.dds_event_qos = dds_event_qos_value
+
+        # Parse dds_event_topic
+        child = ARObject._find_child_element(element, "DDS-EVENT-TOPIC")
+        if child is not None:
+            dds_event_topic_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
+            obj.dds_event_topic = dds_event_topic_value
+
+        return obj
+
 
 
 class DdsCpServiceInstanceEventBuilder:

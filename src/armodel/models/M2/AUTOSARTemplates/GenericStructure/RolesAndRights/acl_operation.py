@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class AclOperation(ARElement):
@@ -32,6 +33,28 @@ class AclOperation(ARElement):
         """Initialize AclOperation."""
         super().__init__()
         self.implieds: list[AclOperation] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AclOperation":
+        """Deserialize XML element to AclOperation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AclOperation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse implieds (list)
+        obj.implieds = []
+        for child in ARObject._find_all_child_elements(element, "IMPLIEDS"):
+            implieds_value = ARObject._deserialize_by_tag(child, "AclOperation")
+            obj.implieds.append(implieds_value)
+
+        return obj
+
 
 
 class AclOperationBuilder:

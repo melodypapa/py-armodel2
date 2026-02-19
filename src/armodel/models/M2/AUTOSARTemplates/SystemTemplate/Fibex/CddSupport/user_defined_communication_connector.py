@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedCommunicationConnector(CommunicationConnector):
@@ -29,6 +30,22 @@ class UserDefinedCommunicationConnector(CommunicationConnector):
     def __init__(self) -> None:
         """Initialize UserDefinedCommunicationConnector."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedCommunicationConnector":
+        """Deserialize XML element to UserDefinedCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedCommunicationConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedCommunicationConnectorBuilder:

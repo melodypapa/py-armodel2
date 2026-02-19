@@ -485,13 +485,18 @@ def _generate_deserialize_method(
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace('_', '-')
 
+            # Convert "any (xxx)" types to "Any" for generation
+            effective_type = attr_type
+            if attr_type.startswith("any ("):
+                effective_type = "Any"
+
             # Generate parsing code based on type and multiplicity
             if multiplicity == "*":
                 # List type
                 code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
         for child in ARObject._find_all_child_elements(element, "{xml_tag}"):
-            {_generate_value_extraction_code(attr_type, "child", package_data, python_name)}
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name)}
             obj.{python_name}.append({python_name}_value)
 
 '''
@@ -500,7 +505,7 @@ def _generate_deserialize_method(
                 code += f'''        # Parse {python_name}
         child = ARObject._find_child_element(element, "{xml_tag}")
         if child is not None:
-            {_generate_value_extraction_code(attr_type, "child", package_data, python_name)}
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name)}
             obj.{python_name} = {python_name}_value
 
 '''
@@ -544,8 +549,9 @@ def _generate_value_extraction_code(
     
     # Handle class types
     else:
-        # Import the class and call its deserialize method
-        return f'''{value_var} = {attr_type}.deserialize({element_var})'''
+        # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
+        # This doesn't require the type to be imported at runtime
+        return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
 
 
 def _generate_ar_object_methods() -> str:

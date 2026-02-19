@@ -41,6 +41,46 @@ class EngineeringObject(ARObject, ABC):
         self.domain: Optional[NameToken] = None
         self.revision_label_strings: list[RevisionLabelString] = []
         self.short_label: NameToken = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EngineeringObject":
+        """Deserialize XML element to EngineeringObject object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EngineeringObject object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse domain
+        child = ARObject._find_child_element(element, "DOMAIN")
+        if child is not None:
+            domain_value = child.text
+            obj.domain = domain_value
+
+        # Parse revision_label_strings (list)
+        obj.revision_label_strings = []
+        for child in ARObject._find_all_child_elements(element, "REVISION-LABEL-STRINGS"):
+            revision_label_strings_value = child.text
+            obj.revision_label_strings.append(revision_label_strings_value)
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class EngineeringObjectBuilder:

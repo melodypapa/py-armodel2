@@ -44,6 +44,40 @@ class ServiceDependency(ARObject, ABC):
         self.assigned_data: Optional[RoleBasedDataTypeAssignment] = None
         self.diagnostic: Optional[ServiceDiagnosticRelevanceEnum] = None
         self.symbolic_name_props: Optional[SymbolicNameProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ServiceDependency":
+        """Deserialize XML element to ServiceDependency object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ServiceDependency object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse assigned_data
+        child = ARObject._find_child_element(element, "ASSIGNED-DATA")
+        if child is not None:
+            assigned_data_value = ARObject._deserialize_by_tag(child, "RoleBasedDataTypeAssignment")
+            obj.assigned_data = assigned_data_value
+
+        # Parse diagnostic
+        child = ARObject._find_child_element(element, "DIAGNOSTIC")
+        if child is not None:
+            diagnostic_value = child.text
+            obj.diagnostic = diagnostic_value
+
+        # Parse symbolic_name_props
+        child = ARObject._find_child_element(element, "SYMBOLIC-NAME-PROPS")
+        if child is not None:
+            symbolic_name_props_value = ARObject._deserialize_by_tag(child, "SymbolicNameProps")
+            obj.symbolic_name_props = symbolic_name_props_value
+
+        return obj
+
 
 
 class ServiceDependencyBuilder:

@@ -35,6 +35,28 @@ class ValueSpecification(ARObject, ABC):
         """Initialize ValueSpecification."""
         super().__init__()
         self.short_label: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ValueSpecification":
+        """Deserialize XML element to ValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class ValueSpecificationBuilder:

@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ServiceProviderEnum,
 )
@@ -45,6 +46,34 @@ class PortInterface(ARElement, ABC):
         super().__init__()
         self.is_service: Optional[Boolean] = None
         self.service_kind: Optional[ServiceProviderEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortInterface":
+        """Deserialize XML element to PortInterface object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortInterface object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse is_service
+        child = ARObject._find_child_element(element, "IS-SERVICE")
+        if child is not None:
+            is_service_value = child.text
+            obj.is_service = is_service_value
+
+        # Parse service_kind
+        child = ARObject._find_child_element(element, "SERVICE-KIND")
+        if child is not None:
+            service_kind_value = child.text
+            obj.service_kind = service_kind_value
+
+        return obj
+
 
 
 class PortInterfaceBuilder:

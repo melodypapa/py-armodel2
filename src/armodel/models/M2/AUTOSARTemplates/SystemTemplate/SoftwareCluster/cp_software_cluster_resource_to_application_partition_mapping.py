@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
     ApplicationPartition,
 )
@@ -39,6 +40,34 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         super().__init__()
         self.application: Optional[ApplicationPartition] = None
         self.resource: Optional[CpSoftwareCluster] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterResourceToApplicationPartitionMapping":
+        """Deserialize XML element to CpSoftwareClusterResourceToApplicationPartitionMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSoftwareClusterResourceToApplicationPartitionMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse application
+        child = ARObject._find_child_element(element, "APPLICATION")
+        if child is not None:
+            application_value = ARObject._deserialize_by_tag(child, "ApplicationPartition")
+            obj.application = application_value
+
+        # Parse resource
+        child = ARObject._find_child_element(element, "RESOURCE")
+        if child is not None:
+            resource_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.resource = resource_value
+
+        return obj
+
 
 
 class CpSoftwareClusterResourceToApplicationPartitionMappingBuilder:

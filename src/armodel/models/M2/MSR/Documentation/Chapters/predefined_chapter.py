@@ -32,6 +32,28 @@ class PredefinedChapter(ARObject):
         """Initialize PredefinedChapter."""
         super().__init__()
         self.chapter_model: ChapterModel = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PredefinedChapter":
+        """Deserialize XML element to PredefinedChapter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PredefinedChapter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapter_model
+        child = ARObject._find_child_element(element, "CHAPTER-MODEL")
+        if child is not None:
+            chapter_model_value = ARObject._deserialize_by_tag(child, "ChapterModel")
+            obj.chapter_model = chapter_model_value
+
+        return obj
+
 
 
 class PredefinedChapterBuilder:

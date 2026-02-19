@@ -32,6 +32,28 @@ class MultiLanguagePlainText(ARObject):
         """Initialize MultiLanguagePlainText."""
         super().__init__()
         self.l10: LPlainText = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiLanguagePlainText":
+        """Deserialize XML element to MultiLanguagePlainText object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiLanguagePlainText object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse l10
+        child = ARObject._find_child_element(element, "L10")
+        if child is not None:
+            l10_value = ARObject._deserialize_by_tag(child, "LPlainText")
+            obj.l10 = l10_value
+
+        return obj
+
 
 
 class MultiLanguagePlainTextBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformation_props import (
     TransformationProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedTransformationProps(TransformationProps):
@@ -29,6 +30,22 @@ class UserDefinedTransformationProps(TransformationProps):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationProps."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationProps":
+        """Deserialize XML element to UserDefinedTransformationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedTransformationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedTransformationPropsBuilder:

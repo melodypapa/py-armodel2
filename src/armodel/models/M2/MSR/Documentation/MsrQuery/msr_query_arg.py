@@ -35,6 +35,34 @@ class MsrQueryArg(ARObject):
         super().__init__()
         self.arg: String = None
         self.si: NameToken = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryArg":
+        """Deserialize XML element to MsrQueryArg object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryArg object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse arg
+        child = ARObject._find_child_element(element, "ARG")
+        if child is not None:
+            arg_value = child.text
+            obj.arg = arg_value
+
+        # Parse si
+        child = ARObject._find_child_element(element, "SI")
+        if child is not None:
+            si_value = child.text
+            obj.si = si_value
+
+        return obj
+
 
 
 class MsrQueryArgBuilder:

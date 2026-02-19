@@ -41,6 +41,40 @@ class RuleBasedValueSpecification(ARObject):
         self.arguments: Optional[RuleArguments] = None
         self.max_size_to_fill: Optional[Integer] = None
         self.rule: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleBasedValueSpecification":
+        """Deserialize XML element to RuleBasedValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleBasedValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse arguments
+        child = ARObject._find_child_element(element, "ARGUMENTS")
+        if child is not None:
+            arguments_value = ARObject._deserialize_by_tag(child, "RuleArguments")
+            obj.arguments = arguments_value
+
+        # Parse max_size_to_fill
+        child = ARObject._find_child_element(element, "MAX-SIZE-TO-FILL")
+        if child is not None:
+            max_size_to_fill_value = child.text
+            obj.max_size_to_fill = max_size_to_fill_value
+
+        # Parse rule
+        child = ARObject._find_child_element(element, "RULE")
+        if child is not None:
+            rule_value = child.text
+            obj.rule = rule_value
+
+        return obj
+
 
 
 class RuleBasedValueSpecificationBuilder:

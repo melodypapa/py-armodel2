@@ -35,6 +35,34 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         super().__init__()
         self.context_ref: Optional[ARRef] = None
         self.target: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationElementInParameterInstanceRef":
+        """Deserialize XML element to ImplementationElementInParameterInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationElementInParameterInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_ref
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.context_ref = context_ref_value
+
+        # Parse target
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_value = child.text
+            obj.target = target_value
+
+        return obj
+
 
 
 class ImplementationElementInParameterInstanceRefBuilder:

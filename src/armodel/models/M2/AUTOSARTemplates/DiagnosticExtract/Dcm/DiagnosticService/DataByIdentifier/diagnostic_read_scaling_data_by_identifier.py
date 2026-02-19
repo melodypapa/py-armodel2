@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.DataByIdentifier.diagnostic_data_by_identifier import (
     DiagnosticDataByIdentifier,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
@@ -31,6 +32,28 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         """Initialize DiagnosticReadScalingDataByIdentifier."""
         super().__init__()
         self.read_scaling: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadScalingDataByIdentifier":
+        """Deserialize XML element to DiagnosticReadScalingDataByIdentifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticReadScalingDataByIdentifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse read_scaling
+        child = ARObject._find_child_element(element, "READ-SCALING")
+        if child is not None:
+            read_scaling_value = child.text
+            obj.read_scaling = read_scaling_value
+
+        return obj
+
 
 
 class DiagnosticReadScalingDataByIdentifierBuilder:

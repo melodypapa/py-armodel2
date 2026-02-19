@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SignalServiceTranslationPropsSet(ARElement):
@@ -31,6 +32,28 @@ class SignalServiceTranslationPropsSet(ARElement):
         """Initialize SignalServiceTranslationPropsSet."""
         super().__init__()
         self.signal_service_propses: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationPropsSet":
+        """Deserialize XML element to SignalServiceTranslationPropsSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SignalServiceTranslationPropsSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse signal_service_propses (list)
+        obj.signal_service_propses = []
+        for child in ARObject._find_all_child_elements(element, "SIGNAL-SERVICE-PROPSES"):
+            signal_service_propses_value = child.text
+            obj.signal_service_propses.append(signal_service_propses_value)
+
+        return obj
+
 
 
 class SignalServiceTranslationPropsSetBuilder:

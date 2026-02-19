@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_configuration_entry import (
     LinConfigurationEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
     LinFrameTriggering,
@@ -35,6 +36,28 @@ class AssignFrameId(LinConfigurationEntry):
         """Initialize AssignFrameId."""
         super().__init__()
         self.assigned_frame_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AssignFrameId":
+        """Deserialize XML element to AssignFrameId object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AssignFrameId object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse assigned_frame_ref
+        child = ARObject._find_child_element(element, "ASSIGNED-FRAME")
+        if child is not None:
+            assigned_frame_ref_value = ARObject._deserialize_by_tag(child, "LinFrameTriggering")
+            obj.assigned_frame_ref = assigned_frame_ref_value
+
+        return obj
+
 
 
 class AssignFrameIdBuilder:

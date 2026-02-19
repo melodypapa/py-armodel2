@@ -32,6 +32,28 @@ class MacSecCipherSuiteConfig(ARObject):
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()
         self.cipher_suite: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacSecCipherSuiteConfig":
+        """Deserialize XML element to MacSecCipherSuiteConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacSecCipherSuiteConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cipher_suite
+        child = ARObject._find_child_element(element, "CIPHER-SUITE")
+        if child is not None:
+            cipher_suite_value = child.text
+            obj.cipher_suite = cipher_suite_value
+
+        return obj
+
 
 
 class MacSecCipherSuiteConfigBuilder:

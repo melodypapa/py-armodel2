@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.schedule_table_entry import (
     ScheduleTableEntry,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
     LinFrameTriggering,
@@ -35,6 +36,28 @@ class ApplicationEntry(ScheduleTableEntry):
         """Initialize ApplicationEntry."""
         super().__init__()
         self.frame_triggering_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationEntry":
+        """Deserialize XML element to ApplicationEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse frame_triggering_ref
+        child = ARObject._find_child_element(element, "FRAME-TRIGGERING")
+        if child is not None:
+            frame_triggering_ref_value = ARObject._deserialize_by_tag(child, "LinFrameTriggering")
+            obj.frame_triggering_ref = frame_triggering_ref_value
+
+        return obj
+
 
 
 class ApplicationEntryBuilder:

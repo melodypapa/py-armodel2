@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -34,6 +35,28 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         """Initialize TlsCryptoCipherSuiteProps."""
         super().__init__()
         self.tcp_ip_tls_use: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TlsCryptoCipherSuiteProps":
+        """Deserialize XML element to TlsCryptoCipherSuiteProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TlsCryptoCipherSuiteProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_tls_use
+        child = ARObject._find_child_element(element, "TCP-IP-TLS-USE")
+        if child is not None:
+            tcp_ip_tls_use_value = child.text
+            obj.tcp_ip_tls_use = tcp_ip_tls_use_value
+
+        return obj
+
 
 
 class TlsCryptoCipherSuitePropsBuilder:

@@ -40,6 +40,40 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.contexts: list[Any] = []
         self.target_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InnerPortGroupInCompositionInstanceRef":
+        """Deserialize XML element to InnerPortGroupInCompositionInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InnerPortGroupInCompositionInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = child.text
+            obj.contexts.append(contexts_value)
+
+        # Parse target_ref
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_ref_value = ARObject._deserialize_by_tag(child, "PortGroup")
+            obj.target_ref = target_ref_value
+
+        return obj
+
 
 
 class InnerPortGroupInCompositionInstanceRefBuilder:

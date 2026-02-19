@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
     TDEventVfbPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventOperationTypeEnum,
 )
@@ -39,6 +40,34 @@ class TDEventOperation(TDEventVfbPort):
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
         self.td_event: Optional[TDEventOperationTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventOperation":
+        """Deserialize XML element to TDEventOperation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventOperation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse operation
+        child = ARObject._find_child_element(element, "OPERATION")
+        if child is not None:
+            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operation = operation_value
+
+        # Parse td_event
+        child = ARObject._find_child_element(element, "TD-EVENT")
+        if child is not None:
+            td_event_value = child.text
+            obj.td_event = td_event_value
+
+        return obj
+
 
 
 class TDEventOperationBuilder:

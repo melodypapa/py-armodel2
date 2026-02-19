@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,6 +45,40 @@ class HwAttributeDef(Identifiable):
         self.hw_attributes: list[HwAttributeLiteralDef] = []
         self.is_required: Optional[Boolean] = None
         self.unit: Optional[Unit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwAttributeDef":
+        """Deserialize XML element to HwAttributeDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwAttributeDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse hw_attributes (list)
+        obj.hw_attributes = []
+        for child in ARObject._find_all_child_elements(element, "HW-ATTRIBUTES"):
+            hw_attributes_value = ARObject._deserialize_by_tag(child, "HwAttributeLiteralDef")
+            obj.hw_attributes.append(hw_attributes_value)
+
+        # Parse is_required
+        child = ARObject._find_child_element(element, "IS-REQUIRED")
+        if child is not None:
+            is_required_value = child.text
+            obj.is_required = is_required_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class HwAttributeDefBuilder:

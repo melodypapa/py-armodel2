@@ -43,6 +43,40 @@ class PortGroupInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target_ref: ARRef = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortGroupInSystemInstanceRef":
+        """Deserialize XML element to PortGroupInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortGroupInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "System")
+            obj.base = base_value
+
+        # Parse context
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context = context_value
+
+        # Parse target_ref
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_ref_value = ARObject._deserialize_by_tag(child, "PortGroup")
+            obj.target_ref = target_ref_value
+
+        return obj
+
 
 
 class PortGroupInSystemInstanceRefBuilder:

@@ -32,6 +32,28 @@ class DdsDurabilityService(ARObject):
         """Initialize DdsDurabilityService."""
         super().__init__()
         self.durability: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsDurabilityService":
+        """Deserialize XML element to DdsDurabilityService object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsDurabilityService object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse durability
+        child = ARObject._find_child_element(element, "DURABILITY")
+        if child is not None:
+            durability_value = child.text
+            obj.durability = durability_value
+
+        return obj
+
 
 
 class DdsDurabilityServiceBuilder:

@@ -45,6 +45,46 @@ class MacSecCryptoAlgoConfig(ARObject):
         self.cipher_suite: MacSecCipherSuiteConfig = None
         self.confidentiality: Optional[MacSecConfidentialityOffsetEnum] = None
         self.replay_protection: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MacSecCryptoAlgoConfig":
+        """Deserialize XML element to MacSecCryptoAlgoConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MacSecCryptoAlgoConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse capability
+        child = ARObject._find_child_element(element, "CAPABILITY")
+        if child is not None:
+            capability_value = child.text
+            obj.capability = capability_value
+
+        # Parse cipher_suite
+        child = ARObject._find_child_element(element, "CIPHER-SUITE")
+        if child is not None:
+            cipher_suite_value = ARObject._deserialize_by_tag(child, "MacSecCipherSuiteConfig")
+            obj.cipher_suite = cipher_suite_value
+
+        # Parse confidentiality
+        child = ARObject._find_child_element(element, "CONFIDENTIALITY")
+        if child is not None:
+            confidentiality_value = child.text
+            obj.confidentiality = confidentiality_value
+
+        # Parse replay_protection
+        child = ARObject._find_child_element(element, "REPLAY-PROTECTION")
+        if child is not None:
+            replay_protection_value = child.text
+            obj.replay_protection = replay_protection_value
+
+        return obj
+
 
 
 class MacSecCryptoAlgoConfigBuilder:

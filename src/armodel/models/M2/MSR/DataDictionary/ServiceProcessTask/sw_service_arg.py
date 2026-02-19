@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
@@ -52,6 +53,40 @@ class SwServiceArg(Identifiable):
         self.direction: Optional[ArgumentDirectionEnum] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwServiceArg":
+        """Deserialize XML element to SwServiceArg object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwServiceArg object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse direction
+        child = ARObject._find_child_element(element, "DIRECTION")
+        if child is not None:
+            direction_value = child.text
+            obj.direction = direction_value
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        return obj
+
 
 
 class SwServiceArgBuilder:

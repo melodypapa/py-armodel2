@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
 )
@@ -44,6 +45,34 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
         self.server_argument_impl: Optional[ServerArgumentImplPolicyEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ArgumentDataPrototype":
+        """Deserialize XML element to ArgumentDataPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ArgumentDataPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse direction
+        child = ARObject._find_child_element(element, "DIRECTION")
+        if child is not None:
+            direction_value = child.text
+            obj.direction = direction_value
+
+        # Parse server_argument_impl
+        child = ARObject._find_child_element(element, "SERVER-ARGUMENT-IMPL")
+        if child is not None:
+            server_argument_impl_value = child.text
+            obj.server_argument_impl = server_argument_impl_value
+
+        return obj
+
 
 
 class ArgumentDataPrototypeBuilder:

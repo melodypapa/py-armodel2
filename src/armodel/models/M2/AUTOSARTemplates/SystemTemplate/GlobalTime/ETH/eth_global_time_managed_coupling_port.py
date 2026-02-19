@@ -51,6 +51,64 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         self.pdelay_request: Optional[TimeValue] = None
         self.pdelay_resp_and: Optional[TimeValue] = None
         self.pdelay: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthGlobalTimeManagedCouplingPort":
+        """Deserialize XML element to EthGlobalTimeManagedCouplingPort object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthGlobalTimeManagedCouplingPort object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse coupling_port
+        child = ARObject._find_child_element(element, "COUPLING-PORT")
+        if child is not None:
+            coupling_port_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.coupling_port = coupling_port_value
+
+        # Parse global_time_port_role
+        child = ARObject._find_child_element(element, "GLOBAL-TIME-PORT-ROLE")
+        if child is not None:
+            global_time_port_role_value = child.text
+            obj.global_time_port_role = global_time_port_role_value
+
+        # Parse global_time_tx_period
+        child = ARObject._find_child_element(element, "GLOBAL-TIME-TX-PERIOD")
+        if child is not None:
+            global_time_tx_period_value = child.text
+            obj.global_time_tx_period = global_time_tx_period_value
+
+        # Parse pdelay_latency
+        child = ARObject._find_child_element(element, "PDELAY-LATENCY")
+        if child is not None:
+            pdelay_latency_value = child.text
+            obj.pdelay_latency = pdelay_latency_value
+
+        # Parse pdelay_request
+        child = ARObject._find_child_element(element, "PDELAY-REQUEST")
+        if child is not None:
+            pdelay_request_value = child.text
+            obj.pdelay_request = pdelay_request_value
+
+        # Parse pdelay_resp_and
+        child = ARObject._find_child_element(element, "PDELAY-RESP-AND")
+        if child is not None:
+            pdelay_resp_and_value = child.text
+            obj.pdelay_resp_and = pdelay_resp_and_value
+
+        # Parse pdelay
+        child = ARObject._find_child_element(element, "PDELAY")
+        if child is not None:
+            pdelay_value = child.text
+            obj.pdelay = pdelay_value
+
+        return obj
+
 
 
 class EthGlobalTimeManagedCouplingPortBuilder:

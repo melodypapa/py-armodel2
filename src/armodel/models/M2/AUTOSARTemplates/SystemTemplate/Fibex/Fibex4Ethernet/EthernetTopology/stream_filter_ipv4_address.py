@@ -32,6 +32,28 @@ class StreamFilterIpv4Address(ARObject):
         """Initialize StreamFilterIpv4Address."""
         super().__init__()
         self.ipv4_address: Optional[Ip4AddressString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterIpv4Address":
+        """Deserialize XML element to StreamFilterIpv4Address object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterIpv4Address object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ipv4_address
+        child = ARObject._find_child_element(element, "IPV4-ADDRESS")
+        if child is not None:
+            ipv4_address_value = child.text
+            obj.ipv4_address = ipv4_address_value
+
+        return obj
+
 
 
 class StreamFilterIpv4AddressBuilder:

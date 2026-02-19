@@ -42,6 +42,34 @@ class ModeRequestTypeMap(ARObject):
         super().__init__()
         self.implementation: Optional[AbstractImplementationDataType] = None
         self.mode_group_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeRequestTypeMap":
+        """Deserialize XML element to ModeRequestTypeMap object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeRequestTypeMap object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse implementation
+        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        if child is not None:
+            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
+            obj.implementation = implementation_value
+
+        # Parse mode_group_ref
+        child = ARObject._find_child_element(element, "MODE-GROUP")
+        if child is not None:
+            mode_group_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.mode_group_ref = mode_group_ref_value
+
+        return obj
+
 
 
 class ModeRequestTypeMapBuilder:

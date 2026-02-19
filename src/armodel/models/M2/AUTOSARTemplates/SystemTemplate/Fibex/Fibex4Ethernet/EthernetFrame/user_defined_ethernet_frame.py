@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetFrame.abstract_ethernet_frame import (
     AbstractEthernetFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UserDefinedEthernetFrame(AbstractEthernetFrame):
@@ -29,6 +30,22 @@ class UserDefinedEthernetFrame(AbstractEthernetFrame):
     def __init__(self) -> None:
         """Initialize UserDefinedEthernetFrame."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UserDefinedEthernetFrame":
+        """Deserialize XML element to UserDefinedEthernetFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UserDefinedEthernetFrame object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UserDefinedEthernetFrameBuilder:

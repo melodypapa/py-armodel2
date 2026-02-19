@@ -29,6 +29,28 @@ class SwGenericAxisParam(ARObject):
         """Initialize SwGenericAxisParam."""
         super().__init__()
         self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwGenericAxisParam":
+        """Deserialize XML element to SwGenericAxisParam object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwGenericAxisParam object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_generic_axis_param
+        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM")
+        if child is not None:
+            sw_generic_axis_param_value = ARObject._deserialize_by_tag(child, "SwGenericAxisParam")
+            obj.sw_generic_axis_param = sw_generic_axis_param_value
+
+        return obj
+
 
 
 class SwGenericAxisParamBuilder:

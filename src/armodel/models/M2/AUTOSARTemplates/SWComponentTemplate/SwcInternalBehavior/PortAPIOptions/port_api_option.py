@@ -58,6 +58,64 @@ class PortAPIOption(ARObject):
         self.port_arg_values: list[PortDefinedArgumentValue] = []
         self.supporteds: list[SwcSupportedFeature] = []
         self.transformer: Optional[DataTransformation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortAPIOption":
+        """Deserialize XML element to PortAPIOption object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortAPIOption object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse enable_take
+        child = ARObject._find_child_element(element, "ENABLE-TAKE")
+        if child is not None:
+            enable_take_value = child.text
+            obj.enable_take = enable_take_value
+
+        # Parse error_handling
+        child = ARObject._find_child_element(element, "ERROR-HANDLING")
+        if child is not None:
+            error_handling_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.error_handling = error_handling_value
+
+        # Parse indirect_api
+        child = ARObject._find_child_element(element, "INDIRECT-API")
+        if child is not None:
+            indirect_api_value = child.text
+            obj.indirect_api = indirect_api_value
+
+        # Parse port_ref
+        child = ARObject._find_child_element(element, "PORT")
+        if child is not None:
+            port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.port_ref = port_ref_value
+
+        # Parse port_arg_values (list)
+        obj.port_arg_values = []
+        for child in ARObject._find_all_child_elements(element, "PORT-ARG-VALUES"):
+            port_arg_values_value = ARObject._deserialize_by_tag(child, "PortDefinedArgumentValue")
+            obj.port_arg_values.append(port_arg_values_value)
+
+        # Parse supporteds (list)
+        obj.supporteds = []
+        for child in ARObject._find_all_child_elements(element, "SUPPORTEDS"):
+            supporteds_value = ARObject._deserialize_by_tag(child, "SwcSupportedFeature")
+            obj.supporteds.append(supporteds_value)
+
+        # Parse transformer
+        child = ARObject._find_child_element(element, "TRANSFORMER")
+        if child is not None:
+            transformer_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.transformer = transformer_value
+
+        return obj
+
 
 
 class PortAPIOptionBuilder:

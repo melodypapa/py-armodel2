@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
@@ -31,6 +32,28 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         """Initialize DiagnosticReadDataByPeriodicID."""
         super().__init__()
         self.read_data_class: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadDataByPeriodicID":
+        """Deserialize XML element to DiagnosticReadDataByPeriodicID object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticReadDataByPeriodicID object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse read_data_class
+        child = ARObject._find_child_element(element, "READ-DATA-CLASS")
+        if child is not None:
+            read_data_class_value = child.text
+            obj.read_data_class = read_data_class_value
+
+        return obj
+
 
 
 class DiagnosticReadDataByPeriodicIDBuilder:

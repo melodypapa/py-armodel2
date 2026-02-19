@@ -37,6 +37,40 @@ class RptSwPrototypingAccess(ARObject):
         self.rpt_hook_access: Optional[RptAccessEnum] = None
         self.rpt_read_access: Optional[RptAccessEnum] = None
         self.rpt_write_access: Optional[RptAccessEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RptSwPrototypingAccess":
+        """Deserialize XML element to RptSwPrototypingAccess object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RptSwPrototypingAccess object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rpt_hook_access
+        child = ARObject._find_child_element(element, "RPT-HOOK-ACCESS")
+        if child is not None:
+            rpt_hook_access_value = child.text
+            obj.rpt_hook_access = rpt_hook_access_value
+
+        # Parse rpt_read_access
+        child = ARObject._find_child_element(element, "RPT-READ-ACCESS")
+        if child is not None:
+            rpt_read_access_value = child.text
+            obj.rpt_read_access = rpt_read_access_value
+
+        # Parse rpt_write_access
+        child = ARObject._find_child_element(element, "RPT-WRITE-ACCESS")
+        if child is not None:
+            rpt_write_access_value = child.text
+            obj.rpt_write_access = rpt_write_access_value
+
+        return obj
+
 
 
 class RptSwPrototypingAccessBuilder:

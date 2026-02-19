@@ -58,6 +58,100 @@ class Ipv6NdpProps(ARObject):
         self.tcp_ip_ndp_rnd_rtr: Optional[Boolean] = None
         self.tcp_ip_ndp_rtr: Optional[TimeValue] = None
         self.tcp_ip_ndp_slaac: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6NdpProps":
+        """Deserialize XML element to Ipv6NdpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6NdpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_ndp_default
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-DEFAULT")
+        if child is not None:
+            tcp_ip_ndp_default_value = child.text
+            obj.tcp_ip_ndp_default = tcp_ip_ndp_default_value
+
+        # Parse tcp_ip_ndp_default_router_list_size
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
+        if child is not None:
+            tcp_ip_ndp_default_router_list_size_value = child.text
+            obj.tcp_ip_ndp_default_router_list_size = tcp_ip_ndp_default_router_list_size_value
+
+        # Parse tcp_ip_ndp
+        child = ARObject._find_child_element(element, "TCP-IP-NDP")
+        if child is not None:
+            tcp_ip_ndp_value = child.text
+            obj.tcp_ip_ndp = tcp_ip_ndp_value
+
+        # Parse tcp_ip_ndp_delay_first_probe_time_value
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
+        if child is not None:
+            tcp_ip_ndp_delay_first_probe_time_value_value = child.text
+            obj.tcp_ip_ndp_delay_first_probe_time_value = tcp_ip_ndp_delay_first_probe_time_value_value
+
+        # Parse tcp_ip_ndp_max_random_factor
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-MAX-RANDOM-FACTOR")
+        if child is not None:
+            tcp_ip_ndp_max_random_factor_value = child.text
+            obj.tcp_ip_ndp_max_random_factor = tcp_ip_ndp_max_random_factor_value
+
+        # Parse tcp_ip_ndp_max_rtr
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-MAX-RTR")
+        if child is not None:
+            tcp_ip_ndp_max_rtr_value = child.text
+            obj.tcp_ip_ndp_max_rtr = tcp_ip_ndp_max_rtr_value
+
+        # Parse tcp_ip_ndp_min_random_factor
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-MIN-RANDOM-FACTOR")
+        if child is not None:
+            tcp_ip_ndp_min_random_factor_value = child.text
+            obj.tcp_ip_ndp_min_random_factor = tcp_ip_ndp_min_random_factor_value
+
+        # Parse tcp_ip_ndp_num
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-NUM")
+        if child is not None:
+            tcp_ip_ndp_num_value = child.text
+            obj.tcp_ip_ndp_num = tcp_ip_ndp_num_value
+
+        # Parse tcp_ip_ndp_packet
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-PACKET")
+        if child is not None:
+            tcp_ip_ndp_packet_value = child.text
+            obj.tcp_ip_ndp_packet = tcp_ip_ndp_packet_value
+
+        # Parse tcp_ip_ndp_prefix
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-PREFIX")
+        if child is not None:
+            tcp_ip_ndp_prefix_value = child.text
+            obj.tcp_ip_ndp_prefix = tcp_ip_ndp_prefix_value
+
+        # Parse tcp_ip_ndp_rnd_rtr
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-RND-RTR")
+        if child is not None:
+            tcp_ip_ndp_rnd_rtr_value = child.text
+            obj.tcp_ip_ndp_rnd_rtr = tcp_ip_ndp_rnd_rtr_value
+
+        # Parse tcp_ip_ndp_rtr
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-RTR")
+        if child is not None:
+            tcp_ip_ndp_rtr_value = child.text
+            obj.tcp_ip_ndp_rtr = tcp_ip_ndp_rtr_value
+
+        # Parse tcp_ip_ndp_slaac
+        child = ARObject._find_child_element(element, "TCP-IP-NDP-SLAAC")
+        if child is not None:
+            tcp_ip_ndp_slaac_value = child.text
+            obj.tcp_ip_ndp_slaac = tcp_ip_ndp_slaac_value
+
+        return obj
+
 
 
 class Ipv6NdpPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     FrameEnum,
     PgwideEnum,
@@ -57,6 +58,58 @@ class MlFigure(Paginateable):
         self.l_graphics: list[LGraphic] = []
         self.pgwide: Optional[PgwideEnum] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MlFigure":
+        """Deserialize XML element to MlFigure object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MlFigure object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse figure_caption
+        child = ARObject._find_child_element(element, "FIGURE-CAPTION")
+        if child is not None:
+            figure_caption_value = ARObject._deserialize_by_tag(child, "Caption")
+            obj.figure_caption = figure_caption_value
+
+        # Parse frame
+        child = ARObject._find_child_element(element, "FRAME")
+        if child is not None:
+            frame_value = child.text
+            obj.frame = frame_value
+
+        # Parse help_entry
+        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        if child is not None:
+            help_entry_value = child.text
+            obj.help_entry = help_entry_value
+
+        # Parse l_graphics (list)
+        obj.l_graphics = []
+        for child in ARObject._find_all_child_elements(element, "L-GRAPHICS"):
+            l_graphics_value = ARObject._deserialize_by_tag(child, "LGraphic")
+            obj.l_graphics.append(l_graphics_value)
+
+        # Parse pgwide
+        child = ARObject._find_child_element(element, "PGWIDE")
+        if child is not None:
+            pgwide_value = child.text
+            obj.pgwide = pgwide_value
+
+        # Parse verbatim
+        child = ARObject._find_child_element(element, "VERBATIM")
+        if child is not None:
+            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            obj.verbatim = verbatim_value
+
+        return obj
+
 
 
 class MlFigureBuilder:

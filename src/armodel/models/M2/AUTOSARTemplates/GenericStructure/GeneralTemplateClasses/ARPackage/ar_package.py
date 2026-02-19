@@ -21,6 +21,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection.collectable_element import (
     CollectableElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
@@ -54,6 +55,40 @@ class ARPackage(CollectableElement):
         self.ar_packages: list[ARPackage] = []
         self.elements: list[PackageableElement] = []
         self.reference_base_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ARPackage":
+        """Deserialize XML element to ARPackage object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ARPackage object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ar_packages (list)
+        obj.ar_packages = []
+        for child in ARObject._find_all_child_elements(element, "AR-PACKAGES"):
+            ar_packages_value = ARObject._deserialize_by_tag(child, "ARPackage")
+            obj.ar_packages.append(ar_packages_value)
+
+        # Parse elements (list)
+        obj.elements = []
+        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
+            elements_value = ARObject._deserialize_by_tag(child, "PackageableElement")
+            obj.elements.append(elements_value)
+
+        # Parse reference_base_refs (list)
+        obj.reference_base_refs = []
+        for child in ARObject._find_all_child_elements(element, "REFERENCE-BASES"):
+            reference_base_refs_value = ARObject._deserialize_by_tag(child, "ReferenceBase")
+            obj.reference_base_refs.append(reference_base_refs_value)
+
+        return obj
+
 
 
 class ARPackageBuilder:

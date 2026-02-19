@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BlockState(Identifiable):
@@ -29,6 +30,22 @@ class BlockState(Identifiable):
     def __init__(self) -> None:
         """Initialize BlockState."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlockState":
+        """Deserialize XML element to BlockState object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlockState object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BlockStateBuilder:

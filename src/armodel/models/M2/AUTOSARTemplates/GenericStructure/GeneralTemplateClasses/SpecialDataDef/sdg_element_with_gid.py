@@ -33,6 +33,28 @@ class SdgElementWithGid(ARObject, ABC):
         """Initialize SdgElementWithGid."""
         super().__init__()
         self.gid: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgElementWithGid":
+        """Deserialize XML element to SdgElementWithGid object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgElementWithGid object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse gid
+        child = ARObject._find_child_element(element, "GID")
+        if child is not None:
+            gid_value = child.text
+            obj.gid = gid_value
+
+        return obj
+
 
 
 class SdgElementWithGidBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_item import (
     BinaryManifestItem,
 )
@@ -34,6 +35,28 @@ class BinaryManifestResourceDefinition(Identifiable):
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
         self.item_definitions: list[BinaryManifestItem] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestResourceDefinition":
+        """Deserialize XML element to BinaryManifestResourceDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestResourceDefinition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse item_definitions (list)
+        obj.item_definitions = []
+        for child in ARObject._find_all_child_elements(element, "ITEM-DEFINITIONS"):
+            item_definitions_value = ARObject._deserialize_by_tag(child, "BinaryManifestItem")
+            obj.item_definitions.append(item_definitions_value)
+
+        return obj
+
 
 
 class BinaryManifestResourceDefinitionBuilder:

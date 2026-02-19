@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -54,6 +55,58 @@ class SwitchStreamFilterEntry(Identifiable):
         self.max_sdu_size: Optional[PositiveInteger] = None
         self.stream_gate: Optional[SwitchStreamGateEntry] = None
         self.stream: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwitchStreamFilterEntry":
+        """Deserialize XML element to SwitchStreamFilterEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwitchStreamFilterEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse asynchronous
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS")
+        if child is not None:
+            asynchronous_value = ARObject._deserialize_by_tag(child, "CouplingPort")
+            obj.asynchronous = asynchronous_value
+
+        # Parse filter_priority
+        child = ARObject._find_child_element(element, "FILTER-PRIORITY")
+        if child is not None:
+            filter_priority_value = child.text
+            obj.filter_priority = filter_priority_value
+
+        # Parse flow_metering
+        child = ARObject._find_child_element(element, "FLOW-METERING")
+        if child is not None:
+            flow_metering_value = ARObject._deserialize_by_tag(child, "SwitchFlowMeteringEntry")
+            obj.flow_metering = flow_metering_value
+
+        # Parse max_sdu_size
+        child = ARObject._find_child_element(element, "MAX-SDU-SIZE")
+        if child is not None:
+            max_sdu_size_value = child.text
+            obj.max_sdu_size = max_sdu_size_value
+
+        # Parse stream_gate
+        child = ARObject._find_child_element(element, "STREAM-GATE")
+        if child is not None:
+            stream_gate_value = ARObject._deserialize_by_tag(child, "SwitchStreamGateEntry")
+            obj.stream_gate = stream_gate_value
+
+        # Parse stream
+        child = ARObject._find_child_element(element, "STREAM")
+        if child is not None:
+            stream_value = child.text
+            obj.stream = stream_value
+
+        return obj
+
 
 
 class SwitchStreamFilterEntryBuilder:

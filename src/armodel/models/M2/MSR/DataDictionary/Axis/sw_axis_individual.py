@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -70,6 +71,70 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_min_axis: Optional[Integer] = None
         self.sw_variable_ref_proxie_refs: list[ARRef] = []
         self.unit: Optional[Unit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwAxisIndividual":
+        """Deserialize XML element to SwAxisIndividual object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwAxisIndividual object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse compu_method
+        child = ARObject._find_child_element(element, "COMPU-METHOD")
+        if child is not None:
+            compu_method_value = ARObject._deserialize_by_tag(child, "CompuMethod")
+            obj.compu_method = compu_method_value
+
+        # Parse data_constr
+        child = ARObject._find_child_element(element, "DATA-CONSTR")
+        if child is not None:
+            data_constr_value = ARObject._deserialize_by_tag(child, "DataConstr")
+            obj.data_constr = data_constr_value
+
+        # Parse input_variable
+        child = ARObject._find_child_element(element, "INPUT-VARIABLE")
+        if child is not None:
+            input_variable_value = ARObject._deserialize_by_tag(child, "ApplicationPrimitiveDataType")
+            obj.input_variable = input_variable_value
+
+        # Parse sw_axis_generic
+        child = ARObject._find_child_element(element, "SW-AXIS-GENERIC")
+        if child is not None:
+            sw_axis_generic_value = ARObject._deserialize_by_tag(child, "SwAxisGeneric")
+            obj.sw_axis_generic = sw_axis_generic_value
+
+        # Parse sw_max_axis
+        child = ARObject._find_child_element(element, "SW-MAX-AXIS")
+        if child is not None:
+            sw_max_axis_value = child.text
+            obj.sw_max_axis = sw_max_axis_value
+
+        # Parse sw_min_axis
+        child = ARObject._find_child_element(element, "SW-MIN-AXIS")
+        if child is not None:
+            sw_min_axis_value = child.text
+            obj.sw_min_axis = sw_min_axis_value
+
+        # Parse sw_variable_ref_proxie_refs (list)
+        obj.sw_variable_ref_proxie_refs = []
+        for child in ARObject._find_all_child_elements(element, "SW-VARIABLE-REF-PROXIES"):
+            sw_variable_ref_proxie_refs_value = ARObject._deserialize_by_tag(child, "SwVariableRefProxy")
+            obj.sw_variable_ref_proxie_refs.append(sw_variable_ref_proxie_refs_value)
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class SwAxisIndividualBuilder:

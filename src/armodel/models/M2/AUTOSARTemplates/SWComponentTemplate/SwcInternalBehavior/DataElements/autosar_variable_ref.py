@@ -36,6 +36,34 @@ class AutosarVariableRef(ARObject):
         super().__init__()
         self.autosar_variable: Optional[Any] = None
         self.local_variable_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AutosarVariableRef":
+        """Deserialize XML element to AutosarVariableRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AutosarVariableRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse autosar_variable
+        child = ARObject._find_child_element(element, "AUTOSAR-VARIABLE")
+        if child is not None:
+            autosar_variable_value = child.text
+            obj.autosar_variable = autosar_variable_value
+
+        # Parse local_variable_ref
+        child = ARObject._find_child_element(element, "LOCAL-VARIABLE")
+        if child is not None:
+            local_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.local_variable_ref = local_variable_ref_value
+
+        return obj
+
 
 
 class AutosarVariableRefBuilder:

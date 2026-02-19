@@ -41,6 +41,40 @@ class RuleBasedValueCont(ARObject):
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.unit: Optional[Unit] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleBasedValueCont":
+        """Deserialize XML element to RuleBasedValueCont object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleBasedValueCont object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rule_based
+        child = ARObject._find_child_element(element, "RULE-BASED")
+        if child is not None:
+            rule_based_value = child.text
+            obj.rule_based = rule_based_value
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class RuleBasedValueContBuilder:

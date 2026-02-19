@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -36,6 +37,34 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         super().__init__()
         self.custom_sub: Optional[PositiveInteger] = None
         self.ecu_reset_class: Optional[DiagnosticEcuReset] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticEcuReset":
+        """Deserialize XML element to DiagnosticEcuReset object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticEcuReset object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse custom_sub
+        child = ARObject._find_child_element(element, "CUSTOM-SUB")
+        if child is not None:
+            custom_sub_value = child.text
+            obj.custom_sub = custom_sub_value
+
+        # Parse ecu_reset_class
+        child = ARObject._find_child_element(element, "ECU-RESET-CLASS")
+        if child is not None:
+            ecu_reset_class_value = ARObject._deserialize_by_tag(child, "DiagnosticEcuReset")
+            obj.ecu_reset_class = ecu_reset_class_value
+
+        return obj
+
 
 
 class DiagnosticEcuResetBuilder:

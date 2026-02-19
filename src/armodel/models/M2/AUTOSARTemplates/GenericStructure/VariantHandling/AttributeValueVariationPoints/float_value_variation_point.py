@@ -27,6 +27,22 @@ class FloatValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize FloatValueVariationPoint."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FloatValueVariationPoint":
+        """Deserialize XML element to FloatValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FloatValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class FloatValueVariationPointBuilder:

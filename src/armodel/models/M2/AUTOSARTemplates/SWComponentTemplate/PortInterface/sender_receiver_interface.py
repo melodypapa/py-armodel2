@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_interface import (
     DataInterface,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.invalidation_policy import (
     InvalidationPolicy,
@@ -50,6 +51,40 @@ class SenderReceiverInterface(DataInterface):
         self.data_element_refs: list[ARRef] = []
         self.invalidation_policy_policies: list[InvalidationPolicy] = []
         self.meta_data_item_set_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverInterface":
+        """Deserialize XML element to SenderReceiverInterface object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderReceiverInterface object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_refs (list)
+        obj.data_element_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-ELEMENTS"):
+            data_element_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_refs.append(data_element_refs_value)
+
+        # Parse invalidation_policy_policies (list)
+        obj.invalidation_policy_policies = []
+        for child in ARObject._find_all_child_elements(element, "INVALIDATION-POLICY-POLICIES"):
+            invalidation_policy_policies_value = ARObject._deserialize_by_tag(child, "InvalidationPolicy")
+            obj.invalidation_policy_policies.append(invalidation_policy_policies_value)
+
+        # Parse meta_data_item_set_refs (list)
+        obj.meta_data_item_set_refs = []
+        for child in ARObject._find_all_child_elements(element, "META-DATA-ITEM-SETS"):
+            meta_data_item_set_refs_value = ARObject._deserialize_by_tag(child, "MetaDataItemSet")
+            obj.meta_data_item_set_refs.append(meta_data_item_set_refs_value)
+
+        return obj
+
 
 
 class SenderReceiverInterfaceBuilder:

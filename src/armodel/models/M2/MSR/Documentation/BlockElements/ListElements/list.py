@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ListEnum,
@@ -43,6 +44,34 @@ class List(Paginateable):
         super().__init__()
         self.item: Item = None
         self.type_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "List":
+        """Deserialize XML element to List object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized List object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse item
+        child = ARObject._find_child_element(element, "ITEM")
+        if child is not None:
+            item_value = ARObject._deserialize_by_tag(child, "Item")
+            obj.item = item_value
+
+        # Parse type_ref
+        child = ARObject._find_child_element(element, "TYPE")
+        if child is not None:
+            type_ref_value = child.text
+            obj.type_ref = type_ref_value
+
+        return obj
+
 
 
 class ListBuilder:

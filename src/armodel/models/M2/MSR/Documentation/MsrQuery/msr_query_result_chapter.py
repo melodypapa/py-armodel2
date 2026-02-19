@@ -35,6 +35,28 @@ class MsrQueryResultChapter(ARObject):
         """Initialize MsrQueryResultChapter."""
         super().__init__()
         self.chapters: list[Chapter] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryResultChapter":
+        """Deserialize XML element to MsrQueryResultChapter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryResultChapter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapters (list)
+        obj.chapters = []
+        for child in ARObject._find_all_child_elements(element, "CHAPTERS"):
+            chapters_value = ARObject._deserialize_by_tag(child, "Chapter")
+            obj.chapters.append(chapters_value)
+
+        return obj
+
 
 
 class MsrQueryResultChapterBuilder:

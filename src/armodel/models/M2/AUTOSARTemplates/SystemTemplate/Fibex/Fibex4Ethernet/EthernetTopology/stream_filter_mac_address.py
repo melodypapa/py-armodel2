@@ -32,6 +32,28 @@ class StreamFilterMACAddress(ARObject):
         """Initialize StreamFilterMACAddress."""
         super().__init__()
         self.mac_address_string: Optional[MacAddressString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterMACAddress":
+        """Deserialize XML element to StreamFilterMACAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterMACAddress object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mac_address_string
+        child = ARObject._find_child_element(element, "MAC-ADDRESS-STRING")
+        if child is not None:
+            mac_address_string_value = child.text
+            obj.mac_address_string = mac_address_string_value
+
+        return obj
+
 
 
 class StreamFilterMACAddressBuilder:

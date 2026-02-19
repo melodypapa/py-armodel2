@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
     IEEE1722TpAcfBus,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
@@ -31,6 +32,28 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         """Initialize IEEE1722TpAcfCan."""
         super().__init__()
         self.message_type_message_type_enum: Optional[IEEE1722TpAcfCan] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfCan":
+        """Deserialize XML element to IEEE1722TpAcfCan object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfCan object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse message_type_message_type_enum
+        child = ARObject._find_child_element(element, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
+        if child is not None:
+            message_type_message_type_enum_value = ARObject._deserialize_by_tag(child, "IEEE1722TpAcfCan")
+            obj.message_type_message_type_enum = message_type_message_type_enum_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfCanBuilder:

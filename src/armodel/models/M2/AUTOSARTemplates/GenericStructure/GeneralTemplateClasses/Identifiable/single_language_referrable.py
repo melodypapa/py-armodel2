@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_long_name import (
     SingleLanguageLongName,
 )
@@ -35,6 +36,28 @@ class SingleLanguageReferrable(Referrable, ABC):
         """Initialize SingleLanguageReferrable."""
         super().__init__()
         self.long_name1: Optional[SingleLanguageLongName] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SingleLanguageReferrable":
+        """Deserialize XML element to SingleLanguageReferrable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SingleLanguageReferrable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse long_name1
+        child = ARObject._find_child_element(element, "LONG-NAME1")
+        if child is not None:
+            long_name1_value = ARObject._deserialize_by_tag(child, "SingleLanguageLongName")
+            obj.long_name1 = long_name1_value
+
+        return obj
+
 
 
 class SingleLanguageReferrableBuilder:

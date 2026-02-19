@@ -27,6 +27,22 @@ class Br(ARObject):
     def __init__(self) -> None:
         """Initialize Br."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Br":
+        """Deserialize XML element to Br object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Br object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BrBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_communication_resource_props import (
     CpSoftwareClusterCommunicationResourceProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster import (
     DataConsistencyPolicyEnum,
     SendIndicationEnum,
@@ -37,6 +38,34 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         super().__init__()
         self.data: Optional[DataConsistencyPolicyEnum] = None
         self.send_indication_enum: Optional[SendIndicationEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataComProps":
+        """Deserialize XML element to DataComProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataComProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data
+        child = ARObject._find_child_element(element, "DATA")
+        if child is not None:
+            data_value = child.text
+            obj.data = data_value
+
+        # Parse send_indication_enum
+        child = ARObject._find_child_element(element, "SEND-INDICATION-ENUM")
+        if child is not None:
+            send_indication_enum_value = child.text
+            obj.send_indication_enum = send_indication_enum_value
+
+        return obj
+
 
 
 class DataComPropsBuilder:

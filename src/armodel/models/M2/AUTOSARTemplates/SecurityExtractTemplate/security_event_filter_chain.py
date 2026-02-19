@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_one_every_n_filter import (
     SecurityEventOneEveryNFilter,
 )
@@ -46,6 +47,46 @@ class SecurityEventFilterChain(IdsCommonElement):
         self.one_every_n: Optional[SecurityEventOneEveryNFilter] = None
         self.state: Optional[SecurityEventStateFilter] = None
         self.threshold: Optional[SecurityEventThresholdFilter] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventFilterChain":
+        """Deserialize XML element to SecurityEventFilterChain object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventFilterChain object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse aggregation
+        child = ARObject._find_child_element(element, "AGGREGATION")
+        if child is not None:
+            aggregation_value = child.text
+            obj.aggregation = aggregation_value
+
+        # Parse one_every_n
+        child = ARObject._find_child_element(element, "ONE-EVERY-N")
+        if child is not None:
+            one_every_n_value = ARObject._deserialize_by_tag(child, "SecurityEventOneEveryNFilter")
+            obj.one_every_n = one_every_n_value
+
+        # Parse state
+        child = ARObject._find_child_element(element, "STATE")
+        if child is not None:
+            state_value = ARObject._deserialize_by_tag(child, "SecurityEventStateFilter")
+            obj.state = state_value
+
+        # Parse threshold
+        child = ARObject._find_child_element(element, "THRESHOLD")
+        if child is not None:
+            threshold_value = ARObject._deserialize_by_tag(child, "SecurityEventThresholdFilter")
+            obj.threshold = threshold_value
+
+        return obj
+
 
 
 class SecurityEventFilterChainBuilder:

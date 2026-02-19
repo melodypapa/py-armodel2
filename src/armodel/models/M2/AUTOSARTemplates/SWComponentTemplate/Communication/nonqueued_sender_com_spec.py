@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender_com_spec import (
     SenderComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (
     DataFilter,
 )
@@ -43,6 +44,34 @@ class NonqueuedSenderComSpec(SenderComSpec):
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
         self.init_value: Optional[ValueSpecification] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NonqueuedSenderComSpec":
+        """Deserialize XML element to NonqueuedSenderComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NonqueuedSenderComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_filter
+        child = ARObject._find_child_element(element, "DATA-FILTER")
+        if child is not None:
+            data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            obj.data_filter = data_filter_value
+
+        # Parse init_value
+        child = ARObject._find_child_element(element, "INIT-VALUE")
+        if child is not None:
+            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.init_value = init_value_value
+
+        return obj
+
 
 
 class NonqueuedSenderComSpecBuilder:

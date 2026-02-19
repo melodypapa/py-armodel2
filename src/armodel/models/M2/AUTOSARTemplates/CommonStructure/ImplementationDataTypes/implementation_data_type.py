@@ -19,6 +19,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
     AbstractImplementationDataType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     NameToken,
@@ -57,6 +58,52 @@ class ImplementationDataType(AbstractImplementationDataType):
         self.sub_elements: list[ImplementationDataTypeElement] = []
         self.symbol_props: Optional[SymbolProps] = None
         self.type_emitter: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataType":
+        """Deserialize XML element to ImplementationDataType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationDataType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dynamic_array_size_profile
+        child = ARObject._find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
+        if child is not None:
+            dynamic_array_size_profile_value = child.text
+            obj.dynamic_array_size_profile = dynamic_array_size_profile_value
+
+        # Parse is_struct_with_optional_element
+        child = ARObject._find_child_element(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
+        if child is not None:
+            is_struct_with_optional_element_value = child.text
+            obj.is_struct_with_optional_element = is_struct_with_optional_element_value
+
+        # Parse sub_elements (list)
+        obj.sub_elements = []
+        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
+            sub_elements_value = ARObject._deserialize_by_tag(child, "ImplementationDataTypeElement")
+            obj.sub_elements.append(sub_elements_value)
+
+        # Parse symbol_props
+        child = ARObject._find_child_element(element, "SYMBOL-PROPS")
+        if child is not None:
+            symbol_props_value = ARObject._deserialize_by_tag(child, "SymbolProps")
+            obj.symbol_props = symbol_props_value
+
+        # Parse type_emitter
+        child = ARObject._find_child_element(element, "TYPE-EMITTER")
+        if child is not None:
+            type_emitter_value = child.text
+            obj.type_emitter = type_emitter_value
+
+        return obj
+
 
 
 class ImplementationDataTypeBuilder:

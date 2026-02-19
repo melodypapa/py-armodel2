@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
     SwRecordLayoutGroup,
@@ -36,6 +37,28 @@ class SwRecordLayout(ARElement):
         """Initialize SwRecordLayout."""
         super().__init__()
         self.sw_record_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwRecordLayout":
+        """Deserialize XML element to SwRecordLayout object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwRecordLayout object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_record_ref
+        child = ARObject._find_child_element(element, "SW-RECORD")
+        if child is not None:
+            sw_record_ref_value = ARObject._deserialize_by_tag(child, "SwRecordLayoutGroup")
+            obj.sw_record_ref = sw_record_ref_value
+
+        return obj
+
 
 
 class SwRecordLayoutBuilder:

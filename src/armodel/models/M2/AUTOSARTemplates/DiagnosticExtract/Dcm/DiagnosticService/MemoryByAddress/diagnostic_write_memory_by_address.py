@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_addressable_range_access import (
     DiagnosticMemoryAddressableRangeAccess,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticWriteMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
@@ -31,6 +32,28 @@ class DiagnosticWriteMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
         """Initialize DiagnosticWriteMemoryByAddress."""
         super().__init__()
         self.write_class: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticWriteMemoryByAddress":
+        """Deserialize XML element to DiagnosticWriteMemoryByAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticWriteMemoryByAddress object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse write_class
+        child = ARObject._find_child_element(element, "WRITE-CLASS")
+        if child is not None:
+            write_class_value = child.text
+            obj.write_class = write_class_value
+
+        return obj
+
 
 
 class DiagnosticWriteMemoryByAddressBuilder:

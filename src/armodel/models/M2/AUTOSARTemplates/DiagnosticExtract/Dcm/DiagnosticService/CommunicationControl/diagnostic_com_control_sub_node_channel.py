@@ -29,6 +29,28 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
         self.sub_node: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSubNodeChannel":
+        """Deserialize XML element to DiagnosticComControlSubNodeChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticComControlSubNodeChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sub_node
+        child = ARObject._find_child_element(element, "SUB-NODE")
+        if child is not None:
+            sub_node_value = child.text
+            obj.sub_node = sub_node_value
+
+        return obj
+
 
 
 class DiagnosticComControlSubNodeChannelBuilder:

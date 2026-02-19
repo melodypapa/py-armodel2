@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.so_con_i_pdu_identifier import (
     SoConIPduIdentifier,
 )
@@ -34,6 +35,28 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         """Initialize SocketConnectionIpduIdentifierSet."""
         super().__init__()
         self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SocketConnectionIpduIdentifierSet":
+        """Deserialize XML element to SocketConnectionIpduIdentifierSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SocketConnectionIpduIdentifierSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse i_pdu_identifiers (list)
+        obj.i_pdu_identifiers = []
+        for child in ARObject._find_all_child_elements(element, "I-PDU-IDENTIFIERS"):
+            i_pdu_identifiers_value = ARObject._deserialize_by_tag(child, "SoConIPduIdentifier")
+            obj.i_pdu_identifiers.append(i_pdu_identifiers_value)
+
+        return obj
+
 
 
 class SocketConnectionIpduIdentifierSetBuilder:

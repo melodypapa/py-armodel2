@@ -1103,6 +1103,40 @@ class ARObject:
         return [elem for elem in parent if elem.tag.endswith(tag)]
 
     @staticmethod
+    def _deserialize_by_tag(element: ET.Element, class_name: str) -> "ARObject":
+        """Deserialize XML element using class name (for TYPE_CHECKING compatibility).
+
+        This method is used when a class type is only available in TYPE_CHECKING blocks
+        but needs to be used at runtime in deserialize() methods. It uses the
+        ModelFactory to get the class from the tag name without importing it.
+
+        Args:
+            element: XML element to deserialize
+            class_name: Name of the class to deserialize to
+
+        Returns:
+            Deserialized object
+        """
+        # Get the class from ModelFactory
+        from armodel.serialization.model_factory import ModelFactory
+        from armodel.serialization.name_converter import NameConverter
+
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
+
+        # Convert class name to XML tag
+        xml_tag = NameConverter.to_xml_tag(class_name)
+
+        # Get the class from the factory
+        cls = factory.get_class(xml_tag)
+        if cls is None:
+            raise ValueError(f"Unknown class: {class_name}")
+
+        # Call the deserialize method on the class
+        return cls.deserialize(element)
+
+    @staticmethod
     def _strip_namespace(tag: str) -> str:
         """Strip namespace from XML tag.
 

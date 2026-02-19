@@ -33,6 +33,28 @@ class LanguageSpecific(ARObject, ABC):
         """Initialize LanguageSpecific."""
         super().__init__()
         self.l: LEnum = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LanguageSpecific":
+        """Deserialize XML element to LanguageSpecific object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LanguageSpecific object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse l
+        child = ARObject._find_child_element(element, "L")
+        if child is not None:
+            l_value = child.text
+            obj.l = l_value
+
+        return obj
+
 
 
 class LanguageSpecificBuilder:

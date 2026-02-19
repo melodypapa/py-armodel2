@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_config import (
     TpConfig,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
     IEEE1722TpConnection,
 )
@@ -34,6 +35,28 @@ class IEEE1722TpConfig(TpConfig):
         """Initialize IEEE1722TpConfig."""
         super().__init__()
         self.tp_connections: list[IEEE1722TpConnection] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpConfig":
+        """Deserialize XML element to IEEE1722TpConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tp_connections (list)
+        obj.tp_connections = []
+        for child in ARObject._find_all_child_elements(element, "TP-CONNECTIONS"):
+            tp_connections_value = ARObject._deserialize_by_tag(child, "IEEE1722TpConnection")
+            obj.tp_connections.append(tp_connections_value)
+
+        return obj
+
 
 
 class IEEE1722TpConfigBuilder:

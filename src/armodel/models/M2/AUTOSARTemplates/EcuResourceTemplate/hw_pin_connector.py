@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
 )
@@ -34,6 +35,28 @@ class HwPinConnector(Describable):
         """Initialize HwPinConnector."""
         super().__init__()
         self.hw_pins: list[HwPin] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwPinConnector":
+        """Deserialize XML element to HwPinConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwPinConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse hw_pins (list)
+        obj.hw_pins = []
+        for child in ARObject._find_all_child_elements(element, "HW-PINS"):
+            hw_pins_value = ARObject._deserialize_by_tag(child, "HwPin")
+            obj.hw_pins.append(hw_pins_value)
+
+        return obj
+
 
 
 class HwPinConnectorBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
@@ -31,6 +32,28 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
         """Initialize DiagnosticRequestFileTransfer."""
         super().__init__()
         self.request_file: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticRequestFileTransfer":
+        """Deserialize XML element to DiagnosticRequestFileTransfer object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticRequestFileTransfer object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse request_file
+        child = ARObject._find_child_element(element, "REQUEST-FILE")
+        if child is not None:
+            request_file_value = child.text
+            obj.request_file = request_file_value
+
+        return obj
+
 
 
 class DiagnosticRequestFileTransferBuilder:

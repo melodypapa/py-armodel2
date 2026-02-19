@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping import (
     OsTaskPreemptabilityEnum,
 )
@@ -42,6 +43,40 @@ class OsTaskProxy(ARElement):
         self.period: Optional[TimeValue] = None
         self.preemptability: Optional[OsTaskPreemptabilityEnum] = None
         self.priority: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "OsTaskProxy":
+        """Deserialize XML element to OsTaskProxy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized OsTaskProxy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse period
+        child = ARObject._find_child_element(element, "PERIOD")
+        if child is not None:
+            period_value = child.text
+            obj.period = period_value
+
+        # Parse preemptability
+        child = ARObject._find_child_element(element, "PREEMPTABILITY")
+        if child is not None:
+            preemptability_value = child.text
+            obj.preemptability = preemptability_value
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        return obj
+
 
 
 class OsTaskProxyBuilder:

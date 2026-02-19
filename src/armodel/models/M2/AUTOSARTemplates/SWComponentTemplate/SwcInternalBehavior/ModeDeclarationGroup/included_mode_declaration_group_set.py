@@ -38,6 +38,34 @@ class IncludedModeDeclarationGroupSet(ARObject):
         super().__init__()
         self.mode_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IncludedModeDeclarationGroupSet":
+        """Deserialize XML element to IncludedModeDeclarationGroupSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IncludedModeDeclarationGroupSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mode_refs (list)
+        obj.mode_refs = []
+        for child in ARObject._find_all_child_elements(element, "MODES"):
+            mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.mode_refs.append(mode_refs_value)
+
+        # Parse prefix
+        child = ARObject._find_child_element(element, "PREFIX")
+        if child is not None:
+            prefix_value = child.text
+            obj.prefix = prefix_value
+
+        return obj
+
 
 
 class IncludedModeDeclarationGroupSetBuilder:

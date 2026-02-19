@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
@@ -57,6 +58,58 @@ class ISignalToIPduMapping(Identifiable):
         self.start_position: Optional[UnlimitedInteger] = None
         self.transfer_property_enum: Optional[TransferPropertyEnum] = None
         self.update: Optional[UnlimitedInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ISignalToIPduMapping":
+        """Deserialize XML element to ISignalToIPduMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ISignalToIPduMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse i_signal
+        child = ARObject._find_child_element(element, "I-SIGNAL")
+        if child is not None:
+            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
+            obj.i_signal = i_signal_value
+
+        # Parse i_signal_group_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP")
+        if child is not None:
+            i_signal_group_ref_value = ARObject._deserialize_by_tag(child, "ISignalGroup")
+            obj.i_signal_group_ref = i_signal_group_ref_value
+
+        # Parse packing_byte
+        child = ARObject._find_child_element(element, "PACKING-BYTE")
+        if child is not None:
+            packing_byte_value = child.text
+            obj.packing_byte = packing_byte_value
+
+        # Parse start_position
+        child = ARObject._find_child_element(element, "START-POSITION")
+        if child is not None:
+            start_position_value = child.text
+            obj.start_position = start_position_value
+
+        # Parse transfer_property_enum
+        child = ARObject._find_child_element(element, "TRANSFER-PROPERTY-ENUM")
+        if child is not None:
+            transfer_property_enum_value = child.text
+            obj.transfer_property_enum = transfer_property_enum_value
+
+        # Parse update
+        child = ARObject._find_child_element(element, "UPDATE")
+        if child is not None:
+            update_value = child.text
+            obj.update = update_value
+
+        return obj
+
 
 
 class ISignalToIPduMappingBuilder:

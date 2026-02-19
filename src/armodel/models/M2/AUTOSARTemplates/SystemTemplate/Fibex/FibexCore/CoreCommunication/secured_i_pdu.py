@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     SecuredPduHeaderEnum,
@@ -53,6 +54,64 @@ class SecuredIPdu(IPdu):
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecuredIPdu":
+        """Deserialize XML element to SecuredIPdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecuredIPdu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse dynamic
+        child = ARObject._find_child_element(element, "DYNAMIC")
+        if child is not None:
+            dynamic_value = child.text
+            obj.dynamic = dynamic_value
+
+        # Parse freshness_props
+        child = ARObject._find_child_element(element, "FRESHNESS-PROPS")
+        if child is not None:
+            freshness_props_value = child.text
+            obj.freshness_props = freshness_props_value
+
+        # Parse payload_ref
+        child = ARObject._find_child_element(element, "PAYLOAD")
+        if child is not None:
+            payload_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.payload_ref = payload_ref_value
+
+        # Parse secure
+        child = ARObject._find_child_element(element, "SECURE")
+        if child is not None:
+            secure_value = child.text
+            obj.secure = secure_value
+
+        # Parse use_as
+        child = ARObject._find_child_element(element, "USE-AS")
+        if child is not None:
+            use_as_value = child.text
+            obj.use_as = use_as_value
+
+        # Parse use_secured_pdu
+        child = ARObject._find_child_element(element, "USE-SECURED-PDU")
+        if child is not None:
+            use_secured_pdu_value = child.text
+            obj.use_secured_pdu = use_secured_pdu_value
+
+        return obj
+
 
 
 class SecuredIPduBuilder:

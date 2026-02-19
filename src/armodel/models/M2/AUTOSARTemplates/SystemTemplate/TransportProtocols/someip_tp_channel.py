@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -39,6 +40,40 @@ class SomeipTpChannel(Identifiable):
         self.burst_size: Optional[PositiveInteger] = None
         self.rx_timeout_time: Optional[TimeValue] = None
         self.separation_time: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SomeipTpChannel":
+        """Deserialize XML element to SomeipTpChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SomeipTpChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse burst_size
+        child = ARObject._find_child_element(element, "BURST-SIZE")
+        if child is not None:
+            burst_size_value = child.text
+            obj.burst_size = burst_size_value
+
+        # Parse rx_timeout_time
+        child = ARObject._find_child_element(element, "RX-TIMEOUT-TIME")
+        if child is not None:
+            rx_timeout_time_value = child.text
+            obj.rx_timeout_time = rx_timeout_time_value
+
+        # Parse separation_time
+        child = ARObject._find_child_element(element, "SEPARATION-TIME")
+        if child is not None:
+            separation_time_value = child.text
+            obj.separation_time = separation_time_value
+
+        return obj
+
 
 
 class SomeipTpChannelBuilder:

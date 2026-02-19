@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class IPv6ExtHeaderFilterList(Identifiable):
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
         self.allowed_i_pv6_exts: list[PositiveInteger] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPv6ExtHeaderFilterList":
+        """Deserialize XML element to IPv6ExtHeaderFilterList object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPv6ExtHeaderFilterList object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse allowed_i_pv6_exts (list)
+        obj.allowed_i_pv6_exts = []
+        for child in ARObject._find_all_child_elements(element, "ALLOWED-I-PV6-EXTS"):
+            allowed_i_pv6_exts_value = child.text
+            obj.allowed_i_pv6_exts.append(allowed_i_pv6_exts_value)
+
+        return obj
+
 
 
 class IPv6ExtHeaderFilterListBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.DynamicallyDefineData import (
     DiagnosticHandleDDDIConfigurationEnum,
 )
@@ -41,6 +42,40 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         self.check_per: Optional[Boolean] = None
         self.configuration: Optional[DiagnosticHandleDDDIConfigurationEnum] = None
         self.subfunctions: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticDynamicallyDefineDataIdentifierClass":
+        """Deserialize XML element to DiagnosticDynamicallyDefineDataIdentifierClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticDynamicallyDefineDataIdentifierClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse check_per
+        child = ARObject._find_child_element(element, "CHECK-PER")
+        if child is not None:
+            check_per_value = child.text
+            obj.check_per = check_per_value
+
+        # Parse configuration
+        child = ARObject._find_child_element(element, "CONFIGURATION")
+        if child is not None:
+            configuration_value = child.text
+            obj.configuration = configuration_value
+
+        # Parse subfunctions (list)
+        obj.subfunctions = []
+        for child in ARObject._find_all_child_elements(element, "SUBFUNCTIONS"):
+            subfunctions_value = child.text
+            obj.subfunctions.append(subfunctions_value)
+
+        return obj
+
 
 
 class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:

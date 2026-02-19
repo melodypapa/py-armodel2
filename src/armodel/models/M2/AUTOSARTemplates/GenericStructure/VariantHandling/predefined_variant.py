@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
     SwSystemconstantValueSet,
 )
@@ -40,6 +41,40 @@ class PredefinedVariant(ARElement):
         self.included_variants: list[PredefinedVariant] = []
         self.post_build_variants: list[Any] = []
         self.sws: list[SwSystemconstantValueSet] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PredefinedVariant":
+        """Deserialize XML element to PredefinedVariant object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PredefinedVariant object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse included_variants (list)
+        obj.included_variants = []
+        for child in ARObject._find_all_child_elements(element, "INCLUDED-VARIANTS"):
+            included_variants_value = ARObject._deserialize_by_tag(child, "PredefinedVariant")
+            obj.included_variants.append(included_variants_value)
+
+        # Parse post_build_variants (list)
+        obj.post_build_variants = []
+        for child in ARObject._find_all_child_elements(element, "POST-BUILD-VARIANTS"):
+            post_build_variants_value = child.text
+            obj.post_build_variants.append(post_build_variants_value)
+
+        # Parse sws (list)
+        obj.sws = []
+        for child in ARObject._find_all_child_elements(element, "SWS"):
+            sws_value = ARObject._deserialize_by_tag(child, "SwSystemconstantValueSet")
+            obj.sws.append(sws_value)
+
+        return obj
+
 
 
 class PredefinedVariantBuilder:

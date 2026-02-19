@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.data_format_element_scope import (
     DataFormatElementScope,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -34,6 +35,28 @@ class ConcreteClassTailoring(DataFormatElementScope):
         """Initialize ConcreteClassTailoring."""
         super().__init__()
         self.validation_root: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConcreteClassTailoring":
+        """Deserialize XML element to ConcreteClassTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConcreteClassTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse validation_root
+        child = ARObject._find_child_element(element, "VALIDATION-ROOT")
+        if child is not None:
+            validation_root_value = child.text
+            obj.validation_root = validation_root_value
+
+        return obj
+
 
 
 class ConcreteClassTailoringBuilder:

@@ -27,6 +27,22 @@ class SingleLanguageLongName(ARObject):
     def __init__(self) -> None:
         """Initialize SingleLanguageLongName."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SingleLanguageLongName":
+        """Deserialize XML element to SingleLanguageLongName object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SingleLanguageLongName object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SingleLanguageLongNameBuilder:

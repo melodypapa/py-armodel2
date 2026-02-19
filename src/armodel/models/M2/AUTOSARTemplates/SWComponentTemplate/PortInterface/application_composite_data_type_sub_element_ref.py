@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
     SubElementRef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
@@ -31,6 +32,28 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         """Initialize ApplicationCompositeDataTypeSubElementRef."""
         super().__init__()
         self.application: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeDataTypeSubElementRef":
+        """Deserialize XML element to ApplicationCompositeDataTypeSubElementRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationCompositeDataTypeSubElementRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse application
+        child = ARObject._find_child_element(element, "APPLICATION")
+        if child is not None:
+            application_value = child.text
+            obj.application = application_value
+
+        return obj
+
 
 
 class ApplicationCompositeDataTypeSubElementRefBuilder:

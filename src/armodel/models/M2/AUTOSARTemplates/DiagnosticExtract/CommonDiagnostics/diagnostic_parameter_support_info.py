@@ -32,6 +32,28 @@ class DiagnosticParameterSupportInfo(ARObject):
         """Initialize DiagnosticParameterSupportInfo."""
         super().__init__()
         self.support_info_bit: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticParameterSupportInfo":
+        """Deserialize XML element to DiagnosticParameterSupportInfo object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticParameterSupportInfo object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse support_info_bit
+        child = ARObject._find_child_element(element, "SUPPORT-INFO-BIT")
+        if child is not None:
+            support_info_bit_value = child.text
+            obj.support_info_bit = support_info_bit_value
+
+        return obj
+
 
 
 class DiagnosticParameterSupportInfoBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
     ValueSpecification,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -30,6 +31,22 @@ class AbstractRuleBasedValueSpecification(ValueSpecification, ABC):
     def __init__(self) -> None:
         """Initialize AbstractRuleBasedValueSpecification."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractRuleBasedValueSpecification":
+        """Deserialize XML element to AbstractRuleBasedValueSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractRuleBasedValueSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class AbstractRuleBasedValueSpecificationBuilder:

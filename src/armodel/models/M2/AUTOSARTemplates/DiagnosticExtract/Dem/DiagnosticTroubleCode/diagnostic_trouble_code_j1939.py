@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
     DiagnosticTroubleCode,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,6 +49,52 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         self.kind: Optional[DiagnosticTroubleCode] = None
         self.node: Optional[DiagnosticJ1939Node] = None
         self.spn: Optional[DiagnosticJ1939Spn] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeJ1939":
+        """Deserialize XML element to DiagnosticTroubleCodeJ1939 object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticTroubleCodeJ1939 object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dtc_props_props
+        child = ARObject._find_child_element(element, "DTC-PROPS-PROPS")
+        if child is not None:
+            dtc_props_props_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
+            obj.dtc_props_props = dtc_props_props_value
+
+        # Parse fmi
+        child = ARObject._find_child_element(element, "FMI")
+        if child is not None:
+            fmi_value = child.text
+            obj.fmi = fmi_value
+
+        # Parse kind
+        child = ARObject._find_child_element(element, "KIND")
+        if child is not None:
+            kind_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
+            obj.kind = kind_value
+
+        # Parse node
+        child = ARObject._find_child_element(element, "NODE")
+        if child is not None:
+            node_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Node")
+            obj.node = node_value
+
+        # Parse spn
+        child = ARObject._find_child_element(element, "SPN")
+        if child is not None:
+            spn_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Spn")
+            obj.spn = spn_value
+
+        return obj
+
 
 
 class DiagnosticTroubleCodeJ1939Builder:

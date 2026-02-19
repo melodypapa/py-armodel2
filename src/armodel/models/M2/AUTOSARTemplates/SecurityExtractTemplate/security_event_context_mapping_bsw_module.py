@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_context_mapping import (
     SecurityEventContextMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -34,6 +35,28 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         """Initialize SecurityEventContextMappingBswModule."""
         super().__init__()
         self.affected_bsw: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventContextMappingBswModule":
+        """Deserialize XML element to SecurityEventContextMappingBswModule object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventContextMappingBswModule object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse affected_bsw
+        child = ARObject._find_child_element(element, "AFFECTED-BSW")
+        if child is not None:
+            affected_bsw_value = child.text
+            obj.affected_bsw = affected_bsw_value
+
+        return obj
+
 
 
 class SecurityEventContextMappingBswModuleBuilder:

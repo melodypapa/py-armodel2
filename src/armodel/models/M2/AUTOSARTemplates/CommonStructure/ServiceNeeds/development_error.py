@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.traced_failure import (
     TracedFailure,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DevelopmentError(TracedFailure):
@@ -30,6 +31,22 @@ class DevelopmentError(TracedFailure):
     def __init__(self) -> None:
         """Initialize DevelopmentError."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DevelopmentError":
+        """Deserialize XML element to DevelopmentError object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DevelopmentError object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class DevelopmentErrorBuilder:

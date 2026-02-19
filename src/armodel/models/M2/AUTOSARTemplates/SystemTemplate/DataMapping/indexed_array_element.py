@@ -36,6 +36,40 @@ class IndexedArrayElement(ARObject):
         self.application_array: Optional[Any] = None
         self.implementation: Optional[Any] = None
         self.index: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IndexedArrayElement":
+        """Deserialize XML element to IndexedArrayElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IndexedArrayElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse application_array
+        child = ARObject._find_child_element(element, "APPLICATION-ARRAY")
+        if child is not None:
+            application_array_value = child.text
+            obj.application_array = application_array_value
+
+        # Parse implementation
+        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        if child is not None:
+            implementation_value = child.text
+            obj.implementation = implementation_value
+
+        # Parse index
+        child = ARObject._find_child_element(element, "INDEX")
+        if child is not None:
+            index_value = child.text
+            obj.index = index_value
+
+        return obj
+
 
 
 class IndexedArrayElementBuilder:

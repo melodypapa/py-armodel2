@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
     AutosarDataType,
 )
@@ -38,6 +39,28 @@ class AutosarDataPrototype(DataPrototype, ABC):
         """Initialize AutosarDataPrototype."""
         super().__init__()
         self.type: Optional[AutosarDataType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AutosarDataPrototype":
+        """Deserialize XML element to AutosarDataPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AutosarDataPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type
+        child = ARObject._find_child_element(element, "TYPE")
+        if child is not None:
+            type_value = ARObject._deserialize_by_tag(child, "AutosarDataType")
+            obj.type = type_value
+
+        return obj
+
 
 
 class AutosarDataPrototypeBuilder:

@@ -38,6 +38,34 @@ class InstantiationRTEEventProps(ARObject, ABC):
         super().__init__()
         self.refined_event: Optional[RTEEvent] = None
         self.short_label: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InstantiationRTEEventProps":
+        """Deserialize XML element to InstantiationRTEEventProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InstantiationRTEEventProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse refined_event
+        child = ARObject._find_child_element(element, "REFINED-EVENT")
+        if child is not None:
+            refined_event_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            obj.refined_event = refined_event_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class InstantiationRTEEventPropsBuilder:

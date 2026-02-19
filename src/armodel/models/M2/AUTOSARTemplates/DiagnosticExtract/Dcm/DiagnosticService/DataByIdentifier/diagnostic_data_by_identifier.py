@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
     DiagnosticAbstractDataIdentifier,
 )
@@ -35,6 +36,28 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()
         self.data_identifier: Optional[DiagnosticAbstractDataIdentifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticDataByIdentifier":
+        """Deserialize XML element to DiagnosticDataByIdentifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticDataByIdentifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_identifier
+        child = ARObject._find_child_element(element, "DATA-IDENTIFIER")
+        if child is not None:
+            data_identifier_value = ARObject._deserialize_by_tag(child, "DiagnosticAbstractDataIdentifier")
+            obj.data_identifier = data_identifier_value
+
+        return obj
+
 
 
 class DiagnosticDataByIdentifierBuilder:

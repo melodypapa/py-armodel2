@@ -42,6 +42,40 @@ class SenderRecArrayElementMapping(ARObject):
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
         self.indexed_array: Optional[IndexedArrayElement] = None
         self.system_signal: Optional[SystemSignal] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderRecArrayElementMapping":
+        """Deserialize XML element to SenderRecArrayElementMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderRecArrayElementMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse complex_type
+        child = ARObject._find_child_element(element, "COMPLEX-TYPE")
+        if child is not None:
+            complex_type_value = ARObject._deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
+            obj.complex_type = complex_type_value
+
+        # Parse indexed_array
+        child = ARObject._find_child_element(element, "INDEXED-ARRAY")
+        if child is not None:
+            indexed_array_value = ARObject._deserialize_by_tag(child, "IndexedArrayElement")
+            obj.indexed_array = indexed_array_value
+
+        # Parse system_signal
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        if child is not None:
+            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
+            obj.system_signal = system_signal_value
+
+        return obj
+
 
 
 class SenderRecArrayElementMappingBuilder:

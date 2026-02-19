@@ -53,6 +53,46 @@ class Describable(ARObject, ABC):
         self.category: Optional[CategoryString] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Describable":
+        """Deserialize XML element to Describable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Describable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse admin_data
+        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        if child is not None:
+            admin_data_value = ARObject._deserialize_by_tag(child, "AdminData")
+            obj.admin_data = admin_data_value
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        return obj
+
 
 
 class DescribableBuilder:

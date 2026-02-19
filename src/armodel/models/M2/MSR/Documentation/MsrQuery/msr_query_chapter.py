@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
@@ -42,6 +43,34 @@ class MsrQueryChapter(Paginateable):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result_chapter: Optional[MsrQueryResultChapter] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryChapter":
+        """Deserialize XML element to MsrQueryChapter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryChapter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse msr_query_props
+        child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")
+        if child is not None:
+            msr_query_props_value = ARObject._deserialize_by_tag(child, "MsrQueryProps")
+            obj.msr_query_props = msr_query_props_value
+
+        # Parse msr_query_result_chapter
+        child = ARObject._find_child_element(element, "MSR-QUERY-RESULT-CHAPTER")
+        if child is not None:
+            msr_query_result_chapter_value = ARObject._deserialize_by_tag(child, "MsrQueryResultChapter")
+            obj.msr_query_result_chapter = msr_query_result_chapter_value
+
+        return obj
+
 
 
 class MsrQueryChapterBuilder:

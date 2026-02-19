@@ -32,6 +32,28 @@ class DdsTransportPriority(ARObject):
         """Initialize DdsTransportPriority."""
         super().__init__()
         self.transport_priority: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsTransportPriority":
+        """Deserialize XML element to DdsTransportPriority object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsTransportPriority object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse transport_priority
+        child = ARObject._find_child_element(element, "TRANSPORT-PRIORITY")
+        if child is not None:
+            transport_priority_value = child.text
+            obj.transport_priority = transport_priority_value
+
+        return obj
+
 
 
 class DdsTransportPriorityBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
     AbstractSecurityEventFilter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -37,6 +38,34 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         super().__init__()
         self.interval_length: Optional[TimeValue] = None
         self.threshold: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventThresholdFilter":
+        """Deserialize XML element to SecurityEventThresholdFilter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventThresholdFilter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interval_length
+        child = ARObject._find_child_element(element, "INTERVAL-LENGTH")
+        if child is not None:
+            interval_length_value = child.text
+            obj.interval_length = interval_length_value
+
+        # Parse threshold
+        child = ARObject._find_child_element(element, "THRESHOLD")
+        if child is not None:
+            threshold_value = child.text
+            obj.threshold = threshold_value
+
+        return obj
+
 
 
 class SecurityEventThresholdFilterBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -48,6 +49,64 @@ class CryptoKeySlot(Identifiable):
         self.key_slot_contents: list[Any] = []
         self.slot_capacity: Optional[PositiveInteger] = None
         self.slot_type: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CryptoKeySlot":
+        """Deserialize XML element to CryptoKeySlot object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CryptoKeySlot object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse allocate_shadow
+        child = ARObject._find_child_element(element, "ALLOCATE-SHADOW")
+        if child is not None:
+            allocate_shadow_value = child.text
+            obj.allocate_shadow = allocate_shadow_value
+
+        # Parse crypto_alg_id
+        child = ARObject._find_child_element(element, "CRYPTO-ALG-ID")
+        if child is not None:
+            crypto_alg_id_value = child.text
+            obj.crypto_alg_id = crypto_alg_id_value
+
+        # Parse crypto_object_type_enum
+        child = ARObject._find_child_element(element, "CRYPTO-OBJECT-TYPE-ENUM")
+        if child is not None:
+            crypto_object_type_enum_value = child.text
+            obj.crypto_object_type_enum = crypto_object_type_enum_value
+
+        # Parse key_slot_allowed
+        child = ARObject._find_child_element(element, "KEY-SLOT-ALLOWED")
+        if child is not None:
+            key_slot_allowed_value = child.text
+            obj.key_slot_allowed = key_slot_allowed_value
+
+        # Parse key_slot_contents (list)
+        obj.key_slot_contents = []
+        for child in ARObject._find_all_child_elements(element, "KEY-SLOT-CONTENTS"):
+            key_slot_contents_value = child.text
+            obj.key_slot_contents.append(key_slot_contents_value)
+
+        # Parse slot_capacity
+        child = ARObject._find_child_element(element, "SLOT-CAPACITY")
+        if child is not None:
+            slot_capacity_value = child.text
+            obj.slot_capacity = slot_capacity_value
+
+        # Parse slot_type
+        child = ARObject._find_child_element(element, "SLOT-TYPE")
+        if child is not None:
+            slot_type_value = child.text
+            obj.slot_type = slot_type_value
+
+        return obj
+
 
 
 class CryptoKeySlotBuilder:

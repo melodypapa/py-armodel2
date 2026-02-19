@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -34,6 +35,28 @@ class DdsCpPartition(Identifiable):
         """Initialize DdsCpPartition."""
         super().__init__()
         self.partition_name: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsCpPartition":
+        """Deserialize XML element to DdsCpPartition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsCpPartition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse partition_name
+        child = ARObject._find_child_element(element, "PARTITION-NAME")
+        if child is not None:
+            partition_name_value = child.text
+            obj.partition_name = partition_name_value
+
+        return obj
+
 
 
 class DdsCpPartitionBuilder:

@@ -32,6 +32,28 @@ class UdpProps(ARObject):
         """Initialize UdpProps."""
         super().__init__()
         self.udp_ttl: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UdpProps":
+        """Deserialize XML element to UdpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UdpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse udp_ttl
+        child = ARObject._find_child_element(element, "UDP-TTL")
+        if child is not None:
+            udp_ttl_value = child.text
+            obj.udp_ttl = udp_ttl_value
+
+        return obj
+
 
 
 class UdpPropsBuilder:

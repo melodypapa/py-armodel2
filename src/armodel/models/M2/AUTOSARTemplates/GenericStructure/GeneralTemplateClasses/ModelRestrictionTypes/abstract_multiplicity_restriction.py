@@ -37,6 +37,34 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         super().__init__()
         self.lower_multiplicity: Optional[PositiveInteger] = None
         self.upper_multiplicity: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractMultiplicityRestriction":
+        """Deserialize XML element to AbstractMultiplicityRestriction object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractMultiplicityRestriction object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lower_multiplicity
+        child = ARObject._find_child_element(element, "LOWER-MULTIPLICITY")
+        if child is not None:
+            lower_multiplicity_value = child.text
+            obj.lower_multiplicity = lower_multiplicity_value
+
+        # Parse upper_multiplicity
+        child = ARObject._find_child_element(element, "UPPER-MULTIPLICITY")
+        if child is not None:
+            upper_multiplicity_value = child.text
+            obj.upper_multiplicity = upper_multiplicity_value
+
+        return obj
+
 
 
 class AbstractMultiplicityRestrictionBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_master import (
     GlobalTimeMaster,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeCrcSupportEnum,
 )
@@ -39,6 +40,34 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         super().__init__()
         self.crc_secured: Optional[GlobalTimeCrcSupportEnum] = None
         self.sync: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeCanMaster":
+        """Deserialize XML element to GlobalTimeCanMaster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeCanMaster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse crc_secured
+        child = ARObject._find_child_element(element, "CRC-SECURED")
+        if child is not None:
+            crc_secured_value = child.text
+            obj.crc_secured = crc_secured_value
+
+        # Parse sync
+        child = ARObject._find_child_element(element, "SYNC")
+        if child is not None:
+            sync_value = child.text
+            obj.sync = sync_value
+
+        return obj
+
 
 
 class GlobalTimeCanMasterBuilder:

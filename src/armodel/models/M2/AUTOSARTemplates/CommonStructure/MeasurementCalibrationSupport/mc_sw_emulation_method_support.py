@@ -47,6 +47,52 @@ class McSwEmulationMethodSupport(ARObject):
         self.element_groups: list[McParameterElementGroup] = []
         self.reference_table_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McSwEmulationMethodSupport":
+        """Deserialize XML element to McSwEmulationMethodSupport object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McSwEmulationMethodSupport object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base_reference_ref
+        child = ARObject._find_child_element(element, "BASE-REFERENCE")
+        if child is not None:
+            base_reference_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.base_reference_ref = base_reference_ref_value
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse element_groups (list)
+        obj.element_groups = []
+        for child in ARObject._find_all_child_elements(element, "ELEMENT-GROUPS"):
+            element_groups_value = ARObject._deserialize_by_tag(child, "McParameterElementGroup")
+            obj.element_groups.append(element_groups_value)
+
+        # Parse reference_table_ref
+        child = ARObject._find_child_element(element, "REFERENCE-TABLE")
+        if child is not None:
+            reference_table_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.reference_table_ref = reference_table_ref_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class McSwEmulationMethodSupportBuilder:

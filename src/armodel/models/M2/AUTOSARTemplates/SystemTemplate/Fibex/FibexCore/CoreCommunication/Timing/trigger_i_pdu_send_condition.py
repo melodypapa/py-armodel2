@@ -32,6 +32,28 @@ class TriggerIPduSendCondition(ARObject):
         """Initialize TriggerIPduSendCondition."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TriggerIPduSendCondition":
+        """Deserialize XML element to TriggerIPduSendCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TriggerIPduSendCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse modes (list)
+        obj.modes = []
+        for child in ARObject._find_all_child_elements(element, "MODES"):
+            modes_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.modes.append(modes_value)
+
+        return obj
+
 
 
 class TriggerIPduSendConditionBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
     ModeActivationKind,
 )
@@ -34,6 +35,28 @@ class BswModeSwitchEvent(BswScheduleEvent):
         """Initialize BswModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswModeSwitchEvent":
+        """Deserialize XML element to BswModeSwitchEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswModeSwitchEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse activation
+        child = ARObject._find_child_element(element, "ACTIVATION")
+        if child is not None:
+            activation_value = child.text
+            obj.activation = activation_value
+
+        return obj
+
 
 
 class BswModeSwitchEventBuilder:

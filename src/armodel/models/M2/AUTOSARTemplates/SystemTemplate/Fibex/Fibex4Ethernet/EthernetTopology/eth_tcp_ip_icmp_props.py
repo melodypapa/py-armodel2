@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_ip_icmpv4_props import (
     TcpIpIcmpv4Props,
 )
@@ -39,6 +40,34 @@ class EthTcpIpIcmpProps(ARElement):
         super().__init__()
         self.icmp_v4_props: Optional[TcpIpIcmpv4Props] = None
         self.icmp_v6_props: Optional[TcpIpIcmpv6Props] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthTcpIpIcmpProps":
+        """Deserialize XML element to EthTcpIpIcmpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthTcpIpIcmpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse icmp_v4_props
+        child = ARObject._find_child_element(element, "ICMP-V4-PROPS")
+        if child is not None:
+            icmp_v4_props_value = ARObject._deserialize_by_tag(child, "TcpIpIcmpv4Props")
+            obj.icmp_v4_props = icmp_v4_props_value
+
+        # Parse icmp_v6_props
+        child = ARObject._find_child_element(element, "ICMP-V6-PROPS")
+        if child is not None:
+            icmp_v6_props_value = ARObject._deserialize_by_tag(child, "TcpIpIcmpv6Props")
+            obj.icmp_v6_props = icmp_v6_props_value
+
+        return obj
+
 
 
 class EthTcpIpIcmpPropsBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     TcpRoleEnum,
 )
@@ -52,6 +53,46 @@ class StaticSocketConnection(Identifiable):
         self.remote_address: Optional[SocketAddress] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StaticSocketConnection":
+        """Deserialize XML element to StaticSocketConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StaticSocketConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse i_pdu_identifiers (list)
+        obj.i_pdu_identifiers = []
+        for child in ARObject._find_all_child_elements(element, "I-PDU-IDENTIFIERS"):
+            i_pdu_identifiers_value = ARObject._deserialize_by_tag(child, "SoConIPduIdentifier")
+            obj.i_pdu_identifiers.append(i_pdu_identifiers_value)
+
+        # Parse remote_address
+        child = ARObject._find_child_element(element, "REMOTE-ADDRESS")
+        if child is not None:
+            remote_address_value = ARObject._deserialize_by_tag(child, "SocketAddress")
+            obj.remote_address = remote_address_value
+
+        # Parse tcp_connect
+        child = ARObject._find_child_element(element, "TCP-CONNECT")
+        if child is not None:
+            tcp_connect_value = child.text
+            obj.tcp_connect = tcp_connect_value
+
+        # Parse tcp_role
+        child = ARObject._find_child_element(element, "TCP-ROLE")
+        if child is not None:
+            tcp_role_value = child.text
+            obj.tcp_role = tcp_role_value
+
+        return obj
+
 
 
 class StaticSocketConnectionBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.busspecific_nm_ecu import (
     BusspecificNmEcu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class UdpNmEcu(BusspecificNmEcu):
@@ -29,6 +30,22 @@ class UdpNmEcu(BusspecificNmEcu):
     def __init__(self) -> None:
         """Initialize UdpNmEcu."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "UdpNmEcu":
+        """Deserialize XML element to UdpNmEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized UdpNmEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class UdpNmEcuBuilder:

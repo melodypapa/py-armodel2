@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator import (
     DiagnosticIndicatorTypeEnum,
 )
@@ -34,6 +35,28 @@ class IndicatorStatusNeeds(ServiceNeeds):
         """Initialize IndicatorStatusNeeds."""
         super().__init__()
         self.type_enum: Optional[DiagnosticIndicatorTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IndicatorStatusNeeds":
+        """Deserialize XML element to IndicatorStatusNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IndicatorStatusNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type_enum
+        child = ARObject._find_child_element(element, "TYPE-ENUM")
+        if child is not None:
+            type_enum_value = child.text
+            obj.type_enum = type_enum_value
+
+        return obj
+
 
 
 class IndicatorStatusNeedsBuilder:

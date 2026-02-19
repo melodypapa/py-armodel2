@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
     ConditionByFormula,
 )
@@ -45,6 +46,40 @@ class VariationPointProxy(Identifiable):
         self.condition_access: Optional[ConditionByFormula] = None
         self.implementation: Optional[AbstractImplementationDataType] = None
         self.post_build_value: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariationPointProxy":
+        """Deserialize XML element to VariationPointProxy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariationPointProxy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse condition_access
+        child = ARObject._find_child_element(element, "CONDITION-ACCESS")
+        if child is not None:
+            condition_access_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
+            obj.condition_access = condition_access_value
+
+        # Parse implementation
+        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        if child is not None:
+            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
+            obj.implementation = implementation_value
+
+        # Parse post_build_value
+        child = ARObject._find_child_element(element, "POST-BUILD-VALUE")
+        if child is not None:
+            post_build_value_value = child.text
+            obj.post_build_value = post_build_value_value
+
+        return obj
+
 
 
 class VariationPointProxyBuilder:

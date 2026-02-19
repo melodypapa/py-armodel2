@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     ProgramminglanguageEnum,
@@ -99,6 +100,112 @@ class Implementation(ARElement, ABC):
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Implementation":
+        """Deserialize XML element to Implementation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Implementation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse build_action_manifest
+        child = ARObject._find_child_element(element, "BUILD-ACTION-MANIFEST")
+        if child is not None:
+            build_action_manifest_value = ARObject._deserialize_by_tag(child, "BuildActionManifest")
+            obj.build_action_manifest = build_action_manifest_value
+
+        # Parse code_descriptors (list)
+        obj.code_descriptors = []
+        for child in ARObject._find_all_child_elements(element, "CODE-DESCRIPTORS"):
+            code_descriptors_value = ARObject._deserialize_by_tag(child, "Code")
+            obj.code_descriptors.append(code_descriptors_value)
+
+        # Parse compilers (list)
+        obj.compilers = []
+        for child in ARObject._find_all_child_elements(element, "COMPILERS"):
+            compilers_value = ARObject._deserialize_by_tag(child, "Compiler")
+            obj.compilers.append(compilers_value)
+
+        # Parse generated_refs (list)
+        obj.generated_refs = []
+        for child in ARObject._find_all_child_elements(element, "GENERATEDS"):
+            generated_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
+            obj.generated_refs.append(generated_refs_value)
+
+        # Parse hw_elements (list)
+        obj.hw_elements = []
+        for child in ARObject._find_all_child_elements(element, "HW-ELEMENTS"):
+            hw_elements_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.hw_elements.append(hw_elements_value)
+
+        # Parse linkers (list)
+        obj.linkers = []
+        for child in ARObject._find_all_child_elements(element, "LINKERS"):
+            linkers_value = ARObject._deserialize_by_tag(child, "Linker")
+            obj.linkers.append(linkers_value)
+
+        # Parse mc_support
+        child = ARObject._find_child_element(element, "MC-SUPPORT")
+        if child is not None:
+            mc_support_value = ARObject._deserialize_by_tag(child, "McSupportData")
+            obj.mc_support = mc_support_value
+
+        # Parse programming
+        child = ARObject._find_child_element(element, "PROGRAMMING")
+        if child is not None:
+            programming_value = child.text
+            obj.programming = programming_value
+
+        # Parse required_artifact_refs (list)
+        obj.required_artifact_refs = []
+        for child in ARObject._find_all_child_elements(element, "REQUIRED-ARTIFACTS"):
+            required_artifact_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
+            obj.required_artifact_refs.append(required_artifact_refs_value)
+
+        # Parse required_refs (list)
+        obj.required_refs = []
+        for child in ARObject._find_all_child_elements(element, "REQUIREDS"):
+            required_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
+            obj.required_refs.append(required_refs_value)
+
+        # Parse resource
+        child = ARObject._find_child_element(element, "RESOURCE")
+        if child is not None:
+            resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
+            obj.resource = resource_value
+
+        # Parse swc_bsw_ref
+        child = ARObject._find_child_element(element, "SWC-BSW")
+        if child is not None:
+            swc_bsw_ref_value = ARObject._deserialize_by_tag(child, "SwcBswMapping")
+            obj.swc_bsw_ref = swc_bsw_ref_value
+
+        # Parse sw_version
+        child = ARObject._find_child_element(element, "SW-VERSION")
+        if child is not None:
+            sw_version_value = child.text
+            obj.sw_version = sw_version_value
+
+        # Parse used_code_generator
+        child = ARObject._find_child_element(element, "USED-CODE-GENERATOR")
+        if child is not None:
+            used_code_generator_value = child.text
+            obj.used_code_generator = used_code_generator_value
+
+        # Parse vendor_id
+        child = ARObject._find_child_element(element, "VENDOR-ID")
+        if child is not None:
+            vendor_id_value = child.text
+            obj.vendor_id = vendor_id_value
+
+        return obj
+
 
 
 class ImplementationBuilder:

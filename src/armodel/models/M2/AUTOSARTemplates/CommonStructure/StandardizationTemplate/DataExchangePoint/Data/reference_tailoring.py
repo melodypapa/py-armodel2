@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.attribute_tailoring import (
     AttributeTailoring,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
     ClassTailoring,
@@ -40,6 +41,34 @@ class ReferenceTailoring(AttributeTailoring):
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
         self.unresolved_restriction_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ReferenceTailoring":
+        """Deserialize XML element to ReferenceTailoring object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ReferenceTailoring object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type_tailorings (list)
+        obj.type_tailorings = []
+        for child in ARObject._find_all_child_elements(element, "TYPE-TAILORINGS"):
+            type_tailorings_value = ARObject._deserialize_by_tag(child, "ClassTailoring")
+            obj.type_tailorings.append(type_tailorings_value)
+
+        # Parse unresolved_restriction_ref
+        child = ARObject._find_child_element(element, "UNRESOLVED-RESTRICTION")
+        if child is not None:
+            unresolved_restriction_ref_value = ARObject._deserialize_by_tag(child, "UnresolvedReferenceRestrictionWithSeverity")
+            obj.unresolved_restriction_ref = unresolved_restriction_ref_value
+
+        return obj
+
 
 
 class ReferenceTailoringBuilder:

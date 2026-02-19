@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.LatencyTimingConstraint import (
     LatencyConstraintTypeEnum,
 )
@@ -48,6 +49,52 @@ class LatencyTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.nominal: Optional[MultidimensionalTime] = None
         self.scope: Optional[TimingDescriptionEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LatencyTimingConstraint":
+        """Deserialize XML element to LatencyTimingConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LatencyTimingConstraint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse latency
+        child = ARObject._find_child_element(element, "LATENCY")
+        if child is not None:
+            latency_value = child.text
+            obj.latency = latency_value
+
+        # Parse maximum
+        child = ARObject._find_child_element(element, "MAXIMUM")
+        if child is not None:
+            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.maximum = maximum_value
+
+        # Parse minimum
+        child = ARObject._find_child_element(element, "MINIMUM")
+        if child is not None:
+            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.minimum = minimum_value
+
+        # Parse nominal
+        child = ARObject._find_child_element(element, "NOMINAL")
+        if child is not None:
+            nominal_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.nominal = nominal_value
+
+        # Parse scope
+        child = ARObject._find_child_element(element, "SCOPE")
+        if child is not None:
+            scope_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
+            obj.scope = scope_value
+
+        return obj
+
 
 
 class LatencyTimingConstraintBuilder:

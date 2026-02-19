@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import (
     CompuConstContent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -34,6 +35,28 @@ class CompuConstFormulaContent(CompuConstContent):
         """Initialize CompuConstFormulaContent."""
         super().__init__()
         self.vf: Numerical = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompuConstFormulaContent":
+        """Deserialize XML element to CompuConstFormulaContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompuConstFormulaContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse vf
+        child = ARObject._find_child_element(element, "VF")
+        if child is not None:
+            vf_value = child.text
+            obj.vf = vf_value
+
+        return obj
+
 
 
 class CompuConstFormulaContentBuilder:

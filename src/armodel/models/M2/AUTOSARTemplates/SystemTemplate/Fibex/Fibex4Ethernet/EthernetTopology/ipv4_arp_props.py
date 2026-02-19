@@ -40,6 +40,46 @@ class Ipv4ArpProps(ARObject):
         self.tcp_ip_arp_packet: Optional[Boolean] = None
         self.tcp_ip_arp: Optional[TimeValue] = None
         self.tcp_ip_arp_table: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv4ArpProps":
+        """Deserialize XML element to Ipv4ArpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv4ArpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_arp_num
+        child = ARObject._find_child_element(element, "TCP-IP-ARP-NUM")
+        if child is not None:
+            tcp_ip_arp_num_value = child.text
+            obj.tcp_ip_arp_num = tcp_ip_arp_num_value
+
+        # Parse tcp_ip_arp_packet
+        child = ARObject._find_child_element(element, "TCP-IP-ARP-PACKET")
+        if child is not None:
+            tcp_ip_arp_packet_value = child.text
+            obj.tcp_ip_arp_packet = tcp_ip_arp_packet_value
+
+        # Parse tcp_ip_arp
+        child = ARObject._find_child_element(element, "TCP-IP-ARP")
+        if child is not None:
+            tcp_ip_arp_value = child.text
+            obj.tcp_ip_arp = tcp_ip_arp_value
+
+        # Parse tcp_ip_arp_table
+        child = ARObject._find_child_element(element, "TCP-IP-ARP-TABLE")
+        if child is not None:
+            tcp_ip_arp_table_value = child.text
+            obj.tcp_ip_arp_table = tcp_ip_arp_table_value
+
+        return obj
+
 
 
 class Ipv4ArpPropsBuilder:

@@ -46,6 +46,40 @@ class DataPrototypeTransformationProps(ARObject):
         self.data_prototype_in_ref: Optional[ARRef] = None
         self.network: Optional[SwDataDefProps] = None
         self.transformation_props: Optional[TransformationProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeTransformationProps":
+        """Deserialize XML element to DataPrototypeTransformationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeTransformationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_prototype_in_ref
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN")
+        if child is not None:
+            data_prototype_in_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.data_prototype_in_ref = data_prototype_in_ref_value
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.network = network_value
+
+        # Parse transformation_props
+        child = ARObject._find_child_element(element, "TRANSFORMATION-PROPS")
+        if child is not None:
+            transformation_props_value = ARObject._deserialize_by_tag(child, "TransformationProps")
+            obj.transformation_props = transformation_props_value
+
+        return obj
+
 
 
 class DataPrototypeTransformationPropsBuilder:

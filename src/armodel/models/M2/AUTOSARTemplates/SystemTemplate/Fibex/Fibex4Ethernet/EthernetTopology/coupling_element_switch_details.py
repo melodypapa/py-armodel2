@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_element_abstract_details import (
     CouplingElementAbstractDetails,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_asynchronous_traffic_shaper_group_entry import (
     SwitchAsynchronousTrafficShaperGroupEntry,
 )
@@ -51,6 +52,52 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         self.stream_gates: list[SwitchStreamGateEntry] = []
         self.switch_streams: list[Any] = []
         self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CouplingElementSwitchDetails":
+        """Deserialize XML element to CouplingElementSwitchDetails object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CouplingElementSwitchDetails object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse flow_meterings (list)
+        obj.flow_meterings = []
+        for child in ARObject._find_all_child_elements(element, "FLOW-METERINGS"):
+            flow_meterings_value = ARObject._deserialize_by_tag(child, "SwitchFlowMeteringEntry")
+            obj.flow_meterings.append(flow_meterings_value)
+
+        # Parse stream_filters (list)
+        obj.stream_filters = []
+        for child in ARObject._find_all_child_elements(element, "STREAM-FILTERS"):
+            stream_filters_value = ARObject._deserialize_by_tag(child, "SwitchStreamFilterEntry")
+            obj.stream_filters.append(stream_filters_value)
+
+        # Parse stream_gates (list)
+        obj.stream_gates = []
+        for child in ARObject._find_all_child_elements(element, "STREAM-GATES"):
+            stream_gates_value = ARObject._deserialize_by_tag(child, "SwitchStreamGateEntry")
+            obj.stream_gates.append(stream_gates_value)
+
+        # Parse switch_streams (list)
+        obj.switch_streams = []
+        for child in ARObject._find_all_child_elements(element, "SWITCH-STREAMS"):
+            switch_streams_value = child.text
+            obj.switch_streams.append(switch_streams_value)
+
+        # Parse traffic_shapers (list)
+        obj.traffic_shapers = []
+        for child in ARObject._find_all_child_elements(element, "TRAFFIC-SHAPERS"):
+            traffic_shapers_value = ARObject._deserialize_by_tag(child, "SwitchAsynchronousTrafficShaperGroupEntry")
+            obj.traffic_shapers.append(traffic_shapers_value)
+
+        return obj
+
 
 
 class CouplingElementSwitchDetailsBuilder:

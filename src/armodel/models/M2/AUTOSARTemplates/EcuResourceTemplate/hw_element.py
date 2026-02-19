@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group import (
     HwPinGroup,
@@ -48,6 +49,40 @@ class HwElement(HwDescriptionEntity):
         self.hw_elements: list[HwElementConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
         self.nested_elements: list[HwElement] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwElement":
+        """Deserialize XML element to HwElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse hw_elements (list)
+        obj.hw_elements = []
+        for child in ARObject._find_all_child_elements(element, "HW-ELEMENTS"):
+            hw_elements_value = ARObject._deserialize_by_tag(child, "HwElementConnector")
+            obj.hw_elements.append(hw_elements_value)
+
+        # Parse hw_pin_group_refs (list)
+        obj.hw_pin_group_refs = []
+        for child in ARObject._find_all_child_elements(element, "HW-PIN-GROUPS"):
+            hw_pin_group_refs_value = ARObject._deserialize_by_tag(child, "HwPinGroup")
+            obj.hw_pin_group_refs.append(hw_pin_group_refs_value)
+
+        # Parse nested_elements (list)
+        obj.nested_elements = []
+        for child in ARObject._find_all_child_elements(element, "NESTED-ELEMENTS"):
+            nested_elements_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.nested_elements.append(nested_elements_value)
+
+        return obj
+
 
 
 class HwElementBuilder:

@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ApplicationSwComponentType(AtomicSwComponentType):
@@ -33,6 +34,22 @@ class ApplicationSwComponentType(AtomicSwComponentType):
     def __init__(self) -> None:
         """Initialize ApplicationSwComponentType."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationSwComponentType":
+        """Deserialize XML element to ApplicationSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationSwComponentType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class ApplicationSwComponentTypeBuilder:

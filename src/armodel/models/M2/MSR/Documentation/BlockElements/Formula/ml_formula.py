@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.caption import (
     Caption,
 )
@@ -52,6 +53,52 @@ class MlFormula(Paginateable):
         self.l_graphics: list[LGraphic] = []
         self.tex_math: Optional[MultiLanguagePlainText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MlFormula":
+        """Deserialize XML element to MlFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MlFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse formula_caption
+        child = ARObject._find_child_element(element, "FORMULA-CAPTION")
+        if child is not None:
+            formula_caption_value = ARObject._deserialize_by_tag(child, "Caption")
+            obj.formula_caption = formula_caption_value
+
+        # Parse generic_math
+        child = ARObject._find_child_element(element, "GENERIC-MATH")
+        if child is not None:
+            generic_math_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            obj.generic_math = generic_math_value
+
+        # Parse l_graphics (list)
+        obj.l_graphics = []
+        for child in ARObject._find_all_child_elements(element, "L-GRAPHICS"):
+            l_graphics_value = ARObject._deserialize_by_tag(child, "LGraphic")
+            obj.l_graphics.append(l_graphics_value)
+
+        # Parse tex_math
+        child = ARObject._find_child_element(element, "TEX-MATH")
+        if child is not None:
+            tex_math_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            obj.tex_math = tex_math_value
+
+        # Parse verbatim
+        child = ARObject._find_child_element(element, "VERBATIM")
+        if child is not None:
+            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            obj.verbatim = verbatim_value
+
+        return obj
+
 
 
 class MlFormulaBuilder:

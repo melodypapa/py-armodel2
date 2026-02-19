@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
     IEEE1722TpAcfBus,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -39,6 +40,40 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         self.base_frequency: Optional[PositiveInteger] = None
         self.frame_sync_enabled: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfLin":
+        """Deserialize XML element to IEEE1722TpAcfLin object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfLin object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base_frequency
+        child = ARObject._find_child_element(element, "BASE-FREQUENCY")
+        if child is not None:
+            base_frequency_value = child.text
+            obj.base_frequency = base_frequency_value
+
+        # Parse frame_sync_enabled
+        child = ARObject._find_child_element(element, "FRAME-SYNC-ENABLED")
+        if child is not None:
+            frame_sync_enabled_value = child.text
+            obj.frame_sync_enabled = frame_sync_enabled_value
+
+        # Parse timestamp
+        child = ARObject._find_child_element(element, "TIMESTAMP")
+        if child is not None:
+            timestamp_value = child.text
+            obj.timestamp = timestamp_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfLinBuilder:

@@ -38,6 +38,34 @@ class MetaDataItem(ARObject):
         super().__init__()
         self.length: Optional[PositiveInteger] = None
         self.meta_data_item: Optional[TextValueSpecification] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MetaDataItem":
+        """Deserialize XML element to MetaDataItem object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MetaDataItem object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse length
+        child = ARObject._find_child_element(element, "LENGTH")
+        if child is not None:
+            length_value = child.text
+            obj.length = length_value
+
+        # Parse meta_data_item
+        child = ARObject._find_child_element(element, "META-DATA-ITEM")
+        if child is not None:
+            meta_data_item_value = ARObject._deserialize_by_tag(child, "TextValueSpecification")
+            obj.meta_data_item = meta_data_item_value
+
+        return obj
+
 
 
 class MetaDataItemBuilder:

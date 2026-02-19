@@ -49,6 +49,64 @@ class DataFilter(ARObject):
         self.offset: Optional[PositiveInteger] = None
         self.period: Optional[PositiveInteger] = None
         self.x: Optional[UnlimitedInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataFilter":
+        """Deserialize XML element to DataFilter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataFilter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_filter_type_enum
+        child = ARObject._find_child_element(element, "DATA-FILTER-TYPE-ENUM")
+        if child is not None:
+            data_filter_type_enum_value = child.text
+            obj.data_filter_type_enum = data_filter_type_enum_value
+
+        # Parse mask
+        child = ARObject._find_child_element(element, "MASK")
+        if child is not None:
+            mask_value = child.text
+            obj.mask = mask_value
+
+        # Parse max
+        child = ARObject._find_child_element(element, "MAX")
+        if child is not None:
+            max_value = child.text
+            obj.max = max_value
+
+        # Parse min
+        child = ARObject._find_child_element(element, "MIN")
+        if child is not None:
+            min_value = child.text
+            obj.min = min_value
+
+        # Parse offset
+        child = ARObject._find_child_element(element, "OFFSET")
+        if child is not None:
+            offset_value = child.text
+            obj.offset = offset_value
+
+        # Parse period
+        child = ARObject._find_child_element(element, "PERIOD")
+        if child is not None:
+            period_value = child.text
+            obj.period = period_value
+
+        # Parse x
+        child = ARObject._find_child_element(element, "X")
+        if child is not None:
+            x_value = child.text
+            obj.x = x_value
+
+        return obj
+
 
 
 class DataFilterBuilder:

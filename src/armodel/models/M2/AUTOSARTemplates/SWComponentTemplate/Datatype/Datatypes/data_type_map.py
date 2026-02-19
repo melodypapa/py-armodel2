@@ -41,6 +41,34 @@ class DataTypeMap(ARObject):
         super().__init__()
         self.application_data_type: Optional[ApplicationDataType] = None
         self.implementation: Optional[AbstractImplementationDataType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataTypeMap":
+        """Deserialize XML element to DataTypeMap object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataTypeMap object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse application_data_type
+        child = ARObject._find_child_element(element, "APPLICATION-DATA-TYPE")
+        if child is not None:
+            application_data_type_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
+            obj.application_data_type = application_data_type_value
+
+        # Parse implementation
+        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        if child is not None:
+            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
+            obj.implementation = implementation_value
+
+        return obj
+
 
 
 class DataTypeMapBuilder:

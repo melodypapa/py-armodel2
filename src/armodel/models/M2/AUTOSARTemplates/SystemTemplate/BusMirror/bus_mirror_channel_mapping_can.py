@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_channel_mapping import (
     BusMirrorChannelMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -51,6 +52,52 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
         self.mirror_source_lin: Optional[PositiveInteger] = None
         self.mirror_status: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingCan":
+        """Deserialize XML element to BusMirrorChannelMappingCan object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorChannelMappingCan object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse can_id_ranges (list)
+        obj.can_id_ranges = []
+        for child in ARObject._find_all_child_elements(element, "CAN-ID-RANGES"):
+            can_id_ranges_value = ARObject._deserialize_by_tag(child, "BusMirrorCanIdRangeMapping")
+            obj.can_id_ranges.append(can_id_ranges_value)
+
+        # Parse can_id_to_can_ids (list)
+        obj.can_id_to_can_ids = []
+        for child in ARObject._find_all_child_elements(element, "CAN-ID-TO-CAN-IDS"):
+            can_id_to_can_ids_value = ARObject._deserialize_by_tag(child, "BusMirrorCanIdToCanIdMapping")
+            obj.can_id_to_can_ids.append(can_id_to_can_ids_value)
+
+        # Parse lin_pid_to_can_ids (list)
+        obj.lin_pid_to_can_ids = []
+        for child in ARObject._find_all_child_elements(element, "LIN-PID-TO-CAN-IDS"):
+            lin_pid_to_can_ids_value = ARObject._deserialize_by_tag(child, "BusMirrorLinPidToCanIdMapping")
+            obj.lin_pid_to_can_ids.append(lin_pid_to_can_ids_value)
+
+        # Parse mirror_source_lin
+        child = ARObject._find_child_element(element, "MIRROR-SOURCE-LIN")
+        if child is not None:
+            mirror_source_lin_value = child.text
+            obj.mirror_source_lin = mirror_source_lin_value
+
+        # Parse mirror_status
+        child = ARObject._find_child_element(element, "MIRROR-STATUS")
+        if child is not None:
+            mirror_status_value = child.text
+            obj.mirror_status = mirror_status_value
+
+        return obj
+
 
 
 class BusMirrorChannelMappingCanBuilder:

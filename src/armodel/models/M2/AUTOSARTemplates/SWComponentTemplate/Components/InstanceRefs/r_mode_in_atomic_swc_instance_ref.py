@@ -48,6 +48,46 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         self.context_mode_group_prototype_ref: Optional[ARRef] = None
         self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_mode_declaration: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RModeInAtomicSwcInstanceRef":
+        """Deserialize XML element to RModeInAtomicSwcInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RModeInAtomicSwcInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
+            obj.base = base_value
+
+        # Parse context_mode_group_prototype_ref
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-PROTOTYPE")
+        if child is not None:
+            context_mode_group_prototype_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.context_mode_group_prototype_ref = context_mode_group_prototype_ref_value
+
+        # Parse context_port_prototype
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-PROTOTYPE")
+        if child is not None:
+            context_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
+            obj.context_port_prototype = context_port_prototype_value
+
+        # Parse target_mode_declaration
+        child = ARObject._find_child_element(element, "TARGET-MODE-DECLARATION")
+        if child is not None:
+            target_mode_declaration_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.target_mode_declaration = target_mode_declaration_value
+
+        return obj
+
 
 
 class RModeInAtomicSwcInstanceRefBuilder:

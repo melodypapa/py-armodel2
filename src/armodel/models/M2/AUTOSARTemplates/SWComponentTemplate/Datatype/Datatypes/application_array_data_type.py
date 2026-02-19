@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_composite_data_type import (
     ApplicationCompositeDataType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -38,6 +39,34 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         super().__init__()
         self.dynamic_array: Optional[String] = None
         self.element: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationArrayDataType":
+        """Deserialize XML element to ApplicationArrayDataType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationArrayDataType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dynamic_array
+        child = ARObject._find_child_element(element, "DYNAMIC-ARRAY")
+        if child is not None:
+            dynamic_array_value = child.text
+            obj.dynamic_array = dynamic_array_value
+
+        # Parse element
+        child = ARObject._find_child_element(element, "ELEMENT")
+        if child is not None:
+            element_value = child.text
+            obj.element = element_value
+
+        return obj
+
 
 
 class ApplicationArrayDataTypeBuilder:

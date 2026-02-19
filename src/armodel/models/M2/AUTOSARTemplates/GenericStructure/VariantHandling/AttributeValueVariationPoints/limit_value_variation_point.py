@@ -32,6 +32,28 @@ class LimitValueVariationPoint(ARObject):
         """Initialize LimitValueVariationPoint."""
         super().__init__()
         self.interval_type_enum: Optional[IntervalTypeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LimitValueVariationPoint":
+        """Deserialize XML element to LimitValueVariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LimitValueVariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interval_type_enum
+        child = ARObject._find_child_element(element, "INTERVAL-TYPE-ENUM")
+        if child is not None:
+            interval_type_enum_value = child.text
+            obj.interval_type_enum = interval_type_enum_value
+
+        return obj
+
 
 
 class LimitValueVariationPointBuilder:

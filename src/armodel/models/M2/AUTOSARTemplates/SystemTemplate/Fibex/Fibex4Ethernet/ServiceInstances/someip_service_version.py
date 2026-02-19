@@ -34,6 +34,34 @@ class SomeipServiceVersion(ARObject):
         super().__init__()
         self.major_version: Optional[PositiveInteger] = None
         self.minor_version: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SomeipServiceVersion":
+        """Deserialize XML element to SomeipServiceVersion object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SomeipServiceVersion object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse major_version
+        child = ARObject._find_child_element(element, "MAJOR-VERSION")
+        if child is not None:
+            major_version_value = child.text
+            obj.major_version = major_version_value
+
+        # Parse minor_version
+        child = ARObject._find_child_element(element, "MINOR-VERSION")
+        if child is not None:
+            minor_version_value = child.text
+            obj.minor_version = minor_version_value
+
+        return obj
+
 
 
 class SomeipServiceVersionBuilder:

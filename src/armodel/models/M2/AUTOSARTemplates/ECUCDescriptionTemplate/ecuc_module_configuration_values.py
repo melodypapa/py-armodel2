@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     RevisionLabelString,
@@ -56,6 +57,58 @@ class EcucModuleConfigurationValues(ARElement):
         self.implementation: Optional[Any] = None
         self.module: Optional[BswImplementation] = None
         self.post_build_variant: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucModuleConfigurationValues":
+        """Deserialize XML element to EcucModuleConfigurationValues object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucModuleConfigurationValues object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse containers (list)
+        obj.containers = []
+        for child in ARObject._find_all_child_elements(element, "CONTAINERS"):
+            containers_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
+            obj.containers.append(containers_value)
+
+        # Parse definition
+        child = ARObject._find_child_element(element, "DEFINITION")
+        if child is not None:
+            definition_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
+            obj.definition = definition_value
+
+        # Parse ecuc_def_edition
+        child = ARObject._find_child_element(element, "ECUC-DEF-EDITION")
+        if child is not None:
+            ecuc_def_edition_value = child.text
+            obj.ecuc_def_edition = ecuc_def_edition_value
+
+        # Parse implementation
+        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        if child is not None:
+            implementation_value = child.text
+            obj.implementation = implementation_value
+
+        # Parse module
+        child = ARObject._find_child_element(element, "MODULE")
+        if child is not None:
+            module_value = ARObject._deserialize_by_tag(child, "BswImplementation")
+            obj.module = module_value
+
+        # Parse post_build_variant
+        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        if child is not None:
+            post_build_variant_value = child.text
+            obj.post_build_variant = post_build_variant_value
+
+        return obj
+
 
 
 class EcucModuleConfigurationValuesBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
     SdgElementWithGid,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MetaClassName,
 )
@@ -35,6 +36,28 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         """Initialize SdgAbstractForeignReference."""
         super().__init__()
         self.dest_meta_class: Optional[MetaClassName] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgAbstractForeignReference":
+        """Deserialize XML element to SdgAbstractForeignReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgAbstractForeignReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dest_meta_class
+        child = ARObject._find_child_element(element, "DEST-META-CLASS")
+        if child is not None:
+            dest_meta_class_value = child.text
+            obj.dest_meta_class = dest_meta_class_value
+
+        return obj
+
 
 
 class SdgAbstractForeignReferenceBuilder:

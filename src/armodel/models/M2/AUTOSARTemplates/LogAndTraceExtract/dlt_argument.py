@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -52,6 +53,58 @@ class DltArgument(Identifiable):
         self.optional: Optional[Boolean] = None
         self.predefined_text: Optional[Boolean] = None
         self.variable_length: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DltArgument":
+        """Deserialize XML element to DltArgument object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DltArgument object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dlt_arguments (list)
+        obj.dlt_arguments = []
+        for child in ARObject._find_all_child_elements(element, "DLT-ARGUMENTS"):
+            dlt_arguments_value = ARObject._deserialize_by_tag(child, "DltArgument")
+            obj.dlt_arguments.append(dlt_arguments_value)
+
+        # Parse length
+        child = ARObject._find_child_element(element, "LENGTH")
+        if child is not None:
+            length_value = child.text
+            obj.length = length_value
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.network = network_value
+
+        # Parse optional
+        child = ARObject._find_child_element(element, "OPTIONAL")
+        if child is not None:
+            optional_value = child.text
+            obj.optional = optional_value
+
+        # Parse predefined_text
+        child = ARObject._find_child_element(element, "PREDEFINED-TEXT")
+        if child is not None:
+            predefined_text_value = child.text
+            obj.predefined_text = predefined_text_value
+
+        # Parse variable_length
+        child = ARObject._find_child_element(element, "VARIABLE-LENGTH")
+        if child is not None:
+            variable_length_value = child.text
+            obj.variable_length = variable_length_value
+
+        return obj
+
 
 
 class DltArgumentBuilder:

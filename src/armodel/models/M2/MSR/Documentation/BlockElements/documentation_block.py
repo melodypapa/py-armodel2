@@ -86,6 +86,88 @@ class DocumentationBlock(ARObject):
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DocumentationBlock":
+        """Deserialize XML element to DocumentationBlock object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DocumentationBlock object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse def_list_ref
+        child = ARObject._find_child_element(element, "DEF-LIST")
+        if child is not None:
+            def_list_ref_value = ARObject._deserialize_by_tag(child, "DefList")
+            obj.def_list_ref = def_list_ref_value
+
+        # Parse figure
+        child = ARObject._find_child_element(element, "FIGURE")
+        if child is not None:
+            figure_value = ARObject._deserialize_by_tag(child, "MlFigure")
+            obj.figure = figure_value
+
+        # Parse formula
+        child = ARObject._find_child_element(element, "FORMULA")
+        if child is not None:
+            formula_value = ARObject._deserialize_by_tag(child, "MlFormula")
+            obj.formula = formula_value
+
+        # Parse labeled_list_label_ref
+        child = ARObject._find_child_element(element, "LABELED-LIST-LABEL")
+        if child is not None:
+            labeled_list_label_ref_value = ARObject._deserialize_by_tag(child, "LabeledList")
+            obj.labeled_list_label_ref = labeled_list_label_ref_value
+
+        # Parse list_ref
+        child = ARObject._find_child_element(element, "LIST")
+        if child is not None:
+            list_ref_value = ARObject._deserialize_by_tag(child, "List")
+            obj.list_ref = list_ref_value
+
+        # Parse msr_query_p2
+        child = ARObject._find_child_element(element, "MSR-QUERY-P2")
+        if child is not None:
+            msr_query_p2_value = ARObject._deserialize_by_tag(child, "MsrQueryP2")
+            obj.msr_query_p2 = msr_query_p2_value
+
+        # Parse note
+        child = ARObject._find_child_element(element, "NOTE")
+        if child is not None:
+            note_value = ARObject._deserialize_by_tag(child, "Note")
+            obj.note = note_value
+
+        # Parse p
+        child = ARObject._find_child_element(element, "P")
+        if child is not None:
+            p_value = child.text
+            obj.p = p_value
+
+        # Parse structured_req
+        child = ARObject._find_child_element(element, "STRUCTURED-REQ")
+        if child is not None:
+            structured_req_value = ARObject._deserialize_by_tag(child, "StructuredReq")
+            obj.structured_req = structured_req_value
+
+        # Parse trace
+        child = ARObject._find_child_element(element, "TRACE")
+        if child is not None:
+            trace_value = ARObject._deserialize_by_tag(child, "TraceableText")
+            obj.trace = trace_value
+
+        # Parse verbatim
+        child = ARObject._find_child_element(element, "VERBATIM")
+        if child is not None:
+            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            obj.verbatim = verbatim_value
+
+        return obj
+
 
 
 class DocumentationBlockBuilder:

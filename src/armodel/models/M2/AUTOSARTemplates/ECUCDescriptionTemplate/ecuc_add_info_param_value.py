@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_value import (
     EcucParameterValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -34,6 +35,28 @@ class EcucAddInfoParamValue(EcucParameterValue):
         """Initialize EcucAddInfoParamValue."""
         super().__init__()
         self.value: Optional[DocumentationBlock] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucAddInfoParamValue":
+        """Deserialize XML element to EcucAddInfoParamValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucAddInfoParamValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.value = value_value
+
+        return obj
+
 
 
 class EcucAddInfoParamValueBuilder:

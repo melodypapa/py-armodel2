@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent import (
     DiagnosticIumprKindEnum,
 )
@@ -39,6 +40,34 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         super().__init__()
         self.event: Optional[DiagnosticEvent] = None
         self.ratio_kind: Optional[DiagnosticIumprKindEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticIumpr":
+        """Deserialize XML element to DiagnosticIumpr object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticIumpr object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event
+        child = ARObject._find_child_element(element, "EVENT")
+        if child is not None:
+            event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.event = event_value
+
+        # Parse ratio_kind
+        child = ARObject._find_child_element(element, "RATIO-KIND")
+        if child is not None:
+            ratio_kind_value = child.text
+            obj.ratio_kind = ratio_kind_value
+
+        return obj
+
 
 
 class DiagnosticIumprBuilder:

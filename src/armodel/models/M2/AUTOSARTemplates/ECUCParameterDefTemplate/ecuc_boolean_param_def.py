@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -35,6 +36,28 @@ class EcucBooleanParamDef(EcucParameterDef):
         """Initialize EcucBooleanParamDef."""
         super().__init__()
         self.default_value: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucBooleanParamDef":
+        """Deserialize XML element to EcucBooleanParamDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucBooleanParamDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_value
+        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        if child is not None:
+            default_value_value = child.text
+            obj.default_value = default_value_value
+
+        return obj
+
 
 
 class EcucBooleanParamDefBuilder:

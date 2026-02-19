@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
@@ -42,6 +43,28 @@ class VariableDataPrototype(AutosarDataPrototype):
         """Initialize VariableDataPrototype."""
         super().__init__()
         self.init_value: Optional[ValueSpecification] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariableDataPrototype":
+        """Deserialize XML element to VariableDataPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariableDataPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse init_value
+        child = ARObject._find_child_element(element, "INIT-VALUE")
+        if child is not None:
+            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.init_value = init_value_value
+
+        return obj
+
 
 
 class VariableDataPrototypeBuilder:

@@ -47,6 +47,46 @@ class SwTextProps(ARObject):
         self.base_type: Optional[SwBaseType] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwTextProps":
+        """Deserialize XML element to SwTextProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwTextProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse array_size
+        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        if child is not None:
+            array_size_value = child.text
+            obj.array_size = array_size_value
+
+        # Parse base_type
+        child = ARObject._find_child_element(element, "BASE-TYPE")
+        if child is not None:
+            base_type_value = ARObject._deserialize_by_tag(child, "SwBaseType")
+            obj.base_type = base_type_value
+
+        # Parse sw_fill_character
+        child = ARObject._find_child_element(element, "SW-FILL-CHARACTER")
+        if child is not None:
+            sw_fill_character_value = child.text
+            obj.sw_fill_character = sw_fill_character_value
+
+        # Parse sw_max_text_size
+        child = ARObject._find_child_element(element, "SW-MAX-TEXT-SIZE")
+        if child is not None:
+            sw_max_text_size_value = child.text
+            obj.sw_max_text_size = sw_max_text_size_value
+
+        return obj
+
 
 
 class SwTextPropsBuilder:

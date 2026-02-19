@@ -42,6 +42,40 @@ class Ipv6Props(ARObject):
         self.dhcp_props: Optional[Dhcpv6Props] = None
         self.fragmentation: Optional[Ipv6FragmentationProps] = None
         self.ndp_props: Optional[Ipv6NdpProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6Props":
+        """Deserialize XML element to Ipv6Props object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6Props object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dhcp_props
+        child = ARObject._find_child_element(element, "DHCP-PROPS")
+        if child is not None:
+            dhcp_props_value = ARObject._deserialize_by_tag(child, "Dhcpv6Props")
+            obj.dhcp_props = dhcp_props_value
+
+        # Parse fragmentation
+        child = ARObject._find_child_element(element, "FRAGMENTATION")
+        if child is not None:
+            fragmentation_value = ARObject._deserialize_by_tag(child, "Ipv6FragmentationProps")
+            obj.fragmentation = fragmentation_value
+
+        # Parse ndp_props
+        child = ARObject._find_child_element(element, "NDP-PROPS")
+        if child is not None:
+            ndp_props_value = ARObject._deserialize_by_tag(child, "Ipv6NdpProps")
+            obj.ndp_props = ndp_props_value
+
+        return obj
+
 
 
 class Ipv6PropsBuilder:

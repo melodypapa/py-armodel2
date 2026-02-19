@@ -38,6 +38,34 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         super().__init__()
         self.remapped_can_id: Optional[PositiveInteger] = None
         self.source_lin_pid_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorLinPidToCanIdMapping":
+        """Deserialize XML element to BusMirrorLinPidToCanIdMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorLinPidToCanIdMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse remapped_can_id
+        child = ARObject._find_child_element(element, "REMAPPED-CAN-ID")
+        if child is not None:
+            remapped_can_id_value = child.text
+            obj.remapped_can_id = remapped_can_id_value
+
+        # Parse source_lin_pid_ref
+        child = ARObject._find_child_element(element, "SOURCE-LIN-PID")
+        if child is not None:
+            source_lin_pid_ref_value = ARObject._deserialize_by_tag(child, "LinFrameTriggering")
+            obj.source_lin_pid_ref = source_lin_pid_ref_value
+
+        return obj
+
 
 
 class BusMirrorLinPidToCanIdMappingBuilder:

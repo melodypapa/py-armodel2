@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -31,6 +32,22 @@ class AtpBlueprintable(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize AtpBlueprintable."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AtpBlueprintable":
+        """Deserialize XML element to AtpBlueprintable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AtpBlueprintable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class AtpBlueprintableBuilder:

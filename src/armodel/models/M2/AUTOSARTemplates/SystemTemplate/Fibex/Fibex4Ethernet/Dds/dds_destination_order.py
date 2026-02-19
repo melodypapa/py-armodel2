@@ -29,6 +29,28 @@ class DdsDestinationOrder(ARObject):
         """Initialize DdsDestinationOrder."""
         super().__init__()
         self.destination: Optional[DdsDestinationOrder] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsDestinationOrder":
+        """Deserialize XML element to DdsDestinationOrder object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsDestinationOrder object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination
+        child = ARObject._find_child_element(element, "DESTINATION")
+        if child is not None:
+            destination_value = ARObject._deserialize_by_tag(child, "DdsDestinationOrder")
+            obj.destination = destination_value
+
+        return obj
+
 
 
 class DdsDestinationOrderBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -39,6 +40,34 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.diagnostic_data: Optional[DiagnosticDataElement] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSwClusterResourceToDiagDataElemMapping":
+        """Deserialize XML element to CpSwClusterResourceToDiagDataElemMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSwClusterResourceToDiagDataElemMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cp_software_cluster
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        if child is not None:
+            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.cp_software_cluster = cp_software_cluster_value
+
+        # Parse diagnostic_data
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA")
+        if child is not None:
+            diagnostic_data_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
+            obj.diagnostic_data = diagnostic_data_value
+
+        return obj
+
 
 
 class CpSwClusterResourceToDiagDataElemMappingBuilder:

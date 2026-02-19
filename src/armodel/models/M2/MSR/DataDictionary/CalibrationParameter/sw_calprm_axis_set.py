@@ -32,6 +32,28 @@ class SwCalprmAxisSet(ARObject):
         """Initialize SwCalprmAxisSet."""
         super().__init__()
         self.sw_calprm_axises: list[SwCalprmAxis] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwCalprmAxisSet":
+        """Deserialize XML element to SwCalprmAxisSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwCalprmAxisSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_calprm_axises (list)
+        obj.sw_calprm_axises = []
+        for child in ARObject._find_all_child_elements(element, "SW-CALPRM-AXISES"):
+            sw_calprm_axises_value = ARObject._deserialize_by_tag(child, "SwCalprmAxis")
+            obj.sw_calprm_axises.append(sw_calprm_axises_value)
+
+        return obj
+
 
 
 class SwCalprmAxisSetBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.td_event_vfb_port import (
     TDEventVfbPort,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventTriggerTypeEnum,
@@ -40,6 +41,34 @@ class TDEventTrigger(TDEventVfbPort):
         super().__init__()
         self.td_event_trigger_ref: Optional[ARRef] = None
         self.trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventTrigger":
+        """Deserialize XML element to TDEventTrigger object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventTrigger object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse td_event_trigger_ref
+        child = ARObject._find_child_element(element, "TD-EVENT-TRIGGER")
+        if child is not None:
+            td_event_trigger_ref_value = child.text
+            obj.td_event_trigger_ref = td_event_trigger_ref_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.trigger_ref = trigger_ref_value
+
+        return obj
+
 
 
 class TDEventTriggerBuilder:

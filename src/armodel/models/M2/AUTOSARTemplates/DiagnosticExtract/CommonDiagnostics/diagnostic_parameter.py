@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_parameter import (
     DiagnosticAbstractParameter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticParameter(DiagnosticAbstractParameter):
@@ -33,6 +34,34 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         super().__init__()
         self.ident: Optional[DiagnosticParameter] = None
         self.support_info: Optional[DiagnosticParameter] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticParameter":
+        """Deserialize XML element to DiagnosticParameter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticParameter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ident
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            obj.ident = ident_value
+
+        # Parse support_info
+        child = ARObject._find_child_element(element, "SUPPORT-INFO")
+        if child is not None:
+            support_info_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            obj.support_info = support_info_value
+
+        return obj
+
 
 
 class DiagnosticParameterBuilder:

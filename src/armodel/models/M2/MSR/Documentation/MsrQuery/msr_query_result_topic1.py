@@ -27,6 +27,22 @@ class MsrQueryResultTopic1(ARObject):
     def __init__(self) -> None:
         """Initialize MsrQueryResultTopic1."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryResultTopic1":
+        """Deserialize XML element to MsrQueryResultTopic1 object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryResultTopic1 object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class MsrQueryResultTopic1Builder:

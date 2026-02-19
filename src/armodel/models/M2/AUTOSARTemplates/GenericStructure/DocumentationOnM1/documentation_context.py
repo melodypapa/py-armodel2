@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -39,6 +40,34 @@ class DocumentationContext(MultilanguageReferrable):
         super().__init__()
         self.feature: Optional[AtpFeature] = None
         self.identifiable: Optional[Identifiable] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DocumentationContext":
+        """Deserialize XML element to DocumentationContext object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DocumentationContext object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse feature
+        child = ARObject._find_child_element(element, "FEATURE")
+        if child is not None:
+            feature_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            obj.feature = feature_value
+
+        # Parse identifiable
+        child = ARObject._find_child_element(element, "IDENTIFIABLE")
+        if child is not None:
+            identifiable_value = ARObject._deserialize_by_tag(child, "Identifiable")
+            obj.identifiable = identifiable_value
+
+        return obj
+
 
 
 class DocumentationContextBuilder:

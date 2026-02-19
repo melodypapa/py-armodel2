@@ -64,6 +64,94 @@ class Entry(ARObject):
         self.rowsep: Optional[TableSeparatorString] = None
         self.spanname: Optional[String] = None
         self.valign: Optional[ValignEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Entry":
+        """Deserialize XML element to Entry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Entry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse align
+        child = ARObject._find_child_element(element, "ALIGN")
+        if child is not None:
+            align_value = child.text
+            obj.align = align_value
+
+        # Parse bgcolor
+        child = ARObject._find_child_element(element, "BGCOLOR")
+        if child is not None:
+            bgcolor_value = child.text
+            obj.bgcolor = bgcolor_value
+
+        # Parse colname
+        child = ARObject._find_child_element(element, "COLNAME")
+        if child is not None:
+            colname_value = child.text
+            obj.colname = colname_value
+
+        # Parse colsep
+        child = ARObject._find_child_element(element, "COLSEP")
+        if child is not None:
+            colsep_value = child.text
+            obj.colsep = colsep_value
+
+        # Parse entry_contents
+        child = ARObject._find_child_element(element, "ENTRY-CONTENTS")
+        if child is not None:
+            entry_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.entry_contents = entry_contents_value
+
+        # Parse morerows
+        child = ARObject._find_child_element(element, "MOREROWS")
+        if child is not None:
+            morerows_value = child.text
+            obj.morerows = morerows_value
+
+        # Parse nameend
+        child = ARObject._find_child_element(element, "NAMEEND")
+        if child is not None:
+            nameend_value = child.text
+            obj.nameend = nameend_value
+
+        # Parse namest
+        child = ARObject._find_child_element(element, "NAMEST")
+        if child is not None:
+            namest_value = child.text
+            obj.namest = namest_value
+
+        # Parse rotate
+        child = ARObject._find_child_element(element, "ROTATE")
+        if child is not None:
+            rotate_value = child.text
+            obj.rotate = rotate_value
+
+        # Parse rowsep
+        child = ARObject._find_child_element(element, "ROWSEP")
+        if child is not None:
+            rowsep_value = child.text
+            obj.rowsep = rowsep_value
+
+        # Parse spanname
+        child = ARObject._find_child_element(element, "SPANNAME")
+        if child is not None:
+            spanname_value = child.text
+            obj.spanname = spanname_value
+
+        # Parse valign
+        child = ARObject._find_child_element(element, "VALIGN")
+        if child is not None:
+            valign_value = child.text
+            obj.valign = valign_value
+
+        return obj
+
 
 
 class EntryBuilder:

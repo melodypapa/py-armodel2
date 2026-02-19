@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -39,6 +40,34 @@ class MultiLanguageParagraph(Paginateable):
         super().__init__()
         self.help_entry: Optional[String] = None
         self.l1: LParagraph = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiLanguageParagraph":
+        """Deserialize XML element to MultiLanguageParagraph object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiLanguageParagraph object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse help_entry
+        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        if child is not None:
+            help_entry_value = child.text
+            obj.help_entry = help_entry_value
+
+        # Parse l1
+        child = ARObject._find_child_element(element, "L1")
+        if child is not None:
+            l1_value = ARObject._deserialize_by_tag(child, "LParagraph")
+            obj.l1 = l1_value
+
+        return obj
+
 
 
 class MultiLanguageParagraphBuilder:

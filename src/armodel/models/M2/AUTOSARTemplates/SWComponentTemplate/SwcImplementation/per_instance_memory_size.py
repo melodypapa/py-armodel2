@@ -39,6 +39,40 @@ class PerInstanceMemorySize(ARObject):
         self.alignment: Optional[PositiveInteger] = None
         self.per_instance_memory_memory: Optional[PerInstanceMemory] = None
         self.size: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PerInstanceMemorySize":
+        """Deserialize XML element to PerInstanceMemorySize object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PerInstanceMemorySize object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alignment
+        child = ARObject._find_child_element(element, "ALIGNMENT")
+        if child is not None:
+            alignment_value = child.text
+            obj.alignment = alignment_value
+
+        # Parse per_instance_memory_memory
+        child = ARObject._find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY")
+        if child is not None:
+            per_instance_memory_memory_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
+            obj.per_instance_memory_memory = per_instance_memory_memory_value
+
+        # Parse size
+        child = ARObject._find_child_element(element, "SIZE")
+        if child is not None:
+            size_value = child.text
+            obj.size = size_value
+
+        return obj
+
 
 
 class PerInstanceMemorySizeBuilder:

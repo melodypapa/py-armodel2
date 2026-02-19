@@ -27,6 +27,22 @@ class CanCommunicationController(ARObject):
     def __init__(self) -> None:
         """Initialize CanCommunicationController."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanCommunicationController":
+        """Deserialize XML element to CanCommunicationController object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanCommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class CanCommunicationControllerBuilder:

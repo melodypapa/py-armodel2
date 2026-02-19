@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -32,6 +33,28 @@ class EnumerationMappingTable(PackageableElement):
         """Initialize EnumerationMappingTable."""
         super().__init__()
         self.entrie_refs: list[ARRef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EnumerationMappingTable":
+        """Deserialize XML element to EnumerationMappingTable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EnumerationMappingTable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse entrie_refs (list)
+        obj.entrie_refs = []
+        for child in ARObject._find_all_child_elements(element, "ENTRIES"):
+            entrie_refs_value = child.text
+            obj.entrie_refs.append(entrie_refs_value)
+
+        return obj
+
 
 
 class EnumerationMappingTableBuilder:

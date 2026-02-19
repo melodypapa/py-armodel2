@@ -37,6 +37,34 @@ class DdsReliability(ARObject):
         super().__init__()
         self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
         self.reliability_max: Optional[Float] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsReliability":
+        """Deserialize XML element to DdsReliability object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsReliability object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse reliability_kind
+        child = ARObject._find_child_element(element, "RELIABILITY-KIND")
+        if child is not None:
+            reliability_kind_value = child.text
+            obj.reliability_kind = reliability_kind_value
+
+        # Parse reliability_max
+        child = ARObject._find_child_element(element, "RELIABILITY-MAX")
+        if child is not None:
+            reliability_max_value = child.text
+            obj.reliability_max = reliability_max_value
+
+        return obj
+
 
 
 class DdsReliabilityBuilder:

@@ -44,6 +44,46 @@ class PduToFrameMapping(ARObject):
         self.pdu: Optional[Pdu] = None
         self.start_position: Optional[Integer] = None
         self.update: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PduToFrameMapping":
+        """Deserialize XML element to PduToFrameMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PduToFrameMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse packing_byte
+        child = ARObject._find_child_element(element, "PACKING-BYTE")
+        if child is not None:
+            packing_byte_value = child.text
+            obj.packing_byte = packing_byte_value
+
+        # Parse pdu
+        child = ARObject._find_child_element(element, "PDU")
+        if child is not None:
+            pdu_value = ARObject._deserialize_by_tag(child, "Pdu")
+            obj.pdu = pdu_value
+
+        # Parse start_position
+        child = ARObject._find_child_element(element, "START-POSITION")
+        if child is not None:
+            start_position_value = child.text
+            obj.start_position = start_position_value
+
+        # Parse update
+        child = ARObject._find_child_element(element, "UPDATE")
+        if child is not None:
+            update_value = child.text
+            obj.update = update_value
+
+        return obj
+
 
 
 class PduToFrameMappingBuilder:

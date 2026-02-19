@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_inhibition_needs import (
     FunctionInhibitionNeeds,
 )
@@ -35,6 +36,28 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()
         self.controlled_fid: Optional[FunctionInhibitionNeeds] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FunctionInhibitionAvailabilityNeeds":
+        """Deserialize XML element to FunctionInhibitionAvailabilityNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FunctionInhibitionAvailabilityNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse controlled_fid
+        child = ARObject._find_child_element(element, "CONTROLLED-FID")
+        if child is not None:
+            controlled_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
+            obj.controlled_fid = controlled_fid_value
+
+        return obj
+
 
 
 class FunctionInhibitionAvailabilityNeedsBuilder:

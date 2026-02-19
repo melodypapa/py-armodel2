@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     MaxCommModeEnum,
 )
@@ -35,6 +36,28 @@ class ComMgrUserNeeds(ServiceNeeds):
         """Initialize ComMgrUserNeeds."""
         super().__init__()
         self.max_comm_mode_enum: Optional[MaxCommModeEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ComMgrUserNeeds":
+        """Deserialize XML element to ComMgrUserNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ComMgrUserNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_comm_mode_enum
+        child = ARObject._find_child_element(element, "MAX-COMM-MODE-ENUM")
+        if child is not None:
+            max_comm_mode_enum_value = child.text
+            obj.max_comm_mode_enum = max_comm_mode_enum_value
+
+        return obj
+
 
 
 class ComMgrUserNeedsBuilder:

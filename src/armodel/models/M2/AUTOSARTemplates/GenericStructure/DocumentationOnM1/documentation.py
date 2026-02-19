@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.documentation_context import (
     DocumentationContext,
 )
@@ -41,6 +42,34 @@ class Documentation(ARElement):
         super().__init__()
         self.contexts: list[DocumentationContext] = []
         self.documentation: Optional[PredefinedChapter] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Documentation":
+        """Deserialize XML element to Documentation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Documentation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = ARObject._deserialize_by_tag(child, "DocumentationContext")
+            obj.contexts.append(contexts_value)
+
+        # Parse documentation
+        child = ARObject._find_child_element(element, "DOCUMENTATION")
+        if child is not None:
+            documentation_value = ARObject._deserialize_by_tag(child, "PredefinedChapter")
+            obj.documentation = documentation_value
+
+        return obj
+
 
 
 class DocumentationBuilder:

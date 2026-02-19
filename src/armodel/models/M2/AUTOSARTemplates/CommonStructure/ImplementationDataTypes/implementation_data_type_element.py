@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type_element import (
     AbstractImplementationDataTypeElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArrayImplPolicyEnum,
     ArraySizeSemanticsEnum,
@@ -60,6 +61,58 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         self.is_optional: Optional[Boolean] = None
         self.sub_elements: list[Any] = []
         self.sw_data_def: Optional[SwDataDefProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationDataTypeElement":
+        """Deserialize XML element to ImplementationDataTypeElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationDataTypeElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse array_impl_policy_enum
+        child = ARObject._find_child_element(element, "ARRAY-IMPL-POLICY-ENUM")
+        if child is not None:
+            array_impl_policy_enum_value = child.text
+            obj.array_impl_policy_enum = array_impl_policy_enum_value
+
+        # Parse array_size
+        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        if child is not None:
+            array_size_value = child.text
+            obj.array_size = array_size_value
+
+        # Parse array_size_handling
+        child = ARObject._find_child_element(element, "ARRAY-SIZE-HANDLING")
+        if child is not None:
+            array_size_handling_value = child.text
+            obj.array_size_handling = array_size_handling_value
+
+        # Parse is_optional
+        child = ARObject._find_child_element(element, "IS-OPTIONAL")
+        if child is not None:
+            is_optional_value = child.text
+            obj.is_optional = is_optional_value
+
+        # Parse sub_elements (list)
+        obj.sub_elements = []
+        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
+            sub_elements_value = child.text
+            obj.sub_elements.append(sub_elements_value)
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        return obj
+
 
 
 class ImplementationDataTypeElementBuilder:

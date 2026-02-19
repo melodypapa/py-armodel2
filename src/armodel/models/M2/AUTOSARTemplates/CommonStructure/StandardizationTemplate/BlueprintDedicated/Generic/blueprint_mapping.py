@@ -37,6 +37,34 @@ class BlueprintMapping(ARObject):
         super().__init__()
         self.blueprint: AtpBlueprint = None
         self.derived_object: AtpBlueprintable = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintMapping":
+        """Deserialize XML element to BlueprintMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint
+        child = ARObject._find_child_element(element, "BLUEPRINT")
+        if child is not None:
+            blueprint_value = ARObject._deserialize_by_tag(child, "AtpBlueprint")
+            obj.blueprint = blueprint_value
+
+        # Parse derived_object
+        child = ARObject._find_child_element(element, "DERIVED-OBJECT")
+        if child is not None:
+            derived_object_value = ARObject._deserialize_by_tag(child, "AtpBlueprintable")
+            obj.derived_object = derived_object_value
+
+        return obj
+
 
 
 class BlueprintMappingBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
@@ -39,6 +40,34 @@ class FMFeatureRelation(Identifiable):
         super().__init__()
         self.features: list[FMFeature] = []
         self.restriction: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFeatureRelation":
+        """Deserialize XML element to FMFeatureRelation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFeatureRelation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse features (list)
+        obj.features = []
+        for child in ARObject._find_all_child_elements(element, "FEATURES"):
+            features_value = ARObject._deserialize_by_tag(child, "FMFeature")
+            obj.features.append(features_value)
+
+        # Parse restriction
+        child = ARObject._find_child_element(element, "RESTRICTION")
+        if child is not None:
+            restriction_value = child.text
+            obj.restriction = restriction_value
+
+        return obj
+
 
 
 class FMFeatureRelationBuilder:

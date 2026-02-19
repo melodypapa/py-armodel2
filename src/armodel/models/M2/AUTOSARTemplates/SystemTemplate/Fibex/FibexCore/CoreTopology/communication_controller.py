@@ -33,6 +33,28 @@ class CommunicationController(ARObject, ABC):
         """Initialize CommunicationController."""
         super().__init__()
         self.wake_up_by: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommunicationController":
+        """Deserialize XML element to CommunicationController object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse wake_up_by
+        child = ARObject._find_child_element(element, "WAKE-UP-BY")
+        if child is not None:
+            wake_up_by_value = child.text
+            obj.wake_up_by = wake_up_by_value
+
+        return obj
+
 
 
 class CommunicationControllerBuilder:

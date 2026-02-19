@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -63,6 +64,58 @@ class CompositionSwComponentType(SwComponentType):
         self.data_type_refs: list[ARRef] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
         self.physical: Optional[PhysicalDimension] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompositionSwComponentType":
+        """Deserialize XML element to CompositionSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompositionSwComponentType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse components (list)
+        obj.components = []
+        for child in ARObject._find_all_child_elements(element, "COMPONENTS"):
+            components_value = child.text
+            obj.components.append(components_value)
+
+        # Parse connectors (list)
+        obj.connectors = []
+        for child in ARObject._find_all_child_elements(element, "CONNECTORS"):
+            connectors_value = ARObject._deserialize_by_tag(child, "SwConnector")
+            obj.connectors.append(connectors_value)
+
+        # Parse constant_values (list)
+        obj.constant_values = []
+        for child in ARObject._find_all_child_elements(element, "CONSTANT-VALUES"):
+            constant_values_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
+            obj.constant_values.append(constant_values_value)
+
+        # Parse data_type_refs (list)
+        obj.data_type_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
+            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
+            obj.data_type_refs.append(data_type_refs_value)
+
+        # Parse instantiation_rte_events (list)
+        obj.instantiation_rte_events = []
+        for child in ARObject._find_all_child_elements(element, "INSTANTIATION-RTE-EVENTS"):
+            instantiation_rte_events_value = ARObject._deserialize_by_tag(child, "InstantiationRTEEventProps")
+            obj.instantiation_rte_events.append(instantiation_rte_events_value)
+
+        # Parse physical
+        child = ARObject._find_child_element(element, "PHYSICAL")
+        if child is not None:
+            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.physical = physical_value
+
+        return obj
+
 
 
 class CompositionSwComponentTypeBuilder:

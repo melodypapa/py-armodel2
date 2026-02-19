@@ -48,6 +48,46 @@ class SwValueCont(ARObject):
         self.sw_values_phys: Optional[SwValues] = None
         self.unit: Optional[Unit] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwValueCont":
+        """Deserialize XML element to SwValueCont object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwValueCont object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse sw_values_phys
+        child = ARObject._find_child_element(element, "SW-VALUES-PHYS")
+        if child is not None:
+            sw_values_phys_value = ARObject._deserialize_by_tag(child, "SwValues")
+            obj.sw_values_phys = sw_values_phys_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        # Parse unit_display
+        child = ARObject._find_child_element(element, "UNIT-DISPLAY")
+        if child is not None:
+            unit_display_value = ARObject._deserialize_by_tag(child, "SingleLanguageUnitNames")
+            obj.unit_display = unit_display_value
+
+        return obj
+
 
 
 class SwValueContBuilder:

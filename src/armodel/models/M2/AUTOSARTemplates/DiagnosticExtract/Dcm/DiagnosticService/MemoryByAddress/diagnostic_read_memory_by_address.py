@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.MemoryByAddress.diagnostic_memory_addressable_range_access import (
     DiagnosticMemoryAddressableRangeAccess,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticReadMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
@@ -31,6 +32,28 @@ class DiagnosticReadMemoryByAddress(DiagnosticMemoryAddressableRangeAccess):
         """Initialize DiagnosticReadMemoryByAddress."""
         super().__init__()
         self.read_class: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticReadMemoryByAddress":
+        """Deserialize XML element to DiagnosticReadMemoryByAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticReadMemoryByAddress object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse read_class
+        child = ARObject._find_child_element(element, "READ-CLASS")
+        if child is not None:
+            read_class_value = child.text
+            obj.read_class = read_class_value
+
+        return obj
+
 
 
 class DiagnosticReadMemoryByAddressBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_communication_controller_attributes import (
     AbstractCanCommunicationControllerAttributes,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -40,6 +41,46 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         self.sync_jump_width: Optional[Integer] = None
         self.time_seg1: Optional[Integer] = None
         self.time_seg2: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanControllerConfiguration":
+        """Deserialize XML element to CanControllerConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanControllerConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse prop_seg
+        child = ARObject._find_child_element(element, "PROP-SEG")
+        if child is not None:
+            prop_seg_value = child.text
+            obj.prop_seg = prop_seg_value
+
+        # Parse sync_jump_width
+        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        if child is not None:
+            sync_jump_width_value = child.text
+            obj.sync_jump_width = sync_jump_width_value
+
+        # Parse time_seg1
+        child = ARObject._find_child_element(element, "TIME-SEG1")
+        if child is not None:
+            time_seg1_value = child.text
+            obj.time_seg1 = time_seg1_value
+
+        # Parse time_seg2
+        child = ARObject._find_child_element(element, "TIME-SEG2")
+        if child is not None:
+            time_seg2_value = child.text
+            obj.time_seg2 = time_seg2_value
+
+        return obj
+
 
 
 class CanControllerConfigurationBuilder:

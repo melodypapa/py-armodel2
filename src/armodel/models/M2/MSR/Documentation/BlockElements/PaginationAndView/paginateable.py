@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.document_view_selectable import (
     DocumentViewSelectable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView import (
     ChapterEnumBreak,
     KeepWithPreviousEnum,
@@ -38,6 +39,34 @@ class Paginateable(DocumentViewSelectable, ABC):
         super().__init__()
         self.break_: Optional[ChapterEnumBreak] = None
         self.keep_with: Optional[KeepWithPreviousEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Paginateable":
+        """Deserialize XML element to Paginateable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Paginateable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse break_
+        child = ARObject._find_child_element(element, "BREAK")
+        if child is not None:
+            break__value = child.text
+            obj.break_ = break__value
+
+        # Parse keep_with
+        child = ARObject._find_child_element(element, "KEEP-WITH")
+        if child is not None:
+            keep_with_value = child.text
+            obj.keep_with = keep_with_value
+
+        return obj
+
 
 
 class PaginateableBuilder:

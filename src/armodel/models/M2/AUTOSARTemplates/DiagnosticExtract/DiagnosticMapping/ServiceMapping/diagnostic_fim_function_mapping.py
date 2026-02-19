@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
@@ -37,6 +38,46 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         self.mapped_flat_swc: Optional[Any] = None
         self.mapped: Optional[Any] = None
         self.mapped_swc: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimFunctionMapping":
+        """Deserialize XML element to DiagnosticFimFunctionMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticFimFunctionMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse mapped_bsw
+        child = ARObject._find_child_element(element, "MAPPED-BSW")
+        if child is not None:
+            mapped_bsw_value = child.text
+            obj.mapped_bsw = mapped_bsw_value
+
+        # Parse mapped_flat_swc
+        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC")
+        if child is not None:
+            mapped_flat_swc_value = child.text
+            obj.mapped_flat_swc = mapped_flat_swc_value
+
+        # Parse mapped
+        child = ARObject._find_child_element(element, "MAPPED")
+        if child is not None:
+            mapped_value = child.text
+            obj.mapped = mapped_value
+
+        # Parse mapped_swc
+        child = ARObject._find_child_element(element, "MAPPED-SWC")
+        if child is not None:
+            mapped_swc_value = child.text
+            obj.mapped_swc = mapped_swc_value
+
+        return obj
+
 
 
 class DiagnosticFimFunctionMappingBuilder:

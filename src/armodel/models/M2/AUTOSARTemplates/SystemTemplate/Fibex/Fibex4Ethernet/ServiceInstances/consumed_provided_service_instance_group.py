@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class ConsumedProvidedServiceInstanceGroup(FibexElement):
@@ -33,6 +34,34 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         super().__init__()
         self.consumed_services: list[Any] = []
         self.provided_services: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConsumedProvidedServiceInstanceGroup":
+        """Deserialize XML element to ConsumedProvidedServiceInstanceGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConsumedProvidedServiceInstanceGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse consumed_services (list)
+        obj.consumed_services = []
+        for child in ARObject._find_all_child_elements(element, "CONSUMED-SERVICES"):
+            consumed_services_value = child.text
+            obj.consumed_services.append(consumed_services_value)
+
+        # Parse provided_services (list)
+        obj.provided_services = []
+        for child in ARObject._find_all_child_elements(element, "PROVIDED-SERVICES"):
+            provided_services_value = child.text
+            obj.provided_services.append(provided_services_value)
+
+        return obj
+
 
 
 class ConsumedProvidedServiceInstanceGroupBuilder:

@@ -42,6 +42,40 @@ class ClientServerOperationBlueprintMapping(ARObject):
         self.blueprint: Optional[DocumentationBlock] = None
         self.bsw_module_entry: BswModuleEntry = None
         self.client_server: ClientServerOperation = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientServerOperationBlueprintMapping":
+        """Deserialize XML element to ClientServerOperationBlueprintMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientServerOperationBlueprintMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint
+        child = ARObject._find_child_element(element, "BLUEPRINT")
+        if child is not None:
+            blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.blueprint = blueprint_value
+
+        # Parse bsw_module_entry
+        child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY")
+        if child is not None:
+            bsw_module_entry_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.bsw_module_entry = bsw_module_entry_value
+
+        # Parse client_server
+        child = ARObject._find_child_element(element, "CLIENT-SERVER")
+        if child is not None:
+            client_server_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.client_server = client_server_value
+
+        return obj
+
 
 
 class ClientServerOperationBlueprintMappingBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.transport_protocol_configuration import (
     TransportProtocolConfiguration,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -39,6 +40,34 @@ class RtpTp(TransportProtocolConfiguration):
         super().__init__()
         self.ssrc: Optional[PositiveInteger] = None
         self.tcp_udp_config: Optional[TcpUdpConfig] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RtpTp":
+        """Deserialize XML element to RtpTp object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RtpTp object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ssrc
+        child = ARObject._find_child_element(element, "SSRC")
+        if child is not None:
+            ssrc_value = child.text
+            obj.ssrc = ssrc_value
+
+        # Parse tcp_udp_config
+        child = ARObject._find_child_element(element, "TCP-UDP-CONFIG")
+        if child is not None:
+            tcp_udp_config_value = ARObject._deserialize_by_tag(child, "TcpUdpConfig")
+            obj.tcp_udp_config = tcp_udp_config_value
+
+        return obj
+
 
 
 class RtpTpBuilder:

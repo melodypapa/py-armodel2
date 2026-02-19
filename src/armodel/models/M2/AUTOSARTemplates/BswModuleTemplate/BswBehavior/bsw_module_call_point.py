@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
 )
@@ -35,6 +36,28 @@ class BswModuleCallPoint(Referrable, ABC):
         """Initialize BswModuleCallPoint."""
         super().__init__()
         self.contexts: list[BswDistinguishedPartition] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswModuleCallPoint":
+        """Deserialize XML element to BswModuleCallPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswModuleCallPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = ARObject._deserialize_by_tag(child, "BswDistinguishedPartition")
+            obj.contexts.append(contexts_value)
+
+        return obj
+
 
 
 class BswModuleCallPointBuilder:

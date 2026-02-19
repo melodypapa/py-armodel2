@@ -50,6 +50,52 @@ class McSupportData(ARObject):
         self.mc_variables: list[McDataInstance] = []
         self.measurables: list[SwSystemconstantValueSet] = []
         self.rpt_support_data: Optional[RptSupportData] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McSupportData":
+        """Deserialize XML element to McSupportData object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McSupportData object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse emulations (list)
+        obj.emulations = []
+        for child in ARObject._find_all_child_elements(element, "EMULATIONS"):
+            emulations_value = ARObject._deserialize_by_tag(child, "McSwEmulationMethodSupport")
+            obj.emulations.append(emulations_value)
+
+        # Parse mc_parameters (list)
+        obj.mc_parameters = []
+        for child in ARObject._find_all_child_elements(element, "MC-PARAMETERS"):
+            mc_parameters_value = ARObject._deserialize_by_tag(child, "McDataInstance")
+            obj.mc_parameters.append(mc_parameters_value)
+
+        # Parse mc_variables (list)
+        obj.mc_variables = []
+        for child in ARObject._find_all_child_elements(element, "MC-VARIABLES"):
+            mc_variables_value = ARObject._deserialize_by_tag(child, "McDataInstance")
+            obj.mc_variables.append(mc_variables_value)
+
+        # Parse measurables (list)
+        obj.measurables = []
+        for child in ARObject._find_all_child_elements(element, "MEASURABLES"):
+            measurables_value = ARObject._deserialize_by_tag(child, "SwSystemconstantValueSet")
+            obj.measurables.append(measurables_value)
+
+        # Parse rpt_support_data
+        child = ARObject._find_child_element(element, "RPT-SUPPORT-DATA")
+        if child is not None:
+            rpt_support_data_value = ARObject._deserialize_by_tag(child, "RptSupportData")
+            obj.rpt_support_data = rpt_support_data_value
+
+        return obj
+
 
 
 class McSupportDataBuilder:

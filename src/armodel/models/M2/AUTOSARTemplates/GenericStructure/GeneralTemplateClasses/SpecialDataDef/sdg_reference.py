@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_attribute import (
     SdgAttribute,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
 )
@@ -34,6 +35,28 @@ class SdgReference(SdgAttribute):
         """Initialize SdgReference."""
         super().__init__()
         self.dest_sdg: Optional[SdgClass] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgReference":
+        """Deserialize XML element to SdgReference object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgReference object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dest_sdg
+        child = ARObject._find_child_element(element, "DEST-SDG")
+        if child is not None:
+            dest_sdg_value = ARObject._deserialize_by_tag(child, "SdgClass")
+            obj.dest_sdg = dest_sdg_value
+
+        return obj
+
 
 
 class SdgReferenceBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_internal_reference_def import (
     EcucAbstractInternalReferenceDef,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destination_uri_def import (
     EcucDestinationUriDef,
 )
@@ -35,6 +36,28 @@ class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
         """Initialize EcucUriReferenceDef."""
         super().__init__()
         self.destination_uri: Optional[EcucDestinationUriDef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucUriReferenceDef":
+        """Deserialize XML element to EcucUriReferenceDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucUriReferenceDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_uri
+        child = ARObject._find_child_element(element, "DESTINATION-URI")
+        if child is not None:
+            destination_uri_value = ARObject._deserialize_by_tag(child, "EcucDestinationUriDef")
+            obj.destination_uri = destination_uri_value
+
+        return obj
+
 
 
 class EcucUriReferenceDefBuilder:

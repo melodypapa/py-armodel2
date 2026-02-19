@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
     ApplicationDataType,
 )
@@ -36,6 +37,28 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
         """Initialize ApplicationCompositeElementDataPrototype."""
         super().__init__()
         self.type: Optional[ApplicationDataType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationCompositeElementDataPrototype":
+        """Deserialize XML element to ApplicationCompositeElementDataPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationCompositeElementDataPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse type
+        child = ARObject._find_child_element(element, "TYPE")
+        if child is not None:
+            type_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
+            obj.type = type_value
+
+        return obj
+
 
 
 class ApplicationCompositeElementDataPrototypeBuilder:

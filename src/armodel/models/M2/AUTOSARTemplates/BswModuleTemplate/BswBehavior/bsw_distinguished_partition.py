@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswDistinguishedPartition(Referrable):
@@ -29,6 +30,22 @@ class BswDistinguishedPartition(Referrable):
     def __init__(self) -> None:
         """Initialize BswDistinguishedPartition."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswDistinguishedPartition":
+        """Deserialize XML element to BswDistinguishedPartition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswDistinguishedPartition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BswDistinguishedPartitionBuilder:

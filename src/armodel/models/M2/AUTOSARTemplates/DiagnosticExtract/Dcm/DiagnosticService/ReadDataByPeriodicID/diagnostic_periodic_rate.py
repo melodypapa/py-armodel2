@@ -34,6 +34,34 @@ class DiagnosticPeriodicRate(ARObject):
         super().__init__()
         self.period: Optional[TimeValue] = None
         self.periodic_rate: Optional[DiagnosticPeriodicRate] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticPeriodicRate":
+        """Deserialize XML element to DiagnosticPeriodicRate object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticPeriodicRate object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse period
+        child = ARObject._find_child_element(element, "PERIOD")
+        if child is not None:
+            period_value = child.text
+            obj.period = period_value
+
+        # Parse periodic_rate
+        child = ARObject._find_child_element(element, "PERIODIC-RATE")
+        if child is not None:
+            periodic_rate_value = ARObject._deserialize_by_tag(child, "DiagnosticPeriodicRate")
+            obj.periodic_rate = periodic_rate_value
+
+        return obj
+
 
 
 class DiagnosticPeriodicRateBuilder:

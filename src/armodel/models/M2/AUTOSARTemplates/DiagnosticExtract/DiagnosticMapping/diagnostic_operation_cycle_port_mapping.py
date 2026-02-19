@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_sw_mapping import (
     DiagnosticSwMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
@@ -35,6 +36,40 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         self.operation_cycle: Optional[Any] = None
         self.swc_flat_service: Optional[Any] = None
         self.swc_service: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticOperationCyclePortMapping":
+        """Deserialize XML element to DiagnosticOperationCyclePortMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticOperationCyclePortMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse operation_cycle
+        child = ARObject._find_child_element(element, "OPERATION-CYCLE")
+        if child is not None:
+            operation_cycle_value = child.text
+            obj.operation_cycle = operation_cycle_value
+
+        # Parse swc_flat_service
+        child = ARObject._find_child_element(element, "SWC-FLAT-SERVICE")
+        if child is not None:
+            swc_flat_service_value = child.text
+            obj.swc_flat_service = swc_flat_service_value
+
+        # Parse swc_service
+        child = ARObject._find_child_element(element, "SWC-SERVICE")
+        if child is not None:
+            swc_service_value = child.text
+            obj.swc_service = swc_service_value
+
+        return obj
+
 
 
 class DiagnosticOperationCyclePortMappingBuilder:

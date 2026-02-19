@@ -51,6 +51,64 @@ class DocRevision(ARObject):
         self.revision_label_p1: Optional[RevisionLabelString] = None
         self.revision_label_p2: Optional[RevisionLabelString] = None
         self.state: Optional[NameToken] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DocRevision":
+        """Deserialize XML element to DocRevision object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DocRevision object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse date
+        child = ARObject._find_child_element(element, "DATE")
+        if child is not None:
+            date_value = child.text
+            obj.date = date_value
+
+        # Parse issued_by
+        child = ARObject._find_child_element(element, "ISSUED-BY")
+        if child is not None:
+            issued_by_value = child.text
+            obj.issued_by = issued_by_value
+
+        # Parse modifications (list)
+        obj.modifications = []
+        for child in ARObject._find_all_child_elements(element, "MODIFICATIONS"):
+            modifications_value = ARObject._deserialize_by_tag(child, "Modification")
+            obj.modifications.append(modifications_value)
+
+        # Parse revision_label_string
+        child = ARObject._find_child_element(element, "REVISION-LABEL-STRING")
+        if child is not None:
+            revision_label_string_value = child.text
+            obj.revision_label_string = revision_label_string_value
+
+        # Parse revision_label_p1
+        child = ARObject._find_child_element(element, "REVISION-LABEL-P1")
+        if child is not None:
+            revision_label_p1_value = child.text
+            obj.revision_label_p1 = revision_label_p1_value
+
+        # Parse revision_label_p2
+        child = ARObject._find_child_element(element, "REVISION-LABEL-P2")
+        if child is not None:
+            revision_label_p2_value = child.text
+            obj.revision_label_p2 = revision_label_p2_value
+
+        # Parse state
+        child = ARObject._find_child_element(element, "STATE")
+        if child is not None:
+            state_value = child.text
+            obj.state = state_value
+
+        return obj
+
 
 
 class DocRevisionBuilder:

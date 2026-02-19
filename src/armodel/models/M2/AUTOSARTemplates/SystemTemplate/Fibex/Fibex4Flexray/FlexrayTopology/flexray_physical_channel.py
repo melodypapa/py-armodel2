@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayTopology import (
     FlexrayChannelName,
 )
@@ -34,6 +35,28 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         """Initialize FlexrayPhysicalChannel."""
         super().__init__()
         self.channel_name: Optional[FlexrayChannelName] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayPhysicalChannel":
+        """Deserialize XML element to FlexrayPhysicalChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayPhysicalChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse channel_name
+        child = ARObject._find_child_element(element, "CHANNEL-NAME")
+        if child is not None:
+            channel_name_value = child.text
+            obj.channel_name = channel_name_value
+
+        return obj
+
 
 
 class FlexrayPhysicalChannelBuilder:

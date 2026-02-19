@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation_props import (
     ImplementationProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class SymbolicNameProps(ImplementationProps):
@@ -29,6 +30,22 @@ class SymbolicNameProps(ImplementationProps):
     def __init__(self) -> None:
         """Initialize SymbolicNameProps."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SymbolicNameProps":
+        """Deserialize XML element to SymbolicNameProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SymbolicNameProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class SymbolicNamePropsBuilder:

@@ -27,6 +27,22 @@ class LVerbatim(ARObject):
     def __init__(self) -> None:
         """Initialize LVerbatim."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LVerbatim":
+        """Deserialize XML element to LVerbatim object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LVerbatim object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class LVerbatimBuilder:

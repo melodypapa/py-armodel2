@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BackgroundEvent(RTEEvent):
@@ -29,6 +30,22 @@ class BackgroundEvent(RTEEvent):
     def __init__(self) -> None:
         """Initialize BackgroundEvent."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BackgroundEvent":
+        """Deserialize XML element to BackgroundEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BackgroundEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BackgroundEventBuilder:

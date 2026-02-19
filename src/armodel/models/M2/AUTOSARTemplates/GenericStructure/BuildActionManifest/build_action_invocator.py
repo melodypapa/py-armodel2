@@ -32,6 +32,28 @@ class BuildActionInvocator(ARObject):
         """Initialize BuildActionInvocator."""
         super().__init__()
         self.command: Optional[VerbatimString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BuildActionInvocator":
+        """Deserialize XML element to BuildActionInvocator object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BuildActionInvocator object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse command
+        child = ARObject._find_child_element(element, "COMMAND")
+        if child is not None:
+            command_value = child.text
+            obj.command = command_value
+
+        return obj
+
 
 
 class BuildActionInvocatorBuilder:

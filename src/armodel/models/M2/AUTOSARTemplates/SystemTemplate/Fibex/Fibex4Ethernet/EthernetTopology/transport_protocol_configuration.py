@@ -28,6 +28,22 @@ class TransportProtocolConfiguration(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize TransportProtocolConfiguration."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransportProtocolConfiguration":
+        """Deserialize XML element to TransportProtocolConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransportProtocolConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class TransportProtocolConfigurationBuilder:

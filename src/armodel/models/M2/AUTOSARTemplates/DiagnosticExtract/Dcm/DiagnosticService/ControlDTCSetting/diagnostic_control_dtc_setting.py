@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_instance import (
     DiagnosticServiceInstance,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
@@ -31,6 +32,28 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         """Initialize DiagnosticControlDTCSetting."""
         super().__init__()
         self.dtc_setting_class: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticControlDTCSetting":
+        """Deserialize XML element to DiagnosticControlDTCSetting object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticControlDTCSetting object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dtc_setting_class
+        child = ARObject._find_child_element(element, "DTC-SETTING-CLASS")
+        if child is not None:
+            dtc_setting_class_value = child.text
+            obj.dtc_setting_class = dtc_setting_class_value
+
+        return obj
+
 
 
 class DiagnosticControlDTCSettingBuilder:

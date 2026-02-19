@@ -34,6 +34,34 @@ class SwcToSwcOperationArguments(ARObject):
         super().__init__()
         self.direction: Optional[Any] = None
         self.operations: list[ClientServerOperation] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcToSwcOperationArguments":
+        """Deserialize XML element to SwcToSwcOperationArguments object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcToSwcOperationArguments object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse direction
+        child = ARObject._find_child_element(element, "DIRECTION")
+        if child is not None:
+            direction_value = child.text
+            obj.direction = direction_value
+
+        # Parse operations (list)
+        obj.operations = []
+        for child in ARObject._find_all_child_elements(element, "OPERATIONS"):
+            operations_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.operations.append(operations_value)
+
+        return obj
+
 
 
 class SwcToSwcOperationArgumentsBuilder:

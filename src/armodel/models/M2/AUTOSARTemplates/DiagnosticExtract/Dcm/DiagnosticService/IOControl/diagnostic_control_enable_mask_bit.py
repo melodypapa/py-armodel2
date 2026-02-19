@@ -37,6 +37,34 @@ class DiagnosticControlEnableMaskBit(ARObject):
         super().__init__()
         self.bit_number: Optional[PositiveInteger] = None
         self.controlled_datas: list[DiagnosticDataElement] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticControlEnableMaskBit":
+        """Deserialize XML element to DiagnosticControlEnableMaskBit object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticControlEnableMaskBit object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bit_number
+        child = ARObject._find_child_element(element, "BIT-NUMBER")
+        if child is not None:
+            bit_number_value = child.text
+            obj.bit_number = bit_number_value
+
+        # Parse controlled_datas (list)
+        obj.controlled_datas = []
+        for child in ARObject._find_all_child_elements(element, "CONTROLLED-DATAS"):
+            controlled_datas_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
+            obj.controlled_datas.append(controlled_datas_value)
+
+        return obj
+
 
 
 class DiagnosticControlEnableMaskBitBuilder:

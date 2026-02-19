@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
@@ -48,6 +49,46 @@ class SenderReceiverToSignalMapping(DataMapping):
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverToSignalMapping":
+        """Deserialize XML element to SenderReceiverToSignalMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderReceiverToSignalMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_system_instance_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF")
+        if child is not None:
+            data_element_system_instance_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_system_instance_ref = data_element_system_instance_ref_value
+
+        # Parse sender_to_signal_ref
+        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")
+        if child is not None:
+            sender_to_signal_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            obj.sender_to_signal_ref = sender_to_signal_ref_value
+
+        # Parse signal_to_ref
+        child = ARObject._find_child_element(element, "SIGNAL-TO")
+        if child is not None:
+            signal_to_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            obj.signal_to_ref = signal_to_ref_value
+
+        # Parse system_signal
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        if child is not None:
+            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
+            obj.system_signal = system_signal_value
+
+        return obj
+
 
 
 class SenderReceiverToSignalMappingBuilder:

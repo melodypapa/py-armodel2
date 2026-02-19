@@ -37,6 +37,34 @@ class OrderedMaster(ARObject):
         super().__init__()
         self.index: Optional[PositiveInteger] = None
         self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "OrderedMaster":
+        """Deserialize XML element to OrderedMaster object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized OrderedMaster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse index
+        child = ARObject._find_child_element(element, "INDEX")
+        if child is not None:
+            index_value = child.text
+            obj.index = index_value
+
+        # Parse time_sync_server_configuration
+        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
+        if child is not None:
+            time_sync_server_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncServerConfiguration")
+            obj.time_sync_server_configuration = time_sync_server_configuration_value
+
+        return obj
+
 
 
 class OrderedMasterBuilder:

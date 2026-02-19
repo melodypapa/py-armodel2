@@ -42,6 +42,40 @@ class Baseline(ARObject):
         self.custom_sdg_defs: list[SdgDef] = []
         self.customs: list[Documentation] = []
         self.standards: list[String] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Baseline":
+        """Deserialize XML element to Baseline object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Baseline object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse custom_sdg_defs (list)
+        obj.custom_sdg_defs = []
+        for child in ARObject._find_all_child_elements(element, "CUSTOM-SDG-DEFS"):
+            custom_sdg_defs_value = ARObject._deserialize_by_tag(child, "SdgDef")
+            obj.custom_sdg_defs.append(custom_sdg_defs_value)
+
+        # Parse customs (list)
+        obj.customs = []
+        for child in ARObject._find_all_child_elements(element, "CUSTOMS"):
+            customs_value = ARObject._deserialize_by_tag(child, "Documentation")
+            obj.customs.append(customs_value)
+
+        # Parse standards (list)
+        obj.standards = []
+        for child in ARObject._find_all_child_elements(element, "STANDARDS"):
+            standards_value = child.text
+            obj.standards.append(standards_value)
+
+        return obj
+
 
 
 class BaselineBuilder:

@@ -32,6 +32,28 @@ class Tbody(ARObject):
         """Initialize Tbody."""
         super().__init__()
         self.valign: Optional[ValignEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Tbody":
+        """Deserialize XML element to Tbody object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Tbody object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse valign
+        child = ARObject._find_child_element(element, "VALIGN")
+        if child is not None:
+            valign_value = child.text
+            obj.valign = valign_value
+
+        return obj
+
 
 
 class TbodyBuilder:

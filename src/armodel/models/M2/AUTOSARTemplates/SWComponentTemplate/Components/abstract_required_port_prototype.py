@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port_com_spec import (
     RPortComSpec,
 )
@@ -37,6 +38,28 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
         self.required_coms: list[RPortComSpec] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractRequiredPortPrototype":
+        """Deserialize XML element to AbstractRequiredPortPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractRequiredPortPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse required_coms (list)
+        obj.required_coms = []
+        for child in ARObject._find_all_child_elements(element, "REQUIRED-COMS"):
+            required_coms_value = ARObject._deserialize_by_tag(child, "RPortComSpec")
+            obj.required_coms.append(required_coms_value)
+
+        return obj
+
 
 
 class AbstractRequiredPortPrototypeBuilder:

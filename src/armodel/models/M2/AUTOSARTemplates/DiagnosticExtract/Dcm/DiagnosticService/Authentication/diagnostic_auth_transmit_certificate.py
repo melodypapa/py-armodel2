@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.Authentication.diagnostic_authentication import (
     DiagnosticAuthentication,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
@@ -31,6 +32,28 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         """Initialize DiagnosticAuthTransmitCertificate."""
         super().__init__()
         self.certificates: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthTransmitCertificate":
+        """Deserialize XML element to DiagnosticAuthTransmitCertificate object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAuthTransmitCertificate object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse certificates (list)
+        obj.certificates = []
+        for child in ARObject._find_all_child_elements(element, "CERTIFICATES"):
+            certificates_value = child.text
+            obj.certificates.append(certificates_value)
+
+        return obj
+
 
 
 class DiagnosticAuthTransmitCertificateBuilder:

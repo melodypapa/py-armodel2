@@ -34,6 +34,34 @@ class SoftwareContext(ARObject):
         super().__init__()
         self.input: Optional[String] = None
         self.state: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SoftwareContext":
+        """Deserialize XML element to SoftwareContext object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SoftwareContext object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse input
+        child = ARObject._find_child_element(element, "INPUT")
+        if child is not None:
+            input_value = child.text
+            obj.input = input_value
+
+        # Parse state
+        child = ARObject._find_child_element(element, "STATE")
+        if child is not None:
+            state_value = child.text
+            obj.state = state_value
+
+        return obj
+
 
 
 class SoftwareContextBuilder:

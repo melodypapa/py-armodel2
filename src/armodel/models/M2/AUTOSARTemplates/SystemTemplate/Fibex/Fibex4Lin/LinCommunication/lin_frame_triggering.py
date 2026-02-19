@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
     LinChecksumType,
 )
@@ -39,6 +40,34 @@ class LinFrameTriggering(FrameTriggering):
         super().__init__()
         self.identifier: Optional[Integer] = None
         self.lin_checksum: Optional[LinChecksumType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinFrameTriggering":
+        """Deserialize XML element to LinFrameTriggering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinFrameTriggering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse identifier
+        child = ARObject._find_child_element(element, "IDENTIFIER")
+        if child is not None:
+            identifier_value = child.text
+            obj.identifier = identifier_value
+
+        # Parse lin_checksum
+        child = ARObject._find_child_element(element, "LIN-CHECKSUM")
+        if child is not None:
+            lin_checksum_value = child.text
+            obj.lin_checksum = lin_checksum_value
+
+        return obj
+
 
 
 class LinFrameTriggeringBuilder:

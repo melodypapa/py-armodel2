@@ -57,6 +57,64 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         self.context_root: Optional[RootSwCompositionPrototype] = None
         self.root_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataPrototypeInSystemInstanceRef":
+        """Deserialize XML element to DataPrototypeInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataPrototypeInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "System")
+            obj.base = base_value
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = child.text
+            obj.contexts.append(contexts_value)
+
+        # Parse context_datas (list)
+        obj.context_datas = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-DATAS"):
+            context_datas_value = child.text
+            obj.context_datas.append(context_datas_value)
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        # Parse context_root
+        child = ARObject._find_child_element(element, "CONTEXT-ROOT")
+        if child is not None:
+            context_root_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context_root = context_root_value
+
+        # Parse root_data_prototype_ref
+        child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE")
+        if child is not None:
+            root_data_prototype_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.root_data_prototype_ref = root_data_prototype_ref_value
+
+        # Parse target_data_ref
+        child = ARObject._find_child_element(element, "TARGET-DATA")
+        if child is not None:
+            target_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            obj.target_data_ref = target_data_ref_value
+
+        return obj
+
 
 
 class DataPrototypeInSystemInstanceRefBuilder:

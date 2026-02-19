@@ -43,6 +43,40 @@ class CalibrationParameterValue(ARObject):
         self.appl_init_value: Optional[ValueSpecification] = None
         self.impl_init_value: Optional[ValueSpecification] = None
         self.initialized: Optional[FlatInstanceDescriptor] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValue":
+        """Deserialize XML element to CalibrationParameterValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CalibrationParameterValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse appl_init_value
+        child = ARObject._find_child_element(element, "APPL-INIT-VALUE")
+        if child is not None:
+            appl_init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.appl_init_value = appl_init_value_value
+
+        # Parse impl_init_value
+        child = ARObject._find_child_element(element, "IMPL-INIT-VALUE")
+        if child is not None:
+            impl_init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.impl_init_value = impl_init_value_value
+
+        # Parse initialized
+        child = ARObject._find_child_element(element, "INITIALIZED")
+        if child is not None:
+            initialized_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
+            obj.initialized = initialized_value
+
+        return obj
+
 
 
 class CalibrationParameterValueBuilder:

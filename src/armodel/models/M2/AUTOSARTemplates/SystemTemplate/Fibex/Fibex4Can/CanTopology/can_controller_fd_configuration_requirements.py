@@ -53,6 +53,82 @@ class CanControllerFdConfigurationRequirements(ARObject):
         self.min_trcv_delay: Optional[TimeValue] = None
         self.padding_value: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanControllerFdConfigurationRequirements":
+        """Deserialize XML element to CanControllerFdConfigurationRequirements object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanControllerFdConfigurationRequirements object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max_number_of_time_quanta_per
+        child = ARObject._find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")
+        if child is not None:
+            max_number_of_time_quanta_per_value = child.text
+            obj.max_number_of_time_quanta_per = max_number_of_time_quanta_per_value
+
+        # Parse max_sample
+        child = ARObject._find_child_element(element, "MAX-SAMPLE")
+        if child is not None:
+            max_sample_value = child.text
+            obj.max_sample = max_sample_value
+
+        # Parse max_sync_jump
+        child = ARObject._find_child_element(element, "MAX-SYNC-JUMP")
+        if child is not None:
+            max_sync_jump_value = child.text
+            obj.max_sync_jump = max_sync_jump_value
+
+        # Parse max_trcv_delay
+        child = ARObject._find_child_element(element, "MAX-TRCV-DELAY")
+        if child is not None:
+            max_trcv_delay_value = child.text
+            obj.max_trcv_delay = max_trcv_delay_value
+
+        # Parse min_number_of_time_quanta_per
+        child = ARObject._find_child_element(element, "MIN-NUMBER-OF-TIME-QUANTA-PER")
+        if child is not None:
+            min_number_of_time_quanta_per_value = child.text
+            obj.min_number_of_time_quanta_per = min_number_of_time_quanta_per_value
+
+        # Parse min_sample_point
+        child = ARObject._find_child_element(element, "MIN-SAMPLE-POINT")
+        if child is not None:
+            min_sample_point_value = child.text
+            obj.min_sample_point = min_sample_point_value
+
+        # Parse min_sync_jump
+        child = ARObject._find_child_element(element, "MIN-SYNC-JUMP")
+        if child is not None:
+            min_sync_jump_value = child.text
+            obj.min_sync_jump = min_sync_jump_value
+
+        # Parse min_trcv_delay
+        child = ARObject._find_child_element(element, "MIN-TRCV-DELAY")
+        if child is not None:
+            min_trcv_delay_value = child.text
+            obj.min_trcv_delay = min_trcv_delay_value
+
+        # Parse padding_value
+        child = ARObject._find_child_element(element, "PADDING-VALUE")
+        if child is not None:
+            padding_value_value = child.text
+            obj.padding_value = padding_value_value
+
+        # Parse tx_bit_rate_switch
+        child = ARObject._find_child_element(element, "TX-BIT-RATE-SWITCH")
+        if child is not None:
+            tx_bit_rate_switch_value = child.text
+            obj.tx_bit_rate_switch = tx_bit_rate_switch_value
+
+        return obj
+
 
 
 class CanControllerFdConfigurationRequirementsBuilder:

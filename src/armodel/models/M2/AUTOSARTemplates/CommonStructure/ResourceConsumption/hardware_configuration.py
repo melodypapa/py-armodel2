@@ -36,6 +36,40 @@ class HardwareConfiguration(ARObject):
         self.additional: Optional[String] = None
         self.processor_mode: Optional[String] = None
         self.processor_speed: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HardwareConfiguration":
+        """Deserialize XML element to HardwareConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HardwareConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse additional
+        child = ARObject._find_child_element(element, "ADDITIONAL")
+        if child is not None:
+            additional_value = child.text
+            obj.additional = additional_value
+
+        # Parse processor_mode
+        child = ARObject._find_child_element(element, "PROCESSOR-MODE")
+        if child is not None:
+            processor_mode_value = child.text
+            obj.processor_mode = processor_mode_value
+
+        # Parse processor_speed
+        child = ARObject._find_child_element(element, "PROCESSOR-SPEED")
+        if child is not None:
+            processor_speed_value = child.text
+            obj.processor_speed = processor_speed_value
+
+        return obj
+
 
 
 class HardwareConfigurationBuilder:

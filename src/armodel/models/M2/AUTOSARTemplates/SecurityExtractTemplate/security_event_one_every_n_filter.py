@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_security_event_filter import (
     AbstractSecurityEventFilter,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         """Initialize SecurityEventOneEveryNFilter."""
         super().__init__()
         self.n: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventOneEveryNFilter":
+        """Deserialize XML element to SecurityEventOneEveryNFilter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventOneEveryNFilter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse n
+        child = ARObject._find_child_element(element, "N")
+        if child is not None:
+            n_value = child.text
+            obj.n = n_value
+
+        return obj
+
 
 
 class SecurityEventOneEveryNFilterBuilder:

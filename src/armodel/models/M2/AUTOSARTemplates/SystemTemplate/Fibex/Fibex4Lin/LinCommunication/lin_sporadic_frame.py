@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
     LinFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_unconditional_frame import (
     LinUnconditionalFrame,
 )
@@ -34,6 +35,28 @@ class LinSporadicFrame(LinFrame):
         """Initialize LinSporadicFrame."""
         super().__init__()
         self.substituteds: list[LinUnconditionalFrame] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinSporadicFrame":
+        """Deserialize XML element to LinSporadicFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinSporadicFrame object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse substituteds (list)
+        obj.substituteds = []
+        for child in ARObject._find_all_child_elements(element, "SUBSTITUTEDS"):
+            substituteds_value = ARObject._deserialize_by_tag(child, "LinUnconditionalFrame")
+            obj.substituteds.append(substituteds_value)
+
+        return obj
+
 
 
 class LinSporadicFrameBuilder:

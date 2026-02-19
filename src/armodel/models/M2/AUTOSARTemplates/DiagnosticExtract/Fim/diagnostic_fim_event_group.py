@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -34,6 +35,28 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
         """Initialize DiagnosticFimEventGroup."""
         super().__init__()
         self.events: list[DiagnosticEvent] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimEventGroup":
+        """Deserialize XML element to DiagnosticFimEventGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticFimEventGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse events (list)
+        obj.events = []
+        for child in ARObject._find_all_child_elements(element, "EVENTS"):
+            events_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.events.append(events_value)
+
+        return obj
+
 
 
 class DiagnosticFimEventGroupBuilder:

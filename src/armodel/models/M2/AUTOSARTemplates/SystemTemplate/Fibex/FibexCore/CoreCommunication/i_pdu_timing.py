@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.describable import (
     Describable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -36,6 +37,34 @@ class IPduTiming(Describable):
         super().__init__()
         self.minimum_delay: Optional[TimeValue] = None
         self.transmission: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IPduTiming":
+        """Deserialize XML element to IPduTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IPduTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse minimum_delay
+        child = ARObject._find_child_element(element, "MINIMUM-DELAY")
+        if child is not None:
+            minimum_delay_value = child.text
+            obj.minimum_delay = minimum_delay_value
+
+        # Parse transmission
+        child = ARObject._find_child_element(element, "TRANSMISSION")
+        if child is not None:
+            transmission_value = child.text
+            obj.transmission = transmission_value
+
+        return obj
+
 
 
 class IPduTimingBuilder:

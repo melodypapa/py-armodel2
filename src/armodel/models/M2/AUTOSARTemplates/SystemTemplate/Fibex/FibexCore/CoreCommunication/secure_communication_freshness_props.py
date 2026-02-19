@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -39,6 +40,40 @@ class SecureCommunicationFreshnessProps(Identifiable):
         self.freshness: Optional[PositiveInteger] = None
         self.freshness_value: Optional[PositiveInteger] = None
         self.use_freshness: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecureCommunicationFreshnessProps":
+        """Deserialize XML element to SecureCommunicationFreshnessProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecureCommunicationFreshnessProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse freshness
+        child = ARObject._find_child_element(element, "FRESHNESS")
+        if child is not None:
+            freshness_value = child.text
+            obj.freshness = freshness_value
+
+        # Parse freshness_value
+        child = ARObject._find_child_element(element, "FRESHNESS-VALUE")
+        if child is not None:
+            freshness_value_value = child.text
+            obj.freshness_value = freshness_value_value
+
+        # Parse use_freshness
+        child = ARObject._find_child_element(element, "USE-FRESHNESS")
+        if child is not None:
+            use_freshness_value = child.text
+            obj.use_freshness = use_freshness_value
+
+        return obj
+
 
 
 class SecureCommunicationFreshnessPropsBuilder:

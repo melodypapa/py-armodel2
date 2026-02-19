@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     String,
@@ -39,6 +40,40 @@ class HwPin(Identifiable):
         self.function_names: list[String] = []
         self.packaging_pin: Optional[String] = None
         self.pin_number: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwPin":
+        """Deserialize XML element to HwPin object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwPin object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse function_names (list)
+        obj.function_names = []
+        for child in ARObject._find_all_child_elements(element, "FUNCTION-NAMES"):
+            function_names_value = child.text
+            obj.function_names.append(function_names_value)
+
+        # Parse packaging_pin
+        child = ARObject._find_child_element(element, "PACKAGING-PIN")
+        if child is not None:
+            packaging_pin_value = child.text
+            obj.packaging_pin = packaging_pin_value
+
+        # Parse pin_number
+        child = ARObject._find_child_element(element, "PIN-NUMBER")
+        if child is not None:
+            pin_number_value = child.text
+            obj.pin_number = pin_number_value
+
+        return obj
+
 
 
 class HwPinBuilder:

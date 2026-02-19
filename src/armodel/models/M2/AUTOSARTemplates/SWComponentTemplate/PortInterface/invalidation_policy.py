@@ -38,6 +38,34 @@ class InvalidationPolicy(ARObject):
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InvalidationPolicy":
+        """Deserialize XML element to InvalidationPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InvalidationPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        if child is not None:
+            data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_ref = data_element_ref_value
+
+        # Parse handle_invalid_enum
+        child = ARObject._find_child_element(element, "HANDLE-INVALID-ENUM")
+        if child is not None:
+            handle_invalid_enum_value = child.text
+            obj.handle_invalid_enum = handle_invalid_enum_value
+
+        return obj
+
 
 
 class InvalidationPolicyBuilder:

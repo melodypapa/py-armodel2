@@ -63,6 +63,88 @@ class DiagnosticCommonProps(ARObject):
         self.response_on_all: Optional[Boolean] = None
         self.response_on: Optional[Boolean] = None
         self.type_of_event: Optional[DiagnosticEvent] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCommonProps":
+        """Deserialize XML element to DiagnosticCommonProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticCommonProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse debounces (list)
+        obj.debounces = []
+        for child in ARObject._find_all_child_elements(element, "DEBOUNCES"):
+            debounces_value = child.text
+            obj.debounces.append(debounces_value)
+
+        # Parse default
+        child = ARObject._find_child_element(element, "DEFAULT")
+        if child is not None:
+            default_value = child.text
+            obj.default = default_value
+
+        # Parse event
+        child = ARObject._find_child_element(element, "EVENT")
+        if child is not None:
+            event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.event = event_value
+
+        # Parse max_number_of
+        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        if child is not None:
+            max_number_of_value = child.text
+            obj.max_number_of = max_number_of_value
+
+        # Parse occurrence
+        child = ARObject._find_child_element(element, "OCCURRENCE")
+        if child is not None:
+            occurrence_value = child.text
+            obj.occurrence = occurrence_value
+
+        # Parse reset_confirmed
+        child = ARObject._find_child_element(element, "RESET-CONFIRMED")
+        if child is not None:
+            reset_confirmed_value = child.text
+            obj.reset_confirmed = reset_confirmed_value
+
+        # Parse reset_pending_bit
+        child = ARObject._find_child_element(element, "RESET-PENDING-BIT")
+        if child is not None:
+            reset_pending_bit_value = child.text
+            obj.reset_pending_bit = reset_pending_bit_value
+
+        # Parse response_on_all
+        child = ARObject._find_child_element(element, "RESPONSE-ON-ALL")
+        if child is not None:
+            response_on_all_value = child.text
+            obj.response_on_all = response_on_all_value
+
+        # Parse response_on
+        child = ARObject._find_child_element(element, "RESPONSE-ON")
+        if child is not None:
+            response_on_value = child.text
+            obj.response_on = response_on_value
+
+        # Parse type_of_event
+        child = ARObject._find_child_element(element, "TYPE-OF-EVENT")
+        if child is not None:
+            type_of_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.type_of_event = type_of_event_value
+
+        return obj
+
 
 
 class DiagnosticCommonPropsBuilder:

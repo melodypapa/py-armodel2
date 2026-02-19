@@ -34,6 +34,34 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         super().__init__()
         self.j1939_controller: Optional[Any] = None
         self.j1939_nm_node: Optional[J1939NmNode] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939ControllerApplicationToJ1939NmNodeMapping":
+        """Deserialize XML element to J1939ControllerApplicationToJ1939NmNodeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939ControllerApplicationToJ1939NmNodeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse j1939_controller
+        child = ARObject._find_child_element(element, "J1939-CONTROLLER")
+        if child is not None:
+            j1939_controller_value = child.text
+            obj.j1939_controller = j1939_controller_value
+
+        # Parse j1939_nm_node
+        child = ARObject._find_child_element(element, "J1939-NM-NODE")
+        if child is not None:
+            j1939_nm_node_value = ARObject._deserialize_by_tag(child, "J1939NmNode")
+            obj.j1939_nm_node = j1939_nm_node_value
+
+        return obj
+
 
 
 class J1939ControllerApplicationToJ1939NmNodeMappingBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster_resource import (
     CpSoftwareClusterResource,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
 )
@@ -34,6 +35,28 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         """Initialize CpSoftwareClusterServiceResource."""
         super().__init__()
         self.resource_needses: list[EcucContainerValue] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterServiceResource":
+        """Deserialize XML element to CpSoftwareClusterServiceResource object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CpSoftwareClusterServiceResource object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse resource_needses (list)
+        obj.resource_needses = []
+        for child in ARObject._find_all_child_elements(element, "RESOURCE-NEEDSES"):
+            resource_needses_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
+            obj.resource_needses.append(resource_needses_value)
+
+        return obj
+
 
 
 class CpSoftwareClusterServiceResourceBuilder:

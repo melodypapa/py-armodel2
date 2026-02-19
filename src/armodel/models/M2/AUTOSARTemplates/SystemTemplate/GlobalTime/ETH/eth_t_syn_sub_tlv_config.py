@@ -38,6 +38,46 @@ class EthTSynSubTlvConfig(ARObject):
         self.status_sub_tlv: Optional[Boolean] = None
         self.time_sub_tlv: Optional[Boolean] = None
         self.user_data_sub_tlv: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthTSynSubTlvConfig":
+        """Deserialize XML element to EthTSynSubTlvConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthTSynSubTlvConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ofs_sub_tlv
+        child = ARObject._find_child_element(element, "OFS-SUB-TLV")
+        if child is not None:
+            ofs_sub_tlv_value = child.text
+            obj.ofs_sub_tlv = ofs_sub_tlv_value
+
+        # Parse status_sub_tlv
+        child = ARObject._find_child_element(element, "STATUS-SUB-TLV")
+        if child is not None:
+            status_sub_tlv_value = child.text
+            obj.status_sub_tlv = status_sub_tlv_value
+
+        # Parse time_sub_tlv
+        child = ARObject._find_child_element(element, "TIME-SUB-TLV")
+        if child is not None:
+            time_sub_tlv_value = child.text
+            obj.time_sub_tlv = time_sub_tlv_value
+
+        # Parse user_data_sub_tlv
+        child = ARObject._find_child_element(element, "USER-DATA-SUB-TLV")
+        if child is not None:
+            user_data_sub_tlv_value = child.text
+            obj.user_data_sub_tlv = user_data_sub_tlv_value
+
+        return obj
+
 
 
 class EthTSynSubTlvConfigBuilder:

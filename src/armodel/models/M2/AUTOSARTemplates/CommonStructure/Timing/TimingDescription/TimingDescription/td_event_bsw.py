@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
     BswModuleDescription,
 )
@@ -35,6 +36,28 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         """Initialize TDEventBsw."""
         super().__init__()
         self.bsw_module_description: Optional[BswModuleDescription] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventBsw":
+        """Deserialize XML element to TDEventBsw object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventBsw object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_module_description
+        child = ARObject._find_child_element(element, "BSW-MODULE-DESCRIPTION")
+        if child is not None:
+            bsw_module_description_value = ARObject._deserialize_by_tag(child, "BswModuleDescription")
+            obj.bsw_module_description = bsw_module_description_value
+
+        return obj
+
 
 
 class TDEventBswBuilder:

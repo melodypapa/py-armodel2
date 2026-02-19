@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.GeneralAnnotation.general_annotation import (
     GeneralAnnotation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     DataLimitKindEnum,
@@ -49,6 +50,46 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         self.data_element_ref: Optional[ARRef] = None
         self.limit_kind: Optional[DataLimitKindEnum] = None
         self.processing_kind_enum: Optional[ProcessingKindEnum] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverAnnotation":
+        """Deserialize XML element to SenderReceiverAnnotation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderReceiverAnnotation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse computed
+        child = ARObject._find_child_element(element, "COMPUTED")
+        if child is not None:
+            computed_value = child.text
+            obj.computed = computed_value
+
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        if child is not None:
+            data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_ref = data_element_ref_value
+
+        # Parse limit_kind
+        child = ARObject._find_child_element(element, "LIMIT-KIND")
+        if child is not None:
+            limit_kind_value = child.text
+            obj.limit_kind = limit_kind_value
+
+        # Parse processing_kind_enum
+        child = ARObject._find_child_element(element, "PROCESSING-KIND-ENUM")
+        if child is not None:
+            processing_kind_enum_value = child.text
+            obj.processing_kind_enum = processing_kind_enum_value
+
+        return obj
+
 
 
 class SenderReceiverAnnotationBuilder:

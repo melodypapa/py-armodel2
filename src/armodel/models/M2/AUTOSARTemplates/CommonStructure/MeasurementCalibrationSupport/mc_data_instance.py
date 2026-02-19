@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     McdIdentifier,
@@ -84,6 +85,94 @@ class McDataInstance(Identifiable):
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.sub_elements: list[McDataInstance] = []
         self.symbol: Optional[SymbolString] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McDataInstance":
+        """Deserialize XML element to McDataInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McDataInstance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse array_size
+        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        if child is not None:
+            array_size_value = child.text
+            obj.array_size = array_size_value
+
+        # Parse display_identifier
+        child = ARObject._find_child_element(element, "DISPLAY-IDENTIFIER")
+        if child is not None:
+            display_identifier_value = child.text
+            obj.display_identifier = display_identifier_value
+
+        # Parse flat_map_entry
+        child = ARObject._find_child_element(element, "FLAT-MAP-ENTRY")
+        if child is not None:
+            flat_map_entry_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
+            obj.flat_map_entry = flat_map_entry_value
+
+        # Parse instance_in
+        child = ARObject._find_child_element(element, "INSTANCE-IN")
+        if child is not None:
+            instance_in_value = ARObject._deserialize_by_tag(child, "ImplementationElementInParameterInstanceRef")
+            obj.instance_in = instance_in_value
+
+        # Parse mc_data_access_details
+        child = ARObject._find_child_element(element, "MC-DATA-ACCESS-DETAILS")
+        if child is not None:
+            mc_data_access_details_value = ARObject._deserialize_by_tag(child, "McDataAccessDetails")
+            obj.mc_data_access_details = mc_data_access_details_value
+
+        # Parse mc_datas (list)
+        obj.mc_datas = []
+        for child in ARObject._find_all_child_elements(element, "MC-DATAS"):
+            mc_datas_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
+            obj.mc_datas.append(mc_datas_value)
+
+        # Parse resulting
+        child = ARObject._find_child_element(element, "RESULTING")
+        if child is not None:
+            resulting_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.resulting = resulting_value
+
+        # Parse resulting_rpt_sw
+        child = ARObject._find_child_element(element, "RESULTING-RPT-SW")
+        if child is not None:
+            resulting_rpt_sw_value = ARObject._deserialize_by_tag(child, "RptSwPrototypingAccess")
+            obj.resulting_rpt_sw = resulting_rpt_sw_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse rpt_impl_policy
+        child = ARObject._find_child_element(element, "RPT-IMPL-POLICY")
+        if child is not None:
+            rpt_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
+            obj.rpt_impl_policy = rpt_impl_policy_value
+
+        # Parse sub_elements (list)
+        obj.sub_elements = []
+        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
+            sub_elements_value = ARObject._deserialize_by_tag(child, "McDataInstance")
+            obj.sub_elements.append(sub_elements_value)
+
+        # Parse symbol
+        child = ARObject._find_child_element(element, "SYMBOL")
+        if child is not None:
+            symbol_value = child.text
+            obj.symbol = symbol_value
+
+        return obj
+
 
 
 class McDataInstanceBuilder:

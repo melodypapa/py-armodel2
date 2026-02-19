@@ -41,6 +41,40 @@ class EndToEndProtectionVariablePrototype(ARObject):
         self.receiver_refs: list[ARRef] = []
         self.sender_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EndToEndProtectionVariablePrototype":
+        """Deserialize XML element to EndToEndProtectionVariablePrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EndToEndProtectionVariablePrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse receiver_refs (list)
+        obj.receiver_refs = []
+        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
+            receiver_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.receiver_refs.append(receiver_refs_value)
+
+        # Parse sender_ref
+        child = ARObject._find_child_element(element, "SENDER")
+        if child is not None:
+            sender_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.sender_ref = sender_ref_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class EndToEndProtectionVariablePrototypeBuilder:

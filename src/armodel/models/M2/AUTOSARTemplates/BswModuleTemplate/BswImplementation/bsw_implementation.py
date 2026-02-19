@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
     Implementation,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     RevisionLabelString,
@@ -55,6 +56,58 @@ class BswImplementation(Implementation):
         self.recommendeds: list[Any] = []
         self.vendor_api_infix: Optional[Identifier] = None
         self.vendor_specifics: list[EcucModuleDef] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswImplementation":
+        """Deserialize XML element to BswImplementation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswImplementation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ar_release
+        child = ARObject._find_child_element(element, "AR-RELEASE")
+        if child is not None:
+            ar_release_value = child.text
+            obj.ar_release = ar_release_value
+
+        # Parse behavior
+        child = ARObject._find_child_element(element, "BEHAVIOR")
+        if child is not None:
+            behavior_value = ARObject._deserialize_by_tag(child, "BswInternalBehavior")
+            obj.behavior = behavior_value
+
+        # Parse preconfigureds (list)
+        obj.preconfigureds = []
+        for child in ARObject._find_all_child_elements(element, "PRECONFIGUREDS"):
+            preconfigureds_value = child.text
+            obj.preconfigureds.append(preconfigureds_value)
+
+        # Parse recommendeds (list)
+        obj.recommendeds = []
+        for child in ARObject._find_all_child_elements(element, "RECOMMENDEDS"):
+            recommendeds_value = child.text
+            obj.recommendeds.append(recommendeds_value)
+
+        # Parse vendor_api_infix
+        child = ARObject._find_child_element(element, "VENDOR-API-INFIX")
+        if child is not None:
+            vendor_api_infix_value = child.text
+            obj.vendor_api_infix = vendor_api_infix_value
+
+        # Parse vendor_specifics (list)
+        obj.vendor_specifics = []
+        for child in ARObject._find_all_child_elements(element, "VENDOR-SPECIFICS"):
+            vendor_specifics_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
+            obj.vendor_specifics.append(vendor_specifics_value)
+
+        return obj
+
 
 
 class BswImplementationBuilder:

@@ -45,6 +45,46 @@ class BuildActionIoElement(ARObject):
         self.ecuc_definition: Optional[EcucDefinitionElement] = None
         self.role: Optional[Identifier] = None
         self.sdgs: list[Sdg] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BuildActionIoElement":
+        """Deserialize XML element to BuildActionIoElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BuildActionIoElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse ecuc_definition
+        child = ARObject._find_child_element(element, "ECUC-DEFINITION")
+        if child is not None:
+            ecuc_definition_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
+            obj.ecuc_definition = ecuc_definition_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        # Parse sdgs (list)
+        obj.sdgs = []
+        for child in ARObject._find_all_child_elements(element, "SDGS"):
+            sdgs_value = ARObject._deserialize_by_tag(child, "Sdg")
+            obj.sdgs.append(sdgs_value)
+
+        return obj
+
 
 
 class BuildActionIoElementBuilder:

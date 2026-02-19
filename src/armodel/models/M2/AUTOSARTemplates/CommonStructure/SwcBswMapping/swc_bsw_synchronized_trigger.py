@@ -35,6 +35,34 @@ class SwcBswSynchronizedTrigger(ARObject):
         super().__init__()
         self.bsw_trigger_ref: Optional[ARRef] = None
         self.swc_trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcBswSynchronizedTrigger":
+        """Deserialize XML element to SwcBswSynchronizedTrigger object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcBswSynchronizedTrigger object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bsw_trigger_ref
+        child = ARObject._find_child_element(element, "BSW-TRIGGER")
+        if child is not None:
+            bsw_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.bsw_trigger_ref = bsw_trigger_ref_value
+
+        # Parse swc_trigger_ref
+        child = ARObject._find_child_element(element, "SWC-TRIGGER")
+        if child is not None:
+            swc_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.swc_trigger_ref = swc_trigger_ref_value
+
+        return obj
+
 
 
 class SwcBswSynchronizedTriggerBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -33,6 +34,28 @@ class Traceable(MultilanguageReferrable, ABC):
         """Initialize Traceable."""
         super().__init__()
         self.traces: list[Traceable] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Traceable":
+        """Deserialize XML element to Traceable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Traceable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse traces (list)
+        obj.traces = []
+        for child in ARObject._find_all_child_elements(element, "TRACES"):
+            traces_value = ARObject._deserialize_by_tag(child, "Traceable")
+            obj.traces.append(traces_value)
+
+        return obj
+
 
 
 class TraceableBuilder:

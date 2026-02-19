@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class VlanConfig(Identifiable):
         """Initialize VlanConfig."""
         super().__init__()
         self.vlan_identifier: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VlanConfig":
+        """Deserialize XML element to VlanConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VlanConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse vlan_identifier
+        child = ARObject._find_child_element(element, "VLAN-IDENTIFIER")
+        if child is not None:
+            vlan_identifier_value = child.text
+            obj.vlan_identifier = vlan_identifier_value
+
+        return obj
+
 
 
 class VlanConfigBuilder:

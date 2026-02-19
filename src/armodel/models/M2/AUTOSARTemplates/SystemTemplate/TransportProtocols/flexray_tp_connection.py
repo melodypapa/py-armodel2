@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection import (
     TpConnection,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -62,6 +63,76 @@ class FlexrayTpConnection(TpConnection):
         self.tp_connection: Optional[FlexrayTpConnection] = None
         self.transmitter: Optional[FlexrayTpNode] = None
         self.tx_pdu_pool: Optional[FlexrayTpPduPool] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayTpConnection":
+        """Deserialize XML element to FlexrayTpConnection object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayTpConnection object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse bandwidth
+        child = ARObject._find_child_element(element, "BANDWIDTH")
+        if child is not None:
+            bandwidth_value = child.text
+            obj.bandwidth = bandwidth_value
+
+        # Parse direct_tp_sdu
+        child = ARObject._find_child_element(element, "DIRECT-TP-SDU")
+        if child is not None:
+            direct_tp_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
+            obj.direct_tp_sdu = direct_tp_sdu_value
+
+        # Parse multicast
+        child = ARObject._find_child_element(element, "MULTICAST")
+        if child is not None:
+            multicast_value = ARObject._deserialize_by_tag(child, "TpAddress")
+            obj.multicast = multicast_value
+
+        # Parse receivers (list)
+        obj.receivers = []
+        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
+            receivers_value = ARObject._deserialize_by_tag(child, "FlexrayTpNode")
+            obj.receivers.append(receivers_value)
+
+        # Parse reversed_tp_sdu
+        child = ARObject._find_child_element(element, "REVERSED-TP-SDU")
+        if child is not None:
+            reversed_tp_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
+            obj.reversed_tp_sdu = reversed_tp_sdu_value
+
+        # Parse rx_pdu_pool
+        child = ARObject._find_child_element(element, "RX-PDU-POOL")
+        if child is not None:
+            rx_pdu_pool_value = ARObject._deserialize_by_tag(child, "FlexrayTpPduPool")
+            obj.rx_pdu_pool = rx_pdu_pool_value
+
+        # Parse tp_connection
+        child = ARObject._find_child_element(element, "TP-CONNECTION")
+        if child is not None:
+            tp_connection_value = ARObject._deserialize_by_tag(child, "FlexrayTpConnection")
+            obj.tp_connection = tp_connection_value
+
+        # Parse transmitter
+        child = ARObject._find_child_element(element, "TRANSMITTER")
+        if child is not None:
+            transmitter_value = ARObject._deserialize_by_tag(child, "FlexrayTpNode")
+            obj.transmitter = transmitter_value
+
+        # Parse tx_pdu_pool
+        child = ARObject._find_child_element(element, "TX-PDU-POOL")
+        if child is not None:
+            tx_pdu_pool_value = ARObject._deserialize_by_tag(child, "FlexrayTpPduPool")
+            obj.tx_pdu_pool = tx_pdu_pool_value
+
+        return obj
+
 
 
 class FlexrayTpConnectionBuilder:

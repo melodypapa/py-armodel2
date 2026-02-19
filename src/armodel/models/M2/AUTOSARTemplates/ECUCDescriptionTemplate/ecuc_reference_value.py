@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_reference_value import (
     EcucAbstractReferenceValue,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -36,6 +37,28 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         """Initialize EcucReferenceValue."""
         super().__init__()
         self.value_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucReferenceValue":
+        """Deserialize XML element to EcucReferenceValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucReferenceValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value_ref
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.value_ref = value_ref_value
+
+        return obj
+
 
 
 class EcucReferenceValueBuilder:

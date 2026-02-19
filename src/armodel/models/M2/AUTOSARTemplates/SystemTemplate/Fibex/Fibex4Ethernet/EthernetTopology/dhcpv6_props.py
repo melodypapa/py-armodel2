@@ -36,6 +36,40 @@ class Dhcpv6Props(ARObject):
         self.tcp_ip_dhcp: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_inf: Optional[TimeValue] = None
         self.tcp_ip_dhcp_v6_sol: Optional[TimeValue] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Dhcpv6Props":
+        """Deserialize XML element to Dhcpv6Props object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Dhcpv6Props object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_dhcp
+        child = ARObject._find_child_element(element, "TCP-IP-DHCP")
+        if child is not None:
+            tcp_ip_dhcp_value = child.text
+            obj.tcp_ip_dhcp = tcp_ip_dhcp_value
+
+        # Parse tcp_ip_dhcp_v6_inf
+        child = ARObject._find_child_element(element, "TCP-IP-DHCP-V6-INF")
+        if child is not None:
+            tcp_ip_dhcp_v6_inf_value = child.text
+            obj.tcp_ip_dhcp_v6_inf = tcp_ip_dhcp_v6_inf_value
+
+        # Parse tcp_ip_dhcp_v6_sol
+        child = ARObject._find_child_element(element, "TCP-IP-DHCP-V6-SOL")
+        if child is not None:
+            tcp_ip_dhcp_v6_sol_value = child.text
+            obj.tcp_ip_dhcp_v6_sol = tcp_ip_dhcp_v6_sol_value
+
+        return obj
+
 
 
 class Dhcpv6PropsBuilder:

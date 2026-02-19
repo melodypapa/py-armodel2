@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import (
     CompuScaleContents,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import (
     CompuRationalCoeffs,
 )
@@ -34,6 +35,28 @@ class CompuScaleRationalFormula(CompuScaleContents):
         """Initialize CompuScaleRationalFormula."""
         super().__init__()
         self.compu_rational_coeffs: Optional[CompuRationalCoeffs] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompuScaleRationalFormula":
+        """Deserialize XML element to CompuScaleRationalFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompuScaleRationalFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse compu_rational_coeffs
+        child = ARObject._find_child_element(element, "COMPU-RATIONAL-COEFFS")
+        if child is not None:
+            compu_rational_coeffs_value = ARObject._deserialize_by_tag(child, "CompuRationalCoeffs")
+            obj.compu_rational_coeffs = compu_rational_coeffs_value
+
+        return obj
+
 
 
 class CompuScaleRationalFormulaBuilder:

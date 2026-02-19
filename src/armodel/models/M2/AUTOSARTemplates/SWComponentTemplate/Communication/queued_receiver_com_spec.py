@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import (
     ReceiverComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class QueuedReceiverComSpec(ReceiverComSpec):
         """Initialize QueuedReceiverComSpec."""
         super().__init__()
         self.queue_length: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "QueuedReceiverComSpec":
+        """Deserialize XML element to QueuedReceiverComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized QueuedReceiverComSpec object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse queue_length
+        child = ARObject._find_child_element(element, "QUEUE-LENGTH")
+        if child is not None:
+            queue_length_value = child.text
+            obj.queue_length = queue_length_value
+
+        return obj
+
 
 
 class QueuedReceiverComSpecBuilder:

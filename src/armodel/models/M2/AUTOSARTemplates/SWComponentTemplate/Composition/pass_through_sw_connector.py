@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -40,6 +41,34 @@ class PassThroughSwConnector(SwConnector):
         super().__init__()
         self.provided_outer: Optional[AbstractProvidedPortPrototype] = None
         self.required_outer: Optional[AbstractRequiredPortPrototype] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PassThroughSwConnector":
+        """Deserialize XML element to PassThroughSwConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PassThroughSwConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provided_outer
+        child = ARObject._find_child_element(element, "PROVIDED-OUTER")
+        if child is not None:
+            provided_outer_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
+            obj.provided_outer = provided_outer_value
+
+        # Parse required_outer
+        child = ARObject._find_child_element(element, "REQUIRED-OUTER")
+        if child is not None:
+            required_outer_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
+            obj.required_outer = required_outer_value
+
+        return obj
+
 
 
 class PassThroughSwConnectorBuilder:

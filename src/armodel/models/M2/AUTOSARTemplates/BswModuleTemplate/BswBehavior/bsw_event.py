@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstract_event import (
     AbstractEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
 )
@@ -46,6 +47,40 @@ class BswEvent(AbstractEvent, ABC):
         self.contexts: list[BswDistinguishedPartition] = []
         self.disabled_in_mode_description_instance_refs: list[ModeDeclaration] = []
         self.starts_on_event: Optional[BswModuleEntity] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswEvent":
+        """Deserialize XML element to BswEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = ARObject._deserialize_by_tag(child, "BswDistinguishedPartition")
+            obj.contexts.append(contexts_value)
+
+        # Parse disabled_in_mode_description_instance_refs (list)
+        obj.disabled_in_mode_description_instance_refs = []
+        for child in ARObject._find_all_child_elements(element, "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS"):
+            disabled_in_mode_description_instance_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.disabled_in_mode_description_instance_refs.append(disabled_in_mode_description_instance_refs_value)
+
+        # Parse starts_on_event
+        child = ARObject._find_child_element(element, "STARTS-ON-EVENT")
+        if child is not None:
+            starts_on_event_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
+            obj.starts_on_event = starts_on_event_value
+
+        return obj
+
 
 
 class BswEventBuilder:

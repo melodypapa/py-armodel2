@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -42,6 +43,34 @@ class AssemblySwConnector(SwConnector):
         super().__init__()
         self.provider_instance_ref: Optional[AbstractProvidedPortPrototype] = None
         self.requester_instance_ref: Optional[AbstractRequiredPortPrototype] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AssemblySwConnector":
+        """Deserialize XML element to AssemblySwConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AssemblySwConnector object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse provider_instance_ref
+        child = ARObject._find_child_element(element, "PROVIDER-INSTANCE-REF")
+        if child is not None:
+            provider_instance_ref_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
+            obj.provider_instance_ref = provider_instance_ref_value
+
+        # Parse requester_instance_ref
+        child = ARObject._find_child_element(element, "REQUESTER-INSTANCE-REF")
+        if child is not None:
+            requester_instance_ref_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
+            obj.requester_instance_ref = requester_instance_ref_value
+
+        return obj
+
 
 
 class AssemblySwConnectorBuilder:

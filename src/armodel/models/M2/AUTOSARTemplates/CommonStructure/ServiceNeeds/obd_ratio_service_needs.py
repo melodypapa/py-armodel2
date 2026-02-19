@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_capability_element import (
     DiagnosticCapabilityElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ObdRatioConnectionKindEnum,
 )
@@ -44,6 +45,40 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         self.connection_type: Optional[ObdRatioConnectionKindEnum] = None
         self.rate_based_monitored_event: Optional[DiagnosticEventNeeds] = None
         self.used_fid: Optional[FunctionInhibitionNeeds] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ObdRatioServiceNeeds":
+        """Deserialize XML element to ObdRatioServiceNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ObdRatioServiceNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse connection_type
+        child = ARObject._find_child_element(element, "CONNECTION-TYPE")
+        if child is not None:
+            connection_type_value = child.text
+            obj.connection_type = connection_type_value
+
+        # Parse rate_based_monitored_event
+        child = ARObject._find_child_element(element, "RATE-BASED-MONITORED-EVENT")
+        if child is not None:
+            rate_based_monitored_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEventNeeds")
+            obj.rate_based_monitored_event = rate_based_monitored_event_value
+
+        # Parse used_fid
+        child = ARObject._find_child_element(element, "USED-FID")
+        if child is not None:
+            used_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
+            obj.used_fid = used_fid_value
+
+        return obj
+
 
 
 class ObdRatioServiceNeedsBuilder:

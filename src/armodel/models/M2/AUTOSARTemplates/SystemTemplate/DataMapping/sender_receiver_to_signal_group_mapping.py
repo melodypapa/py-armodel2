@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping import (
     DataMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
@@ -45,6 +46,40 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         self.data_element_ref: Optional[ARRef] = None
         self.signal_group_ref: Optional[ARRef] = None
         self.type_mapping: Optional[SenderRecCompositeTypeMapping] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SenderReceiverToSignalGroupMapping":
+        """Deserialize XML element to SenderReceiverToSignalGroupMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SenderReceiverToSignalGroupMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        if child is not None:
+            data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.data_element_ref = data_element_ref_value
+
+        # Parse signal_group_ref
+        child = ARObject._find_child_element(element, "SIGNAL-GROUP")
+        if child is not None:
+            signal_group_ref_value = ARObject._deserialize_by_tag(child, "SystemSignalGroup")
+            obj.signal_group_ref = signal_group_ref_value
+
+        # Parse type_mapping
+        child = ARObject._find_child_element(element, "TYPE-MAPPING")
+        if child is not None:
+            type_mapping_value = ARObject._deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
+            obj.type_mapping = type_mapping_value
+
+        return obj
+
 
 
 class SenderReceiverToSignalGroupMappingBuilder:

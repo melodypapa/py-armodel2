@@ -37,6 +37,40 @@ class InitialSdDelayConfig(ARObject):
         self.initial_delay_max: Optional[TimeValue] = None
         self.initial_delay_min: Optional[TimeValue] = None
         self.initial: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InitialSdDelayConfig":
+        """Deserialize XML element to InitialSdDelayConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InitialSdDelayConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse initial_delay_max
+        child = ARObject._find_child_element(element, "INITIAL-DELAY-MAX")
+        if child is not None:
+            initial_delay_max_value = child.text
+            obj.initial_delay_max = initial_delay_max_value
+
+        # Parse initial_delay_min
+        child = ARObject._find_child_element(element, "INITIAL-DELAY-MIN")
+        if child is not None:
+            initial_delay_min_value = child.text
+            obj.initial_delay_min = initial_delay_min_value
+
+        # Parse initial
+        child = ARObject._find_child_element(element, "INITIAL")
+        if child is not None:
+            initial_value = child.text
+            obj.initial = initial_value
+
+        return obj
+
 
 
 class InitialSdDelayConfigBuilder:

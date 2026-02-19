@@ -39,6 +39,40 @@ class TopicContent(ARObject):
         self.block_level: DocumentationBlock = None
         self.table: Optional[Table] = None
         self.traceable_table: Any = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TopicContent":
+        """Deserialize XML element to TopicContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TopicContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse block_level
+        child = ARObject._find_child_element(element, "BLOCK-LEVEL")
+        if child is not None:
+            block_level_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.block_level = block_level_value
+
+        # Parse table
+        child = ARObject._find_child_element(element, "TABLE")
+        if child is not None:
+            table_value = ARObject._deserialize_by_tag(child, "Table")
+            obj.table = table_value
+
+        # Parse traceable_table
+        child = ARObject._find_child_element(element, "TRACEABLE-TABLE")
+        if child is not None:
+            traceable_table_value = child.text
+            obj.traceable_table = traceable_table_value
+
+        return obj
+
 
 
 class TopicContentBuilder:

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -37,6 +38,34 @@ class SecurityEventDefinition(IdsCommonElement):
         super().__init__()
         self.event_symbol_name: Optional[Any] = None
         self.id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecurityEventDefinition":
+        """Deserialize XML element to SecurityEventDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecurityEventDefinition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse event_symbol_name
+        child = ARObject._find_child_element(element, "EVENT-SYMBOL-NAME")
+        if child is not None:
+            event_symbol_name_value = child.text
+            obj.event_symbol_name = event_symbol_name_value
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        return obj
+
 
 
 class SecurityEventDefinitionBuilder:

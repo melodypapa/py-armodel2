@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class CryptoEllipticCurveProps(ARElement):
         """Initialize CryptoEllipticCurveProps."""
         super().__init__()
         self.named_curve_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CryptoEllipticCurveProps":
+        """Deserialize XML element to CryptoEllipticCurveProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CryptoEllipticCurveProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse named_curve_id
+        child = ARObject._find_child_element(element, "NAMED-CURVE-ID")
+        if child is not None:
+            named_curve_id_value = child.text
+            obj.named_curve_id = named_curve_id_value
+
+        return obj
+
 
 
 class CryptoEllipticCurvePropsBuilder:

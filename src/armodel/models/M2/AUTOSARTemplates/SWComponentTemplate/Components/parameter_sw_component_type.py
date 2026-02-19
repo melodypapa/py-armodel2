@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -46,6 +47,40 @@ class ParameterSwComponentType(SwComponentType):
         self.constants: list[ConstantSpecification] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ParameterSwComponentType":
+        """Deserialize XML element to ParameterSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ParameterSwComponentType object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse constants (list)
+        obj.constants = []
+        for child in ARObject._find_all_child_elements(element, "CONSTANTS"):
+            constants_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
+            obj.constants.append(constants_value)
+
+        # Parse data_type_refs (list)
+        obj.data_type_refs = []
+        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
+            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
+            obj.data_type_refs.append(data_type_refs_value)
+
+        # Parse instantiation_data_defs (list)
+        obj.instantiation_data_defs = []
+        for child in ARObject._find_all_child_elements(element, "INSTANTIATION-DATA-DEFS"):
+            instantiation_data_defs_value = ARObject._deserialize_by_tag(child, "InstantiationDataDefProps")
+            obj.instantiation_data_defs.append(instantiation_data_defs_value)
+
+        return obj
+
 
 
 class ParameterSwComponentTypeBuilder:

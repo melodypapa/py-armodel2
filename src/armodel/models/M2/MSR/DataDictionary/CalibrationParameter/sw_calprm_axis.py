@@ -52,6 +52,52 @@ class SwCalprmAxis(ARObject):
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
         self.sw_calprm_axis: Optional[SwCalprmAxisTypeProps] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwCalprmAxis":
+        """Deserialize XML element to SwCalprmAxis object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwCalprmAxis object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse display_format_string
+        child = ARObject._find_child_element(element, "DISPLAY-FORMAT-STRING")
+        if child is not None:
+            display_format_string_value = child.text
+            obj.display_format_string = display_format_string_value
+
+        # Parse sw_axis_index
+        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        if child is not None:
+            sw_axis_index_value = child.text
+            obj.sw_axis_index = sw_axis_index_value
+
+        # Parse sw_calibration_access
+        child = ARObject._find_child_element(element, "SW-CALIBRATION-ACCESS")
+        if child is not None:
+            sw_calibration_access_value = child.text
+            obj.sw_calibration_access = sw_calibration_access_value
+
+        # Parse sw_calprm_axis
+        child = ARObject._find_child_element(element, "SW-CALPRM-AXIS")
+        if child is not None:
+            sw_calprm_axis_value = ARObject._deserialize_by_tag(child, "SwCalprmAxisTypeProps")
+            obj.sw_calprm_axis = sw_calprm_axis_value
+
+        return obj
+
 
 
 class SwCalprmAxisBuilder:

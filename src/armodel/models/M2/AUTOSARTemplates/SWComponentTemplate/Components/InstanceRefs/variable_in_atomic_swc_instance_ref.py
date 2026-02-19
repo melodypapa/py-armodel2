@@ -44,6 +44,40 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         self.abstract_target_ref: Optional[ARRef] = None
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariableInAtomicSwcInstanceRef":
+        """Deserialize XML element to VariableInAtomicSwcInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariableInAtomicSwcInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse abstract_target_ref
+        child = ARObject._find_child_element(element, "ABSTRACT-TARGET")
+        if child is not None:
+            abstract_target_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.abstract_target_ref = abstract_target_ref_value
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
+            obj.base = base_value
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        return obj
+
 
 
 class VariableInAtomicSwcInstanceRefBuilder:

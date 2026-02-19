@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diagnostic_mapping import (
     DiagnosticMapping,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -41,6 +42,40 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         self.diagnostic_event: Optional[DiagnosticEvent] = None
         self.event_group_group: Optional[DiagnosticFimEventGroup] = None
         self.inhibition_source: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticInhibitSourceEventMapping":
+        """Deserialize XML element to DiagnosticInhibitSourceEventMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticInhibitSourceEventMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse diagnostic_event
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        if child is not None:
+            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            obj.diagnostic_event = diagnostic_event_value
+
+        # Parse event_group_group
+        child = ARObject._find_child_element(element, "EVENT-GROUP-GROUP")
+        if child is not None:
+            event_group_group_value = ARObject._deserialize_by_tag(child, "DiagnosticFimEventGroup")
+            obj.event_group_group = event_group_group_value
+
+        # Parse inhibition_source
+        child = ARObject._find_child_element(element, "INHIBITION-SOURCE")
+        if child is not None:
+            inhibition_source_value = child.text
+            obj.inhibition_source = inhibition_source_value
+
+        return obj
+
 
 
 class DiagnosticInhibitSourceEventMappingBuilder:

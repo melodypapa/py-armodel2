@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -44,6 +45,40 @@ class RootSwCompositionPrototype(Identifiable):
         self.calibrations: list[Any] = []
         self.flat_map: Optional[FlatMap] = None
         self.software: Optional[CompositionSwComponentType] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RootSwCompositionPrototype":
+        """Deserialize XML element to RootSwCompositionPrototype object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RootSwCompositionPrototype object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse calibrations (list)
+        obj.calibrations = []
+        for child in ARObject._find_all_child_elements(element, "CALIBRATIONS"):
+            calibrations_value = child.text
+            obj.calibrations.append(calibrations_value)
+
+        # Parse flat_map
+        child = ARObject._find_child_element(element, "FLAT-MAP")
+        if child is not None:
+            flat_map_value = ARObject._deserialize_by_tag(child, "FlatMap")
+            obj.flat_map = flat_map_value
+
+        # Parse software
+        child = ARObject._find_child_element(element, "SOFTWARE")
+        if child is not None:
+            software_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.software = software_value
+
+        return obj
+
 
 
 class RootSwCompositionPrototypeBuilder:

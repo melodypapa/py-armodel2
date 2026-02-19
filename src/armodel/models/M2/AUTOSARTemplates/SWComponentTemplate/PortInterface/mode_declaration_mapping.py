@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -36,6 +37,34 @@ class ModeDeclarationMapping(Identifiable):
         super().__init__()
         self.first_modes: list[ModeDeclaration] = []
         self.second_mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationMapping":
+        """Deserialize XML element to ModeDeclarationMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeDeclarationMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_modes (list)
+        obj.first_modes = []
+        for child in ARObject._find_all_child_elements(element, "FIRST-MODES"):
+            first_modes_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.first_modes.append(first_modes_value)
+
+        # Parse second_mode
+        child = ARObject._find_child_element(element, "SECOND-MODE")
+        if child is not None:
+            second_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.second_mode = second_mode_value
+
+        return obj
+
 
 
 class ModeDeclarationMappingBuilder:

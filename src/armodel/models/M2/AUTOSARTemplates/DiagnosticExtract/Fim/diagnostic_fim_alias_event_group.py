@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_abstract_alias_event import (
     DiagnosticAbstractAliasEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
@@ -31,6 +32,28 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
         self.grouped_aliases: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticFimAliasEventGroup":
+        """Deserialize XML element to DiagnosticFimAliasEventGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticFimAliasEventGroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse grouped_aliases (list)
+        obj.grouped_aliases = []
+        for child in ARObject._find_all_child_elements(element, "GROUPED-ALIASES"):
+            grouped_aliases_value = child.text
+            obj.grouped_aliases.append(grouped_aliases_value)
+
+        return obj
+
 
 
 class DiagnosticFimAliasEventGroupBuilder:

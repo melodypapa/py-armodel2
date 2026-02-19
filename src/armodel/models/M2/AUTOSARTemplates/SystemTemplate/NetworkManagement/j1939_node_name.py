@@ -48,6 +48,76 @@ class J1939NodeName(ARObject):
         self.manufacturer_code: Optional[Integer] = None
         self.vehicle_system: Optional[Integer] = None
         self.vehicle_system_instance: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939NodeName":
+        """Deserialize XML element to J1939NodeName object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939NodeName object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse arbitrary_address
+        child = ARObject._find_child_element(element, "ARBITRARY-ADDRESS")
+        if child is not None:
+            arbitrary_address_value = child.text
+            obj.arbitrary_address = arbitrary_address_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = child.text
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse function
+        child = ARObject._find_child_element(element, "FUNCTION")
+        if child is not None:
+            function_value = child.text
+            obj.function = function_value
+
+        # Parse function_instance
+        child = ARObject._find_child_element(element, "FUNCTION-INSTANCE")
+        if child is not None:
+            function_instance_value = child.text
+            obj.function_instance = function_instance_value
+
+        # Parse identitiy_number
+        child = ARObject._find_child_element(element, "IDENTITIY-NUMBER")
+        if child is not None:
+            identitiy_number_value = child.text
+            obj.identitiy_number = identitiy_number_value
+
+        # Parse industry_group
+        child = ARObject._find_child_element(element, "INDUSTRY-GROUP")
+        if child is not None:
+            industry_group_value = child.text
+            obj.industry_group = industry_group_value
+
+        # Parse manufacturer_code
+        child = ARObject._find_child_element(element, "MANUFACTURER-CODE")
+        if child is not None:
+            manufacturer_code_value = child.text
+            obj.manufacturer_code = manufacturer_code_value
+
+        # Parse vehicle_system
+        child = ARObject._find_child_element(element, "VEHICLE-SYSTEM")
+        if child is not None:
+            vehicle_system_value = child.text
+            obj.vehicle_system = vehicle_system_value
+
+        # Parse vehicle_system_instance
+        child = ARObject._find_child_element(element, "VEHICLE-SYSTEM-INSTANCE")
+        if child is not None:
+            vehicle_system_instance_value = child.text
+            obj.vehicle_system_instance = vehicle_system_instance_value
+
+        return obj
+
 
 
 class J1939NodeNameBuilder:

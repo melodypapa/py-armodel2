@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.ident_caption import (
     IdentCaption,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswServiceDependencyIdent(IdentCaption):
@@ -29,6 +30,22 @@ class BswServiceDependencyIdent(IdentCaption):
     def __init__(self) -> None:
         """Initialize BswServiceDependencyIdent."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswServiceDependencyIdent":
+        """Deserialize XML element to BswServiceDependencyIdent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswServiceDependencyIdent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BswServiceDependencyIdentBuilder:

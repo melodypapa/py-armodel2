@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -40,6 +41,34 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
         self.system_signal_group_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SystemSignalGroupToCommunicationResourceMapping":
+        """Deserialize XML element to SystemSignalGroupToCommunicationResourceMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SystemSignalGroupToCommunicationResourceMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse software_cluster
+        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        if child is not None:
+            software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.software_cluster = software_cluster_value
+
+        # Parse system_signal_group_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP")
+        if child is not None:
+            system_signal_group_ref_value = ARObject._deserialize_by_tag(child, "SystemSignalGroup")
+            obj.system_signal_group_ref = system_signal_group_ref_value
+
+        return obj
+
 
 
 class SystemSignalGroupToCommunicationResourceMappingBuilder:

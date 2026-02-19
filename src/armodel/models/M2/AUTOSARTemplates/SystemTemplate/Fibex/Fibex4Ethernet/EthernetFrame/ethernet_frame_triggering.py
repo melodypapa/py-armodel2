@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EthernetFrameTriggering(FrameTriggering):
@@ -29,6 +30,22 @@ class EthernetFrameTriggering(FrameTriggering):
     def __init__(self) -> None:
         """Initialize EthernetFrameTriggering."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EthernetFrameTriggering":
+        """Deserialize XML element to EthernetFrameTriggering object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EthernetFrameTriggering object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class EthernetFrameTriggeringBuilder:

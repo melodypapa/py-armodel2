@@ -41,6 +41,40 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         self.abstract_context: Optional[Any] = None
         self.base: Optional[CompositionSwComponentType] = None
         self.target_port_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortInCompositionTypeInstanceRef":
+        """Deserialize XML element to PortInCompositionTypeInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortInCompositionTypeInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse abstract_context
+        child = ARObject._find_child_element(element, "ABSTRACT-CONTEXT")
+        if child is not None:
+            abstract_context_value = child.text
+            obj.abstract_context = abstract_context_value
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse target_port_ref
+        child = ARObject._find_child_element(element, "TARGET-PORT")
+        if child is not None:
+            target_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.target_port_ref = target_port_ref_value
+
+        return obj
+
 
 
 class PortInCompositionTypeInstanceRefBuilder:

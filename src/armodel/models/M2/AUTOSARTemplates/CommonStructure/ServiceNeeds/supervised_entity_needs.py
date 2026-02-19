@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -49,6 +50,64 @@ class SupervisedEntityNeeds(ServiceNeeds):
         self.max_alive_cycle: Optional[TimeValue] = None
         self.min_alive_cycle: Optional[TimeValue] = None
         self.tolerated_failed: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SupervisedEntityNeeds":
+        """Deserialize XML element to SupervisedEntityNeeds object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SupervisedEntityNeeds object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse activate_at_start
+        child = ARObject._find_child_element(element, "ACTIVATE-AT-START")
+        if child is not None:
+            activate_at_start_value = child.text
+            obj.activate_at_start = activate_at_start_value
+
+        # Parse checkpointses (list)
+        obj.checkpointses = []
+        for child in ARObject._find_all_child_elements(element, "CHECKPOINTSES"):
+            checkpointses_value = child.text
+            obj.checkpointses.append(checkpointses_value)
+
+        # Parse enable
+        child = ARObject._find_child_element(element, "ENABLE")
+        if child is not None:
+            enable_value = child.text
+            obj.enable = enable_value
+
+        # Parse expected_alive
+        child = ARObject._find_child_element(element, "EXPECTED-ALIVE")
+        if child is not None:
+            expected_alive_value = child.text
+            obj.expected_alive = expected_alive_value
+
+        # Parse max_alive_cycle
+        child = ARObject._find_child_element(element, "MAX-ALIVE-CYCLE")
+        if child is not None:
+            max_alive_cycle_value = child.text
+            obj.max_alive_cycle = max_alive_cycle_value
+
+        # Parse min_alive_cycle
+        child = ARObject._find_child_element(element, "MIN-ALIVE-CYCLE")
+        if child is not None:
+            min_alive_cycle_value = child.text
+            obj.min_alive_cycle = min_alive_cycle_value
+
+        # Parse tolerated_failed
+        child = ARObject._find_child_element(element, "TOLERATED-FAILED")
+        if child is not None:
+            tolerated_failed_value = child.text
+            obj.tolerated_failed = tolerated_failed_value
+
+        return obj
+
 
 
 class SupervisedEntityNeedsBuilder:

@@ -44,6 +44,52 @@ class AbstractValueRestriction(ARObject, ABC):
         self.min: Optional[Limit] = None
         self.min_length: Optional[PositiveInteger] = None
         self.pattern: Optional[RegularExpression] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractValueRestriction":
+        """Deserialize XML element to AbstractValueRestriction object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractValueRestriction object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse max
+        child = ARObject._find_child_element(element, "MAX")
+        if child is not None:
+            max_value = child.text
+            obj.max = max_value
+
+        # Parse max_length
+        child = ARObject._find_child_element(element, "MAX-LENGTH")
+        if child is not None:
+            max_length_value = child.text
+            obj.max_length = max_length_value
+
+        # Parse min
+        child = ARObject._find_child_element(element, "MIN")
+        if child is not None:
+            min_value = child.text
+            obj.min = min_value
+
+        # Parse min_length
+        child = ARObject._find_child_element(element, "MIN-LENGTH")
+        if child is not None:
+            min_length_value = child.text
+            obj.min_length = min_length_value
+
+        # Parse pattern
+        child = ARObject._find_child_element(element, "PATTERN")
+        if child is not None:
+            pattern_value = child.text
+            obj.pattern = pattern_value
+
+        return obj
+
 
 
 class AbstractValueRestrictionBuilder:

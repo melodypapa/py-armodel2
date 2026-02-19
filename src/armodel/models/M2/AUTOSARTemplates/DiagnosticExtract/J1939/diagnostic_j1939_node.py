@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_common_element import (
     DiagnosticCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_nm_node import (
     J1939NmNode,
 )
@@ -34,6 +35,28 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939Node."""
         super().__init__()
         self.nm_node: Optional[J1939NmNode] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939Node":
+        """Deserialize XML element to DiagnosticJ1939Node object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticJ1939Node object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse nm_node
+        child = ARObject._find_child_element(element, "NM-NODE")
+        if child is not None:
+            nm_node_value = ARObject._deserialize_by_tag(child, "J1939NmNode")
+            obj.nm_node = nm_node_value
+
+        return obj
+
 
 
 class DiagnosticJ1939NodeBuilder:

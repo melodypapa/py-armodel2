@@ -35,6 +35,28 @@ class ConditionByFormula(ARObject):
         """Initialize ConditionByFormula."""
         super().__init__()
         self.binding_time_enum: BindingTimeEnum = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConditionByFormula":
+        """Deserialize XML element to ConditionByFormula object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConditionByFormula object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse binding_time_enum
+        child = ARObject._find_child_element(element, "BINDING-TIME-ENUM")
+        if child is not None:
+            binding_time_enum_value = child.text
+            obj.binding_time_enum = binding_time_enum_value
+
+        return obj
+
 
 
 class ConditionByFormulaBuilder:

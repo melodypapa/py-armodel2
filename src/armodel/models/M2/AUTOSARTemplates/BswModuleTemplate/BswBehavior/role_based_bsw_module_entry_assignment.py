@@ -37,6 +37,34 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         super().__init__()
         self.assigned_entry: Optional[BswModuleEntry] = None
         self.role: Optional[Identifier] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedBswModuleEntryAssignment":
+        """Deserialize XML element to RoleBasedBswModuleEntryAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedBswModuleEntryAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse assigned_entry
+        child = ARObject._find_child_element(element, "ASSIGNED-ENTRY")
+        if child is not None:
+            assigned_entry_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.assigned_entry = assigned_entry_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = child.text
+            obj.role = role_value
+
+        return obj
+
 
 
 class RoleBasedBswModuleEntryAssignmentBuilder:

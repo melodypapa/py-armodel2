@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_composite_element_data_prototype import (
     ApplicationCompositeElementDataPrototype,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -36,6 +37,28 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         """Initialize ApplicationRecordElement."""
         super().__init__()
         self.is_optional: Optional[Boolean] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ApplicationRecordElement":
+        """Deserialize XML element to ApplicationRecordElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ApplicationRecordElement object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse is_optional
+        child = ARObject._find_child_element(element, "IS-OPTIONAL")
+        if child is not None:
+            is_optional_value = child.text
+            obj.is_optional = is_optional_value
+
+        return obj
+
 
 
 class ApplicationRecordElementBuilder:

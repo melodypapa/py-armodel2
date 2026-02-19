@@ -45,6 +45,46 @@ class ClientServerOperationMapping(ARObject):
         self.first_operation: Optional[ClientServerOperation] = None
         self.first_to_second: Optional[DataTransformation] = None
         self.second: Optional[ClientServerOperation] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientServerOperationMapping":
+        """Deserialize XML element to ClientServerOperationMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientServerOperationMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse argument_refs (list)
+        obj.argument_refs = []
+        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
+            argument_refs_value = ARObject._deserialize_by_tag(child, "DataPrototypeMapping")
+            obj.argument_refs.append(argument_refs_value)
+
+        # Parse first_operation
+        child = ARObject._find_child_element(element, "FIRST-OPERATION")
+        if child is not None:
+            first_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.first_operation = first_operation_value
+
+        # Parse first_to_second
+        child = ARObject._find_child_element(element, "FIRST-TO-SECOND")
+        if child is not None:
+            first_to_second_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.first_to_second = first_to_second_value
+
+        # Parse second
+        child = ARObject._find_child_element(element, "SECOND")
+        if child is not None:
+            second_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.second = second_value
+
+        return obj
+
 
 
 class ClientServerOperationMappingBuilder:

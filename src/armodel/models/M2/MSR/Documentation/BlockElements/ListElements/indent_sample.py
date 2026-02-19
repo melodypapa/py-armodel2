@@ -37,6 +37,34 @@ class IndentSample(ARObject):
         super().__init__()
         self.item_label_pos_enum: Optional[ItemLabelPosEnum] = None
         self.l2: LOverviewParagraph = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IndentSample":
+        """Deserialize XML element to IndentSample object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IndentSample object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse item_label_pos_enum
+        child = ARObject._find_child_element(element, "ITEM-LABEL-POS-ENUM")
+        if child is not None:
+            item_label_pos_enum_value = child.text
+            obj.item_label_pos_enum = item_label_pos_enum_value
+
+        # Parse l2
+        child = ARObject._find_child_element(element, "L2")
+        if child is not None:
+            l2_value = ARObject._deserialize_by_tag(child, "LOverviewParagraph")
+            obj.l2 = l2_value
+
+        return obj
+
 
 
 class IndentSampleBuilder:

@@ -28,6 +28,22 @@ class CompuContent(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize CompuContent."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompuContent":
+        """Deserialize XML element to CompuContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompuContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class CompuContentBuilder:

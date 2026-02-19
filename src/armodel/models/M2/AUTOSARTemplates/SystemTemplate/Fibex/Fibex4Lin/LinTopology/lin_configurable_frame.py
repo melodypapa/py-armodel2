@@ -37,6 +37,34 @@ class LinConfigurableFrame(ARObject):
         super().__init__()
         self.frame: Optional[LinFrame] = None
         self.message_id: Optional[PositiveInteger] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinConfigurableFrame":
+        """Deserialize XML element to LinConfigurableFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinConfigurableFrame object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse frame
+        child = ARObject._find_child_element(element, "FRAME")
+        if child is not None:
+            frame_value = ARObject._deserialize_by_tag(child, "LinFrame")
+            obj.frame = frame_value
+
+        # Parse message_id
+        child = ARObject._find_child_element(element, "MESSAGE-ID")
+        if child is not None:
+            message_id_value = child.text
+            obj.message_id = message_id_value
+
+        return obj
+
 
 
 class LinConfigurableFrameBuilder:

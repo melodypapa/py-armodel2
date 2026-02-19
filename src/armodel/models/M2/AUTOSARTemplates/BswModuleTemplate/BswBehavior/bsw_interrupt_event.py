@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_event import (
     BswEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswInterruptEvent(BswEvent):
@@ -29,6 +30,22 @@ class BswInterruptEvent(BswEvent):
     def __init__(self) -> None:
         """Initialize BswInterruptEvent."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswInterruptEvent":
+        """Deserialize XML element to BswInterruptEvent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswInterruptEvent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BswInterruptEventBuilder:

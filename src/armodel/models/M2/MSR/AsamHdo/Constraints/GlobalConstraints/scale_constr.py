@@ -44,6 +44,52 @@ class ScaleConstr(ARObject):
         self.short_label: Optional[Identifier] = None
         self.upper_limit: Optional[Limit] = None
         self.validity: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ScaleConstr":
+        """Deserialize XML element to ScaleConstr object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ScaleConstr object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        # Parse lower_limit
+        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        if child is not None:
+            lower_limit_value = child.text
+            obj.lower_limit = lower_limit_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
+
+        # Parse upper_limit
+        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        if child is not None:
+            upper_limit_value = child.text
+            obj.upper_limit = upper_limit_value
+
+        # Parse validity
+        child = ARObject._find_child_element(element, "VALIDITY")
+        if child is not None:
+            validity_value = child.text
+            obj.validity = validity_value
+
+        return obj
+
 
 
 class ScaleConstrBuilder:

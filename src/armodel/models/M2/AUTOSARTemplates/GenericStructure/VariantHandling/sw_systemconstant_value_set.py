@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconst_value import (
     SwSystemconstValue,
 )
@@ -39,6 +40,28 @@ class SwSystemconstantValueSet(ARElement):
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
         self.sws: list[SwSystemconstValue] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwSystemconstantValueSet":
+        """Deserialize XML element to SwSystemconstantValueSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwSystemconstantValueSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sws (list)
+        obj.sws = []
+        for child in ARObject._find_all_child_elements(element, "SWS"):
+            sws_value = ARObject._deserialize_by_tag(child, "SwSystemconstValue")
+            obj.sws.append(sws_value)
+
+        return obj
+
 
 
 class SwSystemconstantValueSetBuilder:

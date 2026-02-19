@@ -33,6 +33,28 @@ class LLongName(ARObject):
         """Initialize LLongName."""
         super().__init__()
         self.blueprint_value: Optional[String] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LLongName":
+        """Deserialize XML element to LLongName object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LLongName object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint_value
+        child = ARObject._find_child_element(element, "BLUEPRINT-VALUE")
+        if child is not None:
+            blueprint_value_value = child.text
+            obj.blueprint_value = blueprint_value_value
+
+        return obj
+
 
 
 class LLongNameBuilder:

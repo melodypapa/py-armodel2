@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
     BswModuleCallPoint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
@@ -31,6 +32,28 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
         self.asynchronous: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BswAsynchronousServerCallResultPoint":
+        """Deserialize XML element to BswAsynchronousServerCallResultPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BswAsynchronousServerCallResultPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse asynchronous
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS")
+        if child is not None:
+            asynchronous_value = child.text
+            obj.asynchronous = asynchronous_value
+
+        return obj
+
 
 
 class BswAsynchronousServerCallResultPointBuilder:

@@ -28,6 +28,22 @@ class BaseTypeDefinition(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize BaseTypeDefinition."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BaseTypeDefinition":
+        """Deserialize XML element to BaseTypeDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BaseTypeDefinition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class BaseTypeDefinitionBuilder:

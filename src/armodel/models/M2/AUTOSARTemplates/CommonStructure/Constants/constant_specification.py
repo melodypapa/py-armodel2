@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
@@ -38,6 +39,28 @@ class ConstantSpecification(ARElement):
         """Initialize ConstantSpecification."""
         super().__init__()
         self.value_spec: Optional[ValueSpecification] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConstantSpecification":
+        """Deserialize XML element to ConstantSpecification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConstantSpecification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse value_spec
+        child = ARObject._find_child_element(element, "VALUE-SPEC")
+        if child is not None:
+            value_spec_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.value_spec = value_spec_value
+
+        return obj
+
 
 
 class ConstantSpecificationBuilder:

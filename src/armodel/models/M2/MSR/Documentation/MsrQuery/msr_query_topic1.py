@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
@@ -39,6 +40,34 @@ class MsrQueryTopic1(Paginateable):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result_topic1: Optional[MsrQueryResultTopic1] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryTopic1":
+        """Deserialize XML element to MsrQueryTopic1 object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryTopic1 object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse msr_query_props
+        child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")
+        if child is not None:
+            msr_query_props_value = ARObject._deserialize_by_tag(child, "MsrQueryProps")
+            obj.msr_query_props = msr_query_props_value
+
+        # Parse msr_query_result_topic1
+        child = ARObject._find_child_element(element, "MSR-QUERY-RESULT-TOPIC1")
+        if child is not None:
+            msr_query_result_topic1_value = ARObject._deserialize_by_tag(child, "MsrQueryResultTopic1")
+            obj.msr_query_result_topic1 = msr_query_result_topic1_value
+
+        return obj
+
 
 
 class MsrQueryTopic1Builder:

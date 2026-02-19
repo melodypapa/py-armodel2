@@ -31,6 +31,34 @@ class CompositeNetworkRepresentation(ARObject):
         super().__init__()
         self.leaf_element_element_in_port_interface_instance_ref: Optional[Any] = None
         self.network_representation: Optional[Any] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompositeNetworkRepresentation":
+        """Deserialize XML element to CompositeNetworkRepresentation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompositeNetworkRepresentation object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse leaf_element_element_in_port_interface_instance_ref
+        child = ARObject._find_child_element(element, "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
+        if child is not None:
+            leaf_element_element_in_port_interface_instance_ref_value = child.text
+            obj.leaf_element_element_in_port_interface_instance_ref = leaf_element_element_in_port_interface_instance_ref_value
+
+        # Parse network_representation
+        child = ARObject._find_child_element(element, "NETWORK-REPRESENTATION")
+        if child is not None:
+            network_representation_value = child.text
+            obj.network_representation = network_representation_value
+
+        return obj
+
 
 
 class CompositeNetworkRepresentationBuilder:

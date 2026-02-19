@@ -45,6 +45,46 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
         self.context_port_ref: Optional[ARRef] = None
         self.context_sws: list[Any] = []
         self.target_variable_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariableDataPrototypeInCompositionInstanceRef":
+        """Deserialize XML element to VariableDataPrototypeInCompositionInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariableDataPrototypeInCompositionInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            obj.base = base_value
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        # Parse context_sws (list)
+        obj.context_sws = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXT-SWS"):
+            context_sws_value = child.text
+            obj.context_sws.append(context_sws_value)
+
+        # Parse target_variable_ref
+        child = ARObject._find_child_element(element, "TARGET-VARIABLE")
+        if child is not None:
+            target_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            obj.target_variable_ref = target_variable_ref_value
+
+        return obj
+
 
 
 class VariableDataPrototypeInCompositionInstanceRefBuilder:

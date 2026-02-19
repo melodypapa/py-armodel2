@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_debounce_algorithm import (
     DiagEventDebounceAlgorithm,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -46,6 +47,58 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         self.counter_jump: Optional[Integer] = None
         self.counter_jump_up: Optional[Integer] = None
         self.counter_passed: Optional[Integer] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagEventDebounceCounterBased":
+        """Deserialize XML element to DiagEventDebounceCounterBased object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagEventDebounceCounterBased object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse counter_based
+        child = ARObject._find_child_element(element, "COUNTER-BASED")
+        if child is not None:
+            counter_based_value = child.text
+            obj.counter_based = counter_based_value
+
+        # Parse counter
+        child = ARObject._find_child_element(element, "COUNTER")
+        if child is not None:
+            counter_value = child.text
+            obj.counter = counter_value
+
+        # Parse counter_failed
+        child = ARObject._find_child_element(element, "COUNTER-FAILED")
+        if child is not None:
+            counter_failed_value = child.text
+            obj.counter_failed = counter_failed_value
+
+        # Parse counter_jump
+        child = ARObject._find_child_element(element, "COUNTER-JUMP")
+        if child is not None:
+            counter_jump_value = child.text
+            obj.counter_jump = counter_jump_value
+
+        # Parse counter_jump_up
+        child = ARObject._find_child_element(element, "COUNTER-JUMP-UP")
+        if child is not None:
+            counter_jump_up_value = child.text
+            obj.counter_jump_up = counter_jump_up_value
+
+        # Parse counter_passed
+        child = ARObject._find_child_element(element, "COUNTER-PASSED")
+        if child is not None:
+            counter_passed_value = child.text
+            obj.counter_passed = counter_passed_value
+
+        return obj
+
 
 
 class DiagEventDebounceCounterBasedBuilder:

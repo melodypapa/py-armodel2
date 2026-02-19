@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,28 @@ class TcpOptionFilterList(Identifiable):
         """Initialize TcpOptionFilterList."""
         super().__init__()
         self.allowed_tcp_options: list[PositiveInteger] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TcpOptionFilterList":
+        """Deserialize XML element to TcpOptionFilterList object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TcpOptionFilterList object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse allowed_tcp_options (list)
+        obj.allowed_tcp_options = []
+        for child in ARObject._find_all_child_elements(element, "ALLOWED-TCP-OPTIONS"):
+            allowed_tcp_options_value = child.text
+            obj.allowed_tcp_options.append(allowed_tcp_options_value)
+
+        return obj
+
 
 
 class TcpOptionFilterListBuilder:

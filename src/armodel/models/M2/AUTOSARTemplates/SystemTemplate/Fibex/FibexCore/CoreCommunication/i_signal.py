@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping import (
     DataTypePolicyEnum,
 )
@@ -79,6 +80,82 @@ class ISignal(FibexElement):
         self.system_signal: Optional[SystemSignal] = None
         self.timeout: Optional[ValueSpecification] = None
         self.transformation_i_signals: list[Any] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ISignal":
+        """Deserialize XML element to ISignal object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ISignal object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data
+        child = ARObject._find_child_element(element, "DATA")
+        if child is not None:
+            data_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            obj.data = data_value
+
+        # Parse data_type_policy_enum
+        child = ARObject._find_child_element(element, "DATA-TYPE-POLICY-ENUM")
+        if child is not None:
+            data_type_policy_enum_value = child.text
+            obj.data_type_policy_enum = data_type_policy_enum_value
+
+        # Parse init_value
+        child = ARObject._find_child_element(element, "INIT-VALUE")
+        if child is not None:
+            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.init_value = init_value_value
+
+        # Parse i_signal_props
+        child = ARObject._find_child_element(element, "I-SIGNAL-PROPS")
+        if child is not None:
+            i_signal_props_value = ARObject._deserialize_by_tag(child, "ISignalProps")
+            obj.i_signal_props = i_signal_props_value
+
+        # Parse i_signal_type_enum
+        child = ARObject._find_child_element(element, "I-SIGNAL-TYPE-ENUM")
+        if child is not None:
+            i_signal_type_enum_value = child.text
+            obj.i_signal_type_enum = i_signal_type_enum_value
+
+        # Parse length
+        child = ARObject._find_child_element(element, "LENGTH")
+        if child is not None:
+            length_value = child.text
+            obj.length = length_value
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.network = network_value
+
+        # Parse system_signal
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        if child is not None:
+            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
+            obj.system_signal = system_signal_value
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.timeout = timeout_value
+
+        # Parse transformation_i_signals (list)
+        obj.transformation_i_signals = []
+        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-I-SIGNALS"):
+            transformation_i_signals_value = child.text
+            obj.transformation_i_signals.append(transformation_i_signals_value)
+
+        return obj
+
 
 
 class ISignalBuilder:

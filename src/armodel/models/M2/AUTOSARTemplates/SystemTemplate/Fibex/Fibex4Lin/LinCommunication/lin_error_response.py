@@ -33,6 +33,28 @@ class LinErrorResponse(ARObject):
         """Initialize LinErrorResponse."""
         super().__init__()
         self.response_error_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinErrorResponse":
+        """Deserialize XML element to LinErrorResponse object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinErrorResponse object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse response_error_ref
+        child = ARObject._find_child_element(element, "RESPONSE-ERROR")
+        if child is not None:
+            response_error_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            obj.response_error_ref = response_error_ref_value
+
+        return obj
+
 
 
 class LinErrorResponseBuilder:

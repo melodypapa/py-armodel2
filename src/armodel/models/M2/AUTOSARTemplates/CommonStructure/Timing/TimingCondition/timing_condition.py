@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TimingCondition(Identifiable):
@@ -31,6 +32,28 @@ class TimingCondition(Identifiable):
         """Initialize TimingCondition."""
         super().__init__()
         self.timing_condition: Optional[TimingCondition] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TimingCondition":
+        """Deserialize XML element to TimingCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TimingCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse timing_condition
+        child = ARObject._find_child_element(element, "TIMING-CONDITION")
+        if child is not None:
+            timing_condition_value = ARObject._deserialize_by_tag(child, "TimingCondition")
+            obj.timing_condition = timing_condition_value
+
+        return obj
+
 
 
 class TimingConditionBuilder:

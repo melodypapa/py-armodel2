@@ -37,6 +37,34 @@ class ChapterContent(ARObject):
         super().__init__()
         self.prms: Prms = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ChapterContent":
+        """Deserialize XML element to ChapterContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ChapterContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse prms
+        child = ARObject._find_child_element(element, "PRMS")
+        if child is not None:
+            prms_value = ARObject._deserialize_by_tag(child, "Prms")
+            obj.prms = prms_value
+
+        # Parse topic_content_or_msr
+        child = ARObject._find_child_element(element, "TOPIC-CONTENT-OR-MSR")
+        if child is not None:
+            topic_content_or_msr_value = ARObject._deserialize_by_tag(child, "TopicContentOrMsrQuery")
+            obj.topic_content_or_msr = topic_content_or_msr_value
+
+        return obj
+
 
 
 class ChapterContentBuilder:

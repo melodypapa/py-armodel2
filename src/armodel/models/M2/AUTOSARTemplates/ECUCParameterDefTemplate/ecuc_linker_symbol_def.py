@@ -27,6 +27,22 @@ class EcucLinkerSymbolDef(ARObject):
     def __init__(self) -> None:
         """Initialize EcucLinkerSymbolDef."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucLinkerSymbolDef":
+        """Deserialize XML element to EcucLinkerSymbolDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucLinkerSymbolDef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class EcucLinkerSymbolDefBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_configuration_class import (
     EcucAbstractConfigurationClass,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class EcucMultiplicityConfigurationClass(EcucAbstractConfigurationClass):
@@ -29,6 +30,22 @@ class EcucMultiplicityConfigurationClass(EcucAbstractConfigurationClass):
     def __init__(self) -> None:
         """Initialize EcucMultiplicityConfigurationClass."""
         super().__init__()
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucMultiplicityConfigurationClass":
+        """Deserialize XML element to EcucMultiplicityConfigurationClass object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucMultiplicityConfigurationClass object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        return obj
+
 
 
 class EcucMultiplicityConfigurationClassBuilder:

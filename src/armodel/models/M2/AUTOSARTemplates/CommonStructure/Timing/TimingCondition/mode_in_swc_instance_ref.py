@@ -50,6 +50,52 @@ class ModeInSwcInstanceRef(ARObject):
         self.context_mode_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeInSwcInstanceRef":
+        """Deserialize XML element to ModeInSwcInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeInSwcInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "SwComponentType")
+            obj.base = base_value
+
+        # Parse contexts (list)
+        obj.contexts = []
+        for child in ARObject._find_all_child_elements(element, "CONTEXTS"):
+            contexts_value = child.text
+            obj.contexts.append(contexts_value)
+
+        # Parse context_mode_ref
+        child = ARObject._find_child_element(element, "CONTEXT-MODE")
+        if child is not None:
+            context_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.context_mode_ref = context_mode_ref_value
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        # Parse target_mode
+        child = ARObject._find_child_element(element, "TARGET-MODE")
+        if child is not None:
+            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.target_mode = target_mode_value
+
+        return obj
+
 
 
 class ModeInSwcInstanceRefBuilder:

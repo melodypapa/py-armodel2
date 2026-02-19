@@ -38,6 +38,34 @@ class SwRecordLayoutGroupContent(ARObject):
         super().__init__()
         self.sw_record_ref: Optional[ARRef] = None
         self.sw_record_layout_v: Optional[SwRecordLayoutV] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwRecordLayoutGroupContent":
+        """Deserialize XML element to SwRecordLayoutGroupContent object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwRecordLayoutGroupContent object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_record_ref
+        child = ARObject._find_child_element(element, "SW-RECORD")
+        if child is not None:
+            sw_record_ref_value = ARObject._deserialize_by_tag(child, "SwRecordLayoutGroup")
+            obj.sw_record_ref = sw_record_ref_value
+
+        # Parse sw_record_layout_v
+        child = ARObject._find_child_element(element, "SW-RECORD-LAYOUT-V")
+        if child is not None:
+            sw_record_layout_v_value = ARObject._deserialize_by_tag(child, "SwRecordLayoutV")
+            obj.sw_record_layout_v = sw_record_layout_v_value
+
+        return obj
+
 
 
 class SwRecordLayoutGroupContentBuilder:

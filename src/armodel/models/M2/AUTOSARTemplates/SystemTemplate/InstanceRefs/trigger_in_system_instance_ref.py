@@ -48,6 +48,46 @@ class TriggerInSystemInstanceRef(ARObject):
         self.context: Optional[RootSwCompositionPrototype] = None
         self.context_port_ref: ARRef = None
         self.target_trigger_ref: Optional[ARRef] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TriggerInSystemInstanceRef":
+        """Deserialize XML element to TriggerInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TriggerInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse base
+        child = ARObject._find_child_element(element, "BASE")
+        if child is not None:
+            base_value = ARObject._deserialize_by_tag(child, "System")
+            obj.base = base_value
+
+        # Parse context
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context = context_value
+
+        # Parse context_port_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        if child is not None:
+            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.context_port_ref = context_port_ref_value
+
+        # Parse target_trigger_ref
+        child = ARObject._find_child_element(element, "TARGET-TRIGGER")
+        if child is not None:
+            target_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.target_trigger_ref = target_trigger_ref_value
+
+        return obj
+
 
 
 class TriggerInSystemInstanceRefBuilder:

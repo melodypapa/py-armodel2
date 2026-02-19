@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
 )
@@ -35,6 +36,28 @@ class TpConfig(FibexElement, ABC):
         """Initialize TpConfig."""
         super().__init__()
         self.communication_cluster: Optional[CommunicationCluster] = None
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TpConfig":
+        """Deserialize XML element to TpConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TpConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_cluster
+        child = ARObject._find_child_element(element, "COMMUNICATION-CLUSTER")
+        if child is not None:
+            communication_cluster_value = ARObject._deserialize_by_tag(child, "CommunicationCluster")
+            obj.communication_cluster = communication_cluster_value
+
+        return obj
+
 
 
 class TpConfigBuilder:

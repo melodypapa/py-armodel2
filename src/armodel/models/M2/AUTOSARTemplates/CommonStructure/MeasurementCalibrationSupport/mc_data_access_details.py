@@ -40,6 +40,34 @@ class McDataAccessDetails(ARObject):
         super().__init__()
         self.rte_event_refs: list[RTEEvent] = []
         self.variable_accesses: list[VariableAccess] = []
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "McDataAccessDetails":
+        """Deserialize XML element to McDataAccessDetails object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized McDataAccessDetails object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rte_event_refs (list)
+        obj.rte_event_refs = []
+        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-REFS"):
+            rte_event_refs_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            obj.rte_event_refs.append(rte_event_refs_value)
+
+        # Parse variable_accesses (list)
+        obj.variable_accesses = []
+        for child in ARObject._find_all_child_elements(element, "VARIABLE-ACCESSES"):
+            variable_accesses_value = ARObject._deserialize_by_tag(child, "VariableAccess")
+            obj.variable_accesses.append(variable_accesses_value)
+
+        return obj
+
 
 
 class McDataAccessDetailsBuilder:
