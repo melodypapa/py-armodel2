@@ -42,9 +42,9 @@ class AREnum(Enum):
         if namespace:
             elem.set("xmlns", namespace)
 
-        # Get the value from the enum and convert to uppercase
+        # Get the value from the enum and preserve original case
         if hasattr(self, 'value'):
-            elem.text = str(self.value).upper()
+            elem.text = str(self.value)
         return elem
 
     @classmethod
