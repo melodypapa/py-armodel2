@@ -41,6 +41,94 @@ class ScheduleTableEntry(ARObject, ABC):
         self.delay: Optional[TimeValue] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.position_in_table: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ScheduleTableEntry to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize delay
+        if self.delay is not None:
+            serialized = ARObject._serialize_item(self.delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTRODUCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize position_in_table
+        if self.position_in_table is not None:
+            serialized = ARObject._serialize_item(self.position_in_table, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POSITION-IN-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ScheduleTableEntry":
+        """Deserialize XML element to ScheduleTableEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ScheduleTableEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse delay
+        child = ARObject._find_child_element(element, "DELAY")
+        if child is not None:
+            delay_value = child.text
+            obj.delay = delay_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        # Parse position_in_table
+        child = ARObject._find_child_element(element, "POSITION-IN-TABLE")
+        if child is not None:
+            position_in_table_value = child.text
+            obj.position_in_table = position_in_table_value
+
+        return obj
+
 
 
 class ScheduleTableEntryBuilder:

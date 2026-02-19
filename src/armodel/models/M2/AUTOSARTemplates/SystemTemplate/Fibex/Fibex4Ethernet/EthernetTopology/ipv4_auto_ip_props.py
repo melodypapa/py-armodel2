@@ -32,6 +32,54 @@ class Ipv4AutoIpProps(ARObject):
         """Initialize Ipv4AutoIpProps."""
         super().__init__()
         self.tcp_ip_auto_ip_init: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv4AutoIpProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tcp_ip_auto_ip_init
+        if self.tcp_ip_auto_ip_init is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_auto_ip_init, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-AUTO-IP-INIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv4AutoIpProps":
+        """Deserialize XML element to Ipv4AutoIpProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv4AutoIpProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse tcp_ip_auto_ip_init
+        child = ARObject._find_child_element(element, "TCP-IP-AUTO-IP-INIT")
+        if child is not None:
+            tcp_ip_auto_ip_init_value = child.text
+            obj.tcp_ip_auto_ip_init = tcp_ip_auto_ip_init_value
+
+        return obj
+
 
 
 class Ipv4AutoIpPropsBuilder:

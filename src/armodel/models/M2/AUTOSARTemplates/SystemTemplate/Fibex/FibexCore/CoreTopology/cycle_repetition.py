@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cycle import (
     CommunicationCycle,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
     CycleRepetitionType,
 )
@@ -39,6 +40,83 @@ class CycleRepetition(CommunicationCycle):
         super().__init__()
         self.base_cycle: Optional[Integer] = None
         self.cycle_repetition: Optional[CycleRepetitionType] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CycleRepetition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CycleRepetition, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize base_cycle
+        if self.base_cycle is not None:
+            serialized = ARObject._serialize_item(self.base_cycle, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cycle_repetition
+        if self.cycle_repetition is not None:
+            serialized = ARObject._serialize_item(self.cycle_repetition, "CycleRepetitionType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLE-REPETITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CycleRepetition":
+        """Deserialize XML element to CycleRepetition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CycleRepetition object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CycleRepetition, cls).deserialize(element)
+
+        # Parse base_cycle
+        child = ARObject._find_child_element(element, "BASE-CYCLE")
+        if child is not None:
+            base_cycle_value = child.text
+            obj.base_cycle = base_cycle_value
+
+        # Parse cycle_repetition
+        child = ARObject._find_child_element(element, "CYCLE-REPETITION")
+        if child is not None:
+            cycle_repetition_value = CycleRepetitionType.deserialize(child)
+            obj.cycle_repetition = cycle_repetition_value
+
+        return obj
+
 
 
 class CycleRepetitionBuilder:

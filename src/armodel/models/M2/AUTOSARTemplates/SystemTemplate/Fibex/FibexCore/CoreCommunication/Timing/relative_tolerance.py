@@ -32,6 +32,54 @@ class RelativeTolerance(ARObject):
         """Initialize RelativeTolerance."""
         super().__init__()
         self.relative: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RelativeTolerance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize relative
+        if self.relative is not None:
+            serialized = ARObject._serialize_item(self.relative, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELATIVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RelativeTolerance":
+        """Deserialize XML element to RelativeTolerance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RelativeTolerance object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse relative
+        child = ARObject._find_child_element(element, "RELATIVE")
+        if child is not None:
+            relative_value = child.text
+            obj.relative = relative_value
+
+        return obj
+
 
 
 class RelativeToleranceBuilder:

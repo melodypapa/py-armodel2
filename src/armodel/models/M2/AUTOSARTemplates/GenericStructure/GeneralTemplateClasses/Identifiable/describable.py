@@ -53,6 +53,114 @@ class Describable(ARObject, ABC):
         self.category: Optional[CategoryString] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Describable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize admin_data
+        if self.admin_data is not None:
+            serialized = ARObject._serialize_item(self.admin_data, "AdminData")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADMIN-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize category
+        if self.category is not None:
+            serialized = ARObject._serialize_item(self.category, "CategoryString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize desc
+        if self.desc is not None:
+            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTRODUCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Describable":
+        """Deserialize XML element to Describable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Describable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse admin_data
+        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        if child is not None:
+            admin_data_value = ARObject._deserialize_by_tag(child, "AdminData")
+            obj.admin_data = admin_data_value
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = child.text
+            obj.category = category_value
+
+        # Parse desc
+        child = ARObject._find_child_element(element, "DESC")
+        if child is not None:
+            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            obj.desc = desc_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.introduction = introduction_value
+
+        return obj
+
 
 
 class DescribableBuilder:

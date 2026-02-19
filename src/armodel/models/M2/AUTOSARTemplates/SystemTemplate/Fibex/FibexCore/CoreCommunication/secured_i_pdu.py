@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_pdu import (
     IPdu,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     SecuredPduHeaderEnum,
@@ -53,6 +54,183 @@ class SecuredIPdu(IPdu):
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SecuredIPdu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SecuredIPdu, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize authentication
+        if self.authentication is not None:
+            serialized = ARObject._serialize_item(self.authentication, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTHENTICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dynamic
+        if self.dynamic is not None:
+            serialized = ARObject._serialize_item(self.dynamic, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DYNAMIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize freshness_props
+        if self.freshness_props is not None:
+            serialized = ARObject._serialize_item(self.freshness_props, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRESHNESS-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize payload_ref
+        if self.payload_ref is not None:
+            serialized = ARObject._serialize_item(self.payload_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PAYLOAD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize secure
+        if self.secure is not None:
+            serialized = ARObject._serialize_item(self.secure, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize use_as
+        if self.use_as is not None:
+            serialized = ARObject._serialize_item(self.use_as, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USE-AS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize use_secured_pdu
+        if self.use_secured_pdu is not None:
+            serialized = ARObject._serialize_item(self.use_secured_pdu, "SecuredPduHeaderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USE-SECURED-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecuredIPdu":
+        """Deserialize XML element to SecuredIPdu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecuredIPdu object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecuredIPdu, cls).deserialize(element)
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse dynamic
+        child = ARObject._find_child_element(element, "DYNAMIC")
+        if child is not None:
+            dynamic_value = child.text
+            obj.dynamic = dynamic_value
+
+        # Parse freshness_props
+        child = ARObject._find_child_element(element, "FRESHNESS-PROPS")
+        if child is not None:
+            freshness_props_value = child.text
+            obj.freshness_props = freshness_props_value
+
+        # Parse payload_ref
+        child = ARObject._find_child_element(element, "PAYLOAD")
+        if child is not None:
+            payload_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.payload_ref = payload_ref_value
+
+        # Parse secure
+        child = ARObject._find_child_element(element, "SECURE")
+        if child is not None:
+            secure_value = child.text
+            obj.secure = secure_value
+
+        # Parse use_as
+        child = ARObject._find_child_element(element, "USE-AS")
+        if child is not None:
+            use_as_value = child.text
+            obj.use_as = use_as_value
+
+        # Parse use_secured_pdu
+        child = ARObject._find_child_element(element, "USE-SECURED-PDU")
+        if child is not None:
+            use_secured_pdu_value = SecuredPduHeaderEnum.deserialize(child)
+            obj.use_secured_pdu = use_secured_pdu_value
+
+        return obj
+
 
 
 class SecuredIPduBuilder:

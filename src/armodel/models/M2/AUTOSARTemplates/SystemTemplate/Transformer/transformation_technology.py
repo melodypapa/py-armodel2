@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     TransformerClassEnum,
 )
@@ -57,6 +58,183 @@ class TransformationTechnology(Identifiable):
         self.transformation_description: Optional[TransformationDescription] = None
         self.transformer: Optional[TransformerClassEnum] = None
         self.version: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TransformationTechnology to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TransformationTechnology, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize buffer_properties
+        if self.buffer_properties is not None:
+            serialized = ARObject._serialize_item(self.buffer_properties, "BufferProperties")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUFFER-PROPERTIES")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize has_internal
+        if self.has_internal is not None:
+            serialized = ARObject._serialize_item(self.has_internal, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HAS-INTERNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize needs_original
+        if self.needs_original is not None:
+            serialized = ARObject._serialize_item(self.needs_original, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NEEDS-ORIGINAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize protocol
+        if self.protocol is not None:
+            serialized = ARObject._serialize_item(self.protocol, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROTOCOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transformation_description
+        if self.transformation_description is not None:
+            serialized = ARObject._serialize_item(self.transformation_description, "TransformationDescription")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFORMATION-DESCRIPTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transformer
+        if self.transformer is not None:
+            serialized = ARObject._serialize_item(self.transformer, "TransformerClassEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFORMER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize version
+        if self.version is not None:
+            serialized = ARObject._serialize_item(self.version, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransformationTechnology":
+        """Deserialize XML element to TransformationTechnology object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransformationTechnology object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TransformationTechnology, cls).deserialize(element)
+
+        # Parse buffer_properties
+        child = ARObject._find_child_element(element, "BUFFER-PROPERTIES")
+        if child is not None:
+            buffer_properties_value = ARObject._deserialize_by_tag(child, "BufferProperties")
+            obj.buffer_properties = buffer_properties_value
+
+        # Parse has_internal
+        child = ARObject._find_child_element(element, "HAS-INTERNAL")
+        if child is not None:
+            has_internal_value = child.text
+            obj.has_internal = has_internal_value
+
+        # Parse needs_original
+        child = ARObject._find_child_element(element, "NEEDS-ORIGINAL")
+        if child is not None:
+            needs_original_value = child.text
+            obj.needs_original = needs_original_value
+
+        # Parse protocol
+        child = ARObject._find_child_element(element, "PROTOCOL")
+        if child is not None:
+            protocol_value = child.text
+            obj.protocol = protocol_value
+
+        # Parse transformation_description
+        child = ARObject._find_child_element(element, "TRANSFORMATION-DESCRIPTION")
+        if child is not None:
+            transformation_description_value = ARObject._deserialize_by_tag(child, "TransformationDescription")
+            obj.transformation_description = transformation_description_value
+
+        # Parse transformer
+        child = ARObject._find_child_element(element, "TRANSFORMER")
+        if child is not None:
+            transformer_value = TransformerClassEnum.deserialize(child)
+            obj.transformer = transformer_value
+
+        # Parse version
+        child = ARObject._find_child_element(element, "VERSION")
+        if child is not None:
+            version_value = child.text
+            obj.version = version_value
+
+        return obj
+
 
 
 class TransformationTechnologyBuilder:

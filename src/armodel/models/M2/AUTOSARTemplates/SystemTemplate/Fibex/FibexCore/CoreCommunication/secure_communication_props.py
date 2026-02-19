@@ -44,6 +44,174 @@ class SecureCommunicationProps(ARObject):
         self.message_link: Optional[PositiveInteger] = None
         self.secondary: Optional[PositiveInteger] = None
         self.secured_area: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SecureCommunicationProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize auth_data
+        if self.auth_data is not None:
+            serialized = ARObject._serialize_item(self.auth_data, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTH-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize authentication
+        if self.authentication is not None:
+            serialized = ARObject._serialize_item(self.authentication, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTHENTICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_id
+        if self.data_id is not None:
+            serialized = ARObject._serialize_item(self.data_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize freshness_value
+        if self.freshness_value is not None:
+            serialized = ARObject._serialize_item(self.freshness_value, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRESHNESS-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize message_link
+        if self.message_link is not None:
+            serialized = ARObject._serialize_item(self.message_link, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-LINK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize secondary
+        if self.secondary is not None:
+            serialized = ARObject._serialize_item(self.secondary, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECONDARY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize secured_area
+        if self.secured_area is not None:
+            serialized = ARObject._serialize_item(self.secured_area, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURED-AREA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SecureCommunicationProps":
+        """Deserialize XML element to SecureCommunicationProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SecureCommunicationProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse auth_data
+        child = ARObject._find_child_element(element, "AUTH-DATA")
+        if child is not None:
+            auth_data_value = child.text
+            obj.auth_data = auth_data_value
+
+        # Parse authentication
+        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse data_id
+        child = ARObject._find_child_element(element, "DATA-ID")
+        if child is not None:
+            data_id_value = child.text
+            obj.data_id = data_id_value
+
+        # Parse freshness_value
+        child = ARObject._find_child_element(element, "FRESHNESS-VALUE")
+        if child is not None:
+            freshness_value_value = child.text
+            obj.freshness_value = freshness_value_value
+
+        # Parse message_link
+        child = ARObject._find_child_element(element, "MESSAGE-LINK")
+        if child is not None:
+            message_link_value = child.text
+            obj.message_link = message_link_value
+
+        # Parse secondary
+        child = ARObject._find_child_element(element, "SECONDARY")
+        if child is not None:
+            secondary_value = child.text
+            obj.secondary = secondary_value
+
+        # Parse secured_area
+        child = ARObject._find_child_element(element, "SECURED-AREA")
+        if child is not None:
+            secured_area_value = child.text
+            obj.secured_area = secured_area_value
+
+        return obj
+
 
 
 class SecureCommunicationPropsBuilder:

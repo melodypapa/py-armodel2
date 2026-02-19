@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     UdpChecksumCalculationEnum,
@@ -75,6 +76,263 @@ class SocketAddress(Identifiable):
         self.pdu_collection: Optional[TimeValue] = None
         self.static_sockets: list[StaticSocketConnection] = []
         self.udp_checksum: Optional[UdpChecksumCalculationEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SocketAddress to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SocketAddress, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize allowed_i_pv6_ext_ref
+        if self.allowed_i_pv6_ext_ref is not None:
+            serialized = ARObject._serialize_item(self.allowed_i_pv6_ext_ref, "IPv6ExtHeaderFilterList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALLOWED-I-PV6-EXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize allowed_tcp_ref
+        if self.allowed_tcp_ref is not None:
+            serialized = ARObject._serialize_item(self.allowed_tcp_ref, "TcpOptionFilterList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALLOWED-TCP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize application_endpoint_endpoint
+        if self.application_endpoint_endpoint is not None:
+            serialized = ARObject._serialize_item(self.application_endpoint_endpoint, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPLICATION-ENDPOINT-ENDPOINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize connector
+        if self.connector is not None:
+            serialized = ARObject._serialize_item(self.connector, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONNECTOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize differentiated
+        if self.differentiated is not None:
+            serialized = ARObject._serialize_item(self.differentiated, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIFFERENTIATED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize flow_label
+        if self.flow_label is not None:
+            serialized = ARObject._serialize_item(self.flow_label, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLOW-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicasts (list to container "MULTICASTS")
+        if self.multicasts:
+            wrapper = ET.Element("MULTICASTS")
+            for item in self.multicasts:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize path_mtu
+        if self.path_mtu is not None:
+            serialized = ARObject._serialize_item(self.path_mtu, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PATH-MTU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_collection
+        if self.pdu_collection is not None:
+            serialized = ARObject._serialize_item(self.pdu_collection, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-COLLECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize static_sockets (list to container "STATIC-SOCKETS")
+        if self.static_sockets:
+            wrapper = ET.Element("STATIC-SOCKETS")
+            for item in self.static_sockets:
+                serialized = ARObject._serialize_item(item, "StaticSocketConnection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize udp_checksum
+        if self.udp_checksum is not None:
+            serialized = ARObject._serialize_item(self.udp_checksum, "UdpChecksumCalculationEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UDP-CHECKSUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SocketAddress":
+        """Deserialize XML element to SocketAddress object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SocketAddress object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SocketAddress, cls).deserialize(element)
+
+        # Parse allowed_i_pv6_ext_ref
+        child = ARObject._find_child_element(element, "ALLOWED-I-PV6-EXT")
+        if child is not None:
+            allowed_i_pv6_ext_ref_value = ARObject._deserialize_by_tag(child, "IPv6ExtHeaderFilterList")
+            obj.allowed_i_pv6_ext_ref = allowed_i_pv6_ext_ref_value
+
+        # Parse allowed_tcp_ref
+        child = ARObject._find_child_element(element, "ALLOWED-TCP")
+        if child is not None:
+            allowed_tcp_ref_value = ARObject._deserialize_by_tag(child, "TcpOptionFilterList")
+            obj.allowed_tcp_ref = allowed_tcp_ref_value
+
+        # Parse application_endpoint_endpoint
+        child = ARObject._find_child_element(element, "APPLICATION-ENDPOINT-ENDPOINT")
+        if child is not None:
+            application_endpoint_endpoint_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.application_endpoint_endpoint = application_endpoint_endpoint_value
+
+        # Parse connector
+        child = ARObject._find_child_element(element, "CONNECTOR")
+        if child is not None:
+            connector_value = child.text
+            obj.connector = connector_value
+
+        # Parse differentiated
+        child = ARObject._find_child_element(element, "DIFFERENTIATED")
+        if child is not None:
+            differentiated_value = child.text
+            obj.differentiated = differentiated_value
+
+        # Parse flow_label
+        child = ARObject._find_child_element(element, "FLOW-LABEL")
+        if child is not None:
+            flow_label_value = child.text
+            obj.flow_label = flow_label_value
+
+        # Parse multicasts (list from container "MULTICASTS")
+        obj.multicasts = []
+        container = ARObject._find_child_element(element, "MULTICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.multicasts.append(child_value)
+
+        # Parse path_mtu
+        child = ARObject._find_child_element(element, "PATH-MTU")
+        if child is not None:
+            path_mtu_value = child.text
+            obj.path_mtu = path_mtu_value
+
+        # Parse pdu_collection
+        child = ARObject._find_child_element(element, "PDU-COLLECTION")
+        if child is not None:
+            pdu_collection_value = child.text
+            obj.pdu_collection = pdu_collection_value
+
+        # Parse static_sockets (list from container "STATIC-SOCKETS")
+        obj.static_sockets = []
+        container = ARObject._find_child_element(element, "STATIC-SOCKETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.static_sockets.append(child_value)
+
+        # Parse udp_checksum
+        child = ARObject._find_child_element(element, "UDP-CHECKSUM")
+        if child is not None:
+            udp_checksum_value = UdpChecksumCalculationEnum.deserialize(child)
+            obj.udp_checksum = udp_checksum_value
+
+        return obj
+
 
 
 class SocketAddressBuilder:

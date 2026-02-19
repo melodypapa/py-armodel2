@@ -38,6 +38,74 @@ class SwDataDependencyArgs(ARObject):
         super().__init__()
         self.sw_calprm_ref_proxy_ref: Optional[ARRef] = None
         self.sw_variable_ref_proxy_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwDataDependencyArgs to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_calprm_ref_proxy_ref
+        if self.sw_calprm_ref_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-CALPRM-REF-PROXY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_variable_ref_proxy_ref
+        if self.sw_variable_ref_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_variable_ref_proxy_ref, "SwVariableRefProxy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-VARIABLE-REF-PROXY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwDataDependencyArgs":
+        """Deserialize XML element to SwDataDependencyArgs object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwDataDependencyArgs object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_calprm_ref_proxy_ref
+        child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY")
+        if child is not None:
+            sw_calprm_ref_proxy_ref_value = ARObject._deserialize_by_tag(child, "SwCalprmRefProxy")
+            obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value
+
+        # Parse sw_variable_ref_proxy_ref
+        child = ARObject._find_child_element(element, "SW-VARIABLE-REF-PROXY")
+        if child is not None:
+            sw_variable_ref_proxy_ref_value = ARObject._deserialize_by_tag(child, "SwVariableRefProxy")
+            obj.sw_variable_ref_proxy_ref = sw_variable_ref_proxy_ref_value
+
+        return obj
+
 
 
 class SwDataDependencyArgsBuilder:

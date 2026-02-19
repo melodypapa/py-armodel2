@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -40,6 +41,83 @@ class PassThroughSwConnector(SwConnector):
         super().__init__()
         self.provided_outer: Optional[AbstractProvidedPortPrototype] = None
         self.required_outer: Optional[AbstractRequiredPortPrototype] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PassThroughSwConnector to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PassThroughSwConnector, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize provided_outer
+        if self.provided_outer is not None:
+            serialized = ARObject._serialize_item(self.provided_outer, "AbstractProvidedPortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROVIDED-OUTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize required_outer
+        if self.required_outer is not None:
+            serialized = ARObject._serialize_item(self.required_outer, "AbstractRequiredPortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUIRED-OUTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PassThroughSwConnector":
+        """Deserialize XML element to PassThroughSwConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PassThroughSwConnector object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PassThroughSwConnector, cls).deserialize(element)
+
+        # Parse provided_outer
+        child = ARObject._find_child_element(element, "PROVIDED-OUTER")
+        if child is not None:
+            provided_outer_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
+            obj.provided_outer = provided_outer_value
+
+        # Parse required_outer
+        child = ARObject._find_child_element(element, "REQUIRED-OUTER")
+        if child is not None:
+            required_outer_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
+            obj.required_outer = required_outer_value
+
+        return obj
+
 
 
 class PassThroughSwConnectorBuilder:

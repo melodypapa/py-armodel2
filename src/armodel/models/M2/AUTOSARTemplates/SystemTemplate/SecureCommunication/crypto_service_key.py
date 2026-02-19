@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -50,6 +51,143 @@ class CryptoServiceKey(ARElement):
         self.key_generation: Optional[CryptoServiceKey] = None
         self.key_storage_type: Optional[String] = None
         self.length: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CryptoServiceKey to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CryptoServiceKey, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize algorithm_family
+        if self.algorithm_family is not None:
+            serialized = ARObject._serialize_item(self.algorithm_family, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALGORITHM-FAMILY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize development
+        if self.development is not None:
+            serialized = ARObject._serialize_item(self.development, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEVELOPMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize key_generation
+        if self.key_generation is not None:
+            serialized = ARObject._serialize_item(self.key_generation, "CryptoServiceKey")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KEY-GENERATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize key_storage_type
+        if self.key_storage_type is not None:
+            serialized = ARObject._serialize_item(self.key_storage_type, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KEY-STORAGE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize length
+        if self.length is not None:
+            serialized = ARObject._serialize_item(self.length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CryptoServiceKey":
+        """Deserialize XML element to CryptoServiceKey object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CryptoServiceKey object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CryptoServiceKey, cls).deserialize(element)
+
+        # Parse algorithm_family
+        child = ARObject._find_child_element(element, "ALGORITHM-FAMILY")
+        if child is not None:
+            algorithm_family_value = child.text
+            obj.algorithm_family = algorithm_family_value
+
+        # Parse development
+        child = ARObject._find_child_element(element, "DEVELOPMENT")
+        if child is not None:
+            development_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.development = development_value
+
+        # Parse key_generation
+        child = ARObject._find_child_element(element, "KEY-GENERATION")
+        if child is not None:
+            key_generation_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
+            obj.key_generation = key_generation_value
+
+        # Parse key_storage_type
+        child = ARObject._find_child_element(element, "KEY-STORAGE-TYPE")
+        if child is not None:
+            key_storage_type_value = child.text
+            obj.key_storage_type = key_storage_type_value
+
+        # Parse length
+        child = ARObject._find_child_element(element, "LENGTH")
+        if child is not None:
+            length_value = child.text
+            obj.length = length_value
+
+        return obj
+
 
 
 class CryptoServiceKeyBuilder:

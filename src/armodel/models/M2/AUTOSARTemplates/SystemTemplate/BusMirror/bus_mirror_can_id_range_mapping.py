@@ -36,6 +36,94 @@ class BusMirrorCanIdRangeMapping(ARObject):
         self.destination_base: Optional[PositiveInteger] = None
         self.source_can_id_code: Optional[PositiveInteger] = None
         self.source_can_id: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BusMirrorCanIdRangeMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize destination_base
+        if self.destination_base is not None:
+            serialized = ARObject._serialize_item(self.destination_base, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESTINATION-BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_can_id_code
+        if self.source_can_id_code is not None:
+            serialized = ARObject._serialize_item(self.source_can_id_code, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-CAN-ID-CODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_can_id
+        if self.source_can_id is not None:
+            serialized = ARObject._serialize_item(self.source_can_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-CAN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BusMirrorCanIdRangeMapping":
+        """Deserialize XML element to BusMirrorCanIdRangeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BusMirrorCanIdRangeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse destination_base
+        child = ARObject._find_child_element(element, "DESTINATION-BASE")
+        if child is not None:
+            destination_base_value = child.text
+            obj.destination_base = destination_base_value
+
+        # Parse source_can_id_code
+        child = ARObject._find_child_element(element, "SOURCE-CAN-ID-CODE")
+        if child is not None:
+            source_can_id_code_value = child.text
+            obj.source_can_id_code = source_can_id_code_value
+
+        # Parse source_can_id
+        child = ARObject._find_child_element(element, "SOURCE-CAN-ID")
+        if child is not None:
+            source_can_id_value = child.text
+            obj.source_can_id = source_can_id_value
+
+        return obj
+
 
 
 class BusMirrorCanIdRangeMappingBuilder:

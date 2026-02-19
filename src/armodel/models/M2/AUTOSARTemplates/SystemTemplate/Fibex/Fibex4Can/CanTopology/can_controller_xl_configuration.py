@@ -51,6 +51,234 @@ class CanControllerXlConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanControllerXlConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize error_signaling
+        if self.error_signaling is not None:
+            serialized = ARObject._serialize_item(self.error_signaling, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ERROR-SIGNALING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize prop_seg
+        if self.prop_seg is not None:
+            serialized = ARObject._serialize_item(self.prop_seg, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROP-SEG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pwm_l
+        if self.pwm_l is not None:
+            serialized = ARObject._serialize_item(self.pwm_l, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PWM-L")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pwm_o
+        if self.pwm_o is not None:
+            serialized = ARObject._serialize_item(self.pwm_o, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PWM-O")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pwm_s
+        if self.pwm_s is not None:
+            serialized = ARObject._serialize_item(self.pwm_s, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PWM-S")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ssp_offset
+        if self.ssp_offset is not None:
+            serialized = ARObject._serialize_item(self.ssp_offset, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SSP-OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sync_jump_width
+        if self.sync_jump_width is not None:
+            serialized = ARObject._serialize_item(self.sync_jump_width, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-JUMP-WIDTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_seg1
+        if self.time_seg1 is not None:
+            serialized = ARObject._serialize_item(self.time_seg1, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SEG1")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_seg2
+        if self.time_seg2 is not None:
+            serialized = ARObject._serialize_item(self.time_seg2, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SEG2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trcv_pwm_mode
+        if self.trcv_pwm_mode is not None:
+            serialized = ARObject._serialize_item(self.trcv_pwm_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRCV-PWM-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanControllerXlConfiguration":
+        """Deserialize XML element to CanControllerXlConfiguration object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanControllerXlConfiguration object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse error_signaling
+        child = ARObject._find_child_element(element, "ERROR-SIGNALING")
+        if child is not None:
+            error_signaling_value = child.text
+            obj.error_signaling = error_signaling_value
+
+        # Parse prop_seg
+        child = ARObject._find_child_element(element, "PROP-SEG")
+        if child is not None:
+            prop_seg_value = child.text
+            obj.prop_seg = prop_seg_value
+
+        # Parse pwm_l
+        child = ARObject._find_child_element(element, "PWM-L")
+        if child is not None:
+            pwm_l_value = child.text
+            obj.pwm_l = pwm_l_value
+
+        # Parse pwm_o
+        child = ARObject._find_child_element(element, "PWM-O")
+        if child is not None:
+            pwm_o_value = child.text
+            obj.pwm_o = pwm_o_value
+
+        # Parse pwm_s
+        child = ARObject._find_child_element(element, "PWM-S")
+        if child is not None:
+            pwm_s_value = child.text
+            obj.pwm_s = pwm_s_value
+
+        # Parse ssp_offset
+        child = ARObject._find_child_element(element, "SSP-OFFSET")
+        if child is not None:
+            ssp_offset_value = child.text
+            obj.ssp_offset = ssp_offset_value
+
+        # Parse sync_jump_width
+        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        if child is not None:
+            sync_jump_width_value = child.text
+            obj.sync_jump_width = sync_jump_width_value
+
+        # Parse time_seg1
+        child = ARObject._find_child_element(element, "TIME-SEG1")
+        if child is not None:
+            time_seg1_value = child.text
+            obj.time_seg1 = time_seg1_value
+
+        # Parse time_seg2
+        child = ARObject._find_child_element(element, "TIME-SEG2")
+        if child is not None:
+            time_seg2_value = child.text
+            obj.time_seg2 = time_seg2_value
+
+        # Parse trcv_pwm_mode
+        child = ARObject._find_child_element(element, "TRCV-PWM-MODE")
+        if child is not None:
+            trcv_pwm_mode_value = child.text
+            obj.trcv_pwm_mode = trcv_pwm_mode_value
+
+        return obj
+
 
 
 class CanControllerXlConfigurationBuilder:

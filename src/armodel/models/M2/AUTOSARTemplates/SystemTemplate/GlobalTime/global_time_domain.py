@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -75,6 +76,263 @@ class GlobalTimeDomain(FibexElement):
         self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GlobalTimeDomain to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GlobalTimeDomain, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize debounce_time
+        if self.debounce_time is not None:
+            serialized = ARObject._serialize_item(self.debounce_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEBOUNCE-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize domain_id
+        if self.domain_id is not None:
+            serialized = ARObject._serialize_item(self.domain_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DOMAIN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize gateways (list to container "GATEWAYS")
+        if self.gateways:
+            wrapper = ET.Element("GATEWAYS")
+            for item in self.gateways:
+                serialized = ARObject._serialize_item(item, "GlobalTimeGateway")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize global_time
+        if self.global_time is not None:
+            serialized = ARObject._serialize_item(self.global_time, "AbstractGlobalTimeDomainProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_time_master
+        if self.global_time_master is not None:
+            serialized = ARObject._serialize_item(self.global_time_master, "GlobalTimeMaster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-TIME-MASTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_time_subs (list to container "GLOBAL-TIME-SUBS")
+        if self.global_time_subs:
+            wrapper = ET.Element("GLOBAL-TIME-SUBS")
+            for item in self.global_time_subs:
+                serialized = ARObject._serialize_item(item, "GlobalTimeDomain")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize network
+        if self.network is not None:
+            serialized = ARObject._serialize_item(self.network, "NetworkSegmentIdentification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset_time
+        if self.offset_time is not None:
+            serialized = ARObject._serialize_item(self.offset_time, "GlobalTimeDomain")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_triggering_ref
+        if self.pdu_triggering_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_triggering_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-TRIGGERING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize slaves (list to container "SLAVES")
+        if self.slaves:
+            wrapper = ET.Element("SLAVES")
+            for item in self.slaves:
+                serialized = ARObject._serialize_item(item, "GlobalTimeSlave")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sync_loss
+        if self.sync_loss is not None:
+            serialized = ARObject._serialize_item(self.sync_loss, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-LOSS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "GlobalTimeDomain":
+        """Deserialize XML element to GlobalTimeDomain object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized GlobalTimeDomain object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(GlobalTimeDomain, cls).deserialize(element)
+
+        # Parse debounce_time
+        child = ARObject._find_child_element(element, "DEBOUNCE-TIME")
+        if child is not None:
+            debounce_time_value = child.text
+            obj.debounce_time = debounce_time_value
+
+        # Parse domain_id
+        child = ARObject._find_child_element(element, "DOMAIN-ID")
+        if child is not None:
+            domain_id_value = child.text
+            obj.domain_id = domain_id_value
+
+        # Parse gateways (list from container "GATEWAYS")
+        obj.gateways = []
+        container = ARObject._find_child_element(element, "GATEWAYS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.gateways.append(child_value)
+
+        # Parse global_time
+        child = ARObject._find_child_element(element, "GLOBAL-TIME")
+        if child is not None:
+            global_time_value = ARObject._deserialize_by_tag(child, "AbstractGlobalTimeDomainProps")
+            obj.global_time = global_time_value
+
+        # Parse global_time_master
+        child = ARObject._find_child_element(element, "GLOBAL-TIME-MASTER")
+        if child is not None:
+            global_time_master_value = ARObject._deserialize_by_tag(child, "GlobalTimeMaster")
+            obj.global_time_master = global_time_master_value
+
+        # Parse global_time_subs (list from container "GLOBAL-TIME-SUBS")
+        obj.global_time_subs = []
+        container = ARObject._find_child_element(element, "GLOBAL-TIME-SUBS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.global_time_subs.append(child_value)
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = ARObject._deserialize_by_tag(child, "NetworkSegmentIdentification")
+            obj.network = network_value
+
+        # Parse offset_time
+        child = ARObject._find_child_element(element, "OFFSET-TIME")
+        if child is not None:
+            offset_time_value = ARObject._deserialize_by_tag(child, "GlobalTimeDomain")
+            obj.offset_time = offset_time_value
+
+        # Parse pdu_triggering_ref
+        child = ARObject._find_child_element(element, "PDU-TRIGGERING")
+        if child is not None:
+            pdu_triggering_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            obj.pdu_triggering_ref = pdu_triggering_ref_value
+
+        # Parse slaves (list from container "SLAVES")
+        obj.slaves = []
+        container = ARObject._find_child_element(element, "SLAVES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.slaves.append(child_value)
+
+        # Parse sync_loss
+        child = ARObject._find_child_element(element, "SYNC-LOSS")
+        if child is not None:
+            sync_loss_value = child.text
+            obj.sync_loss = sync_loss_value
+
+        return obj
+
 
 
 class GlobalTimeDomainBuilder:

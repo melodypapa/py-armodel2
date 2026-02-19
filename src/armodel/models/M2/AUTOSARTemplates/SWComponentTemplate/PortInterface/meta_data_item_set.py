@@ -39,6 +39,74 @@ class MetaDataItemSet(ARObject):
         super().__init__()
         self.data_element_refs: list[ARRef] = []
         self.meta_data_items: list[MetaDataItem] = []
+    def serialize(self) -> ET.Element:
+        """Serialize MetaDataItemSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_element_refs (list to container "DATA-ELEMENTS")
+        if self.data_element_refs:
+            wrapper = ET.Element("DATA-ELEMENTS")
+            for item in self.data_element_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize meta_data_items (list to container "META-DATA-ITEMS")
+        if self.meta_data_items:
+            wrapper = ET.Element("META-DATA-ITEMS")
+            for item in self.meta_data_items:
+                serialized = ARObject._serialize_item(item, "MetaDataItem")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MetaDataItemSet":
+        """Deserialize XML element to MetaDataItemSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MetaDataItemSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_element_refs (list from container "DATA-ELEMENTS")
+        obj.data_element_refs = []
+        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_element_refs.append(child_value)
+
+        # Parse meta_data_items (list from container "META-DATA-ITEMS")
+        obj.meta_data_items = []
+        container = ARObject._find_child_element(element, "META-DATA-ITEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.meta_data_items.append(child_value)
+
+        return obj
+
 
 
 class MetaDataItemSetBuilder:

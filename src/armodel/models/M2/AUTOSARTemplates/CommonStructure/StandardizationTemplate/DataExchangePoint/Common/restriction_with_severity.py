@@ -33,6 +33,54 @@ class RestrictionWithSeverity(ARObject, ABC):
         """Initialize RestrictionWithSeverity."""
         super().__init__()
         self.severity: SeverityEnum = None
+    def serialize(self) -> ET.Element:
+        """Serialize RestrictionWithSeverity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize severity
+        if self.severity is not None:
+            serialized = ARObject._serialize_item(self.severity, "SeverityEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEVERITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RestrictionWithSeverity":
+        """Deserialize XML element to RestrictionWithSeverity object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RestrictionWithSeverity object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse severity
+        child = ARObject._find_child_element(element, "SEVERITY")
+        if child is not None:
+            severity_value = SeverityEnum.deserialize(child)
+            obj.severity = severity_value
+
+        return obj
+
 
 
 class RestrictionWithSeverityBuilder:

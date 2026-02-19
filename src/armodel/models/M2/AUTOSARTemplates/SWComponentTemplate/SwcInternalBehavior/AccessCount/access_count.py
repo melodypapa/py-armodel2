@@ -37,6 +37,74 @@ class AccessCount(ARObject):
         super().__init__()
         self.access_point: Optional[AbstractAccessPoint] = None
         self.value: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AccessCount to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize access_point
+        if self.access_point is not None:
+            serialized = ARObject._serialize_item(self.access_point, "AbstractAccessPoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACCESS-POINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AccessCount":
+        """Deserialize XML element to AccessCount object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AccessCount object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse access_point
+        child = ARObject._find_child_element(element, "ACCESS-POINT")
+        if child is not None:
+            access_point_value = ARObject._deserialize_by_tag(child, "AbstractAccessPoint")
+            obj.access_point = access_point_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = child.text
+            obj.value = value_value
+
+        return obj
+
 
 
 class AccessCountBuilder:

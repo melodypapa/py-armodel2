@@ -32,6 +32,54 @@ class PduMappingDefaultValue(ARObject):
         """Initialize PduMappingDefaultValue."""
         super().__init__()
         self.default_values: list[DefaultValueElement] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PduMappingDefaultValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_values (list to container "DEFAULT-VALUES")
+        if self.default_values:
+            wrapper = ET.Element("DEFAULT-VALUES")
+            for item in self.default_values:
+                serialized = ARObject._serialize_item(item, "DefaultValueElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PduMappingDefaultValue":
+        """Deserialize XML element to PduMappingDefaultValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PduMappingDefaultValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse default_values (list from container "DEFAULT-VALUES")
+        obj.default_values = []
+        container = ARObject._find_child_element(element, "DEFAULT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.default_values.append(child_value)
+
+        return obj
+
 
 
 class PduMappingDefaultValueBuilder:

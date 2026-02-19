@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -64,6 +65,203 @@ class IdsmInstance(IdsCommonElement):
         self.signature: Optional[Any] = None
         self.timestamp: Optional[String] = None
         self.traffic_limitation: Optional[IdsmTrafficLimitation] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IdsmInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IdsmInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize block_states (list to container "BLOCK-STATES")
+        if self.block_states:
+            wrapper = ET.Element("BLOCK-STATES")
+            for item in self.block_states:
+                serialized = ARObject._serialize_item(item, "BlockState")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize idsm_instance_id
+        if self.idsm_instance_id is not None:
+            serialized = ARObject._serialize_item(self.idsm_instance_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDSM-INSTANCE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize idsm_module
+        if self.idsm_module is not None:
+            serialized = ARObject._serialize_item(self.idsm_module, "IdsmModuleInstantiation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDSM-MODULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rate_limitation
+        if self.rate_limitation is not None:
+            serialized = ARObject._serialize_item(self.rate_limitation, "IdsmRateLimitation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RATE-LIMITATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize signature
+        if self.signature is not None:
+            serialized = ARObject._serialize_item(self.signature, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIGNATURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timestamp
+        if self.timestamp is not None:
+            serialized = ARObject._serialize_item(self.timestamp, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMESTAMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize traffic_limitation
+        if self.traffic_limitation is not None:
+            serialized = ARObject._serialize_item(self.traffic_limitation, "IdsmTrafficLimitation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRAFFIC-LIMITATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IdsmInstance":
+        """Deserialize XML element to IdsmInstance object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IdsmInstance object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IdsmInstance, cls).deserialize(element)
+
+        # Parse block_states (list from container "BLOCK-STATES")
+        obj.block_states = []
+        container = ARObject._find_child_element(element, "BLOCK-STATES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.block_states.append(child_value)
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse idsm_instance_id
+        child = ARObject._find_child_element(element, "IDSM-INSTANCE-ID")
+        if child is not None:
+            idsm_instance_id_value = child.text
+            obj.idsm_instance_id = idsm_instance_id_value
+
+        # Parse idsm_module
+        child = ARObject._find_child_element(element, "IDSM-MODULE")
+        if child is not None:
+            idsm_module_value = ARObject._deserialize_by_tag(child, "IdsmModuleInstantiation")
+            obj.idsm_module = idsm_module_value
+
+        # Parse rate_limitation
+        child = ARObject._find_child_element(element, "RATE-LIMITATION")
+        if child is not None:
+            rate_limitation_value = ARObject._deserialize_by_tag(child, "IdsmRateLimitation")
+            obj.rate_limitation = rate_limitation_value
+
+        # Parse signature
+        child = ARObject._find_child_element(element, "SIGNATURE")
+        if child is not None:
+            signature_value = child.text
+            obj.signature = signature_value
+
+        # Parse timestamp
+        child = ARObject._find_child_element(element, "TIMESTAMP")
+        if child is not None:
+            timestamp_value = child.text
+            obj.timestamp = timestamp_value
+
+        # Parse traffic_limitation
+        child = ARObject._find_child_element(element, "TRAFFIC-LIMITATION")
+        if child is not None:
+            traffic_limitation_value = ARObject._deserialize_by_tag(child, "IdsmTrafficLimitation")
+            obj.traffic_limitation = traffic_limitation_value
+
+        return obj
+
 
 
 class IdsmInstanceBuilder:

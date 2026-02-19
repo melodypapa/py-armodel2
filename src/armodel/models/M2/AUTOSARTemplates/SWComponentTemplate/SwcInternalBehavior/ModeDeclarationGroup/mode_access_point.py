@@ -39,6 +39,74 @@ class ModeAccessPoint(ARObject):
         super().__init__()
         self.ident: Optional[ModeAccessPointIdent] = None
         self.mode_group_instance_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeAccessPoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ident
+        if self.ident is not None:
+            serialized = ARObject._serialize_item(self.ident, "ModeAccessPointIdent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_group_instance_ref
+        if self.mode_group_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_group_instance_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-GROUP-INSTANCE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeAccessPoint":
+        """Deserialize XML element to ModeAccessPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeAccessPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ident
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_value = ARObject._deserialize_by_tag(child, "ModeAccessPointIdent")
+            obj.ident = ident_value
+
+        # Parse mode_group_instance_ref
+        child = ARObject._find_child_element(element, "MODE-GROUP-INSTANCE-REF")
+        if child is not None:
+            mode_group_instance_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.mode_group_instance_ref = mode_group_instance_ref_value
+
+        return obj
+
 
 
 class ModeAccessPointBuilder:

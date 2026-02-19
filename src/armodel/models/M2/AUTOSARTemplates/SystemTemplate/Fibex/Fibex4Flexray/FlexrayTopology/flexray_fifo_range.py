@@ -34,6 +34,74 @@ class FlexrayFifoRange(ARObject):
         super().__init__()
         self.range_max: Optional[Integer] = None
         self.range_min: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayFifoRange to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize range_max
+        if self.range_max is not None:
+            serialized = ARObject._serialize_item(self.range_max, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RANGE-MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize range_min
+        if self.range_min is not None:
+            serialized = ARObject._serialize_item(self.range_min, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RANGE-MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayFifoRange":
+        """Deserialize XML element to FlexrayFifoRange object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayFifoRange object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse range_max
+        child = ARObject._find_child_element(element, "RANGE-MAX")
+        if child is not None:
+            range_max_value = child.text
+            obj.range_max = range_max_value
+
+        # Parse range_min
+        child = ARObject._find_child_element(element, "RANGE-MIN")
+        if child is not None:
+            range_min_value = child.text
+            obj.range_min = range_min_value
+
+        return obj
+
 
 
 class FlexrayFifoRangeBuilder:

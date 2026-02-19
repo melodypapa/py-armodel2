@@ -62,6 +62,314 @@ class Map(ARObject):
         self.onmouseover: Optional[String] = None
         self.onmouseup: Optional[String] = None
         self.title: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Map to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize area
+        if self.area is not None:
+            serialized = ARObject._serialize_item(self.area, "Area")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AREA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize class_
+        if self.class_ is not None:
+            serialized = ARObject._serialize_item(self.class_, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLASS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize name
+        if self.name is not None:
+            serialized = ARObject._serialize_item(self.name, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onclick
+        if self.onclick is not None:
+            serialized = ARObject._serialize_item(self.onclick, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONCLICK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ondblclick
+        if self.ondblclick is not None:
+            serialized = ARObject._serialize_item(self.ondblclick, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONDBLCLICK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeydown
+        if self.onkeydown is not None:
+            serialized = ARObject._serialize_item(self.onkeydown, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYDOWN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeypress
+        if self.onkeypress is not None:
+            serialized = ARObject._serialize_item(self.onkeypress, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYPRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeyup
+        if self.onkeyup is not None:
+            serialized = ARObject._serialize_item(self.onkeyup, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmousedown
+        if self.onmousedown is not None:
+            serialized = ARObject._serialize_item(self.onmousedown, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEDOWN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmousemove
+        if self.onmousemove is not None:
+            serialized = ARObject._serialize_item(self.onmousemove, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEMOVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseout
+        if self.onmouseout is not None:
+            serialized = ARObject._serialize_item(self.onmouseout, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseover
+        if self.onmouseover is not None:
+            serialized = ARObject._serialize_item(self.onmouseover, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEOVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseup
+        if self.onmouseup is not None:
+            serialized = ARObject._serialize_item(self.onmouseup, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize title
+        if self.title is not None:
+            serialized = ARObject._serialize_item(self.title, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TITLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Map":
+        """Deserialize XML element to Map object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Map object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse area
+        child = ARObject._find_child_element(element, "AREA")
+        if child is not None:
+            area_value = ARObject._deserialize_by_tag(child, "Area")
+            obj.area = area_value
+
+        # Parse class_
+        child = ARObject._find_child_element(element, "CLASS")
+        if child is not None:
+            class__value = child.text
+            obj.class_ = class__value
+
+        # Parse name
+        child = ARObject._find_child_element(element, "NAME")
+        if child is not None:
+            name_value = child.text
+            obj.name = name_value
+
+        # Parse onclick
+        child = ARObject._find_child_element(element, "ONCLICK")
+        if child is not None:
+            onclick_value = child.text
+            obj.onclick = onclick_value
+
+        # Parse ondblclick
+        child = ARObject._find_child_element(element, "ONDBLCLICK")
+        if child is not None:
+            ondblclick_value = child.text
+            obj.ondblclick = ondblclick_value
+
+        # Parse onkeydown
+        child = ARObject._find_child_element(element, "ONKEYDOWN")
+        if child is not None:
+            onkeydown_value = child.text
+            obj.onkeydown = onkeydown_value
+
+        # Parse onkeypress
+        child = ARObject._find_child_element(element, "ONKEYPRESS")
+        if child is not None:
+            onkeypress_value = child.text
+            obj.onkeypress = onkeypress_value
+
+        # Parse onkeyup
+        child = ARObject._find_child_element(element, "ONKEYUP")
+        if child is not None:
+            onkeyup_value = child.text
+            obj.onkeyup = onkeyup_value
+
+        # Parse onmousedown
+        child = ARObject._find_child_element(element, "ONMOUSEDOWN")
+        if child is not None:
+            onmousedown_value = child.text
+            obj.onmousedown = onmousedown_value
+
+        # Parse onmousemove
+        child = ARObject._find_child_element(element, "ONMOUSEMOVE")
+        if child is not None:
+            onmousemove_value = child.text
+            obj.onmousemove = onmousemove_value
+
+        # Parse onmouseout
+        child = ARObject._find_child_element(element, "ONMOUSEOUT")
+        if child is not None:
+            onmouseout_value = child.text
+            obj.onmouseout = onmouseout_value
+
+        # Parse onmouseover
+        child = ARObject._find_child_element(element, "ONMOUSEOVER")
+        if child is not None:
+            onmouseover_value = child.text
+            obj.onmouseover = onmouseover_value
+
+        # Parse onmouseup
+        child = ARObject._find_child_element(element, "ONMOUSEUP")
+        if child is not None:
+            onmouseup_value = child.text
+            obj.onmouseup = onmouseup_value
+
+        # Parse title
+        child = ARObject._find_child_element(element, "TITLE")
+        if child is not None:
+            title_value = child.text
+            obj.title = title_value
+
+        return obj
+
 
 
 class MapBuilder:

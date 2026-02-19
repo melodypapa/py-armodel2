@@ -33,6 +33,54 @@ class BlueprintPolicy(ARObject, ABC):
         """Initialize BlueprintPolicy."""
         super().__init__()
         self.attribute_name: String = None
+    def serialize(self) -> ET.Element:
+        """Serialize BlueprintPolicy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize attribute_name
+        if self.attribute_name is not None:
+            serialized = ARObject._serialize_item(self.attribute_name, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ATTRIBUTE-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BlueprintPolicy":
+        """Deserialize XML element to BlueprintPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BlueprintPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse attribute_name
+        child = ARObject._find_child_element(element, "ATTRIBUTE-NAME")
+        if child is not None:
+            attribute_name_value = child.text
+            obj.attribute_name = attribute_name_value
+
+        return obj
+
 
 
 class BlueprintPolicyBuilder:

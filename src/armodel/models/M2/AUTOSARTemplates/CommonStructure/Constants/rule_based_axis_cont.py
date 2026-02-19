@@ -50,6 +50,134 @@ class RuleBasedAxisCont(ARObject):
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit: Optional[Unit] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RuleBasedAxisCont to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize category
+        if self.category is not None:
+            serialized = ARObject._serialize_item(self.category, "CalprmAxisCategoryEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rule_based
+        if self.rule_based is not None:
+            serialized = ARObject._serialize_item(self.rule_based, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RULE-BASED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_arraysize_ref
+        if self.sw_arraysize_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-ARRAYSIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_axis_index
+        if self.sw_axis_index is not None:
+            serialized = ARObject._serialize_item(self.sw_axis_index, "AxisIndexType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-AXIS-INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unit
+        if self.unit is not None:
+            serialized = ARObject._serialize_item(self.unit, "Unit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleBasedAxisCont":
+        """Deserialize XML element to RuleBasedAxisCont object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleBasedAxisCont object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse category
+        child = ARObject._find_child_element(element, "CATEGORY")
+        if child is not None:
+            category_value = CalprmAxisCategoryEnum.deserialize(child)
+            obj.category = category_value
+
+        # Parse rule_based
+        child = ARObject._find_child_element(element, "RULE-BASED")
+        if child is not None:
+            rule_based_value = child.text
+            obj.rule_based = rule_based_value
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse sw_axis_index
+        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        if child is not None:
+            sw_axis_index_value = child.text
+            obj.sw_axis_index = sw_axis_index_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class RuleBasedAxisContBuilder:

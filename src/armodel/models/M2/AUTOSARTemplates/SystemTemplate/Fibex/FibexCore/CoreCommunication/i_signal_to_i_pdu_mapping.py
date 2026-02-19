@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
@@ -57,6 +58,163 @@ class ISignalToIPduMapping(Identifiable):
         self.start_position: Optional[UnlimitedInteger] = None
         self.transfer_property_enum: Optional[TransferPropertyEnum] = None
         self.update: Optional[UnlimitedInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ISignalToIPduMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ISignalToIPduMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_signal
+        if self.i_signal is not None:
+            serialized = ARObject._serialize_item(self.i_signal, "ISignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_group_ref
+        if self.i_signal_group_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize packing_byte
+        if self.packing_byte is not None:
+            serialized = ARObject._serialize_item(self.packing_byte, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PACKING-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize start_position
+        if self.start_position is not None:
+            serialized = ARObject._serialize_item(self.start_position, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("START-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transfer_property_enum
+        if self.transfer_property_enum is not None:
+            serialized = ARObject._serialize_item(self.transfer_property_enum, "TransferPropertyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFER-PROPERTY-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update
+        if self.update is not None:
+            serialized = ARObject._serialize_item(self.update, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ISignalToIPduMapping":
+        """Deserialize XML element to ISignalToIPduMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ISignalToIPduMapping object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalToIPduMapping, cls).deserialize(element)
+
+        # Parse i_signal
+        child = ARObject._find_child_element(element, "I-SIGNAL")
+        if child is not None:
+            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
+            obj.i_signal = i_signal_value
+
+        # Parse i_signal_group_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP")
+        if child is not None:
+            i_signal_group_ref_value = ARObject._deserialize_by_tag(child, "ISignalGroup")
+            obj.i_signal_group_ref = i_signal_group_ref_value
+
+        # Parse packing_byte
+        child = ARObject._find_child_element(element, "PACKING-BYTE")
+        if child is not None:
+            packing_byte_value = ByteOrderEnum.deserialize(child)
+            obj.packing_byte = packing_byte_value
+
+        # Parse start_position
+        child = ARObject._find_child_element(element, "START-POSITION")
+        if child is not None:
+            start_position_value = child.text
+            obj.start_position = start_position_value
+
+        # Parse transfer_property_enum
+        child = ARObject._find_child_element(element, "TRANSFER-PROPERTY-ENUM")
+        if child is not None:
+            transfer_property_enum_value = TransferPropertyEnum.deserialize(child)
+            obj.transfer_property_enum = transfer_property_enum_value
+
+        # Parse update
+        child = ARObject._find_child_element(element, "UPDATE")
+        if child is not None:
+            update_value = child.text
+            obj.update = update_value
+
+        return obj
+
 
 
 class ISignalToIPduMappingBuilder:

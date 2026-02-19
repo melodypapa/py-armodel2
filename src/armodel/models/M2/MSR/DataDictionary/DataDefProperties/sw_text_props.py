@@ -47,6 +47,114 @@ class SwTextProps(ARObject):
         self.base_type: Optional[SwBaseType] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwTextProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize array_size
+        if self.array_size is not None:
+            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARRAY-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base_type
+        if self.base_type is not None:
+            serialized = ARObject._serialize_item(self.base_type, "SwBaseType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_fill_character
+        if self.sw_fill_character is not None:
+            serialized = ARObject._serialize_item(self.sw_fill_character, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-FILL-CHARACTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_max_text_size
+        if self.sw_max_text_size is not None:
+            serialized = ARObject._serialize_item(self.sw_max_text_size, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-MAX-TEXT-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwTextProps":
+        """Deserialize XML element to SwTextProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwTextProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse array_size
+        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        if child is not None:
+            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
+            obj.array_size = array_size_value
+
+        # Parse base_type
+        child = ARObject._find_child_element(element, "BASE-TYPE")
+        if child is not None:
+            base_type_value = ARObject._deserialize_by_tag(child, "SwBaseType")
+            obj.base_type = base_type_value
+
+        # Parse sw_fill_character
+        child = ARObject._find_child_element(element, "SW-FILL-CHARACTER")
+        if child is not None:
+            sw_fill_character_value = child.text
+            obj.sw_fill_character = sw_fill_character_value
+
+        # Parse sw_max_text_size
+        child = ARObject._find_child_element(element, "SW-MAX-TEXT-SIZE")
+        if child is not None:
+            sw_max_text_size_value = child.text
+            obj.sw_max_text_size = sw_max_text_size_value
+
+        return obj
+
 
 
 class SwTextPropsBuilder:

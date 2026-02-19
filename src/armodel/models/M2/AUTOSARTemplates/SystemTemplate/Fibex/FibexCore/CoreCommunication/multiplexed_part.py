@@ -33,6 +33,54 @@ class MultiplexedPart(ARObject, ABC):
         """Initialize MultiplexedPart."""
         super().__init__()
         self.segment_positions: list[SegmentPosition] = []
+    def serialize(self) -> ET.Element:
+        """Serialize MultiplexedPart to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize segment_positions (list to container "SEGMENT-POSITIONS")
+        if self.segment_positions:
+            wrapper = ET.Element("SEGMENT-POSITIONS")
+            for item in self.segment_positions:
+                serialized = ARObject._serialize_item(item, "SegmentPosition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiplexedPart":
+        """Deserialize XML element to MultiplexedPart object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiplexedPart object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse segment_positions (list from container "SEGMENT-POSITIONS")
+        obj.segment_positions = []
+        container = ARObject._find_child_element(element, "SEGMENT-POSITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.segment_positions.append(child_value)
+
+        return obj
+
 
 
 class MultiplexedPartBuilder:

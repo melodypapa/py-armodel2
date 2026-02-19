@@ -35,6 +35,74 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         super().__init__()
         self.context_ref: Optional[ARRef] = None
         self.target: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ImplementationElementInParameterInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize context_ref
+        if self.context_ref is not None:
+            serialized = ARObject._serialize_item(self.context_ref, "ParameterDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target
+        if self.target is not None:
+            serialized = ARObject._serialize_item(self.target, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ImplementationElementInParameterInstanceRef":
+        """Deserialize XML element to ImplementationElementInParameterInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ImplementationElementInParameterInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_ref
+        child = ARObject._find_child_element(element, "CONTEXT")
+        if child is not None:
+            context_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            obj.context_ref = context_ref_value
+
+        # Parse target
+        child = ARObject._find_child_element(element, "TARGET")
+        if child is not None:
+            target_value = child.text
+            obj.target = target_value
+
+        return obj
+
 
 
 class ImplementationElementInParameterInstanceRefBuilder:

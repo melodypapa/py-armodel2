@@ -34,6 +34,74 @@ class ConstantSpecificationMapping(ARObject):
         super().__init__()
         self.appl_constant: Optional[ConstantSpecification] = None
         self.impl_constant: Optional[ConstantSpecification] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ConstantSpecificationMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize appl_constant
+        if self.appl_constant is not None:
+            serialized = ARObject._serialize_item(self.appl_constant, "ConstantSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPL-CONSTANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize impl_constant
+        if self.impl_constant is not None:
+            serialized = ARObject._serialize_item(self.impl_constant, "ConstantSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMPL-CONSTANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConstantSpecificationMapping":
+        """Deserialize XML element to ConstantSpecificationMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConstantSpecificationMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse appl_constant
+        child = ARObject._find_child_element(element, "APPL-CONSTANT")
+        if child is not None:
+            appl_constant_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
+            obj.appl_constant = appl_constant_value
+
+        # Parse impl_constant
+        child = ARObject._find_child_element(element, "IMPL-CONSTANT")
+        if child is not None:
+            impl_constant_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
+            obj.impl_constant = impl_constant_value
+
+        return obj
+
 
 
 class ConstantSpecificationMappingBuilder:

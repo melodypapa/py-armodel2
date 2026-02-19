@@ -43,6 +43,94 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.time_mark: Optional[Integer] = None
         self.trigger_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TtcanAbsolutelyScheduledTiming to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize communication_cycle_cycle
+        if self.communication_cycle_cycle is not None:
+            serialized = ARObject._serialize_item(self.communication_cycle_cycle, "CommunicationCycle")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CYCLE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_mark
+        if self.time_mark is not None:
+            serialized = ARObject._serialize_item(self.time_mark, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-MARK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trigger_ref
+        if self.trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.trigger_ref, "TtcanTriggerType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TtcanAbsolutelyScheduledTiming":
+        """Deserialize XML element to TtcanAbsolutelyScheduledTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TtcanAbsolutelyScheduledTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_cycle_cycle
+        child = ARObject._find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
+        if child is not None:
+            communication_cycle_cycle_value = ARObject._deserialize_by_tag(child, "CommunicationCycle")
+            obj.communication_cycle_cycle = communication_cycle_cycle_value
+
+        # Parse time_mark
+        child = ARObject._find_child_element(element, "TIME-MARK")
+        if child is not None:
+            time_mark_value = child.text
+            obj.time_mark = time_mark_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = TtcanTriggerType.deserialize(child)
+            obj.trigger_ref = trigger_ref_value
+
+        return obj
+
 
 
 class TtcanAbsolutelyScheduledTimingBuilder:

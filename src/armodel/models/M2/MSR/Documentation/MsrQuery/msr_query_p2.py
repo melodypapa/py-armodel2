@@ -40,6 +40,74 @@ class MsrQueryP2(ARObject):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result: Optional[DocumentationBlock] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MsrQueryP2 to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize msr_query_props
+        if self.msr_query_props is not None:
+            serialized = ARObject._serialize_item(self.msr_query_props, "MsrQueryProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize msr_query_result
+        if self.msr_query_result is not None:
+            serialized = ARObject._serialize_item(self.msr_query_result, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-RESULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MsrQueryP2":
+        """Deserialize XML element to MsrQueryP2 object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MsrQueryP2 object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse msr_query_props
+        child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")
+        if child is not None:
+            msr_query_props_value = ARObject._deserialize_by_tag(child, "MsrQueryProps")
+            obj.msr_query_props = msr_query_props_value
+
+        # Parse msr_query_result
+        child = ARObject._find_child_element(element, "MSR-QUERY-RESULT")
+        if child is not None:
+            msr_query_result_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.msr_query_result = msr_query_result_value
+
+        return obj
+
 
 
 class MsrQueryP2Builder:

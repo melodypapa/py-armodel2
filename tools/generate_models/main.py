@@ -58,8 +58,6 @@ def generate_all_models(
     packages_dir = mapping_file.parent / "packages"
     package_data = load_all_package_data(packages_dir) if include_members else {}
 
-    
-
     if generate_classes:
         # Generate classes from mapping.json
         data = parse_mapping_json(mapping_file)
@@ -75,7 +73,9 @@ def generate_all_models(
         class_json_file_map = {}
         for package_path, package_info in package_data.items():
             if "classes" in package_info:
-                json_file_path = str(packages_dir / f"{package_path.replace('::', '_')}.classes.json")
+                json_file_path = str(
+                    packages_dir / f"{package_path.replace('::', '_')}.classes.json"
+                )
                 for cls in package_info["classes"]:
                     class_json_file_map[cls["name"]] = json_file_path
 
@@ -101,7 +101,13 @@ def generate_all_models(
 
             # Generate class code
             class_code = generate_class_code(
-                type_def, hierarchy_info, package_data, include_members, json_file_path, dependency_graph, force_type_checking_imports
+                type_def,
+                hierarchy_info,
+                package_data,
+                include_members,
+                json_file_path,
+                dependency_graph,
+                force_type_checking_imports,
             )
             builder_code = generate_builder_code(type_def)
 
@@ -159,7 +165,9 @@ def generate_all_models(
 
                 # Generate primitive code with JSON file path and package data
                 json_file_path = f"packages/{primitive_file.name}"
-                primitive_code = generate_primitive_code(primitive_def, package_data, json_file_path)
+                primitive_code = generate_primitive_code(
+                    primitive_def, package_data, json_file_path
+                )
 
                 # Write to file
                 filename.write_text(primitive_code)
@@ -178,9 +186,28 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate AUTOSAR model classes, enums, and primitives from JSON definitions"
     )
-    parser.add_argument("mapping_file", type=Path, help="Path to mapping.json file")
-    parser.add_argument("hierarchy_file", type=Path, help="Path to hierarchy.json file")
-    parser.add_argument("output_dir", type=Path, help="Output directory for generated files")
+
+    # Optional arguments with defaults based on project structure
+    parser.add_argument(
+        "--mapping-file",
+        type=Path,
+        default=Path("docs/json/mapping.json"),
+        help="Path to mapping.json file (default: docs/json/mapping.json)",
+    )
+    parser.add_argument(
+        "--hierarchy-file",
+        type=Path,
+        default=Path("docs/json/hierarchy.json"),
+        help="Path to hierarchy.json file (default: docs/json/hierarchy.json)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("src/armodel/models"),
+        help="Output directory for generated files (default: src/armodel/models/M2)",
+    )
+
+    # Generation options
     parser.add_argument(
         "--classes", action="store_true", default=True, help="Generate class files (default: True)"
     )

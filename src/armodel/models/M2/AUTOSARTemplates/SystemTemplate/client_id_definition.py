@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -39,6 +40,83 @@ class ClientIdDefinition(Identifiable):
         super().__init__()
         self.client_id: Optional[Numerical] = None
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ClientIdDefinition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ClientIdDefinition, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize client_id
+        if self.client_id is not None:
+            serialized = ARObject._serialize_item(self.client_id, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize client_server_instance_ref
+        if self.client_server_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.client_server_instance_ref, "ClientServerOperation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-SERVER-INSTANCE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientIdDefinition":
+        """Deserialize XML element to ClientIdDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientIdDefinition object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientIdDefinition, cls).deserialize(element)
+
+        # Parse client_id
+        child = ARObject._find_child_element(element, "CLIENT-ID")
+        if child is not None:
+            client_id_value = child.text
+            obj.client_id = client_id_value
+
+        # Parse client_server_instance_ref
+        child = ARObject._find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
+        if child is not None:
+            client_server_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            obj.client_server_instance_ref = client_server_instance_ref_value
+
+        return obj
+
 
 
 class ClientIdDefinitionBuilder:

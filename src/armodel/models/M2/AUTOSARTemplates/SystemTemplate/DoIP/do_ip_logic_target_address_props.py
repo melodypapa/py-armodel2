@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.abstract_do_ip_logic_address_props import (
     AbstractDoIpLogicAddressProps,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class DoIpLogicTargetAddressProps(AbstractDoIpLogicAddressProps):
@@ -29,6 +30,41 @@ class DoIpLogicTargetAddressProps(AbstractDoIpLogicAddressProps):
     def __init__(self) -> None:
         """Initialize DoIpLogicTargetAddressProps."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize DoIpLogicTargetAddressProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DoIpLogicTargetAddressProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DoIpLogicTargetAddressProps":
+        """Deserialize XML element to DoIpLogicTargetAddressProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DoIpLogicTargetAddressProps object
+        """
+        # Delegate to parent class to handle inherited attributes
+        return super(DoIpLogicTargetAddressProps, cls).deserialize(element)
+
 
 
 class DoIpLogicTargetAddressPropsBuilder:

@@ -39,6 +39,94 @@ class ConfidenceInterval(ARObject):
         self.lower_bound: Optional[MultidimensionalTime] = None
         self.propability: Optional[Float] = None
         self.upper_bound: Optional[MultidimensionalTime] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ConfidenceInterval to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize lower_bound
+        if self.lower_bound is not None:
+            serialized = ARObject._serialize_item(self.lower_bound, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOWER-BOUND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize propability
+        if self.propability is not None:
+            serialized = ARObject._serialize_item(self.propability, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROPABILITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upper_bound
+        if self.upper_bound is not None:
+            serialized = ARObject._serialize_item(self.upper_bound, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPPER-BOUND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConfidenceInterval":
+        """Deserialize XML element to ConfidenceInterval object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConfidenceInterval object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lower_bound
+        child = ARObject._find_child_element(element, "LOWER-BOUND")
+        if child is not None:
+            lower_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.lower_bound = lower_bound_value
+
+        # Parse propability
+        child = ARObject._find_child_element(element, "PROPABILITY")
+        if child is not None:
+            propability_value = child.text
+            obj.propability = propability_value
+
+        # Parse upper_bound
+        child = ARObject._find_child_element(element, "UPPER-BOUND")
+        if child is not None:
+            upper_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.upper_bound = upper_bound_value
+
+        return obj
+
 
 
 class ConfidenceIntervalBuilder:

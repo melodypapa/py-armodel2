@@ -38,6 +38,74 @@ class InterpolationRoutineMapping(ARObject):
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
         self.sw_record: Optional[SwRecordLayout] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InterpolationRoutineMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize interpolation_routines (list to container "INTERPOLATION-ROUTINES")
+        if self.interpolation_routines:
+            wrapper = ET.Element("INTERPOLATION-ROUTINES")
+            for item in self.interpolation_routines:
+                serialized = ARObject._serialize_item(item, "InterpolationRoutine")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_record
+        if self.sw_record is not None:
+            serialized = ARObject._serialize_item(self.sw_record, "SwRecordLayout")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InterpolationRoutineMapping":
+        """Deserialize XML element to InterpolationRoutineMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InterpolationRoutineMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
+        obj.interpolation_routines = []
+        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.interpolation_routines.append(child_value)
+
+        # Parse sw_record
+        child = ARObject._find_child_element(element, "SW-RECORD")
+        if child is not None:
+            sw_record_value = ARObject._deserialize_by_tag(child, "SwRecordLayout")
+            obj.sw_record = sw_record_value
+
+        return obj
+
 
 
 class InterpolationRoutineMappingBuilder:

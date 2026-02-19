@@ -37,6 +37,74 @@ class SoAdConfig(ARObject):
         super().__init__()
         self.connections: list[SocketConnection] = []
         self.socket_addresses: list[SocketAddress] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SoAdConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize connections (list to container "CONNECTIONS")
+        if self.connections:
+            wrapper = ET.Element("CONNECTIONS")
+            for item in self.connections:
+                serialized = ARObject._serialize_item(item, "SocketConnection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize socket_addresses (list to container "SOCKET-ADDRESSES")
+        if self.socket_addresses:
+            wrapper = ET.Element("SOCKET-ADDRESSES")
+            for item in self.socket_addresses:
+                serialized = ARObject._serialize_item(item, "SocketAddress")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SoAdConfig":
+        """Deserialize XML element to SoAdConfig object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SoAdConfig object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse connections (list from container "CONNECTIONS")
+        obj.connections = []
+        container = ARObject._find_child_element(element, "CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connections.append(child_value)
+
+        # Parse socket_addresses (list from container "SOCKET-ADDRESSES")
+        obj.socket_addresses = []
+        container = ARObject._find_child_element(element, "SOCKET-ADDRESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.socket_addresses.append(child_value)
+
+        return obj
+
 
 
 class SoAdConfigBuilder:

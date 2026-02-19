@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.timing_constraint import (
     TimingConstraint,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.SynchronizationTiming import (
     EventOccurrenceKindEnum,
     SynchronizationTypeEnum,
@@ -49,6 +50,143 @@ class SynchronizationTimingConstraint(TimingConstraint):
         self.scope_events: list[TimingDescriptionEvent] = []
         self.synchronization: Optional[SynchronizationTypeEnum] = None
         self.tolerance: Optional[MultidimensionalTime] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SynchronizationTimingConstraint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SynchronizationTimingConstraint, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize event
+        if self.event is not None:
+            serialized = ARObject._serialize_item(self.event, "EventOccurrenceKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scopes (list to container "SCOPES")
+        if self.scopes:
+            wrapper = ET.Element("SCOPES")
+            for item in self.scopes:
+                serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize scope_events (list to container "SCOPE-EVENTS")
+        if self.scope_events:
+            wrapper = ET.Element("SCOPE-EVENTS")
+            for item in self.scope_events:
+                serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize synchronization
+        if self.synchronization is not None:
+            serialized = ARObject._serialize_item(self.synchronization, "SynchronizationTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNCHRONIZATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tolerance
+        if self.tolerance is not None:
+            serialized = ARObject._serialize_item(self.tolerance, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TOLERANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SynchronizationTimingConstraint":
+        """Deserialize XML element to SynchronizationTimingConstraint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SynchronizationTimingConstraint object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SynchronizationTimingConstraint, cls).deserialize(element)
+
+        # Parse event
+        child = ARObject._find_child_element(element, "EVENT")
+        if child is not None:
+            event_value = EventOccurrenceKindEnum.deserialize(child)
+            obj.event = event_value
+
+        # Parse scopes (list from container "SCOPES")
+        obj.scopes = []
+        container = ARObject._find_child_element(element, "SCOPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scopes.append(child_value)
+
+        # Parse scope_events (list from container "SCOPE-EVENTS")
+        obj.scope_events = []
+        container = ARObject._find_child_element(element, "SCOPE-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scope_events.append(child_value)
+
+        # Parse synchronization
+        child = ARObject._find_child_element(element, "SYNCHRONIZATION")
+        if child is not None:
+            synchronization_value = SynchronizationTypeEnum.deserialize(child)
+            obj.synchronization = synchronization_value
+
+        # Parse tolerance
+        child = ARObject._find_child_element(element, "TOLERANCE")
+        if child is not None:
+            tolerance_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            obj.tolerance = tolerance_value
+
+        return obj
+
 
 
 class SynchronizationTimingConstraintBuilder:

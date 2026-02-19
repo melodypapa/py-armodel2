@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.ViewMapSet.view_map import (
     ViewMap,
 )
@@ -35,6 +36,63 @@ class ViewMapSet(ARElement):
         """Initialize ViewMapSet."""
         super().__init__()
         self.view_maps: list[ViewMap] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ViewMapSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ViewMapSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize view_maps (list to container "VIEW-MAPS")
+        if self.view_maps:
+            wrapper = ET.Element("VIEW-MAPS")
+            for item in self.view_maps:
+                serialized = ARObject._serialize_item(item, "ViewMap")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ViewMapSet":
+        """Deserialize XML element to ViewMapSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ViewMapSet object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ViewMapSet, cls).deserialize(element)
+
+        # Parse view_maps (list from container "VIEW-MAPS")
+        obj.view_maps = []
+        container = ARObject._find_child_element(element, "VIEW-MAPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.view_maps.append(child_value)
+
+        return obj
+
 
 
 class ViewMapSetBuilder:

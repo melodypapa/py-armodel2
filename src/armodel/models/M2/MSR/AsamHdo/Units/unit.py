@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -49,6 +50,123 @@ class Unit(ARElement):
         self.factor_si_to_unit: Optional[Float] = None
         self.offset_si_to_unit: Optional[Float] = None
         self.physical: Optional[PhysicalDimension] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Unit to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Unit, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize display_name
+        if self.display_name is not None:
+            serialized = ARObject._serialize_item(self.display_name, "SingleLanguageUnitNames")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DISPLAY-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize factor_si_to_unit
+        if self.factor_si_to_unit is not None:
+            serialized = ARObject._serialize_item(self.factor_si_to_unit, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FACTOR-SI-TO-UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset_si_to_unit
+        if self.offset_si_to_unit is not None:
+            serialized = ARObject._serialize_item(self.offset_si_to_unit, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET-SI-TO-UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize physical
+        if self.physical is not None:
+            serialized = ARObject._serialize_item(self.physical, "PhysicalDimension")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PHYSICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Unit":
+        """Deserialize XML element to Unit object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Unit object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Unit, cls).deserialize(element)
+
+        # Parse display_name
+        child = ARObject._find_child_element(element, "DISPLAY-NAME")
+        if child is not None:
+            display_name_value = ARObject._deserialize_by_tag(child, "SingleLanguageUnitNames")
+            obj.display_name = display_name_value
+
+        # Parse factor_si_to_unit
+        child = ARObject._find_child_element(element, "FACTOR-SI-TO-UNIT")
+        if child is not None:
+            factor_si_to_unit_value = child.text
+            obj.factor_si_to_unit = factor_si_to_unit_value
+
+        # Parse offset_si_to_unit
+        child = ARObject._find_child_element(element, "OFFSET-SI-TO-UNIT")
+        if child is not None:
+            offset_si_to_unit_value = child.text
+            obj.offset_si_to_unit = offset_si_to_unit_value
+
+        # Parse physical
+        child = ARObject._find_child_element(element, "PHYSICAL")
+        if child is not None:
+            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.physical = physical_value
+
+        return obj
+
 
 
 class UnitBuilder:

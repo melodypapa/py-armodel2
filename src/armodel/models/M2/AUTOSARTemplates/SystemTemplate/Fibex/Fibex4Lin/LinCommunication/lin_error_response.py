@@ -33,6 +33,54 @@ class LinErrorResponse(ARObject):
         """Initialize LinErrorResponse."""
         super().__init__()
         self.response_error_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize LinErrorResponse to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize response_error_ref
+        if self.response_error_ref is not None:
+            serialized = ARObject._serialize_item(self.response_error_ref, "ISignalTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE-ERROR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinErrorResponse":
+        """Deserialize XML element to LinErrorResponse object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinErrorResponse object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse response_error_ref
+        child = ARObject._find_child_element(element, "RESPONSE-ERROR")
+        if child is not None:
+            response_error_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            obj.response_error_ref = response_error_ref_value
+
+        return obj
+
 
 
 class LinErrorResponseBuilder:

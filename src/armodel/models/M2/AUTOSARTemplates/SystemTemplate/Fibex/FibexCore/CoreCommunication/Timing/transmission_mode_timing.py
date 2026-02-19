@@ -37,6 +37,74 @@ class TransmissionModeTiming(ARObject):
         super().__init__()
         self.cyclic_timing: Optional[CyclicTiming] = None
         self.event_controlled_timing_timing: Optional[EventControlledTiming] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TransmissionModeTiming to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cyclic_timing
+        if self.cyclic_timing is not None:
+            serialized = ARObject._serialize_item(self.cyclic_timing, "CyclicTiming")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLIC-TIMING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_controlled_timing_timing
+        if self.event_controlled_timing_timing is not None:
+            serialized = ARObject._serialize_item(self.event_controlled_timing_timing, "EventControlledTiming")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-CONTROLLED-TIMING-TIMING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransmissionModeTiming":
+        """Deserialize XML element to TransmissionModeTiming object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransmissionModeTiming object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cyclic_timing
+        child = ARObject._find_child_element(element, "CYCLIC-TIMING")
+        if child is not None:
+            cyclic_timing_value = ARObject._deserialize_by_tag(child, "CyclicTiming")
+            obj.cyclic_timing = cyclic_timing_value
+
+        # Parse event_controlled_timing_timing
+        child = ARObject._find_child_element(element, "EVENT-CONTROLLED-TIMING-TIMING")
+        if child is not None:
+            event_controlled_timing_timing_value = ARObject._deserialize_by_tag(child, "EventControlledTiming")
+            obj.event_controlled_timing_timing = event_controlled_timing_timing_value
+
+        return obj
+
 
 
 class TransmissionModeTimingBuilder:

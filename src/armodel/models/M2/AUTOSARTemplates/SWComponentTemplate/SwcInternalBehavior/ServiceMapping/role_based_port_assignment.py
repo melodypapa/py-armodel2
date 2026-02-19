@@ -41,6 +41,74 @@ class RoleBasedPortAssignment(ARObject):
         super().__init__()
         self.port_prototype_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedPortAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize port_prototype_ref
+        if self.port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PORT-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedPortAssignment":
+        """Deserialize XML element to RoleBasedPortAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedPortAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse port_prototype_ref
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        if child is not None:
+            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            obj.port_prototype_ref = port_prototype_ref_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.role = role_value
+
+        return obj
+
 
 
 class RoleBasedPortAssignmentBuilder:

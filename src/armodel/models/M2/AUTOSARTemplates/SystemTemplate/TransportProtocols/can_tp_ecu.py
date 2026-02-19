@@ -37,6 +37,74 @@ class CanTpEcu(ARObject):
         super().__init__()
         self.cycle_time_main: Optional[TimeValue] = None
         self.ecu_instance: Optional[EcuInstance] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanTpEcu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cycle_time_main
+        if self.cycle_time_main is not None:
+            serialized = ARObject._serialize_item(self.cycle_time_main, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLE-TIME-MAIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CanTpEcu":
+        """Deserialize XML element to CanTpEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CanTpEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cycle_time_main
+        child = ARObject._find_child_element(element, "CYCLE-TIME-MAIN")
+        if child is not None:
+            cycle_time_main_value = child.text
+            obj.cycle_time_main = cycle_time_main_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        return obj
+
 
 
 class CanTpEcuBuilder:

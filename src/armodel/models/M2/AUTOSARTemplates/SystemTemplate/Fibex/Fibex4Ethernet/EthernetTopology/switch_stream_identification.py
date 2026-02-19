@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -53,6 +54,183 @@ class SwitchStreamIdentification(Identifiable):
         self.filter_action_vlan: Optional[PositiveInteger] = None
         self.ingress_ports: list[CouplingPort] = []
         self.stream_filter: Optional[SwitchStreamFilterRule] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwitchStreamIdentification to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwitchStreamIdentification, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize egress_ports (list to container "EGRESS-PORTS")
+        if self.egress_ports:
+            wrapper = ET.Element("EGRESS-PORTS")
+            for item in self.egress_ports:
+                serialized = ARObject._serialize_item(item, "CouplingPort")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize filter_action_block
+        if self.filter_action_block is not None:
+            serialized = ARObject._serialize_item(self.filter_action_block, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FILTER-ACTION-BLOCK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize filter_action_dest
+        if self.filter_action_dest is not None:
+            serialized = ARObject._serialize_item(self.filter_action_dest, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FILTER-ACTION-DEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize filter_action_drop
+        if self.filter_action_drop is not None:
+            serialized = ARObject._serialize_item(self.filter_action_drop, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FILTER-ACTION-DROP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize filter_action_vlan
+        if self.filter_action_vlan is not None:
+            serialized = ARObject._serialize_item(self.filter_action_vlan, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FILTER-ACTION-VLAN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ingress_ports (list to container "INGRESS-PORTS")
+        if self.ingress_ports:
+            wrapper = ET.Element("INGRESS-PORTS")
+            for item in self.ingress_ports:
+                serialized = ARObject._serialize_item(item, "CouplingPort")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize stream_filter
+        if self.stream_filter is not None:
+            serialized = ARObject._serialize_item(self.stream_filter, "SwitchStreamFilterRule")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STREAM-FILTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwitchStreamIdentification":
+        """Deserialize XML element to SwitchStreamIdentification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwitchStreamIdentification object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwitchStreamIdentification, cls).deserialize(element)
+
+        # Parse egress_ports (list from container "EGRESS-PORTS")
+        obj.egress_ports = []
+        container = ARObject._find_child_element(element, "EGRESS-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.egress_ports.append(child_value)
+
+        # Parse filter_action_block
+        child = ARObject._find_child_element(element, "FILTER-ACTION-BLOCK")
+        if child is not None:
+            filter_action_block_value = child.text
+            obj.filter_action_block = filter_action_block_value
+
+        # Parse filter_action_dest
+        child = ARObject._find_child_element(element, "FILTER-ACTION-DEST")
+        if child is not None:
+            filter_action_dest_value = child.text
+            obj.filter_action_dest = filter_action_dest_value
+
+        # Parse filter_action_drop
+        child = ARObject._find_child_element(element, "FILTER-ACTION-DROP")
+        if child is not None:
+            filter_action_drop_value = child.text
+            obj.filter_action_drop = filter_action_drop_value
+
+        # Parse filter_action_vlan
+        child = ARObject._find_child_element(element, "FILTER-ACTION-VLAN")
+        if child is not None:
+            filter_action_vlan_value = child.text
+            obj.filter_action_vlan = filter_action_vlan_value
+
+        # Parse ingress_ports (list from container "INGRESS-PORTS")
+        obj.ingress_ports = []
+        container = ARObject._find_child_element(element, "INGRESS-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ingress_ports.append(child_value)
+
+        # Parse stream_filter
+        child = ARObject._find_child_element(element, "STREAM-FILTER")
+        if child is not None:
+            stream_filter_value = ARObject._deserialize_by_tag(child, "SwitchStreamFilterRule")
+            obj.stream_filter = stream_filter_value
+
+        return obj
+
 
 
 class SwitchStreamIdentificationBuilder:

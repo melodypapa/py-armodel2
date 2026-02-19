@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,6 +35,63 @@ class TcpOptionFilterList(Identifiable):
         """Initialize TcpOptionFilterList."""
         super().__init__()
         self.allowed_tcp_options: list[PositiveInteger] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TcpOptionFilterList to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TcpOptionFilterList, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize allowed_tcp_options (list to container "ALLOWED-TCP-OPTIONS")
+        if self.allowed_tcp_options:
+            wrapper = ET.Element("ALLOWED-TCP-OPTIONS")
+            for item in self.allowed_tcp_options:
+                serialized = ARObject._serialize_item(item, "PositiveInteger")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TcpOptionFilterList":
+        """Deserialize XML element to TcpOptionFilterList object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TcpOptionFilterList object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TcpOptionFilterList, cls).deserialize(element)
+
+        # Parse allowed_tcp_options (list from container "ALLOWED-TCP-OPTIONS")
+        obj.allowed_tcp_options = []
+        container = ARObject._find_child_element(element, "ALLOWED-TCP-OPTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.allowed_tcp_options.append(child_value)
+
+        return obj
+
 
 
 class TcpOptionFilterListBuilder:

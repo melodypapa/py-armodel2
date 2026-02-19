@@ -33,6 +33,54 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
         """Initialize FMFormulaByFeaturesAndSwSystemconsts."""
         super().__init__()
         self.feature: Optional[FMFeature] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FMFormulaByFeaturesAndSwSystemconsts to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize feature
+        if self.feature is not None:
+            serialized = ARObject._serialize_item(self.feature, "FMFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FEATURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FMFormulaByFeaturesAndSwSystemconsts":
+        """Deserialize XML element to FMFormulaByFeaturesAndSwSystemconsts object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FMFormulaByFeaturesAndSwSystemconsts object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse feature
+        child = ARObject._find_child_element(element, "FEATURE")
+        if child is not None:
+            feature_value = ARObject._deserialize_by_tag(child, "FMFeature")
+            obj.feature = feature_value
+
+        return obj
+
 
 
 class FMFormulaByFeaturesAndSwSystemconstsBuilder:

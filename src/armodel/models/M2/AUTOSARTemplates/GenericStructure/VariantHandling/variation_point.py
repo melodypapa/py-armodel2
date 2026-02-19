@@ -42,6 +42,74 @@ class VariationPoint(ARObject):
         super().__init__()
         self.blueprint: Optional[DocumentationBlock] = None
         self.sw_syscond: Optional[ConditionByFormula] = None
+    def serialize(self) -> ET.Element:
+        """Serialize VariationPoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize blueprint
+        if self.blueprint is not None:
+            serialized = ARObject._serialize_item(self.blueprint, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BLUEPRINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_syscond
+        if self.sw_syscond is not None:
+            serialized = ARObject._serialize_item(self.sw_syscond, "ConditionByFormula")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-SYSCOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "VariationPoint":
+        """Deserialize XML element to VariationPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized VariationPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse blueprint
+        child = ARObject._find_child_element(element, "BLUEPRINT")
+        if child is not None:
+            blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            obj.blueprint = blueprint_value
+
+        # Parse sw_syscond
+        child = ARObject._find_child_element(element, "SW-SYSCOND")
+        if child is not None:
+            sw_syscond_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
+            obj.sw_syscond = sw_syscond_value
+
+        return obj
+
 
 
 class VariationPointBuilder:

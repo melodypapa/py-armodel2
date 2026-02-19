@@ -42,6 +42,114 @@ class FlexrayTpEcu(ARObject):
         self.cycle_time_main: Optional[TimeValue] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.full_duplex: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayTpEcu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cancellation
+        if self.cancellation is not None:
+            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CANCELLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cycle_time_main
+        if self.cycle_time_main is not None:
+            serialized = ARObject._serialize_item(self.cycle_time_main, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLE-TIME-MAIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize full_duplex
+        if self.full_duplex is not None:
+            serialized = ARObject._serialize_item(self.full_duplex, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FULL-DUPLEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "FlexrayTpEcu":
+        """Deserialize XML element to FlexrayTpEcu object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized FlexrayTpEcu object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse cancellation
+        child = ARObject._find_child_element(element, "CANCELLATION")
+        if child is not None:
+            cancellation_value = child.text
+            obj.cancellation = cancellation_value
+
+        # Parse cycle_time_main
+        child = ARObject._find_child_element(element, "CYCLE-TIME-MAIN")
+        if child is not None:
+            cycle_time_main_value = child.text
+            obj.cycle_time_main = cycle_time_main_value
+
+        # Parse ecu_instance
+        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        if child is not None:
+            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
+            obj.ecu_instance = ecu_instance_value
+
+        # Parse full_duplex
+        child = ARObject._find_child_element(element, "FULL-DUPLEX")
+        if child is not None:
+            full_duplex_value = child.text
+            obj.full_duplex = full_duplex_value
+
+        return obj
+
 
 
 class FlexrayTpEcuBuilder:

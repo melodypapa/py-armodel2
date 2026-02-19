@@ -41,6 +41,94 @@ class InterpolationRoutine(ARObject):
         self.interpolation: Optional[BswModuleEntry] = None
         self.is_default: Optional[Boolean] = None
         self.short_label: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InterpolationRoutine to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize interpolation
+        if self.interpolation is not None:
+            serialized = ARObject._serialize_item(self.interpolation, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTERPOLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_default
+        if self.is_default is not None:
+            serialized = ARObject._serialize_item(self.is_default, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-DEFAULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InterpolationRoutine":
+        """Deserialize XML element to InterpolationRoutine object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InterpolationRoutine object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse interpolation
+        child = ARObject._find_child_element(element, "INTERPOLATION")
+        if child is not None:
+            interpolation_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.interpolation = interpolation_value
+
+        # Parse is_default
+        child = ARObject._find_child_element(element, "IS-DEFAULT")
+        if child is not None:
+            is_default_value = child.text
+            obj.is_default = is_default_value
+
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.short_label = short_label_value
+
+        return obj
+
 
 
 class InterpolationRoutineBuilder:

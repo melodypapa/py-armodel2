@@ -32,6 +32,54 @@ class NetworkSegmentIdentification(ARObject):
         """Initialize NetworkSegmentIdentification."""
         super().__init__()
         self.network: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NetworkSegmentIdentification to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize network
+        if self.network is not None:
+            serialized = ARObject._serialize_item(self.network, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NetworkSegmentIdentification":
+        """Deserialize XML element to NetworkSegmentIdentification object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NetworkSegmentIdentification object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse network
+        child = ARObject._find_child_element(element, "NETWORK")
+        if child is not None:
+            network_value = child.text
+            obj.network = network_value
+
+        return obj
+
 
 
 class NetworkSegmentIdentificationBuilder:

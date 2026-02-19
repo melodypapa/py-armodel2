@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
     AtomicSwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.bulk_nv_data_descriptor import (
     BulkNvDataDescriptor,
 )
@@ -40,6 +41,83 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         super().__init__()
         self.bulk_nv_datas: list[BulkNvDataDescriptor] = []
         self.nv_blocks: list[NvBlockDescriptor] = []
+    def serialize(self) -> ET.Element:
+        """Serialize NvBlockSwComponentType to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NvBlockSwComponentType, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bulk_nv_datas (list to container "BULK-NV-DATAS")
+        if self.bulk_nv_datas:
+            wrapper = ET.Element("BULK-NV-DATAS")
+            for item in self.bulk_nv_datas:
+                serialized = ARObject._serialize_item(item, "BulkNvDataDescriptor")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize nv_blocks (list to container "NV-BLOCKS")
+        if self.nv_blocks:
+            wrapper = ET.Element("NV-BLOCKS")
+            for item in self.nv_blocks:
+                serialized = ARObject._serialize_item(item, "NvBlockDescriptor")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NvBlockSwComponentType":
+        """Deserialize XML element to NvBlockSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NvBlockSwComponentType object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NvBlockSwComponentType, cls).deserialize(element)
+
+        # Parse bulk_nv_datas (list from container "BULK-NV-DATAS")
+        obj.bulk_nv_datas = []
+        container = ARObject._find_child_element(element, "BULK-NV-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.bulk_nv_datas.append(child_value)
+
+        # Parse nv_blocks (list from container "NV-BLOCKS")
+        obj.nv_blocks = []
+        container = ARObject._find_child_element(element, "NV-BLOCKS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nv_blocks.append(child_value)
+
+        return obj
+
 
 
 class NvBlockSwComponentTypeBuilder:

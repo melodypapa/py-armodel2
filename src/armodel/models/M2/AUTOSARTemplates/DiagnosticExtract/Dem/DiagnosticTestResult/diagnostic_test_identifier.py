@@ -34,6 +34,74 @@ class DiagnosticTestIdentifier(ARObject):
         super().__init__()
         self.id: Optional[PositiveInteger] = None
         self.uas_id: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticTestIdentifier to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize id
+        if self.id is not None:
+            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize uas_id
+        if self.uas_id is not None:
+            serialized = ARObject._serialize_item(self.uas_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UAS-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticTestIdentifier":
+        """Deserialize XML element to DiagnosticTestIdentifier object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticTestIdentifier object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse id
+        child = ARObject._find_child_element(element, "ID")
+        if child is not None:
+            id_value = child.text
+            obj.id = id_value
+
+        # Parse uas_id
+        child = ARObject._find_child_element(element, "UAS-ID")
+        if child is not None:
+            uas_id_value = child.text
+            obj.uas_id = uas_id_value
+
+        return obj
+
 
 
 class DiagnosticTestIdentifierBuilder:

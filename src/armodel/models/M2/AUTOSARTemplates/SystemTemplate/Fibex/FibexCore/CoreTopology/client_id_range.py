@@ -34,6 +34,74 @@ class ClientIdRange(ARObject):
         super().__init__()
         self.lower_limit: Optional[Limit] = None
         self.upper_limit: Optional[Limit] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ClientIdRange to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize lower_limit
+        if self.lower_limit is not None:
+            serialized = ARObject._serialize_item(self.lower_limit, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOWER-LIMIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upper_limit
+        if self.upper_limit is not None:
+            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPPER-LIMIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ClientIdRange":
+        """Deserialize XML element to ClientIdRange object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ClientIdRange object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse lower_limit
+        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        if child is not None:
+            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            obj.lower_limit = lower_limit_value
+
+        # Parse upper_limit
+        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        if child is not None:
+            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            obj.upper_limit = upper_limit_value
+
+        return obj
+
 
 
 class ClientIdRangeBuilder:

@@ -36,6 +36,74 @@ class RptImplPolicy(ARObject):
         super().__init__()
         self.rpt_enabler_impl: Optional[RptEnablerImplTypeEnum] = None
         self.rpt_preparation_enum: Optional[RptPreparationEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RptImplPolicy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize rpt_enabler_impl
+        if self.rpt_enabler_impl is not None:
+            serialized = ARObject._serialize_item(self.rpt_enabler_impl, "RptEnablerImplTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-ENABLER-IMPL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_preparation_enum
+        if self.rpt_preparation_enum is not None:
+            serialized = ARObject._serialize_item(self.rpt_preparation_enum, "RptPreparationEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-PREPARATION-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RptImplPolicy":
+        """Deserialize XML element to RptImplPolicy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RptImplPolicy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rpt_enabler_impl
+        child = ARObject._find_child_element(element, "RPT-ENABLER-IMPL")
+        if child is not None:
+            rpt_enabler_impl_value = RptEnablerImplTypeEnum.deserialize(child)
+            obj.rpt_enabler_impl = rpt_enabler_impl_value
+
+        # Parse rpt_preparation_enum
+        child = ARObject._find_child_element(element, "RPT-PREPARATION-ENUM")
+        if child is not None:
+            rpt_preparation_enum_value = RptPreparationEnum.deserialize(child)
+            obj.rpt_preparation_enum = rpt_preparation_enum_value
+
+        return obj
+
 
 
 class RptImplPolicyBuilder:

@@ -37,6 +37,74 @@ class DdsReliability(ARObject):
         super().__init__()
         self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
         self.reliability_max: Optional[Float] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsReliability to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize reliability_kind
+        if self.reliability_kind is not None:
+            serialized = ARObject._serialize_item(self.reliability_kind, "DdsReliabilityKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELIABILITY-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reliability_max
+        if self.reliability_max is not None:
+            serialized = ARObject._serialize_item(self.reliability_max, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELIABILITY-MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsReliability":
+        """Deserialize XML element to DdsReliability object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsReliability object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse reliability_kind
+        child = ARObject._find_child_element(element, "RELIABILITY-KIND")
+        if child is not None:
+            reliability_kind_value = DdsReliabilityKindEnum.deserialize(child)
+            obj.reliability_kind = reliability_kind_value
+
+        # Parse reliability_max
+        child = ARObject._find_child_element(element, "RELIABILITY-MAX")
+        if child is not None:
+            reliability_max_value = child.text
+            obj.reliability_max = reliability_max_value
+
+        return obj
+
 
 
 class DdsReliabilityBuilder:

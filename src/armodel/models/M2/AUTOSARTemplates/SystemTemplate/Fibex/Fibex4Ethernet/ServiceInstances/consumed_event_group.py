@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -65,6 +66,223 @@ class ConsumedEventGroup(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_client_config: Optional[Any] = None
         self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ConsumedEventGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ConsumedEventGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize application_endpoint
+        if self.application_endpoint is not None:
+            serialized = ARObject._serialize_item(self.application_endpoint, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPLICATION-ENDPOINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize auto_require
+        if self.auto_require is not None:
+            serialized = ARObject._serialize_item(self.auto_require, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTO-REQUIRE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_group
+        if self.event_group is not None:
+            serialized = ARObject._serialize_item(self.event_group, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_multicasts (list to container "EVENT-MULTICASTS")
+        if self.event_multicasts:
+            wrapper = ET.Element("EVENT-MULTICASTS")
+            for item in self.event_multicasts:
+                serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pdu_activation_routings (list to container "PDU-ACTIVATION-ROUTINGS")
+        if self.pdu_activation_routings:
+            wrapper = ET.Element("PDU-ACTIVATION-ROUTINGS")
+            for item in self.pdu_activation_routings:
+                serialized = ARObject._serialize_item(item, "PduActivationRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        if self.routing_group_refs:
+            wrapper = ET.Element("ROUTING-GROUPS")
+            for item in self.routing_group_refs:
+                serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sd_client_config
+        if self.sd_client_config is not None:
+            serialized = ARObject._serialize_item(self.sd_client_config, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sd_client_timer
+        if self.sd_client_timer is not None:
+            serialized = ARObject._serialize_item(self.sd_client_timer, "SomeipSdClientEventGroupTimingConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-TIMER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ConsumedEventGroup":
+        """Deserialize XML element to ConsumedEventGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ConsumedEventGroup object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ConsumedEventGroup, cls).deserialize(element)
+
+        # Parse application_endpoint
+        child = ARObject._find_child_element(element, "APPLICATION-ENDPOINT")
+        if child is not None:
+            application_endpoint_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            obj.application_endpoint = application_endpoint_value
+
+        # Parse auto_require
+        child = ARObject._find_child_element(element, "AUTO-REQUIRE")
+        if child is not None:
+            auto_require_value = child.text
+            obj.auto_require = auto_require_value
+
+        # Parse event_group
+        child = ARObject._find_child_element(element, "EVENT-GROUP")
+        if child is not None:
+            event_group_value = child.text
+            obj.event_group = event_group_value
+
+        # Parse event_multicasts (list from container "EVENT-MULTICASTS")
+        obj.event_multicasts = []
+        container = ARObject._find_child_element(element, "EVENT-MULTICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.event_multicasts.append(child_value)
+
+        # Parse pdu_activation_routings (list from container "PDU-ACTIVATION-ROUTINGS")
+        obj.pdu_activation_routings = []
+        container = ARObject._find_child_element(element, "PDU-ACTIVATION-ROUTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_activation_routings.append(child_value)
+
+        # Parse priority
+        child = ARObject._find_child_element(element, "PRIORITY")
+        if child is not None:
+            priority_value = child.text
+            obj.priority = priority_value
+
+        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
+        obj.routing_group_refs = []
+        container = ARObject._find_child_element(element, "ROUTING-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.routing_group_refs.append(child_value)
+
+        # Parse sd_client_config
+        child = ARObject._find_child_element(element, "SD-CLIENT-CONFIG")
+        if child is not None:
+            sd_client_config_value = child.text
+            obj.sd_client_config = sd_client_config_value
+
+        # Parse sd_client_timer
+        child = ARObject._find_child_element(element, "SD-CLIENT-TIMER")
+        if child is not None:
+            sd_client_timer_value = ARObject._deserialize_by_tag(child, "SomeipSdClientEventGroupTimingConfig")
+            obj.sd_client_timer = sd_client_timer_value
+
+        return obj
+
 
 
 class ConsumedEventGroupBuilder:

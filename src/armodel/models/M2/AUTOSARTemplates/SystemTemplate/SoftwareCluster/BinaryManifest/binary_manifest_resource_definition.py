@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_item import (
     BinaryManifestItem,
 )
@@ -34,6 +35,63 @@ class BinaryManifestResourceDefinition(Identifiable):
         """Initialize BinaryManifestResourceDefinition."""
         super().__init__()
         self.item_definitions: list[BinaryManifestItem] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BinaryManifestResourceDefinition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BinaryManifestResourceDefinition, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize item_definitions (list to container "ITEM-DEFINITIONS")
+        if self.item_definitions:
+            wrapper = ET.Element("ITEM-DEFINITIONS")
+            for item in self.item_definitions:
+                serialized = ARObject._serialize_item(item, "BinaryManifestItem")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "BinaryManifestResourceDefinition":
+        """Deserialize XML element to BinaryManifestResourceDefinition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized BinaryManifestResourceDefinition object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BinaryManifestResourceDefinition, cls).deserialize(element)
+
+        # Parse item_definitions (list from container "ITEM-DEFINITIONS")
+        obj.item_definitions = []
+        container = ARObject._find_child_element(element, "ITEM-DEFINITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.item_definitions.append(child_value)
+
+        return obj
+
 
 
 class BinaryManifestResourceDefinitionBuilder:

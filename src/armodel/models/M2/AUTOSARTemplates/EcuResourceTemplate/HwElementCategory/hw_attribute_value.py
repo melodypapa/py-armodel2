@@ -45,6 +45,114 @@ class HwAttributeValue(ARObject):
         self.hw_attribute_def: Optional[HwAttributeDef] = None
         self.v: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize HwAttributeValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize annotation
+        if self.annotation is not None:
+            serialized = ARObject._serialize_item(self.annotation, "Annotation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ANNOTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hw_attribute_def
+        if self.hw_attribute_def is not None:
+            serialized = ARObject._serialize_item(self.hw_attribute_def, "HwAttributeDef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HW-ATTRIBUTE-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize v
+        if self.v is not None:
+            serialized = ARObject._serialize_item(self.v, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = ARObject._serialize_item(self.vt, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "HwAttributeValue":
+        """Deserialize XML element to HwAttributeValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized HwAttributeValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse annotation
+        child = ARObject._find_child_element(element, "ANNOTATION")
+        if child is not None:
+            annotation_value = ARObject._deserialize_by_tag(child, "Annotation")
+            obj.annotation = annotation_value
+
+        # Parse hw_attribute_def
+        child = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEF")
+        if child is not None:
+            hw_attribute_def_value = ARObject._deserialize_by_tag(child, "HwAttributeDef")
+            obj.hw_attribute_def = hw_attribute_def_value
+
+        # Parse v
+        child = ARObject._find_child_element(element, "V")
+        if child is not None:
+            v_value = child.text
+            obj.v = v_value
+
+        # Parse vt
+        child = ARObject._find_child_element(element, "VT")
+        if child is not None:
+            vt_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            obj.vt = vt_value
+
+        return obj
+
 
 
 class HwAttributeValueBuilder:

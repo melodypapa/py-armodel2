@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
     EcucScopeEnum,
 )
@@ -59,6 +60,163 @@ class EcucDefinitionElement(Identifiable, ABC):
         self.related_trace: Optional[Traceable] = None
         self.scope: Optional[EcucScopeEnum] = None
         self.upper_multiplicity: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucDefinitionElement to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucDefinitionElement, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ecuc_cond
+        if self.ecuc_cond is not None:
+            serialized = ARObject._serialize_item(self.ecuc_cond, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECUC-COND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecuc_validations (list to container "ECUC-VALIDATIONS")
+        if self.ecuc_validations:
+            wrapper = ET.Element("ECUC-VALIDATIONS")
+            for item in self.ecuc_validations:
+                serialized = ARObject._serialize_item(item, "EcucValidationCondition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize lower_multiplicity
+        if self.lower_multiplicity is not None:
+            serialized = ARObject._serialize_item(self.lower_multiplicity, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOWER-MULTIPLICITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize related_trace
+        if self.related_trace is not None:
+            serialized = ARObject._serialize_item(self.related_trace, "Traceable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELATED-TRACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scope
+        if self.scope is not None:
+            serialized = ARObject._serialize_item(self.scope, "EcucScopeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upper_multiplicity
+        if self.upper_multiplicity is not None:
+            serialized = ARObject._serialize_item(self.upper_multiplicity, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPPER-MULTIPLICITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucDefinitionElement":
+        """Deserialize XML element to EcucDefinitionElement object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucDefinitionElement object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucDefinitionElement, cls).deserialize(element)
+
+        # Parse ecuc_cond
+        child = ARObject._find_child_element(element, "ECUC-COND")
+        if child is not None:
+            ecuc_cond_value = child.text
+            obj.ecuc_cond = ecuc_cond_value
+
+        # Parse ecuc_validations (list from container "ECUC-VALIDATIONS")
+        obj.ecuc_validations = []
+        container = ARObject._find_child_element(element, "ECUC-VALIDATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecuc_validations.append(child_value)
+
+        # Parse lower_multiplicity
+        child = ARObject._find_child_element(element, "LOWER-MULTIPLICITY")
+        if child is not None:
+            lower_multiplicity_value = child.text
+            obj.lower_multiplicity = lower_multiplicity_value
+
+        # Parse related_trace
+        child = ARObject._find_child_element(element, "RELATED-TRACE")
+        if child is not None:
+            related_trace_value = ARObject._deserialize_by_tag(child, "Traceable")
+            obj.related_trace = related_trace_value
+
+        # Parse scope
+        child = ARObject._find_child_element(element, "SCOPE")
+        if child is not None:
+            scope_value = EcucScopeEnum.deserialize(child)
+            obj.scope = scope_value
+
+        # Parse upper_multiplicity
+        child = ARObject._find_child_element(element, "UPPER-MULTIPLICITY")
+        if child is not None:
+            upper_multiplicity_value = child.text
+            obj.upper_multiplicity = upper_multiplicity_value
+
+        return obj
+
 
 
 class EcucDefinitionElementBuilder:

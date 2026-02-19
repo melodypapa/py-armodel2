@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import (
     ReceiverComSpec,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
     HandleTimeoutEnum,
 )
@@ -63,6 +64,203 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         self.handle_timeout_enum: Optional[HandleTimeoutEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.timeout: Optional[ValueSpecification] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NonqueuedReceiverComSpec to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NonqueuedReceiverComSpec, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize alive_timeout
+        if self.alive_timeout is not None:
+            serialized = ARObject._serialize_item(self.alive_timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIVE-TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize enable_update
+        if self.enable_update is not None:
+            serialized = ARObject._serialize_item(self.enable_update, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENABLE-UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize filter
+        if self.filter is not None:
+            serialized = ARObject._serialize_item(self.filter, "DataFilter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FILTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_data
+        if self.handle_data is not None:
+            serialized = ARObject._serialize_item(self.handle_data, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_never
+        if self.handle_never is not None:
+            serialized = ARObject._serialize_item(self.handle_never, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-NEVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_timeout_enum
+        if self.handle_timeout_enum is not None:
+            serialized = ARObject._serialize_item(self.handle_timeout_enum, "HandleTimeoutEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-TIMEOUT-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize init_value
+        if self.init_value is not None:
+            serialized = ARObject._serialize_item(self.init_value, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INIT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout
+        if self.timeout is not None:
+            serialized = ARObject._serialize_item(self.timeout, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NonqueuedReceiverComSpec":
+        """Deserialize XML element to NonqueuedReceiverComSpec object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NonqueuedReceiverComSpec object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NonqueuedReceiverComSpec, cls).deserialize(element)
+
+        # Parse alive_timeout
+        child = ARObject._find_child_element(element, "ALIVE-TIMEOUT")
+        if child is not None:
+            alive_timeout_value = child.text
+            obj.alive_timeout = alive_timeout_value
+
+        # Parse enable_update
+        child = ARObject._find_child_element(element, "ENABLE-UPDATE")
+        if child is not None:
+            enable_update_value = child.text
+            obj.enable_update = enable_update_value
+
+        # Parse filter
+        child = ARObject._find_child_element(element, "FILTER")
+        if child is not None:
+            filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            obj.filter = filter_value
+
+        # Parse handle_data
+        child = ARObject._find_child_element(element, "HANDLE-DATA")
+        if child is not None:
+            handle_data_value = child.text
+            obj.handle_data = handle_data_value
+
+        # Parse handle_never
+        child = ARObject._find_child_element(element, "HANDLE-NEVER")
+        if child is not None:
+            handle_never_value = child.text
+            obj.handle_never = handle_never_value
+
+        # Parse handle_timeout_enum
+        child = ARObject._find_child_element(element, "HANDLE-TIMEOUT-ENUM")
+        if child is not None:
+            handle_timeout_enum_value = HandleTimeoutEnum.deserialize(child)
+            obj.handle_timeout_enum = handle_timeout_enum_value
+
+        # Parse init_value
+        child = ARObject._find_child_element(element, "INIT-VALUE")
+        if child is not None:
+            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.init_value = init_value_value
+
+        # Parse timeout
+        child = ARObject._find_child_element(element, "TIMEOUT")
+        if child is not None:
+            timeout_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.timeout = timeout_value
+
+        return obj
+
 
 
 class NonqueuedReceiverComSpecBuilder:

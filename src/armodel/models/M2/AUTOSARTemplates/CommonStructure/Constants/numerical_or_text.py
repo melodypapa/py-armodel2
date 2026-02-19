@@ -36,6 +36,74 @@ class NumericalOrText(ARObject):
         super().__init__()
         self.vf: Optional[Numerical] = None
         self.vt: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NumericalOrText to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize vf
+        if self.vf is not None:
+            serialized = ARObject._serialize_item(self.vf, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = ARObject._serialize_item(self.vt, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "NumericalOrText":
+        """Deserialize XML element to NumericalOrText object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized NumericalOrText object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse vf
+        child = ARObject._find_child_element(element, "VF")
+        if child is not None:
+            vf_value = child.text
+            obj.vf = vf_value
+
+        # Parse vt
+        child = ARObject._find_child_element(element, "VT")
+        if child is not None:
+            vt_value = child.text
+            obj.vt = vt_value
+
+        return obj
+
 
 
 class NumericalOrTextBuilder:

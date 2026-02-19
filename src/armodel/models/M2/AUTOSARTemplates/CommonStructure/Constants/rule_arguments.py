@@ -43,6 +43,114 @@ class RuleArguments(ARObject):
         self.vf: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RuleArguments to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize v
+        if self.v is not None:
+            serialized = ARObject._serialize_item(self.v, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vf
+        if self.vf is not None:
+            serialized = ARObject._serialize_item(self.vf, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = ARObject._serialize_item(self.vt, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vtf
+        if self.vtf is not None:
+            serialized = ARObject._serialize_item(self.vtf, "NumericalOrText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VTF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleArguments":
+        """Deserialize XML element to RuleArguments object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleArguments object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse v
+        child = ARObject._find_child_element(element, "V")
+        if child is not None:
+            v_value = child.text
+            obj.v = v_value
+
+        # Parse vf
+        child = ARObject._find_child_element(element, "VF")
+        if child is not None:
+            vf_value = child.text
+            obj.vf = vf_value
+
+        # Parse vt
+        child = ARObject._find_child_element(element, "VT")
+        if child is not None:
+            vt_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            obj.vt = vt_value
+
+        # Parse vtf
+        child = ARObject._find_child_element(element, "VTF")
+        if child is not None:
+            vtf_value = ARObject._deserialize_by_tag(child, "NumericalOrText")
+            obj.vtf = vtf_value
+
+        return obj
+
 
 
 class RuleArgumentsBuilder:

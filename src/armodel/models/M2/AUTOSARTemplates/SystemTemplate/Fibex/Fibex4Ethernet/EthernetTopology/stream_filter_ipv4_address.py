@@ -32,6 +32,54 @@ class StreamFilterIpv4Address(ARObject):
         """Initialize StreamFilterIpv4Address."""
         super().__init__()
         self.ipv4_address: Optional[Ip4AddressString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StreamFilterIpv4Address to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ipv4_address
+        if self.ipv4_address is not None:
+            serialized = ARObject._serialize_item(self.ipv4_address, "Ip4AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV4-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterIpv4Address":
+        """Deserialize XML element to StreamFilterIpv4Address object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterIpv4Address object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ipv4_address
+        child = ARObject._find_child_element(element, "IPV4-ADDRESS")
+        if child is not None:
+            ipv4_address_value = child.text
+            obj.ipv4_address = ipv4_address_value
+
+        return obj
+
 
 
 class StreamFilterIpv4AddressBuilder:

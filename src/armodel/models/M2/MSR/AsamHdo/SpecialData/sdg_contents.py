@@ -53,6 +53,134 @@ class SdgContents(ARObject):
         self.sdg: Optional[Sdg] = None
         self.sdx_ref: Optional[ARRef] = None
         self.sdxf_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SdgContents to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sd
+        if self.sd is not None:
+            serialized = ARObject._serialize_item(self.sd, "Sd")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdf
+        if self.sdf is not None:
+            serialized = ARObject._serialize_item(self.sdf, "Sdf")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdg
+        if self.sdg is not None:
+            serialized = ARObject._serialize_item(self.sdg, "Sdg")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdx_ref
+        if self.sdx_ref is not None:
+            serialized = ARObject._serialize_item(self.sdx_ref, "Referrable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdxf_ref
+        if self.sdxf_ref is not None:
+            serialized = ARObject._serialize_item(self.sdxf_ref, "Referrable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDXF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgContents":
+        """Deserialize XML element to SdgContents object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgContents object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sd
+        child = ARObject._find_child_element(element, "SD")
+        if child is not None:
+            sd_value = ARObject._deserialize_by_tag(child, "Sd")
+            obj.sd = sd_value
+
+        # Parse sdf
+        child = ARObject._find_child_element(element, "SDF")
+        if child is not None:
+            sdf_value = ARObject._deserialize_by_tag(child, "Sdf")
+            obj.sdf = sdf_value
+
+        # Parse sdg
+        child = ARObject._find_child_element(element, "SDG")
+        if child is not None:
+            sdg_value = ARObject._deserialize_by_tag(child, "Sdg")
+            obj.sdg = sdg_value
+
+        # Parse sdx_ref
+        child = ARObject._find_child_element(element, "SDX")
+        if child is not None:
+            sdx_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.sdx_ref = sdx_ref_value
+
+        # Parse sdxf_ref
+        child = ARObject._find_child_element(element, "SDXF")
+        if child is not None:
+            sdxf_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            obj.sdxf_ref = sdxf_ref_value
+
+        return obj
+
 
 
 class SdgContentsBuilder:

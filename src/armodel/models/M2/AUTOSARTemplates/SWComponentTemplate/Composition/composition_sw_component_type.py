@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -63,6 +64,163 @@ class CompositionSwComponentType(SwComponentType):
         self.data_type_refs: list[ARRef] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
         self.physical: Optional[PhysicalDimension] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CompositionSwComponentType to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CompositionSwComponentType, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize components (list to container "COMPONENTS")
+        if self.components:
+            wrapper = ET.Element("COMPONENTS")
+            for item in self.components:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize connectors (list to container "CONNECTORS")
+        if self.connectors:
+            wrapper = ET.Element("CONNECTORS")
+            for item in self.connectors:
+                serialized = ARObject._serialize_item(item, "SwConnector")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize constant_values (list to container "CONSTANT-VALUES")
+        if self.constant_values:
+            wrapper = ET.Element("CONSTANT-VALUES")
+            for item in self.constant_values:
+                serialized = ARObject._serialize_item(item, "ConstantSpecification")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_type_refs (list to container "DATA-TYPES")
+        if self.data_type_refs:
+            wrapper = ET.Element("DATA-TYPES")
+            for item in self.data_type_refs:
+                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize instantiation_rte_events (list to container "INSTANTIATION-RTE-EVENTS")
+        if self.instantiation_rte_events:
+            wrapper = ET.Element("INSTANTIATION-RTE-EVENTS")
+            for item in self.instantiation_rte_events:
+                serialized = ARObject._serialize_item(item, "InstantiationRTEEventProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize physical
+        if self.physical is not None:
+            serialized = ARObject._serialize_item(self.physical, "PhysicalDimension")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PHYSICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CompositionSwComponentType":
+        """Deserialize XML element to CompositionSwComponentType object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CompositionSwComponentType object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CompositionSwComponentType, cls).deserialize(element)
+
+        # Parse components (list from container "COMPONENTS")
+        obj.components = []
+        container = ARObject._find_child_element(element, "COMPONENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.components.append(child_value)
+
+        # Parse connectors (list from container "CONNECTORS")
+        obj.connectors = []
+        container = ARObject._find_child_element(element, "CONNECTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connectors.append(child_value)
+
+        # Parse constant_values (list from container "CONSTANT-VALUES")
+        obj.constant_values = []
+        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constant_values.append(child_value)
+
+        # Parse data_type_refs (list from container "DATA-TYPES")
+        obj.data_type_refs = []
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
+
+        # Parse instantiation_rte_events (list from container "INSTANTIATION-RTE-EVENTS")
+        obj.instantiation_rte_events = []
+        container = ARObject._find_child_element(element, "INSTANTIATION-RTE-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.instantiation_rte_events.append(child_value)
+
+        # Parse physical
+        child = ARObject._find_child_element(element, "PHYSICAL")
+        if child is not None:
+            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
+            obj.physical = physical_value
+
+        return obj
+
 
 
 class CompositionSwComponentTypeBuilder:

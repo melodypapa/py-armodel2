@@ -48,6 +48,94 @@ class SwPointerTargetProps(ARObject):
         self.function_pointer: Optional[BswModuleEntry] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.target_category: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwPointerTargetProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize function_pointer
+        if self.function_pointer is not None:
+            serialized = ARObject._serialize_item(self.function_pointer, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FUNCTION-POINTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_data_def
+        if self.sw_data_def is not None:
+            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DATA-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_category
+        if self.target_category is not None:
+            serialized = ARObject._serialize_item(self.target_category, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwPointerTargetProps":
+        """Deserialize XML element to SwPointerTargetProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwPointerTargetProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse function_pointer
+        child = ARObject._find_child_element(element, "FUNCTION-POINTER")
+        if child is not None:
+            function_pointer_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
+            obj.function_pointer = function_pointer_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        # Parse target_category
+        child = ARObject._find_child_element(element, "TARGET-CATEGORY")
+        if child is not None:
+            target_category_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.target_category = target_category_value
+
+        return obj
+
 
 
 class SwPointerTargetPropsBuilder:

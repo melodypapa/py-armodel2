@@ -38,6 +38,74 @@ class RoleBasedResourceDependency(ARObject):
         super().__init__()
         self.resource: Optional[CpSoftwareCluster] = None
         self.role: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedResourceDependency to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize resource
+        if self.resource is not None:
+            serialized = ARObject._serialize_item(self.resource, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedResourceDependency":
+        """Deserialize XML element to RoleBasedResourceDependency object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedResourceDependency object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse resource
+        child = ARObject._find_child_element(element, "RESOURCE")
+        if child is not None:
+            resource_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            obj.resource = resource_value
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.role = role_value
+
+        return obj
+
 
 
 class RoleBasedResourceDependencyBuilder:

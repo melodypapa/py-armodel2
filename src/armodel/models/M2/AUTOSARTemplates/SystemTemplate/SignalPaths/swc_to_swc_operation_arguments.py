@@ -34,6 +34,74 @@ class SwcToSwcOperationArguments(ARObject):
         super().__init__()
         self.direction: Optional[Any] = None
         self.operations: list[ClientServerOperation] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwcToSwcOperationArguments to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize direction
+        if self.direction is not None:
+            serialized = ARObject._serialize_item(self.direction, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIRECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize operations (list to container "OPERATIONS")
+        if self.operations:
+            wrapper = ET.Element("OPERATIONS")
+            for item in self.operations:
+                serialized = ARObject._serialize_item(item, "ClientServerOperation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcToSwcOperationArguments":
+        """Deserialize XML element to SwcToSwcOperationArguments object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcToSwcOperationArguments object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse direction
+        child = ARObject._find_child_element(element, "DIRECTION")
+        if child is not None:
+            direction_value = child.text
+            obj.direction = direction_value
+
+        # Parse operations (list from container "OPERATIONS")
+        obj.operations = []
+        container = ARObject._find_child_element(element, "OPERATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.operations.append(child_value)
+
+        return obj
+
 
 
 class SwcToSwcOperationArgumentsBuilder:

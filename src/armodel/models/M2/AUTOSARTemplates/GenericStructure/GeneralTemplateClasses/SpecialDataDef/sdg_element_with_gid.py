@@ -33,6 +33,54 @@ class SdgElementWithGid(ARObject, ABC):
         """Initialize SdgElementWithGid."""
         super().__init__()
         self.gid: Optional[NameToken] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SdgElementWithGid to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize gid
+        if self.gid is not None:
+            serialized = ARObject._serialize_item(self.gid, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgElementWithGid":
+        """Deserialize XML element to SdgElementWithGid object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgElementWithGid object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse gid
+        child = ARObject._find_child_element(element, "GID")
+        if child is not None:
+            gid_value = child.text
+            obj.gid = gid_value
+
+        return obj
+
 
 
 class SdgElementWithGidBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.abstract_can_communication_connector import (
     AbstractCanCommunicationConnector,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
 class TtcanCommunicationConnector(AbstractCanCommunicationConnector):
@@ -29,6 +30,41 @@ class TtcanCommunicationConnector(AbstractCanCommunicationConnector):
     def __init__(self) -> None:
         """Initialize TtcanCommunicationConnector."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize TtcanCommunicationConnector to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TtcanCommunicationConnector, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TtcanCommunicationConnector":
+        """Deserialize XML element to TtcanCommunicationConnector object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TtcanCommunicationConnector object
+        """
+        # Delegate to parent class to handle inherited attributes
+        return super(TtcanCommunicationConnector, cls).deserialize(element)
+
 
 
 class TtcanCommunicationConnectorBuilder:

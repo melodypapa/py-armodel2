@@ -32,6 +32,54 @@ class DiagnosticAuthRoleProxy(ARObject):
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
         self.authentications: list[DiagnosticAuthRole] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticAuthRoleProxy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize authentications (list to container "AUTHENTICATIONS")
+        if self.authentications:
+            wrapper = ET.Element("AUTHENTICATIONS")
+            for item in self.authentications:
+                serialized = ARObject._serialize_item(item, "DiagnosticAuthRole")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticAuthRoleProxy":
+        """Deserialize XML element to DiagnosticAuthRoleProxy object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticAuthRoleProxy object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse authentications (list from container "AUTHENTICATIONS")
+        obj.authentications = []
+        container = ARObject._find_child_element(element, "AUTHENTICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.authentications.append(child_value)
+
+        return obj
+
 
 
 class DiagnosticAuthRoleProxyBuilder:

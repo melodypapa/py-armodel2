@@ -37,6 +37,74 @@ class InfrastructureServices(ARObject):
         super().__init__()
         self.do_ip_entity: Optional[DoIpEntity] = None
         self.time: Optional[TimeSynchronization] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InfrastructureServices to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize do_ip_entity
+        if self.do_ip_entity is not None:
+            serialized = ARObject._serialize_item(self.do_ip_entity, "DoIpEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DO-IP-ENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time
+        if self.time is not None:
+            serialized = ARObject._serialize_item(self.time, "TimeSynchronization")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InfrastructureServices":
+        """Deserialize XML element to InfrastructureServices object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InfrastructureServices object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse do_ip_entity
+        child = ARObject._find_child_element(element, "DO-IP-ENTITY")
+        if child is not None:
+            do_ip_entity_value = ARObject._deserialize_by_tag(child, "DoIpEntity")
+            obj.do_ip_entity = do_ip_entity_value
+
+        # Parse time
+        child = ARObject._find_child_element(element, "TIME")
+        if child is not None:
+            time_value = ARObject._deserialize_by_tag(child, "TimeSynchronization")
+            obj.time = time_value
+
+        return obj
+
 
 
 class InfrastructureServicesBuilder:

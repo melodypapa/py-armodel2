@@ -41,6 +41,94 @@ class RuleBasedValueCont(ARObject):
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.unit: Optional[Unit] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RuleBasedValueCont to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize rule_based
+        if self.rule_based is not None:
+            serialized = ARObject._serialize_item(self.rule_based, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RULE-BASED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_arraysize_ref
+        if self.sw_arraysize_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-ARRAYSIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unit
+        if self.unit is not None:
+            serialized = ARObject._serialize_item(self.unit, "Unit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RuleBasedValueCont":
+        """Deserialize XML element to RuleBasedValueCont object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RuleBasedValueCont object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse rule_based
+        child = ARObject._find_child_element(element, "RULE-BASED")
+        if child is not None:
+            rule_based_value = child.text
+            obj.rule_based = rule_based_value
+
+        # Parse sw_arraysize_ref
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        if child is not None:
+            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            obj.sw_arraysize_ref = sw_arraysize_ref_value
+
+        # Parse unit
+        child = ARObject._find_child_element(element, "UNIT")
+        if child is not None:
+            unit_value = ARObject._deserialize_by_tag(child, "Unit")
+            obj.unit = unit_value
+
+        return obj
+
 
 
 class RuleBasedValueContBuilder:

@@ -36,6 +36,94 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         self.context_root_sw: Optional[RootSwCompositionPrototype] = None
         self.context_sw_prototypes: list[Any] = []
         self.target_swc: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwcServiceDependencyInSystemInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize context_root_sw
+        if self.context_root_sw is not None:
+            serialized = ARObject._serialize_item(self.context_root_sw, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-ROOT-SW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_sw_prototypes (list to container "CONTEXT-SW-PROTOTYPES")
+        if self.context_sw_prototypes:
+            wrapper = ET.Element("CONTEXT-SW-PROTOTYPES")
+            for item in self.context_sw_prototypes:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize target_swc
+        if self.target_swc is not None:
+            serialized = ARObject._serialize_item(self.target_swc, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-SWC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwcServiceDependencyInSystemInstanceRef":
+        """Deserialize XML element to SwcServiceDependencyInSystemInstanceRef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwcServiceDependencyInSystemInstanceRef object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse context_root_sw
+        child = ARObject._find_child_element(element, "CONTEXT-ROOT-SW")
+        if child is not None:
+            context_root_sw_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.context_root_sw = context_root_sw_value
+
+        # Parse context_sw_prototypes (list from container "CONTEXT-SW-PROTOTYPES")
+        obj.context_sw_prototypes = []
+        container = ARObject._find_child_element(element, "CONTEXT-SW-PROTOTYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.context_sw_prototypes.append(child_value)
+
+        # Parse target_swc
+        child = ARObject._find_child_element(element, "TARGET-SWC")
+        if child is not None:
+            target_swc_value = child.text
+            obj.target_swc = target_swc_value
+
+        return obj
+
 
 
 class SwcServiceDependencyInSystemInstanceRefBuilder:

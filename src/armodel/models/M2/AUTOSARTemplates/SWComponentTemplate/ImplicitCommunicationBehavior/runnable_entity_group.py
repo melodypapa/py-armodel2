@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
     RunnableEntity,
@@ -38,6 +39,83 @@ class RunnableEntityGroup(Identifiable):
         super().__init__()
         self.runnable_entities: list[RunnableEntity] = []
         self.runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize RunnableEntityGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RunnableEntityGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize runnable_entities (list to container "RUNNABLE-ENTITIES")
+        if self.runnable_entities:
+            wrapper = ET.Element("RUNNABLE-ENTITIES")
+            for item in self.runnable_entities:
+                serialized = ARObject._serialize_item(item, "RunnableEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize runnable_entity_group_group_in_composition_instance_ref_refs (list to container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        if self.runnable_entity_group_group_in_composition_instance_ref_refs:
+            wrapper = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+            for item in self.runnable_entity_group_group_in_composition_instance_ref_refs:
+                serialized = ARObject._serialize_item(item, "RunnableEntityGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RunnableEntityGroup":
+        """Deserialize XML element to RunnableEntityGroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RunnableEntityGroup object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RunnableEntityGroup, cls).deserialize(element)
+
+        # Parse runnable_entities (list from container "RUNNABLE-ENTITIES")
+        obj.runnable_entities = []
+        container = ARObject._find_child_element(element, "RUNNABLE-ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runnable_entities.append(child_value)
+
+        # Parse runnable_entity_group_group_in_composition_instance_ref_refs (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        obj.runnable_entity_group_group_in_composition_instance_ref_refs = []
+        container = ARObject._find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runnable_entity_group_group_in_composition_instance_ref_refs.append(child_value)
+
+        return obj
+
 
 
 class RunnableEntityGroupBuilder:

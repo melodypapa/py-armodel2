@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAcf.ieee1722_tp_acf_bus import (
     IEEE1722TpAcfBus,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -39,6 +40,103 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         self.base_frequency: Optional[PositiveInteger] = None
         self.frame_sync_enabled: Optional[Boolean] = None
         self.timestamp: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpAcfLin to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpAcfLin, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize base_frequency
+        if self.base_frequency is not None:
+            serialized = ARObject._serialize_item(self.base_frequency, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-FREQUENCY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize frame_sync_enabled
+        if self.frame_sync_enabled is not None:
+            serialized = ARObject._serialize_item(self.frame_sync_enabled, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRAME-SYNC-ENABLED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timestamp
+        if self.timestamp is not None:
+            serialized = ARObject._serialize_item(self.timestamp, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMESTAMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfLin":
+        """Deserialize XML element to IEEE1722TpAcfLin object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IEEE1722TpAcfLin object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAcfLin, cls).deserialize(element)
+
+        # Parse base_frequency
+        child = ARObject._find_child_element(element, "BASE-FREQUENCY")
+        if child is not None:
+            base_frequency_value = child.text
+            obj.base_frequency = base_frequency_value
+
+        # Parse frame_sync_enabled
+        child = ARObject._find_child_element(element, "FRAME-SYNC-ENABLED")
+        if child is not None:
+            frame_sync_enabled_value = child.text
+            obj.frame_sync_enabled = frame_sync_enabled_value
+
+        # Parse timestamp
+        child = ARObject._find_child_element(element, "TIMESTAMP")
+        if child is not None:
+            timestamp_value = child.text
+            obj.timestamp = timestamp_value
+
+        return obj
+
 
 
 class IEEE1722TpAcfLinBuilder:

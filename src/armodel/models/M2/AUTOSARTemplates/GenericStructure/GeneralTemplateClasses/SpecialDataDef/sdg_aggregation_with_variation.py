@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_element_with_gid import (
     SdgElementWithGid,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
 )
@@ -34,6 +35,63 @@ class SdgAggregationWithVariation(SdgElementWithGid):
         """Initialize SdgAggregationWithVariation."""
         super().__init__()
         self.sub_sdg: Optional[SdgClass] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SdgAggregationWithVariation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SdgAggregationWithVariation, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize sub_sdg
+        if self.sub_sdg is not None:
+            serialized = ARObject._serialize_item(self.sub_sdg, "SdgClass")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB-SDG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SdgAggregationWithVariation":
+        """Deserialize XML element to SdgAggregationWithVariation object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SdgAggregationWithVariation object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SdgAggregationWithVariation, cls).deserialize(element)
+
+        # Parse sub_sdg
+        child = ARObject._find_child_element(element, "SUB-SDG")
+        if child is not None:
+            sub_sdg_value = ARObject._deserialize_by_tag(child, "SdgClass")
+            obj.sub_sdg = sub_sdg_value
+
+        return obj
+
 
 
 class SdgAggregationWithVariationBuilder:

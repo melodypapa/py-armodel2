@@ -46,6 +46,94 @@ class InstantiationDataDefProps(ARObject):
         self.parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.variable_instance_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InstantiationDataDefProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize parameter_ref
+        if self.parameter_ref is not None:
+            serialized = ARObject._serialize_item(self.parameter_ref, "AutosarParameterRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PARAMETER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_data_def
+        if self.sw_data_def is not None:
+            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DATA-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize variable_instance_ref
+        if self.variable_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.variable_instance_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VARIABLE-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InstantiationDataDefProps":
+        """Deserialize XML element to InstantiationDataDefProps object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InstantiationDataDefProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse parameter_ref
+        child = ARObject._find_child_element(element, "PARAMETER")
+        if child is not None:
+            parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            obj.parameter_ref = parameter_ref_value
+
+        # Parse sw_data_def
+        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        if child is not None:
+            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            obj.sw_data_def = sw_data_def_value
+
+        # Parse variable_instance_ref
+        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE")
+        if child is not None:
+            variable_instance_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            obj.variable_instance_ref = variable_instance_ref_value
+
+        return obj
+
 
 
 class InstantiationDataDefPropsBuilder:

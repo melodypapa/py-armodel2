@@ -43,6 +43,94 @@ class DataConstrRule(ARObject):
         self.constr_level: Optional[Integer] = None
         self.internal_constrs: Optional[InternalConstrs] = None
         self.phys_constrs: Optional[PhysConstrs] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataConstrRule to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize constr_level
+        if self.constr_level is not None:
+            serialized = ARObject._serialize_item(self.constr_level, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONSTR-LEVEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize internal_constrs
+        if self.internal_constrs is not None:
+            serialized = ARObject._serialize_item(self.internal_constrs, "InternalConstrs")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTERNAL-CONSTRS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize phys_constrs
+        if self.phys_constrs is not None:
+            serialized = ARObject._serialize_item(self.phys_constrs, "PhysConstrs")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PHYS-CONSTRS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DataConstrRule":
+        """Deserialize XML element to DataConstrRule object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DataConstrRule object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse constr_level
+        child = ARObject._find_child_element(element, "CONSTR-LEVEL")
+        if child is not None:
+            constr_level_value = child.text
+            obj.constr_level = constr_level_value
+
+        # Parse internal_constrs
+        child = ARObject._find_child_element(element, "INTERNAL-CONSTRS")
+        if child is not None:
+            internal_constrs_value = ARObject._deserialize_by_tag(child, "InternalConstrs")
+            obj.internal_constrs = internal_constrs_value
+
+        # Parse phys_constrs
+        child = ARObject._find_child_element(element, "PHYS-CONSTRS")
+        if child is not None:
+            phys_constrs_value = ARObject._deserialize_by_tag(child, "PhysConstrs")
+            obj.phys_constrs = phys_constrs_value
+
+        return obj
+
 
 
 class DataConstrRuleBuilder:

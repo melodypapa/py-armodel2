@@ -32,6 +32,54 @@ class TriggerIPduSendCondition(ARObject):
         """Initialize TriggerIPduSendCondition."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TriggerIPduSendCondition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize modes (list to container "MODES")
+        if self.modes:
+            wrapper = ET.Element("MODES")
+            for item in self.modes:
+                serialized = ARObject._serialize_item(item, "ModeDeclaration")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TriggerIPduSendCondition":
+        """Deserialize XML element to TriggerIPduSendCondition object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TriggerIPduSendCondition object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse modes (list from container "MODES")
+        obj.modes = []
+        container = ARObject._find_child_element(element, "MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.modes.append(child_value)
+
+        return obj
+
 
 
 class TriggerIPduSendConditionBuilder:

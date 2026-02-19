@@ -40,6 +40,94 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         self.first_mode_group_prototype_ref: Optional[ARRef] = None
         self.mode: Optional[ModeDeclaration] = None
         self.second_mode_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeDeclarationGroupPrototypeMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_mode_group_prototype_ref
+        if self.first_mode_group_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.first_mode_group_prototype_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-MODE-GROUP-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode
+        if self.mode is not None:
+            serialized = ARObject._serialize_item(self.mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_mode_ref
+        if self.second_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.second_mode_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroupPrototypeMapping":
+        """Deserialize XML element to ModeDeclarationGroupPrototypeMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ModeDeclarationGroupPrototypeMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse first_mode_group_prototype_ref
+        child = ARObject._find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE")
+        if child is not None:
+            first_mode_group_prototype_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
+
+        # Parse mode
+        child = ARObject._find_child_element(element, "MODE")
+        if child is not None:
+            mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            obj.mode = mode_value
+
+        # Parse second_mode_ref
+        child = ARObject._find_child_element(element, "SECOND-MODE")
+        if child is not None:
+            second_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            obj.second_mode_ref = second_mode_ref_value
+
+        return obj
+
 
 
 class ModeDeclarationGroupPrototypeMappingBuilder:

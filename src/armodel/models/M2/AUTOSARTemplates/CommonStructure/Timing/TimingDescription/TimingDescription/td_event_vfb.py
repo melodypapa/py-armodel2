@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from abc import ABC, abstractmethod
 
 
@@ -32,6 +33,63 @@ class TDEventVfb(TimingDescriptionEvent, ABC):
         """Initialize TDEventVfb."""
         super().__init__()
         self.component: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventVfb to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventVfb, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize component
+        if self.component is not None:
+            serialized = ARObject._serialize_item(self.component, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPONENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TDEventVfb":
+        """Deserialize XML element to TDEventVfb object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TDEventVfb object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventVfb, cls).deserialize(element)
+
+        # Parse component
+        child = ARObject._find_child_element(element, "COMPONENT")
+        if child is not None:
+            component_value = child.text
+            obj.component = component_value
+
+        return obj
+
 
 
 class TDEventVfbBuilder:

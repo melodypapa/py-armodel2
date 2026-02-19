@@ -32,6 +32,54 @@ class StreamFilterIEEE1722Tp(ARObject):
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
         self.stream_id: Optional[PositiveUnlimitedInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StreamFilterIEEE1722Tp to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize stream_id
+        if self.stream_id is not None:
+            serialized = ARObject._serialize_item(self.stream_id, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STREAM-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "StreamFilterIEEE1722Tp":
+        """Deserialize XML element to StreamFilterIEEE1722Tp object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized StreamFilterIEEE1722Tp object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse stream_id
+        child = ARObject._find_child_element(element, "STREAM-ID")
+        if child is not None:
+            stream_id_value = child.text
+            obj.stream_id = stream_id_value
+
+        return obj
+
 
 
 class StreamFilterIEEE1722TpBuilder:

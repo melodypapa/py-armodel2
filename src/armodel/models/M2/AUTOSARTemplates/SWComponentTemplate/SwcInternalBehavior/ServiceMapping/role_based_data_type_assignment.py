@@ -35,6 +35,74 @@ class RoleBasedDataTypeAssignment(ARObject):
         super().__init__()
         self.role: Optional[Identifier] = None
         self.used: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedDataTypeAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize used
+        if self.used is not None:
+            serialized = ARObject._serialize_item(self.used, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "RoleBasedDataTypeAssignment":
+        """Deserialize XML element to RoleBasedDataTypeAssignment object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized RoleBasedDataTypeAssignment object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse role
+        child = ARObject._find_child_element(element, "ROLE")
+        if child is not None:
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.role = role_value
+
+        # Parse used
+        child = ARObject._find_child_element(element, "USED")
+        if child is not None:
+            used_value = child.text
+            obj.used = used_value
+
+        return obj
+
 
 
 class RoleBasedDataTypeAssignmentBuilder:

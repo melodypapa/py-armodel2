@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     CIdentifier,
@@ -48,6 +49,143 @@ class EcucModuleDef(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.refined_module: Optional[EcucModuleDef] = None
         self.supporteds: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EcucModuleDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucModuleDef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize api_service_prefix
+        if self.api_service_prefix is not None:
+            serialized = ARObject._serialize_item(self.api_service_prefix, "CIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("API-SERVICE-PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize containers (list to container "CONTAINERS")
+        if self.containers:
+            wrapper = ET.Element("CONTAINERS")
+            for item in self.containers:
+                serialized = ARObject._serialize_item(item, "EcucContainerDef")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize post_build_variant
+        if self.post_build_variant is not None:
+            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POST-BUILD-VARIANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize refined_module
+        if self.refined_module is not None:
+            serialized = ARObject._serialize_item(self.refined_module, "EcucModuleDef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REFINED-MODULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize supporteds (list to container "SUPPORTEDS")
+        if self.supporteds:
+            wrapper = ET.Element("SUPPORTEDS")
+            for item in self.supporteds:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucModuleDef":
+        """Deserialize XML element to EcucModuleDef object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucModuleDef object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucModuleDef, cls).deserialize(element)
+
+        # Parse api_service_prefix
+        child = ARObject._find_child_element(element, "API-SERVICE-PREFIX")
+        if child is not None:
+            api_service_prefix_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            obj.api_service_prefix = api_service_prefix_value
+
+        # Parse containers (list from container "CONTAINERS")
+        obj.containers = []
+        container = ARObject._find_child_element(element, "CONTAINERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.containers.append(child_value)
+
+        # Parse post_build_variant
+        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        if child is not None:
+            post_build_variant_value = child.text
+            obj.post_build_variant = post_build_variant_value
+
+        # Parse refined_module
+        child = ARObject._find_child_element(element, "REFINED-MODULE")
+        if child is not None:
+            refined_module_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
+            obj.refined_module = refined_module_value
+
+        # Parse supporteds (list from container "SUPPORTEDS")
+        obj.supporteds = []
+        container = ARObject._find_child_element(element, "SUPPORTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.supporteds.append(child_value)
+
+        return obj
+
 
 
 class EcucModuleDefBuilder:

@@ -33,6 +33,54 @@ class EcucIndexableValue(ARObject, ABC):
         """Initialize EcucIndexableValue."""
         super().__init__()
         self.index: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucIndexableValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize index
+        if self.index is not None:
+            serialized = ARObject._serialize_item(self.index, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EcucIndexableValue":
+        """Deserialize XML element to EcucIndexableValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EcucIndexableValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse index
+        child = ARObject._find_child_element(element, "INDEX")
+        if child is not None:
+            index_value = child.text
+            obj.index = index_value
+
+        return obj
+
 
 
 class EcucIndexableValueBuilder:

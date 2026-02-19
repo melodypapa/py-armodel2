@@ -34,6 +34,74 @@ class IndexEntry(ARObject):
         super().__init__()
         self.sub: Superscript = None
         self.sup: Superscript = None
+    def serialize(self) -> ET.Element:
+        """Serialize IndexEntry to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sub
+        if self.sub is not None:
+            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sup
+        if self.sup is not None:
+            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IndexEntry":
+        """Deserialize XML element to IndexEntry object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IndexEntry object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sub
+        child = ARObject._find_child_element(element, "SUB")
+        if child is not None:
+            sub_value = child.text
+            obj.sub = sub_value
+
+        # Parse sup
+        child = ARObject._find_child_element(element, "SUP")
+        if child is not None:
+            sup_value = child.text
+            obj.sup = sup_value
+
+        return obj
+
 
 
 class IndexEntryBuilder:

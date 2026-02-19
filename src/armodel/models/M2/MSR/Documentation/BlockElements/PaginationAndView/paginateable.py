@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.document_view_selectable import (
     DocumentViewSelectable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView import (
     ChapterEnumBreak,
     KeepWithPreviousEnum,
@@ -38,6 +39,83 @@ class Paginateable(DocumentViewSelectable, ABC):
         super().__init__()
         self.break_: Optional[ChapterEnumBreak] = None
         self.keep_with: Optional[KeepWithPreviousEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Paginateable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Paginateable, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize break_
+        if self.break_ is not None:
+            serialized = ARObject._serialize_item(self.break_, "ChapterEnumBreak")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BREAK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize keep_with
+        if self.keep_with is not None:
+            serialized = ARObject._serialize_item(self.keep_with, "KeepWithPreviousEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KEEP-WITH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Paginateable":
+        """Deserialize XML element to Paginateable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Paginateable object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Paginateable, cls).deserialize(element)
+
+        # Parse break_
+        child = ARObject._find_child_element(element, "BREAK")
+        if child is not None:
+            break__value = ChapterEnumBreak.deserialize(child)
+            obj.break_ = break__value
+
+        # Parse keep_with
+        child = ARObject._find_child_element(element, "KEEP-WITH")
+        if child is not None:
+            keep_with_value = KeepWithPreviousEnum.deserialize(child)
+            obj.keep_with = keep_with_value
+
+        return obj
+
 
 
 class PaginateableBuilder:

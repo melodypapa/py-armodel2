@@ -29,6 +29,54 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
         self.sub_node: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticComControlSubNodeChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sub_node
+        if self.sub_node is not None:
+            serialized = ARObject._serialize_item(self.sub_node, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSubNodeChannel":
+        """Deserialize XML element to DiagnosticComControlSubNodeChannel object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticComControlSubNodeChannel object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sub_node
+        child = ARObject._find_child_element(element, "SUB-NODE")
+        if child is not None:
+            sub_node_value = child.text
+            obj.sub_node = sub_node_value
+
+        return obj
+
 
 
 class DiagnosticComControlSubNodeChannelBuilder:

@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame import (
     LinFrame,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_unconditional_frame import (
     LinUnconditionalFrame,
 )
@@ -34,6 +35,63 @@ class LinSporadicFrame(LinFrame):
         """Initialize LinSporadicFrame."""
         super().__init__()
         self.substituteds: list[LinUnconditionalFrame] = []
+    def serialize(self) -> ET.Element:
+        """Serialize LinSporadicFrame to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(LinSporadicFrame, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize substituteds (list to container "SUBSTITUTEDS")
+        if self.substituteds:
+            wrapper = ET.Element("SUBSTITUTEDS")
+            for item in self.substituteds:
+                serialized = ARObject._serialize_item(item, "LinUnconditionalFrame")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "LinSporadicFrame":
+        """Deserialize XML element to LinSporadicFrame object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized LinSporadicFrame object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinSporadicFrame, cls).deserialize(element)
+
+        # Parse substituteds (list from container "SUBSTITUTEDS")
+        obj.substituteds = []
+        container = ARObject._find_child_element(element, "SUBSTITUTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.substituteds.append(child_value)
+
+        return obj
+
 
 
 class LinSporadicFrameBuilder:

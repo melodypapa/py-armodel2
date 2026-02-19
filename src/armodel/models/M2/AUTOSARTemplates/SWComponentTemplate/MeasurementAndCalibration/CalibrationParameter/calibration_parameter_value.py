@@ -43,6 +43,94 @@ class CalibrationParameterValue(ARObject):
         self.appl_init_value: Optional[ValueSpecification] = None
         self.impl_init_value: Optional[ValueSpecification] = None
         self.initialized: Optional[FlatInstanceDescriptor] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CalibrationParameterValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize appl_init_value
+        if self.appl_init_value is not None:
+            serialized = ARObject._serialize_item(self.appl_init_value, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPL-INIT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize impl_init_value
+        if self.impl_init_value is not None:
+            serialized = ARObject._serialize_item(self.impl_init_value, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMPL-INIT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize initialized
+        if self.initialized is not None:
+            serialized = ARObject._serialize_item(self.initialized, "FlatInstanceDescriptor")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIALIZED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CalibrationParameterValue":
+        """Deserialize XML element to CalibrationParameterValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CalibrationParameterValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse appl_init_value
+        child = ARObject._find_child_element(element, "APPL-INIT-VALUE")
+        if child is not None:
+            appl_init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.appl_init_value = appl_init_value_value
+
+        # Parse impl_init_value
+        child = ARObject._find_child_element(element, "IMPL-INIT-VALUE")
+        if child is not None:
+            impl_init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.impl_init_value = impl_init_value_value
+
+        # Parse initialized
+        child = ARObject._find_child_element(element, "INITIALIZED")
+        if child is not None:
+            initialized_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
+            obj.initialized = initialized_value
+
+        return obj
+
 
 
 class CalibrationParameterValueBuilder:

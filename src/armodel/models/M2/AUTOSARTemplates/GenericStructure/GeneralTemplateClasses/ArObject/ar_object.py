@@ -1061,6 +1061,158 @@ class ARObject:
             # Default to string
             return text
 
+    @staticmethod
+    def _find_child_element(parent: ET.Element, tag: str) -> Optional[ET.Element]:
+        """Find child element by tag name (with namespace handling).
+
+        Args:
+            parent: Parent XML element
+            tag: Tag name to search for
+
+        Returns:
+            Child element if found, None otherwise
+        """
+        # Direct find without namespace
+        child = parent.find(tag)
+        if child is not None:
+            return child
+
+        # Try with namespace handling
+        for elem in parent:
+            if elem.tag.endswith(tag):
+                return elem
+        return None
+
+    @staticmethod
+    def _find_all_child_elements(parent: ET.Element, tag: str) -> list[ET.Element]:
+        """Find all child elements by tag name (with namespace handling).
+
+        Args:
+            parent: Parent XML element
+            tag: Tag name to search for
+
+        Returns:
+            List of child elements
+        """
+        # Direct findall without namespace
+        children = parent.findall(tag)
+        if children:
+            return children
+
+        # Try with namespace handling
+        return [elem for elem in parent if elem.tag.endswith(tag)]
+
+    @staticmethod
+    def _deserialize_by_tag(element: ET.Element, class_name: Optional[str] = None) -> Optional["ARObject"]:
+        """Deserialize XML element using class name (for TYPE_CHECKING compatibility).
+
+        This method is used when a class type is only available in TYPE_CHECKING blocks
+        but needs to be used at runtime in deserialize() methods. It uses the
+        ModelFactory to get the class from the tag name without importing it.
+
+        Args:
+            element: XML element to deserialize
+            class_name: Name of the class to deserialize to. If None, the class is
+                       determined from the element's XML tag name.
+
+        Returns:
+            Deserialized object, or None if the element cannot be deserialized
+        """
+        # Get the class from ModelFactory
+        from armodel.serialization.model_factory import ModelFactory
+        from armodel.serialization.name_converter import NameConverter
+
+        factory = ModelFactory()
+        if not factory.is_initialized():
+            factory.load_mappings()
+
+        # Determine the XML tag to use
+        if class_name is None:
+            # Use the element's tag directly
+            xml_tag = ARObject._strip_namespace(element.tag)
+        else:
+            # Convert class name to XML tag
+            xml_tag = NameConverter.to_xml_tag(class_name)
+
+        # Get the class from the factory
+        cls = factory.get_class(xml_tag)
+        if cls is None:
+            # If class_name was provided, raise an error
+            if class_name is not None:
+                raise ValueError(f"Unknown class: {class_name}")
+            # Otherwise, just return None (skip this element)
+            return None
+
+        # Call the deserialize method on the class
+        return cls.deserialize(element)
+
+    @staticmethod
+    def _strip_namespace(tag: str) -> str:
+        """Strip namespace from XML tag.
+
+        Args:
+            tag: XML tag with optional namespace
+
+        Returns:
+            Tag without namespace
+        """
+        if '}' in tag:
+            return tag.split('}')[1]
+        return tag
+
+    @staticmethod
+    def _serialize_item(value, expected_type: str) -> Optional[ET.Element]:
+        """Serialize a single item for use in generated serialize() methods.
+
+        This helper method is used by generated serialize() methods to serialize
+        individual items (from lists or single attributes) without needing to
+        import the actual types. It handles ARPrimitive, AREnum, ARRef, and
+        ARObject types efficiently.
+
+        Args:
+            value: The value to serialize
+            expected_type: The expected type name (for context, can be "Any" for polymorphic)
+
+        Returns:
+            Serialized XML element, or None if value is None
+        """
+        if value is None:
+            return None
+
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
+            ARPrimitive,
+        )
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import (
+            AREnum,
+        )
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import (
+            ARRef,
+        )
+
+        # Handle ARPrimitive types
+        if isinstance(value, ARPrimitive):
+            return value.serialize()
+
+        # Handle AREnum types
+        elif isinstance(value, AREnum):
+            elem = ET.Element("VALUE")
+            elem.text = str(value.value).upper()
+            return elem
+
+        # Handle ARRef types
+        elif isinstance(value, ARRef):
+            return value.serialize()
+
+        # Handle ARObject types
+        elif hasattr(value, 'serialize'):
+            return value.serialize()
+
+        # Handle primitive Python types (str, int, float, bool)
+        else:
+            elem = ET.Element("VALUE")
+            elem.text = str(value)
+            return elem
+
 
 class ARObjectBuilder:
     """Builder for ARObject."""

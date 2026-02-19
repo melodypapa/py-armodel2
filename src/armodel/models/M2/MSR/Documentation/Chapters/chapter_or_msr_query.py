@@ -40,6 +40,74 @@ class ChapterOrMsrQuery(ARObject):
         super().__init__()
         self.chapter: Chapter = None
         self.msr_query_chapter: MsrQueryChapter = None
+    def serialize(self) -> ET.Element:
+        """Serialize ChapterOrMsrQuery to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize chapter
+        if self.chapter is not None:
+            serialized = ARObject._serialize_item(self.chapter, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHAPTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize msr_query_chapter
+        if self.msr_query_chapter is not None:
+            serialized = ARObject._serialize_item(self.msr_query_chapter, "MsrQueryChapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-CHAPTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ChapterOrMsrQuery":
+        """Deserialize XML element to ChapterOrMsrQuery object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ChapterOrMsrQuery object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapter
+        child = ARObject._find_child_element(element, "CHAPTER")
+        if child is not None:
+            chapter_value = ARObject._deserialize_by_tag(child, "Chapter")
+            obj.chapter = chapter_value
+
+        # Parse msr_query_chapter
+        child = ARObject._find_child_element(element, "MSR-QUERY-CHAPTER")
+        if child is not None:
+            msr_query_chapter_value = ARObject._deserialize_by_tag(child, "MsrQueryChapter")
+            obj.msr_query_chapter = msr_query_chapter_value
+
+        return obj
+
 
 
 class ChapterOrMsrQueryBuilder:

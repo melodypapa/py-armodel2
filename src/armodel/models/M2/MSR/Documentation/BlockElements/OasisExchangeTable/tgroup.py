@@ -58,6 +58,194 @@ class Tgroup(ARObject):
         self.tbody: Tbody = None
         self.tfoot: Optional[Tbody] = None
         self.thead: Optional[Tbody] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Tgroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize align
+        if self.align is not None:
+            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cols
+        if self.cols is not None:
+            serialized = ARObject._serialize_item(self.cols, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colsep
+        if self.colsep is not None:
+            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colspecs (list to container "COLSPECS")
+        if self.colspecs:
+            wrapper = ET.Element("COLSPECS")
+            for item in self.colspecs:
+                serialized = ARObject._serialize_item(item, "Colspec")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rowsep
+        if self.rowsep is not None:
+            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROWSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tbody
+        if self.tbody is not None:
+            serialized = ARObject._serialize_item(self.tbody, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TBODY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tfoot
+        if self.tfoot is not None:
+            serialized = ARObject._serialize_item(self.tfoot, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TFOOT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize thead
+        if self.thead is not None:
+            serialized = ARObject._serialize_item(self.thead, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("THEAD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Tgroup":
+        """Deserialize XML element to Tgroup object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Tgroup object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse align
+        child = ARObject._find_child_element(element, "ALIGN")
+        if child is not None:
+            align_value = AlignEnum.deserialize(child)
+            obj.align = align_value
+
+        # Parse cols
+        child = ARObject._find_child_element(element, "COLS")
+        if child is not None:
+            cols_value = child.text
+            obj.cols = cols_value
+
+        # Parse colsep
+        child = ARObject._find_child_element(element, "COLSEP")
+        if child is not None:
+            colsep_value = child.text
+            obj.colsep = colsep_value
+
+        # Parse colspecs (list from container "COLSPECS")
+        obj.colspecs = []
+        container = ARObject._find_child_element(element, "COLSPECS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.colspecs.append(child_value)
+
+        # Parse rowsep
+        child = ARObject._find_child_element(element, "ROWSEP")
+        if child is not None:
+            rowsep_value = child.text
+            obj.rowsep = rowsep_value
+
+        # Parse tbody
+        child = ARObject._find_child_element(element, "TBODY")
+        if child is not None:
+            tbody_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.tbody = tbody_value
+
+        # Parse tfoot
+        child = ARObject._find_child_element(element, "TFOOT")
+        if child is not None:
+            tfoot_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.tfoot = tfoot_value
+
+        # Parse thead
+        child = ARObject._find_child_element(element, "THEAD")
+        if child is not None:
+            thead_value = ARObject._deserialize_by_tag(child, "Tbody")
+            obj.thead = thead_value
+
+        return obj
+
 
 
 class TgroupBuilder:

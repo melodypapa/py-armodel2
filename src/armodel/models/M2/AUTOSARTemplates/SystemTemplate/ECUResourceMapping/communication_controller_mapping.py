@@ -37,6 +37,74 @@ class CommunicationControllerMapping(ARObject):
         super().__init__()
         self.communication_controller: Optional[CommunicationController] = None
         self.hw: Optional[HwElement] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CommunicationControllerMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize communication_controller
+        if self.communication_controller is not None:
+            serialized = ARObject._serialize_item(self.communication_controller, "CommunicationController")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CONTROLLER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hw
+        if self.hw is not None:
+            serialized = ARObject._serialize_item(self.hw, "HwElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommunicationControllerMapping":
+        """Deserialize XML element to CommunicationControllerMapping object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommunicationControllerMapping object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse communication_controller
+        child = ARObject._find_child_element(element, "COMMUNICATION-CONTROLLER")
+        if child is not None:
+            communication_controller_value = ARObject._deserialize_by_tag(child, "CommunicationController")
+            obj.communication_controller = communication_controller_value
+
+        # Parse hw
+        child = ARObject._find_child_element(element, "HW")
+        if child is not None:
+            hw_value = ARObject._deserialize_by_tag(child, "HwElement")
+            obj.hw = hw_value
+
+        return obj
+
 
 
 class CommunicationControllerMappingBuilder:

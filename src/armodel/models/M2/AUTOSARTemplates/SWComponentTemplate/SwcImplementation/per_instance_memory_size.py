@@ -39,6 +39,94 @@ class PerInstanceMemorySize(ARObject):
         self.alignment: Optional[PositiveInteger] = None
         self.per_instance_memory_memory: Optional[PerInstanceMemory] = None
         self.size: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PerInstanceMemorySize to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize alignment
+        if self.alignment is not None:
+            serialized = ARObject._serialize_item(self.alignment, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGNMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize per_instance_memory_memory
+        if self.per_instance_memory_memory is not None:
+            serialized = ARObject._serialize_item(self.per_instance_memory_memory, "PerInstanceMemory")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PER-INSTANCE-MEMORY-MEMORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size
+        if self.size is not None:
+            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PerInstanceMemorySize":
+        """Deserialize XML element to PerInstanceMemorySize object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PerInstanceMemorySize object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse alignment
+        child = ARObject._find_child_element(element, "ALIGNMENT")
+        if child is not None:
+            alignment_value = child.text
+            obj.alignment = alignment_value
+
+        # Parse per_instance_memory_memory
+        child = ARObject._find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY")
+        if child is not None:
+            per_instance_memory_memory_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
+            obj.per_instance_memory_memory = per_instance_memory_memory_value
+
+        # Parse size
+        child = ARObject._find_child_element(element, "SIZE")
+        if child is not None:
+            size_value = child.text
+            obj.size = size_value
+
+        return obj
+
 
 
 class PerInstanceMemorySizeBuilder:

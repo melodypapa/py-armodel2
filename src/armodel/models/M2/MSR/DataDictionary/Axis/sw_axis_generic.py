@@ -37,6 +37,74 @@ class SwAxisGeneric(ARObject):
         super().__init__()
         self.sw_axis_type: Optional[SwAxisType] = None
         self.sw_generic_axis_params: list[SwGenericAxisParam] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwAxisGeneric to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_axis_type
+        if self.sw_axis_type is not None:
+            serialized = ARObject._serialize_item(self.sw_axis_type, "SwAxisType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-AXIS-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_generic_axis_params (list to container "SW-GENERIC-AXIS-PARAMS")
+        if self.sw_generic_axis_params:
+            wrapper = ET.Element("SW-GENERIC-AXIS-PARAMS")
+            for item in self.sw_generic_axis_params:
+                serialized = ARObject._serialize_item(item, "SwGenericAxisParam")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SwAxisGeneric":
+        """Deserialize XML element to SwAxisGeneric object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SwAxisGeneric object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse sw_axis_type
+        child = ARObject._find_child_element(element, "SW-AXIS-TYPE")
+        if child is not None:
+            sw_axis_type_value = ARObject._deserialize_by_tag(child, "SwAxisType")
+            obj.sw_axis_type = sw_axis_type_value
+
+        # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
+        obj.sw_generic_axis_params = []
+        container = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_generic_axis_params.append(child_value)
+
+        return obj
+
 
 
 class SwAxisGenericBuilder:

@@ -42,6 +42,94 @@ class Ipv6Props(ARObject):
         self.dhcp_props: Optional[Dhcpv6Props] = None
         self.fragmentation: Optional[Ipv6FragmentationProps] = None
         self.ndp_props: Optional[Ipv6NdpProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv6Props to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize dhcp_props
+        if self.dhcp_props is not None:
+            serialized = ARObject._serialize_item(self.dhcp_props, "Dhcpv6Props")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DHCP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize fragmentation
+        if self.fragmentation is not None:
+            serialized = ARObject._serialize_item(self.fragmentation, "Ipv6FragmentationProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRAGMENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ndp_props
+        if self.ndp_props is not None:
+            serialized = ARObject._serialize_item(self.ndp_props, "Ipv6NdpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NDP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "Ipv6Props":
+        """Deserialize XML element to Ipv6Props object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized Ipv6Props object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse dhcp_props
+        child = ARObject._find_child_element(element, "DHCP-PROPS")
+        if child is not None:
+            dhcp_props_value = ARObject._deserialize_by_tag(child, "Dhcpv6Props")
+            obj.dhcp_props = dhcp_props_value
+
+        # Parse fragmentation
+        child = ARObject._find_child_element(element, "FRAGMENTATION")
+        if child is not None:
+            fragmentation_value = ARObject._deserialize_by_tag(child, "Ipv6FragmentationProps")
+            obj.fragmentation = fragmentation_value
+
+        # Parse ndp_props
+        child = ARObject._find_child_element(element, "NDP-PROPS")
+        if child is not None:
+            ndp_props_value = ARObject._deserialize_by_tag(child, "Ipv6NdpProps")
+            obj.ndp_props = ndp_props_value
+
+        return obj
+
 
 
 class Ipv6PropsBuilder:

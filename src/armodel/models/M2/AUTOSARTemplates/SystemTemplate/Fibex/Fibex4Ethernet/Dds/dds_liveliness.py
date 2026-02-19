@@ -37,6 +37,74 @@ class DdsLiveliness(ARObject):
         super().__init__()
         self.liveliness_lease: Optional[Float] = None
         self.liveness_kind: Optional[DdsLivenessKindEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsLiveliness to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize liveliness_lease
+        if self.liveliness_lease is not None:
+            serialized = ARObject._serialize_item(self.liveliness_lease, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LIVELINESS-LEASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize liveness_kind
+        if self.liveness_kind is not None:
+            serialized = ARObject._serialize_item(self.liveness_kind, "DdsLivenessKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LIVENESS-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsLiveliness":
+        """Deserialize XML element to DdsLiveliness object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsLiveliness object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse liveliness_lease
+        child = ARObject._find_child_element(element, "LIVELINESS-LEASE")
+        if child is not None:
+            liveliness_lease_value = child.text
+            obj.liveliness_lease = liveliness_lease_value
+
+        # Parse liveness_kind
+        child = ARObject._find_child_element(element, "LIVENESS-KIND")
+        if child is not None:
+            liveness_kind_value = DdsLivenessKindEnum.deserialize(child)
+            obj.liveness_kind = liveness_kind_value
+
+        return obj
+
 
 
 class DdsLivelinessBuilder:

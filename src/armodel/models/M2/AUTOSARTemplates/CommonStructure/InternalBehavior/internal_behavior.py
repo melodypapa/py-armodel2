@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -66,6 +67,163 @@ class InternalBehavior(Identifiable, ABC):
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
         self.static_memorie_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize InternalBehavior to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(InternalBehavior, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize constants (list to container "CONSTANTS")
+        if self.constants:
+            wrapper = ET.Element("CONSTANTS")
+            for item in self.constants:
+                serialized = ARObject._serialize_item(item, "ParameterDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize constant_values (list to container "CONSTANT-VALUES")
+        if self.constant_values:
+            wrapper = ET.Element("CONSTANT-VALUES")
+            for item in self.constant_values:
+                serialized = ARObject._serialize_item(item, "ConstantSpecification")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_type_refs (list to container "DATA-TYPES")
+        if self.data_type_refs:
+            wrapper = ET.Element("DATA-TYPES")
+            for item in self.data_type_refs:
+                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
+        if self.exclusive_areas:
+            wrapper = ET.Element("EXCLUSIVE-AREAS")
+            for item in self.exclusive_areas:
+                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize exclusive_area_nestings (list to container "EXCLUSIVE-AREA-NESTINGS")
+        if self.exclusive_area_nestings:
+            wrapper = ET.Element("EXCLUSIVE-AREA-NESTINGS")
+            for item in self.exclusive_area_nestings:
+                serialized = ARObject._serialize_item(item, "ExclusiveAreaNestingOrder")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize static_memorie_refs (list to container "STATIC-MEMORIES")
+        if self.static_memorie_refs:
+            wrapper = ET.Element("STATIC-MEMORIES")
+            for item in self.static_memorie_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "InternalBehavior":
+        """Deserialize XML element to InternalBehavior object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized InternalBehavior object
+        """
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(InternalBehavior, cls).deserialize(element)
+
+        # Parse constants (list from container "CONSTANTS")
+        obj.constants = []
+        container = ARObject._find_child_element(element, "CONSTANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constants.append(child_value)
+
+        # Parse constant_values (list from container "CONSTANT-VALUES")
+        obj.constant_values = []
+        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constant_values.append(child_value)
+
+        # Parse data_type_refs (list from container "DATA-TYPES")
+        obj.data_type_refs = []
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
+
+        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
+        obj.exclusive_areas = []
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_areas.append(child_value)
+
+        # Parse exclusive_area_nestings (list from container "EXCLUSIVE-AREA-NESTINGS")
+        obj.exclusive_area_nestings = []
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-NESTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_area_nestings.append(child_value)
+
+        # Parse static_memorie_refs (list from container "STATIC-MEMORIES")
+        obj.static_memorie_refs = []
+        container = ARObject._find_child_element(element, "STATIC-MEMORIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.static_memorie_refs.append(child_value)
+
+        return obj
+
 
 
 class InternalBehaviorBuilder:

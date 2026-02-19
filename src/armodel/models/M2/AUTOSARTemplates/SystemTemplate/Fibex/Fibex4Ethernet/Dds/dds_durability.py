@@ -32,6 +32,54 @@ class DdsDurability(ARObject):
         """Initialize DdsDurability."""
         super().__init__()
         self.durability_kind: Optional[DdsDurabilityKindEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsDurability to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize durability_kind
+        if self.durability_kind is not None:
+            serialized = ARObject._serialize_item(self.durability_kind, "DdsDurabilityKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DURABILITY-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DdsDurability":
+        """Deserialize XML element to DdsDurability object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DdsDurability object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse durability_kind
+        child = ARObject._find_child_element(element, "DURABILITY-KIND")
+        if child is not None:
+            durability_kind_value = DdsDurabilityKindEnum.deserialize(child)
+            obj.durability_kind = durability_kind_value
+
+        return obj
+
 
 
 class DdsDurabilityBuilder:

@@ -38,6 +38,74 @@ class DocumentViewSelectable(ARObject, ABC):
         super().__init__()
         self.si: NameTokens = None
         self.view: Optional[ViewTokens] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DocumentViewSelectable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize si
+        if self.si is not None:
+            serialized = ARObject._serialize_item(self.si, "NameTokens")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SI")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize view
+        if self.view is not None:
+            serialized = ARObject._serialize_item(self.view, "ViewTokens")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VIEW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DocumentViewSelectable":
+        """Deserialize XML element to DocumentViewSelectable object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DocumentViewSelectable object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse si
+        child = ARObject._find_child_element(element, "SI")
+        if child is not None:
+            si_value = child.text
+            obj.si = si_value
+
+        # Parse view
+        child = ARObject._find_child_element(element, "VIEW")
+        if child is not None:
+            view_value = child.text
+            obj.view = view_value
+
+        return obj
+
 
 
 class DocumentViewSelectableBuilder:

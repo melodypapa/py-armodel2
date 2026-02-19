@@ -32,6 +32,54 @@ class PredefinedChapter(ARObject):
         """Initialize PredefinedChapter."""
         super().__init__()
         self.chapter_model: ChapterModel = None
+    def serialize(self) -> ET.Element:
+        """Serialize PredefinedChapter to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize chapter_model
+        if self.chapter_model is not None:
+            serialized = ARObject._serialize_item(self.chapter_model, "ChapterModel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHAPTER-MODEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PredefinedChapter":
+        """Deserialize XML element to PredefinedChapter object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PredefinedChapter object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse chapter_model
+        child = ARObject._find_child_element(element, "CHAPTER-MODEL")
+        if child is not None:
+            chapter_model_value = ARObject._deserialize_by_tag(child, "ChapterModel")
+            obj.chapter_model = chapter_model_value
+
+        return obj
+
 
 
 class PredefinedChapterBuilder:

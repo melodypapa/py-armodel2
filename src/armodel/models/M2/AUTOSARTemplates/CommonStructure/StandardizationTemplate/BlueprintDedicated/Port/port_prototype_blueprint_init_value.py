@@ -41,6 +41,74 @@ class PortPrototypeBlueprintInitValue(ARObject):
         super().__init__()
         self.data_prototype_ref: ARRef = None
         self.value: ValueSpecification = None
+    def serialize(self) -> ET.Element:
+        """Serialize PortPrototypeBlueprintInitValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_prototype_ref
+        if self.data_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.data_prototype_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "ValueSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprintInitValue":
+        """Deserialize XML element to PortPrototypeBlueprintInitValue object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized PortPrototypeBlueprintInitValue object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_prototype_ref
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE")
+        if child is not None:
+            data_prototype_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            obj.data_prototype_ref = data_prototype_ref_value
+
+        # Parse value
+        child = ARObject._find_child_element(element, "VALUE")
+        if child is not None:
+            value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            obj.value = value_value
+
+        return obj
+
 
 
 class PortPrototypeBlueprintInitValueBuilder:

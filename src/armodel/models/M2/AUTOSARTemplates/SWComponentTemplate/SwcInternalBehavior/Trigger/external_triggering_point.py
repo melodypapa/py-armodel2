@@ -36,6 +36,74 @@ class ExternalTriggeringPoint(ARObject):
         super().__init__()
         self.ident_ref: Optional[ARRef] = None
         self.trigger_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ExternalTriggeringPoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ident_ref
+        if self.ident_ref is not None:
+            serialized = ARObject._serialize_item(self.ident_ref, "ExternalTriggeringPoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trigger_ref
+        if self.trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "ExternalTriggeringPoint":
+        """Deserialize XML element to ExternalTriggeringPoint object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized ExternalTriggeringPoint object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse ident_ref
+        child = ARObject._find_child_element(element, "IDENT")
+        if child is not None:
+            ident_ref_value = ARObject._deserialize_by_tag(child, "ExternalTriggeringPoint")
+            obj.ident_ref = ident_ref_value
+
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER")
+        if child is not None:
+            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            obj.trigger_ref = trigger_ref_value
+
+        return obj
+
 
 
 class ExternalTriggeringPointBuilder:

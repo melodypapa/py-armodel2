@@ -37,6 +37,74 @@ class IncludedDataTypeSet(ARObject):
         super().__init__()
         self.data_types: list[AutosarDataType] = []
         self.literal_prefix: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IncludedDataTypeSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_types (list to container "DATA-TYPES")
+        if self.data_types:
+            wrapper = ET.Element("DATA-TYPES")
+            for item in self.data_types:
+                serialized = ARObject._serialize_item(item, "AutosarDataType")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize literal_prefix
+        if self.literal_prefix is not None:
+            serialized = ARObject._serialize_item(self.literal_prefix, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LITERAL-PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "IncludedDataTypeSet":
+        """Deserialize XML element to IncludedDataTypeSet object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized IncludedDataTypeSet object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse data_types (list from container "DATA-TYPES")
+        obj.data_types = []
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_types.append(child_value)
+
+        # Parse literal_prefix
+        child = ARObject._find_child_element(element, "LITERAL-PREFIX")
+        if child is not None:
+            literal_prefix_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.literal_prefix = literal_prefix_value
+
+        return obj
+
 
 
 class IncludedDataTypeSetBuilder:
